@@ -1,9 +1,8 @@
 ﻿using MongoDB.Driver;
 
-namespace Business.Data.Interfaces
+namespace Business.Data.Interfaces;
+
+public interface IMongoDataLayerContext
 {
-    public interface IMongoDataLayerContext
-    {
-        IMongoDatabase MongoDatabase { get; }
-    }
+    IMongoDatabase MongoDatabase { get; }
 }

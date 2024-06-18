@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace CodeWithMe.Client.Authenticate;
 
-public class PersistentAuthenticationStateProvider: AuthenticationStateProvider, IDisposable
+public class PersistentAuthenticationStateProvider : AuthenticationStateProvider, IDisposable
 {
     private static readonly Task<AuthenticationState> DefaultUnauthenticatedTask = Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
 

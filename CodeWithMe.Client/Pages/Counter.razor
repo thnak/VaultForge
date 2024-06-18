@@ -1,7 +1,7 @@
 ﻿@page "/counter"
-@attribute [Authorize]
 @using BusinessModels.People
 @using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 
 <PageTitle>Counter</PageTitle>
 
@@ -12,10 +12,10 @@
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 @code {
-    private int currentCount = 0;
+    private int currentCount;
 
     private UserModel _userModel = new();
-    
+
     private void IncrementCount()
     {
         currentCount++;

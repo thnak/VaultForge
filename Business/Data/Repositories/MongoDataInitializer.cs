@@ -8,5 +8,4 @@ public class MongoDataInitializer : IMongoDataInitializer
     {
         throw new NotImplementedException();
     }
-    
 }

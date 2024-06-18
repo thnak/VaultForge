@@ -29,7 +29,7 @@ public partial class LoginPage : ComponentBase
     };
 
     private string[] FormError { get; set; } = [];
-    
+
 
     private void PasswordIconClick()
     {

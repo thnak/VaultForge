@@ -10,9 +10,9 @@ using Microsoft.Extensions.Options;
 
 namespace CodeWithMe.Authenticate;
 
-public class PersistingServerAuthenticationStateProvider: ServerAuthenticationStateProvider, IDisposable
+public class PersistingServerAuthenticationStateProvider : ServerAuthenticationStateProvider, IDisposable
 {
-     private readonly IdentityOptions _options;
+    private readonly IdentityOptions _options;
     private readonly PersistentComponentState _state;
 
     private readonly PersistingComponentStateSubscription _subscription;

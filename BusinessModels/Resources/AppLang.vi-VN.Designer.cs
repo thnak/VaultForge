@@ -28,7 +28,7 @@ namespace BusinessModels.Resources {
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public AppLang_vi_VN() {
+        internal AppLang_vi_VN() {
         }
         
         /// <summary>

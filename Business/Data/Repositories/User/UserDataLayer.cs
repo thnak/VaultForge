@@ -9,8 +9,8 @@ namespace Business.Data.Repositories.User;
 
 public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
 {
-    private readonly IMongoCollection<UserModel> _dataDb = context.MongoDatabase.GetCollection<UserModel>("User");
     private const string SearchIndexString = "UserSearchIndex";
+    private readonly IMongoCollection<UserModel> _dataDb = context.MongoDatabase.GetCollection<UserModel>("User");
 
     private readonly SemaphoreSlim _semaphore = new(1, 1);
 
@@ -20,10 +20,10 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
         try
         {
             var keys = Builders<UserModel>.IndexKeys.Descending(x => x.UserName);
-            var indexOptions = new CreateIndexOptions<UserModel>()
+            var indexOptions = new CreateIndexOptions<UserModel>
             {
                 Unique = true,
-                PartialFilterExpression = Builders<UserModel>.Filter.Type(x => x.Alias, "string")
+                PartialFilterExpression = Builders<UserModel>.Filter.Type(field: x => x.Alias, "string")
             };
             var indexModel = new CreateIndexModel<UserModel>(keys, indexOptions);
 
@@ -175,7 +175,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
         try
         {
             if (Get(model.UserName) == null) return (false, AppLang.User_is_not_exists);
-            var filter = Builders<UserModel>.Filter.Eq(x => x.UserName, model.UserName);
+            var filter = Builders<UserModel>.Filter.Eq(field: x => x.UserName, model.UserName);
             var result = await _dataDb.ReplaceOneAsync(filter, model);
             if (result.IsAcknowledged)
             {
@@ -200,7 +200,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
 
     public (bool, string) Delete(string key)
     {
-        
+
         try
         {
             if (string.IsNullOrWhiteSpace(key)) return (false, AppLang.User_name_is_not_valid);

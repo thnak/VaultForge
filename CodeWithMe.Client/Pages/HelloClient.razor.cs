@@ -5,5 +5,4 @@ namespace CodeWithMe.Client.Pages;
 
 public partial class HelloClient(IToastService toastService) : ComponentBase
 {
-    
 }

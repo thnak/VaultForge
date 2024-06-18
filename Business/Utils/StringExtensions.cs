@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 
@@ -8,17 +7,17 @@ public static class StringExtensions
 {
     public static T? DecodeBase64String<T>(this string base64String)
     {
-        byte[] base64Bytes = Convert.FromBase64String(base64String);
-        string plainText = Encoding.UTF8.GetString(base64Bytes);
+        var base64Bytes = Convert.FromBase64String(base64String);
+        var plainText = Encoding.UTF8.GetString(base64Bytes);
         var json = JsonSerializer.Deserialize<T>(plainText);
         return json;
     }
-    
+
     public static string DecodeBase64String(this string base64String)
     {
         if (string.IsNullOrEmpty(base64String)) return string.Empty;
-        byte[] base64Bytes = Convert.FromBase64String(base64String);
-        string plainText = Encoding.UTF8.GetString(base64Bytes);
+        var base64Bytes = Convert.FromBase64String(base64String);
+        var plainText = Encoding.UTF8.GetString(base64Bytes);
         return plainText;
     }
 
@@ -37,11 +36,11 @@ public static class StringExtensions
 
     public static string AppendAndEncodeBase64StringAsUri(this string source, string message)
     {
-        StringBuilder stringBuilder = new StringBuilder();
+        var stringBuilder = new StringBuilder();
         stringBuilder.Append(source);
         if (!source.EndsWith('/')) stringBuilder.Append('/');
         var planText = Encode2Base64String(message);
-        if(planText.Length < 2048)
+        if (planText.Length < 2048)
             stringBuilder.Append(planText);
         return stringBuilder.ToString();
     }

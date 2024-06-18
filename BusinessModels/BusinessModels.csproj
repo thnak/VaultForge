@@ -7,36 +7,36 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="MessagePack" Version="2.5.168" />
-      <PackageReference Include="MessagePack.Annotations" Version="2.5.168" />
-      <PackageReference Include="MessagePackAnalyzer" Version="2.5.140">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Include="MongoDB.Bson" Version="2.26.0" />
+        <PackageReference Include="MessagePack" Version="2.5.168"/>
+        <PackageReference Include="MessagePack.Annotations" Version="2.5.168"/>
+        <PackageReference Include="MessagePackAnalyzer" Version="2.5.140">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="MongoDB.Bson" Version="2.26.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Resources\AppLang.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>AppLang.resx</DependentUpon>
-      </Compile>
+        <Compile Update="Resources\AppLang.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>AppLang.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Resources\AppLang.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>AppLang.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources\AppLang.vi-VN.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>AppLang.vi-VN.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources\AppLang.en-US.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>AppLang.en-US.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
+        <EmbeddedResource Update="Resources\AppLang.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>AppLang.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\AppLang.vi-VN.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>AppLang.vi-VN.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\AppLang.en-US.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>AppLang.en-US.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
 </Project>

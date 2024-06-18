@@ -32,7 +32,7 @@ public class MongoDataLayerContext(IOptions<DbSettingModel> settings) : IMongoDa
                     new(CompressorType.Snappy),
                     new(CompressorType.Noop)
                 },
-                Credential = new MongoCredential("SCRAM-SHA-1", identity, evidence),
+                Credential = new MongoCredential("SCRAM-SHA-1", identity, evidence)
 
             };
 
