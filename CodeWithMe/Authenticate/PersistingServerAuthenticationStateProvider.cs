@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Security.Claims;
 using Business.Business.Interfaces.User;
 using BusinessModels.People;
 using Microsoft.AspNetCore.Components;
@@ -71,7 +72,8 @@ public class PersistingServerAuthenticationStateProvider : ServerAuthenticationS
                     UserName = userId,
                     Email = email ?? string.Empty,
                     Roles = roles,
-                    ImageUrl = avatarUri
+                    ImageUrl = avatarUri,
+                    JwtAccessToken = principal.Claims.FirstOrDefault(x=>x.Type == ClaimTypes.UserData)?.Value ?? string.Empty
                 });
             }
         }

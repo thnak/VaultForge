@@ -11,12 +11,12 @@
     <link href="fontawesome-free-6.5.2-web/css/all.css" rel="stylesheet"/>
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet"/>
 
-    <HeadOutlet @rendermode="InteractiveWebAssembly"/>
+    <HeadOutlet @rendermode="_renderMode"/>
     <title></title>
 </head>
 
 <body>
-<Routes @rendermode="InteractiveWebAssembly"/>
+<Routes @rendermode="_renderMode"/>
 <script src="_content/MudBlazor/MudBlazor.min.js"></script>
 <script src="_framework/blazor.web.js"></script>
 <script src="js/app.js"></script>
@@ -27,4 +27,5 @@
 @code
 {
     private string Lang { get; } = Thread.CurrentThread.CurrentCulture.Name;
+    private readonly InteractiveWebAssemblyRenderMode _renderMode = new(true);
 }

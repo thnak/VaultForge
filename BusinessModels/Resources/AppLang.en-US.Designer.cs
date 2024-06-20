@@ -69,6 +69,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This resource requires {0} years old.
+        /// </summary>
+        public static string This_resource_requires__0__years_old {
+            get {
+                return ResourceManager.GetString("This resource requires {0} years old", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User is already exists.
         /// </summary>
         public static string User_is_already_exists {

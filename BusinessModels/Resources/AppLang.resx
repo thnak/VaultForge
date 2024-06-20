@@ -138,4 +138,7 @@
     <data name="User update failed" xml:space="preserve">
     <value>Cập nhật người dùng không thành công</value>
   </data>
+    <data name="This resource requires {0} years old" xml:space="preserve">
+        <value>Tài nguyên này yêu cầu {0} tuổi</value>
+    </data>
 </root>

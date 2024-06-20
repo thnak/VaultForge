@@ -39,4 +39,7 @@
     <data name="Username or password incorrect" xml:space="preserve">
         <value>Tài khoản hoặc mật khẩu không đúng</value>
     </data>
+    <data name="This resource requires {0} years old" xml:space="preserve">
+        <value>Tài nguyên này yêu cầu {0} tuổi</value>
+    </data>
 </root>

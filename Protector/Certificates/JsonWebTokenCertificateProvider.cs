@@ -50,6 +50,11 @@ public class JsonWebTokenCertificateProvider(IOptions<AppCertificate> settings)
         return tokenHandler.WriteToken(token);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns>null if ClaimsPrincipal is null or the jwt is outdated</returns>
     public ClaimsPrincipal? GetClaimsFromToken(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -63,8 +68,7 @@ public class JsonWebTokenCertificateProvider(IOptions<AppCertificate> settings)
         try
         {
             var jwtSecurityToken = new JwtSecurityToken(token);
-            if (jwtSecurityToken.ValidTo > DateTime.Now) return tokenHandler.ValidateToken(token, validationParameters, out _);
-            return null;
+            return jwtSecurityToken.ValidTo > DateTime.UtcNow ? tokenHandler.ValidateToken(token, validationParameters, out _) : null;
         }
         catch (Exception)
         {

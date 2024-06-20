@@ -39,4 +39,7 @@
     <data name="User update failed" xml:space="preserve">
         <value>User update failed</value>
     </data>
+    <data name="This resource requires {0} years old" xml:space="preserve">
+        <value>This resource requires {0} years old</value>
+    </data>
 </root>

@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.User;
 using BusinessModels.People;
@@ -108,6 +109,17 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
     public IAsyncEnumerable<UserModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken? cancellationToken = default)
     {
         throw new NotImplementedException();
+    }
+    public async IAsyncEnumerable<UserModel> Where(Expression<Func<UserModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
+    {
+        var data = await _dataDb.FindAsync(predicate, new FindOptions<UserModel, UserModel>(), cancellationTokenSource?.Token ?? default);
+        while (await data.MoveNextAsync(cancellationTokenSource?.Token ?? default))
+        {
+            foreach (var user in data.Current)
+            {
+                yield return user;
+            }
+        }
     }
     public UserModel? Get(string key)
     {

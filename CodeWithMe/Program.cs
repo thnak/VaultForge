@@ -11,6 +11,7 @@ using Business.Data.Repositories.User;
 using BusinessModels.General;
 using BusinessModels.Resources;
 using CodeWithMe.Authenticate;
+using CodeWithMe.Authenticate.AuthorizationRequirement;
 using CodeWithMe.Components;
 using CodeWithMe.MiddleWares;
 using CodeWithMe.Services;
@@ -34,6 +35,7 @@ using Protector;
 using Protector.Certificates;
 using Protector.Certificates.Models;
 using Protector.KeyProvider;
+using Protector.Policy;
 using _Imports=CodeWithMe.Client._Imports;
 
 namespace CodeWithMe;
@@ -51,10 +53,19 @@ public abstract class Program
         builder.Services.AddMudServices();
         builder.Services.AddBlazoredToast();
 
-        #region Additionnal services
+        #region Configure Setting
 
         builder.Services.Configure<DbSettingModel>(builder.Configuration.GetSection("DBSetting"));
+        builder.Services.Configure<AppCertificate>(builder.Configuration.GetSection("AppCertificate"));
+
+        #endregion
+
+        #region Additionnal services
+
         builder.Services.AddScoped<IMongoDataLayerContext, MongoDataLayerContext>();
+
+        // builder.Services.AddDbContextFactory<UserModel>
+
         builder.Services.AddScoped<IUserDataLayer, UserDataLayer>();
         builder.Services.AddScoped<IUserBusinessLayer, UserBusinessLayer>();
 
@@ -122,11 +133,16 @@ public abstract class Program
 
         #region Authenticate & Protection
 
-        builder.Services.AddScoped<AuthenticationStateProvider, PersistingServerAuthenticationStateProvider>();
         builder.Services.AddSingleton<JsonWebTokenCertificateProvider>();
         builder.Services.AddSingleton<RsaKeyProvider>();
+        builder.Services.AddScoped<AuthenticationStateProvider, PersistingServerAuthenticationStateProvider>();
         builder.Services.AddCascadingAuthenticationState();
-        builder.Services.AddAuthorization();
+        builder.Services.AddAuthorization(options => {
+            options.AddPolicy(PolicyNames.Over18, policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(18)));
+            options.AddPolicy(PolicyNames.Over14, policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(14)));
+            options.AddPolicy(PolicyNames.Over7, policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(7)));
+            
+        });
         builder.Services.AddAuthentication(options => {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -280,22 +296,47 @@ public abstract class Program
     private static async Task ValidateAsync(CookieValidatePrincipalContext context)
     {
         var userPrincipal = context.Principal;
-        var authenticationType = userPrincipal?.Identity?.AuthenticationType ?? string.Empty;
+        if (userPrincipal == null)
+        {
+            await Reject();
+            return;
+        }
+
+        var authenticationType = userPrincipal.Identity?.AuthenticationType ?? string.Empty;
         if (authenticationType == CookieNames.AuthenticationType)
         {
             // Example: Check if the user's security stamp is still valid
-            var userManager = context.HttpContext.RequestServices.GetRequiredService<IUserBusinessLayer>();
+            // var userManager = context.HttpContext.RequestServices.GetRequiredService<IUserBusinessLayer>();
+            var jswProvider = context.HttpContext.RequestServices.GetRequiredService<JsonWebTokenCertificateProvider>();
+
+            var jwt = userPrincipal.FindFirst(ClaimTypes.UserData)?.Value;
+            if (string.IsNullOrEmpty(jwt))
+            {
+                await Reject();
+                return;
+            }
+            var claimsPrincipal = jswProvider.GetClaimsFromToken(jwt);
+            if (claimsPrincipal == null)
+            {
+                await Reject();
+                return;
+            }
+
             var userId = userPrincipal?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var user = userId;
 
             if (user == null)
             {
-                // If the user is not found or is not in the required role, reject the principal
-                context.RejectPrincipal();
-                await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                await Reject();
             }
         }
         else
+        {
+            await Reject();
+        }
+        return;
+
+        async Task Reject()
         {
             context.RejectPrincipal();
             await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
