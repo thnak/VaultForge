@@ -1,0 +1,52 @@
+@implements IDisposable
+
+<CascadingValue Name="UsePopoverProvider" Value="false">
+    <MudThemeProvider @bind-IsDarkMode="@CustomStateContainer.IsDarkMode" @ref="MudThemeProvider" Theme="@CustomStateContainer.MudTheme"></MudThemeProvider>
+</CascadingValue>
+
+@code {
+    private MudThemeProvider MudThemeProvider { get; set; } = default!;
+
+    #region Init
+
+    protected override Task OnInitializedAsync()
+    {
+        CustomStateContainer.OnChanged += StateHasChanged;
+        return base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var isDarkMode = await JsRuntime.InvokeAsync<string?>("localStorage.getItem", nameof(CustomStateContainer.IsDarkMode));
+            await MudThemeProvider.WatchSystemPreference(OnSystemPreferenceChanged);
+
+            if (isDarkMode != null)
+            {
+                CustomStateContainer.IsDarkMode = bool.Parse(isDarkMode);
+            }
+            else
+            {
+                var darkMode = await MudThemeProvider.GetSystemPreference();
+                CustomStateContainer.IsDarkMode = darkMode;
+            }
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #endregion
+
+    private Task OnSystemPreferenceChanged(bool newValue)
+    {
+        CustomStateContainer.IsDarkMode = newValue;
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        MudThemeProvider.Dispose();
+    }
+
+}

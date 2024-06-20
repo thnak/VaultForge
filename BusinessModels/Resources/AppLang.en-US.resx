@@ -42,4 +42,10 @@
     <data name="This resource requires {0} years old" xml:space="preserve">
         <value>This resource requires {0} years old</value>
     </data>
+    <data name="There is nothing to show" xml:space="preserve">
+        <value>There is nothing to show</value>
+    </data>
+    <data name="One moment please" xml:space="preserve">
+        <value>One moment please</value>
+    </data>
 </root>

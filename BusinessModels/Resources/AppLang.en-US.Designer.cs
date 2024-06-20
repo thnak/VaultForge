@@ -60,11 +60,29 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to One moment please.
+        /// </summary>
+        public static string One_moment_please {
+            get {
+                return ResourceManager.GetString("One moment please", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Success.
         /// </summary>
         public static string Success {
             get {
                 return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is nothing to show.
+        /// </summary>
+        public static string There_is_nothing_to_show {
+            get {
+                return ResourceManager.GetString("There is nothing to show", resourceCulture);
             }
         }
         

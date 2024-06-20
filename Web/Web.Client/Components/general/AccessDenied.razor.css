@@ -1,0 +1,42 @@
+.container {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+@media (orientation: landscape) {
+    .container {
+        height: calc(100vh - var(--mud-appbar-height) - 16px);
+    }
+}
+
+@media (orientation: portrait) {
+    .container {
+        height: calc(100vh - var(--mud-appbar-height) - 4px);
+    }
+}
+
+h1 {
+    font-size: 3em;
+    color: #333;
+}
+
+p {
+    font-size: 1.2em;
+    color: #666;
+    margin-top: 20px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,40 @@
+﻿
+
+<ThemeProvider/>
+<MudPopoverProvider/>
+<MudDialogProvider MaxWidth="MaxWidth.False"
+                   Position="DialogPosition.Center"/>
+<MudSnackbarProvider/>
+
+
+
+<MudBreakpointProvider>
+    <CascadingAuthenticationState>
+        <Router AppAssembly="@typeof(Program).Assembly">
+            <Found Context="routeData">
+                <ErrorBoundary>
+                    <ChildContent>
+                        <AuthorizeRouteView DefaultLayout="@typeof(MainLayout)" RouteData="@routeData">
+                            <Authorizing>
+                                <Loading/>
+                            </Authorizing>
+                            <NotAuthorized>
+                                <AccessDenied/>
+                            </NotAuthorized>
+                        </AuthorizeRouteView>
+                        @* <FocusOnNavigate RouteData="@routeData" Selector="h1"/> *@
+                    </ChildContent>
+                    <ErrorContent Context="ex">
+                        <ErrorPage Exception="@ex"/>
+                    </ErrorContent>
+                </ErrorBoundary>
+            </Found>
+            <NotFound>
+                <NotFoundPage/>
+            </NotFound>
+            <Navigating>
+                <Loading/>
+            </Navigating>
+        </Router>
+    </CascadingAuthenticationState>
+</MudBreakpointProvider>
