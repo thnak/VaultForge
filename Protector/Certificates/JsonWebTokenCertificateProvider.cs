@@ -8,7 +8,7 @@ using Protector.Certificates.Models;
 namespace Protector.Certificates;
 
 /// <summary>
-///     Tạo jwt từ file cert
+/// Tạo jwt từ file cert
 /// </summary>
 /// <param name="settings"></param>
 public class JsonWebTokenCertificateProvider(IOptions<AppCertificate> settings)
@@ -63,7 +63,8 @@ public class JsonWebTokenCertificateProvider(IOptions<AppCertificate> settings)
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new X509SecurityKey(_certificate),
             ValidateIssuer = false,
-            ValidateAudience = false
+            ValidateAudience = false,
+            ValidateLifetime = true
         };
         try
         {

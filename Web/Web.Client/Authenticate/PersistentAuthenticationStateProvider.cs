@@ -16,7 +16,7 @@ public class PersistentAuthenticationStateProvider : AuthenticationStateProvider
     {
         if (!state.TryTakeFromJson<UserInfoModel>(nameof(UserInfoModel), out var userInfo) || userInfo is null) return;
 
-        AvatarUri = userInfo.ImageUrl;
+        AvatarUri = userInfo.Avatar;
         UserName = userInfo.UserName;
         List<Claim> claims =
         [

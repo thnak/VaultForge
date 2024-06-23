@@ -1,16 +1,18 @@
-using Business.Data.Interfaces;
+using Business.Data.Interfaces.Entity.User;
 using BusinessModels.General;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Compression;
 using MongoDB.Driver.Core.Configuration;
 
-namespace Business.Data.Repositories;
+namespace Business.Data;
 
-public class MongoDataLayerContext : IMongoDataLayerContext
+public class MongoDbEntityClient
 {
-    public IMongoDatabase MongoDatabase { get; }
-    public MongoDataLayerContext(IOptions<DbSettingModel> settings)
+    public DbContextOptions<EntityDataContext> MongoDatabase { get; set; }
+
+    public MongoDbEntityClient(IOptions<DbSettingModel> settings)
     {
         var dbName = settings.Value.DatabaseName;
         var user = settings.Value.UserName;
@@ -34,10 +36,7 @@ public class MongoDataLayerContext : IMongoDataLayerContext
             Credential = new MongoCredential("SCRAM-SHA-1", identity, evidence)
 
         };
-
         var client = new MongoClient(setup);
-        var dbContext = client.GetDatabase(dbName);
-        MongoDatabase = dbContext ?? throw new Exception();
-
+        MongoDatabase = new DbContextOptionsBuilder<EntityDataContext>().UseMongoDB(client, dbName).Options;
     }
 }

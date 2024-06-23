@@ -9,7 +9,7 @@
 
 
 <MudBreakpointProvider>
-    <CascadingAuthenticationState>
+    @* <CascadingAuthenticationState> *@
         <Router AppAssembly="@typeof(Program).Assembly">
             <Found Context="routeData">
                 <ErrorBoundary>
@@ -36,5 +36,5 @@
                 <Loading/>
             </Navigating>
         </Router>
-    </CascadingAuthenticationState>
+    @* </CascadingAuthenticationState> *@
 </MudBreakpointProvider>

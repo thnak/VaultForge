@@ -147,4 +147,19 @@
     <data name="One moment please" xml:space="preserve">
         <value>Vui lòng đợi một lát</value>
     </data>
+    <data name="User or password is incorrect" xml:space="preserve">
+        <value>Tài khoản hoặc mật khẩu không đúng</value>
+    </data>
+    <data name="User is authenticated" xml:space="preserve">
+        <value>Người dùng được xác thực</value>
+    </data>
+    <data name="The user has been authenticated" xml:space="preserve">
+        <value>Người dùng đã được xác thực</value>
+    </data>
+    <data name="User has been authenticated" xml:space="preserve">
+        <value>Người dùng đã được xác thực</value>
+    </data>
+    <data name="Hello" xml:space="preserve">
+        <value>Xin chào</value>
+    </data>
 </root>

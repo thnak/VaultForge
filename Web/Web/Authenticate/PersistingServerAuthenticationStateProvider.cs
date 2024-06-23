@@ -64,7 +64,7 @@ public class PersistingServerAuthenticationStateProvider : ServerAuthenticationS
                 var avatarUri = string.Empty;
                 if (!string.IsNullOrEmpty(principal.Identity.Name))
                 {
-                    avatarUri = _userBl.Value.Get(principal.Identity.Name)?.ImageUrl ?? avatarUri;
+                    avatarUri = _userBl.Value.Get(principal.Identity.Name)?.Avatar ?? avatarUri;
                 }
 
                 _state.PersistAsJson(nameof(UserInfoModel), new UserInfoModel
@@ -72,7 +72,7 @@ public class PersistingServerAuthenticationStateProvider : ServerAuthenticationS
                     UserName = userId,
                     Email = email ?? string.Empty,
                     Roles = roles,
-                    ImageUrl = avatarUri,
+                    Avatar = avatarUri,
                     JwtAccessToken = principal.Claims.FirstOrDefault(x=>x.Type == ClaimTypes.UserData)?.Value ?? string.Empty
                 });
             }
@@ -82,7 +82,7 @@ public class PersistingServerAuthenticationStateProvider : ServerAuthenticationS
             UserName = "haha",
             Email = "haha",
             Roles = [],
-            ImageUrl = "avatarUri"
+            Avatar = "avatarUri"
         });
     }
 }

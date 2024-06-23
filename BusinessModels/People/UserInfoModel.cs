@@ -20,15 +20,12 @@ public class UserInfoModel
     {
         LastLogin = user.LastLogin;
         PhoneNumber = user.PhoneNumber;
-        Department = user.Department;
         Email = user.Email;
-        Company = user.Company;
         UserName = user.UserName;
         Roles = user.Roles;
-        RoleGroups = user.RoleGroups;
         LastConnect = user.LastConnect;
         Token = token;
-        ImageUrl = user.ImageUrl;
+        Avatar = user.Avatar;
     }
 
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
@@ -50,7 +47,7 @@ public class UserInfoModel
     public DateTime LastConnect { get; set; }
 
     [BsonElement("9")] [Key(9)] public string Token { get; set; } = string.Empty;
-    [BsonElement("10")] [Key(10)] public string ImageUrl { get; set; } = "default_user.jpg";
+    [BsonElement("10")] [Key(10)] public string Avatar { get; set; } = "default_user.jpg";
 
     [Key(11)]
     [JsonIgnore]

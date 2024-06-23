@@ -1,4 +1,4 @@
-namespace Business.Utils;
+namespace BusinessModels.Utils;
 
 public static class DataTimeExtensions
 {

@@ -5,6 +5,7 @@ using BusinessModels.People;
 using BusinessModels.Resources;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Protector.Utils;
 
 namespace Business.Data.Repositories.User;
 
@@ -21,14 +22,9 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
         try
         {
             var keys = Builders<UserModel>.IndexKeys.Descending(x => x.UserName);
-            var indexOptions = new CreateIndexOptions<UserModel>
-            {
-                Unique = true,
-                PartialFilterExpression = Builders<UserModel>.Filter.Type(field: x => x.Alias, "string")
-            };
-            var indexModel = new CreateIndexModel<UserModel>(keys, indexOptions);
+            var indexModel = new CreateIndexModel<UserModel>(keys);
 
-            var searchIndexKeys = Builders<UserModel>.IndexKeys.Text(x => x.UserName).Text(x => x.Alias).Text(x => x.FullName);
+            var searchIndexKeys = Builders<UserModel>.IndexKeys.Text(x => x.UserName).Text(x => x.FullName);
             var searchIndexOptions = new CreateIndexOptions
             {
                 Name = SearchIndexString
@@ -37,6 +33,19 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
             var searchIndexModel = new CreateIndexModel<UserModel>(searchIndexKeys, searchIndexOptions);
             await _dataDb.Indexes.CreateOneAsync(searchIndexModel);
             await _dataDb.Indexes.CreateOneAsync(indexModel);
+
+            var system = Get("System");
+            if (system == null)
+            {
+                var passWord = "PassWd2@";
+                await CreateAsync(new UserModel()
+                {
+                    UserName = "System",
+                    PasswordHash = passWord.ComputeSha256Hash(),
+                    JoinDate = DateTime.Now,
+                });
+            }
+            
             Console.WriteLine(@"[Init] User data layer");
             return (true, string.Empty);
         }
@@ -70,8 +79,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
                                 "path", new BsonArray
                                 {
                                     nameof(UserModel.UserName),
-                                    nameof(UserModel.FullName),
-                                    nameof(UserModel.Alias)
+                                    nameof(UserModel.FullName)
                                 }
                             }// Specify the fields to search
                         }
@@ -125,7 +133,8 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
     {
         try
         {
-            var result = _dataDb.Find(x => x.UserName == key || x.Alias == key).FirstOrDefault();
+            var filter = Builders<UserModel>.Filter.Eq(x => x.UserName, key);
+            var result = _dataDb.Find(filter).Limit(1).FirstOrDefault();
             return result;
         }
         catch (MongoException)
@@ -226,5 +235,15 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
         {
             return (false, ex.Message);
         }
+    }
+    public List<string> GetAllRoles(string userName)
+    {
+        var filter = Builders<UserModel>.Filter.Eq(x => x.UserName, userName);
+        var project = Builders<UserModel>.Projection.Expression(x => new UserModel()
+        {
+            Roles = x.Roles
+        });
+        var data = _dataDb.Find(filter).Limit(1).Project(project).FirstOrDefault();
+        return data?.Roles ?? [];
     }
 }

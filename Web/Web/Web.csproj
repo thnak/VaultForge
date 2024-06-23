@@ -9,7 +9,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0-preview.5.24306.11" />
         <PackageReference Include="Microsoft.Extensions.Caching.Hybrid" Version="9.0.0-preview.5.24306.11" />
-        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.6" />
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.0-preview.5.24306.11" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.6.2" />
         <ProjectReference Include="..\..\BusinessModels\BusinessModels.csproj" />
         <ProjectReference Include="..\..\Business\Business.csproj" />

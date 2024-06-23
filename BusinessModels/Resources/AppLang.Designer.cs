@@ -60,6 +60,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Xin chào.
+        /// </summary>
+        public static string Hello {
+            get {
+                return ResourceManager.GetString("Hello", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vui lòng đợi một lát.
         /// </summary>
         public static string One_moment_please {
@@ -74,6 +83,15 @@ namespace BusinessModels.Resources {
         public static string Success {
             get {
                 return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Người dùng đã được xác thực.
+        /// </summary>
+        public static string The_user_has_been_authenticated {
+            get {
+                return ResourceManager.GetString("The user has been authenticated", resourceCulture);
             }
         }
         
@@ -96,11 +114,29 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Người dùng đã được xác thực.
+        /// </summary>
+        public static string User_has_been_authenticated {
+            get {
+                return ResourceManager.GetString("User has been authenticated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Người dùng đã tồn tại.
         /// </summary>
         public static string User_is_already_exists {
             get {
                 return ResourceManager.GetString("User is already exists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Người dùng được xác thực.
+        /// </summary>
+        public static string User_is_authenticated {
+            get {
+                return ResourceManager.GetString("User is authenticated", resourceCulture);
             }
         }
         
@@ -119,6 +155,15 @@ namespace BusinessModels.Resources {
         public static string User_name_is_not_valid {
             get {
                 return ResourceManager.GetString("User name is not valid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tài khoản hoặc mật khẩu không đúng.
+        /// </summary>
+        public static string User_or_password_is_incorrect {
+            get {
+                return ResourceManager.GetString("User or password is incorrect", resourceCulture);
             }
         }
         

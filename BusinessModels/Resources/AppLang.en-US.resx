@@ -48,4 +48,19 @@
     <data name="One moment please" xml:space="preserve">
         <value>One moment please</value>
     </data>
+    <data name="User or password is incorrect" xml:space="preserve">
+        <value>User or password is incorrect</value>
+    </data>
+    <data name="User is authenticated" xml:space="preserve">
+        <value>User is authenticated</value>
+    </data>
+    <data name="The user has been authenticated" xml:space="preserve">
+        <value>The user has been authenticated</value>
+    </data>
+    <data name="User has been authenticated" xml:space="preserve">
+        <value>User has been authenticated</value>
+    </data>
+    <data name="Hello" xml:space="preserve">
+        <value>Hello</value>
+    </data>
 </root>

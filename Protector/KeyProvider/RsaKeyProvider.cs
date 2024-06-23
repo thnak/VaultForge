@@ -2,6 +2,9 @@ using System.Security.Cryptography;
 
 namespace Protector.KeyProvider;
 
+/// <summary>
+/// Cung cấp khóa công khai
+/// </summary>
 public class RsaKeyProvider
 {
     public RsaKeyProvider()
