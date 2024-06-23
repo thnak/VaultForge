@@ -36,6 +36,7 @@ using Web.Authenticate;
 using Web.Authenticate.AuthorizationRequirement;
 using Web.Client.Services;
 using Web.Components;
+using Web.MiddleWares;
 using Web.Services;
 
 
@@ -137,6 +138,7 @@ public class Program
         #endregion
 
         #region Authenticate & Protection
+        builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         builder.Services.AddSingleton<JsonWebTokenCertificateProvider>();
         builder.Services.AddSingleton<RsaKeyProvider>();
@@ -233,7 +235,7 @@ public class Program
                     IssuerSigningKey = new X509SecurityKey(certificate),
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    ValidateLifetime = true,
+                    ValidateLifetime = false,
                 };
 
                 options.Events = new JwtBearerEvents
@@ -247,7 +249,7 @@ public class Program
 
                 Task OnMessageReceived(MessageReceivedContext arg)
                 {
-                    string[] names = [CookieNames.JwtTokenName, CookieNames.Antiforgery];
+                    string[] names = [CookieNames.JwtTokenName];
                     foreach (var name in names)
                     {
                         arg.Request.Cookies.TryGetValue(name, out var token);
@@ -391,7 +393,7 @@ public class Program
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
-            app.UseWebAssemblyDebugging();
+            // app.UseWebAssemblyDebugging();
         }
         else
         {
@@ -427,6 +429,9 @@ public class Program
         //     ApplyHeaders(context.Response.Headers);
         //     await next();
         // });
+
+        app.UseMiddleware<ErrorHandlingMiddleware>();
+        
         app.Run();
     }
     // static void ApplyHeaders(IHeaderDictionary headers)

@@ -16,14 +16,14 @@ using Web.Attribute;
 
 namespace Web.Controllers;
 
-[Route("api/[controller]/[action]")]
+[Route("api/[controller]")]
 [ApiController]
 public class AccountController(
-    IUserBusinessLayer userBl, 
-    JsonWebTokenCertificateProvider jsonWebTokenCertificateProvider, 
+    IUserBusinessLayer userBl,
+    JsonWebTokenCertificateProvider jsonWebTokenCertificateProvider,
     IAntiforgery antiforgery) : ControllerBase
 {
-    [HttpPost]
+    [HttpPost("login")]
     [ValidateAntiForgeryToken]
     [EnableRateLimiting(PolicyNamesAndRoles.LimitRate.Fixed)]
     public async Task<IActionResult> Login([FromForm] RequestLoginModel request)
@@ -44,7 +44,7 @@ public class AccountController(
         return Redirect(PageRoutes.Account.LoginError.AppendAndEncodeBase64StringAsUri(authenticateState.Item2));
     }
 
-    [HttpPost]
+    [HttpPost("GetJwt")]
     [EnableRateLimiting(PolicyNamesAndRoles.LimitRate.Fixed)]
     [ValidateAntiForgeryToken]
     public IActionResult GetJwt([FromForm] RequestLoginModel request)
@@ -59,23 +59,38 @@ public class AccountController(
         return Ok();
     }
 
-    [HttpGet]
+    [HttpGet("GetWeatwqwqher")]
     [Authorize(AuthenticationSchemes = $"{JwtBearerDefaults.AuthenticationScheme},{CookieAuthenticationDefaults.AuthenticationScheme}")]
-    [DisableFormValueModelBinding]
-    public IActionResult GetWeather()
+    // [DisableFormValueModelBinding]
+    public IActionResult GetWeatwqwqher()
+    {
+        var con = HttpContext;
+        return Ok(AppLang.Hello);
+    }
+    
+    [HttpPost("GetWeather2")]
+    [ValidateAntiForgeryToken]
+    public IActionResult GetWeather2()
     {
         return Ok(AppLang.Hello);
     }
-
+    
+    
     /// <summary>
     /// Manual get AntiForgeryToken for your self. it's also add a cookie for you
     /// </summary>
+    /// <param name="cookieName">Optional support for multiple request</param>
     /// <returns></returns>
-    [HttpGet]
+    [HttpGet("GetAntiForgeryToken")]
     [EnableRateLimiting(PolicyNamesAndRoles.LimitRate.Fixed)]
-    public IActionResult GetAntiForgeryToken(bool? storage)
+    public IActionResult GetAntiForgeryToken(string? cookieName)
     {
-        var tokens = storage is true ? antiforgery.GetAndStoreTokens(HttpContext) : antiforgery.GetTokens(HttpContext);
+        var isNullOrEmpty = string.IsNullOrEmpty(cookieName);
+        var tokens = isNullOrEmpty ? antiforgery.GetAndStoreTokens(HttpContext) : antiforgery.GetTokens(HttpContext);
+        if (!isNullOrEmpty)
+        {
+            if (tokens.RequestToken != null) HttpContext.Response.Cookies.Append(cookieName!, tokens.RequestToken);
+        }
         return new JsonResult(new
         {
             token = tokens.RequestToken

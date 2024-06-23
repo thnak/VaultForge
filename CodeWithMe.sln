@@ -15,10 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web\Web.csproj",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Client", "Web\Web.Client\Web.Client.csproj", "{5F5279AD-03E9-45A6-AC39-A475EDB0D77A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web2", "Web2\Web2\Web2.csproj", "{39F5B14C-5DD1-445B-8436-2CB6C8919AA6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web2.Client", "Web2\Web2.Client\Web2.Client.csproj", "{8897355D-F164-437C-8229-54C6108B7F84}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,14 +45,6 @@ Global
 		{5F5279AD-03E9-45A6-AC39-A475EDB0D77A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F5279AD-03E9-45A6-AC39-A475EDB0D77A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F5279AD-03E9-45A6-AC39-A475EDB0D77A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{39F5B14C-5DD1-445B-8436-2CB6C8919AA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{39F5B14C-5DD1-445B-8436-2CB6C8919AA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{39F5B14C-5DD1-445B-8436-2CB6C8919AA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{39F5B14C-5DD1-445B-8436-2CB6C8919AA6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8897355D-F164-437C-8229-54C6108B7F84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8897355D-F164-437C-8229-54C6108B7F84}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8897355D-F164-437C-8229-54C6108B7F84}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8897355D-F164-437C-8229-54C6108B7F84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

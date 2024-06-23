@@ -25,7 +25,6 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
     private void OnStopping()
     {
         Console.WriteLine(@"OnStopping");
-        Thread.Sleep(100_000);
         // ...
     }
 
