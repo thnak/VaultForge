@@ -137,7 +137,23 @@ public class Program
 
         #endregion
 
+        #region Logginf
+
+        builder.Services.AddLogging();
+        builder.Services.AddHttpLogging();
+        builder.Logging.SetMinimumLevel(LogLevel.Information);
+        
+        #endregion
+        
         #region Authenticate & Protection
+        
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policy => {
+                policy.WithOrigins().AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+            });
+        });
+        
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         builder.Services.AddSingleton<JsonWebTokenCertificateProvider>();
@@ -315,7 +331,8 @@ public class Program
                     ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
                 };
                 options.AutoGenerateKeys = true;
-            });
+            })
+            .PersistKeysToFileSystem(new DirectoryInfo(Directory.GetCurrentDirectory()));
 
         builder.Services.Configure<ForwardedHeadersOptions>(options => {
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
@@ -401,6 +418,8 @@ public class Program
             app.UseResponseCompression();
         }
 
+        app.UseCors();
+        
         app.UseRateLimiter();
 
         app.UseCors();

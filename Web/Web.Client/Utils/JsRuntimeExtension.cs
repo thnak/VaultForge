@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Microsoft.JSInterop;
 
-namespace Web.Utils;
+namespace Web.Client.Utils;
 
 public static class JsRuntimeExtension
 {
@@ -21,6 +21,13 @@ public static class JsRuntimeExtension
     {
         await jsRuntime.InvokeVoidAsync("localStorage.setItem", key, value);
     }
+
+    public static async Task SetLocalStorage(this IJSRuntime jsRuntime, string key, Object v)
+    {
+        var jsonText = JsonSerializer.Serialize(v);
+        await jsRuntime.SetLocalStorage(key, jsonText);
+    }
+    
     public static async Task<string?> GetLocalStorage(this IJSRuntime jsRuntime, string key)
     {
         return await jsRuntime.InvokeAsync<string?>("localStorage.getItem", key);

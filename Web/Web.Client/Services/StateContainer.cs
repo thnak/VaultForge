@@ -1,3 +1,4 @@
+using Microsoft.JSInterop;
 using MudBlazor;
 
 namespace Web.Client.Services;
@@ -12,7 +13,7 @@ public class StateContainer
     {
         _mudTheme = new MudTheme
         {
-            Palette = new PaletteLight
+            PaletteLight = new PaletteLight
             {
                 Primary = "#00a3e8",
                 PrimaryContrastText = "#F8F8F8",
@@ -27,14 +28,12 @@ public class StateContainer
                 DrawerIcon = "#68b7d9"
             }
         };
-        SharedPalette = _isDarkMode ? _mudTheme.PaletteDark : _mudTheme.Palette;
+        SharedPalette = _isDarkMode ? _mudTheme.PaletteDark : _mudTheme.PaletteLight;
     }
 
     public Action? OnChanged { get; set; }
-
-#pragma warning disable CS0618
+    public Func<Task>? OnChangedAsync { get; set; }
     public Palette SharedPalette { get; set; }
-#pragma warning restore CS0618
 
     public MudTheme MudTheme
     {
@@ -55,12 +54,17 @@ public class StateContainer
             HandleChanged();
         }
     }
-
-    // public SidebarType SidebarType { get; set; }
-
+    
+    [JSInvokable]
+    public static void ReceiveScreenshot(string dataUrl)
+    {
+        Console.WriteLine(dataUrl);
+    }
+    
     private void HandleChanged()
     {
-        SharedPalette = _isDarkMode ? _mudTheme.PaletteDark : _mudTheme.Palette;
+        SharedPalette = _isDarkMode ? _mudTheme.PaletteDark : _mudTheme.PaletteLight;
         OnChanged?.Invoke();
+        OnChangedAsync?.Invoke();
     }
 }

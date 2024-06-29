@@ -1,6 +1,7 @@
+@using Web.Client.Utils
 @implements IDisposable
 
-<CascadingValue Name="UsePopoverProvider" Value="false">
+<CascadingValue Name="UsePopoverProvider" Value="false" IsFixed>
     <MudThemeProvider @bind-IsDarkMode="@CustomStateContainer.IsDarkMode" @ref="MudThemeProvider" Theme="@CustomStateContainer.MudTheme"></MudThemeProvider>
 </CascadingValue>
 
@@ -19,7 +20,8 @@
     {
         if (firstRender)
         {
-            var isDarkMode = await JsRuntime.InvokeAsync<string?>("localStorage.getItem", nameof(CustomStateContainer.IsDarkMode));
+            
+            var isDarkMode = await JsRuntime.GetLocalStorage(nameof(CustomStateContainer.IsDarkMode));
             await MudThemeProvider.WatchSystemPreference(OnSystemPreferenceChanged);
 
             if (isDarkMode != null)
@@ -38,10 +40,10 @@
 
     #endregion
 
-    private Task OnSystemPreferenceChanged(bool newValue)
+    private async Task OnSystemPreferenceChanged(bool newValue)
     {
         CustomStateContainer.IsDarkMode = newValue;
-        return Task.CompletedTask;
+        await JsRuntime.SetLocalStorage(nameof(CustomStateContainer.IsDarkMode), newValue);
     }
 
     public void Dispose()
