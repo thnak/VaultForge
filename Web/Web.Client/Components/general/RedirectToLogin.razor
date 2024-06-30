@@ -4,6 +4,6 @@
 @code {
     protected override void OnInitialized()
     {
-        NavigationManager.NavigateTo($"{PageRoutes.Account.Login}?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}", forceLoad: true);
+        NavigationManager.NavigateTo($"{PageRoutes.Account.SignIn}?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}", forceLoad: true);
     }
 }

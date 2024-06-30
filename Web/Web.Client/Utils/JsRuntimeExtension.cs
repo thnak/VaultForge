@@ -27,7 +27,7 @@ public static class JsRuntimeExtension
         var jsonText = JsonSerializer.Serialize(v);
         await jsRuntime.SetLocalStorage(key, jsonText);
     }
-    
+
     public static async Task<string?> GetLocalStorage(this IJSRuntime jsRuntime, string key)
     {
         return await jsRuntime.InvokeAsync<string?>("localStorage.getItem", key);
@@ -78,6 +78,25 @@ public static class JsRuntimeExtension
     public static async Task ClearSessionStorage(this IJSRuntime jsRuntime)
     {
         await jsRuntime.InvokeVoidAsync("sessionStorage.clear");
+    }
+
+    public static async Task LocationReplace(this IJSRuntime jsRuntime, string uri)
+    {
+        await jsRuntime.InvokeVoidAsync("window.location.replace", uri);
+    }
+
+    #endregion
+
+    #region Culture
+
+    public static async Task SetCulture(this IJSRuntime jsRuntime, string name)
+    {
+        await jsRuntime.InvokeVoidAsync("blazorCulture.get", name);
+    }
+
+    public static async Task<string?> GetCulture(this IJSRuntime jsRuntime)
+    {
+        return await jsRuntime.InvokeAsync<string?>("blazorCulture.set");
     }
 
     #endregion

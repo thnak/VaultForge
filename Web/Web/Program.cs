@@ -169,7 +169,7 @@ public class Program
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options => {
                 options.SlidingExpiration = true;
-                options.LoginPath = PageRoutes.Account.Login;
+                options.LoginPath = PageRoutes.Account.SignIn;
                 options.LogoutPath = PageRoutes.Account.Logout;
                 options.AccessDeniedPath = PageRoutes.Account.Denied;
                 options.ExpireTimeSpan = TimeSpan.FromHours(ProtectorTime.CookieExpireTimeSpan);
@@ -410,7 +410,7 @@ public class Program
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
-            // app.UseWebAssemblyDebugging();
+            app.UseWebAssemblyDebugging();
         }
         else
         {

@@ -18,4 +18,10 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.0-preview.5.24306.11"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="myCA.pfx">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

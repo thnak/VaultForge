@@ -12,7 +12,7 @@
 
     protected override Task OnInitializedAsync()
     {
-        CustomStateContainer.OnChanged += StateHasChanged;
+        CustomStateContainer.OnChangedAsync += ThemeChangeEvent;
         return base.OnInitializedAsync();
     }
 
@@ -20,7 +20,6 @@
     {
         if (firstRender)
         {
-            
             var isDarkMode = await JsRuntime.GetLocalStorage(nameof(CustomStateContainer.IsDarkMode));
             await MudThemeProvider.WatchSystemPreference(OnSystemPreferenceChanged);
 
@@ -40,15 +39,21 @@
 
     #endregion
 
+    private async Task ThemeChangeEvent()
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+    
     private async Task OnSystemPreferenceChanged(bool newValue)
     {
         CustomStateContainer.IsDarkMode = newValue;
+        await ThemeChangeEvent();
         await JsRuntime.SetLocalStorage(nameof(CustomStateContainer.IsDarkMode), newValue);
     }
 
     public void Dispose()
     {
+        CustomStateContainer.OnChangedAsync += ThemeChangeEvent;
         MudThemeProvider.Dispose();
     }
-
 }

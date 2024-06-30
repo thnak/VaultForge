@@ -1,0 +1,104 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Home page" xml:space="preserve">
+        <value>Pagina de inicio</value>
+    </data>
+    <data name="Hello" xml:space="preserve">
+        <value>Hola</value>
+    </data>
+    <data name="Dark mode" xml:space="preserve">
+        <value>Modo oscuro</value>
+    </data>
+    <data name="Light mode" xml:space="preserve">
+        <value>Modo de luz</value>
+    </data>
+    <data name="Logout" xml:space="preserve">
+        <value>Cerrar sesión</value>
+    </data>
+    <data name="Logout and login again" xml:space="preserve">
+        <value>Cerrar sesión y volver a iniciar sesión</value>
+    </data>
+    <data name="Logout from all devices" xml:space="preserve">
+        <value>Cerrar sesión en todos los dispositivos</value>
+    </data>
+    <data name="Logout successful" xml:space="preserve">
+        <value>Cerrar sesión exitosamente</value>
+    </data>
+    <data name="One moment please" xml:space="preserve">
+        <value>Un momento por favor</value>
+    </data>
+    <data name="Profile" xml:space="preserve">
+        <value>Perfil</value>
+    </data>
+    <data name="Success" xml:space="preserve">
+        <value>Éxito</value>
+    </data>
+    <data name="System preference" xml:space="preserve">
+        <value>Preferencia del sistema</value>
+    </data>
+    <data name="The user has been authenticated" xml:space="preserve">
+        <value>El usuario ha sido autenticado.</value>
+    </data>
+    <data name="There is nothing to show" xml:space="preserve">
+        <value>No hay nada que mostrar</value>
+    </data>
+    <data name="This resource requires {0} years old" xml:space="preserve">
+        <value>Este recurso requiere {0} años de antigüedad.</value>
+    </data>
+    <data name="User has been authenticated" xml:space="preserve">
+        <value>El usuario ha sido autenticado</value>
+    </data>
+    <data name="User is already exists" xml:space="preserve">
+        <value>El usuario ya existe</value>
+    </data>
+    <data name="User is authenticated" xml:space="preserve">
+        <value>El usuario está autenticado</value>
+    </data>
+    <data name="User is not exists" xml:space="preserve">
+        <value>El usuario no existe</value>
+    </data>
+    <data name="User name is not valid" xml:space="preserve">
+        <value>El nombre de usuario no es válido</value>
+    </data>
+    <data name="User or password is incorrect" xml:space="preserve">
+        <value>El usuario o la contraseña son incorrectos</value>
+    </data>
+    <data name="User update failed" xml:space="preserve">
+        <value>La actualización del usuario falló</value>
+    </data>
+    <data name="User updated successfully" xml:space="preserve">
+        <value>Usuario actualizado con éxito</value>
+    </data>
+    <data name="Username or password incorrect" xml:space="preserve">
+        <value>Usuario o contraseña incorrectos</value>
+    </data>
+    <data name="Login" xml:space="preserve">
+        <value>Acceso</value>
+    </data>
+    <data name="You have been banned from logging in, please try again at {0}" xml:space="preserve">
+        <value>Se te ha prohibido iniciar sesión, inténtalo nuevamente el {0}</value>
+    </data>
+    <data name="Register a new account" xml:space="preserve">
+        <value>Registre una nueva cuenta</value>
+    </data>
+    <data name="Passwords do not match." xml:space="preserve">
+        <value>Las contraseñas no coinciden.</value>
+    </data>
+    <data name="Registration failed" xml:space="preserve">
+        <value>Registro fallido</value>
+    </data>
+    <data name="Sign Out" xml:space="preserve">
+        <value>Desconectar</value>
+    </data>
+</root>

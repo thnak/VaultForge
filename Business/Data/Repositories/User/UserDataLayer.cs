@@ -41,7 +41,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
                 await CreateAsync(new UserModel()
                 {
                     UserName = "System",
-                    PasswordHash = passWord.ComputeSha256Hash(),
+                    Password = passWord.ComputeSha256Hash(),
                     JoinDate = DateTime.Now,
                 });
             }
@@ -221,14 +221,14 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
 
     public (bool, string) Delete(string key)
     {
-
         try
         {
             if (string.IsNullOrWhiteSpace(key)) return (false, AppLang.User_name_is_not_valid);
 
             var query = Get(key);
             if (query == null) return (false, AppLang.User_is_not_exists);
-            _dataDb.DeleteOne(x => x.ObjectId == query.ObjectId);
+            query.Leave = DateTime.Now;
+            _ = UpdateAsync(query).Result;
             return (true, AppLang.Success);
         }
         catch (Exception ex)

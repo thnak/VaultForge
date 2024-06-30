@@ -14,6 +14,9 @@ public class UserModel
     public ObjectId ObjectId { get; set; } = ObjectId.GenerateNewId();
     [Key(1)]
     public string UserName { get; set; } = string.Empty;
+    [Key(19)]
+    public string Password { get; set; } = string.Empty;
+
     [Key(2)]
     public string FullName { get; set; } = string.Empty;
 
@@ -31,8 +34,8 @@ public class UserModel
 
     [Key(7)]
     public string Email { get; set; } = string.Empty;
-    [Key(8)]
-    public string PasswordHash { get; set; } = string.Empty;
+    
+    
     [Key(9)]
     public string PhoneNumber { get; set; } = string.Empty;
 
@@ -44,8 +47,18 @@ public class UserModel
     [Key(11)]
     public List<string> Tokens { get; set; } = new();
 
+    /// <summary>
+    /// Tổng số lần sai mật khẩu
+    /// </summary>
     [Key(12)]
     public int AccessFailedCount { get; set; }
+
+    /// <summary>
+    /// Số lần sai mật khẩu hiện tại
+    /// </summary>
+    [Key(20)]
+    public int CurrentFailCount { get; set; }
+    
     [Key(13)]
     public DateTime BanTime { get; set; }
 

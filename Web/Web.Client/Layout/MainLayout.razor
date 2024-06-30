@@ -1,23 +1,49 @@
-﻿@inherits LayoutComponentBase
+﻿@using BusinessModels.Resources
+@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu/>
-    </div>
+@* <div class="page"> *@
+@*     <div class="sidebar"> *@
+@*         <NavMenu/> *@
+@*     </div> *@
+@* *@
+@*     <main> *@
+@*         <div class="top-row px-4"> *@
+@*             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a> *@
+@*         </div> *@
+@* *@
+@*         <article class="content px-4"> *@
+@*             @Body *@
+@*         </article> *@
+@*     </main> *@
+@* </div> *@
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
+<MudLayout Style="@("background-color:var(--mud-palette-background-grey)")">
+    <AppBar HandleDrawerOpen="@DrawerToggle"
+            MudThemeProvider="@MudThemeProvider"/>
+    <MudDrawer Anchor="Anchor.Start"
+               @bind-Open="@_drawerOpen"
+               Breakpoint="Breakpoint.Xl"
+               ClipMode="DrawerClipMode.Docked"
+               Elevation="1">
+        <MudDrawerHeader Class="align-center justify-center">
+            <MudText Typo="Typo.h6">Web</MudText>
+        </MudDrawerHeader>
+        <MudNavMenu>
+            <NavMenu/>
+        </MudNavMenu>
+    </MudDrawer>
+    <div class="mud-main-content this-main-container">
+        <div class="blazor-main-container">
             @Body
-        </article>
-    </main>
-</div>
+        </div>
+    </div>
+    <MudScrollToTop TopOffset="100">
+        <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowUpward"></MudFab>
+    </MudScrollToTop>
+</MudLayout>
 
-<div id="blazor-error-ui" data-nosnippet>
+<div id="blazor-error-ui">
     An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
+    <a class="reload" href="">Reload</a>
+    <a class="dismiss">🗙</a>
 </div>

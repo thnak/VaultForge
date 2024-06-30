@@ -5,6 +5,7 @@ using Business.Data.Interfaces.User;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using BusinessModels.Secure;
+using BusinessModels.Utils;
 using MongoDB.Driver;
 using Protector.Utils;
 
@@ -54,50 +55,74 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
     }
     public Task<(bool, string)> UpdateAsync(UserModel model)
     {
-        throw new NotImplementedException();
+        return userDl.UpdateAsync(model);
     }
     public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<UserModel> models, CancellationTokenSource? cancellationTokenSource = default)
     {
-
-        throw new NotImplementedException();
+        return userDl.UpdateAsync(models, cancellationTokenSource);
     }
     public (bool, string) Delete(string key)
     {
-        throw new NotImplementedException();
+        return userDl.Delete(key);
     }
     public (bool, string) Authenticate(RequestLoginModel model)
     {
-        var user = Get(model.UserName);
+        var userNameHash = model.UserName.ComputeSha256Hash();
+        var user = Get(userNameHash);
         if (user == null) return (false, AppLang.Username_or_password_incorrect);
-        if (user.PasswordHash == model.Password.ComputeSha256Hash())
+
+        try
         {
-            return (true, AppLang.User_has_been_authenticated);
+            if (user.BanTime > DateTime.Now)
+            {
+                return (false, AppLang.You_have_been_banned_from_logging_in__please_try_again_at__0_.AutoReplace([user.BanTime.ToString(CultureInfo.CurrentCulture)]));
+            }
+
+            if (user.Password == model.Password.ComputeSha256Hash() && user.UserName == userNameHash)
+            {
+                user.CurrentFailCount = 0;
+                user.AccessFailedCount = 0;
+                user.BanTime = DateTime.MinValue;
+                return (true, AppLang.User_has_been_authenticated);
+            }
+            user.CurrentFailCount++;
+            if (user.CurrentFailCount >= 3)
+            {
+                var banMinus = Math.Pow(5, user.AccessFailedCount);
+                user.BanTime = DateTime.Now.AddMinutes(banMinus);
+                user.AccessFailedCount++;
+                user.CurrentFailCount = 0;
+            }
+            return (false, AppLang.Username_or_password_incorrect);
         }
-        return (false, AppLang.Username_or_password_incorrect);
+        finally
+        {
+            UpdateAsync(user);
+        }
+
     }
     public ClaimsIdentity CreateIdentity(string userName)
     {
-        var user = Get(userName);
+        var user = Get(userName.ComputeSha256Hash());
         if (user == null) return new ClaimsIdentity();
 
-        var claims = GetAllClaim(user);
+        var claims = GetAllClaim(user, userName);
 
         return new ClaimsIdentity(claims, CookieNames.AuthenticationType);
     }
     public List<Claim> GetAllClaim(string userName)
     {
-        var user = Get(userName);
-        return user == null ? [] : GetAllClaim(user);
+        var user = Get(userName.ComputeSha256Hash());
+        return user == null ? [] : GetAllClaim(user, userName);
     }
-    public List<Claim> GetAllClaim(UserModel user)
+    public List<Claim> GetAllClaim(UserModel user, string userName)
     {
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, user.UserName),
-            new(ClaimTypes.Name, user.UserName),
+            new(ClaimTypes.Name, userName),
             new(ClaimTypes.Hash, user.SecurityStamp),
             new(ClaimTypes.DateOfBirth, user.BirthDay.ToString(CultureInfo.InvariantCulture)),
-
         };
         var roles = userDl.GetAllRoles(user.UserName);
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));

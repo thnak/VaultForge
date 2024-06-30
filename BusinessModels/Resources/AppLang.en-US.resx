@@ -22,7 +22,7 @@
         <value>Success</value>
     </data>
     <data name="User name is not valid" xml:space="preserve">
-        <value>User name is not valid</value>
+        <value>Username is not valid</value>
     </data>
     <data name="User is not exists" xml:space="preserve">
         <value>User is not exists</value>
@@ -62,5 +62,68 @@
     </data>
     <data name="Hello" xml:space="preserve">
         <value>Hello</value>
+    </data>
+    <data name="Profile" xml:space="preserve">
+        <value>Profile</value>
+    </data>
+    <data name="Logout" xml:space="preserve">
+        <value>Logout</value>
+    </data>
+    <data name="Logout and login again" xml:space="preserve">
+        <value>Logout and login again</value>
+    </data>
+    <data name="Logout successful" xml:space="preserve">
+        <value>Logout successful</value>
+    </data>
+    <data name="Logout from all devices" xml:space="preserve">
+        <value>Logout from all devices</value>
+    </data>
+    <data name="Dark mode" xml:space="preserve">
+        <value>Dark mode</value>
+    </data>
+    <data name="Light mode" xml:space="preserve">
+        <value>Light mode</value>
+    </data>
+    <data name="System preference" xml:space="preserve">
+        <value>System preference</value>
+    </data>
+    <data name="Home page" xml:space="preserve">
+        <value>Home page</value>
+    </data>
+    <data name="Login" xml:space="preserve">
+        <value>Login</value>
+    </data>
+    <data name="You have been banned from logging in, please try again at {0}" xml:space="preserve">
+        <value>You have been banned from logging in, please try again at {0}</value>
+    </data>
+    <data name="Register a new account" xml:space="preserve">
+        <value>Register a new account</value>
+    </data>
+    <data name="Passwords do not match." xml:space="preserve">
+        <value>Passwords do not match.</value>
+    </data>
+    <data name="Registration failed" xml:space="preserve">
+        <value>Registration failed</value>
+    </data>
+    <data name="Sign Out" xml:space="preserve">
+        <value>Sign Out</value>
+    </data>
+    <data name="Username" xml:space="preserve">
+        <value>Username</value>
+    </data>
+    <data name="Password" xml:space="preserve">
+        <value>Password</value>
+    </data>
+    <data name="Create Account" xml:space="preserve">
+        <value>Create Account</value>
+    </data>
+    <data name="Welcome back!" xml:space="preserve">
+        <value>Welcome back!</value>
+    </data>
+    <data name="To keep connected with us please login with your personal info" xml:space="preserve">
+        <value>To keep connected with us please login with your personal info</value>
+    </data>
+    <data name="Sign In" xml:space="preserve">
+        <value>Sign In</value>
     </data>
 </root>

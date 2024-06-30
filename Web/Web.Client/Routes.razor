@@ -9,7 +9,6 @@
 
 
 <MudBreakpointProvider>
-    @* <CascadingAuthenticationState> *@
         <Router AppAssembly="@typeof(Program).Assembly">
             <Found Context="routeData">
                 <ErrorBoundary>
@@ -22,7 +21,6 @@
                                 <AccessDenied/>
                             </NotAuthorized>
                         </AuthorizeRouteView>
-                        @* <FocusOnNavigate RouteData="@routeData" Selector="h1"/> *@
                     </ChildContent>
                     <ErrorContent Context="ex">
                         <ErrorPage Exception="@ex"/>
@@ -36,5 +34,4 @@
                 <Loading/>
             </Navigating>
         </Router>
-    @* </CascadingAuthenticationState> *@
 </MudBreakpointProvider>

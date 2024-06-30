@@ -63,4 +63,64 @@
     <data name="Hello" xml:space="preserve">
         <value>Xin chào</value>
     </data>
+    <data name="Profile" xml:space="preserve">
+        <value>Hồ sơ</value>
+    </data>
+    <data name="Logout" xml:space="preserve">
+        <value>Đăng xuất</value>
+    </data>
+    <data name="Logout and login again" xml:space="preserve">
+        <value>Đăng xuất và đăng nhập lại</value>
+    </data>
+    <data name="Logout successful" xml:space="preserve">
+        <value>Đăng xuất thành công</value>
+    </data>
+    <data name="Logout from all devices" xml:space="preserve">
+        <value>Đăng xuất khỏi tất cả các thiết bị</value>
+    </data>
+    <data name="Dark mode" xml:space="preserve">
+        <value>Chế độ tối</value>
+    </data>
+    <data name="Light mode" xml:space="preserve">
+        <value>Chế độ sáng</value>
+    </data>
+    <data name="System preference" xml:space="preserve">
+        <value>Tùy chọn hệ thống</value>
+    </data>
+    <data name="Home page" xml:space="preserve">
+        <value>Trang chủ</value>
+    </data>
+    <data name="Login" xml:space="preserve">
+        <value>Đăng nhập</value>
+    </data>
+    <data name="You have been banned from logging in, please try again at {0}" xml:space="preserve">
+        <value>Bạn đã bị cấm đăng nhập, vui lòng thử lại lúc {0}</value>
+    </data>
+    <data name="Register a new account" xml:space="preserve">
+        <value>Đăng ký tài khoản mới</value>
+    </data>
+    <data name="Passwords do not match." xml:space="preserve">
+        <value>Mật khẩu không hợp lệ.</value>
+    </data>
+    <data name="Registration failed" xml:space="preserve">
+        <value>Đăng ký không thành công</value>
+    </data>
+    <data name="Sign Out" xml:space="preserve">
+        <value>Đăng xuất</value>
+    </data>
+    <data name="Password" xml:space="preserve">
+        <value>Mật khẩu</value>
+    </data>
+    <data name="Create Account" xml:space="preserve">
+        <value>Tạo tài khoản</value>
+    </data>
+    <data name="Welcome back!" xml:space="preserve">
+        <value>Chào mừng trở lại!</value>
+    </data>
+    <data name="To keep connected with us please login with your personal info" xml:space="preserve">
+        <value>Để duy trì kết nối với chúng tôi vui lòng đăng nhập bằng thông tin cá nhân của bạn</value>
+    </data>
+    <data name="Sign In" xml:space="preserve">
+        <value>Đăng nhập</value>
+    </data>
 </root>

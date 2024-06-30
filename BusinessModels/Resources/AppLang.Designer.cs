@@ -60,11 +60,92 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tạo tài khoản.
+        /// </summary>
+        public static string Create_Account {
+            get {
+                return ResourceManager.GetString("Create Account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chế độ tối.
+        /// </summary>
+        public static string Dark_mode {
+            get {
+                return ResourceManager.GetString("Dark mode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Xin chào.
         /// </summary>
         public static string Hello {
             get {
                 return ResourceManager.GetString("Hello", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trang chủ.
+        /// </summary>
+        public static string Home_page {
+            get {
+                return ResourceManager.GetString("Home page", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chế độ sáng.
+        /// </summary>
+        public static string Light_mode {
+            get {
+                return ResourceManager.GetString("Light mode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đăng nhập.
+        /// </summary>
+        public static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đăng xuất.
+        /// </summary>
+        public static string Logout {
+            get {
+                return ResourceManager.GetString("Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đăng xuất và đăng nhập lại.
+        /// </summary>
+        public static string Logout_and_login_again {
+            get {
+                return ResourceManager.GetString("Logout and login again", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đăng xuất khỏi tất cả các thiết bị.
+        /// </summary>
+        public static string Logout_from_all_devices {
+            get {
+                return ResourceManager.GetString("Logout from all devices", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đăng xuất thành công.
+        /// </summary>
+        public static string Logout_successful {
+            get {
+                return ResourceManager.GetString("Logout successful", resourceCulture);
             }
         }
         
@@ -78,11 +159,83 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mật khẩu.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mật khẩu không hợp lệ..
+        /// </summary>
+        public static string Passwords_do_not_match_ {
+            get {
+                return ResourceManager.GetString("Passwords do not match.", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hồ sơ.
+        /// </summary>
+        public static string Profile {
+            get {
+                return ResourceManager.GetString("Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đăng ký tài khoản mới.
+        /// </summary>
+        public static string Register_a_new_account {
+            get {
+                return ResourceManager.GetString("Register a new account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đăng ký không thành công.
+        /// </summary>
+        public static string Registration_failed {
+            get {
+                return ResourceManager.GetString("Registration failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đăng nhập.
+        /// </summary>
+        public static string Sign_In {
+            get {
+                return ResourceManager.GetString("Sign In", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đăng xuất.
+        /// </summary>
+        public static string Sign_Out {
+            get {
+                return ResourceManager.GetString("Sign Out", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thành công.
         /// </summary>
         public static string Success {
             get {
                 return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tùy chọn hệ thống.
+        /// </summary>
+        public static string System_preference {
+            get {
+                return ResourceManager.GetString("System preference", resourceCulture);
             }
         }
         
@@ -110,6 +263,15 @@ namespace BusinessModels.Resources {
         public static string This_resource_requires__0__years_old {
             get {
                 return ResourceManager.GetString("This resource requires {0} years old", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Để duy trì kết nối với chúng tôi vui lòng đăng nhập bằng thông tin cá nhân của bạn.
+        /// </summary>
+        public static string To_keep_connected_with_us_please_login_with_your_personal_info {
+            get {
+                return ResourceManager.GetString("To keep connected with us please login with your personal info", resourceCulture);
             }
         }
         
@@ -186,11 +348,38 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Username {
+            get {
+                return ResourceManager.GetString("Username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tài khoản hoặc mật khẩu không đúng.
         /// </summary>
         public static string Username_or_password_incorrect {
             get {
                 return ResourceManager.GetString("Username or password incorrect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chào mừng trở lại!.
+        /// </summary>
+        public static string Welcome_back_ {
+            get {
+                return ResourceManager.GetString("Welcome back!", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bạn đã bị cấm đăng nhập, vui lòng thử lại lúc {0}.
+        /// </summary>
+        public static string You_have_been_banned_from_logging_in__please_try_again_at__0_ {
+            get {
+                return ResourceManager.GetString("You have been banned from logging in, please try again at {0}", resourceCulture);
             }
         }
     }
