@@ -24,6 +24,7 @@ class Program
         builder.Services.AddCascadingAuthenticationState();
         // builder.Services.AddAuthenticationStateDeserialization();
         builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
+        builder.Services.AddLocalization();
 
         var host = builder.Build();
 

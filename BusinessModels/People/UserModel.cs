@@ -60,6 +60,7 @@ public class UserModel
     public int CurrentFailCount { get; set; }
     
     [Key(13)]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime BanTime { get; set; }
 
     [Key(14)]

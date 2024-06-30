@@ -12,5 +12,5 @@ public class RequestLoginModel
     [Key(2)]
     public string Message { get; set; } = string.Empty;
     [Key(3)]
-    public string ReturnUrl { get; set; } = string.Empty;
+    public string? ReturnUrl { get; set; } = string.Empty;
 }

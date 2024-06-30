@@ -6,11 +6,6 @@ if ('serviceWorker' in navigator) {
         console.log('Service Worker registration failed:', error);
     });
 }
-
-window.blazorCulture = {
-    get: () => window.localStorage['BlazorCulture'], set: (value) => window.localStorage['BlazorCulture'] = value
-};
-
 function deleteTemplateCache() {
     caches.keys().then(function (names) {
         for (let name of names) caches.delete(name);

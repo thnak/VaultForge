@@ -134,6 +134,6 @@
     {
         await JsRuntime.ClearLocalStorage();
         await JsRuntime.ClearSessionStorage();
-        await JsRuntime.LocationReplace(PageRoutes.Account.Logout);
+        await JsRuntime.LocationReplace("api/Account/signout");
     }
 }

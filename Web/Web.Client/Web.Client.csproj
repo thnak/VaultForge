@@ -6,7 +6,6 @@
         <Nullable>enable</Nullable>
         <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
         <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
-        <WasmEnableThreads>false</WasmEnableThreads>
         <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
     </PropertyGroup>
 
@@ -18,7 +17,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ServiceWorker Include="wwwroot\js\service-worker.js"  />
       <ProjectReference Include="..\..\BusinessModels\BusinessModels.csproj" />
     </ItemGroup>
 

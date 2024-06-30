@@ -440,22 +440,20 @@ public class Program
         app.MapStaticAssets();
         app.MapControllers();
         app.MapRazorComponents<App>()
-            .AddInteractiveWebAssemblyRenderMode(options => {
-                options.ServeMultithreadingHeaders = false;
-            })
+            .AddInteractiveWebAssemblyRenderMode()
             .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
-        // app.Use(async (context, next) => {
-        //     ApplyHeaders(context.Response.Headers);
-        //     await next();
-        // });
+        //app.Use(async (context, next) => {
+        //    ApplyHeaders(context.Response.Headers);
+        //    await next();
+        //});
 
         app.UseMiddleware<ErrorHandlingMiddleware>();
         
         app.Run();
     }
-    // static void ApplyHeaders(IHeaderDictionary headers)
-    // {
-    //     headers.Append("Cross-Origin-Embedder-Policy", "require-corp");
-    //     headers.Append("Cross-Origin-Opener-Policy", "same-origin");
-    // }
+    static void ApplyHeaders(IHeaderDictionary headers)
+    {
+        headers.Append("Cross-Origin-Embedder-Policy", "require-corp");
+        headers.Append("Cross-Origin-Opener-Policy", "same-origin");
+    }
 }

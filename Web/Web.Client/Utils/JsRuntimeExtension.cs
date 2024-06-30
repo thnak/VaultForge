@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.Json;
 using Microsoft.JSInterop;
 
@@ -47,7 +48,9 @@ public static class JsRuntimeExtension
 
     public static async Task ClearLocalStorage(this IJSRuntime jsRuntime)
     {
+        var culture = await jsRuntime.GetCulture();
         await jsRuntime.InvokeVoidAsync("localStorage.clear");
+        await jsRuntime.SetCulture(culture ?? CultureInfo.CurrentCulture.Name);
     }
 
     #endregion
@@ -89,14 +92,15 @@ public static class JsRuntimeExtension
 
     #region Culture
 
+    private const string CultureKeyName = "Culture";
     public static async Task SetCulture(this IJSRuntime jsRuntime, string name)
     {
-        await jsRuntime.InvokeVoidAsync("blazorCulture.get", name);
+        await jsRuntime.SetLocalStorage(CultureKeyName, name);
     }
 
     public static async Task<string?> GetCulture(this IJSRuntime jsRuntime)
     {
-        return await jsRuntime.InvokeAsync<string?>("blazorCulture.set");
+        return await jsRuntime.GetLocalStorage(CultureKeyName);
     }
 
     #endregion

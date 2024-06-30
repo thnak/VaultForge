@@ -71,7 +71,7 @@
             var uri = new Uri(Navigation.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
             var cultureEscaped = Uri.EscapeDataString(obj.Name);
             var uriEscaped = Uri.EscapeDataString(uri);
-
+            // Reload required
             Navigation.NavigateTo(
             $"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}",
             new NavigationOptions

@@ -34,13 +34,14 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
             await _dataDb.Indexes.CreateOneAsync(searchIndexModel);
             await _dataDb.Indexes.CreateOneAsync(indexModel);
 
-            var system = Get("System");
+            var defaultUser = "System".ComputeSha256Hash();
+            var system = Get(defaultUser);
             if (system == null)
             {
                 var passWord = "PassWd2@";
                 await CreateAsync(new UserModel()
                 {
-                    UserName = "System",
+                    UserName = defaultUser,
                     Password = passWord.ComputeSha256Hash(),
                     JoinDate = DateTime.Now,
                 });

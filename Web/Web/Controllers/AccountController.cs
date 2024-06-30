@@ -54,7 +54,9 @@ public class AccountController(
             }
             return Redirect($"/{request.ReturnUrl}");
         }
-
+        
+        if(!string.IsNullOrEmpty(request.ReturnUrl))
+            return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri([authenticateState.Item2, request.ReturnUrl]));    
         return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri(authenticateState.Item2));
     }
 
@@ -98,7 +100,7 @@ public class AccountController(
     public async Task<IActionResult> AccountSignOut()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return Redirect("api/Account/login");
+        return Redirect(PageRoutes.Account.SignIn);
     }
     
     [HttpPost("getJwt")]
