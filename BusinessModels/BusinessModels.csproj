@@ -39,6 +39,18 @@
             <LastGenOutput>AppLang.en-US.Designer.cs</LastGenOutput>
             <DependentUpon>AppLang.resx</DependentUpon>
         </EmbeddedResource>
+        <EmbeddedResource Update="Resources\AppLang.de-DE.resx">
+          <DependentUpon>AppLang.resx</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\AppLang.es-ES.resx">
+          <DependentUpon>AppLang.resx</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\AppLang.ja-JP.resx">
+          <DependentUpon>AppLang.resx</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\AppLang.ko-KR.resx">
+          <DependentUpon>AppLang.resx</DependentUpon>
+        </EmbeddedResource>
     </ItemGroup>
 
 </Project>

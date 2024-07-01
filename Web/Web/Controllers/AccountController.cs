@@ -25,18 +25,27 @@ public class AccountController(
     JsonWebTokenCertificateProvider jsonWebTokenCertificateProvider,
     IAntiforgery antiforgery) : ControllerBase
 {
-
-    [HttpPost("validate")]
+    [HttpPost("validateuser")]
     [IgnoreAntiforgeryToken]
     [AllowAnonymous]
     [EnableRateLimiting(PolicyNamesAndRoles.LimitRate.Sliding)]
-    public IActionResult ValidateUser(string userName)
+    public IActionResult ValidateUser([FromForm] string userName)
     {
-        var user = userBl.Get(userName.ComputeSha256Hash());
-        if (user == null) return Ok(AppLang.User_is_not_exists);
-        return Ok(AppLang.User_is_already_exists);
+        var res = userBl.ValidateUsername(userName);
+        return res.Item1 ? Ok() : BadRequest(res.Item2);
     }
-    
+
+    [HttpPost("validatepassword")]
+    [IgnoreAntiforgeryToken]
+    [AllowAnonymous]
+    [EnableRateLimiting(PolicyNamesAndRoles.LimitRate.Sliding)]
+    public IActionResult ValidatePassword([FromForm] string userName, [FromForm] string password)
+    {
+        var res = userBl.ValidatePassword(userName, password);
+        return res.Item1 ? Ok() : BadRequest(res.Item2);
+    }
+
+
     [HttpPost("login")]
     [ValidateAntiForgeryToken]
     [EnableRateLimiting(PolicyNamesAndRoles.LimitRate.Fixed)]
@@ -54,11 +63,14 @@ public class AccountController(
             }
             return Redirect($"/{request.ReturnUrl}");
         }
-        
-        if(!string.IsNullOrEmpty(request.ReturnUrl))
-            return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri([authenticateState.Item2, request.ReturnUrl]));    
+
+        if (!string.IsNullOrEmpty(request.ReturnUrl))
+            return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri([authenticateState.Item2, request.ReturnUrl]));
         return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri(authenticateState.Item2));
     }
+
+
+
 
     [HttpPost("register")]
     [ValidateAntiForgeryToken]
@@ -102,7 +114,7 @@ public class AccountController(
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return Redirect(PageRoutes.Account.SignIn);
     }
-    
+
     [HttpPost("getJwt")]
     [EnableRateLimiting(PolicyNamesAndRoles.LimitRate.Fixed)]
     [ValidateAntiForgeryToken]

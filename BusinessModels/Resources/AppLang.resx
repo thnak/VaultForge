@@ -225,4 +225,7 @@
     <data name="Sign In" xml:space="preserve">
         <value>Đăng nhập</value>
     </data>
+    <data name="Processing" xml:space="preserve">
+        <value>Đang xử lý</value>
+    </data>
 </root>

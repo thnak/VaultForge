@@ -107,4 +107,7 @@
     <data name="Sign In" xml:space="preserve">
         <value>로그인</value>
     </data>
+    <data name="Processing" xml:space="preserve">
+        <value>처리</value>
+    </data>
 </root>

@@ -65,6 +65,7 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
     {
         return userDl.Delete(key);
     }
+    
     public (bool, string) Authenticate(RequestLoginModel model)
     {
         var userNameHash = model.UserName.ComputeSha256Hash();
@@ -73,12 +74,12 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
 
         try
         {
-            if (user.BanTime > DateTime.UtcNow)
+            if (user.BanTime > DateTime.Now)
             {
                 return (false, AppLang.You_have_been_banned_from_logging_in__please_try_again_at__0_.AutoReplace([user.BanTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)]));
             }
 
-            if (user.Password == model.Password.ComputeSha256Hash() && user.UserName == userNameHash)
+            if (user.Password == model.Password.ComputeSha256Hash())
             {
                 user.CurrentFailCount = 0;
                 user.AccessFailedCount = 0;
@@ -89,7 +90,7 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
             if (user.CurrentFailCount >= 3)
             {
                 var banMinus = Math.Pow(5, user.AccessFailedCount);
-                user.BanTime = DateTime.UtcNow.AddMinutes(banMinus);
+                user.BanTime = DateTime.Now.AddMinutes(banMinus);
                 user.AccessFailedCount++;
                 user.CurrentFailCount = 0;
             }
@@ -101,15 +102,49 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         }
 
     }
+    public (bool, string) ValidateUsername(string username)
+    {
+        var usernameHashed = username.ComputeSha256Hash();
+        var user = userDl.Get(usernameHashed);
+        return user == null ? (false, AppLang.User_is_not_exists) : (true, AppLang.Hello);
+    }
+    
+    public (bool, string) ValidatePassword(string username, string password)
+    {
+        var usernameHashed = username.ComputeSha256Hash();
+        var user = userDl.Get(usernameHashed);
+        if (user == null) return (false, AppLang.User_is_not_exists);
+
+        if (user.BanTime > DateTime.Now)
+        {
+            return (false, AppLang.You_have_been_banned_from_logging_in__please_try_again_at__0_.AutoReplace([user.BanTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)]));
+        }
+        
+        if (user.Password == password.ComputeSha256Hash())
+        {
+            return (true, AppLang.Hello);
+        }
+        
+        user.CurrentFailCount++;
+        if (user.CurrentFailCount >= 3)
+        {
+            var banMinus = Math.Pow(5, user.AccessFailedCount);
+            user.BanTime = DateTime.Now.AddMinutes(banMinus);
+            user.AccessFailedCount++;
+            user.CurrentFailCount = 0;
+        }
+        UpdateAsync(user);
+        return (false, AppLang.User_or_password_is_incorrect);
+    }
+    
     public ClaimsIdentity CreateIdentity(string userName)
     {
         var user = Get(userName.ComputeSha256Hash());
         if (user == null) return new ClaimsIdentity();
-
         var claims = GetAllClaim(user, userName);
-
         return new ClaimsIdentity(claims, CookieNames.AuthenticationType);
     }
+    
     public List<Claim> GetAllClaim(string userName)
     {
         var user = Get(userName.ComputeSha256Hash());

@@ -101,4 +101,7 @@
     <data name="Sign Out" xml:space="preserve">
         <value>Desconectar</value>
     </data>
+    <data name="Processing" xml:space="preserve">
+        <value>Procesando</value>
+    </data>
 </root>

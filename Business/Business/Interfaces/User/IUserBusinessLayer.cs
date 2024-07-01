@@ -7,6 +7,9 @@ namespace Business.Business.Interfaces.User;
 public interface IUserBusinessLayer : IBusinessLayerRepository<UserModel>
 {
     (bool, string) Authenticate(RequestLoginModel model);
+    (bool, string) ValidateUsername(string username);
+    (bool, string) ValidatePassword(string username, string password);
+    
     /// <summary>
     /// Tạo đối tượng xác thực cho người dùng
     /// </summary>

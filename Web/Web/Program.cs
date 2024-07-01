@@ -52,6 +52,7 @@ public class Program
         builder.Services.AddRazorComponents()
             .AddInteractiveWebAssemblyComponents()
             .AddAuthenticationStateSerialization();
+        builder.Services.AddScoped(sp => new HttpClient());
 
         builder.Services.AddScoped<StateContainer>();
 
