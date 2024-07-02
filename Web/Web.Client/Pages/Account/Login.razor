@@ -83,8 +83,10 @@
 
             <MudCarouselItem Transition="Transition.Fade" Color="@Color.Default">
                 <div class="d-flex flex-column align-center justify-center mud-width-full mud-height-full">
-                    @AppLang.One_moment_please
-                    <MudProgressLinear Color="Color.Primary" Size="Size.Small" Indeterminate="true" />
+                    <div class="mud-width-full">
+                        <MudText Typo="Typo.h5" Align="Align.Center">@AppLang.One_moment_please</MudText>
+                        <MudProgressLinear Color="Color.Primary" Size="Size.Small" Indeterminate="true"/>
+                    </div>
                 </div>
             </MudCarouselItem>
 

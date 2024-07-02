@@ -26,7 +26,7 @@ public class AccountController(
     IAntiforgery antiforgery) : ControllerBase
 {
     [HttpPost("validate-user")]
-    [IgnoreAntiforgeryToken]
+    [ValidateAntiForgeryToken]
     [AllowAnonymous]
     [EnableRateLimiting(PolicyNamesAndRoles.LimitRate.Sliding)]
     public IActionResult ValidateUser([FromForm] string userName)
@@ -36,7 +36,7 @@ public class AccountController(
     }
 
     [HttpPost("validate-password")]
-    [IgnoreAntiforgeryToken]
+    [ValidateAntiForgeryToken]
     [AllowAnonymous]
     [EnableRateLimiting(PolicyNamesAndRoles.LimitRate.Sliding)]
     public IActionResult ValidatePassword([FromForm] string userName, [FromForm] string password)

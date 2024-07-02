@@ -31,7 +31,7 @@ public partial class Login(HttpClient httpClient, AntiforgeryStateProvider antif
 
     private int CurrentIndex { get; set; }
     private bool Loading { get; set; }
-    private MudCarousel<object> CarouselLogin { get; set; }
+    private MudCarousel<object>? CarouselLogin { get; set; }
     private string? UserErrorText { get; set; }
     private string? PasswordErrorText { get; set; }
     public bool IsValid { get; set; }
@@ -48,7 +48,6 @@ public partial class Login(HttpClient httpClient, AntiforgeryStateProvider antif
                 {
                     FormUser.ResetValidation();
                     FormError = [ErrorMessage];
-                    // await form.Validate();
                 }
             }
 
@@ -73,10 +72,14 @@ public partial class Login(HttpClient httpClient, AntiforgeryStateProvider antif
                 Loading = true;
                 await Task.Delay(1);
                 await InvokeAsync(StateHasChanged);
+                
+                var antiforgery = antiforgeryStateProvider.GetAntiforgeryToken();
 
                 using var content = new MultipartFormDataContent();
                 content.Add(new StringContent(CurrentRequestModel.UserName), "userName");
-
+                if (antiforgery != null)
+                    content.Add(new StringContent(antiforgery.Value), antiforgery.FormFieldName);
+                
                 var response = await httpClient.PostAsync("/api/Account/validate-user", content);
                 if (response.IsSuccessStatusCode)
                 {
@@ -91,6 +94,7 @@ public partial class Login(HttpClient httpClient, AntiforgeryStateProvider antif
 
                 Loading = false;
                 await Task.Delay(1);
+                await InvokeAsync(StateHasChanged);
             }
         }
 
@@ -105,35 +109,34 @@ public partial class Login(HttpClient httpClient, AntiforgeryStateProvider antif
                 Loading = true;
                 await Task.Delay(1);
                 await InvokeAsync(StateHasChanged);
+                var antiforgery = antiforgeryStateProvider.GetAntiforgeryToken();
 
                 using var content = new MultipartFormDataContent();
                 content.Add(new StringContent(CurrentRequestModel.Password), "password");
                 content.Add(new StringContent(CurrentRequestModel.UserName), "userName");
-
+                if (antiforgery != null)
+                    content.Add(new StringContent(antiforgery.Value), antiforgery.FormFieldName);
+                
+                
                 var response = await httpClient.PostAsync("/api/Account/validate-password", content);
                 if (response.IsSuccessStatusCode)
                 {
                     CurrentIndex++;
-                    var antiforgery = antiforgeryStateProvider.GetAntiforgeryToken();
-
+                    Loading = false;
+                    await InvokeAsync(StateHasChanged);
+                    await Task.Delay(1000);
+                    
                     using var loginForm = new MultipartFormDataContent();
                     loginForm.Add(new StringContent(CurrentRequestModel.Password), nameof(RequestLoginModel.Password));
                     loginForm.Add(new StringContent(CurrentRequestModel.UserName), nameof(RequestLoginModel.UserName));
                     loginForm.Add(new StringContent(CurrentRequestModel.ReturnUrl ?? string.Empty), nameof(RequestLoginModel.ReturnUrl));
-                    if(antiforgery != null)
+                    if (antiforgery != null)
                         loginForm.Add(new StringContent(antiforgery.Value), antiforgery.FormFieldName);
                     response = await httpClient.PostAsync("/api/Account/login", loginForm);
                     if (response.IsSuccessStatusCode)
                     {
-                        if (ReturnUrl != null) Navigation.NavigateTo(ReturnUrl);
-                        else
-                        {
-                            Navigation.NavigateTo("/", new NavigationOptions
-                            {
-                                ForceLoad = true,
-                                ReplaceHistoryEntry = false
-                            });
-                        }
+                        var location = response.Headers.Location?.ToString() ?? "/";
+                        Navigation.NavigateTo(location);
                     }
                 }
                 else
@@ -144,7 +147,9 @@ public partial class Login(HttpClient httpClient, AntiforgeryStateProvider antif
                 }
 
                 Loading = false;
-                await Task.Delay(1);
+                await Task.Delay(1);                    
+                await InvokeAsync(StateHasChanged);
+
             }
         }
 
@@ -158,5 +163,6 @@ public partial class Login(HttpClient httpClient, AntiforgeryStateProvider antif
     {
         FormUser?.Dispose();
         PasswordForm?.Dispose();
+        CarouselLogin?.DisposeAsync();
     }
 }
