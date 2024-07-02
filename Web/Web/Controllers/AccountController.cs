@@ -25,7 +25,7 @@ public class AccountController(
     JsonWebTokenCertificateProvider jsonWebTokenCertificateProvider,
     IAntiforgery antiforgery) : ControllerBase
 {
-    [HttpPost("validateuser")]
+    [HttpPost("validate-user")]
     [IgnoreAntiforgeryToken]
     [AllowAnonymous]
     [EnableRateLimiting(PolicyNamesAndRoles.LimitRate.Sliding)]
@@ -35,7 +35,7 @@ public class AccountController(
         return res.Item1 ? Ok() : BadRequest(res.Item2);
     }
 
-    [HttpPost("validatepassword")]
+    [HttpPost("validate-password")]
     [IgnoreAntiforgeryToken]
     [AllowAnonymous]
     [EnableRateLimiting(PolicyNamesAndRoles.LimitRate.Sliding)]

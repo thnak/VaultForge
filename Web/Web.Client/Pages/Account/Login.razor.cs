@@ -1,12 +1,13 @@
 using BusinessModels.Secure;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 
 namespace Web.Client.Pages.Account;
 
-public partial class Login(HttpClient httpClient) : ComponentBase, IDisposable
+public partial class Login(HttpClient httpClient, AntiforgeryStateProvider antiforgeryStateProvider) : ComponentBase, IDisposable
 {
     [Parameter] [SupplyParameterFromQuery] public string ErrorMessage { get; set; } = string.Empty;
     [Parameter] [SupplyParameterFromQuery] public string? ReturnUrl { get; set; }
@@ -76,11 +77,10 @@ public partial class Login(HttpClient httpClient) : ComponentBase, IDisposable
                 using var content = new MultipartFormDataContent();
                 content.Add(new StringContent(CurrentRequestModel.UserName), "userName");
 
-                var response = await httpClient.PostAsync("/api/Account/validateuser", content);
+                var response = await httpClient.PostAsync("/api/Account/validate-user", content);
                 if (response.IsSuccessStatusCode)
                 {
                     CurrentIndex++;
-                    // CarouselLogin.MoveTo(CurrentIndex);
                 }
                 else
                 {
@@ -110,10 +110,31 @@ public partial class Login(HttpClient httpClient) : ComponentBase, IDisposable
                 content.Add(new StringContent(CurrentRequestModel.Password), "password");
                 content.Add(new StringContent(CurrentRequestModel.UserName), "userName");
 
-                var response = await httpClient.PostAsync("/api/Account/validatepassword", content);
+                var response = await httpClient.PostAsync("/api/Account/validate-password", content);
                 if (response.IsSuccessStatusCode)
                 {
-                    Navigation.NavigateTo("/");
+                    CurrentIndex++;
+                    var antiforgery = antiforgeryStateProvider.GetAntiforgeryToken();
+
+                    using var loginForm = new MultipartFormDataContent();
+                    loginForm.Add(new StringContent(CurrentRequestModel.Password), nameof(RequestLoginModel.Password));
+                    loginForm.Add(new StringContent(CurrentRequestModel.UserName), nameof(RequestLoginModel.UserName));
+                    loginForm.Add(new StringContent(CurrentRequestModel.ReturnUrl ?? string.Empty), nameof(RequestLoginModel.ReturnUrl));
+                    if(antiforgery != null)
+                        loginForm.Add(new StringContent(antiforgery.Value), antiforgery.FormFieldName);
+                    response = await httpClient.PostAsync("/api/Account/login", loginForm);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        if (ReturnUrl != null) Navigation.NavigateTo(ReturnUrl);
+                        else
+                        {
+                            Navigation.NavigateTo("/", new NavigationOptions
+                            {
+                                ForceLoad = true,
+                                ReplaceHistoryEntry = false
+                            });
+                        }
+                    }
                 }
                 else
                 {

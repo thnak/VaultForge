@@ -13,6 +13,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Caching.Hybrid" Version="9.0.0-preview.5.24306.11" />
         <PackageReference Include="MongoDB.Bson" Version="2.26.0"/>
     </ItemGroup>
 
@@ -51,6 +52,10 @@
         <EmbeddedResource Update="Resources\AppLang.ko-KR.resx">
           <DependentUpon>AppLang.resx</DependentUpon>
         </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="SerializerFactory\" />
     </ItemGroup>
 
 </Project>

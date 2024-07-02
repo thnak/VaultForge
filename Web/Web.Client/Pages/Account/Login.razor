@@ -14,7 +14,7 @@
     <div class="main-form">
         <MudCarousel @ref="CarouselLogin" Class="mud-width-full" ShowArrows="false" @bind-SelectedIndex="CurrentIndex" ShowBullets="false" EnableSwipeGesture="false" AutoCycle="false" TData="object">
             <MudCarouselItem Transition="Transition.Slide" Color="@Color.Default">
-                <div class="d-flex" style="height:100%">
+                <div class="d-flex mud-width-full mud-height-full">
                     <MudForm @ref="FormUser" @bind-Errors="@FormError" @bind-IsValid="IsValid" Class="align-center justify-center mud-width-full">
                         <div class="form gap-3">
                             <AntiforgeryToken/>
@@ -44,8 +44,9 @@
                     </MudForm>
                 </div>
             </MudCarouselItem>
+            @* Password *@
             <MudCarouselItem Transition="Transition.Slide" Color="@Color.Default">
-                <div class="d-flex" style="height:100%">
+                <div class="d-flex mud-width-full mud-height-full">
                     <MudForm @ref="PasswordForm" @bind-Errors="@FormError" @bind-IsValid="IsValid" Class="align-center justify-center mud-width-full">
                         <div class="form gap-3">
                             <AntiforgeryToken/>
@@ -77,6 +78,16 @@
                     </MudForm>
                 </div>
             </MudCarouselItem>
+            @* Password *@
+
+
+            <MudCarouselItem Transition="Transition.Fade" Color="@Color.Default">
+                <div class="d-flex flex-column align-center justify-center mud-width-full mud-height-full">
+                    @AppLang.One_moment_please
+                    <MudProgressLinear Color="Color.Primary" Size="Size.Small" Indeterminate="true" />
+                </div>
+            </MudCarouselItem>
+
         </MudCarousel>
 
     </div>

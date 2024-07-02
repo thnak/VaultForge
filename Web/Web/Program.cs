@@ -9,6 +9,7 @@ using Business.Data.Interfaces;
 using Business.Data.Interfaces.User;
 using Business.Data.Repositories;
 using Business.Data.Repositories.User;
+using Business.Models;
 using BusinessModels.General;
 using BusinessModels.Resources;
 using Microsoft.AspNetCore.Authentication;
@@ -32,6 +33,7 @@ using Protector;
 using Protector.Certificates;
 using Protector.Certificates.Models;
 using Protector.KeyProvider;
+using Protector.Tracer;
 using Web.Authenticate;
 using Web.Authenticate.AuthorizationRequirement;
 using Web.Client.Services;
@@ -96,7 +98,10 @@ public class Program
             });
         }
 
-        builder.Services.AddDistributedMemoryCache();
+        builder.Services.AddDistributedMemoryCache(options => {
+            options.ExpirationScanFrequency = TimeSpan.FromSeconds(30);
+        });
+        
         builder.Services.AddHybridCache(options => {
             options.DefaultEntryOptions = new HybridCacheEntryOptions
             {
@@ -105,8 +110,21 @@ public class Program
                 Flags = HybridCacheEntryFlags.None
             };
         });
+        
+        builder.Services.AddOutputCache(options => {
+            options.AddBasePolicy(outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(TimeSpan.FromSeconds(10)));
+            options.DefaultExpirationTimeSpan = OutputCachingPolicy.Expire30;
 
-        builder.Services.AddOutputCache(options => { options.DefaultExpirationTimeSpan = TimeSpan.FromSeconds(30); });
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire10), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire10));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire20), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire20));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire30), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire30));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire40), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire40));
+
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire50), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire50));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire60), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire60));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire120), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire120));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire240), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire240));
+        });
         builder.Services.AddResponseCaching();
 
         #endregion
@@ -138,31 +156,29 @@ public class Program
 
         #endregion
 
-        #region Logginf
+        #region Logging
 
         builder.Services.AddLogging();
         builder.Services.AddHttpLogging();
         builder.Logging.SetMinimumLevel(LogLevel.Information);
-        
+
         #endregion
-        
+
         #region Authenticate & Protection
-        
-        builder.Services.AddCors(options =>
-        {
+
+        builder.Services.AddCors(options => {
             options.AddDefaultPolicy(policy => {
                 policy.WithOrigins().AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
             });
         });
-        
-        builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+        builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        builder.Services.AddSingleton<FailedLoginTracker>();
         builder.Services.AddSingleton<JsonWebTokenCertificateProvider>();
         builder.Services.AddSingleton<RsaKeyProvider>();
         builder.Services.AddScoped<AuthenticationStateProvider, PersistingServerAuthenticationStateProvider>();
         builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddAuthorization(options => {
-            
             options.AddPolicy(PolicyNamesAndRoles.Over18, policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(18)));
             options.AddPolicy(PolicyNamesAndRoles.Over14, policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(14)));
             options.AddPolicy(PolicyNamesAndRoles.Over7, policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(7)));
@@ -203,7 +219,7 @@ public class Program
                     if (authenticationType == CookieNames.AuthenticationType)
                     {
                         // Example: Check if the user's security stamp is still valid
-                        // var userManager = context.HttpContext.RequestServices.GetRequiredService<IUserBusinessLayer>();
+                        var userManager = context.HttpContext.RequestServices.GetRequiredService<IUserBusinessLayer>();
                         var jswProvider = context.HttpContext.RequestServices.GetRequiredService<JsonWebTokenCertificateProvider>();
 
                         var jwt = userPrincipal.FindFirst(ClaimTypes.UserData)?.Value;
@@ -220,8 +236,7 @@ public class Program
                         }
 
                         var userId = userPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                        var user = userId;
-
+                        var user = userId == null ? null : userManager.Get(userId);
                         if (user == null)
                         {
                             await Reject();
@@ -240,7 +255,8 @@ public class Program
                     }
                 }
 
-                    #endregion
+                #endregion
+
             });
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => {
@@ -274,7 +290,7 @@ public class Program
                         arg.Token = token;
                         break;
                     }
-                    
+
                     return Task.CompletedTask;
                 }
 
@@ -282,8 +298,9 @@ public class Program
                 {
                     return Task.CompletedTask;
                 }
-                    #endregion
-               
+
+                #endregion
+
             });
 
         builder.Services.AddSession(options => {
@@ -420,7 +437,7 @@ public class Program
         }
 
         app.UseCors();
-        
+
         app.UseRateLimiter();
 
         app.UseCors();
@@ -449,7 +466,7 @@ public class Program
         //});
 
         app.UseMiddleware<ErrorHandlingMiddleware>();
-        
+
         app.Run();
     }
     static void ApplyHeaders(IHeaderDictionary headers)
