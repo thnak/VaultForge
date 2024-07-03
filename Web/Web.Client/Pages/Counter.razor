@@ -1,13 +1,17 @@
 ﻿@page "/counter"
-@using Microsoft.AspNetCore.Authorization
-@attribute [Authorize(Roles = "Admin")]
+@attribute [Authorize]
 <PageTitle>Counter</PageTitle>
 
 <h1>Counter</h1>
 
-<p role="status">Current count: @currentCount</p>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+<p role="status">Current count: @currentCount</p>
+<AuthorizeView>
+    <Authorized>
+        <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+    </Authorized>
+</AuthorizeView>
 
 @code {
     private int currentCount = 0;

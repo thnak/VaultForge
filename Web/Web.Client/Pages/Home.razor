@@ -1,53 +1,5 @@
-﻿@page "/"
-@using System.Reflection
+﻿@attribute [Route("/")]
+@attribute [Route(PageRoutes.Home.Root)]
+@attribute [Authorize]
 
-<PageTitle>Home</PageTitle>
-
-<h1>Large File Upload</h1>
-<input type="file" id="fileInput"/>
-<button onclick="uploadFile()">Upload</button>
-<progress id="progressBar" value="0" max="100"></progress>
-<script>
-    async function uploadFile() {
-        DotNet.invokeMethodAsync('Web.Client', 'ReceiveScreenshot', 'hello');
-
-        const fileInput = document.getElementById('fileInput');
-        const file = fileInput.files[0];
-        if (!file) {
-            alert('Please select a file');
-            return;
-        }
-
-        const chunkSize = 10 * 1024 * 1024; // 10 MB
-        const totalChunks = Math.ceil(file.size / chunkSize);
-        const progressBar = document.getElementById('progressBar');
-
-        for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
-            const start = chunkIndex * chunkSize;
-            const end = Math.min(start + chunkSize, file.size);
-            const chunk = file.slice(start, end);
-
-            const formData = new FormData();
-            formData.append("chunk", chunk);
-            formData.append("chunkIndex", chunkIndex);
-            formData.append("totalChunks", totalChunks);
-            formData.append("fileName", file.name);
-
-            const response = await fetch("/api/File/upload", {
-                method: "POST",
-                body: formData
-            });
-
-            if (!response.ok) {
-                console.log(response)
-                alert(`Chunk ${chunkIndex + 1} upload failed`);
-                return;
-            }
-
-            // Update progress bar
-            progressBar.value = ((chunkIndex + 1) / totalChunks) * 100;
-        }
-
-        alert("File uploaded successfully");
-    }
-</script>
+<PageTitle>@AppLang.Home_page</PageTitle>

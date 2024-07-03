@@ -1,37 +1,34 @@
-﻿
-
-<ThemeProvider/>
-<MudPopoverProvider/>
-<MudDialogProvider MaxWidth="MaxWidth.False"
+﻿<MudDialogProvider MaxWidth="MaxWidth.False"
                    Position="DialogPosition.Center"/>
 <MudSnackbarProvider/>
-
+<ThemeProvider/>
+<MudPopoverProvider/>
 
 
 <MudBreakpointProvider>
-        <Router AppAssembly="@typeof(Program).Assembly">
-            <Found Context="routeData">
-                <ErrorBoundary>
-                    <ChildContent>
-                        <AuthorizeRouteView DefaultLayout="@typeof(MainLayout)" RouteData="@routeData">
-                            <Authorizing>
-                                <Loading/>
-                            </Authorizing>
-                            <NotAuthorized>
-                                <AccessDenied/>
-                            </NotAuthorized>
-                        </AuthorizeRouteView>
-                    </ChildContent>
-                    <ErrorContent Context="ex">
-                        <ErrorPage Exception="@ex"/>
-                    </ErrorContent>
-                </ErrorBoundary>
-            </Found>
-            <NotFound>
-                <NotFoundPage/>
-            </NotFound>
-            <Navigating>
-                <Loading/>
-            </Navigating>
-        </Router>
+    <Router AppAssembly="@typeof(Program).Assembly">
+        <Found Context="routeData">
+            <ErrorBoundary>
+                <ChildContent>
+                    <AuthorizeRouteView DefaultLayout="@typeof(MainLayout)" RouteData="@routeData">
+                        <Authorizing>
+                            <Loading/>
+                        </Authorizing>
+                        <NotAuthorized>
+                            <AccessDenied/>
+                        </NotAuthorized>
+                    </AuthorizeRouteView>
+                </ChildContent>
+                <ErrorContent Context="ex">
+                    <ErrorPage Exception="@ex"/>
+                </ErrorContent>
+            </ErrorBoundary>
+        </Found>
+        <NotFound>
+            <NotFoundPage/>
+        </NotFound>
+        <Navigating>
+            <Loading/>
+        </Navigating>
+    </Router>
 </MudBreakpointProvider>

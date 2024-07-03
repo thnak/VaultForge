@@ -154,8 +154,8 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
     {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.NameIdentifier, user.UserName),
-            new(ClaimTypes.Name, userName),
+            new(ClaimTypes.NameIdentifier, user.UserName), // Hashed
+            new(ClaimTypes.Name, userName), // normal string
             new(ClaimTypes.Hash, user.SecurityStamp),
             new(ClaimTypes.DateOfBirth, user.BirthDay.ToString(CultureInfo.InvariantCulture)),
         };

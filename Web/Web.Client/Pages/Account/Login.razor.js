@@ -25,4 +25,9 @@ function initFireworks() {
     setInterval(createFirework, 1000);
 }
 
+function ForceLogin() {
+    var btn = document.getElementById("login-btn");
+    btn.click();
+}
+
 document.addEventListener('DOMContentLoaded', initFireworks);

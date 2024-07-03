@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using Protector.Utils;
 
 namespace Web.Authenticate;
 
@@ -51,30 +52,28 @@ public class PersistingServerAuthenticationStateProvider : ServerAuthenticationS
 
         var authenticationState = await _authenticationStateTask;
         var principal = authenticationState.User;
-
-
         if (principal.Identity?.IsAuthenticated == true)
         {
-            var userId = principal.FindFirst(_options.ClaimsIdentity.UserIdClaimType)?.Value;
+            var userId = principal.FindFirst(_options.ClaimsIdentity.UserNameClaimType)?.Value;
             var email = principal.FindFirst(_options.ClaimsIdentity.EmailClaimType)?.Value;
 
             if (userId != null)
             {
-                var roles = new List<string>();
-                var avatarUri = string.Empty;
-                if (!string.IsNullOrEmpty(principal.Identity.Name))
+                var user = _userBl.Value.Get(userId.ComputeSha256Hash());
+                if (user != null)
                 {
-                    avatarUri = _userBl.Value.Get(principal.Identity.Name)?.Avatar ?? avatarUri;
+                    var avatarUri = user.Avatar;
+                    _state.PersistAsJson(nameof(UserInfoModel), new UserInfoModel
+                    {
+                        UserName = userId,
+                        Email = email ?? string.Empty,
+                        Roles = user.Roles,
+                        Avatar = avatarUri,
+                        JwtAccessToken = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.UserData)?.Value ?? string.Empty
+                    });
+
                 }
 
-                _state.PersistAsJson(nameof(UserInfoModel), new UserInfoModel
-                {
-                    UserName = userId,
-                    Email = email ?? string.Empty,
-                    Roles = roles,
-                    Avatar = avatarUri,
-                    JwtAccessToken = principal.Claims.FirstOrDefault(x=>x.Type == ClaimTypes.UserData)?.Value ?? string.Empty
-                });
             }
         }
         _state.PersistAsJson(nameof(UserInfoModel), new UserInfoModel

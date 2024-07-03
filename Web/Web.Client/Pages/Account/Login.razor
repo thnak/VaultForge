@@ -86,6 +86,20 @@
                     <div class="mud-width-full">
                         <MudText Typo="Typo.h5" Align="Align.Center">@AppLang.One_moment_please</MudText>
                         <MudProgressLinear Color="Color.Primary" Size="Size.Small" Indeterminate="true"/>
+                        <div class="d-none">
+                            <form id="loginForm" action="/api/Account/login" method="post">
+                                <AntiforgeryToken/>
+                                <div>
+                                    <label for="UserName">Username:</label>
+                                    <input type="text" id="UserName" name="username" value="@CurrentRequestModel.UserName" required>
+                                </div>
+                                <div>
+                                    <label for="Password">Password:</label>
+                                    <input type="password" id="Password" name="password" value="@CurrentRequestModel.Password" required>
+                                </div>
+                                <button type="submit" id="login-btn">Login</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </MudCarouselItem>

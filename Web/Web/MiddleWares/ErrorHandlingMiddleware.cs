@@ -1,3 +1,7 @@
+using BusinessModels.Resources;
+using BusinessModels.System;
+using BusinessModels.Utils;
+
 namespace Web.MiddleWares;
 
 public class ErrorHandlingMiddleware(RequestDelegate next)
@@ -16,8 +20,15 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
 
     private static Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
-        context.Response.Redirect($"/Error/{Uri.EscapeDataString(exception.Message)}");
-        Console.WriteLine(exception.Message);
+        ErrorRecordModel recordModel = new ErrorRecordModel()
+        {
+            Message = exception.Message,
+            RequestId = context.TraceIdentifier,
+            Src = exception.Source ?? string.Empty,
+            Href = context.Request.Path
+        };
+
+        context.Response.Redirect($"{PageRoutes.Error.ErrorPage.AppendAndEncodeBase64StringAsUri(recordModel.Encode2Base64String())}");
         return Task.CompletedTask;
     }
 }

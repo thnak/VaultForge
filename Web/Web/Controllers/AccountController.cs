@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+using Protector;
 using Protector.Certificates;
 using Protector.Utils;
 
@@ -56,7 +57,12 @@ public class AccountController(
         {
             var claimsIdentity = userBl.CreateIdentity(request.UserName);
             var claimPrincipal = new ClaimsPrincipal(claimsIdentity);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimPrincipal);
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(ProtectorTime.CookieMaxAge)
+            };
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimPrincipal, authProperties);
             if (string.IsNullOrEmpty(request.ReturnUrl))
             {
                 return Redirect("/");

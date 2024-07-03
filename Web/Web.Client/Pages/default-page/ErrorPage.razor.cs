@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using BusinessModels.System;
+using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
 
 namespace Web.Client.Pages.default_page;
@@ -13,42 +15,48 @@ public partial class ErrorPage : ComponentBase
     private string? RequestId { get; set; }
     private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     private string HandingMessage { get; set; } = string.Empty;
-        
+    private ErrorRecordModel RecordModel { get; set; } = new();
     private bool SuccessHanding { get; set; }
     protected override void OnInitialized()
     {
         RequestId = Activity.Current?.Id ?? string.Empty;
     }
 
+    protected override void OnParametersSet()
+    {
+        RecordModel = ErrorMessage.DecodeBase64String<ErrorRecordModel>() ?? RecordModel;
+        base.OnParametersSet();
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
+            await UpdateHandingMessage("Collecting information...");
             if (Exception != null)
             {
                 ErrorMessage = Exception.Message;
-                await UpdataHandingMessage("Processing...");
-                await UpdataHandingMessage("Collecting information...");
-                await UpdataHandingMessage("Processing...");
-                await UpdataHandingMessage("Now you can go back");
-                SuccessHanding = true;
-                await Task.Delay(1);
-                await InvokeAsync(StateHasChanged);
+                await UpdateHandingMessage("Processing...");
+                await UpdateHandingMessage("Collecting information...");
             }
             else
             {
-                await UpdataHandingMessage(ErrorMessage);
-                await UpdataHandingMessage("Processing...");
-                await UpdataHandingMessage("Processing...");
-                SuccessHanding = true;
-                await Task.Delay(1);
-                await InvokeAsync(StateHasChanged);
+                await UpdateHandingMessage(RecordModel.RequestId);
+                await UpdateHandingMessage(RecordModel.Href);
+                await UpdateHandingMessage(RecordModel.Src);
+                await UpdateHandingMessage(RecordModel.Message);
             }
+            await UpdateHandingMessage("Processing...");
+            await UpdateHandingMessage("Now you can go back");
+
+            SuccessHanding = true;
+            await Task.Delay(1);
+            await InvokeAsync(StateHasChanged);
         }
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private async Task UpdataHandingMessage(string message)
+    private async Task UpdateHandingMessage(string message)
     {
         HandingMessage = message;
         await Task.Delay(1000);

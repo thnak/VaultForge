@@ -30,6 +30,11 @@ public static class StringExtension
         return plainText;
     }
 
+    /// <summary>
+    /// Mã hóa base64 với unicode
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns>string</returns>
     public static string Encode2Base64String(this object model)
     {
         var plainText = JsonSerializer.Serialize(model);

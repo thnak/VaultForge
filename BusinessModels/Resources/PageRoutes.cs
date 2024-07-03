@@ -2,10 +2,21 @@ namespace BusinessModels.Resources;
 
 public static class PageRoutes
 {
+    public static class Error
+    {
+        public const string Name = "/Error";
+        public const string ErrorPage = Name + "/page";
+        public const string NotFound = Name + "/404";
+        public const string UnAuthorized = Name + "/403";
+    }
+    public static class Home
+    {
+        public const string Root = "/home";
+    }
     public static class Account
     {
         public const string Name = "/Account";
-        public const string Profile = Name + "/Profile";
+        public const string Profile = Name + "/profile";
         public const string SignIn = Name + "/login";
         public const string SignInError = SignIn + "/error";
 

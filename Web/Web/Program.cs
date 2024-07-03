@@ -1,20 +1,18 @@
 using System.Globalization;
 using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.RateLimiting;
-using Blazored.Toast;
 using Business.Business.Interfaces.User;
 using Business.Business.Repositories.User;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.User;
 using Business.Data.Repositories;
 using Business.Data.Repositories.User;
+using Business.KeyManagement;
 using Business.Models;
 using BusinessModels.General;
 using BusinessModels.Resources;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
@@ -27,8 +25,6 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using MudBlazor.Services;
 using Protector;
 using Protector.Certificates;
 using Protector.Certificates.Models;
@@ -36,7 +32,6 @@ using Protector.KeyProvider;
 using Protector.Tracer;
 using Web.Authenticate;
 using Web.Authenticate.AuthorizationRequirement;
-using Web.Client.Services;
 using Web.Components;
 using Web.MiddleWares;
 using Web.Services;
@@ -54,12 +49,12 @@ public class Program
         builder.Services.AddRazorComponents()
             .AddInteractiveWebAssemblyComponents()
             .AddAuthenticationStateSerialization();
-        builder.Services.AddScoped(sp => new HttpClient());
-
-        builder.Services.AddScoped<StateContainer>();
-
-        builder.Services.AddMudServices();
-        builder.Services.AddBlazoredToast();
+        // builder.Services.AddScoped(sp => new HttpClient());
+        //
+        // builder.Services.AddScoped<StateContainer>();
+        //
+        // builder.Services.AddMudServices();
+        // builder.Services.AddBlazoredToast();
 
 
         #region Configure Setting
@@ -77,6 +72,7 @@ public class Program
         builder.Services.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
         builder.Services.AddSingleton<IUserDataLayer, UserDataLayer>();
         builder.Services.AddSingleton<IUserBusinessLayer, UserBusinessLayer>();
+        builder.Services.AddScoped<IMongoDbXmlKeyProtectorRepository, MongoDbXmlKeyProtectorRepository>();
 
 
         builder.Services.AddHostedService<StartupService>();
@@ -101,7 +97,7 @@ public class Program
         builder.Services.AddDistributedMemoryCache(options => {
             options.ExpirationScanFrequency = TimeSpan.FromSeconds(30);
         });
-        
+
         builder.Services.AddHybridCache(options => {
             options.DefaultEntryOptions = new HybridCacheEntryOptions
             {
@@ -110,7 +106,7 @@ public class Program
                 Flags = HybridCacheEntryFlags.None
             };
         });
-        
+
         builder.Services.AddOutputCache(options => {
             options.AddBasePolicy(outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(TimeSpan.FromSeconds(10)));
             options.DefaultExpirationTimeSpan = OutputCachingPolicy.Expire30;
@@ -194,15 +190,15 @@ public class Program
                 {
                     MaxAge = TimeSpan.FromHours(ProtectorTime.CookieMaxAge),
                     Name = CookieNames.AuthorizeCookie,
-                    SameSite = SameSiteMode.Strict,
+                    SameSite = SameSiteMode.None,
                     IsEssential = true,
                     HttpOnly = true,
-                    SecurePolicy = CookieSecurePolicy.SameAsRequest
+                    SecurePolicy = CookieSecurePolicy.Always
                 };
-                options.Events = new CookieAuthenticationEvents
-                {
-                    OnValidatePrincipal = ValidateAsync
-                };
+                // options.Events = new CookieAuthenticationEvents
+                // {
+                //     OnValidatePrincipal = ValidateAsync
+                // };
 
                 #region Cookie Event Handler
 
@@ -223,17 +219,16 @@ public class Program
                         var jswProvider = context.HttpContext.RequestServices.GetRequiredService<JsonWebTokenCertificateProvider>();
 
                         var jwt = userPrincipal.FindFirst(ClaimTypes.UserData)?.Value;
-                        if (string.IsNullOrEmpty(jwt))
+                        if (!string.IsNullOrEmpty(jwt))
                         {
-                            await Reject();
-                            return;
+                            var claimsPrincipal = jswProvider.GetClaimsFromToken(jwt);
+                            if (claimsPrincipal == null)
+                            {
+                                await Reject();
+                                return;
+                            }
                         }
-                        var claimsPrincipal = jswProvider.GetClaimsFromToken(jwt);
-                        if (claimsPrincipal == null)
-                        {
-                            await Reject();
-                            return;
-                        }
+
 
                         var userId = userPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                         var user = userId == null ? null : userManager.Get(userId);
@@ -258,50 +253,50 @@ public class Program
                 #endregion
 
             });
-        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => {
-                var cert = builder.Configuration.GetSection(nameof(AppCertificate)).Get<AppCertificate>()!;
-                var certificate = new X509Certificate2(cert.FilePath, cert.Password);
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new X509SecurityKey(certificate),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateLifetime = false,
-                };
-
-                options.Events = new JwtBearerEvents
-                {
-                    OnMessageReceived = OnMessageReceived,
-                    OnTokenValidated = OnTokenValidated,
-                };
-                return;
-
-                #region Jwt Event Handler
-
-                Task OnMessageReceived(MessageReceivedContext arg)
-                {
-                    string[] names = [CookieNames.JwtTokenName];
-                    foreach (var name in names)
-                    {
-                        arg.Request.Cookies.TryGetValue(name, out var token);
-                        if (string.IsNullOrEmpty(token)) continue;
-                        arg.Token = token;
-                        break;
-                    }
-
-                    return Task.CompletedTask;
-                }
-
-                Task OnTokenValidated(TokenValidatedContext arg)
-                {
-                    return Task.CompletedTask;
-                }
-
-                #endregion
-
-            });
+        // builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        //     .AddJwtBearer(options => {
+        //         var cert = builder.Configuration.GetSection(nameof(AppCertificate)).Get<AppCertificate>()!;
+        //         var certificate = new X509Certificate2(cert.FilePath, cert.Password);
+        //         options.TokenValidationParameters = new TokenValidationParameters
+        //         {
+        //             ValidateIssuerSigningKey = true,
+        //             IssuerSigningKey = new X509SecurityKey(certificate),
+        //             ValidateIssuer = false,
+        //             ValidateAudience = false,
+        //             ValidateLifetime = false,
+        //         };
+        //
+        //         options.Events = new JwtBearerEvents
+        //         {
+        //             OnMessageReceived = OnMessageReceived,
+        //             OnTokenValidated = OnTokenValidated,
+        //         };
+        //         return;
+        //
+        //         #region Jwt Event Handler
+        //
+        //         Task OnMessageReceived(MessageReceivedContext arg)
+        //         {
+        //             string[] names = [CookieNames.JwtTokenName];
+        //             foreach (var name in names)
+        //             {
+        //                 arg.Request.Cookies.TryGetValue(name, out var token);
+        //                 if (string.IsNullOrEmpty(token)) continue;
+        //                 arg.Token = token;
+        //                 break;
+        //             }
+        //
+        //             return Task.CompletedTask;
+        //         }
+        //
+        //         Task OnTokenValidated(TokenValidatedContext arg)
+        //         {
+        //             return Task.CompletedTask;
+        //         }
+        //
+        //         #endregion
+        //
+        //     });
 
         builder.Services.AddSession(options => {
             options.IdleTimeout = TimeSpan.FromHours(ProtectorTime.SessionIdleTimeout);
@@ -317,7 +312,15 @@ public class Program
             };
         });
 
-        builder.Services.AddCors();
+        builder.Services.AddCors(options => {
+            options.AddPolicy("AllowAllOrigins",
+            corsPolicyBuilder => {
+                corsPolicyBuilder.WithOrigins()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
+        });
         builder.Services.AddAntiforgery(options => {
             options.Cookie = new CookieBuilder
             {
@@ -334,6 +337,7 @@ public class Program
             options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
         });
 
+
         builder.Services.AddDataProtection()
             .UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration
             {
@@ -348,9 +352,10 @@ public class Program
                     EncryptionAlgorithm = EncryptionAlgorithm.AES_256_GCM,
                     ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
                 };
+                options.XmlRepository = builder.Services.BuildServiceProvider().GetService<IMongoDbXmlKeyProtectorRepository>();
                 options.AutoGenerateKeys = true;
-            })
-            .PersistKeysToFileSystem(new DirectoryInfo(Directory.GetCurrentDirectory()));
+            });
+        // .PersistKeysToFileSystem(new DirectoryInfo(Directory.GetCurrentDirectory()));
 
         builder.Services.Configure<ForwardedHeadersOptions>(options => {
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
@@ -423,6 +428,15 @@ public class Program
         var localizationOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>()!.Value;
         app.UseRequestLocalization(localizationOptions);
 
+        // app.UseStatusCodePages(context => {
+        //     var response = context.HttpContext.Response;
+        //     if (response.StatusCode == StatusCodes.Status401Unauthorized)
+        //     {
+        //         response.Redirect(PageRoutes.Account.SignIn);
+        //     }
+        //     return Task.CompletedTask;
+        // });
+
         #endregion
 
         // Configure the HTTP request pipeline.
@@ -436,11 +450,9 @@ public class Program
             app.UseResponseCompression();
         }
 
-        app.UseCors();
-
+        app.UseCors("AllowAllOrigins");
         app.UseRateLimiter();
 
-        app.UseCors();
         app.UseResponseCaching();
         app.UseOutputCache();
 

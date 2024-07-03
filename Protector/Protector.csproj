@@ -10,7 +10,15 @@
         <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="9.0.0-preview.5.24306.11" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0-preview.5.24306.7"/>
         <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.6.0"/>
+        <PackageReference Include="MongoDB.Bson" Version="2.26.0" />
+        <PackageReference Include="MongoDB.Driver" Version="2.26.0" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.6.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.DataProtection">
+        <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.0-preview.5.24306.11\Microsoft.AspNetCore.DataProtection.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

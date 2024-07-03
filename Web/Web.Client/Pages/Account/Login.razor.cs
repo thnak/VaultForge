@@ -3,6 +3,7 @@ using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using MudBlazor;
 
 namespace Web.Client.Pages.Account;
@@ -21,7 +22,6 @@ public partial class Login(HttpClient httpClient, AntiforgeryStateProvider antif
 
     private MudForm? FormUser { get; set; }
     private MudForm? PasswordForm { get; set; }
-
     private RequestLoginModel CurrentRequestModel { get; set; } = new();
     private string CurrentErrorMessage { get; set; } = string.Empty;
     private string PasswordIcon { get; set; } = "fa-solid fa-lock";
@@ -72,14 +72,14 @@ public partial class Login(HttpClient httpClient, AntiforgeryStateProvider antif
                 Loading = true;
                 await Task.Delay(1);
                 await InvokeAsync(StateHasChanged);
-                
+
                 var antiforgery = antiforgeryStateProvider.GetAntiforgeryToken();
 
                 using var content = new MultipartFormDataContent();
                 content.Add(new StringContent(CurrentRequestModel.UserName), "userName");
                 if (antiforgery != null)
                     content.Add(new StringContent(antiforgery.Value), antiforgery.FormFieldName);
-                
+
                 var response = await httpClient.PostAsync("/api/Account/validate-user", content);
                 if (response.IsSuccessStatusCode)
                 {
@@ -116,28 +116,29 @@ public partial class Login(HttpClient httpClient, AntiforgeryStateProvider antif
                 content.Add(new StringContent(CurrentRequestModel.UserName), "userName");
                 if (antiforgery != null)
                     content.Add(new StringContent(antiforgery.Value), antiforgery.FormFieldName);
-                
-                
+
+
                 var response = await httpClient.PostAsync("/api/Account/validate-password", content);
                 if (response.IsSuccessStatusCode)
                 {
                     CurrentIndex++;
                     Loading = false;
                     await InvokeAsync(StateHasChanged);
-                    await Task.Delay(1000);
-                    
-                    using var loginForm = new MultipartFormDataContent();
-                    loginForm.Add(new StringContent(CurrentRequestModel.Password), nameof(RequestLoginModel.Password));
-                    loginForm.Add(new StringContent(CurrentRequestModel.UserName), nameof(RequestLoginModel.UserName));
-                    loginForm.Add(new StringContent(CurrentRequestModel.ReturnUrl ?? string.Empty), nameof(RequestLoginModel.ReturnUrl));
-                    if (antiforgery != null)
-                        loginForm.Add(new StringContent(antiforgery.Value), antiforgery.FormFieldName);
-                    response = await httpClient.PostAsync("/api/Account/login", loginForm);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var location = response.Headers.Location?.ToString() ?? "/";
-                        Navigation.NavigateTo(location);
-                    }
+                    await Task.Delay(2000);
+
+                    await JsRuntime.InvokeVoidAsync("ForceLogin");
+
+                    // using var loginForm = new MultipartFormDataContent();
+                    // loginForm.Add(new StringContent(CurrentRequestModel.Password), nameof(RequestLoginModel.Password));
+                    // loginForm.Add(new StringContent(CurrentRequestModel.UserName), nameof(RequestLoginModel.UserName));
+                    // loginForm.Add(new StringContent(CurrentRequestModel.ReturnUrl ?? string.Empty), nameof(RequestLoginModel.ReturnUrl));
+                    // if (antiforgery != null)
+                    //     loginForm.Add(new StringContent(antiforgery.Value), antiforgery.FormFieldName);
+                    //
+                    // response = await httpClient.PostAsync("/api/Account/login", loginForm);
+                    // if (response.IsSuccessStatusCode)
+                    // {
+                    // }
                 }
                 else
                 {
@@ -147,7 +148,7 @@ public partial class Login(HttpClient httpClient, AntiforgeryStateProvider antif
                 }
 
                 Loading = false;
-                await Task.Delay(1);                    
+                await Task.Delay(1);
                 await InvokeAsync(StateHasChanged);
 
             }

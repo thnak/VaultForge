@@ -16,12 +16,12 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet"/>
-    <HeadOutlet @rendermode="InteractiveWebAssembly"/>
+    <HeadOutlet @rendermode="RenderMode"/>
     <title>Zme</title>
 </head>
 
 <body>
-<Routes @rendermode="InteractiveWebAssembly"/>
+<Routes @rendermode="RenderMode"/>
 <script src="_framework/blazor.web.js"></script>
 <script src="_content/MudBlazor/MudBlazor.min.js"></script>
 <script src="js/app.js"></script>
@@ -33,5 +33,5 @@
 @code
 {
     private string lang { get; } = Thread.CurrentThread.CurrentCulture.Name;
-
+    private static readonly InteractiveWebAssemblyRenderMode RenderMode = new(false);
 }
