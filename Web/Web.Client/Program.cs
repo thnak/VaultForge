@@ -23,7 +23,7 @@ class Program
         // builder.Services.AddAuthenticationStateDeserialization();
         builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
         builder.Services.AddCascadingAuthenticationState();
-
+        builder.Services.AddScoped<ProtectedLocalStorage>();
         builder.Services.AddLocalization();
         builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
         var host = builder.Build();

@@ -72,7 +72,7 @@ public class Program
         builder.Services.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
         builder.Services.AddSingleton<IUserDataLayer, UserDataLayer>();
         builder.Services.AddSingleton<IUserBusinessLayer, UserBusinessLayer>();
-        builder.Services.AddScoped<IMongoDbXmlKeyProtectorRepository, MongoDbXmlKeyProtectorRepository>();
+        builder.Services.AddSingleton<IMongoDbXmlKeyProtectorRepository, MongoDbXmlKeyProtectorRepository>();
 
 
         builder.Services.AddHostedService<StartupService>();
@@ -352,10 +352,11 @@ public class Program
                     EncryptionAlgorithm = EncryptionAlgorithm.AES_256_GCM,
                     ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
                 };
+ #pragma warning disable ASP0000
                 options.XmlRepository = builder.Services.BuildServiceProvider().GetService<IMongoDbXmlKeyProtectorRepository>();
+ #pragma warning restore ASP0000
                 options.AutoGenerateKeys = true;
             });
-        // .PersistKeysToFileSystem(new DirectoryInfo(Directory.GetCurrentDirectory()));
 
         builder.Services.Configure<ForwardedHeadersOptions>(options => {
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
@@ -427,15 +428,6 @@ public class Program
 
         var localizationOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>()!.Value;
         app.UseRequestLocalization(localizationOptions);
-
-        // app.UseStatusCodePages(context => {
-        //     var response = context.HttpContext.Response;
-        //     if (response.StatusCode == StatusCodes.Status401Unauthorized)
-        //     {
-        //         response.Redirect(PageRoutes.Account.SignIn);
-        //     }
-        //     return Task.CompletedTask;
-        // });
 
         #endregion
 

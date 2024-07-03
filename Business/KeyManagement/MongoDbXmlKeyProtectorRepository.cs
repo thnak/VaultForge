@@ -19,6 +19,7 @@ public interface IMongoDbXmlKeyProtectorRepository : IXmlRepository
 public class MongoDbXmlKeyProtectorRepository(IMongoDataLayerContext context) : IMongoDbXmlKeyProtectorRepository
 {
     private readonly IMongoCollection<DataProtectionKey> _collection = context.MongoDatabase.GetCollection<DataProtectionKey>("DataProtectionKeys");
+
     public IReadOnlyCollection<XElement> GetAllElements()
     {
         var keys = _collection.Find(FilterDefinition<DataProtectionKey>.Empty).ToList();

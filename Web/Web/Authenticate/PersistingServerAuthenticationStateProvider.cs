@@ -71,17 +71,8 @@ public class PersistingServerAuthenticationStateProvider : ServerAuthenticationS
                         Avatar = avatarUri,
                         JwtAccessToken = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.UserData)?.Value ?? string.Empty
                     });
-
                 }
-
             }
         }
-        _state.PersistAsJson(nameof(UserInfoModel), new UserInfoModel
-        {
-            UserName = "haha",
-            Email = "haha",
-            Roles = [],
-            Avatar = "avatarUri"
-        });
     }
 }
