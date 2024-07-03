@@ -34,6 +34,7 @@ public class MongoDbXmlKeyProtectorRepository(IMongoDataLayerContext context) : 
         };
         _collection.InsertOne(key);
     }
+    
     public long CleanupOldKeys(DateTime cutoffDate)
     {
         var filter = Builders<DataProtectionKey>.Filter.Lte(x => x.CreationTime, cutoffDate);

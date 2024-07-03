@@ -41,9 +41,9 @@ public class ProtectedLocalStorage(IJSRuntime jsRuntime)
         result.TryGetValue("data", out object? encryptedData);
         result.TryGetValue("salt", out object? salt);
 
-        await jsRuntime.InvokeVoidAsync("protectedStorage.setItem", key, encryptedData.ToString());
-        await jsRuntime.InvokeVoidAsync("protectedStorage.setItem", key + "_iv", iv.ToString());
-        await jsRuntime.InvokeVoidAsync("protectedStorage.setItem", key + "_salt", salt.ToString());
+        if (encryptedData != null) await jsRuntime.InvokeVoidAsync("protectedStorage.setItem", key, encryptedData.ToString());
+        if (iv != null) await jsRuntime.InvokeVoidAsync("protectedStorage.setItem", key + "_iv", iv.ToString());
+        if (salt != null) await jsRuntime.InvokeVoidAsync("protectedStorage.setItem", key + "_salt", salt.ToString());
     }
 
     public async Task SetAsync(string key, object value)
@@ -65,9 +65,7 @@ public class ProtectedLocalStorage(IJSRuntime jsRuntime)
             return string.Empty;
         }
 
-        return await jsRuntime.InvokeAsync<string>(
-        "protectedStorage.decryptWithPassword", password, iv, encryptedData, salt
-        );
+        return await jsRuntime.InvokeAsync<string>("protectedStorage.decryptWithPassword", password, iv, encryptedData, salt);
     }
 
     public async Task<ProtectedBrowserStorageResult<T>> GetAsync<T>(string key)
