@@ -21,7 +21,7 @@ internal class Program
         builder.Services.AddBlazoredToast();
         builder.Services.AddSingleton<StateContainer>();
         builder.Services.AddAuthorizationCore();
-        // builder.Services.AddAuthenticationStateDeserialization();
+        builder.Services.AddAuthenticationStateDeserialization();
         builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
         builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddScoped<ProtectedLocalStorage>();
