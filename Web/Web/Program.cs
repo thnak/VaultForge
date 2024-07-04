@@ -44,18 +44,12 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        builder.WebHost.UseKestrel(option => option.AddServerHeader = false);
 
         // Add services to the container.
         builder.Services.AddRazorComponents()
             .AddInteractiveWebAssemblyComponents()
             .AddAuthenticationStateSerialization();
-        // builder.Services.AddScoped(sp => new HttpClient());
-        //
-        // builder.Services.AddScoped<StateContainer>();
-        //
-        // builder.Services.AddMudServices();
-        // builder.Services.AddBlazoredToast();
-
 
         #region Configure Setting
 
@@ -316,12 +310,7 @@ public class Program
             options.KnownProxies.Clear();
         });
 
-        builder.Services.ConfigureApplicationCookie(options => {
-            options.Cookie.Name = CookieNames.AuthorizeCookie;
-            options.Cookie.Domain = "localhost";
-            options.Cookie.HttpOnly = true;
-            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        });
+       
 
         builder.Services.Configure<SecurityStampValidatorOptions>(options => { options.ValidationInterval = TimeSpan.FromMinutes(5); });
 

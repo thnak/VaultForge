@@ -33,6 +33,7 @@ using Protector.Certificates;
 using Protector.Certificates.Models;
 using Protector.KeyProvider;
 using Protector.Tracer;
+using ResApi.Middleware;
 
 namespace ResApi;
 
@@ -41,6 +42,9 @@ public abstract class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        builder.WebHost.UseKestrel(option => {
+            option.AddServerHeader = false;
+        });
 
         // Add services to the container.
 
@@ -230,13 +234,6 @@ public abstract class Program
                 #endregion
 
             });
-
-        builder.Services.ConfigureApplicationCookie(options => {
-            options.Cookie.Name = CookieNames.AuthorizeCookie;
-            options.Cookie.Domain = "localhost";
-            options.Cookie.HttpOnly = true;
-            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        });
 
         builder.Services.AddSession(options => {
             options.IdleTimeout = TimeSpan.FromHours(ProtectorTime.SessionIdleTimeout);
@@ -437,10 +434,10 @@ public abstract class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
-
-
         app.MapControllers();
 
+        app.UseMiddleware<GlobalMiddleware>();
+        
         app.Run();
     }
 }
