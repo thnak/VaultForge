@@ -87,14 +87,14 @@ public class AccountController(
         var user = userBl.Get(userNameHashed);
         if (user != null) return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri(AppLang.User_is_already_exists));
 
-        var validateContext = new ValidationContext(request, serviceProvider: null, items: null);
+        var validateContext = new ValidationContext(request, null, null);
         var validationResults = new List<ValidationResult>();
 
-        bool isValid = Validator.TryValidateObject(request, validateContext, validationResults, true);
+        var isValid = Validator.TryValidateObject(request, validateContext, validationResults, true);
 
         if (isValid)
         {
-            var createResult = await userBl.CreateAsync(new UserModel()
+            var createResult = await userBl.CreateAsync(new UserModel
             {
                 UserName = userNameHashed,
                 Password = request.Password.ComputeSha256Hash(),
@@ -153,7 +153,7 @@ public class AccountController(
 
 
     /// <summary>
-    /// Manual get AntiForgeryToken for your self. it's also add a cookie for you
+    ///     Manual get AntiForgeryToken for your self. it's also add a cookie for you
     /// </summary>
     /// <param name="cookieName">Optional support for multiple request</param>
     /// <returns></returns>

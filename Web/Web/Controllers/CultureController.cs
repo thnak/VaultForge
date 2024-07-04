@@ -12,13 +12,13 @@ public class CultureController : Controller
     {
         if (culture is not null)
             HttpContext.Response.Cookies.Append(
-                CookieNames.Culture,
-                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture, culture)),
-                new CookieOptions()
-                {
-                    IsEssential = true,
-                    Expires = DateTimeOffset.UtcNow.AddYears(1)
-                }
+            CookieNames.Culture,
+            CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture, culture)),
+            new CookieOptions
+            {
+                IsEssential = true,
+                Expires = DateTimeOffset.UtcNow.AddYears(1)
+            }
             );
 
         if (!string.IsNullOrEmpty(redirectUri)) return LocalRedirect(redirectUri);

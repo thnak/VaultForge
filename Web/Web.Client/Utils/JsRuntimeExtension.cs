@@ -8,7 +8,7 @@ public static class JsRuntimeExtension
 {
     public static async Task<string?> GetCookie(this IJSRuntime jsRuntime, string cookieName)
     {
-        string? cookieVal = await jsRuntime.InvokeAsync<string?>("getCookie", cookieName);
+        var cookieVal = await jsRuntime.InvokeAsync<string?>("getCookie", cookieName);
         return cookieVal;
     }
     public static async Task SetCookie(this IJSRuntime jsRuntime, string cookieName, string cookieValue, int days)
@@ -23,7 +23,7 @@ public static class JsRuntimeExtension
         await jsRuntime.InvokeVoidAsync("localStorage.setItem", key, value);
     }
 
-    public static async Task SetLocalStorage(this IJSRuntime jsRuntime, string key, Object v)
+    public static async Task SetLocalStorage(this IJSRuntime jsRuntime, string key, object v)
     {
         var jsonText = JsonSerializer.Serialize(v);
         await jsRuntime.SetLocalStorage(key, jsonText);

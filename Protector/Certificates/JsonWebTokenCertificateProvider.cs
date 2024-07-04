@@ -8,7 +8,7 @@ using Protector.Certificates.Models;
 namespace Protector.Certificates;
 
 /// <summary>
-/// Tạo jwt từ file cert
+///     Tạo jwt từ file cert
 /// </summary>
 /// <param name="settings"></param>
 public class JsonWebTokenCertificateProvider(IOptions<AppCertificate> settings)
@@ -51,7 +51,6 @@ public class JsonWebTokenCertificateProvider(IOptions<AppCertificate> settings)
     }
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="token"></param>
     /// <returns>null if ClaimsPrincipal is null or the jwt is outdated</returns>

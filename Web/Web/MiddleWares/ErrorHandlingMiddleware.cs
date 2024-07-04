@@ -20,7 +20,7 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
 
     private static Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
-        ErrorRecordModel recordModel = new ErrorRecordModel()
+        var recordModel = new ErrorRecordModel
         {
             Message = exception.Message,
             RequestId = context.TraceIdentifier,

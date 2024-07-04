@@ -4,7 +4,7 @@ using Web.Client.Models;
 
 namespace Web.Client.Services;
 
-public class ProtectedLocalStorage(IJSRuntime jsRuntime)
+public class ProtectedSessionStorage(IJSRuntime jsRuntime)
 {
     /// <summary>
     ///     Handler function to get key
@@ -15,12 +15,12 @@ public class ProtectedLocalStorage(IJSRuntime jsRuntime)
     {
 
         // Check if a key already exists
-        var key = await jsRuntime.InvokeAsync<string>("protectedLocalStorage.getItem", "encryptionKey");
+        var key = await jsRuntime.InvokeAsync<string>("protectedSessionStorage.getItem", "encryptionKey");
         if (string.IsNullOrEmpty(key))
         {
             // Generate a new key if none exists
-            key = await jsRuntime.InvokeAsync<string>("protectedLocalStorage.generateKey");
-            await jsRuntime.InvokeVoidAsync("protectedLocalStorage.setItem", "encryptionKey", key);
+            key = await jsRuntime.InvokeAsync<string>("protectedSessionStorage.generateKey");
+            await jsRuntime.InvokeVoidAsync("protectedSessionStorage.setItem", "encryptionKey", key);
         }
         return key;
     }
@@ -37,14 +37,14 @@ public class ProtectedLocalStorage(IJSRuntime jsRuntime)
     public async Task SetAsync(string key, string value)
     {
         var password = await GetKey();
-        var result = await jsRuntime.InvokeAsync<Dictionary<string, object>>("protectedLocalStorage.encryptWithPassword", password, value);
+        var result = await jsRuntime.InvokeAsync<Dictionary<string, object>>("protectedSessionStorage.encryptWithPassword", password, value);
         result.TryGetValue("iv", out var iv);
         result.TryGetValue("data", out var encryptedData);
         result.TryGetValue("salt", out var salt);
 
-        if (encryptedData != null) await jsRuntime.InvokeVoidAsync("protectedLocalStorage.setItem", key, encryptedData.ToString());
-        if (iv != null) await jsRuntime.InvokeVoidAsync("protectedLocalStorage.setItem", key + "_iv", iv.ToString());
-        if (salt != null) await jsRuntime.InvokeVoidAsync("protectedLocalStorage.setItem", key + "_salt", salt.ToString());
+        if (encryptedData != null) await jsRuntime.InvokeVoidAsync("protectedSessionStorage.setItem", key, encryptedData.ToString());
+        if (iv != null) await jsRuntime.InvokeVoidAsync("protectedSessionStorage.setItem", key + "_iv", iv.ToString());
+        if (salt != null) await jsRuntime.InvokeVoidAsync("protectedSessionStorage.setItem", key + "_salt", salt.ToString());
     }
 
     public async Task SetAsync(string key, object value)
@@ -57,16 +57,16 @@ public class ProtectedLocalStorage(IJSRuntime jsRuntime)
     public async Task<string> GetAsync(string key)
     {
         var password = await GetKey();
-        var iv = await jsRuntime.InvokeAsync<string>("protectedLocalStorage.getItem", key + "_iv");
-        var encryptedData = await jsRuntime.InvokeAsync<string>("protectedLocalStorage.getItem", key);
-        var salt = await jsRuntime.InvokeAsync<string>("protectedLocalStorage.getItem", key + "_salt");
+        var iv = await jsRuntime.InvokeAsync<string>("protectedSessionStorage.getItem", key + "_iv");
+        var encryptedData = await jsRuntime.InvokeAsync<string>("protectedSessionStorage.getItem", key);
+        var salt = await jsRuntime.InvokeAsync<string>("protectedSessionStorage.getItem", key + "_salt");
 
         if (string.IsNullOrEmpty(iv) || string.IsNullOrEmpty(encryptedData) || string.IsNullOrEmpty(salt))
         {
             return string.Empty;
         }
 
-        return await jsRuntime.InvokeAsync<string>("protectedLocalStorage.decryptWithPassword", password, iv, encryptedData, salt);
+        return await jsRuntime.InvokeAsync<string>("protectedSessionStorage.decryptWithPassword", password, iv, encryptedData, salt);
     }
 
     public async Task<ProtectedBrowserStorageResult<T>> GetAsync<T>(string key)
@@ -86,8 +86,8 @@ public class ProtectedLocalStorage(IJSRuntime jsRuntime)
 
     public async Task RemoveAsync(string key)
     {
-        await jsRuntime.InvokeVoidAsync("protectedLocalStorage.removeItem", key);
-        await jsRuntime.InvokeVoidAsync("protectedLocalStorage.removeItem", key + "_iv");
-        await jsRuntime.InvokeVoidAsync("protectedLocalStorage.removeItem", key + "_salt");
+        await jsRuntime.InvokeVoidAsync("protectedSessionStorage.removeItem", key);
+        await jsRuntime.InvokeVoidAsync("protectedSessionStorage.removeItem", key + "_iv");
+        await jsRuntime.InvokeVoidAsync("protectedSessionStorage.removeItem", key + "_salt");
     }
 }

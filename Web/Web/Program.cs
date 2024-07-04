@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Security.Claims;
 using System.Threading.RateLimiting;
+using Business.Authenticate.AuthorizationRequirement;
 using Business.Business.Interfaces.User;
 using Business.Business.Repositories.User;
 using Business.Data.Interfaces;
@@ -31,11 +32,10 @@ using Protector.Certificates.Models;
 using Protector.KeyProvider;
 using Protector.Tracer;
 using Web.Authenticate;
-using Web.Authenticate.AuthorizationRequirement;
 using Web.Components;
 using Web.MiddleWares;
 using Web.Services;
-
+using _Imports=Web.Client._Imports;
 
 namespace Web;
 
@@ -111,15 +111,15 @@ public class Program
             options.AddBasePolicy(outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(TimeSpan.FromSeconds(10)));
             options.DefaultExpirationTimeSpan = OutputCachingPolicy.Expire30;
 
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire10), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire10));
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire20), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire20));
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire30), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire30));
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire40), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire40));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire10), build: outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire10));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire20), build: outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire20));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire30), build: outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire30));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire40), build: outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire40));
 
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire50), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire50));
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire60), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire60));
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire120), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire120));
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire240), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire240));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire50), build: outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire50));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire60), build: outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire60));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire120), build: outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire120));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire240), build: outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire240));
         });
         builder.Services.AddResponseCaching();
 
@@ -162,12 +162,6 @@ public class Program
 
         #region Authenticate & Protection
 
-        builder.Services.AddCors(options => {
-            options.AddDefaultPolicy(policy => {
-                policy.WithOrigins().AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-            });
-        });
-
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddSingleton<FailedLoginTracker>();
         builder.Services.AddSingleton<JsonWebTokenCertificateProvider>();
@@ -175,9 +169,9 @@ public class Program
         builder.Services.AddScoped<AuthenticationStateProvider, PersistingServerAuthenticationStateProvider>();
         builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddAuthorization(options => {
-            options.AddPolicy(PolicyNamesAndRoles.Over18, policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(18)));
-            options.AddPolicy(PolicyNamesAndRoles.Over14, policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(14)));
-            options.AddPolicy(PolicyNamesAndRoles.Over7, policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(7)));
+            options.AddPolicy(PolicyNamesAndRoles.Over18, configurePolicy: policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(18)));
+            options.AddPolicy(PolicyNamesAndRoles.Over14, configurePolicy: policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(14)));
+            options.AddPolicy(PolicyNamesAndRoles.Over7, configurePolicy: policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(7)));
         });
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options => {
@@ -193,12 +187,14 @@ public class Program
                     SameSite = SameSiteMode.None,
                     IsEssential = true,
                     HttpOnly = true,
-                    SecurePolicy = CookieSecurePolicy.Always
+                    SecurePolicy = CookieSecurePolicy.Always,
+                    Domain = "localhost",
+                    Path = "/"
                 };
-                // options.Events = new CookieAuthenticationEvents
-                // {
-                //     OnValidatePrincipal = ValidateAsync
-                // };
+                options.Events = new CookieAuthenticationEvents
+                {
+                    OnValidatePrincipal = ValidateAsync
+                };
 
                 #region Cookie Event Handler
 
@@ -253,50 +249,6 @@ public class Program
                 #endregion
 
             });
-        // builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-        //     .AddJwtBearer(options => {
-        //         var cert = builder.Configuration.GetSection(nameof(AppCertificate)).Get<AppCertificate>()!;
-        //         var certificate = new X509Certificate2(cert.FilePath, cert.Password);
-        //         options.TokenValidationParameters = new TokenValidationParameters
-        //         {
-        //             ValidateIssuerSigningKey = true,
-        //             IssuerSigningKey = new X509SecurityKey(certificate),
-        //             ValidateIssuer = false,
-        //             ValidateAudience = false,
-        //             ValidateLifetime = false,
-        //         };
-        //
-        //         options.Events = new JwtBearerEvents
-        //         {
-        //             OnMessageReceived = OnMessageReceived,
-        //             OnTokenValidated = OnTokenValidated,
-        //         };
-        //         return;
-        //
-        //         #region Jwt Event Handler
-        //
-        //         Task OnMessageReceived(MessageReceivedContext arg)
-        //         {
-        //             string[] names = [CookieNames.JwtTokenName];
-        //             foreach (var name in names)
-        //             {
-        //                 arg.Request.Cookies.TryGetValue(name, out var token);
-        //                 if (string.IsNullOrEmpty(token)) continue;
-        //                 arg.Token = token;
-        //                 break;
-        //             }
-        //
-        //             return Task.CompletedTask;
-        //         }
-        //
-        //         Task OnTokenValidated(TokenValidatedContext arg)
-        //         {
-        //             return Task.CompletedTask;
-        //         }
-        //
-        //         #endregion
-        //
-        //     });
 
         builder.Services.AddSession(options => {
             options.IdleTimeout = TimeSpan.FromHours(ProtectorTime.SessionIdleTimeout);
@@ -314,12 +266,10 @@ public class Program
 
         builder.Services.AddCors(options => {
             options.AddPolicy("AllowAllOrigins",
-            corsPolicyBuilder => {
-                corsPolicyBuilder.WithOrigins()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
-            });
+            policyBuilder => policyBuilder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials());
         });
         builder.Services.AddAntiforgery(options => {
             options.Cookie = new CookieBuilder
@@ -347,7 +297,7 @@ public class Program
             .SetApplicationName(CookieNames.Name)
             .SetDefaultKeyLifetime(TimeSpan.FromDays(7))
             .AddKeyManagementOptions(options => {
-                options.AuthenticatedEncryptorConfiguration = new AuthenticatedEncryptorConfiguration()
+                options.AuthenticatedEncryptorConfiguration = new AuthenticatedEncryptorConfiguration
                 {
                     EncryptionAlgorithm = EncryptionAlgorithm.AES_256_GCM,
                     ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
@@ -366,6 +316,13 @@ public class Program
             options.KnownProxies.Clear();
         });
 
+        builder.Services.ConfigureApplicationCookie(options => {
+            options.Cookie.Name = CookieNames.AuthorizeCookie;
+            options.Cookie.Domain = "localhost";
+            options.Cookie.HttpOnly = true;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        });
+
         builder.Services.Configure<SecurityStampValidatorOptions>(options => { options.ValidationInterval = TimeSpan.FromMinutes(5); });
 
         #endregion
@@ -373,7 +330,7 @@ public class Program
         #region Rate Limit
 
         builder.Services.AddRateLimiter(options => {
-            options.AddFixedWindowLimiter(PolicyNamesAndRoles.LimitRate.Fixed, opt => {
+            options.AddFixedWindowLimiter(PolicyNamesAndRoles.LimitRate.Fixed, configureOptions: opt => {
                 opt.Window = TimeSpan.FromSeconds(10);
                 opt.PermitLimit = 4;
                 opt.QueueLimit = 2;
@@ -383,7 +340,7 @@ public class Program
             options.RejectionStatusCode = 429;
         });
         builder.Services.AddRateLimiter(options => {
-            options.AddSlidingWindowLimiter(PolicyNamesAndRoles.LimitRate.Sliding, opt => {
+            options.AddSlidingWindowLimiter(PolicyNamesAndRoles.LimitRate.Sliding, configureOptions: opt => {
                 opt.PermitLimit = 100;
                 opt.Window = TimeSpan.FromMinutes(30);
                 opt.SegmentsPerWindow = 3;
@@ -395,7 +352,7 @@ public class Program
         });
 
         builder.Services.AddRateLimiter(options => {
-            options.AddTokenBucketLimiter(PolicyNamesAndRoles.LimitRate.Token, opt => {
+            options.AddTokenBucketLimiter(PolicyNamesAndRoles.LimitRate.Token, configureOptions: opt => {
                 opt.TokenLimit = 100;
                 opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
                 opt.QueueLimit = 10;
@@ -408,7 +365,7 @@ public class Program
         });
 
         builder.Services.AddRateLimiter(options => {
-            options.AddConcurrencyLimiter(PolicyNamesAndRoles.LimitRate.Concurrency, opt => {
+            options.AddConcurrencyLimiter(PolicyNamesAndRoles.LimitRate.Concurrency, configureOptions: opt => {
                 opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
                 opt.QueueLimit = 10;
                 opt.PermitLimit = 100;
@@ -431,6 +388,11 @@ public class Program
 
         #endregion
 
+        app.UseCookiePolicy(new CookiePolicyOptions()
+        {
+            MinimumSameSitePolicy = SameSiteMode.None
+        });
+        
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
@@ -450,7 +412,7 @@ public class Program
 
         app.UseSession();
 
-        app.UseStaticFiles(new StaticFileOptions()
+        app.UseStaticFiles(new StaticFileOptions
         {
             // OnPrepareResponse = (context) => {
             //     ApplyHeaders(context.Context.Response.Headers);
@@ -463,7 +425,7 @@ public class Program
         app.MapControllers();
         app.MapRazorComponents<App>()
             .AddInteractiveWebAssemblyRenderMode()
-            .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
+            .AddAdditionalAssemblies(typeof(_Imports).Assembly);
         //app.Use(async (context, next) => {
         //    ApplyHeaders(context.Response.Headers);
         //    await next();
@@ -473,7 +435,7 @@ public class Program
 
         app.Run();
     }
-    static void ApplyHeaders(IHeaderDictionary headers)
+    private static void ApplyHeaders(IHeaderDictionary headers)
     {
         headers.Append("Cross-Origin-Embedder-Policy", "require-corp");
         headers.Append("Cross-Origin-Opener-Policy", "same-origin");

@@ -6,6 +6,7 @@ if ('serviceWorker' in navigator) {
         console.log('Service Worker registration failed:', error);
     });
 }
+
 function deleteTemplateCache() {
     caches.keys().then(function (names) {
         for (let name of names) caches.delete(name);

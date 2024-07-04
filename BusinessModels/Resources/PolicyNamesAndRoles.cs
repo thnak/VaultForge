@@ -5,7 +5,7 @@ public static class PolicyNamesAndRoles
     public const string Over18 = "Over18";
     public const string Over14 = "Over14";
     public const string Over7 = "Over7";
-    
+
 
     public static class System
     {

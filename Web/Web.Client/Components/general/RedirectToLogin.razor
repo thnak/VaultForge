@@ -1,9 +1,8 @@
-﻿@using BusinessModels.Resources
-@inject NavigationManager NavigationManager
+﻿@inject NavigationManager NavigationManager
 
 @code {
     protected override void OnInitialized()
     {
-        NavigationManager.NavigateTo($"{PageRoutes.Account.SignIn}?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}", forceLoad: true);
+        NavigationManager.NavigateTo($"{PageRoutes.Account.SignIn}?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}", true);
     }
 }

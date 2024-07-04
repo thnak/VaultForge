@@ -14,4 +14,3 @@ public class EntityDataContext(DbContextOptions<EntityDataContext> options) : Db
         var builder = modelBuilder.Entity<UserModel>().ToCollection(nameof(UserModel));
     }
 }
-

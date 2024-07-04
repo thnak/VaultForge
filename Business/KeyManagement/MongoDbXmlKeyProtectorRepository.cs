@@ -9,7 +9,7 @@ namespace Business.KeyManagement;
 public interface IMongoDbXmlKeyProtectorRepository : IXmlRepository
 {
     /// <summary>
-    /// Xóa key quá khứ
+    ///     Xóa key quá khứ
     /// </summary>
     /// <param name="cutoffDate"></param>
     /// <returns></returns>
@@ -34,10 +34,10 @@ public class MongoDbXmlKeyProtectorRepository(IMongoDataLayerContext context) : 
         };
         _collection.InsertOne(key);
     }
-    
+
     public long CleanupOldKeys(DateTime cutoffDate)
     {
-        var filter = Builders<DataProtectionKey>.Filter.Lte(x => x.CreationTime, cutoffDate);
+        var filter = Builders<DataProtectionKey>.Filter.Lte(field: x => x.CreationTime, cutoffDate);
         var count = _collection.CountDocuments(filter);
         _collection.DeleteMany(filter);
         return count;

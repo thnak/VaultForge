@@ -208,7 +208,7 @@
         <value>Đăng xuất</value>
     </data>
     <data name="Username" xml:space="preserve">
-        <value />
+        <value/>
     </data>
     <data name="Password" xml:space="preserve">
         <value>Mật khẩu</value>

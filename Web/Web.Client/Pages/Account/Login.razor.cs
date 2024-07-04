@@ -13,16 +13,9 @@ public partial class Login(HttpClient httpClient, AntiforgeryStateProvider antif
     [Parameter] [SupplyParameterFromQuery] public string ErrorMessage { get; set; } = string.Empty;
     [Parameter] [SupplyParameterFromQuery] public string? ReturnUrl { get; set; }
 
-    protected override void OnParametersSet()
-    {
-        ErrorMessage = ErrorMessage.DecodeBase64String();
-        ReturnUrl = ReturnUrl?.DecodeBase64String();
-        base.OnParametersSet();
-    }
-
     private MudForm? FormUser { get; set; }
     private MudForm? PasswordForm { get; set; }
-    private RequestLoginModel CurrentRequestModel { get; set; } = new();
+    private RequestLoginModel CurrentRequestModel { get; } = new();
     private string CurrentErrorMessage { get; set; } = string.Empty;
     private string PasswordIcon { get; set; } = "fa-solid fa-lock";
 
@@ -35,6 +28,20 @@ public partial class Login(HttpClient httpClient, AntiforgeryStateProvider antif
     private string? UserErrorText { get; set; }
     private string? PasswordErrorText { get; set; }
     public bool IsValid { get; set; }
+
+    public void Dispose()
+    {
+        FormUser?.Dispose();
+        PasswordForm?.Dispose();
+        CarouselLogin?.DisposeAsync();
+    }
+
+    protected override void OnParametersSet()
+    {
+        ErrorMessage = ErrorMessage.DecodeBase64String();
+        ReturnUrl = ReturnUrl?.DecodeBase64String();
+        base.OnParametersSet();
+    }
 
     protected override async Task OnAfterRenderAsync(bool first)
     {
@@ -158,12 +165,5 @@ public partial class Login(HttpClient httpClient, AntiforgeryStateProvider antif
     private void UsernameClickEvent()
     {
         InvokeAsync(StateHasChanged);
-    }
-
-    public void Dispose()
-    {
-        FormUser?.Dispose();
-        PasswordForm?.Dispose();
-        CarouselLogin?.DisposeAsync();
     }
 }

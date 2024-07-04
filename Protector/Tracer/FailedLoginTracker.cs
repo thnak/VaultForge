@@ -2,9 +2,9 @@ namespace Protector.Tracer;
 
 public class FailedLoginTracker
 {
+    private readonly TimeSpan _blockDuration = TimeSpan.FromMinutes(15);
     private readonly Dictionary<string, (int AttemptCount, DateTime? BlockUntil)> _failedAttempts = new();
     private readonly int _maxAttempts = 5;
-    private readonly TimeSpan _blockDuration = TimeSpan.FromMinutes(15);
 
     public bool IsBlocked(string ipAddress)
     {

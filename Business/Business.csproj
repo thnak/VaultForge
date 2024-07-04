@@ -13,25 +13,29 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
-        <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0-preview.5.24306.7" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6"/>
+        <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0-preview.5.24306.7"/>
         <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0-preview.5.24306.7"/>
         <PackageReference Include="MongoDB.Driver" Version="2.26.0"/>
-        <PackageReference Include="MongoDB.EntityFrameworkCore" Version="8.0.1" />
+        <PackageReference Include="MongoDB.EntityFrameworkCore" Version="8.0.1"/>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\BusinessModels\BusinessModels.csproj"/>
-        <ProjectReference Include="..\Protector\Protector.csproj" />
+        <ProjectReference Include="..\Protector\Protector.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Microsoft.AspNetCore.DataProtection">
-        <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.0-preview.5.24306.11\Microsoft.AspNetCore.DataProtection.dll</HintPath>
-      </Reference>
-      <Reference Include="Microsoft.AspNetCore.Mvc.Core">
-        <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.0-preview.5.24306.11\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
-      </Reference>
+        <Reference Include="Microsoft.AspNetCore.DataProtection">
+            <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.0-preview.5.24306.11\Microsoft.AspNetCore.DataProtection.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.AspNetCore.Mvc.Core">
+            <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.0-preview.5.24306.11\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Authenticate\" />
     </ItemGroup>
 
 </Project>

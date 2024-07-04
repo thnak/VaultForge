@@ -3,7 +3,7 @@ using BusinessModels.Resources;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Web.Authenticate.AuthorizationRequirement;
+namespace Business.Authenticate.AuthorizationRequirement;
 
 public class OverYearOldRequirement(int old) : AuthorizationHandler<OverYearOldRequirement>, IAuthorizationRequirement
 {
@@ -23,7 +23,7 @@ public class OverYearOldRequirement(int old) : AuthorizationHandler<OverYearOldR
         else
         {
             var dateOfBirth = Convert.ToDateTime(dobVal);
-            int age = DateTime.Today.Year - dateOfBirth.Year;
+            var age = DateTime.Today.Year - dateOfBirth.Year;
             if (dateOfBirth > DateTime.Today.AddYears(-age))
             {
                 age--;

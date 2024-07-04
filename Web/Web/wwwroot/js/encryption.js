@@ -54,12 +54,13 @@ async function importKey(keyBase64) {
         ["encrypt", "decrypt"]
     );
 }
+
 async function deriveKey(password, salt) {
     const enc = new TextEncoder();
     const keyMaterial = await window.crypto.subtle.importKey(
         "raw",
         enc.encode(password),
-        { name: "PBKDF2" },
+        {name: "PBKDF2"},
         false,
         ["deriveKey"]
     );
@@ -72,7 +73,7 @@ async function deriveKey(password, salt) {
             hash: "SHA-256"
         },
         keyMaterial,
-        { name: "AES-GCM", length: 256 },
+        {name: "AES-GCM", length: 256},
         true,
         ["encrypt", "decrypt"]
     );
@@ -84,7 +85,7 @@ async function encryptWithPassword(password, data) {
     const iv = window.crypto.getRandomValues(new Uint8Array(12));
     const enc = new TextEncoder();
     const encrypted = await window.crypto.subtle.encrypt(
-        { name: "AES-GCM", iv: iv },
+        {name: "AES-GCM", iv: iv},
         key,
         enc.encode(data)
     );
@@ -103,7 +104,7 @@ async function decryptWithPassword(password, ivBase64, dataBase64, saltBase64) {
     const key = await deriveKey(password, salt);
 
     const decrypted = await window.crypto.subtle.decrypt(
-        { name: "AES-GCM", iv: iv },
+        {name: "AES-GCM", iv: iv},
         key,
         encryptedData
     );
@@ -111,10 +112,18 @@ async function decryptWithPassword(password, ivBase64, dataBase64, saltBase64) {
     return new TextDecoder().decode(decrypted);
 }
 
-window.protectedStorage = {
+window.protectedLocalStorage = {
     encryptWithPassword,
     decryptWithPassword,
     setItem: (key, value) => localStorage.setItem(key, value),
     getItem: (key) => localStorage.getItem(key),
     removeItem: (key) => localStorage.removeItem(key)
+};
+
+window.protectedSessionStorage = {
+    encryptWithPassword,
+    decryptWithPassword,
+    setItem: (key, value) => sessionStorage.setItem(key, value),
+    getItem: (key) => sessionStorage.getItem(key),
+    removeItem: (key) => sessionStorage.removeItem(key)
 };

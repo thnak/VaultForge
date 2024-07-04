@@ -65,7 +65,7 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
     {
         return userDl.Delete(key);
     }
-    
+
     public (bool, string) Authenticate(RequestLoginModel model)
     {
         var userNameHash = model.UserName.ComputeSha256Hash();
@@ -108,7 +108,7 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         var user = userDl.Get(usernameHashed);
         return user == null ? (false, AppLang.User_is_not_exists) : (true, AppLang.Hello);
     }
-    
+
     public (bool, string) ValidatePassword(string username, string password)
     {
         var usernameHashed = username.ComputeSha256Hash();
@@ -119,12 +119,12 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         {
             return (false, AppLang.You_have_been_banned_from_logging_in__please_try_again_at__0_.AutoReplace([user.BanTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)]));
         }
-        
+
         if (user.Password == password.ComputeSha256Hash())
         {
             return (true, AppLang.Hello);
         }
-        
+
         user.CurrentFailCount++;
         if (user.CurrentFailCount >= 3)
         {
@@ -136,7 +136,7 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         UpdateAsync(user);
         return (false, AppLang.User_or_password_is_incorrect);
     }
-    
+
     public ClaimsIdentity CreateIdentity(string userName)
     {
         var user = Get(userName.ComputeSha256Hash());
@@ -144,7 +144,7 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         var claims = GetAllClaim(user, userName);
         return new ClaimsIdentity(claims, CookieNames.AuthenticationType);
     }
-    
+
     public List<Claim> GetAllClaim(string userName)
     {
         var user = Get(userName.ComputeSha256Hash());
@@ -154,10 +154,10 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
     {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.NameIdentifier, user.UserName), // Hashed
-            new(ClaimTypes.Name, userName), // normal string
+            new(ClaimTypes.NameIdentifier, user.UserName),// Hashed
+            new(ClaimTypes.Name, userName),// normal string
             new(ClaimTypes.Hash, user.SecurityStamp),
-            new(ClaimTypes.DateOfBirth, user.BirthDay.ToString(CultureInfo.InvariantCulture)),
+            new(ClaimTypes.DateOfBirth, user.BirthDay.ToString(CultureInfo.InvariantCulture))
         };
         var roles = userDl.GetAllRoles(user.UserName);
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));

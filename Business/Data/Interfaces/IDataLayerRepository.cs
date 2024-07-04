@@ -7,9 +7,9 @@ public interface IDataLayerRepository<T> where T : class
 {
     Task<long> GetDocumentSizeAsync(CancellationTokenSource? cancellationTokenSource = default);
     IAsyncEnumerable<T> Search(string queryString, int limit = 10, CancellationTokenSource? cancellationTokenSource = default);
-    
+
     /// <summary>
-    /// Only work with mongo
+    ///     Only work with mongo
     /// </summary>
     /// <param name="filter"></param>
     /// <param name="cancellationTokenSource"></param>
@@ -19,7 +19,7 @@ public interface IDataLayerRepository<T> where T : class
     IAsyncEnumerable<T> FindProjectAsync(string keyWord, int limit = 10, CancellationToken? cancellationToken = default);
 
     IAsyncEnumerable<T> Where(Expression<Func<T, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default);
-    
+
     T? Get(string key);
     IAsyncEnumerable<T?> GetAsync(List<string> keys, CancellationTokenSource? cancellationTokenSource = default);
     Task<(T[], long)> GetAllAsync(int page, int size, CancellationTokenSource? cancellationTokenSource = default);

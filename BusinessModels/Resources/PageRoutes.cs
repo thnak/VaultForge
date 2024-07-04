@@ -9,10 +9,12 @@ public static class PageRoutes
         public const string NotFound = Name + "/404";
         public const string UnAuthorized = Name + "/403";
     }
+
     public static class Home
     {
         public const string Root = "/home";
     }
+
     public static class Account
     {
         public const string Name = "/Account";
@@ -22,7 +24,7 @@ public static class PageRoutes
 
         public const string SignUp = Name + "register";
         public const string SignUpError = SignUp + "/error";
-        
+
         public const string Logout = Name + "/logout";
         public const string Denied = Name + "/403";
     }

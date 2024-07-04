@@ -17,23 +17,19 @@ public class FileController : ControllerBase
     [HttpPost("testfdsjhfids")]
     public IActionResult TestEndpoint(string name)
     {
-        return Ok(new { message = $"Hello, {name}!" });
-    }
-    public class FormChunk
-    {
-        public IFormFile Chunk { get; set; }
-        public string ChunkIndexString { get; set; } = string.Empty;
-        public string TotalChunksString { get; set; } = string.Empty;
-        public string FileName { get; set; } = string.Empty;
+        return Ok(new
+        {
+            message = $"Hello, {name}!"
+        });
     }
 
     [HttpPost("upload")]
     public async Task<IActionResult> UploadChunk([FromForm] FormChunk form)
     {
 
-        (IFormFile? chunk, string chunkIndexString, string totalChunksString, string fileName) = (form.Chunk, form.ChunkIndexString, form.TotalChunksString, form.FileName);
-        int chunkIndex = int.Parse(chunkIndexString);
-        int totalChunks = int.Parse(totalChunksString);
+        (var chunk, var chunkIndexString, var totalChunksString, var fileName) = (form.Chunk, form.ChunkIndexString, form.TotalChunksString, form.FileName);
+        var chunkIndex = int.Parse(chunkIndexString);
+        var totalChunks = int.Parse(totalChunksString);
 
         if (chunk == null || chunk.Length == 0)
         {
@@ -46,7 +42,7 @@ public class FileController : ControllerBase
         var filePath = Path.Combine(uploadPath, $"{fileName}.part{chunkIndex}");
 
         // Save chunk to disk
-        using (var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, useAsync: true))
+        using (var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true))
         {
             await chunk.CopyToAsync(stream);
         }
@@ -58,7 +54,7 @@ public class FileController : ControllerBase
 
             using (var finalStream = new FileStream(finalFilePath, FileMode.Append))
             {
-                for (int i = 0; i < totalChunks; i++)
+                for (var i = 0; i < totalChunks; i++)
                 {
                     var partPath = Path.Combine(uploadPath, $"{fileName}.part{i}");
                     using (var partStream = new FileStream(partPath, FileMode.Open))
@@ -76,5 +72,13 @@ public class FileController : ControllerBase
         }
 
         return Ok();
+    }
+
+    public class FormChunk
+    {
+        public IFormFile Chunk { get; set; }
+        public string ChunkIndexString { get; set; } = string.Empty;
+        public string TotalChunksString { get; set; } = string.Empty;
+        public string FileName { get; set; } = string.Empty;
     }
 }

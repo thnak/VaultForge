@@ -39,14 +39,14 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
             if (system == null)
             {
                 var passWord = "PassWd2@";
-                await CreateAsync(new UserModel()
+                await CreateAsync(new UserModel
                 {
                     UserName = defaultUser,
                     Password = passWord.ComputeSha256Hash(),
-                    JoinDate = DateTime.Now,
+                    JoinDate = DateTime.Now
                 });
             }
-            
+
             Console.WriteLine(@"[Init] User data layer");
             return (true, string.Empty);
         }
@@ -134,7 +134,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
     {
         try
         {
-            var filter = Builders<UserModel>.Filter.Eq(x => x.UserName, key);
+            var filter = Builders<UserModel>.Filter.Eq(field: x => x.UserName, key);
             var result = _dataDb.Find(filter).Limit(1).FirstOrDefault();
             return result;
         }
@@ -239,8 +239,8 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
     }
     public List<string> GetAllRoles(string userName)
     {
-        var filter = Builders<UserModel>.Filter.Eq(x => x.UserName, userName);
-        var project = Builders<UserModel>.Projection.Expression(x => new UserModel()
+        var filter = Builders<UserModel>.Filter.Eq(field: x => x.UserName, userName);
+        var project = Builders<UserModel>.Projection.Expression(x => new UserModel
         {
             Roles = x.Roles
         });

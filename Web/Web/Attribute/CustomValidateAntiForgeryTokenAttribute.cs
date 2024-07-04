@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Web.Attribute;
 
-[AttributeUsage( AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = false, Inherited = true )]
+[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
 public class CustomValidateAntiForgeryTokenAttribute() : TypeFilterAttribute(typeof(CustomValidateAntiForgeryTokenFilter))
 {
     private class CustomValidateAntiForgeryTokenFilter(IAntiforgery antiforgery, IHttpContextAccessor httpContextAccessor) : IAuthorizationFilter

@@ -9,7 +9,6 @@ namespace Business.Data.Repositories;
 
 public class MongoDataLayerContext : IMongoDataLayerContext
 {
-    public IMongoDatabase MongoDatabase { get; }
     public MongoDataLayerContext(IOptions<DbSettingModel> settings)
     {
         var dbName = settings.Value.DatabaseName;
@@ -40,4 +39,5 @@ public class MongoDataLayerContext : IMongoDataLayerContext
         MongoDatabase = dbContext ?? throw new Exception();
 
     }
+    public IMongoDatabase MongoDatabase { get; }
 }

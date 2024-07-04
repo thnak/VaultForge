@@ -10,8 +10,6 @@ namespace Business.Data;
 
 public class MongoDbEntityClient
 {
-    public DbContextOptions<EntityDataContext> MongoDatabase { get; set; }
-
     public MongoDbEntityClient(IOptions<DbSettingModel> settings)
     {
         var dbName = settings.Value.DatabaseName;
@@ -39,4 +37,5 @@ public class MongoDbEntityClient
         var client = new MongoClient(setup);
         MongoDatabase = new DbContextOptionsBuilder<EntityDataContext>().UseMongoDB(client, dbName).Options;
     }
+    public DbContextOptions<EntityDataContext> MongoDatabase { get; set; }
 }

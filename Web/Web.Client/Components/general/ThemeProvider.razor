@@ -43,7 +43,7 @@
     {
         await InvokeAsync(StateHasChanged);
     }
-    
+
     private async Task OnSystemPreferenceChanged(bool newValue)
     {
         CustomStateContainer.IsDarkMode = newValue;

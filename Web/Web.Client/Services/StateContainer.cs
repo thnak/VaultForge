@@ -54,13 +54,13 @@ public class StateContainer
             HandleChanged();
         }
     }
-    
+
     [JSInvokable]
     public static void ReceiveScreenshot(string dataUrl)
     {
         Console.WriteLine(dataUrl);
     }
-    
+
     private void HandleChanged()
     {
         SharedPalette = _isDarkMode ? _mudTheme.PaletteDark : _mudTheme.PaletteLight;

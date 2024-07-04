@@ -1,10 +1,15 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Web.Client.Services.Http;
 
 namespace Web.Client.Pages;
 
-public partial class Home : ComponentBase, IDisposable
+public partial class Home(BaseHttpClientService apiService) : ComponentBase, IDisposable
 {
+    public void Dispose()
+    {
+        ProtectedLocalStorageService.KeyHandler -= GetKey;
+    }
     private async Task Crypting(MouseEventArgs obj)
     {
         ProtectedLocalStorageService.KeyHandler += GetKey;
@@ -21,8 +26,12 @@ public partial class Home : ComponentBase, IDisposable
         var data = await ProtectedLocalStorageService.GetAsync("exampleKey");
         Console.WriteLine(data);
     }
-    public void Dispose()
+    private async Task GetWeather(MouseEventArgs obj)
     {
-        ProtectedLocalStorageService.KeyHandler -= GetKey;
+        var response = await apiService.HttpClient.GetAsync("/WeatherForecast/GetWeatherForecast");
+        if (response.IsSuccessStatusCode)
+        {
+            var data = await response.Content.ReadAsStringAsync();
+        }
     }
 }

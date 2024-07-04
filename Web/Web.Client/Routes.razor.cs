@@ -4,6 +4,10 @@ namespace Web.Client;
 
 public partial class Routes : ComponentBase, IDisposable
 {
+    public void Dispose()
+    {
+        CustomStateContainer.OnChangedAsync -= OnChangedAsync;
+    }
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
@@ -15,10 +19,5 @@ public partial class Routes : ComponentBase, IDisposable
     private async Task OnChangedAsync()
     {
         await InvokeAsync(StateHasChanged);
-    }
-
-    public void Dispose()
-    {
-        CustomStateContainer.OnChangedAsync -= OnChangedAsync;
     }
 }

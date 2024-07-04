@@ -7,13 +7,14 @@ using Microsoft.JSInterop;
 using MudBlazor.Services;
 using Web.Client.Authenticate;
 using Web.Client.Services;
+using Web.Client.Services.Http;
 using Web.Client.Utils;
 
 namespace Web.Client;
 
-class Program
+internal class Program
 {
-    static async Task Main(string[] args)
+    private static async Task Main(string[] args)
     {
         var builder = WebAssemblyHostBuilder.CreateDefault(args);
         builder.Services.AddMudServices();
@@ -24,8 +25,16 @@ class Program
         builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
         builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddScoped<ProtectedLocalStorage>();
+        builder.Services.AddScoped<ProtectedSessionStorage>();
         builder.Services.AddLocalization();
-        builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+        builder.Services.AddScoped(_ => new BaseHttpClientService(new HttpClient()
+        {
+            BaseAddress = new Uri("https://localhost:5217"),
+        }));
+        builder.Services.AddScoped(_ => new HttpClient
+        {
+            BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+        });
         var host = builder.Build();
 
         var defaultCulture = AllowedCulture.SupportedCultures.Select(x => x.Name).ToArray().First();

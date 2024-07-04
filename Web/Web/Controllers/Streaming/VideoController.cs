@@ -7,7 +7,7 @@ namespace Web.Controllers.Streaming;
 
 [Route("api/[controller]")]
 [ApiController]
-public class VideoController() : ControllerBase
+public class VideoController : ControllerBase
 {
     [HttpGet("stream/{fileName}")]
     public IActionResult StreamVideo(string fileName)
@@ -18,7 +18,7 @@ public class VideoController() : ControllerBase
         {
             return NotFound();
         }
-        ContentDisposition cd = new ContentDisposition
+        var cd = new ContentDisposition
         {
             FileName = fileName,
             Inline = true// false = prompt the user for downloading;  true = browser to try to show the file inline
@@ -35,7 +35,7 @@ public class VideoController() : ControllerBase
         Response.RegisterForDisposeAsync(fileStream);
         Response.Headers.Append("Content-Disposition", cd.ToString());
 
-        return File(fileStream, "video/mp4", fileName, enableRangeProcessing: true);
+        return File(fileStream, "video/mp4", fileName, true);
 
     }
 }

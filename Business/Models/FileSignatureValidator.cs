@@ -10,6 +10,23 @@ public static class FileSignatureValidator
 
     public static readonly byte[] Mp4Signature = [0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70];
 
+
+    #region Validate image
+
+    public static bool ValidateImageSignature(string path)
+    {
+        List<byte[]> imageSignatures = [JpegSignature, PngSignature, Gif89aSignature, Gif87aSignature];
+        using var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
+
+        foreach (var signature in imageSignatures)
+        {
+            if (ValidateFileSignatureAndSeek(fileStream, signature)) return true;
+        }
+        return false;
+    }
+
+    #endregion
+
     #region Validate special signature
 
     public static bool ValidateFileSignature(string filePath, byte[] expectedSignature)
@@ -18,7 +35,7 @@ public static class FileSignatureValidator
         {
             using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
 
-            byte[] fileHeader = new byte[Math.Min(expectedSignature.Length, fileStream.Length)];
+            var fileHeader = new byte[Math.Min(expectedSignature.Length, fileStream.Length)];
             fileStream.ReadExactly(fileHeader);
 
             return fileHeader.SequenceEqual(expectedSignature);
@@ -32,7 +49,7 @@ public static class FileSignatureValidator
     public static (bool, byte[]) ValidateFileSignatureWithoutSeek(Stream stream, byte[] expectedSignature)
     {
         var bufferLength = Math.Min(stream.Length, expectedSignature.Length);
-        byte[] fileHeader = new byte[bufferLength];
+        var fileHeader = new byte[bufferLength];
         try
         {
             stream.ReadExactly(fileHeader);
@@ -47,7 +64,7 @@ public static class FileSignatureValidator
     public static bool ValidateFileSignatureAndSeek(Stream stream, byte[] expectedSignature)
     {
         var bufferLength = Math.Min(stream.Length, expectedSignature.Length);
-        byte[] fileHeader = new byte[bufferLength];
+        var fileHeader = new byte[bufferLength];
         try
         {
             stream.ReadExactly(fileHeader);
@@ -58,23 +75,6 @@ public static class FileSignatureValidator
         {
             return false;
         }
-    }
-
-    #endregion
-
-
-    #region Validate image
-
-    public static bool ValidateImageSignature(string path)
-    {
-        List<byte[]> imageSignatures = [JpegSignature, PngSignature, Gif89aSignature, Gif87aSignature];
-        using var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-
-        foreach (var signature in imageSignatures)
-        {
-            if (ValidateFileSignatureAndSeek(fileStream, signature)) return true;
-        }
-        return false;
     }
 
     #endregion

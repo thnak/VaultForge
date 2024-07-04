@@ -7,7 +7,7 @@ public static class StringExtension
 {
     public static string AutoReplace(this string self, IEnumerable<string> text2Replace)
     {
-        int index = 0;
+        var index = 0;
         foreach (var text in text2Replace)
         {
             self = self.Replace($"{{{index}}}", text);
@@ -17,21 +17,21 @@ public static class StringExtension
     }
     public static T? DecodeBase64String<T>(this string base64String)
     {
-        byte[] base64Bytes = Convert.FromBase64String(base64String);
-        string plainText = Encoding.Unicode.GetString(base64Bytes);
+        var base64Bytes = Convert.FromBase64String(base64String);
+        var plainText = Encoding.Unicode.GetString(base64Bytes);
         var json = JsonSerializer.Deserialize<T>(plainText);
         return json;
     }
     public static string DecodeBase64String(this string base64String)
     {
         if (string.IsNullOrEmpty(base64String)) return string.Empty;
-        byte[] base64Bytes = Convert.FromBase64String(base64String);
-        string plainText = Encoding.Unicode.GetString(base64Bytes);
+        var base64Bytes = Convert.FromBase64String(base64String);
+        var plainText = Encoding.Unicode.GetString(base64Bytes);
         return plainText;
     }
 
     /// <summary>
-    /// Mã hóa base64 với unicode
+    ///     Mã hóa base64 với unicode
     /// </summary>
     /// <param name="model"></param>
     /// <returns>string</returns>
@@ -50,15 +50,15 @@ public static class StringExtension
 
     public static string AppendAndEncodeBase64StringAsUri(this string source, string message)
     {
-        StringBuilder stringBuilder = new StringBuilder();
+        var stringBuilder = new StringBuilder();
         stringBuilder.Append(source);
         if (!source.EndsWith('/')) stringBuilder.Append('/');
         stringBuilder.Append(Encode2Base64String(message));
         return stringBuilder.ToString();
     }
-    public static string AppendAndEncodeBase64StringAsUri(this string source,params string[] message)
+    public static string AppendAndEncodeBase64StringAsUri(this string source, params string[] message)
     {
-        StringBuilder stringBuilder = new StringBuilder();
+        var stringBuilder = new StringBuilder();
         stringBuilder.Append(source);
         if (!source.EndsWith('/')) stringBuilder.Append('/');
         foreach (var mess in message)

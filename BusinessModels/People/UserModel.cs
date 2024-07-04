@@ -34,8 +34,8 @@ public class UserModel
 
     [Key(7)]
     public string Email { get; set; } = string.Empty;
-    
-    
+
+
     [Key(9)]
     public string PhoneNumber { get; set; } = string.Empty;
 
@@ -48,17 +48,17 @@ public class UserModel
     public List<string> Tokens { get; set; } = new();
 
     /// <summary>
-    /// Tổng số lần sai mật khẩu
+    ///     Tổng số lần sai mật khẩu
     /// </summary>
     [Key(12)]
     public int AccessFailedCount { get; set; }
 
     /// <summary>
-    /// Số lần sai mật khẩu hiện tại
+    ///     Số lần sai mật khẩu hiện tại
     /// </summary>
     [Key(20)]
     public int CurrentFailCount { get; set; }
-    
+
     [Key(13)]
     [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
     public DateTime BanTime { get; set; }
