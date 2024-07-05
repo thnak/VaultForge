@@ -265,6 +265,14 @@ public class Program
                 .AllowAnyMethod()
                 .AllowCredentials());
         });
+        
+        builder.Services.ConfigureApplicationCookie(options => {
+            options.Cookie.Name = CookieNames.AuthorizeCookie;
+            options.Cookie.Domain = "localhost";
+            options.Cookie.HttpOnly = true;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        });
+        
         builder.Services.AddAntiforgery(options => {
             options.Cookie = new CookieBuilder
             {

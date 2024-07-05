@@ -126,4 +126,10 @@
     <data name="Processing" xml:space="preserve">
         <value>Đang xử lý</value>
     </data>
+    <data name="Next" xml:space="preserve">
+        <value>Tiếp theo</value>
+    </data>
+    <data name="Sign in to your account" xml:space="preserve">
+        <value>Đăng nhập vào tài khoản của bạn</value>
+    </data>
 </root>

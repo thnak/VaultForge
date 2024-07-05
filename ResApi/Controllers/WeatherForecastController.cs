@@ -21,11 +21,10 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
     [HttpGet("GetWeatherForecast")]
     [IgnoreAntiforgeryToken]
     [Authorize(AuthenticationSchemes = $"{CookieAuthenticationDefaults.AuthenticationScheme}, {JwtBearerDefaults.AuthenticationScheme}")]
-    [OutputCache]
     public WeatherForecast[] Get()
     {
         return memoryCache.GetOrCreate("api/WeatherForecast/GetWeatherForecast", entry => {
-            return Enumerable.Range(1, 500000).Select(index => new WeatherForecast
+            return Enumerable.Range(1, 50).Select(index => new WeatherForecast
                 {
                     Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
                     TemperatureC = Random.Shared.Next(-20, 55),
@@ -33,6 +32,5 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
                 })
                 .ToArray();
         }) ?? [];
-
     }
 }

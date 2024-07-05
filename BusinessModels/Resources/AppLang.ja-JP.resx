@@ -101,4 +101,28 @@
     <data name="Sign Out" xml:space="preserve">
         <value>サインアウト</value>
     </data>
+    <data name="Password" xml:space="preserve">
+        <value>パスワード</value>
+    </data>
+    <data name="Create Account" xml:space="preserve">
+        <value>アカウントを作成</value>
+    </data>
+    <data name="To keep connected with us please login with your personal info" xml:space="preserve">
+        <value>私たちとつながり続けるために、個人情報でログインしてください</value>
+    </data>
+    <data name="Sign In" xml:space="preserve">
+        <value>サインイン (or ログイン)</value>
+    </data>
+    <data name="Processing" xml:space="preserve">
+        <value>処理中</value>
+    </data>
+    <data name="Next" xml:space="preserve">
+        <value>次へ</value>
+    </data>
+    <data name="Enter password" xml:space="preserve">
+        <value>パスワードを入力してください</value>
+    </data>
+    <data name="Sign in to your account" xml:space="preserve">
+        <value>アカウントにサインインしてください</value>
+    </data>
 </root>

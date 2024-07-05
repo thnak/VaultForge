@@ -3,6 +3,8 @@
 @attribute [Route(PageRoutes.Account.SignInError + "/{ErrorMessage}/{ReturnUrl}")]
 @layout SignInLayout
 
+<PageTitle>@AppLang.Sign_in_to_your_account</PageTitle>
+
 <div class="sign-up-form">
     <div class="welcome-back px-3 background d-none d-md-flex">
         <div class="firework-container" id="firework-container"></div>
@@ -50,7 +52,7 @@
                     <MudForm @ref="PasswordForm" @bind-Errors="@FormError" @bind-IsValid="IsValid" Class="align-center justify-center mud-width-full">
                         <div class="form gap-3">
                             <AntiforgeryToken/>
-                            <MudText Color="Color.Primary" Align="Align.Center" Typo="Typo.h5">@AppLang.Create_Account</MudText>
+                            <MudText Color="Color.Primary" Align="Align.Center" Typo="Typo.h5">@AppLang.Enter_password</MudText>
 
                             <MudTextField T="string" @bind-Value="CurrentRequestModel.Password" For="() => CurrentRequestModel.Password" Adornment="Adornment.Start"
                                           UserAttributes="@(new Dictionary<string, object> { { "name", "Password" }, { "autocomplete", "current-password" } })"
@@ -96,6 +98,10 @@
                                 <div>
                                     <label for="Password">Password:</label>
                                     <input type="password" id="Password" name="password" value="@CurrentRequestModel.Password" required>
+                                </div>
+                                <div>
+                                    <label for="ReturnUrl">Password:</label>
+                                    <input type="text" id="ReturnUrl" name="ReturnUrl" value="@CurrentRequestModel.ReturnUrl">
                                 </div>
                                 <button type="submit" id="login-btn">Login</button>
                             </form>

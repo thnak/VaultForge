@@ -110,4 +110,16 @@
     <data name="Processing" xml:space="preserve">
         <value>처리</value>
     </data>
+    <data name="Password" xml:space="preserve">
+        <value>비밀번호</value>
+    </data>
+    <data name="Create Account" xml:space="preserve">
+        <value>계정을 생성하다</value>
+    </data>
+    <data name="Next" xml:space="preserve">
+        <value>다음</value>
+    </data>
+    <data name="Sign in to your account" xml:space="preserve">
+        <value>계정에 로그인하세요</value>
+    </data>
 </root>

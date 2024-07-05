@@ -97,12 +97,6 @@ public abstract class Program
 
         #region Authenticate & Protection
 
-        builder.Services.AddCors(options => {
-            options.AddDefaultPolicy(policy => {
-                policy.WithOrigins().AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-            });
-        });
-
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddSingleton<FailedLoginTracker>();
         builder.Services.AddSingleton<JsonWebTokenCertificateProvider>();
@@ -258,6 +252,13 @@ public abstract class Program
                     .AllowAnyMethod()
                     .AllowCredentials();
             });
+        });
+        
+        builder.Services.ConfigureApplicationCookie(options => {
+            options.Cookie.Name = CookieNames.AuthorizeCookie;
+            options.Cookie.Domain = "localhost";
+            options.Cookie.HttpOnly = true;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         });
         
         builder.Services.AddAntiforgery(options => {

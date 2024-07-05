@@ -129,4 +129,10 @@
     <data name="Processing" xml:space="preserve">
         <value>Processing</value>
     </data>
+    <data name="Next" xml:space="preserve">
+        <value>Next</value>
+    </data>
+    <data name="Sign in to your account" xml:space="preserve">
+        <value>Sign in to your account</value>
+    </data>
 </root>

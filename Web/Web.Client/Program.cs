@@ -29,7 +29,12 @@ internal class Program
         builder.Services.AddLocalization();
         builder.Services.AddScoped(_ => new BaseHttpClientService(new HttpClient()
         {
+
+#if DEBUG
             BaseAddress = new Uri("https://localhost:5217"),
+#else
+            BaseAddress = new Uri("https://thnakdevserver.ddns.net:4331"),
+#endif
         }));
         builder.Services.AddScoped(_ => new HttpClient
         {

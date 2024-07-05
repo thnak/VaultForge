@@ -32,6 +32,7 @@ public partial class Home(BaseHttpClientService apiService) : ComponentBase, IDi
         if (response.IsSuccessStatusCode)
         {
             var data = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(data.Length);
         }
     }
 }

@@ -104,4 +104,22 @@
     <data name="Processing" xml:space="preserve">
         <value>Wird bearbeitet</value>
     </data>
+    <data name="Password" xml:space="preserve">
+        <value>Passwort</value>
+    </data>
+    <data name="Create Account" xml:space="preserve">
+        <value>Konto erstellen</value>
+    </data>
+    <data name="To keep connected with us please login with your personal info" xml:space="preserve">
+        <value>Um mit uns verbunden zu bleiben, melden Sie sich bitte mit Ihren persönlichen Daten an</value>
+    </data>
+    <data name="Sign In" xml:space="preserve">
+        <value>Anmelden</value>
+    </data>
+    <data name="Next" xml:space="preserve">
+        <value>Weiter</value>
+    </data>
+    <data name="Sign in to your account" xml:space="preserve">
+        <value>Melden Sie sich bei Ihrem Konto an</value>
+    </data>
 </root>

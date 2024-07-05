@@ -78,6 +78,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Enter_password {
+            get {
+                return ResourceManager.GetString("Enter password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Xin chào.
         /// </summary>
         public static string Hello {
@@ -150,6 +159,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tiếp theo.
+        /// </summary>
+        public static string Next {
+            get {
+                return ResourceManager.GetString("Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vui lòng đợi một lát.
         /// </summary>
         public static string One_moment_please {
@@ -218,6 +236,15 @@ namespace BusinessModels.Resources {
         public static string Sign_In {
             get {
                 return ResourceManager.GetString("Sign In", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đăng nhập vào tài khoản của bạn.
+        /// </summary>
+        public static string Sign_in_to_your_account {
+            get {
+                return ResourceManager.GetString("Sign in to your account", resourceCulture);
             }
         }
         
