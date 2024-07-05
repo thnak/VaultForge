@@ -16,10 +16,8 @@ public class PersistingServerAuthenticationStateProvider : ServerAuthenticationS
 {
     private readonly IdentityOptions _options;
     private readonly PersistentComponentState _state;
-
     private readonly PersistingComponentStateSubscription _subscription;
     private readonly Lazy<IUserBusinessLayer> _userBl;
-
     private Task<AuthenticationState>? _authenticationStateTask;
 
     public PersistingServerAuthenticationStateProvider(
@@ -35,12 +33,6 @@ public class PersistingServerAuthenticationStateProvider : ServerAuthenticationS
         _subscription = _state.RegisterOnPersisting(OnPersistingAsync, RenderMode.InteractiveWebAssembly);
     }
 
-    public void Dispose()
-    {
-        _subscription.Dispose();
-        AuthenticationStateChanged -= OnAuthenticationStateChanged;
-    }
-
     private void OnAuthenticationStateChanged(Task<AuthenticationState> task)
     {
         _authenticationStateTask = task;
@@ -54,18 +46,18 @@ public class PersistingServerAuthenticationStateProvider : ServerAuthenticationS
         var principal = authenticationState.User;
         if (principal.Identity?.IsAuthenticated == true)
         {
-            var userId = principal.FindFirst(_options.ClaimsIdentity.UserNameClaimType)?.Value;
+            var originUsername = principal.FindFirst(_options.ClaimsIdentity.UserNameClaimType)?.Value;
             var email = principal.FindFirst(_options.ClaimsIdentity.EmailClaimType)?.Value;
 
-            if (userId != null)
+            if (originUsername != null)
             {
-                var user = _userBl.Value.Get(userId.ComputeSha256Hash());
+                var user = _userBl.Value.Get(originUsername.ComputeSha256Hash());
                 if (user != null)
                 {
                     var avatarUri = user.Avatar;
                     _state.PersistAsJson(nameof(UserInfoModel), new UserInfoModel
                     {
-                        UserName = userId,
+                        UserName = originUsername,
                         Email = email ?? string.Empty,
                         Roles = user.Roles,
                         Avatar = avatarUri,
@@ -74,5 +66,11 @@ public class PersistingServerAuthenticationStateProvider : ServerAuthenticationS
                 }
             }
         }
+    }
+
+    public void Dispose()
+    {
+        _subscription.Dispose();
+        AuthenticationStateChanged -= OnAuthenticationStateChanged;
     }
 }

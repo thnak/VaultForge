@@ -1,12 +1,15 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace ResApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class WeatherForecastController(ILogger<WeatherForecastController> logger) : ControllerBase
+public class WeatherForecastController(ILogger<WeatherForecastController> logger, IMemoryCache memoryCache) : ControllerBase
 {
     private static readonly string[] Summaries =
     {
@@ -17,16 +20,19 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
 
     [HttpGet("GetWeatherForecast")]
     [IgnoreAntiforgeryToken]
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
-    public IEnumerable<WeatherForecast> Get()
+    [Authorize(AuthenticationSchemes = $"{CookieAuthenticationDefaults.AuthenticationScheme}, {JwtBearerDefaults.AuthenticationScheme}")]
+    [OutputCache]
+    public WeatherForecast[] Get()
     {
-        var user = HttpContext.User;
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+        return memoryCache.GetOrCreate("api/WeatherForecast/GetWeatherForecast", entry => {
+            return Enumerable.Range(1, 500000).Select(index => new WeatherForecast
+                {
+                    Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                    TemperatureC = Random.Shared.Next(-20, 55),
+                    Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+                })
+                .ToArray();
+        }) ?? [];
+
     }
 }
