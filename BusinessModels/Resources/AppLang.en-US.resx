@@ -135,4 +135,7 @@
     <data name="Sign in to your account" xml:space="preserve">
         <value>Sign in to your account</value>
     </data>
+    <data name="Do not use this token on a server that provides this token" xml:space="preserve">
+        <value>Do not use this token on a server that provides this token</value>
+    </data>
 </root>

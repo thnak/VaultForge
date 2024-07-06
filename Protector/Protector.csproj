@@ -21,4 +21,8 @@
         </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\BusinessModels\BusinessModels.csproj" />
+    </ItemGroup>
+
 </Project>

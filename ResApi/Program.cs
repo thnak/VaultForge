@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.RateLimiting;
 using Business.Authenticate.AuthorizationRequirement;
+using Business.Authenticate.TokenProvider;
 using Business.Business.Interfaces.User;
 using Business.Business.Repositories.User;
 using Business.Data.Interfaces;
@@ -29,7 +30,6 @@ using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Protector;
-using Protector.Certificates;
 using Protector.Certificates.Models;
 using Protector.KeyProvider;
 using Protector.Tracer;
@@ -54,7 +54,7 @@ public abstract class Program
 
         builder.Services.Configure<DbSettingModel>(builder.Configuration.GetSection("DBSetting"));
         builder.Services.Configure<AppCertificate>(builder.Configuration.GetSection("AppCertificate"));
-        
+
         builder.Services.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
         builder.Services.AddSingleton<IUserDataLayer, UserDataLayer>();
         builder.Services.AddSingleton<IUserBusinessLayer, UserBusinessLayer>();
@@ -99,7 +99,7 @@ public abstract class Program
 
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddSingleton<FailedLoginTracker>();
-        builder.Services.AddSingleton<JsonWebTokenCertificateProvider>();
+        builder.Services.AddSingleton<IJsonWebTokenCertificateProvider, JsonWebTokenCertificateProvider>();
         builder.Services.AddSingleton<RsaKeyProvider>();
         builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddAuthorization(options => {
@@ -122,7 +122,7 @@ public abstract class Program
                     IsEssential = true,
                     HttpOnly = true,
                     SecurePolicy = CookieSecurePolicy.Always,
-                    Domain = "localhost",
+                    Domain = CookieNames.Domain,
                     Path = "/"
                 };
                 options.Events = new CookieAuthenticationEvents
@@ -146,7 +146,7 @@ public abstract class Program
                     {
                         // Example: Check if the user's security stamp is still valid
                         var userManager = context.HttpContext.RequestServices.GetRequiredService<IUserBusinessLayer>();
-                        var jswProvider = context.HttpContext.RequestServices.GetRequiredService<JsonWebTokenCertificateProvider>();
+                        var jswProvider = context.HttpContext.RequestServices.GetRequiredService<IJsonWebTokenCertificateProvider>();
 
                         var jwt = userPrincipal.FindFirst(ClaimTypes.UserData)?.Value;
                         if (!string.IsNullOrEmpty(jwt))
@@ -183,7 +183,7 @@ public abstract class Program
                 #endregion
 
             });
-        
+
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => {
                 var cert = builder.Configuration.GetSection(nameof(AppCertificate)).Get<AppCertificate>()!;
@@ -201,6 +201,7 @@ public abstract class Program
                 {
                     OnMessageReceived = OnMessageReceived,
                     OnTokenValidated = OnTokenValidated,
+                    OnChallenge = OnChallenge
                 };
                 return;
 
@@ -213,6 +214,7 @@ public abstract class Program
                     {
                         arg.Request.Cookies.TryGetValue(name, out var token);
                         if (string.IsNullOrEmpty(token)) continue;
+                        
                         arg.Token = token;
                         break;
                     }
@@ -221,6 +223,11 @@ public abstract class Program
                 }
 
                 Task OnTokenValidated(TokenValidatedContext arg)
+                {
+                    return Task.CompletedTask;
+                }
+
+                Task OnChallenge(JwtBearerChallengeContext arg)
                 {
                     return Task.CompletedTask;
                 }
@@ -244,23 +251,23 @@ public abstract class Program
         });
 
         builder.Services.AddCors(options => {
-            options.AddPolicy("AllowAllOrigins",
+            options.AddPolicy("AllowLocalOrigin",
             configurePolicy: corsPolicyBuilder => {
                 corsPolicyBuilder
-                    .WithOrigins("https://localhost:5000")
+                    .WithOrigins("https://localhost:5000", "https://thnakdevserver.ddns.net:5000")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();
             });
         });
-        
+
         builder.Services.ConfigureApplicationCookie(options => {
             options.Cookie.Name = CookieNames.AuthorizeCookie;
-            options.Cookie.Domain = "localhost";
+            options.Cookie.Domain = CookieNames.Domain;
             options.Cookie.HttpOnly = true;
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         });
-        
+
         builder.Services.AddAntiforgery(options => {
             options.Cookie = new CookieBuilder
             {
@@ -269,7 +276,8 @@ public abstract class Program
                 SameSite = SameSiteMode.Strict,
                 IsEssential = true,
                 HttpOnly = true,
-                SecurePolicy = CookieSecurePolicy.SameAsRequest
+                SecurePolicy = CookieSecurePolicy.SameAsRequest,
+                Domain = CookieNames.Domain
             };
         });
 
@@ -412,7 +420,7 @@ public abstract class Program
         app.UseRequestLocalization(localizationOptions);
 
         #endregion
-        
+
         app.UseCookiePolicy(new CookiePolicyOptions()
         {
             MinimumSameSitePolicy = SameSiteMode.None
@@ -426,19 +434,17 @@ public abstract class Program
         }
         app.UseSession();
 
-        app.UseCors("AllowAllOrigins");
+        app.UseCors("AllowLocalOrigin");
         app.UseRateLimiter();
         app.UseResponseCaching();
         app.UseAntiforgery();
         app.UseOutputCache();
 
-        app.UseHttpsRedirection();
-
         app.UseAuthorization();
         app.MapControllers();
 
         app.UseMiddleware<GlobalMiddleware>();
-        
+
         app.Run();
     }
 }

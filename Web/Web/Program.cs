@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Security.Claims;
 using System.Threading.RateLimiting;
 using Business.Authenticate.AuthorizationRequirement;
+using Business.Authenticate.TokenProvider;
 using Business.Business.Interfaces.User;
 using Business.Business.Repositories.User;
 using Business.Data.Interfaces;
@@ -21,13 +22,13 @@ using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationM
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Options;
 using Protector;
-using Protector.Certificates;
 using Protector.Certificates.Models;
 using Protector.KeyProvider;
 using Protector.Tracer;
@@ -139,8 +140,14 @@ public class Program
                 new CookieRequestCultureProvider
                 {
                     CookieName = CookieNames.Culture,
-                    Options = new RequestLocalizationOptions()
-                }
+                    Options = new RequestLocalizationOptions(),
+                },
+                new QueryStringRequestCultureProvider()
+                {
+                    QueryStringKey = CookieNames.Culture,
+                    UIQueryStringKey = $"{CookieNames.Culture}-UI"
+                },
+                new AcceptLanguageHeaderRequestCultureProvider()
             };
         });
 
@@ -158,7 +165,7 @@ public class Program
 
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddSingleton<FailedLoginTracker>();
-        builder.Services.AddSingleton<JsonWebTokenCertificateProvider>();
+        builder.Services.AddSingleton<IJsonWebTokenCertificateProvider, JsonWebTokenCertificateProvider>();
         builder.Services.AddSingleton<RsaKeyProvider>();
         builder.Services.AddScoped<AuthenticationStateProvider, PersistingServerAuthenticationStateProvider>();
         builder.Services.AddCascadingAuthenticationState();
@@ -178,11 +185,11 @@ public class Program
                 {
                     MaxAge = TimeSpan.FromHours(ProtectorTime.CookieMaxAge),
                     Name = CookieNames.AuthorizeCookie,
-                    SameSite = SameSiteMode.None,
+                    SameSite = SameSiteMode.Unspecified,
                     IsEssential = true,
                     HttpOnly = true,
                     SecurePolicy = CookieSecurePolicy.Always,
-                    Domain = "localhost",
+                    Domain = CookieNames.Domain,
                     Path = "/"
                 };
                 options.Events = new CookieAuthenticationEvents
@@ -206,7 +213,7 @@ public class Program
                     {
                         // Example: Check if the user's security stamp is still valid
                         var userManager = context.HttpContext.RequestServices.GetRequiredService<IUserBusinessLayer>();
-                        var jswProvider = context.HttpContext.RequestServices.GetRequiredService<JsonWebTokenCertificateProvider>();
+                        var jswProvider = context.HttpContext.RequestServices.GetRequiredService<IJsonWebTokenCertificateProvider>();
 
                         var jwt = userPrincipal.FindFirst(ClaimTypes.UserData)?.Value;
                         if (!string.IsNullOrEmpty(jwt))
@@ -220,7 +227,7 @@ public class Program
                         }
 
 
-                        var userId = userPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                        var userId = userPrincipal.FindFirst(ClaimTypes.Name)?.Value;
                         var user = userId == null ? null : userManager.Get(userId);
                         if (user == null)
                         {
@@ -261,18 +268,19 @@ public class Program
         builder.Services.AddCors(options => {
             options.AddPolicy("AllowAllOrigins",
             policyBuilder => policyBuilder
+                .WithOrigins("localhost:5217", "https://thnakdevserver.ddns.net:4331")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials());
         });
-        
+
         builder.Services.ConfigureApplicationCookie(options => {
             options.Cookie.Name = CookieNames.AuthorizeCookie;
-            options.Cookie.Domain = "localhost";
+            options.Cookie.Domain = CookieNames.Domain;
             options.Cookie.HttpOnly = true;
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         });
-        
+
         builder.Services.AddAntiforgery(options => {
             options.Cookie = new CookieBuilder
             {
@@ -281,7 +289,8 @@ public class Program
                 SameSite = SameSiteMode.Strict,
                 IsEssential = true,
                 HttpOnly = true,
-                SecurePolicy = CookieSecurePolicy.SameAsRequest
+                SecurePolicy = CookieSecurePolicy.SameAsRequest,
+                Domain = CookieNames.Domain
             };
         });
 
@@ -318,7 +327,6 @@ public class Program
             options.KnownProxies.Clear();
         });
 
-       
 
         builder.Services.Configure<SecurityStampValidatorOptions>(options => { options.ValidationInterval = TimeSpan.FromMinutes(5); });
 
@@ -387,9 +395,9 @@ public class Program
 
         app.UseCookiePolicy(new CookiePolicyOptions()
         {
-            MinimumSameSitePolicy = SameSiteMode.None
+            MinimumSameSitePolicy = SameSiteMode.Unspecified
         });
-        
+
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {

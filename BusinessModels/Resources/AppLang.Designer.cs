@@ -78,6 +78,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Không sử dụng mã thông báo này trên máy chủ cung cấp mã thông báo này.
+        /// </summary>
+        public static string Do_not_use_this_token_on_a_server_that_provides_this_token {
+            get {
+                return ResourceManager.GetString("Do not use this token on a server that provides this token", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         public static string Enter_password {

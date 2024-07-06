@@ -1,8 +1,8 @@
+using System.Dynamic;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace ResApi.Controllers;
@@ -18,6 +18,13 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
 
     private readonly ILogger<WeatherForecastController> _logger = logger;
 
+    [HttpGet("index")]
+    [IgnoreAntiforgeryToken]
+    public IActionResult GetIndex()
+    {
+        return Ok("Hello World!");
+    }
+
     [HttpGet("GetWeatherForecast")]
     [IgnoreAntiforgeryToken]
     [Authorize(AuthenticationSchemes = $"{CookieAuthenticationDefaults.AuthenticationScheme}, {JwtBearerDefaults.AuthenticationScheme}")]
@@ -26,7 +33,7 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
         return memoryCache.GetOrCreate("api/WeatherForecast/GetWeatherForecast", entry => {
             return Enumerable.Range(1, 50).Select(index => new WeatherForecast
                 {
-                    Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                    Date = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(index)),
                     TemperatureC = Random.Shared.Next(-20, 55),
                     Summary = Summaries[Random.Shared.Next(Summaries.Length)]
                 })

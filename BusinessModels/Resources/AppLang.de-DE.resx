@@ -122,4 +122,7 @@
     <data name="Sign in to your account" xml:space="preserve">
         <value>Melden Sie sich bei Ihrem Konto an</value>
     </data>
+    <data name="Do not use this token on a server that provides this token" xml:space="preserve">
+        <value>Verwenden Sie dieses Token nicht auf einem Server, der dieses Token bereitstellt</value>
+    </data>
 </root>

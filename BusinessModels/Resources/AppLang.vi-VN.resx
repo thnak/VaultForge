@@ -132,4 +132,7 @@
     <data name="Sign in to your account" xml:space="preserve">
         <value>Đăng nhập vào tài khoản của bạn</value>
     </data>
+    <data name="Do not use this token on a server that provides this token" xml:space="preserve">
+        <value>Không sử dụng mã thông báo này trên máy chủ cung cấp mã thông báo này</value>
+    </data>
 </root>

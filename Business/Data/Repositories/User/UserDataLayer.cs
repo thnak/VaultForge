@@ -43,7 +43,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
                 {
                     UserName = defaultUser,
                     Password = passWord.ComputeSha256Hash(),
-                    JoinDate = DateTime.Now
+                    JoinDate = DateTime.UtcNow
                 });
             }
 
@@ -55,6 +55,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
             return (false, ex.Message);
         }
     }
+    
     public Task<long> GetDocumentSizeAsync(CancellationTokenSource? cancellationTokenSource = default)
     {
         return _dataDb.EstimatedDocumentCountAsync();
@@ -134,6 +135,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
     {
         try
         {
+            key = key.ComputeSha256Hash();
             var filter = Builders<UserModel>.Filter.Eq(field: x => x.UserName, key);
             var result = _dataDb.Find(filter).Limit(1).FirstOrDefault();
             return result;
@@ -228,7 +230,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
 
             var query = Get(key);
             if (query == null) return (false, AppLang.User_is_not_exists);
-            query.Leave = DateTime.Now;
+            query.Leave = DateTime.UtcNow;
             _ = UpdateAsync(query).Result;
             return (true, AppLang.Success);
         }
@@ -239,6 +241,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
     }
     public List<string> GetAllRoles(string userName)
     {
+        userName = userName.ComputeSha256Hash();
         var filter = Builders<UserModel>.Filter.Eq(field: x => x.UserName, userName);
         var project = Builders<UserModel>.Projection.Expression(x => new UserModel
         {

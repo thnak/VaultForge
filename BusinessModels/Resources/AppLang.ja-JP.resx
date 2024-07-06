@@ -125,4 +125,7 @@
     <data name="Sign in to your account" xml:space="preserve">
         <value>アカウントにサインインしてください</value>
     </data>
+    <data name="Do not use this token on a server that provides this token" xml:space="preserve">
+        <value>このトークンを提供するサーバーでは、このトークンを使用しないでください</value>
+    </data>
 </root>

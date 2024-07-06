@@ -22,11 +22,11 @@ public class UserModel
 
     [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
     [Key(4)]
-    public DateTime BirthDay { get; set; } = DateTime.Now;
+    public DateTime BirthDay { get; set; } = DateTime.UtcNow;
 
     [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
     [Key(5)]
-    public DateTime JoinDate { get; set; } = DateTime.Now;
+    public DateTime JoinDate { get; set; } = DateTime.UtcNow;
 
     [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
     [Key(6)]

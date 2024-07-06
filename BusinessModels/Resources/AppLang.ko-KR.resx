@@ -122,4 +122,7 @@
     <data name="Sign in to your account" xml:space="preserve">
         <value>계정에 로그인하세요</value>
     </data>
+    <data name="Do not use this token on a server that provides this token" xml:space="preserve">
+        <value>이 토큰을 제공하는 서버에서 이 토큰을 사용하지 마세요</value>
+    </data>
 </root>

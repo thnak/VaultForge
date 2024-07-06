@@ -11,15 +11,18 @@ public class CultureController : Controller
     public IActionResult Set(string? culture, string? redirectUri)
     {
         if (culture is not null)
+        {
+            var cookieTextPlant = CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture, culture));
             HttpContext.Response.Cookies.Append(
             CookieNames.Culture,
-            CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture, culture)),
+            cookieTextPlant,
             new CookieOptions
             {
                 IsEssential = true,
                 Expires = DateTimeOffset.UtcNow.AddYears(1)
             }
             );
+        }
 
         if (!string.IsNullOrEmpty(redirectUri)) return LocalRedirect(redirectUri);
         return Ok();

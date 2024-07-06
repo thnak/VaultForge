@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
 using System.Security.Claims;
+using Business.Authenticate.TokenProvider;
 using Business.Business.Interfaces.User;
 using BusinessModels.People;
 using BusinessModels.Resources;
@@ -9,12 +10,10 @@ using BusinessModels.Utils;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Protector;
-using Protector.Certificates;
 using Protector.Utils;
 
 namespace Web.Controllers;
@@ -23,7 +22,7 @@ namespace Web.Controllers;
 [ApiController]
 public class AccountController(
     IUserBusinessLayer userBl,
-    JsonWebTokenCertificateProvider jsonWebTokenCertificateProvider,
+    IJsonWebTokenCertificateProvider jsonWebTokenCertificateProvider,
     IAntiforgery antiforgery) : ControllerBase
 {
     [HttpPost("validate-user")]
@@ -76,15 +75,12 @@ public class AccountController(
     }
 
 
-
-
     [HttpPost("register")]
     [ValidateAntiForgeryToken]
     [EnableRateLimiting(PolicyNamesAndRoles.LimitRate.Fixed)]
     public async Task<IActionResult> AccountSignUp([FromForm] RequestRegisterModel request)
     {
-        var userNameHashed = request.Username.ComputeSha256Hash();
-        var user = userBl.Get(userNameHashed);
+        var user = userBl.Get(request.Username);
         if (user != null) return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri(AppLang.User_is_already_exists));
 
         var validateContext = new ValidationContext(request, null, null);
@@ -96,7 +92,7 @@ public class AccountController(
         {
             var createResult = await userBl.CreateAsync(new UserModel
             {
-                UserName = userNameHashed,
+                UserName = request.Username.ComputeSha256Hash(),
                 Password = request.Password.ComputeSha256Hash(),
                 BirthDay = request.BirthDay,
                 FullName = request.FullName
@@ -113,7 +109,7 @@ public class AccountController(
         return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri(AppLang.Registration_failed));
     }
 
-    [HttpGet("signout")]
+    [HttpGet("sign-out")]
     [IgnoreAntiforgeryToken]
     public async Task<IActionResult> AccountSignOut()
     {
@@ -131,24 +127,14 @@ public class AccountController(
         {
             var claims = userBl.GetAllClaim(request.UserName);
             var token = jsonWebTokenCertificateProvider.GenerateJwtToken(claims);
-            return Content(token, MediaTypeNames.Application.Json);
+            object model = new
+            {
+                Token = token,
+                Message = AppLang.Do_not_use_this_token_on_a_server_that_provides_this_token
+            };
+            return Content(model.ToJson(), MediaTypeNames.Application.Json);
         }
         return Ok();
-    }
-
-    [HttpGet("GetWeatwqwqher")]
-    [Authorize(AuthenticationSchemes = $"{JwtBearerDefaults.AuthenticationScheme},{CookieAuthenticationDefaults.AuthenticationScheme}")]
-    // [DisableFormValueModelBinding]
-    public IActionResult GetWeatwqwqher()
-    {
-        return Ok(AppLang.Hello);
-    }
-
-    [HttpPost("GetWeather2")]
-    [ValidateAntiForgeryToken]
-    public IActionResult GetWeather2()
-    {
-        return Ok(AppLang.Hello);
     }
 
 
@@ -171,5 +157,21 @@ public class AccountController(
         {
             token = tokens.RequestToken
         });
+    }
+
+    [HttpGet("get-never-expire-token")]
+    [Authorize(Roles = PolicyNamesAndRoles.System.Roles)]
+    [IgnoreAntiforgeryToken]
+    public IActionResult GetNeverExpireToken()
+    {
+        var userClaim = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
+        if (userClaim == null) return BadRequest();
+        var user = userBl.Get(userClaim.Value);
+        if (user == null) return BadRequest();
+
+        var claims = userBl.GetAllClaim(userClaim.Value);
+
+        var token = jsonWebTokenCertificateProvider.GenNeverExpireToken(userClaim.Value, claims);
+        return Content(token.ToJson(), MediaTypeNames.Application.Json);
     }
 }

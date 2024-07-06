@@ -10,13 +10,13 @@ public static class PolicyNamesAndRoles
     public static class System
     {
         public const string Name = "System";
-        public const string Roles = $"{Over7}";
+        public const string Roles = $"{Name},Admin,{Over7},{Over14},{Over18}";
     }
 
     public static class Admin
     {
         public const string Name = "Admin";
-        public const string Roles = $"{Over7}";
+        public const string Roles = $"Admin,{Over7},{Over14},{Over18}";
     }
 
     public static class LimitRate

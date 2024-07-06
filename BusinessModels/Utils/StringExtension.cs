@@ -56,6 +56,12 @@ public static class StringExtension
         stringBuilder.Append(Encode2Base64String(message));
         return stringBuilder.ToString();
     }
+
+    public static string ToJson(this object model)
+    {
+        return JsonSerializer.Serialize(model);
+    }
+    
     public static string AppendAndEncodeBase64StringAsUri(this string source, params string[] message)
     {
         var stringBuilder = new StringBuilder();
