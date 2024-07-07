@@ -20,7 +20,7 @@
                     </AuthorizeRouteView>
                 </ChildContent>
                 <ErrorContent Context="ex">
-                    <ErrorPage Exception="@ex"/>
+                    <ErrorPage ErrorMessage="@EncodeException(ex)"/>
                 </ErrorContent>
             </ErrorBoundary>
         </Found>

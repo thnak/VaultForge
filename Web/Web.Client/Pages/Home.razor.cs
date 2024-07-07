@@ -10,6 +10,7 @@ public partial class Home(BaseHttpClientService apiService) : ComponentBase, IDi
     {
         ProtectedLocalStorageService.KeyHandler -= GetKey;
     }
+
     private async Task Crypting(MouseEventArgs obj)
     {
         ProtectedLocalStorageService.KeyHandler += GetKey;
@@ -26,6 +27,7 @@ public partial class Home(BaseHttpClientService apiService) : ComponentBase, IDi
         var data = await ProtectedLocalStorageService.GetAsync("exampleKey");
         Console.WriteLine(data);
     }
+
     private async Task GetWeather(MouseEventArgs obj)
     {
         var response = await apiService.HttpClient.GetAsync("/WeatherForecast/GetWeatherForecast");

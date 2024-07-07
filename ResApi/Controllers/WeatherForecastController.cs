@@ -1,3 +1,4 @@
+using BusinessModels.Resources;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -21,7 +22,7 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
     [IgnoreAntiforgeryToken]
     public IActionResult GetIndex()
     {
-        return Ok("Hello World!");
+        return Ok(AppLang.Hello);
     }
 
     [HttpGet("GetWeatherForecast")]

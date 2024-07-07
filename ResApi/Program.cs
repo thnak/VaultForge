@@ -108,6 +108,22 @@ public abstract class Program
             options.AddPolicy(PolicyNamesAndRoles.Over14, configurePolicy: policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(14)));
             options.AddPolicy(PolicyNamesAndRoles.Over7, configurePolicy: policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(7)));
         });
+        
+        builder.Services.Configure<CookiePolicyOptions>(options =>
+        {
+            options.MinimumSameSitePolicy = SameSiteMode.None;
+            options.HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always;
+            options.Secure = CookieSecurePolicy.Always; // Ensure cookies are always sent over HTTPS
+        });
+        
+        builder.Services.ConfigureApplicationCookie(options => {
+            options.Cookie.Name = CookieNames.AuthorizeCookie;
+            options.Cookie.Domain = CookieNames.Domain;
+            options.Cookie.HttpOnly = true;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            options.Cookie.SameSite = SameSiteMode.None;
+        });
+        
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options => {
                 options.SlidingExpiration = true;
@@ -262,12 +278,12 @@ public abstract class Program
             });
         });
 
-        builder.Services.ConfigureApplicationCookie(options => {
-            options.Cookie.Name = CookieNames.AuthorizeCookie;
-            options.Cookie.Domain = CookieNames.Domain;
-            options.Cookie.HttpOnly = true;
-            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        });
+        // builder.Services.ConfigureApplicationCookie(options => {
+        //     options.Cookie.Name = CookieNames.AuthorizeCookie;
+        //     options.Cookie.Domain = CookieNames.Domain;
+        //     options.Cookie.HttpOnly = true;
+        //     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        // });
 
         builder.Services.AddAntiforgery(options => {
             options.Cookie = new CookieBuilder
@@ -422,10 +438,7 @@ public abstract class Program
 
         #endregion
 
-        app.UseCookiePolicy(new CookiePolicyOptions
-        {
-            MinimumSameSitePolicy = SameSiteMode.None
-        });
+        app.UseCookiePolicy();
 
 
         // Configure the HTTP request pipeline.

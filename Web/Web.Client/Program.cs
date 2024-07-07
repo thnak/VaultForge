@@ -27,19 +27,20 @@ internal class Program
         builder.Services.AddScoped<ProtectedLocalStorage>();
         builder.Services.AddScoped<ProtectedSessionStorage>();
         builder.Services.AddLocalization();
-        builder.Services.AddScoped(_ => new BaseHttpClientService(new HttpClient
+        builder.Services.AddScoped(_ =>
         {
-
+            HttpClient httpClient = new HttpClient(new CookieHandler());
 #if DEBUG
-            BaseAddress = new Uri("https://localhost:5217"),
+            httpClient.BaseAddress = new Uri("https://localhost:5217");
 #else
-            BaseAddress = new Uri("https://thnakdevserver.ddns.net:5001"),
+            httpClient.BaseAddress = new Uri("https://thnakdevserver.ddns.net:5001");
 #endif
-        }));
-        builder.Services.AddScoped(_ => new HttpClient
-        {
-            BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+            return new BaseHttpClientService(httpClient);
         });
+        builder.Services.AddScoped(_ => new HttpClient(new HttpClientHandler()
+        {
+            AllowAutoRedirect = true,
+        }));
         var host = builder.Build();
 
         var defaultCulture = AllowedCulture.SupportedCultures.Select(x => x.Name).ToArray().First();
