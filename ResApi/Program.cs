@@ -75,6 +75,7 @@ public abstract class Program
             options.SupportedCultures = supportedCultures;
             options.SupportedUICultures = supportedCultures;
             options.ApplyCurrentCultureToResponseHeaders = true;
+            
             options.RequestCultureProviders = new List<IRequestCultureProvider>
             {
                 new CookieRequestCultureProvider
@@ -246,7 +247,8 @@ public abstract class Program
                 Expiration = TimeSpan.FromHours(ProtectorTime.SessionCookieMaxAge),
                 IsEssential = false,
                 HttpOnly = true,
-                SecurePolicy = CookieSecurePolicy.SameAsRequest
+                SecurePolicy = CookieSecurePolicy.SameAsRequest,
+                Domain = CookieNames.Domain
             };
         });
 

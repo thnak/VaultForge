@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using Protector.Utils;
 
 namespace Web.Authenticate;
 
@@ -51,7 +50,7 @@ public class PersistingServerAuthenticationStateProvider : ServerAuthenticationS
 
             if (originUsername != null)
             {
-                var user = _userBl.Value.Get(originUsername.ComputeSha256Hash());
+                var user = _userBl.Value.Get(originUsername);
                 if (user != null)
                 {
                     var avatarUri = user.Avatar;

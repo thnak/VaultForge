@@ -22,7 +22,6 @@ using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationM
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -259,9 +258,10 @@ public class Program
                 Name = CookieNames.Session,
                 SameSite = SameSiteMode.Strict,
                 Expiration = TimeSpan.FromHours(ProtectorTime.SessionCookieMaxAge),
-                IsEssential = false,
+                IsEssential = true,
                 HttpOnly = true,
-                SecurePolicy = CookieSecurePolicy.SameAsRequest
+                SecurePolicy = CookieSecurePolicy.SameAsRequest,
+                Domain = CookieNames.Domain
             };
         });
 
