@@ -32,6 +32,12 @@ public class PersistingServerAuthenticationStateProvider : ServerAuthenticationS
         _subscription = _state.RegisterOnPersisting(OnPersistingAsync, RenderMode.InteractiveWebAssembly);
     }
 
+    public void Dispose()
+    {
+        _subscription.Dispose();
+        AuthenticationStateChanged -= OnAuthenticationStateChanged;
+    }
+
     private void OnAuthenticationStateChanged(Task<AuthenticationState> task)
     {
         _authenticationStateTask = task;
@@ -65,11 +71,5 @@ public class PersistingServerAuthenticationStateProvider : ServerAuthenticationS
                 }
             }
         }
-    }
-
-    public void Dispose()
-    {
-        _subscription.Dispose();
-        AuthenticationStateChanged -= OnAuthenticationStateChanged;
     }
 }

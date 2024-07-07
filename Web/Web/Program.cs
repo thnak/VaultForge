@@ -139,9 +139,9 @@ public class Program
                 new CookieRequestCultureProvider
                 {
                     CookieName = CookieNames.Culture,
-                    Options = new RequestLocalizationOptions(),
+                    Options = new RequestLocalizationOptions()
                 },
-                new QueryStringRequestCultureProvider()
+                new QueryStringRequestCultureProvider
                 {
                     QueryStringKey = CookieNames.Culture,
                     UIQueryStringKey = $"{CookieNames.Culture}-UI"
@@ -267,7 +267,7 @@ public class Program
 
         builder.Services.AddCors(options => {
             options.AddPolicy("AllowAllOrigins",
-            policyBuilder => policyBuilder
+            configurePolicy: policyBuilder => policyBuilder
                 .WithOrigins("localhost:5217", "https://thnakdevserver.ddns.net:5001")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
@@ -393,7 +393,7 @@ public class Program
 
         #endregion
 
-        app.UseCookiePolicy(new CookiePolicyOptions()
+        app.UseCookiePolicy(new CookiePolicyOptions
         {
             MinimumSameSitePolicy = SameSiteMode.Unspecified
         });

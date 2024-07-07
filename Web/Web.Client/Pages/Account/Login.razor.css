@@ -1,11 +1,11 @@
 .sign-up-form {
     align-self: center;
+    justify-content: center;
     height: 50vh;
     max-height: 1200px;
     width: 140vmin;
     max-width: 1400px;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
+    display: flex;
 }
 
 .background {
@@ -14,6 +14,10 @@
     background: linear-gradient(45deg, yellow, green);
     position: relative;
     overflow: hidden;
+}
+
+.flex-2{
+    flex: 2;
 }
 
 .firework-container {
@@ -63,6 +67,7 @@
 .main-form {
     height: 100%;
     width: 100%;
+    max-width: 700px;
     display: flex;
     justify-content: center;
     border-top: 4px inset #00D407;

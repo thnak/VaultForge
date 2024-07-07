@@ -61,7 +61,7 @@ public static class StringExtension
     {
         return JsonSerializer.Serialize(model);
     }
-    
+
     public static string AppendAndEncodeBase64StringAsUri(this string source, params string[] message)
     {
         var stringBuilder = new StringBuilder();

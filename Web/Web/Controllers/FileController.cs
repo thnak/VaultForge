@@ -27,7 +27,7 @@ public class FileController : ControllerBase
     public async Task<IActionResult> UploadChunk([FromForm] FormChunk form)
     {
 
-        (var chunk, var chunkIndexString, var totalChunksString, var fileName) = (form.Chunk, form.ChunkIndexString, form.TotalChunksString, form.FileName);
+        var (chunk, chunkIndexString, totalChunksString, fileName) = (form.Chunk, form.ChunkIndexString, form.TotalChunksString, form.FileName);
         var chunkIndex = int.Parse(chunkIndexString);
         var totalChunks = int.Parse(totalChunksString);
 

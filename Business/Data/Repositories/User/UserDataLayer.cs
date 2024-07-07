@@ -55,7 +55,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
             return (false, ex.Message);
         }
     }
-    
+
     public Task<long> GetDocumentSizeAsync(CancellationTokenSource? cancellationTokenSource = default)
     {
         return _dataDb.EstimatedDocumentCountAsync();

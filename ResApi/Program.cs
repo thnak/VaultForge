@@ -75,7 +75,7 @@ public abstract class Program
             options.SupportedCultures = supportedCultures;
             options.SupportedUICultures = supportedCultures;
             options.ApplyCurrentCultureToResponseHeaders = true;
-            
+
             options.RequestCultureProviders = new List<IRequestCultureProvider>
             {
                 new CookieRequestCultureProvider
@@ -159,7 +159,7 @@ public abstract class Program
                                 return;
                             }
                         }
-                        
+
                         var userId = userPrincipal.FindFirst(ClaimTypes.Name)?.Value;
                         var user = userId == null ? null : userManager.Get(userId);
                         if (user == null)
@@ -194,7 +194,7 @@ public abstract class Program
                     IssuerSigningKey = new X509SecurityKey(certificate),
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    ValidateLifetime = false,
+                    ValidateLifetime = false
                 };
 
                 options.Events = new JwtBearerEvents
@@ -214,7 +214,7 @@ public abstract class Program
                     {
                         arg.Request.Cookies.TryGetValue(name, out var token);
                         if (string.IsNullOrEmpty(token)) continue;
-                        
+
                         arg.Token = token;
                         break;
                     }
@@ -422,7 +422,7 @@ public abstract class Program
 
         #endregion
 
-        app.UseCookiePolicy(new CookiePolicyOptions()
+        app.UseCookiePolicy(new CookiePolicyOptions
         {
             MinimumSameSitePolicy = SameSiteMode.None
         });

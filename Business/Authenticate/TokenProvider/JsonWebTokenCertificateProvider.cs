@@ -26,8 +26,6 @@ public class JsonWebTokenCertificateProvider : IJsonWebTokenCertificateProvider
 {
     private const string SearchIndexString = "TotkenSearchIndex";
     private const string TableName = "Totken";
-    private X509SecurityKey Key { get; set; }
-    private IMongoCollection<TokenModel> DataDb { get; set; }
 
     public JsonWebTokenCertificateProvider(IOptions<AppCertificate> settings, IMongoDataLayerContext context)
     {
@@ -48,6 +46,8 @@ public class JsonWebTokenCertificateProvider : IJsonWebTokenCertificateProvider
         DataDb.Indexes.CreateOneAsync(searchIndexModel);
         DataDb.Indexes.CreateOne(indexModel);
     }
+    private X509SecurityKey Key { get; }
+    private IMongoCollection<TokenModel> DataDb { get; }
 
     public string GenerateJwtToken(string username, int expiresHours = ProtectorTime.JsonWebTokenMaxAge)
     {
@@ -121,19 +121,19 @@ public class JsonWebTokenCertificateProvider : IJsonWebTokenCertificateProvider
         var token = tokenHandler.CreateToken(tokenDescriptor);
         var tokenString = tokenHandler.WriteToken(token);
 
-        TokenModel model = new TokenModel()
+        var model = new TokenModel
         {
             CreateByUser = username,
             Token = tokenString
         };
-        
+
         DataDb.InsertOne(model);
         return model;
     }
     public TokenModel? GetNeverExpireToken(string id)
     {
-        ObjectId objectId = ObjectId.Parse(id);
-        var filter = Builders<TokenModel>.Filter.Eq(x => x.Id, objectId);
+        var objectId = ObjectId.Parse(id);
+        var filter = Builders<TokenModel>.Filter.Eq(field: x => x.Id, objectId);
         return DataDb.Find(filter).FirstOrDefault();
     }
 

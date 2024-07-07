@@ -6,14 +6,14 @@
 <PageTitle>@AppLang.Sign_in_to_your_account</PageTitle>
 
 <div class="sign-up-form">
-    <div class="welcome-back px-3 background d-none d-md-flex">
+    <div class="welcome-back px-3 background d-none d-md-flex flex-1">
         <div class="firework-container" id="firework-container"></div>
         <MudText Typo="Typo.h5">@AppLang.Welcome_back_</MudText>
         <span>@AppLang.To_keep_connected_with_us_please_login_with_your_personal_info</span>
         <MudButton Href="@PageRoutes.Account.SignIn" Variant="Variant.Outlined" Color="Color.Secondary">@AppLang.Sign_In</MudButton>
     </div>
-    
-    <div class="main-form">
+
+    <div class="main-form flex-2">
         <MudCarousel @ref="CarouselLogin" Class="mud-width-full" ShowArrows="false" @bind-SelectedIndex="CurrentIndex" ShowBullets="false" EnableSwipeGesture="false" AutoCycle="false" TData="object">
             <MudCarouselItem Transition="Transition.Slide" Color="@Color.Default">
                 <div class="d-flex mud-width-full mud-height-full">

@@ -27,7 +27,7 @@ internal class Program
         builder.Services.AddScoped<ProtectedLocalStorage>();
         builder.Services.AddScoped<ProtectedSessionStorage>();
         builder.Services.AddLocalization();
-        builder.Services.AddScoped(_ => new BaseHttpClientService(new HttpClient()
+        builder.Services.AddScoped(_ => new BaseHttpClientService(new HttpClient
         {
 
 #if DEBUG
