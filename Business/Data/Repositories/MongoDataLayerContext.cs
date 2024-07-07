@@ -31,8 +31,22 @@ public class MongoDataLayerContext : IMongoDataLayerContext
                 new(CompressorType.Noop)
             },
             Credential = new MongoCredential("SCRAM-SHA-1", identity, evidence)
-
         };
+
+#if DEBUG
+        setup.Compressors =
+        [
+            new CompressorConfiguration(CompressorType.ZStandard),
+            new CompressorConfiguration(CompressorType.Zlib),
+            new CompressorConfiguration(CompressorType.Snappy),
+            new CompressorConfiguration(CompressorType.Noop)
+        ];
+#else
+        setup.Compressors =
+        [
+            new CompressorConfiguration(CompressorType.Noop)
+        ];
+#endif
 
         var client = new MongoClient(setup);
         var dbContext = client.GetDatabase(dbName);
