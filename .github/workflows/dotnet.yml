@@ -21,6 +21,8 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 9.0.100-preview.5.24307.3
+    - name: Install .NET Wasm Tools
+      run: dotnet workload install wasm-tools
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
