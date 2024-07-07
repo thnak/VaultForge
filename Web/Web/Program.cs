@@ -268,7 +268,7 @@ public class Program
         builder.Services.AddCors(options => {
             options.AddPolicy("AllowAllOrigins",
             policyBuilder => policyBuilder
-                .WithOrigins("localhost:5217", "https://thnakdevserver.ddns.net:4331")
+                .WithOrigins("localhost:5217", "https://thnakdevserver.ddns.net:5001")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials());

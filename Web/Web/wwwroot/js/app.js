@@ -13,6 +13,10 @@ function deleteTemplateCache() {
     });
 }
 
+window.CloseProgressBar = () => {
+    const progressWrapper = document.getElementById("progress-wrapper");
+    progressWrapper.classList.add('closed');
+}
 
 window.requestNotificationPermission = async () => {
     const permission = await Notification.requestPermission();

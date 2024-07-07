@@ -33,7 +33,7 @@ internal class Program
 #if DEBUG
             BaseAddress = new Uri("https://localhost:5217"),
 #else
-            BaseAddress = new Uri("https://thnakdevserver.ddns.net:4331"),
+            BaseAddress = new Uri("https://thnakdevserver.ddns.net:5001"),
 #endif
         }));
         builder.Services.AddScoped(_ => new HttpClient
