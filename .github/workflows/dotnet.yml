@@ -23,6 +23,8 @@ jobs:
         dotnet-version: 9.0.100-preview.5.24307.3
     - name: Restore dependencies
       run: dotnet restore
+    - name: Install .NET Wasm Tools
+      run: dotnet tool install --global wasm-tools
     - name: Build
       run: dotnet build
     - name: Test
