@@ -159,9 +159,8 @@ public abstract class Program
                                 return;
                             }
                         }
-
-
-                        var userId = userPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                        
+                        var userId = userPrincipal.FindFirst(ClaimTypes.Name)?.Value;
                         var user = userId == null ? null : userManager.Get(userId);
                         if (user == null)
                         {
