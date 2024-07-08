@@ -6,7 +6,10 @@ public class CookieHandler : DelegatingHandler
 {
     public CookieHandler()
     {
-        InnerHandler = new HttpClientHandler();
+        InnerHandler = new HttpClientHandler()
+        {
+            AllowAutoRedirect = true
+        };
     }
 
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

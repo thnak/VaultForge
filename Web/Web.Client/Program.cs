@@ -37,10 +37,7 @@ internal class Program
 #endif
             return new BaseHttpClientService(httpClient);
         });
-        builder.Services.AddScoped(_ => new HttpClient(new HttpClientHandler()
-        {
-            AllowAutoRedirect = true,
-        }));
+        builder.Services.AddScoped(_ => new HttpClient(new CookieHandler()));
         var host = builder.Build();
 
         var defaultCulture = AllowedCulture.SupportedCultures.Select(x => x.Name).ToArray().First();
