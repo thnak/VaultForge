@@ -212,7 +212,7 @@ public abstract class Program
                     ValidateAudience = false,
                     ValidateLifetime = false
                 };
-
+                
                 options.Events = new JwtBearerEvents
                 {
                     OnMessageReceived = OnMessageReceived,
