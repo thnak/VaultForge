@@ -35,9 +35,4 @@
         </Reference>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Business\Interfaces\FileSystem\" />
-      <Folder Include="Business\Repositories\FileSystem\" />
-    </ItemGroup>
-
 </Project>

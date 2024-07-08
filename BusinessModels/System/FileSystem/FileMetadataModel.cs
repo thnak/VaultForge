@@ -13,5 +13,6 @@ public class FileMetadataModel
     [Key(3)] public int? Height { get; set; } // Height of the media (if applicable, e.g., video, image)
     [Key(4)] public int? Bitrate { get; set; } // Bitrate of the media file (if applicable, e.g., audio, video)
     [Key(5)] public string Codec { get; set; } = string.Empty; // Codec used for the media file
-    [Key(6)] public string Thumbnail { get; set; } = string.Empty; // URL or base64 string of the thumbnail image
+    [Key(6)] public string ThumbnailAbsolutePath { get; set; } = string.Empty;
+    [Key(7)] public string ThumbnailContentType { get; set; } = string.Empty;
 }

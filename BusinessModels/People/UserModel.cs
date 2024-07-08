@@ -80,4 +80,7 @@ public class UserModel
 
     [Key(18)]
     public string Avatar { get; set; } = "default_user.jpg";
+
+    [Key(21)]
+    public string Folder { get; set; } = string.Empty;
 }

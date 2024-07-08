@@ -21,8 +21,12 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
     {
         try
         {
-            var keys = Builders<UserModel>.IndexKeys.Descending(x => x.UserName);
-            var indexModel = new CreateIndexModel<UserModel>(keys);
+            var nameKey = Builders<UserModel>.IndexKeys.Descending(x => x.UserName);
+            var folderKey = Builders<UserModel>.IndexKeys.Descending(x => x.Folder);
+
+
+            var indexModel = new CreateIndexModel<UserModel>(nameKey, new CreateIndexOptions() { Unique = true });
+            var folderModel = new CreateIndexModel<UserModel>(folderKey, new CreateIndexOptions() { Unique = true });
 
             var searchIndexKeys = Builders<UserModel>.IndexKeys.Text(x => x.UserName).Text(x => x.FullName);
             var searchIndexOptions = new CreateIndexOptions
@@ -31,8 +35,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
             };
 
             var searchIndexModel = new CreateIndexModel<UserModel>(searchIndexKeys, searchIndexOptions);
-            await _dataDb.Indexes.CreateOneAsync(searchIndexModel);
-            await _dataDb.Indexes.CreateOneAsync(indexModel);
+            await _dataDb.Indexes.CreateManyAsync([indexModel, folderModel, searchIndexModel]);
 
             var defaultUser = "System".ComputeSha256Hash();
             var system = Get(defaultUser);
@@ -70,20 +73,20 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
                 {
                     {
                         "index", SearchIndexString
-                    },// Specify the name of your search index
+                    }, // Specify the name of your search index
                     {
                         "text", new BsonDocument
                         {
                             {
                                 "query", queryString
-                            },// Specify the search term
+                            }, // Specify the search term
                             {
                                 "path", new BsonArray
                                 {
                                     nameof(UserModel.UserName),
                                     nameof(UserModel.FullName)
                                 }
-                            }// Specify the fields to search
+                            } // Specify the fields to search
                         }
                     }
                 }
@@ -97,7 +100,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
                 {
                     "$limit", limit
                 }
-            }// Limit the number of results
+            } // Limit the number of results
         };
         var searchResults = await _dataDb.AggregateAsync<UserModel>(pipeline, null, cancellationTokenSource?.Token ?? default);
         while (await searchResults.MoveNextAsync(cancellationTokenSource?.Token ?? default))
@@ -108,18 +111,22 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
             }
         }
     }
+
     public IAsyncEnumerable<UserModel> FindAsync(FilterDefinition<UserModel> filter, CancellationTokenSource? cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
+
     public IAsyncEnumerable<UserModel> FindAsync(string keyWord, CancellationTokenSource? cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
+
     public IAsyncEnumerable<UserModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken? cancellationToken = default)
     {
         throw new NotImplementedException();
     }
+
     public async IAsyncEnumerable<UserModel> Where(Expression<Func<UserModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
     {
         var data = await _dataDb.FindAsync(predicate, new FindOptions<UserModel, UserModel>(), cancellationTokenSource?.Token ?? default);
@@ -131,6 +138,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
             }
         }
     }
+
     public UserModel? Get(string key)
     {
         try
@@ -145,6 +153,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
             return default;
         }
     }
+
     public async IAsyncEnumerable<UserModel?> GetAsync(List<string> keys, CancellationTokenSource? cancellationTokenSource = default)
     {
         await _semaphore.WaitAsync();
@@ -152,6 +161,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
         {
             yield return Get(userName);
         }
+
         _semaphore.Release();
     }
 
@@ -159,14 +169,17 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
     {
         throw new NotImplementedException();
     }
+
     public IAsyncEnumerable<UserModel> GetAllAsync(CancellationTokenSource cancellationTokenSource)
     {
         throw new NotImplementedException();
     }
+
     public (bool, string) UpdateProperties(string key, Dictionary<string, dynamic> properties)
     {
         throw new NotImplementedException();
     }
+
     public async Task<(bool, string)> CreateAsync(UserModel model)
     {
         await _semaphore.WaitAsync();
@@ -205,6 +218,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
             {
                 return (true, AppLang.Success);
             }
+
             return (false, AppLang.User_update_failed);
         }
         catch (Exception e)
@@ -239,6 +253,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
             return (false, ex.Message);
         }
     }
+
     public List<string> GetAllRoles(string userName)
     {
         userName = userName.ComputeSha256Hash();

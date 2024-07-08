@@ -25,11 +25,6 @@ public class FolderInfoModel
     public string Password { get; set; } = string.Empty;
 
     /// <summary>
-    /// Username own this folder
-    /// </summary>
-    public string UserName { get; set; } = string.Empty;
-
-    /// <summary>
     /// Last modified date of the file
     /// </summary>
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
@@ -38,7 +33,6 @@ public class FolderInfoModel
     /// <summary>
     /// Relative path for UI display
     /// </summary>
-    [BsonIgnore]
     public string RelativePath { get; set; } = string.Empty;
 
     #region Front-End Properties

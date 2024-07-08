@@ -60,11 +60,29 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Không tìm thấy siêu dữ liệu.
+        /// </summary>
+        public static string Could_not_found_metadata {
+            get {
+                return ResourceManager.GetString("Could not found metadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tạo tài khoản.
         /// </summary>
         public static string Create_Account {
             get {
                 return ResourceManager.GetString("Create Account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tạo thành công.
+        /// </summary>
+        public static string Create_successfully {
+            get {
+                return ResourceManager.GetString("Create successfully", resourceCulture);
             }
         }
         
@@ -78,6 +96,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Xóa thành công.
+        /// </summary>
+        public static string Delete_successfully {
+            get {
+                return ResourceManager.GetString("Delete successfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Không sử dụng mã thông báo này trên máy chủ cung cấp mã thông báo này.
         /// </summary>
         public static string Do_not_use_this_token_on_a_server_that_provides_this_token {
@@ -87,11 +114,56 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Nhập mật khẩu.
         /// </summary>
         public static string Enter_password {
             get {
                 return ResourceManager.GetString("Enter password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Không tìm thấy tệp.
+        /// </summary>
+        public static string File_could_not_be_found {
+            get {
+                return ResourceManager.GetString("File could not be found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tệp đã tồn tại.
+        /// </summary>
+        public static string File_is_already_exsists {
+            get {
+                return ResourceManager.GetString("File is already exsists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Không tìm thấy tệp.
+        /// </summary>
+        public static string File_not_found_ {
+            get {
+                return ResourceManager.GetString("File not found ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thư mục đã tồn tại.
+        /// </summary>
+        public static string Folder_already_exists {
+            get {
+                return ResourceManager.GetString("Folder already exists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Không tìm thấy thư mục.
+        /// </summary>
+        public static string Folder_could_not_be_found {
+            get {
+                return ResourceManager.GetString("Folder could not be found", resourceCulture);
             }
         }
         
@@ -110,6 +182,33 @@ namespace BusinessModels.Resources {
         public static string Home_page {
             get {
                 return ResourceManager.GetString("Home page", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Siêu dữ liệu không chính xác.
+        /// </summary>
+        public static string Incorrect_metadata {
+            get {
+                return ResourceManager.GetString("Incorrect metadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID siêu dữ liệu không chính xác.
+        /// </summary>
+        public static string Incorrect_metadata_ID {
+            get {
+                return ResourceManager.GetString("Incorrect metadata ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mật khẩu không đúng.
+        /// </summary>
+        public static string Incorrect_password {
+            get {
+                return ResourceManager.GetString("Incorrect password", resourceCulture);
             }
         }
         

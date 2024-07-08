@@ -232,12 +232,45 @@
         <value>Tiếp theo</value>
     </data>
     <data name="Enter password" xml:space="preserve">
-        <value/>
+        <value>Nhập mật khẩu</value>
     </data>
     <data name="Sign in to your account" xml:space="preserve">
         <value>Đăng nhập vào tài khoản của bạn</value>
     </data>
     <data name="Do not use this token on a server that provides this token" xml:space="preserve">
         <value>Không sử dụng mã thông báo này trên máy chủ cung cấp mã thông báo này</value>
+    </data>
+    <data name="File could not be found" xml:space="preserve">
+        <value>Không tìm thấy tệp</value>
+    </data>
+    <data name="File not found " xml:space="preserve">
+        <value>Không tìm thấy tệp</value>
+    </data>
+    <data name="Incorrect metadata" xml:space="preserve">
+        <value>Siêu dữ liệu không chính xác</value>
+    </data>
+    <data name="Incorrect metadata ID" xml:space="preserve">
+        <value>ID siêu dữ liệu không chính xác</value>
+    </data>
+    <data name="Could not found metadata" xml:space="preserve">
+        <value>Không tìm thấy siêu dữ liệu</value>
+    </data>
+    <data name="Delete successfully" xml:space="preserve">
+        <value>Xóa thành công</value>
+    </data>
+    <data name="File is already exsists" xml:space="preserve">
+        <value>Tệp đã tồn tại</value>
+    </data>
+    <data name="Create successfully" xml:space="preserve">
+        <value>Tạo thành công</value>
+    </data>
+    <data name="Folder already exists" xml:space="preserve">
+        <value>Thư mục đã tồn tại</value>
+    </data>
+    <data name="Incorrect password" xml:space="preserve">
+        <value>Mật khẩu không đúng</value>
+    </data>
+    <data name="Folder could not be found" xml:space="preserve">
+        <value>Không tìm thấy thư mục</value>
     </data>
 </root>

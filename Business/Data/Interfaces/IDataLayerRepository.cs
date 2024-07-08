@@ -5,6 +5,11 @@ namespace Business.Data.Interfaces;
 
 public interface IDataLayerRepository<T> where T : class
 {
+    /// <summary>
+    /// Lấy số lượng document
+    /// </summary>
+    /// <param name="cancellationTokenSource"></param>
+    /// <returns></returns>
     Task<long> GetDocumentSizeAsync(CancellationTokenSource? cancellationTokenSource = default);
     IAsyncEnumerable<T> Search(string queryString, int limit = 10, CancellationTokenSource? cancellationTokenSource = default);
 

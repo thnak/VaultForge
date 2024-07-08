@@ -125,4 +125,40 @@
     <data name="Do not use this token on a server that provides this token" xml:space="preserve">
         <value>Verwenden Sie dieses Token nicht auf einem Server, der dieses Token bereitstellt</value>
     </data>
+    <data name="Enter password" xml:space="preserve">
+        <value>Passwort eingeben</value>
+    </data>
+    <data name="File could not be found" xml:space="preserve">
+        <value>Datei konnte nicht gefunden werden</value>
+    </data>
+    <data name="File not found " xml:space="preserve">
+        <value>Datei nicht gefunden</value>
+    </data>
+    <data name="Incorrect metadata" xml:space="preserve">
+        <value>Falsche Metadaten</value>
+    </data>
+    <data name="Incorrect metadata ID" xml:space="preserve">
+        <value>Falsche Metadaten-ID</value>
+    </data>
+    <data name="Could not found metadata" xml:space="preserve">
+        <value>Metadaten konnten nicht gefunden werden</value>
+    </data>
+    <data name="Delete successfully" xml:space="preserve">
+        <value>Erfolgreich gelöscht</value>
+    </data>
+    <data name="File is already exsists" xml:space="preserve">
+        <value>Datei existiert bereits</value>
+    </data>
+    <data name="Create successfully" xml:space="preserve">
+        <value>Erfolgreich erstellt</value>
+    </data>
+    <data name="Folder already exists" xml:space="preserve">
+        <value>Ordner existiert bereits</value>
+    </data>
+    <data name="Incorrect password" xml:space="preserve">
+        <value>Falsches Passwort</value>
+    </data>
+    <data name="Folder could not be found" xml:space="preserve">
+        <value>Ordner konnte nicht gefunden werden</value>
+    </data>
 </root>

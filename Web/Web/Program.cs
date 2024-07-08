@@ -6,8 +6,10 @@ using Business.Authenticate.TokenProvider;
 using Business.Business.Interfaces.User;
 using Business.Business.Repositories.User;
 using Business.Data.Interfaces;
+using Business.Data.Interfaces.FileSystem;
 using Business.Data.Interfaces.User;
 using Business.Data.Repositories;
+using Business.Data.Repositories.FileSystem;
 using Business.Data.Repositories.User;
 using Business.KeyManagement;
 using Business.Models;
@@ -66,6 +68,9 @@ public class Program
         builder.Services.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
         builder.Services.AddSingleton<IUserDataLayer, UserDataLayer>();
         builder.Services.AddSingleton<IUserBusinessLayer, UserBusinessLayer>();
+        builder.Services.AddSingleton<IFolderSystemDatalayer, FolderSystemDatalayer>();
+        builder.Services.AddSingleton<IFileSystemDatalayer, FileSystemDatalayer>();
+        
         builder.Services.AddSingleton<IMongoDbXmlKeyProtectorRepository, MongoDbXmlKeyProtectorRepository>();
 
 
