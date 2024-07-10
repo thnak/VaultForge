@@ -428,24 +428,24 @@ public class Program
 
         app.UseSession();
 
-        app.UseStaticFiles(new StaticFileOptions
-        {
-            // OnPrepareResponse = (context) => {
-            //     ApplyHeaders(context.Context.Response.Headers);
-            // }
-        });
+        // app.UseStaticFiles(new StaticFileOptions
+        // {
+        //     // OnPrepareResponse = (context) => {
+        //     //     ApplyHeaders(context.Context.Response.Headers);
+        //     // }
+        // });
         app.UseAntiforgery();
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapStaticAssets();
         app.MapControllers();
         app.MapRazorComponents<App>()
-            .AddInteractiveWebAssemblyRenderMode()
+            .AddInteractiveWebAssemblyRenderMode(options => options.ServeMultithreadingHeaders = true)
             .AddAdditionalAssemblies(typeof(_Imports).Assembly);
-        //app.Use(async (context, next) => {
-        //    ApplyHeaders(context.Response.Headers);
-        //    await next();
-        //});
+        // app.Use(async (context, next) => {
+        //     ApplyHeaders(context.Response.Headers);
+        //     await next();
+        // });
 
         app.UseMiddleware<ErrorHandlingMiddleware>();
 
