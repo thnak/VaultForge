@@ -50,6 +50,19 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
                 });
             }
 
+            defaultUser = "Anonymous".ComputeSha256Hash();
+            system = Get(defaultUser);
+            if (system == null)
+            {
+                var passWord = "PassWd2@";
+                await CreateAsync(new UserModel
+                {
+                    UserName = defaultUser,
+                    Password = passWord.ComputeSha256Hash(),
+                    JoinDate = DateTime.UtcNow
+                });
+            }
+
             Console.WriteLine(@"[Init] User data layer");
             return (true, string.Empty);
         }
@@ -264,5 +277,10 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
         });
         var data = _dataDb.Find(filter).Limit(1).Project(project).FirstOrDefault();
         return data?.Roles ?? [];
+    }
+
+    public UserModel GetAnonymous()
+    {
+        return Get("Anonymous")!;
     }
 }

@@ -175,4 +175,10 @@
     <data name="Folder could not be found" xml:space="preserve">
         <value>Folder could not be found</value>
     </data>
+    <data name="Create failed" xml:space="preserve">
+        <value>Create failed</value>
+    </data>
+    <data name="Could not delete root folder" xml:space="preserve">
+        <value>Could not delete root folder</value>
+    </data>
 </root>

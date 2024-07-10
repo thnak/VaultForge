@@ -161,4 +161,10 @@
     <data name="Folder could not be found" xml:space="preserve">
         <value>Ordner konnte nicht gefunden werden</value>
     </data>
+    <data name="Create failed" xml:space="preserve">
+        <value>Erstellen fehlgeschlagen</value>
+    </data>
+    <data name="Could not delete root folder" xml:space="preserve">
+        <value>Không thể xóa thư mục gốc</value>
+    </data>
 </root>

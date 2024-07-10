@@ -66,6 +66,11 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         return userDl.Delete(key);
     }
 
+    public UserModel GetAnonymous()
+    {
+        return userDl.GetAnonymous();
+    }
+
     public (bool, string) Authenticate(RequestLoginModel model)
     {
         var user = Get(model.UserName);

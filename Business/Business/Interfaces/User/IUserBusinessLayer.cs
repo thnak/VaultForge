@@ -6,6 +6,7 @@ namespace Business.Business.Interfaces.User;
 
 public interface IUserBusinessLayer : IBusinessLayerRepository<UserModel>
 {
+    public UserModel GetAnonymous();
     (bool, string) Authenticate(RequestLoginModel model);
     (bool, string) ValidateUsername(string username);
     (bool, string) ValidatePassword(string username, string password);

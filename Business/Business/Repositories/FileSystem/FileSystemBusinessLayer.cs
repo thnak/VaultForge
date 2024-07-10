@@ -1,11 +1,12 @@
 using System.Linq.Expressions;
 using Business.Business.Interfaces.FileSystem;
+using Business.Data.Interfaces.FileSystem;
 using BusinessModels.System.FileSystem;
 using MongoDB.Driver;
 
 namespace Business.Business.Repositories.FileSystem;
 
-public class FileSystemBusinessLayer : IFileSystemBusinessLayer
+public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusinessLayer
 {
     public IAsyncEnumerable<FileInfoModel> FindAsync(FilterDefinition<FileInfoModel> filter, CancellationTokenSource? cancellationTokenSource = default)
     {
@@ -49,17 +50,17 @@ public class FileSystemBusinessLayer : IFileSystemBusinessLayer
 
     public Task<(bool, string)> CreateAsync(FileInfoModel model)
     {
-        throw new NotImplementedException();
+        return da.CreateAsync(model);
     }
 
     public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FileInfoModel> models, CancellationTokenSource? cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        return da.CreateAsync(models, cancellationTokenSource);
     }
 
     public Task<(bool, string)> UpdateAsync(FileInfoModel model)
     {
-        throw new NotImplementedException();
+        return da.UpdateAsync(model);
     }
 
     public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FileInfoModel> models, CancellationTokenSource? cancellationTokenSource = default)

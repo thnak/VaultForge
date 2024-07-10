@@ -11,9 +11,7 @@ public class FolderInfoModel
     /// Name of the folder
     /// </summary>
     public string FolderName { get; set; } = string.Empty;
-
-    public string AbsolutePath { get; set; } = string.Empty; // Absolute path for folder storage
-
+    
     /// <summary>
     /// List of content in the folder, include their child folder
     /// </summary>

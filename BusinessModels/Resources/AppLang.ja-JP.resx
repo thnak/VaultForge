@@ -161,4 +161,7 @@
     <data name="Folder could not be found" xml:space="preserve">
         <value>フォルダが見つかりませんでした</value>
     </data>
+    <data name="Create failed" xml:space="preserve">
+        <value>생성 실패</value>
+    </data>
 </root>
