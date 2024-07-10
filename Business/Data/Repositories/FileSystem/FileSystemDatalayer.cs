@@ -86,13 +86,14 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
     public FileInfoModel? Get(string key)
     {
         var filter = Builders<FileInfoModel>.Filter.Eq(x => x.RelativePath, key);
+        filter |= Builders<FileInfoModel>.Filter.Eq(x => x.AbsolutePath, key);
+        
         if (ObjectId.TryParse(key, out ObjectId id))
         {
             filter |= Builders<FileInfoModel>.Filter.Eq(x => x.Id, id);
-            return _fileDataDb.Find(filter).Limit(1).FirstOrDefault();
         }
 
-        return default;
+        return _fileDataDb.Find(filter).Limit(1).FirstOrDefault();
     }
 
     public IAsyncEnumerable<FileInfoModel?> GetAsync(List<string> keys, CancellationTokenSource? cancellationTokenSource = default)

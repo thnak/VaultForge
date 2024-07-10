@@ -85,6 +85,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
     public FolderInfoModel? Get(string key)
     {
         var filter = Builders<FolderInfoModel>.Filter.Eq(x => x.RelativePath, key);
+        filter |= Builders<FolderInfoModel>.Filter.Eq(x => x.AbsolutePath, key);
         if (ObjectId.TryParse(key, out ObjectId id))
         {
             filter |= Builders<FolderInfoModel>.Filter.Eq(x => x.Id, id);
@@ -125,6 +126,9 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
             {
                 return (false, AppLang.Folder_already_exists);
             }
+
+            if (Path.Exists(model.AbsolutePath))
+                return (false, "Thư mục đã được tạo rồi");
 
             await _dataDb.InsertOneAsync(model);
             return (true, AppLang.Create_successfully);
