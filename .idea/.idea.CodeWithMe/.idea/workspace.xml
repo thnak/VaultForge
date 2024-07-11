@@ -27,22 +27,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03d83e5f-4d67-4198-bfe1-571e68d7c423" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Business/Utils/Helper/FileHelpers.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Business/Utils/Helper/MultipartRequestHelper.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FolderContent.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Web/Web.Client/Services/KeyBoardListener.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Business/Business.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Interfaces/FileSystem/IFolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Interfaces/FileSystem/IFolderSystemBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FolderInfoModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FolderInfoModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/appsettings.Development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Web.Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Web.Client/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Web.Client/Services/StateContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Web.Client/Services/StateContainer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Web/Components/App.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Web/Components/App.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Web/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Web/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Web/Services/HostApplicationLifetimeEventsHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostApplicationLifetimeEventsHostedService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Web/Controllers/FileController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Web/Controllers/FileController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,6 +121,7 @@
       <updated>1720657356935</updated>
       <workItem from="1720657360159" duration="8885000" />
       <workItem from="1720680241997" duration="813000" />
+      <workItem from="1720693820962" duration="626000" />
     </task>
     <servers />
   </component>

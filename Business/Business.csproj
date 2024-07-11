@@ -14,12 +14,18 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="9.0.0-preview.6.24328.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="6.0.0-preview.4.21253.5" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.0-preview.6.24328.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
         <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0-preview.6.24327.7" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0-preview.6.24327.7" />
         <PackageReference Include="MongoDB.Driver" Version="2.27.0" />
         <PackageReference Include="MongoDB.EntityFrameworkCore" Version="8.0.3" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.0-preview1" />
+        <PackageReference Include="System.Text.Encodings.Web" Version="9.0.0-preview.6.24327.7" />
     </ItemGroup>
 
     <ItemGroup>

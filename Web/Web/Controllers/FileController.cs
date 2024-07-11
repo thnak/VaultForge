@@ -76,7 +76,7 @@ public class FileController : ControllerBase
 
     public class FormChunk
     {
-        public IFormFile Chunk { get; set; }
+        public required IFormFile Chunk { get; set; }
         public string ChunkIndexString { get; set; } = string.Empty;
         public string TotalChunksString { get; set; } = string.Empty;
         public string FileName { get; set; } = string.Empty;
