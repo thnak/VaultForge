@@ -20,6 +20,7 @@ internal class Program
         builder.Services.AddMudServices();
         builder.Services.AddBlazoredToast();
         builder.Services.AddSingleton<StateContainer>();
+        builder.Services.AddSingleton<KeyBoardListener>();
         builder.Services.AddAuthorizationCore();
         builder.Services.AddAuthenticationStateDeserialization();
         builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();

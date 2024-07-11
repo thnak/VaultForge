@@ -6,16 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <base href="/"/>
     <link rel="stylesheet" href="@Assets["app.css"]"/>
-    <link rel="icon" href="favicon.ico"/>
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.manifest">
+    <link rel="icon" href="@Assets["favicon.ico"]"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="@Assets["apple-touch-icon.png"]">
+    <link rel="icon" type="image/png" sizes="32x32" href="@Assets["favicon-32x32.png"]">
+    <link rel="icon" type="image/png" sizes="16x16" href="@Assets["favicon-16x16.png"]">
+    <link rel="manifest" href="@Assets["site.manifest"]">
     <link href="@Assets["Web.styles.css"]" rel="stylesheet">
     <link href="@Assets["css/googleapi.css"]" rel="stylesheet" type="text/css"/>
     <link href="@Assets["fontawesome-free-6.5.2-web/css/all.css"]" rel="stylesheet"/>
     <ImportMap />
-    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet"/>
+    <link href="@Assets["_content/MudBlazor/MudBlazor.min.css"]" rel="stylesheet"/>
     <HeadOutlet @rendermode="RenderMode"/>
     <title>Zme</title>
 </head>
@@ -42,10 +42,10 @@
 
 @* Loading Progress *@
 
-<script src="_framework/blazor.web.js"></script>
-<script src="_content/MudBlazor/MudBlazor.min.js"></script>
-<script src="js/app.js"></script>
-<script src="js/encryption.js"></script>
+<script src="@Assets["_framework/blazor.web.js"]"></script>
+<script src="@Assets["_content/MudBlazor/MudBlazor.min.js"]"></script>
+<script src="@Assets["js/app.js"]"></script>
+<script src="@Assets["js/encryption.js"]"></script>
 
 </body>
 

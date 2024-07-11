@@ -15,7 +15,7 @@ public class FolderInfoModel
     /// <summary>
     /// List of content in the folder, include their child folder
     /// </summary>
-    public List<string> Contents { get; set; } = [];
+    public List<FolderContent> Contents { get; set; } = [];
 
     /// <summary>
     /// Folder password

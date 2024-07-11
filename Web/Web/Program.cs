@@ -13,6 +13,7 @@ using Business.Data.Repositories.FileSystem;
 using Business.Data.Repositories.User;
 using Business.KeyManagement;
 using Business.Models;
+using Business.Services;
 using BusinessModels.General;
 using BusinessModels.Resources;
 using Microsoft.AspNetCore.Authentication;
@@ -74,7 +75,7 @@ public class Program
         builder.Services.AddSingleton<IMongoDbXmlKeyProtectorRepository, MongoDbXmlKeyProtectorRepository>();
 
 
-        builder.Services.AddHostedService<StartupService>();
+        // builder.Services.AddHostedService<StartupService>();
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
 
         #endregion

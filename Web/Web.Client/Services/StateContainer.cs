@@ -1,4 +1,3 @@
-using Microsoft.JSInterop;
 using MudBlazor;
 
 namespace Web.Client.Services;
@@ -55,11 +54,7 @@ public class StateContainer
         }
     }
 
-    [JSInvokable]
-    public static void ReceiveScreenshot(string dataUrl)
-    {
-        Console.WriteLine(dataUrl);
-    }
+    
 
     private void HandleChanged()
     {

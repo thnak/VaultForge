@@ -31,8 +31,20 @@
         <Reference Include="Microsoft.AspNetCore.DataProtection">
             <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.0-preview.5.24306.11\Microsoft.AspNetCore.DataProtection.dll</HintPath>
         </Reference>
+        <Reference Include="Microsoft.AspNetCore.Http.Features">
+          <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.0-preview.6.24328.4\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.AspNetCore.Mvc.Abstractions">
+          <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.0-preview.6.24328.4\Microsoft.AspNetCore.Mvc.Abstractions.dll</HintPath>
+        </Reference>
         <Reference Include="Microsoft.AspNetCore.Mvc.Core">
             <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.0-preview.5.24306.11\Microsoft.AspNetCore.Mvc.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.AspNetCore.WebUtilities">
+          <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.0-preview.6.24328.4\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.Net.Http.Headers">
+          <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.0-preview.6.24328.4\Microsoft.Net.Http.Headers.dll</HintPath>
         </Reference>
     </ItemGroup>
 

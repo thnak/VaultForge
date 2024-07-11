@@ -5,13 +5,13 @@ using Business.Data.Interfaces.FileSystem;
 using BusinessModels.General;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Business.Business.Repositories.FileSystem;
 
-public class FolderSystemBusinessLayer(IMemoryCache memoryCache, IFolderSystemDatalayer folderSystemService, IFileSystemBusinessLayer fileSystemService, IUserBusinessLayer userService, IOptions<AppSettings> options) : IFolderSystemBusinessLayer
+public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemService, IFileSystemBusinessLayer fileSystemService, IUserBusinessLayer userService, IOptions<AppSettings> options) : IFolderSystemBusinessLayer
 {
     private readonly string _workingDir = options.Value.FileFolder;
 
@@ -90,7 +90,12 @@ public class FolderSystemBusinessLayer(IMemoryCache memoryCache, IFolderSystemDa
         {
             foreach (var content in folder.Contents)
             {
-                fileSystemService.Delete(content);
+                if (content is { Type: FolderContentType.File or FolderContentType.HiddenFile })
+                    fileSystemService.Delete(content.Id);
+                else
+                {
+                    Delete(content.Id);
+                }
             }
         }
 
@@ -139,7 +144,11 @@ public class FolderSystemBusinessLayer(IMemoryCache memoryCache, IFolderSystemDa
         var res = fileSystemService.CreateAsync(file).Result;
         if (res.Item1)
         {
-            folder.Contents.Add(file.Id.ToString());
+            folder.Contents.Add(new FolderContent()
+            {
+                Id = file.Id.ToString(),
+                Type = FolderContentType.File
+            });
             UpdateAsync(folder);
         }
 
@@ -166,17 +175,51 @@ public class FolderSystemBusinessLayer(IMemoryCache memoryCache, IFolderSystemDa
         {
             foreach (var content in folder.Contents)
             {
-                var file = fileSystemService.Get(content);
-                if (file == null)
+                if (content is { Type: FolderContentType.File or FolderContentType.HiddenFile })
                 {
-                    Console.WriteLine($@"[Error] file by id {content} can not be found");
-                    continue;
-                }
+                    var file = fileSystemService.Get(content.Id);
+                    if (file == null)
+                    {
+                        Console.WriteLine($@"[Error] file by id {content} can not be found");
+                        continue;
+                    }
 
-                total += file.FileSize;
+                    total += file.FileSize;
+                }
+                else
+                {
+                    ObjectId id = ObjectId.Parse(content.Id);
+                    total += await GetFolderByteSize(e => e.Id == id, cancellationTokenSource);
+                }
             }
         }
 
         return total;
+    }
+
+    public async Task<(long, long)> GetFolderContentsSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
+    {
+        var folders = folderSystemService.Where(predicate, cancellationTokenSource);
+        long totalFolders = 0;
+        long totalFiles = 0;
+        await foreach (var folder in folders)
+        {
+            foreach (var content in folder.Contents)
+            {
+                if (content is { Type: FolderContentType.File or FolderContentType.HiddenFile })
+                {
+                    totalFiles++;
+                }
+                else
+                {
+                    ObjectId id = ObjectId.Parse(content.Id);
+                    var (numFolders, numFiles) = await GetFolderContentsSize(e => e.Id == id, cancellationTokenSource);
+                    totalFiles += numFiles;
+                    totalFolders += numFolders;
+                }
+            }
+        }
+
+        return (totalFolders, totalFiles);
     }
 }

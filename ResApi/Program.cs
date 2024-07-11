@@ -4,14 +4,19 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.RateLimiting;
 using Business.Authenticate.AuthorizationRequirement;
 using Business.Authenticate.TokenProvider;
+using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.User;
+using Business.Business.Repositories.FileSystem;
 using Business.Business.Repositories.User;
 using Business.Data.Interfaces;
+using Business.Data.Interfaces.FileSystem;
 using Business.Data.Interfaces.User;
 using Business.Data.Repositories;
+using Business.Data.Repositories.FileSystem;
 using Business.Data.Repositories.User;
 using Business.KeyManagement;
 using Business.Models;
+using Business.Services;
 using BusinessModels.General;
 using BusinessModels.Resources;
 using Microsoft.AspNetCore.Authentication;
@@ -58,7 +63,14 @@ public abstract class Program
         builder.Services.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
         builder.Services.AddSingleton<IUserDataLayer, UserDataLayer>();
         builder.Services.AddSingleton<IUserBusinessLayer, UserBusinessLayer>();
+        builder.Services.AddSingleton<IFolderSystemDatalayer, FolderSystemDatalayer>();
+        builder.Services.AddSingleton<IFolderSystemBusinessLayer, FolderSystemBusinessLayer>();
+        builder.Services.AddSingleton<IFileSystemDatalayer, FileSystemDatalayer>();
+        builder.Services.AddSingleton<IFileSystemBusinessLayer, FileSystemBusinessLayer>();
+        
         builder.Services.AddSingleton<IMongoDbXmlKeyProtectorRepository, MongoDbXmlKeyProtectorRepository>();
+        
+        builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
 
         #region Cultures
 

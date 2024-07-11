@@ -27,18 +27,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03d83e5f-4d67-4198-bfe1-571e68d7c423" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/indexLayout.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/config/applicationhost.config" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Business/Utils/Helper/FileHelpers.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Business/Utils/Helper/MultipartRequestHelper.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FolderContent.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Web/Web.Client/Services/KeyBoardListener.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Business/Business.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/BusinessModels.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/BusinessModels.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Protector/Protector.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Protector/Protector.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/ResApi.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/ResApi.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Web.Client/Web.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Web.Client/Web.Client.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Interfaces/FileSystem/IFolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Interfaces/FileSystem/IFolderSystemBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FolderInfoModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FolderInfoModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/appsettings.Development.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Web.Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Web.Client/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Web.Client/Services/StateContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Web.Client/Services/StateContainer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/Web/Components/App.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Web/Components/App.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Web/Web/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Web/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Web/Web.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Web/Web.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Web/Services/HostApplicationLifetimeEventsHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostApplicationLifetimeEventsHostedService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,13 +53,36 @@
     <option name="autoShow" value="false" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="false" />
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Publish to folder.Unnamed.executor": "Run",
-    "node.js.selected.package.tslint": "(autodetect)"
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2j4rn44A4JSWZ95nQjLrwIOTFU0" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.ResApi.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.Web.executor&quot;: &quot;Debug&quot;,
+    &quot;Publish to folder.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\thanh\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\thanh\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\thanh\\AppData\\Local\\Symbols\\src&quot;
+    ]
   }
-}]]></component>
-  <component name="RunManager" selected="Publish to folder.Unnamed">
+}</component>
+  <component name="RunManager" selected=".NET Launch Settings Profile.Web">
     <configuration name="Unnamed" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" platform="Any CPU" runtime="win-x64" self_contained="true" target_folder="$PROJECT_DIR$/Web/Web/bin/Release/net9.0/win-x64/publish" target_framework="net9.0" uuid_high="7968993561587763531" uuid_low="-5554976231509829006" />
       <method v="2" />
@@ -75,17 +102,48 @@
         <option name="Build" />
       </method>
     </configuration>
+    <configuration name="Web" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Web/Web/Web.csproj" />
+      <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
+      <option name="LAUNCH_PROFILE_NAME" value="http" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <browser name="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" with-js-debugger="true" />
+      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+      <option name="SEND_DEBUG_REQUEST" value="1" />
+      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue=".NET Launch Settings Profile.ResApi" />
+      <item itemvalue=".NET Launch Settings Profile.Web" />
       <item itemvalue="Publish to folder.Unnamed" />
     </list>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="03d83e5f-4d67-4198-bfe1-571e68d7c423" name="Changes" comment="" />
+      <created>1720657356935</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1720657356935</updated>
+      <workItem from="1720657360159" duration="8885000" />
+      <workItem from="1720680241997" duration="813000" />
+    </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="false" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
 </project>
