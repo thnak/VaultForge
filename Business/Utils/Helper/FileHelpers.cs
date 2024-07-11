@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Reflection;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
 
@@ -56,7 +55,7 @@ public static class FileHelpers
         // a BOM as their content.
         if (formFile.Length == 0)
         {
-            modelState.AddModelError(formFile.Name, $"{fieldDisplayName}({trustedFileNameForDisplay}) is empty.");
+            modelState.AddModelError(formFile.Name, $@"{fieldDisplayName}({trustedFileNameForDisplay}) is empty.");
 
             return [];
         }
@@ -65,8 +64,7 @@ public static class FileHelpers
         {
             var megabyteSizeLimit = sizeLimit / 1048576;
             modelState.AddModelError(formFile.Name,
-                $"{fieldDisplayName}({trustedFileNameForDisplay}) exceeds " +
-                $"{megabyteSizeLimit:N1} MB.");
+                $@"{fieldDisplayName}({trustedFileNameForDisplay}) exceeds " + $@"{megabyteSizeLimit:N1} MB.");
 
             return [];
         }
@@ -79,18 +77,18 @@ public static class FileHelpers
             // Check the content length in case the file's only
             // content was a BOM and the content is actually
             // empty after removing the BOM.
-            if (memoryStream.Length == 0) modelState.AddModelError(formFile.Name, $"{fieldDisplayName}({trustedFileNameForDisplay}) is empty.");
+            if (memoryStream.Length == 0) modelState.AddModelError(formFile.Name, $@"{fieldDisplayName}({trustedFileNameForDisplay}) is empty.");
 
             if (!memoryStream.IsValidFileExtensionAndSignature(formFile.FileName, permittedExtensions))
-                modelState.AddModelError(formFile.Name, $"{fieldDisplayName}({trustedFileNameForDisplay}) file type isn't permitted or the file's signature doesn't match the file's extension.");
+                modelState.AddModelError(formFile.Name, $@"{fieldDisplayName}({trustedFileNameForDisplay}) file type isn't permitted or the file's signature doesn't match the file's extension.");
             else
                 return memoryStream.ToArray();
         }
         catch (Exception ex)
         {
             modelState.AddModelError(formFile.Name,
-                $"{fieldDisplayName}({trustedFileNameForDisplay}) upload failed. " +
-                $"Please contact the Help Desk for support. Error: {ex.HResult}");
+                $@"{fieldDisplayName}({trustedFileNameForDisplay}) upload failed. " +
+                $@"Please contact the Help Desk for support. Error: {ex.HResult}");
             // Log the exception
         }
 
@@ -109,19 +107,19 @@ public static class FileHelpers
             // Check if the file is empty or exceeds the size limit.
             if (memoryStream.Length == 0)
             {
-                modelState.AddModelError("File", "The file is empty.");
+                modelState.AddModelError("File", @"The file is empty.");
             }
             else if (memoryStream.Length > sizeLimit)
             {
                 var megabyteSizeLimit = sizeLimit / 1048576;
-                modelState.AddModelError("File", $"The file exceeds {megabyteSizeLimit:N1} MB.");
+                modelState.AddModelError("File", $@"The file exceeds {megabyteSizeLimit:N1} MB.");
             }
             else if (permittedExtensions.Any())
             {
                 var fileName = contentDisposition.FileName.Value;
                 if (fileName == null || !memoryStream.IsValidFileExtensionAndSignature(fileName, permittedExtensions))
                 {
-                    modelState.AddModelError("File", "The file type isn't permitted or the file's signature doesn't match the file's extension.");
+                    modelState.AddModelError("File", @"The file type isn't permitted or the file's signature doesn't match the file's extension.");
                 }
             }
             else
@@ -131,7 +129,7 @@ public static class FileHelpers
         }
         catch (Exception ex)
         {
-            modelState.AddModelError("File", "The upload failed. Please contact the Help Desk " + $" for support. Error: {ex.Message}");
+            modelState.AddModelError("File", @"The upload failed. Please contact the Help Desk " + $@" for support. Error: {ex.Message}");
             // Log the exception
         }
 
@@ -150,7 +148,7 @@ public static class FileHelpers
         }
         catch (Exception ex)
         {
-            modelState.AddModelError("File", "The upload failed. Please contact the Help Desk " + $" for support. Error: {ex.Message}");
+            modelState.AddModelError("File", @"The upload failed. Please contact the Help Desk " + $@" for support. Error: {ex.Message}");
             return 0;
         }
     }
