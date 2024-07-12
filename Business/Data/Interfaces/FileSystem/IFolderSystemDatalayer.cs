@@ -4,6 +4,7 @@ namespace Business.Data.Interfaces.FileSystem;
 
 public interface IFolderSystemDatalayer : IMongoDataInitializer, IDataLayerRepository<FolderInfoModel>
 {
+    FolderInfoModel? Get(string username, string relative, bool hashed = true);
     public (FolderInfoModel?, string) GetWithPassword(string id, string password);
     public (bool, string, string) CreateFolder(FolderInfoModel folderInfoModel);
     public string GetParentFolder(string id);

@@ -18,6 +18,16 @@ public class FolderInfoModel
     public List<FolderContent> Contents { get; set; } = [];
 
     /// <summary>
+    /// The one that own this folder
+    /// </summary>
+    public string Username { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Share this folder to other user
+    /// </summary>
+    public List<string> SharedTo { get; set; } = [];
+
+    /// <summary>
     /// Folder password
     /// </summary>
     public string Password { get; set; } = string.Empty;

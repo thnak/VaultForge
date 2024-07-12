@@ -3,11 +3,13 @@ using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.User;
 using Business.Data.Interfaces.FileSystem;
 using BusinessModels.General;
+using BusinessModels.People;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Protector.Utils;
 
 namespace Business.Business.Repositories.FileSystem;
 
@@ -102,10 +104,16 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return res;
     }
 
+    public FolderInfoModel? Get(string username, string relativePath, bool hashed = true)
+    {
+        username = hashed ? username : username.ComputeSha256Hash();
+        var user = GetUser(username);
+        return folderSystemService.Get(user?.UserName ?? string.Empty, relativePath);
+    }
+
     public FolderInfoModel? GetRoot(string username)
     {
-        if (string.IsNullOrEmpty(username)) username = "Anonymous";
-        var user = userService.Get(username);
+        var user = GetUser(username);
         if (user == null) return default;
 
         var folder = Get(user.Folder);
@@ -115,7 +123,8 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
             {
                 RelativePath = "/",
                 FolderName = "Home",
-                ModifiedDate = DateTime.UtcNow
+                ModifiedDate = DateTime.UtcNow,
+                Username = user.UserName
             };
             var res = CreateAsync(folder).Result;
             if (res.Item1)
@@ -222,4 +231,20 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
 
         return (totalFolders, totalFiles);
     }
+
+    #region Private Mothods
+
+    /// <summary>
+    /// Get user. if user by the name that is not found return Anonymous user
+    /// </summary>
+    /// <param name="username"></param>
+    /// <returns></returns>
+    private UserModel? GetUser(string username)
+    {
+        if (string.IsNullOrEmpty(username)) username = "Anonymous";
+        var user = userService.Get(username);
+        return user;
+    }
+
+    #endregion
 }

@@ -5,7 +5,9 @@ namespace Business.Business.Interfaces.FileSystem;
 
 public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInfoModel>
 {
+    public FolderInfoModel? Get(string username, string relativePath, bool hashed = true);
     public FolderInfoModel? GetRoot(string username);
+    
     public (bool, string) CreateFile(FolderInfoModel folder, FileInfoModel file);
     public (bool, string) CreateFile(string userName, FileInfoModel file);
 

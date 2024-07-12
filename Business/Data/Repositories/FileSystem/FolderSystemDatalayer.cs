@@ -21,7 +21,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
         await _semaphore.WaitAsync();
         try
         {
-            var keys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RelativePath);
+            var keys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RelativePath).Ascending(x => x.Username);
             var indexModel = new CreateIndexModel<FolderInfoModel>(keys, new CreateIndexOptions() { Unique = true });
 
             var searchIndexKeys = Builders<FolderInfoModel>.IndexKeys.Text(x => x.FolderName).Text(x => x.RelativePath);
@@ -45,6 +45,14 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
         {
             _semaphore.Release();
         }
+    }
+
+    public FolderInfoModel? Get(string username, string relative, bool hashed = true)
+    {
+        username = hashed ? username : username.ComputeSha256Hash();
+        var filter = Builders<FolderInfoModel>.Filter.Eq(x => x.RelativePath, relative);
+        filter &= Builders<FolderInfoModel>.Filter.Eq(x => x.Username, username);
+        return _dataDb.Find(filter).FirstOrDefault();
     }
 
     public Task<long> GetDocumentSizeAsync(CancellationTokenSource? cancellationTokenSource = default)

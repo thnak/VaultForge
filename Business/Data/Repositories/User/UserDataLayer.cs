@@ -21,12 +21,10 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
     {
         try
         {
-            var nameKey = Builders<UserModel>.IndexKeys.Descending(x => x.UserName);
-            var folderKey = Builders<UserModel>.IndexKeys.Descending(x => x.Folder);
+            var nameKey = Builders<UserModel>.IndexKeys.Ascending(x => x.UserName);
 
 
             var indexModel = new CreateIndexModel<UserModel>(nameKey, new CreateIndexOptions() { Unique = true });
-            var folderModel = new CreateIndexModel<UserModel>(folderKey, new CreateIndexOptions() { Unique = true });
 
             var searchIndexKeys = Builders<UserModel>.IndexKeys.Text(x => x.UserName).Text(x => x.FullName);
             var searchIndexOptions = new CreateIndexOptions
@@ -35,7 +33,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
             };
 
             var searchIndexModel = new CreateIndexModel<UserModel>(searchIndexKeys, searchIndexOptions);
-            await _dataDb.Indexes.CreateManyAsync([indexModel, folderModel, searchIndexModel]);
+            await _dataDb.Indexes.CreateManyAsync([indexModel, searchIndexModel]);
 
             var defaultUser = "System".ComputeSha256Hash();
             var system = Get(defaultUser);
