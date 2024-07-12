@@ -8,6 +8,12 @@ public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInf
     public FolderInfoModel? Get(string username, string relativePath, bool hashed = true);
     public FolderInfoModel? GetRoot(string username);
     
+    /// <summary>
+    /// Regis new file with auto init absolute path
+    /// </summary>
+    /// <param name="folder"></param>
+    /// <param name="file"></param>
+    /// <returns></returns>
     public (bool, string) CreateFile(FolderInfoModel folder, FileInfoModel file);
     public (bool, string) CreateFile(string userName, FileInfoModel file);
 

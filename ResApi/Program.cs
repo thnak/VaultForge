@@ -59,6 +59,7 @@ public abstract class Program
 
         builder.Services.Configure<DbSettingModel>(builder.Configuration.GetSection("DBSetting"));
         builder.Services.Configure<AppCertificate>(builder.Configuration.GetSection("AppCertificate"));
+        builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
         builder.Services.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
         builder.Services.AddSingleton<IUserDataLayer, UserDataLayer>();

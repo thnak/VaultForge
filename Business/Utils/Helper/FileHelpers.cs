@@ -137,8 +137,8 @@ public static class FileHelpers
         return [];
     }
 
-    public static async Task<long> ProcessStreamedFileAndSave(this MultipartSection section, string path, ContentDispositionHeaderValue contentDisposition,
-        ModelStateDictionary modelState, long sizeLimit, params string[] permittedExtensions)
+    public static async Task<long> ProcessStreamedFileAndSave(this MultipartSection section, string path,
+        ModelStateDictionary modelState)
     {
         try
         {

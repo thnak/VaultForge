@@ -159,6 +159,8 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
                 Type = FolderContentType.File
             });
             UpdateAsync(folder);
+            var _folder = Get(folder.Id.ToString())!;
+            folder.Contents = _folder.Contents;
         }
 
         return res;

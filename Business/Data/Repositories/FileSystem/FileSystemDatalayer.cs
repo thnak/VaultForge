@@ -87,7 +87,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
     {
         var filter = Builders<FileInfoModel>.Filter.Eq(x => x.RelativePath, key);
         filter |= Builders<FileInfoModel>.Filter.Eq(x => x.AbsolutePath, key);
-        
+
         if (ObjectId.TryParse(key, out ObjectId id))
         {
             filter |= Builders<FileInfoModel>.Filter.Eq(x => x.Id, id);
@@ -124,6 +124,8 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
             var file = Get(model.Id.ToString());
             if (file == null)
             {
+                model.CreatedDate = DateTime.UtcNow;
+                model.ModifiedDate = model.CreatedDate;
                 await _fileDataDb.InsertOneAsync(model);
                 return (true, AppLang.Create_successfully);
             }
@@ -147,9 +149,33 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> UpdateAsync(FileInfoModel model)
+    public async Task<(bool, string)> UpdateAsync(FileInfoModel model)
     {
-        throw new NotImplementedException();
+        await _semaphore.WaitAsync();
+        try
+        {
+            var file = Get(model.Id.ToString());
+            if (file == null)
+            {
+                return (false, AppLang.File_could_not_be_found);
+            }
+            else
+            {
+                model.CreatedDate = DateTime.UtcNow;
+                model.ModifiedDate = model.CreatedDate;
+                var filter = Builders<FileInfoModel>.Filter.Eq(x => x.Id, model.Id);
+                await _fileDataDb.ReplaceOneAsync(filter, model);
+                return (true, AppLang.Create_successfully);
+            }
+        }
+        catch (Exception e)
+        {
+            return (false, e.Message);
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
     }
 
     public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FileInfoModel> models, CancellationTokenSource? cancellationTokenSource = default)

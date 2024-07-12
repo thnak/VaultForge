@@ -153,9 +153,32 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> UpdateAsync(FolderInfoModel model)
+    public async Task<(bool, string)> UpdateAsync(FolderInfoModel model)
     {
-        throw new NotImplementedException();
+        await _semaphore.WaitAsync();
+        try
+        {
+            var file = Get(model.Id.ToString());
+            if (file == null)
+            {
+                return (false, AppLang.Folder_could_not_be_found);
+            }
+            else
+            {
+                model.ModifiedDate = DateTime.UtcNow;
+                var filter = Builders<FolderInfoModel>.Filter.Eq(x => x.Id, model.Id);
+                await _dataDb.ReplaceOneAsync(filter, model);
+                return (true, AppLang.Create_successfully);
+            }
+        }
+        catch (Exception e)
+        {
+            return (false, e.Message);
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
     }
 
     public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FolderInfoModel> models,
