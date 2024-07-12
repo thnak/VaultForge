@@ -23,30 +23,23 @@ public class MongoDataLayerContext : IMongoDataLayerContext
         {
             Scheme = ConnectionStringScheme.MongoDB,
             Server = new MongoServerAddress(settings.Value.ConnectionString, settings.Value.Port),
-            Compressors = new List<CompressorConfiguration>
-            {
-                new(CompressorType.ZStandard),
-                new(CompressorType.Zlib),
-                new(CompressorType.Snappy),
-                new(CompressorType.Noop)
-            },
             Credential = new MongoCredential("SCRAM-SHA-1", identity, evidence)
         };
 
-#if DEBUG
-        setup.Compressors =
-        [
-            new CompressorConfiguration(CompressorType.ZStandard),
-            new CompressorConfiguration(CompressorType.Zlib),
-            new CompressorConfiguration(CompressorType.Snappy),
-            new CompressorConfiguration(CompressorType.Noop)
-        ];
-#else
-        setup.Compressors =
-        [
-            new CompressorConfiguration(CompressorType.Noop)
-        ];
-#endif
+// #if DEBUG
+//         setup.Compressors =
+//         [
+//             new CompressorConfiguration(CompressorType.ZStandard),
+//             new CompressorConfiguration(CompressorType.Zlib),
+//             new CompressorConfiguration(CompressorType.Snappy),
+//             new CompressorConfiguration(CompressorType.Noop)
+//         ];
+// #else
+//         setup.Compressors =
+//         [
+//             new CompressorConfiguration(CompressorType.Noop)
+//         ];
+// #endif
 
         var client = new MongoClient(setup);
         var dbContext = client.GetDatabase(dbName);

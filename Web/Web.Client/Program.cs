@@ -38,7 +38,12 @@ internal class Program
 #endif
             return new BaseHttpClientService(httpClient);
         });
-        builder.Services.AddScoped(_ => new HttpClient(new CookieHandler()));
+        builder.Services.AddScoped(_ =>
+        {
+            var httpClient = new HttpClient(new CookieHandler());
+            httpClient.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+            return httpClient;
+        });
         var host = builder.Build();
 
         var defaultCulture = AllowedCulture.SupportedCultures.Select(x => x.Name).ToArray().First();

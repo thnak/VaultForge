@@ -10,14 +10,15 @@
         <Found Context="routeData">
             <ErrorBoundary>
                 <ChildContent>
+                    
                     <AuthorizeRouteView DefaultLayout="@typeof(MainLayout)" RouteData="@routeData">
-                        <Authorizing>
-                            <Loading/>
-                        </Authorizing>
+                        
                         <NotAuthorized>
                             <AccessDenied/>
                         </NotAuthorized>
+                        
                     </AuthorizeRouteView>
+                    
                 </ChildContent>
                 <ErrorContent Context="ex">
                     <ErrorPage ErrorMessage="@EncodeException(ex)"/>

@@ -48,7 +48,7 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         builder.WebHost.UseKestrel(option => option.AddServerHeader = false);
-
+        builder.WebHost.UseIIS();
         // Add services to the container.
         builder.Services.AddRazorComponents()
             .AddInteractiveWebAssemblyComponents()
