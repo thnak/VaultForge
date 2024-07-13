@@ -1,6 +1,11 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
@@ -22,7 +27,136 @@ public static class FileHelpers
         { ".png", [[0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]] },
         { ".jpeg", [[0xFF, 0xD8, 0xFF, 0xE0], [0xFF, 0xD8, 0xFF, 0xE2], [0xFF, 0xD8, 0xFF, 0xE3]] },
         { ".jpg", [[0xFF, 0xD8, 0xFF, 0xE0], [0xFF, 0xD8, 0xFF, 0xE1], [0xFF, 0xD8, 0xFF, 0xE8]] },
-        { ".zip", [[0x50, 0x4B, 0x03, 0x04], "PKLITE"u8.ToArray(), "PKSpX"u8.ToArray(), [0x50, 0x4B, 0x05, 0x06], [0x50, 0x4B, 0x07, 0x08], "WinZip"u8.ToArray()] }
+        { ".zip", [[0x50, 0x4B, 0x03, 0x04], "PKLITE"u8.ToArray(), "PKSpX"u8.ToArray(), [0x50, 0x4B, 0x05, 0x06], [0x50, 0x4B, 0x07, 0x08], "WinZip"u8.ToArray()] },
+        { ".bmp", [[0x42, 0x4D]] },
+        { ".pdf", [[0x25, 0x50, 0x44, 0x46]] },
+        { ".doc", [[0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1]] },
+        { ".xls", [[0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1]] },
+        { ".ppt", [[0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1]] },
+        { ".docx", [[0x50, 0x4B, 0x03, 0x04]] },
+        {
+            ".xlsx", [[0x50, 0x4B, 0x03, 0x04]]
+        },
+        {
+            ".pptx", [[0x50, 0x4B, 0x03, 0x04]]
+        },
+        {
+            ".tif", [
+                [0x49, 0x49, 0x2A, 0x00],
+                [0x4D, 0x4D, 0x00, 0x2A]
+            ]
+        },
+        {
+            ".tiff", [
+                [0x49, 0x49, 0x2A, 0x00],
+                [0x4D, 0x4D, 0x00, 0x2A]
+            ]
+        },
+
+        { ".mpeg", [[0x00, 0x00, 0x01, 0xBA], [0x00, 0x00, 0x01, 0xB3]] },
+        { ".mp4", [[0x00, 0x00, 0x01, 0xBA]] },
+        { ".avi", [[0x52, 0x49, 0x46, 0x46]] },
+        { ".wmv", [[0x30, 0x26, 0xB2, 0x75, 0x8E, 0x66, 0xCF, 0x11, 0xA6, 0xD9, 0x00, 0xAA, 0x00, 0x62, 0xCE, 0x6C]] },
+        { ".mp3", [[0x00, 0x00, 0x01, 0xBA]] },
+        { ".wav", [[0x52, 0x49, 0x46, 0x46]] },
+        { ".exe", [[0x4D, 0x5A]] },
+        { ".xml", [[0x3C, 0x3F, 0x78, 0x6D, 0x6C]] },
+        { ".html", [[0x68, 0x74, 0x6D, 0x6C, 0x3E]] },
+        {
+            ".flv", [[0x46, 0x4C, 0x56, 0x01]]
+        },
+        {
+            ".mkv", [[0x1A, 0x45, 0xDF, 0xA3]]
+        },
+        {
+            ".flac", [[0x66, 0x4C, 0x61, 0x43]]
+        },
+        {
+            ".ogg", [[0x4F, 0x67, 0x67, 0x53]]
+        },
+        {
+            ".wma", [[0x30, 0x26, 0xB2, 0x75, 0x8E, 0x66, 0xCF, 0x11, 0xA6, 0xD9, 0x00, 0xAA, 0x00, 0x62, 0xCE, 0x6C]]
+        },
+        {
+            ".json", [[0x7B]]
+        },
+        {
+            ".csv", [[0xEF, 0xBB, 0xBF]]
+        },
+        {
+            ".sqlite", [[0x53, 0x51, 0x4C, 0x69, 0x74, 0x65, 0x20, 0x66]]
+        },
+        {
+            ".rtf", [[0x7B, 0x5C, 0x72, 0x74, 0x66, 0x31]]
+        },
+        {
+            ".dll", [[0x4D, 0x5A]]
+        },
+    };
+
+    private static readonly Dictionary<string, string> MimeTypeMappings = new()
+    {
+        // Text files
+        { ".txt", "text/plain" },
+        { ".html", "text/html" },
+        { ".htm", "text/html" },
+        { ".css", "text/css" },
+        { ".csv", "text/csv" },
+        { ".xml", "application/xml" },
+        { ".json", "application/json" },
+
+        // Image files
+        { ".jpeg", "image/jpeg" },
+        { ".jpg", "image/jpeg" },
+        { ".png", "image/png" },
+        { ".gif", "image/gif" },
+        { ".bmp", "image/bmp" },
+        { ".tiff", "image/tiff" },
+        { ".tif", "image/tiff" },
+        { ".ico", "image/x-icon" },
+
+        // Audio files
+        { ".mp3", "audio/mpeg" },
+        { ".wav", "audio/wav" },
+        { ".ogg", "audio/ogg" },
+        { ".flac", "audio/flac" },
+
+        // Video files
+        { ".mp4", "video/mp4" },
+        { ".mkv", "video/x-matroska" },
+        { ".avi", "video/x-msvideo" },
+        { ".mpeg", "video/mpeg" },
+        { ".mpg", "video/mpeg" },
+
+        // Document files
+        { ".pdf", "application/pdf" },
+        { ".doc", "application/msword" },
+        { ".docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
+        { ".xls", "application/vnd.ms-excel" },
+        { ".xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" },
+        { ".ppt", "application/vnd.ms-powerpoint" },
+        { ".pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation" },
+
+        // Application files
+        { ".exe", "application/octet-stream" },
+        { ".dll", "application/octet-stream" },
+        { ".zip", "application/zip" },
+        { ".tar", "application/x-tar" },
+        { ".rar", "application/x-rar-compressed" },
+        { ".7z", "application/x-7z-compressed" },
+        { ".gz", "application/gzip" },
+
+        // Script files
+        { ".js", "application/javascript" },
+        { ".php", "application/x-httpd-php" },
+        { ".sh", "application/x-sh" },
+        { ".pl", "application/x-perl" },
+        { ".py", "application/x-python-code" },
+        { ".rb", "application/x-ruby" },
+        { ".ps1", "application/x-powershell" },
+
+        // Other
+        { ".bin", "application/octet-stream" }
     };
 
     // **WARNING!**
@@ -137,20 +271,32 @@ public static class FileHelpers
         return [];
     }
 
-    public static async Task<long> ProcessStreamedFileAndSave(this MultipartSection section, string path,
+    public static async Task<(long, string)> ProcessStreamedFileAndSave(this MultipartSection section, string path,
         ModelStateDictionary modelState)
     {
         try
         {
             await using var targetStream = File.Create(path);
+            using MemoryStream memoryStream = new MemoryStream(FileSignature.Values.Max(x => x.Count));
+            await section.Body.CopyToAsync(memoryStream);
+
+            if (memoryStream.CanSeek)
+                memoryStream.Seek(0, SeekOrigin.Begin);
+
+            await memoryStream.CopyToAsync(targetStream);
+
             await section.Body.CopyToAsync(targetStream);
+
+            var fileExtension = memoryStream.GetCorrectExtension(section.ContentType);
+            var contentType = fileExtension.GetMimeType();
+
             var length = new FileInfo(path).Length;
-            return length;
+            return (length, contentType);
         }
         catch (Exception ex)
         {
             modelState.AddModelError("File", @"The upload failed. Please contact the Help Desk " + $@" for support. Error: {ex.Message}");
-            return 0;
+            return (0, string.Empty);
         }
     }
 
@@ -211,5 +357,38 @@ public static class FileHelpers
         var headerBytes = reader.ReadBytes(signatures.Max(m => m.Length));
 
         return signatures.Any(signature => headerBytes.Take(signature.Length).SequenceEqual(signature));
+    }
+
+    private static string GetCorrectExtension(this Stream stream, string? defaultType = null)
+    {
+        if (stream.CanSeek)
+            stream.Seek(0, SeekOrigin.Begin);
+        try
+        {
+            using BinaryReader reader = new BinaryReader(stream);
+            var headerBytes = reader.ReadBytes(FileSignature.Values.SelectMany(x => x).Max(m => m.Length));
+
+            foreach (var ext in FileSignature.Keys)
+            {
+                var signatures = FileSignature[ext];
+                var signature = signatures.Any(signature => headerBytes.Take(signature.Length).SequenceEqual(signature));
+                if (signature)
+                {
+                    return ext;
+                }
+            }
+
+            return defaultType ?? string.Empty;
+        }
+        finally
+        {
+            if (stream.CanSeek)
+                stream.Seek(0, SeekOrigin.Begin);
+        }
+    }
+
+    public static string GetMimeType(this string fileExtension)
+    {
+        return MimeTypeMappings.GetValueOrDefault(fileExtension.ToLower(), "application/octet-stream"); // Default MIME type
     }
 }

@@ -47,7 +47,11 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        builder.WebHost.UseKestrel(option => option.AddServerHeader = false);
+        builder.WebHost.UseKestrel(option =>
+        {
+            option.AddServerHeader = false;
+            option.Limits.MaxRequestBodySize = Int64.MaxValue;
+        });
         builder.WebHost.UseIIS();
         // Add services to the container.
         builder.Services.AddRazorComponents()

@@ -49,6 +49,7 @@ public abstract class Program
         var builder = WebApplication.CreateBuilder(args);
         builder.WebHost.UseKestrel(option => {
             option.AddServerHeader = false;
+            option.Limits.MaxRequestBodySize = Int64.MaxValue;
         });
 
         // Add services to the container.

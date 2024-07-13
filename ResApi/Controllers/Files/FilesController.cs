@@ -55,7 +55,6 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     {
         try
         {
-            List<string> files = [];
             if (string.IsNullOrEmpty(Request.ContentType) || !MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
             {
                 ModelState.AddModelError("File", "The request couldn't be processed (Error 1).");
@@ -100,11 +99,9 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
                         FileInfoModel file = new FileInfoModel()
                         {
                             FileName = trustedFileNameForDisplay,
-                            ContentType = section.ContentType ?? string.Empty
                         };
                         folderServe.CreateFile(folder, file);
-                        file.FileSize = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState);
-
+                        (file.FileSize, file.ContentType) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState);
                         await fileServe.UpdateAsync(file);
                     }
                 }
