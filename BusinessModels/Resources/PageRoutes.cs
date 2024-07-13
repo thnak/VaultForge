@@ -5,7 +5,7 @@ public static class PageRoutes
     public static class Error
     {
         public const string Name = "/Error";
-        public const string ErrorPage = Name + "/page";
+        public const string ErrorPage = Name + "/error-page";
         public const string NotFound = Name + "/404";
         public const string UnAuthorized = Name + "/403";
     }
@@ -13,6 +13,12 @@ public static class PageRoutes
     public static class Home
     {
         public const string Root = "/home";
+    }
+
+    public static class Drive
+    {
+        public const string Name = "/drive";
+        public const string Index = Name + "/page";
     }
 
     public static class Account
