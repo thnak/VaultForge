@@ -13,15 +13,25 @@ public static class StringExtension
             self = self.Replace($"{{{index}}}", text);
             index++;
         }
+
         return self;
     }
+
     public static T? DecodeBase64String<T>(this string base64String)
     {
-        var base64Bytes = Convert.FromBase64String(base64String);
-        var plainText = Encoding.Unicode.GetString(base64Bytes);
-        var json = JsonSerializer.Deserialize<T>(plainText);
-        return json;
+        try
+        {
+            var base64Bytes = Convert.FromBase64String(base64String);
+            var plainText = Encoding.Unicode.GetString(base64Bytes);
+            var json = JsonSerializer.Deserialize<T>(plainText);
+            return json;
+        }
+        catch (Exception)
+        {
+            return default;
+        }
     }
+
     public static string DecodeBase64String(this string base64String)
     {
         if (string.IsNullOrEmpty(base64String)) return string.Empty;
@@ -72,6 +82,7 @@ public static class StringExtension
             stringBuilder.Append(Encode2Base64String(mess));
             stringBuilder.Append('/');
         }
+
         return stringBuilder.ToString();
     }
 }

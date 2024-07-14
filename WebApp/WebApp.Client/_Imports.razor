@@ -20,7 +20,12 @@
 @using Blazored.Toast.Services
 @using Microsoft.AspNetCore.Components.Authorization
 @using WebApp.Client.Services.UserInterfaces
+@using WebApp.Client.Services.Http;
 
 @inject StateContainer CustomStateContainer
+@inject BaseHttpClientService ApiService
 @inject IJSRuntime JsRuntime
+
+@inject ProtectedLocalStorage ProtectedLocalStorageService
+@inject ProtectedLocalStorage ProtectedSessionStorageService
 @inject NavigationManager Navigation

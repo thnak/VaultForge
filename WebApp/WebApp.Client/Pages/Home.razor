@@ -1,7 +1,11 @@
-﻿@page "/"
+﻿@attribute [Route("/")]
+@attribute [Route(PageRoutes.Home.Root)]
+@attribute [Authorize]
 
-<PageTitle>Home</PageTitle>
+<PageTitle>@AppLang.Home_page</PageTitle>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<MudButton OnClick="@Crypting">Encrypt</MudButton>
+<MudButton OnClick="@DeCrypting">DeEncrypt</MudButton>
+
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@GetWeather">Get Weather</MudButton>

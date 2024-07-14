@@ -1,0 +1,157 @@
+﻿
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #ececec;
+}
+
+/*------------ Login container ------------*/
+
+.box-area {
+    width: 930px;
+}
+
+/*------------ Right box ------------*/
+
+.right-box {
+    padding: 40px 30px 40px 40px;
+}
+
+/*------------ Custom Placeholder ------------*/
+
+::placeholder {
+    font-size: 16px;
+}
+
+.rounded-4 {
+    border-radius: 20px;
+}
+
+.rounded-5 {
+    border-radius: 30px;
+}
+
+.sign-up-form {
+    align-self: center;
+    justify-content: center;
+    height: 50vh;
+    max-height: 1200px;
+    width: 140vmin;
+    max-width: 1400px;
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 2rem;
+}
+
+.sign-up-form > div {
+    flex: 1;
+}
+
+/*noinspection CssUnresolvedCustomProperty*/
+.sign-up-form > div:first-child {
+    border-radius: 1rem;
+    background-color: var(--mud-palette-primary);
+}
+
+.sign-up-form > div:last-child {
+}
+
+@media screen and (max-width: 800px) {
+    .sign-up-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sign-up-form > div:first-child {
+        flex: 1;
+    }
+
+    .sign-up-form > div:last-child {
+        flex: 4;
+    }
+}
+
+.fs-2 {
+    font-size: calc(1.325rem + .9vw) !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-white {
+    color: white;
+}
+
+.text-wrap {
+    text-wrap: wrap;
+}
+
+.firework-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.firework {
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    /*border-radius: 50%;*/
+    position: absolute;
+    animation: fly 10s linear infinite;
+}
+
+@keyframes fly {
+    0% {
+        transform: translateY(100vh) scale(1);
+    }
+    100% {
+        transform: translateY(-10vh) scale(0.5);
+    }
+}
+
+.welcome-back {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcome-back > * {
+    text-align: center;
+}
+
+.welcome-back > span:first-child {
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.main-form {
+    height: 100%;
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    justify-content: center;
+}
+
+.form > span:first-child {
+    font-size: x-large;
+    font-weight: bold;
+    text-align: center;
+}
+
+.form {
+    align-self: center;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

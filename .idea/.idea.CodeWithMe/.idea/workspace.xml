@@ -17,66 +17,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Authenticate/PersistentAuthenticationStateProvider.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/DefaultStatic/AccessDenied.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/DefaultStatic/AccessDenied.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/DefaultStatic/AccessDenied.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/DefaultStatic/ErrorHanding.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/DefaultStatic/ErrorHanding.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/DefaultStatic/ErrorHanding.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/DefaultStatic/ErrorHanding.razor.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/DefaultStatic/Loading.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/DefaultStatic/Loading.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/DefaultStatic/NotFoundComponent.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/DefaultStatic/NotFoundComponent.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/DefaultStatic/NotFoundComponent.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/DefaultStatic/NotFoundComponent.razor.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/DefaultStatic/ThemeProvider.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/AppBar.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/BlankLayout.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/BlankLayout.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/BlankLayout.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/BlankLayout.razor.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/CultureSelector.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/MainLayout.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/SignInLayout.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/SignInLayout.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Models/ApiModel.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Models/ProtectedBrowserStorageResult.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/AccessDeniedPage.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/AccessDeniedPage.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/ErrorPage.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/ErrorPage.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/ErrorPage.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/ErrorPage.razor.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/NotFoundPage.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/NotFoundPage.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/NotFoundPage.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/NotFoundPage.razor.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/Http/BaseHttpClientService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/Http/CookieHandler.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/UserInterfaces/KeyBoardListener.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/UserInterfaces/ProtectedLocalStorage.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/UserInterfaces/ProtectedSessionStorage.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/UserInterfaces/StateContainer.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Utils/JsRuntimeExtension.cs" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add resource">
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Account/SignInPage.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Account/SignInPage.razor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Account/SignInPage.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Account/SignInPage.razor.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Home.razor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp/Controllers/AccountController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp/Controllers/CultureController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp/Controllers/FileController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp/Controllers/Streaming/VideoController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/PageRoutes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/PageRoutes.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/MainLayout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/MainLayout.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/NavMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/NavMenu.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Utils/StringExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/StringExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/SignInLayout.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/SignInLayout.razor.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/ErrorPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/ErrorPage.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Home.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/_Imports.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/_Imports.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Components/App.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Components/App.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/MiddleWares/ErrorHandlingMiddleware.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/MiddleWares/ErrorHandlingMiddleware.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/app.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/bootstrap/bootstrap.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/bootstrap/bootstrap.min.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/favicon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/css/google-api.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/css/google-api.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,6 +55,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/81cd7b5d4f9a4def98fcb318251a687f2db10/f8/43a65fbf/AntiforgeryStateProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/fd17b13cc7c64aec9c7787175bb271d31c8a0/eb/83833ed7/CookieAuthenticationHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e8aee3972f4f46ef190c2b4224be16d75e671b3496b06c7b50b6cbe2418e38/EndPointHelper.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/CodeWithMe/WebApp/WebApp.Client/_Imports.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -346,7 +305,7 @@
       <updated>1720922553695</updated>
       <workItem from="1720922553873" duration="7409000" />
       <workItem from="1720932627085" duration="7056000" />
-      <workItem from="1720952546784" duration="323000" />
+      <workItem from="1720952546784" duration="5526000" />
     </task>
     <task id="LOCAL-00001" summary="remove anti token">
       <option name="closed" value="true" />
@@ -364,7 +323,15 @@
       <option name="project" value="LOCAL" />
       <updated>1720947874128</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="add resource">
+      <option name="closed" value="true" />
+      <created>1720952970966</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1720952970966</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -376,6 +343,7 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="remove anti token" />
     <MESSAGE value="sửa debug" />
-    <option name="LAST_COMMIT_MESSAGE" value="sửa debug" />
+    <MESSAGE value="add resource" />
+    <option name="LAST_COMMIT_MESSAGE" value="add resource" />
   </component>
 </project>
