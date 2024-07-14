@@ -7,3 +7,20 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.JSInterop
 @using WebApp.Client
+@using WebApp.Client.Layout
+@using WebApp.Client.Utils
+@using WebApp.Client.Components.DefaultStatic
+
+@using System.Globalization
+@using BusinessModels.Resources
+@using MudBlazor
+@using MudVariant = MudBlazor.Variant
+
+@using Blazored.Toast
+@using Blazored.Toast.Services
+@using Microsoft.AspNetCore.Components.Authorization
+@using WebApp.Client.Services.UserInterfaces
+
+@inject StateContainer CustomStateContainer
+@inject IJSRuntime JsRuntime
+@inject NavigationManager Navigation

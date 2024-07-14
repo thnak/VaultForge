@@ -1,0 +1,82 @@
+﻿
+<MudSelect AnchorOrigin="Origin.BottomCenter"
+           Class="culture-selector"
+           Margin="Margin"
+           T="CultureInfo"
+           Value="@Culture"
+           ValueChanged="Callback"
+           Variant="Variant.Outlined">
+
+    @foreach (var culture in AllowedCulture.SupportedCultures)
+    {
+        <MudSelectItem Class="center-flag" @key="culture.Name" Value="@culture">
+            <img alt="@culture.NativeName" class="mr-1" height="14" src="@Flags[culture.Name]"/>
+        </MudSelectItem>
+    }
+</MudSelect>
+
+<style>
+    .mud-input-slot.mud-input-root.mud-input-root-outlined.mud-input-root-adorned-end.mud-input-root-margin-dense.mud-select-input,
+    .center-flag > .mud-list-item-text > .mud-typography.mud-typography-body1 {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 8px;
+        align-items: center !important;
+    }
+</style>
+
+@code {
+
+    [Parameter] public Margin Margin { get; set; } = Margin.Dense;
+
+    private static readonly Dictionary<string, string> Flags = new()
+    {
+        {
+            "vi-VN", "/images/Flag_of_Vietnam.png"
+        },
+        {
+            "en-US", "/images/Flag_of_the_United_States.png"
+        },
+        {
+            "de-DE", "/images/Flag_of_Germany.svg"
+        },
+        {
+            "ja-JP", "/images/Flag_of_Japan.svg"
+        },
+        {
+            "ko-KR", "/images/Flag_of_Korea.png"
+        },
+        {
+            "es-ES", "/images/Flag_of_Spain.png"
+        },
+        {
+            "zh-CN", "/images/Flag_of_China.png"
+        }
+    };
+
+    private CultureInfo Culture { get; set; } = CultureInfo.CurrentCulture;
+
+
+    private async Task Callback(CultureInfo obj)
+    {
+        Culture = obj;
+
+        if (!Equals(CultureInfo.CurrentCulture, Culture))
+        {
+            await JsRuntime.SetCulture(Culture.Name);
+            var uri = new Uri(Navigation.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
+            var cultureEscaped = Uri.EscapeDataString(obj.Name);
+            var uriEscaped = Uri.EscapeDataString(uri);
+            // Reload required
+            Navigation.NavigateTo(
+            $"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}",
+            new NavigationOptions
+            {
+                ForceLoad = true,
+                ReplaceHistoryEntry = true
+            }
+            );
+        }
+    }
+
+}

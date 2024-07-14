@@ -1,0 +1,16 @@
+﻿<PageTitle>404 Not Found</PageTitle>
+
+<div class="container">
+    <h1>500 Internal Error</h1>
+    <p>Oops! The page you are looking for could not be working.</p>
+    <div class="d-flex flex-row align-center gap-3 mt-3">
+
+        <MudProgressCircular Color="Color.Primary" Size="Size.Medium" Indeterminate="true"/>
+        <MudText>@HandingMessage</MudText>
+        @if (SuccessHanding)
+        {
+        <MudLink Href="/">Home</MudLink>
+        <MudLink Href="@ReturnUrl">Return</MudLink>
+        }
+    </div>
+</div>

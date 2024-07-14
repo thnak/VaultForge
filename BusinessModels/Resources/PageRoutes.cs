@@ -6,7 +6,9 @@ public static class PageRoutes
     {
         public const string Name = "/Error";
         public const string ErrorPage = Name + "/error-page";
+        public const string Default403 = "/403";
         public const string NotFound = Name + "/404";
+        public const string Default404 = "/404";
         public const string UnAuthorized = Name + "/403";
     }
 

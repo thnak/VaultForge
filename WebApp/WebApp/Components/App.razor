@@ -1,22 +1,58 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="@Lang" >
 
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <base href="/" />
-    <link rel="stylesheet" href="@Assets["bootstrap/bootstrap.min.css"]" />
-    <link rel="stylesheet" href="@Assets["app.css"]" />
-    <link rel="stylesheet" href="@Assets["WebApp.styles.css"]" />
+    <link href="@Assets["css/app.css"]" rel="stylesheet" />
+    <link href="@Assets["apple-touch-icon.png"]" rel="apple-touch-icon" sizes="180x180" >
+    <link href="@Assets["favicon-32x32.png"]" rel="icon" sizes="32x32" type="image/png" >
+    <link href="@Assets["favicon-16x16.png"]" rel="icon" sizes="16x16" type="image/png" >
+    <link href="@Assets["site.manifest"]" rel="manifest" >
+    <link href="@Assets["css/google-api.css"]" rel="stylesheet" type="text/css" />
+    <link href="@Assets["fontawesome-free-6.5.2-web/css/all.css"]" rel="stylesheet" />
+    <link href="@Assets["_content/MudBlazor/MudBlazor.min.css"]" rel="stylesheet" />
+    <link href="@Assets["WebApp.styles.css"]" rel="stylesheet" />
     <ImportMap />
-    <link rel="icon" type="image/png" href="@Assets["favicon.png"]" />
-    <HeadOutlet @rendermode="InteractiveWebAssembly" />
+    <link href="@Assets["favicon.ico"]" rel="icon" type="image/x-icon" />
+    <HeadOutlet @rendermode="RenderMode" />
 </head>
 
 <body>
-    <Routes @rendermode="InteractiveWebAssembly" />
-    <script src="_framework/blazor.web.js"></script>
+
+@* Loading Progress *@
+
+<div class="progress-wrapper" id="progress-wrapper">
+    <div class="progress-box-wrap">
+        <div class="box one"></div>
+        <div class="box two"></div>
+        <div class="box three"></div>
+        <div class="box four"></div>
+        <div class="box five"></div>
+        <div class="box six"></div>
+    </div>
+    <div class="progress-bar">
+        <div class="progress"></div>
+    </div>
+</div>
+
+@* Loading Progress *@
+
+<Routes @rendermode="RenderMode" />
+
+
+<script src="_framework/blazor.web.js" ></script>
+<script src="@Assets["_content/MudBlazor/MudBlazor.min.js"]" ></script>
+<script src="@Assets["js/app.js"]" ></script>
+<script src="@Assets["js/encryption.js"]" ></script>
+
 </body>
 
 </html>
 
+@code
+{
+    private string Lang { get; } = Thread.CurrentThread.CurrentCulture.Name;
+    private static readonly InteractiveWebAssemblyRenderMode RenderMode = new(false);
+}
