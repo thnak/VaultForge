@@ -314,7 +314,7 @@ public class Program
         });
 
         builder.Services.AddControllersWithViews(options => {
-            options.Filters.Add(new AutoIgnoreAntiforgeryTokenAttribute());
+            options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
         });
 
 
