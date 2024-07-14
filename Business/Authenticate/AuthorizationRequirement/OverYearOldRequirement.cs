@@ -35,7 +35,7 @@ public class OverYearOldRequirement(int old) : AuthorizationHandler<OverYearOldR
             }
             else
             {
-                context.Fail(new AuthorizationFailureReason(this, AppLang.This_resource_requires__0__years_old.AutoReplace([$"{old}"])));
+                context.Fail(new AuthorizationFailureReason(this, AppLang.This_resource_requires__0__years_old.AutoReplace($"{old}")));
             }
         }
         return Task.CompletedTask;

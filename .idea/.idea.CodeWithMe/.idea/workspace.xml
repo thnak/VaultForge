@@ -12,29 +12,25 @@
     <projectFile profileName="IIS Express">WebApp/WebApp/WebApp.csproj</projectFile>
     <projectFile profileName="http">WebApp/WebApp/WebApp.csproj</projectFile>
     <projectFile profileName="https">WebApp/WebApp/WebApp.csproj</projectFile>
+    <projectFile pubXmlPath="WebApp/WebApp/Properties/PublishProfiles/FolderProfile.pubxml">WebApp/WebApp/WebApp.csproj</projectFile>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add resource">
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Account/SignInPage.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Account/SignInPage.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Account/SignInPage.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Account/SignInPage.razor.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Home.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp/Controllers/AccountController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp/Controllers/CultureController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp/Controllers/FileController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp/Controllers/Streaming/VideoController.cs" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="sửa lỗi ko debug client được do AOT, trang trí lại SignInPage.razor">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Authenticate/AuthorizationRequirement/OverYearOldRequirement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Authenticate/AuthorizationRequirement/OverYearOldRequirement.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BusinessModels/Utils/StringExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/StringExtension.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/SignInLayout.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/SignInLayout.razor.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/ErrorPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/ErrorPage.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Home.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Web/Web.Client/Web.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Web.Client/Web.Client.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/DefaultStatic/ErrorHanding.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/DefaultStatic/ErrorHanding.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/UserInterfaces/KeyBoardListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/_Imports.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/_Imports.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/css/google-api.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/css/google-api.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Controllers/AccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/js/app.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +51,8 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/81cd7b5d4f9a4def98fcb318251a687f2db10/f8/43a65fbf/AntiforgeryStateProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/fd17b13cc7c64aec9c7787175bb271d31c8a0/eb/83833ed7/CookieAuthenticationHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e8aee3972f4f46ef190c2b4224be16d75e671b3496b06c7b50b6cbe2418e38/EndPointHelper.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/CodeWithMe/WebApp/WebApp.Client/_Imports.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/CodeWithMe/WebApp/WebApp.Client/_Imports.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/CodeWithMe/WebApp/WebApp.Client/_Imports.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -93,6 +91,10 @@
   }
 }</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: https">
+    <configuration name="WebApp: FolderProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
+      <riderPublish configuration="Release" platform="Any CPU" publish_profile="FolderProfile.pubxml" pubxml_path="$PROJECT_DIR$/WebApp/WebApp/Properties/PublishProfiles/FolderProfile.pubxml" uuid_high="-212861499982460667" uuid_low="-5823181797240626509" />
+      <method v="2" />
+    </configuration>
     <configuration name="WebApp.Client" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -293,6 +295,7 @@
       <item itemvalue=".NET Launch Settings Profile.Web: IIS Express" />
       <item itemvalue=".NET Project.WebApp.Client" />
       <item itemvalue=".NET Project.Web.Client" />
+      <item itemvalue="Publish to IIS.WebApp: FolderProfile" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -305,7 +308,7 @@
       <updated>1720922553695</updated>
       <workItem from="1720922553873" duration="7409000" />
       <workItem from="1720932627085" duration="7056000" />
-      <workItem from="1720952546784" duration="5526000" />
+      <workItem from="1720952546784" duration="13690000" />
     </task>
     <task id="LOCAL-00001" summary="remove anti token">
       <option name="closed" value="true" />
@@ -331,7 +334,15 @@
       <option name="project" value="LOCAL" />
       <updated>1720952970966</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="sửa lỗi ko debug client được do AOT, trang trí lại SignInPage.razor">
+      <option name="closed" value="true" />
+      <created>1720958164872</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1720958164872</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -344,6 +355,7 @@
     <MESSAGE value="remove anti token" />
     <MESSAGE value="sửa debug" />
     <MESSAGE value="add resource" />
-    <option name="LAST_COMMIT_MESSAGE" value="add resource" />
+    <MESSAGE value="sửa lỗi ko debug client được do AOT, trang trí lại SignInPage.razor" />
+    <option name="LAST_COMMIT_MESSAGE" value="sửa lỗi ko debug client được do AOT, trang trí lại SignInPage.razor" />
   </component>
 </project>

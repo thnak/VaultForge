@@ -57,3 +57,38 @@ window.setCookie = (cname, cvalue, exdays) => {
     let expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
+
+function PageShowEvent() {
+    DotNet.invokeMethodAsync("WebApp.Client", 'PageShowEventEventListener')
+}
+
+function PageHideEvent() {
+    DotNet.invokeMethodAsync("WebApp.Client", 'PageHideEventEventListener')
+}
+
+function ContextMenuEvent() {
+    DotNet.invokeMethodAsync("WebApp.Client", 'ContextMenuEventListener')
+}
+
+function OfflineEvent() {
+    DotNet.invokeMethodAsync("WebApp.Client", 'OfflineEventListener')
+
+}
+
+function OnlineEvent() {
+    DotNet.invokeMethodAsync("WebApp.Client", 'OnlineEventListener')
+
+}
+
+//
+// Events Listener
+//
+
+window.InitAppEventListener = () => {
+    window.addEventListener("pagehide", PageHideEvent);
+    window.addEventListener("pageshow", PageShowEvent);
+    window.addEventListener("contextmenu", ContextMenuEvent);
+    window.addEventListener('online', OnlineEvent);
+    window.addEventListener('offline', OfflineEvent);
+}
+

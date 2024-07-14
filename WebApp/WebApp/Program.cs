@@ -420,6 +420,8 @@ namespace WebApp
             app.UseRequestLocalization(localizationOptions);
 
             #endregion
+            
+            app.UseStatusCodePagesWithRedirects(PageRoutes.Error.Default404);
 
 
             if (app.Environment.IsDevelopment())
@@ -428,7 +430,6 @@ namespace WebApp
             }
             else
             {
-                app.UseExceptionHandler("/Error");
                 app.UseResponseCompression();
                 app.UseHsts();
             }

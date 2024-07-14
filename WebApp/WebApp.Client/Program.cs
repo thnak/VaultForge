@@ -20,12 +20,10 @@ namespace WebApp.Client
             builder.Services.AddMudServices();
             builder.Services.AddBlazoredToast();
 
-            builder.Services.AddScoped<StateContainer>();
-
             #region Event Service
 
             builder.Services.AddSingleton<StateContainer>();
-            builder.Services.AddSingleton<KeyBoardListener>();
+            builder.Services.AddSingleton<DocumentObjectModelEventListener>();
 
             #endregion
             

@@ -67,7 +67,7 @@ public class AccountController(
                 return Redirect("/");
             }
 
-            return Redirect($"/{request.ReturnUrl}");
+            return Redirect(request.ReturnUrl);
         }
 
         if (!string.IsNullOrEmpty(request.ReturnUrl))

@@ -5,7 +5,7 @@ namespace BusinessModels.Utils;
 
 public static class StringExtension
 {
-    public static string AutoReplace(this string self, IEnumerable<string> text2Replace)
+    public static string AutoReplace(this string self, params string[] text2Replace)
     {
         var index = 0;
         foreach (var text in text2Replace)
@@ -34,10 +34,17 @@ public static class StringExtension
 
     public static string DecodeBase64String(this string base64String)
     {
-        if (string.IsNullOrEmpty(base64String)) return string.Empty;
-        var base64Bytes = Convert.FromBase64String(base64String);
-        var plainText = Encoding.Unicode.GetString(base64Bytes);
-        return plainText;
+        try
+        {
+            if (string.IsNullOrEmpty(base64String)) return string.Empty;
+            var base64Bytes = Convert.FromBase64String(base64String);
+            var plainText = Encoding.Unicode.GetString(base64Bytes);
+            return plainText;
+        }
+        catch (Exception)
+        {
+            return base64String;
+        }
     }
 
     /// <summary>
