@@ -44,7 +44,6 @@ public class MongoDataLayerContext : IMongoDataLayerContext
         var client = new MongoClient(setup);
         var dbContext = client.GetDatabase(dbName);
         MongoDatabase = dbContext ?? throw new Exception();
-
     }
     public IMongoDatabase MongoDatabase { get; }
 }

@@ -3,17 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35005.142
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResApi", "ResApi\ResApi.csproj", "{51F40798-D544-4482-8C58-359DBFA619F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResApi", "ResApi\ResApi.csproj", "{51F40798-D544-4482-8C58-359DBFA619F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Business\Business.csproj", "{9AD2C26A-7B28-4C59-91BB-84C1D2CB82F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Business", "Business\Business.csproj", "{9AD2C26A-7B28-4C59-91BB-84C1D2CB82F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Protector", "Protector\Protector.csproj", "{000D9A18-438D-4634-850A-FD4AF8C2B4B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Protector", "Protector\Protector.csproj", "{000D9A18-438D-4634-850A-FD4AF8C2B4B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessModels", "BusinessModels\BusinessModels.csproj", "{42BD63ED-5653-4F45-AEB0-9F518A787100}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessModels", "BusinessModels\BusinessModels.csproj", "{42BD63ED-5653-4F45-AEB0-9F518A787100}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web\Web.csproj", "{6E978D6C-37D0-494B-B2E8-C28C891E5A72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web\Web.csproj", "{6E978D6C-37D0-494B-B2E8-C28C891E5A72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Client", "Web\Web.Client\Web.Client.csproj", "{5F5279AD-03E9-45A6-AC39-A475EDB0D77A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Client", "Web\Web.Client\Web.Client.csproj", "{5F5279AD-03E9-45A6-AC39-A475EDB0D77A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp\WebApp.csproj", "{FD0BC397-F330-4905-AF2F-E70208F3A2B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp.Client", "WebApp\WebApp.Client\WebApp.Client.csproj", "{2E1D1263-24F8-45F5-90E6-9AC9C0DA9025}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{5F5279AD-03E9-45A6-AC39-A475EDB0D77A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F5279AD-03E9-45A6-AC39-A475EDB0D77A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F5279AD-03E9-45A6-AC39-A475EDB0D77A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD0BC397-F330-4905-AF2F-E70208F3A2B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD0BC397-F330-4905-AF2F-E70208F3A2B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD0BC397-F330-4905-AF2F-E70208F3A2B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD0BC397-F330-4905-AF2F-E70208F3A2B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E1D1263-24F8-45F5-90E6-9AC9C0DA9025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E1D1263-24F8-45F5-90E6-9AC9C0DA9025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E1D1263-24F8-45F5-90E6-9AC9C0DA9025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E1D1263-24F8-45F5-90E6-9AC9C0DA9025}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
