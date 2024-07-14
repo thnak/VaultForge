@@ -26,7 +26,7 @@ public class AccountController(
     IAntiforgery antiforgery) : ControllerBase
 {
     [HttpPost("validate-user")]
-    [ValidateAntiForgeryToken]
+    [IgnoreAntiforgeryToken]
     [AllowAnonymous]
     [EnableRateLimiting(PolicyNamesAndRoles.LimitRate.Sliding)]
     public IActionResult ValidateUser([FromForm] string userName)
@@ -36,7 +36,7 @@ public class AccountController(
     }
 
     [HttpPost("validate-password")]
-    [ValidateAntiForgeryToken]
+    [IgnoreAntiforgeryToken]
     [AllowAnonymous]
     [EnableRateLimiting(PolicyNamesAndRoles.LimitRate.Sliding)]
     public IActionResult ValidatePassword([FromForm] string userName, [FromForm] string password)
@@ -47,7 +47,7 @@ public class AccountController(
 
 
     [HttpPost("login")]
-    [ValidateAntiForgeryToken]
+    [IgnoreAntiforgeryToken]
     [EnableRateLimiting(PolicyNamesAndRoles.LimitRate.Fixed)]
     public async Task<IActionResult> AccountSignIn([FromForm] RequestLoginModel request)
     {
@@ -66,6 +66,7 @@ public class AccountController(
             {
                 return Redirect("/");
             }
+
             return Redirect($"/{request.ReturnUrl}");
         }
 
@@ -76,7 +77,7 @@ public class AccountController(
 
 
     [HttpPost("register")]
-    [ValidateAntiForgeryToken]
+    [IgnoreAntiforgeryToken]
     [EnableRateLimiting(PolicyNamesAndRoles.LimitRate.Fixed)]
     public async Task<IActionResult> AccountSignUp([FromForm] RequestRegisterModel request)
     {
@@ -101,11 +102,13 @@ public class AccountController(
             if (createResult.Item1) return Redirect("/api/Account/login");
             return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri(createResult.Item2));
         }
+
         foreach (var result in validationResults)
         {
             if (result.ErrorMessage != null)
                 return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri(result.ErrorMessage));
         }
+
         return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri(AppLang.Registration_failed));
     }
 
@@ -119,7 +122,7 @@ public class AccountController(
 
     [HttpPost("getJwt")]
     [EnableRateLimiting(PolicyNamesAndRoles.LimitRate.Fixed)]
-    [ValidateAntiForgeryToken]
+    [IgnoreAntiforgeryToken]
     public IActionResult GetJwt([FromForm] RequestLoginModel request)
     {
         var authenticateState = userBl.Authenticate(request);
@@ -134,6 +137,7 @@ public class AccountController(
             };
             return Content(model.ToJson(), MediaTypeNames.Application.Json);
         }
+
         return Ok();
     }
 
@@ -153,6 +157,7 @@ public class AccountController(
         {
             if (tokens.RequestToken != null) HttpContext.Response.Cookies.Append(cookieName!, tokens.RequestToken);
         }
+
         return new JsonResult(new
         {
             token = tokens.RequestToken
@@ -160,14 +165,23 @@ public class AccountController(
     }
 
     [HttpGet("get-never-expire-token")]
-    [Authorize(Roles = PolicyNamesAndRoles.System.Roles)]
+    [Authorize(Roles = "System")]
     [IgnoreAntiforgeryToken]
     public IActionResult GetNeverExpireToken()
     {
         var userClaim = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
-        if (userClaim == null) return BadRequest();
+        if (userClaim == null)
+        {
+            ModelState.AddModelError("Permission", "Could not found user in the context");
+            return BadRequest(ModelState);
+        }
+
         var user = userBl.Get(userClaim.Value);
-        if (user == null) return BadRequest();
+        if (user == null)
+        {
+            ModelState.AddModelError("Permission", "User can not be found");
+            return BadRequest(ModelState);
+        }
 
         var claims = userBl.GetAllClaim(userClaim.Value);
 

@@ -196,7 +196,7 @@ public class Program
             options.Cookie.Domain = CookieNames.Domain;
             options.Cookie.HttpOnly = true;
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-            options.Cookie.SameSite = SameSiteMode.None;
+            options.Cookie.SameSite = SameSiteMode.Lax;
         });
         
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -210,7 +210,7 @@ public class Program
                 {
                     MaxAge = TimeSpan.FromHours(ProtectorTime.CookieMaxAge),
                     Name = CookieNames.AuthorizeCookie,
-                    SameSite = SameSiteMode.None,
+                    SameSite = SameSiteMode.Lax,
                     IsEssential = true,
                     HttpOnly = true,
                     SecurePolicy = CookieSecurePolicy.Always,
@@ -305,16 +305,16 @@ public class Program
             {
                 MaxAge = TimeSpan.FromHours(ProtectorTime.AntiforgeryCookieMaxAge),
                 Name = CookieNames.Antiforgery,
-                SameSite = SameSiteMode.Strict,
-                IsEssential = true,
-                HttpOnly = true,
+                SameSite = SameSiteMode.Unspecified,
+                IsEssential = false,
+                HttpOnly = false,
                 SecurePolicy = CookieSecurePolicy.SameAsRequest,
                 Domain = CookieNames.Domain
             };
         });
 
         builder.Services.AddControllersWithViews(options => {
-            options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            options.Filters.Add(new AutoIgnoreAntiforgeryTokenAttribute());
         });
 
 
@@ -417,7 +417,7 @@ public class Program
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
-            app.UseWebAssemblyDebugging();
+            // app.UseWebAssemblyDebugging();
         }
         else
         {
@@ -445,7 +445,7 @@ public class Program
         app.MapStaticAssets();
         app.MapControllers();
         app.MapRazorComponents<App>()
-            .AddInteractiveWebAssemblyRenderMode(options => options.ServeMultithreadingHeaders = true)
+            .AddInteractiveWebAssemblyRenderMode(options => options.ServeMultithreadingHeaders = false)
             .AddAdditionalAssemblies(typeof(_Imports).Assembly);
         // app.Use(async (context, next) => {
         //     ApplyHeaders(context.Response.Headers);

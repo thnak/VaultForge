@@ -27,6 +27,7 @@ internal class Program
         builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddScoped<ProtectedLocalStorage>();
         builder.Services.AddScoped<ProtectedSessionStorage>();
+        builder.Services.AddScoped<CustomAntiforgeryStateProvider>();
         builder.Services.AddLocalization();
         builder.Services.AddScoped(_ =>
         {
@@ -40,7 +41,7 @@ internal class Program
         });
         builder.Services.AddScoped(_ =>
         {
-            var httpClient = new HttpClient(new CookieHandler());
+            var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
             return httpClient;
         });

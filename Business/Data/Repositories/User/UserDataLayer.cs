@@ -44,7 +44,8 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
                 {
                     UserName = defaultUser,
                     Password = passWord.ComputeSha256Hash(),
-                    JoinDate = DateTime.UtcNow
+                    JoinDate = DateTime.UtcNow,
+                    Roles = [..PolicyNamesAndRoles.System.Roles.Split(",")]
                 });
             }
 

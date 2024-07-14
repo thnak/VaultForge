@@ -5,10 +5,11 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor;
+using Web.Client.Services;
 
 namespace Web.Client.Pages.Account;
 
-public partial class Login(HttpClient httpClient, AntiforgeryStateProvider antiforgeryStateProvider) : ComponentBase, IDisposable
+public partial class Login(HttpClient httpClient, CustomAntiforgeryStateProvider antiforgeryStateProvider) : ComponentBase, IDisposable
 {
     [Parameter] [SupplyParameterFromQuery] public string ErrorMessage { get; set; } = string.Empty;
     [Parameter] [SupplyParameterFromQuery] public string? ReturnUrl { get; set; }
@@ -80,8 +81,8 @@ public partial class Login(HttpClient httpClient, AntiforgeryStateProvider antif
                 await Task.Delay(1);
                 await InvokeAsync(StateHasChanged);
 
-                var antiforgery = antiforgeryStateProvider.GetAntiforgeryToken();
-
+                var antiforgery = await antiforgeryStateProvider.GetAntiforgeryTokenAsync();
+                Console.WriteLine(antiforgery);
                 using var content = new MultipartFormDataContent();
                 content.Add(new StringContent(CurrentRequestModel.UserName), "userName");
                 if (antiforgery != null)
