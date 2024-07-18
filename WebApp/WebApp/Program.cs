@@ -452,10 +452,18 @@ namespace WebApp
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.MapRazorComponents<App>()
-                .AddInteractiveWebAssemblyRenderMode()
+                .AddInteractiveWebAssemblyRenderMode(options => options.ServeMultithreadingHeaders = true)
                 .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
-
+            // app.Use(async (context, next) => {
+            //     ApplyHeaders(context.Response.Headers);
+            //     await next();
+            // });
             app.Run();
         }
+        // private static void ApplyHeaders(IHeaderDictionary headers)
+        // {
+        //     headers.Append("Cross-Origin-Embedder-Policy", "require-corp");
+        //     headers.Append("Cross-Origin-Opener-Policy", "same-origin");
+        // }
     }
 }

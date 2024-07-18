@@ -2,18 +2,30 @@ using Microsoft.JSInterop;
 
 namespace WebApp.Client.Services.UserInterfaces;
 
-public class DocumentObjectModelEventListener
+public class DocumentObjectModelEventListener : IDisposable
 {
     #region Enter
 
-    public static Func<Task>? EnterClickedAsync { get; set; }
-    public static Action? EnterClicked { get; set; }
+    public Func<Task>? EnterClickedAsync
+    {
+        get => SelfEnterClickedAsync;
+        set => SelfEnterClickedAsync = value;
+    }
+
+    public Action? EnterClicked
+    {
+        get => SelfEnterClicked;
+        set => SelfEnterClicked = value;
+    }
+
+    private static Func<Task>? SelfEnterClickedAsync { get; set; }
+    private static Action? SelfEnterClicked { get; set; }
 
     [JSInvokable]
     public static void EnterEventListener()
     {
-        EnterClickedAsync?.Invoke();
-        EnterClicked?.Invoke();
+        SelfEnterClickedAsync?.Invoke();
+        SelfEnterClicked?.Invoke();
     }
 
     #endregion
@@ -163,4 +175,25 @@ public class DocumentObjectModelEventListener
     }
 
     #endregion
+
+    public void Dispose()
+    {
+        ScrollEventAsync = null;
+        ScrollEvent = null;
+
+        PageHideEvent = null;
+        PageHideEventAsync = null;
+
+        PageShowEvent = null;
+        PageShowEventAsync = null;
+
+        Online = null;
+        OnlineAsync = null;
+
+        Offline = null;
+        OfflineAsync = null;
+
+        ContextMenuClickedAsync = null;
+        ContextMenuClicked = null;
+    }
 }

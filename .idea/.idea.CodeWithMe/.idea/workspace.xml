@@ -18,17 +18,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="sửa lỗi ko debug client được do AOT, trang trí lại SignInPage.razor">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Business/Exceptions/ErrorHandling.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BusinessModels/Utils/StreamExtensions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Settings/Theme.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Settings/Theme.razor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Settings/Theme.razor.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Authenticate/AuthorizationRequirement/OverYearOldRequirement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Authenticate/AuthorizationRequirement/OverYearOldRequirement.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Utils/StringExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/StringExtension.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Web/Web.Client/Web.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Web/Web.Client/Web.Client.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/DefaultStatic/ErrorHanding.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/DefaultStatic/ErrorHanding.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/UserInterfaces/KeyBoardListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/_Imports.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/_Imports.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Controllers/AccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Utils/Helper/FileHelpers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Utils/Helper/FileHelpers.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Properties/launchSettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Components/App.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Components/App.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/MiddleWares/ErrorHandlingMiddleware.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/MiddleWares/ErrorHandlingMiddleware.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/js/app.js" afterDir="false" />
     </list>
@@ -48,12 +51,13 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Runtime/ExceptionServices/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/81cd7b5d4f9a4def98fcb318251a687f2db10/f8/43a65fbf/AntiforgeryStateProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/fd17b13cc7c64aec9c7787175bb271d31c8a0/eb/83833ed7/CookieAuthenticationHandler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/36483e83e1974f148aae3aae58ebd899261a994e4c84de57b5ffed0ebb/Palette.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/dd64d971b211e561438492e2fe2c86efc73fddfcf68dd93f231def1eaf/MudColor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e8aee3972f4f46ef190c2b4224be16d75e671b3496b06c7b50b6cbe2418e38/EndPointHelper.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/CodeWithMe/WebApp/WebApp.Client/_Imports.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/CodeWithMe/WebApp/WebApp.Client/_Imports.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/CodeWithMe/WebApp/WebApp.Client/_Imports.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff953b52b66bae7a88dcb19328c1d616a77c12f477863fbca58acbd1631cf2/PaletteLight.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -68,29 +72,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.Web: https.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.WebApp: https.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.ResApi.executor": "Debug",
+    ".NET Launch Settings Profile.Web: https.executor": "Debug",
+    ".NET Launch Settings Profile.WebApp: https.executor": "Debug",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;rider.external.source.directories&quot;: [
-      &quot;C:\\Users\\thanh\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache&quot;,
-      &quot;C:\\Users\\thanh\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache&quot;,
-      &quot;C:\\Users\\thanh\\AppData\\Local\\Symbols\\src&quot;
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\thanh\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
+      "C:\\Users\\thanh\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
+      "C:\\Users\\thanh\\AppData\\Local\\Symbols\\src"
     ]
   }
-}</component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: https">
+}]]></component>
+  <component name="RunManager" selected=".NET Launch Settings Profile.ResApi">
     <configuration name="WebApp: FolderProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
       <riderPublish configuration="Release" platform="Any CPU" publish_profile="FolderProfile.pubxml" pubxml_path="$PROJECT_DIR$/WebApp/WebApp/Properties/PublishProfiles/FolderProfile.pubxml" uuid_high="-212861499982460667" uuid_low="-5823181797240626509" />
       <method v="2" />
@@ -308,7 +313,10 @@
       <updated>1720922553695</updated>
       <workItem from="1720922553873" duration="7409000" />
       <workItem from="1720932627085" duration="7056000" />
-      <workItem from="1720952546784" duration="13690000" />
+      <workItem from="1720952546784" duration="13737000" />
+      <workItem from="1721088956615" duration="3372000" />
+      <workItem from="1721188146683" duration="1193000" />
+      <workItem from="1721292295654" duration="2327000" />
     </task>
     <task id="LOCAL-00001" summary="remove anti token">
       <option name="closed" value="true" />
@@ -342,7 +350,15 @@
       <option name="project" value="LOCAL" />
       <updated>1720958164872</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="add browser listener">
+      <option name="closed" value="true" />
+      <created>1720975339161</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1720975339161</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -356,6 +372,26 @@
     <MESSAGE value="sửa debug" />
     <MESSAGE value="add resource" />
     <MESSAGE value="sửa lỗi ko debug client được do AOT, trang trí lại SignInPage.razor" />
-    <option name="LAST_COMMIT_MESSAGE" value="sửa lỗi ko debug client được do AOT, trang trí lại SignInPage.razor" />
+    <MESSAGE value="add browser listener" />
+    <option name="LAST_COMMIT_MESSAGE" value="add browser listener" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Business/Utils/Helper/FileHelpers.cs</url>
+          <line>289</line>
+          <properties documentPath="C:\Users\thanh\Git\CodeWithMe\Business\Utils\Helper\FileHelpers.cs" containingFunctionPresentation="Method 'ProcessStreamedFileAndSave'">
+            <startOffsets>
+              <option value="11078" />
+            </startOffsets>
+            <endOffsets>
+              <option value="11152" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

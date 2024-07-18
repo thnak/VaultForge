@@ -70,6 +70,12 @@ function ContextMenuEvent() {
     DotNet.invokeMethodAsync("WebApp.Client", 'ContextMenuEventListener')
 }
 
+function EnterClickEvent(event) {
+    if (event.key === "Enter") {
+        DotNet.invokeMethodAsync("WebApp.Client", 'EnterEventListener')
+    }
+}
+
 function OfflineEvent() {
     DotNet.invokeMethodAsync("WebApp.Client", 'OfflineEventListener')
 
@@ -77,8 +83,8 @@ function OfflineEvent() {
 
 function OnlineEvent() {
     DotNet.invokeMethodAsync("WebApp.Client", 'OnlineEventListener')
-
 }
+
 
 //
 // Events Listener
@@ -88,6 +94,7 @@ window.InitAppEventListener = () => {
     window.addEventListener("pagehide", PageHideEvent);
     window.addEventListener("pageshow", PageShowEvent);
     window.addEventListener("contextmenu", ContextMenuEvent);
+    window.addEventListener("keydown", EnterClickEvent)
     window.addEventListener('online', OnlineEvent);
     window.addEventListener('offline', OfflineEvent);
 }

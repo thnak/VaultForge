@@ -10,14 +10,13 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
     {
         try
         {
-            // context.Response.OnStarting(() =>
-            // {
-            //     context.Response.Headers.Append("X-Frame-Options", "DENY");
-            //     context.Response.Headers.Append("X-XSS-Protection", "1; mode=block");
-            //     context.Response.Headers.Append("Referrer-Policy", "no-referrer");
-            //
-            //     return Task.CompletedTask;
-            // });
+            context.Response.OnStarting(() =>
+            {
+                context.Response.Headers.Append("Cross-Origin-Embedder-Policy", "require-corp");
+                context.Response.Headers.Append("Cross-Origin-Opener-Policy", "same-origin");
+
+                return Task.CompletedTask;
+            });
             await next(context);
         }
         catch (Exception ex)

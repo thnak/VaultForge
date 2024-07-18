@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
+using BusinessModels.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
@@ -280,8 +281,7 @@ public static class FileHelpers
             using MemoryStream memoryStream = new MemoryStream(FileSignature.Values.Max(x => x.Count));
             await section.Body.CopyToAsync(memoryStream);
 
-            if (memoryStream.CanSeek)
-                memoryStream.Seek(0, SeekOrigin.Begin);
+            memoryStream.SeekBeginOrigin();
 
             await memoryStream.CopyToAsync(targetStream);
 
@@ -361,8 +361,7 @@ public static class FileHelpers
 
     private static string GetCorrectExtension(this Stream stream, string? defaultType = null)
     {
-        if (stream.CanSeek)
-            stream.Seek(0, SeekOrigin.Begin);
+        stream.SeekBeginOrigin();
         try
         {
             using BinaryReader reader = new BinaryReader(stream);
@@ -382,8 +381,7 @@ public static class FileHelpers
         }
         finally
         {
-            if (stream.CanSeek)
-                stream.Seek(0, SeekOrigin.Begin);
+            stream.SeekBeginOrigin();
         }
     }
 

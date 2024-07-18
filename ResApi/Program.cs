@@ -14,6 +14,7 @@ using Business.Data.Interfaces.User;
 using Business.Data.Repositories;
 using Business.Data.Repositories.FileSystem;
 using Business.Data.Repositories.User;
+using Business.Exceptions;
 using Business.KeyManagement;
 using Business.Models;
 using Business.Services;
@@ -38,7 +39,6 @@ using Protector;
 using Protector.Certificates.Models;
 using Protector.KeyProvider;
 using Protector.Tracer;
-using ResApi.Middleware;
 
 namespace ResApi;
 
@@ -47,7 +47,8 @@ public abstract class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        builder.WebHost.UseKestrel(option => {
+        builder.WebHost.UseKestrel(option =>
+        {
             option.AddServerHeader = false;
             option.Limits.MaxRequestBodySize = Int64.MaxValue;
         });
@@ -69,21 +70,23 @@ public abstract class Program
         builder.Services.AddSingleton<IFolderSystemBusinessLayer, FolderSystemBusinessLayer>();
         builder.Services.AddSingleton<IFileSystemDatalayer, FileSystemDatalayer>();
         builder.Services.AddSingleton<IFileSystemBusinessLayer, FileSystemBusinessLayer>();
-        
+
         builder.Services.AddSingleton<IMongoDbXmlKeyProtectorRepository, MongoDbXmlKeyProtectorRepository>();
-        
+
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
 
         #region Cultures
 
         builder.Services.AddLocalization();
-        builder.Services.Configure<RequestLocalizationOptions>(options => {
+        builder.Services.Configure<RequestLocalizationOptions>(options =>
+        {
             var supportedCultures = AllowedCulture.SupportedCultures.ToArray();
             foreach (var culture in supportedCultures)
             {
                 culture.NumberFormat = NumberFormatInfo.InvariantInfo;
                 culture.DateTimeFormat = DateTimeFormatInfo.InvariantInfo;
             }
+
             options.SetDefaultCulture(supportedCultures[0].Name);
             options.DefaultRequestCulture = new RequestCulture(supportedCultures[0]);
             options.SupportedCultures = supportedCultures;
@@ -117,29 +120,32 @@ public abstract class Program
         builder.Services.AddSingleton<IJsonWebTokenCertificateProvider, JsonWebTokenCertificateProvider>();
         builder.Services.AddSingleton<RsaKeyProvider>();
         builder.Services.AddCascadingAuthenticationState();
-        builder.Services.AddAuthorization(options => {
+        builder.Services.AddAuthorization(options =>
+        {
             options.AddPolicy(PolicyNamesAndRoles.Over18, configurePolicy: policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(18)));
             options.AddPolicy(PolicyNamesAndRoles.Over14, configurePolicy: policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(14)));
             options.AddPolicy(PolicyNamesAndRoles.Over7, configurePolicy: policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(7)));
         });
-        
+
         builder.Services.Configure<CookiePolicyOptions>(options =>
         {
             options.MinimumSameSitePolicy = SameSiteMode.None;
             options.HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always;
             options.Secure = CookieSecurePolicy.Always; // Ensure cookies are always sent over HTTPS
         });
-        
-        builder.Services.ConfigureApplicationCookie(options => {
+
+        builder.Services.ConfigureApplicationCookie(options =>
+        {
             options.Cookie.Name = CookieNames.AuthorizeCookie;
             options.Cookie.Domain = CookieNames.Domain;
             options.Cookie.HttpOnly = true;
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             options.Cookie.SameSite = SameSiteMode.None;
         });
-        
+
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options => {
+            .AddCookie(options =>
+            {
                 options.SlidingExpiration = true;
                 options.LoginPath = PageRoutes.Account.SignIn;
                 options.LogoutPath = PageRoutes.Account.Logout;
@@ -201,6 +207,7 @@ public abstract class Program
                     {
                         await Reject();
                     }
+
                     return;
 
                     async Task Reject()
@@ -211,11 +218,11 @@ public abstract class Program
                 }
 
                 #endregion
-
             });
 
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => {
+            .AddJwtBearer(options =>
+            {
                 var cert = builder.Configuration.GetSection(nameof(AppCertificate)).Get<AppCertificate>()!;
                 var certificate = new X509Certificate2(cert.FilePath, cert.Password);
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -226,7 +233,7 @@ public abstract class Program
                     ValidateAudience = false,
                     ValidateLifetime = false
                 };
-                
+
                 options.Events = new JwtBearerEvents
                 {
                     OnMessageReceived = OnMessageReceived,
@@ -263,10 +270,10 @@ public abstract class Program
                 }
 
                 #endregion
-
             });
 
-        builder.Services.AddSession(options => {
+        builder.Services.AddSession(options =>
+        {
             options.IdleTimeout = TimeSpan.FromHours(ProtectorTime.SessionIdleTimeout);
             options.Cookie = new CookieBuilder
             {
@@ -281,15 +288,17 @@ public abstract class Program
             };
         });
 
-        builder.Services.AddCors(options => {
+        builder.Services.AddCors(options =>
+        {
             options.AddPolicy("AllowLocalOrigin",
-            configurePolicy: corsPolicyBuilder => {
-                corsPolicyBuilder
-                    .WithOrigins("https://localhost:5000", "https://thnakdevserver.ddns.net:5000")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
-            });
+                configurePolicy: corsPolicyBuilder =>
+                {
+                    corsPolicyBuilder
+                        .WithOrigins("https://localhost:5000", "https://thnakdevserver.ddns.net:5000")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
         });
 
         // builder.Services.ConfigureApplicationCookie(options => {
@@ -299,7 +308,8 @@ public abstract class Program
         //     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         // });
 
-        builder.Services.AddAntiforgery(options => {
+        builder.Services.AddAntiforgery(options =>
+        {
             options.Cookie = new CookieBuilder
             {
                 MaxAge = TimeSpan.FromHours(ProtectorTime.AntiforgeryCookieMaxAge),
@@ -312,9 +322,7 @@ public abstract class Program
             };
         });
 
-        builder.Services.AddControllersWithViews(options => {
-            options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-        });
+        builder.Services.AddControllersWithViews(options => { options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); });
 
 
         builder.Services.AddDataProtection()
@@ -325,19 +333,21 @@ public abstract class Program
             })
             .SetApplicationName(CookieNames.Name)
             .SetDefaultKeyLifetime(TimeSpan.FromDays(7))
-            .AddKeyManagementOptions(options => {
+            .AddKeyManagementOptions(options =>
+            {
                 options.AuthenticatedEncryptorConfiguration = new AuthenticatedEncryptorConfiguration
                 {
                     EncryptionAlgorithm = EncryptionAlgorithm.AES_256_GCM,
                     ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
                 };
- #pragma warning disable ASP0000
+#pragma warning disable ASP0000
                 options.XmlRepository = builder.Services.BuildServiceProvider().GetService<IMongoDbXmlKeyProtectorRepository>();
- #pragma warning restore ASP0000
+#pragma warning restore ASP0000
                 options.AutoGenerateKeys = true;
             });
 
-        builder.Services.Configure<ForwardedHeadersOptions>(options => {
+        builder.Services.Configure<ForwardedHeadersOptions>(options =>
+        {
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             options.RequireHeaderSymmetry = false;
             options.ForwardLimit = null;
@@ -353,7 +363,8 @@ public abstract class Program
 
         if (!builder.Environment.IsDevelopment())
         {
-            builder.Services.AddResponseCompression(options => {
+            builder.Services.AddResponseCompression(options =>
+            {
                 options.MimeTypes = new[]
                 {
                     "text/html", "text/css"
@@ -363,11 +374,10 @@ public abstract class Program
             });
         }
 
-        builder.Services.AddDistributedMemoryCache(options => {
-            options.ExpirationScanFrequency = TimeSpan.FromSeconds(30);
-        });
+        builder.Services.AddDistributedMemoryCache(options => { options.ExpirationScanFrequency = TimeSpan.FromSeconds(30); });
 
-        builder.Services.AddHybridCache(options => {
+        builder.Services.AddHybridCache(options =>
+        {
             options.DefaultEntryOptions = new HybridCacheEntryOptions
             {
                 Expiration = TimeSpan.FromSeconds(30),
@@ -376,7 +386,8 @@ public abstract class Program
             };
         });
 
-        builder.Services.AddOutputCache(options => {
+        builder.Services.AddOutputCache(options =>
+        {
             options.AddBasePolicy(outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(TimeSpan.FromSeconds(10)));
             options.DefaultExpirationTimeSpan = OutputCachingPolicy.Expire30;
 
@@ -396,8 +407,10 @@ public abstract class Program
 
         #region Rate Limit
 
-        builder.Services.AddRateLimiter(options => {
-            options.AddFixedWindowLimiter(PolicyNamesAndRoles.LimitRate.Fixed, configureOptions: opt => {
+        builder.Services.AddRateLimiter(options =>
+        {
+            options.AddFixedWindowLimiter(PolicyNamesAndRoles.LimitRate.Fixed, configureOptions: opt =>
+            {
                 opt.Window = TimeSpan.FromSeconds(10);
                 opt.PermitLimit = 4;
                 opt.QueueLimit = 2;
@@ -406,8 +419,10 @@ public abstract class Program
 
             options.RejectionStatusCode = 429;
         });
-        builder.Services.AddRateLimiter(options => {
-            options.AddSlidingWindowLimiter(PolicyNamesAndRoles.LimitRate.Sliding, configureOptions: opt => {
+        builder.Services.AddRateLimiter(options =>
+        {
+            options.AddSlidingWindowLimiter(PolicyNamesAndRoles.LimitRate.Sliding, configureOptions: opt =>
+            {
                 opt.PermitLimit = 100;
                 opt.Window = TimeSpan.FromMinutes(30);
                 opt.SegmentsPerWindow = 3;
@@ -418,21 +433,25 @@ public abstract class Program
             options.RejectionStatusCode = 429;
         });
 
-        builder.Services.AddRateLimiter(options => {
-            options.AddTokenBucketLimiter(PolicyNamesAndRoles.LimitRate.Token, configureOptions: opt => {
+        builder.Services.AddRateLimiter(options =>
+        {
+            options.AddTokenBucketLimiter(PolicyNamesAndRoles.LimitRate.Token, configureOptions: opt =>
+            {
                 opt.TokenLimit = 100;
                 opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
                 opt.QueueLimit = 10;
                 opt.ReplenishmentPeriod = TimeSpan.FromSeconds(10);
-                opt.TokensPerPeriod = 10;//Rate at which you want to fill
+                opt.TokensPerPeriod = 10; //Rate at which you want to fill
                 opt.AutoReplenishment = true;
             });
 
             options.RejectionStatusCode = 429;
         });
 
-        builder.Services.AddRateLimiter(options => {
-            options.AddConcurrencyLimiter(PolicyNamesAndRoles.LimitRate.Concurrency, configureOptions: opt => {
+        builder.Services.AddRateLimiter(options =>
+        {
+            options.AddConcurrencyLimiter(PolicyNamesAndRoles.LimitRate.Concurrency, configureOptions: opt =>
+            {
                 opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
                 opt.QueueLimit = 10;
                 opt.PermitLimit = 100;
@@ -440,6 +459,12 @@ public abstract class Program
 
             options.RejectionStatusCode = 429;
         });
+
+        #endregion
+
+        #region Exception Handler
+
+        builder.Services.AddExceptionHandler<ErrorHandling>();
 
         #endregion
 
@@ -460,6 +485,7 @@ public abstract class Program
         {
             app.MapOpenApi();
         }
+
         app.UseSession();
 
         app.UseCors("AllowLocalOrigin");
@@ -471,7 +497,8 @@ public abstract class Program
         app.UseAuthorization();
         app.MapControllers();
 
-        app.UseMiddleware<GlobalMiddleware>();
+        app.UseExceptionHandler(_ => { });
+
 
         app.Run();
     }
