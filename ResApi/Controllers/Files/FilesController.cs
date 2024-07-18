@@ -5,6 +5,7 @@ using Business.Business.Interfaces.FileSystem;
 using Business.Utils.Helper;
 using BusinessModels.General;
 using BusinessModels.System.FileSystem;
+using BusinessModels.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
+using MongoDB.Bson;
 
 namespace ResApi.Controllers.Files;
 
@@ -48,6 +50,37 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         return PhysicalFile(file.AbsolutePath, file.ContentType, true);
     }
 
+    [HttpPost("get-file-list")]
+    [IgnoreAntiforgeryToken]
+    public IActionResult GetFiles([FromBody] List<string> listFiles)
+    {
+        List<FileInfoModel> files = [];
+        foreach (var id in listFiles)
+        {
+            var file = fileServe.Get(id);
+            if (file == null) continue;
+            files.Add(file);
+        }
+
+        return Content(files.ToJson(), MediaTypeNames.Application.Json);
+    }
+
+    [HttpPost("get-folder-list")]
+    [AllowAnonymous]
+    [IgnoreAntiforgeryToken]
+    public IActionResult GetFolderList([FromBody] List<string> listFolders)
+    {
+        List<FolderInfoModel> files = [];
+        foreach (var id in listFolders)
+        {
+            var file = folderServe.Get(id);
+            if (file == null) continue;
+            files.Add(file);
+        }
+
+        return Content(files.ToJson(), MediaTypeNames.Application.Json);
+    }
+
     [HttpGet("get-file-v2")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public IActionResult GetFile_v2(string id)
@@ -70,7 +103,17 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         Response.ContentLength = file.FileSize;
         return PhysicalFile(file.AbsolutePath, file.ContentType, true);
     }
-    
+
+    [HttpGet("get-shared-folder")]
+    [AllowAnonymous]
+    [IgnoreAntiforgeryToken]
+    public IActionResult GetSharedFolder()
+    {
+        var folder = folderServe.GetRoot("");
+        if (folder == null) return BadRequest("Folder not found");
+        return Content(StringExtension.ToJson(folder), MediaTypeNames.Application.Json);
+    }
+
     [HttpPost("upload-physical")]
     [DisableFormValueModelBinding]
     [AllowAnonymous]

@@ -300,7 +300,7 @@ public abstract class Program
                 configurePolicy: corsPolicyBuilder =>
                 {
                     corsPolicyBuilder
-                        .WithOrigins("https://localhost:5000", "https://thnakdevserver.ddns.net:5000")
+                        .WithOrigins("https://localhost:7158", "https://thnakdevserver.ddns.net:5000")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();

@@ -155,8 +155,8 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
     {
         try
         {
-            key = key.ComputeSha256Hash();
-            var filter = Builders<UserModel>.Filter.Eq(field: x => x.UserName, key);
+            var filter = Builders<UserModel>.Filter.Eq(field: x => x.UserName, key.ComputeSha256Hash());
+            filter |= Builders<UserModel>.Filter.Eq(field: x => x.UserName, key);
             var result = _dataDb.Find(filter).Limit(1).FirstOrDefault();
             return result;
         }

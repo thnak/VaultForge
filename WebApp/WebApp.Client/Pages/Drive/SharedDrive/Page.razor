@@ -1,0 +1,47 @@
+﻿@attribute [Route(PageRoutes.Drive.Shared)]
+@attribute [AllowAnonymous]
+
+<MudDropContainer Class="d-flex flex-column flex-grow-1" ItemDropped="ItemUpdated" Items="Items" ItemsSelector="@((item, dropzone) => item.Identifier == dropzone)" T="DropItem" >
+    <ChildContent>
+        <MudListSubheader Class="mt-4 pb-2" >Folders</MudListSubheader>
+        <div class="d-flex gap-4 mx-4" >
+            <MudDropZone Identifier="Propaganda" OnlyZone="true" T="DropItem" >
+                <MudPaper Class="align-center d-flex gap-2 pa-3" Outlined="true" >
+                    <MudIcon Color="Color.Inherit" Icon="@Icons.Custom.Uncategorized.Folder" />Propaganda
+                </MudPaper>
+            </MudDropZone>
+            <MudDropZone Identifier="Work" OnlyZone="true" T="DropItem" >
+                <MudPaper Class="align-center d-flex gap-2 pa-3" Outlined="true" >
+                    <MudIcon Color="Color.Inherit" Icon="@Icons.Custom.Uncategorized.Folder" />Work
+                </MudPaper>
+            </MudDropZone>
+        </div>
+        <MudListSubheader Class="mt-4 pb-2" >Files</MudListSubheader>
+        <MudDropZone Class="d-flex flex-grow-1 flex-wrap pa-2 rounded" Identifier="Files" T="DropItem" />
+    </ChildContent>
+    <ItemRenderer>
+        <div Class="align-center d-flex ma-2 mud-paper-outlined pa-3 rounded" >
+            <MudIcon Class="mr-2" Color="Color.Inherit" Icon="@(context.Identifier == "Folders" ? Icons.Custom.Uncategorized.Folder : Icons.Custom.FileFormats.FileDocument)" />
+            @context.Name
+        </div>
+    </ItemRenderer>
+</MudDropContainer>
+
+<MudDrawer @bind-Open="@Open" Elevation="0" Variant="@DrawerVariant.Temporary" Anchor="Anchor.Right" Color="Color.Primary">
+    <MudDrawerHeader>
+        <MudText Typo="Typo.h6">File upload</MudText>
+    </MudDrawerHeader>
+    <div class="container" >
+        <div class="header">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <path d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.43285 10 7.84965 10.0688 8.24006 10.1959M12 12V21M12 12L15 15M12 12L9 15" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </g>
+            </svg>
+            <p>Browse File to upload!</p>
+        </div>
+        
+    </div>
+</MudDrawer>

@@ -79,6 +79,18 @@ public static class StringExtension
         return JsonSerializer.Serialize(model);
     }
 
+    public static T? DeSerialize<T>(this string self)
+    {
+        try
+        {
+            return JsonSerializer.Deserialize<T>(self);
+        }
+        catch (Exception)
+        {
+            return default;
+        }
+    }
+
     public static string AppendAndEncodeBase64StringAsUri(this string source, params string[] message)
     {
         var stringBuilder = new StringBuilder();

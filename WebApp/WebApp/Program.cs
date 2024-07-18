@@ -452,7 +452,7 @@ namespace WebApp
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.MapRazorComponents<App>()
-                .AddInteractiveWebAssemblyRenderMode(options => options.ServeMultithreadingHeaders = true)
+                .AddInteractiveWebAssemblyRenderMode(options => options.ServeMultithreadingHeaders = false)
                 .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
             // app.Use(async (context, next) => {
             //     ApplyHeaders(context.Response.Headers);

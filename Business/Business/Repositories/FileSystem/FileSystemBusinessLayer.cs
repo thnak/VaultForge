@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using Business.Business.Interfaces.FileSystem;
 using Business.Data.Interfaces.FileSystem;
 using BusinessModels.System.FileSystem;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Business.Business.Repositories.FileSystem;
@@ -25,7 +26,7 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
 
     public FileInfoModel? Get(string key)
     {
-        throw new NotImplementedException();
+        return da.Get(key);
     }
 
     public IAsyncEnumerable<FileInfoModel?> GetAsync(List<string> keys, CancellationTokenSource? cancellationTokenSource = default)

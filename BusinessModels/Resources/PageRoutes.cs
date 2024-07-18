@@ -21,6 +21,7 @@ public static class PageRoutes
     {
         public const string Name = "/drive";
         public const string Index = Name + "/page";
+        public const string Shared = Name + "/shared";
     }
 
     public static class Account
