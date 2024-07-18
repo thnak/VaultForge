@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
@@ -46,6 +47,7 @@ public class JsonWebTokenCertificateProvider : IJsonWebTokenCertificateProvider
         DataDb.Indexes.CreateOneAsync(searchIndexModel);
         DataDb.Indexes.CreateOne(indexModel);
     }
+
     private X509SecurityKey Key { get; }
     private IMongoCollection<TokenModel> DataDb { get; }
 
@@ -100,7 +102,25 @@ public class JsonWebTokenCertificateProvider : IJsonWebTokenCertificateProvider
         try
         {
             var jwtSecurityToken = new JwtSecurityToken(token);
-            return jwtSecurityToken.ValidTo > DateTime.UtcNow ? tokenHandler.ValidateToken(token, validationParameters, out _) : null;
+
+            var claimPri = tokenHandler.ValidateToken(token, validationParameters, out _);
+
+            if (claimPri == null) return default;
+
+            if (jwtSecurityToken.ValidTo == DateTime.MinValue)
+            {
+                var claimTokenId = claimPri.Claims.FirstOrDefault(x => x.Type == TableName);
+                if (claimTokenId == null)
+                {
+                    return default;
+                }
+
+                var tokenModel = GetNeverExpireToken(claimTokenId.Value);
+                if (tokenModel == null) return default;
+                return tokenModel.ExpireTime > DateTime.UtcNow ? default : claimPri;
+            }
+
+            return claimPri;
         }
         catch (Exception)
         {
@@ -111,30 +131,41 @@ public class JsonWebTokenCertificateProvider : IJsonWebTokenCertificateProvider
     public TokenModel GenNeverExpireToken(string username, List<Claim> claims)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
+        var model = new TokenModel
+        {
+            CreateByUser = username,
+        };
+
+        claims.Add(new Claim(TableName, model.Id.ToString()));
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            SigningCredentials = new SigningCredentials(Key, SecurityAlgorithms.RsaSha256)
+            SigningCredentials = new SigningCredentials(Key, SecurityAlgorithms.RsaSha256),
+            Expires = DateTime.MinValue
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
         var tokenString = tokenHandler.WriteToken(token);
 
-        var model = new TokenModel
-        {
-            CreateByUser = username,
-            Token = tokenString
-        };
+        model.Token = tokenString;
+
 
         DataDb.InsertOne(model);
         return model;
     }
+
     public TokenModel? GetNeverExpireToken(string id)
     {
-        var objectId = ObjectId.Parse(id);
-        var filter = Builders<TokenModel>.Filter.Eq(field: x => x.Id, objectId);
-        return DataDb.Find(filter).FirstOrDefault();
+        if (ObjectId.TryParse(id, out ObjectId objectId))
+        {
+            var filter = Builders<TokenModel>.Filter.Eq(field: x => x.Id, objectId);
+            var token = DataDb.Find(filter).FirstOrDefault();
+            if (token == null) return default;
+            return token.ExpireTime > DateTime.UtcNow ? default : token;
+        }
+
+        return default;
     }
 
 

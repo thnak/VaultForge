@@ -5,6 +5,7 @@ using Business.Business.Interfaces.FileSystem;
 using Business.Utils.Helper;
 using BusinessModels.General;
 using BusinessModels.System.FileSystem;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -47,6 +48,29 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         return PhysicalFile(file.AbsolutePath, file.ContentType, true);
     }
 
+    [HttpGet("get-file-v2")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public IActionResult GetFile_v2(string id)
+    {
+        var file = fileServe.Get(id);
+        if (file == null) return NotFound();
+        var now = DateTime.UtcNow;
+        var cd = new ContentDisposition
+        {
+            FileName = file.FileName,
+            Inline = true, // false = prompt the user for downloading;  true = browser to try to show the file inline,
+            CreationDate = now,
+            ModificationDate = now,
+            ReadDate = now
+        };
+        Response.Headers.Append("Content-Disposition", cd.ToString());
+        Response.ContentType = file.ContentType;
+        Response.Headers.ContentType = file.ContentType;
+        Response.StatusCode = 200;
+        Response.ContentLength = file.FileSize;
+        return PhysicalFile(file.AbsolutePath, file.ContentType, true);
+    }
+    
     [HttpPost("upload-physical")]
     [DisableFormValueModelBinding]
     [AllowAnonymous]

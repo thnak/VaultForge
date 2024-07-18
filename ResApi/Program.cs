@@ -231,14 +231,15 @@ public abstract class Program
                     IssuerSigningKey = new X509SecurityKey(certificate),
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    ValidateLifetime = false
+                    ValidateLifetime = false,
+                    ValidIssuer = certificate.Issuer
                 };
 
                 options.Events = new JwtBearerEvents
                 {
                     OnMessageReceived = OnMessageReceived,
                     OnTokenValidated = OnTokenValidated,
-                    OnChallenge = OnChallenge
+                    OnChallenge = OnChallenge,
                 };
                 return;
 
@@ -261,6 +262,11 @@ public abstract class Program
 
                 Task OnTokenValidated(TokenValidatedContext arg)
                 {
+                    var jwtProvider = arg.HttpContext.RequestServices.GetRequiredService<IJsonWebTokenCertificateProvider>();
+
+                    var claim = jwtProvider.GetClaimsFromToken(arg.SecurityToken.UnsafeToString());
+                    if (claim == null)
+                        arg.Fail("UnAuthorized");
                     return Task.CompletedTask;
                 }
 
