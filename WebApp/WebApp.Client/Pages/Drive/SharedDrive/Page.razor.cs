@@ -8,19 +8,28 @@ using WebApp.Client.Services.Http;
 
 namespace WebApp.Client.Pages.Drive.SharedDrive;
 
-public partial class Page(BaseHttpClientService baseClientService) : ComponentBase
+public partial class Page(BaseHttpClientService baseClientService) : ComponentBase, IDisposable
 {
     private bool Open { get; set; }
     private bool Loading { get; set; }
 
     private FolderInfoModel RootFolder { get; set; } = new();
 
+    private MudDropContainer<DropItem>? DropContainer { get; set; }
+
     private void ItemUpdated(MudItemDropInfo<DropItem> dropItem)
     {
         if (dropItem.Item != null) dropItem.Item.Identifier = dropItem.DropzoneIdentifier;
     }
 
-    private List<DropItem> Items { get; set; } = [];
+    private List<DropItem> Items { get; set; } =
+    [
+        new DropItem() { Name = "Untitled document", Identifier = "Files" },
+        new DropItem() { Name = "GoonSwarmBestSwarm.png", Identifier = "Files" },
+        new DropItem() { Name = "co2traitors.txt", Identifier = "Files" },
+        new DropItem() { Name = "import.csv", Identifier = "Files" },
+        new DropItem() { Name = "planned_components_2022-2023.txt", Identifier = "Files" }
+    ];
 
     #region Models
 
@@ -51,6 +60,8 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     private async Task GetRootFolderAsync()
     {
         Loading = true;
+        await Task.Delay(1);
+        await InvokeAsync(StateHasChanged);
         Items.Clear();
         var responseMessage = await baseClientService.HttpClient.GetAsync("/api/Files/get-shared-folder");
         if (responseMessage.IsSuccessStatusCode)
@@ -86,6 +97,9 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         }
 
         Loading = false;
+        DropContainer?.Refresh();
+        await Task.Delay(1);
+        await InvokeAsync(StateHasChanged);
     }
 
     private async Task<List<FileInfoModel>> GetFiles(List<string> codes)
@@ -118,4 +132,9 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     }
 
     #endregion
+
+    public void Dispose()
+    {
+        //
+    }
 }

@@ -44,7 +44,7 @@ namespace WebApp.Client
             {
                 HttpClient httpClient = new HttpClient(new CookieHandler());
 #if DEBUG
-                httpClient.BaseAddress = new Uri("https://localhost:5217");
+                httpClient.BaseAddress = new Uri("https://thnakdevserver.ddns.net:5001");
 #else
             httpClient.BaseAddress = new Uri("https://thnakdevserver.ddns.net:5001");
 #endif

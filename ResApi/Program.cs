@@ -305,6 +305,12 @@ public abstract class Program
                         .AllowAnyMethod()
                         .AllowCredentials();
                 });
+            options.AddPolicy("AllowAllOrigin", policyBuilder =>
+            {
+                policyBuilder.AllowAnyHeader();
+                policyBuilder.AllowAnyMethod();
+                policyBuilder.AllowAnyOrigin();
+            });
         });
 
         // builder.Services.ConfigureApplicationCookie(options => {
@@ -495,6 +501,7 @@ public abstract class Program
         app.UseSession();
 
         app.UseCors("AllowLocalOrigin");
+        app.UseCors("AllowAllOrigin");
         app.UseRateLimiter();
         app.UseResponseCaching();
         app.UseAntiforgery();

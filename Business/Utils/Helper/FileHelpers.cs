@@ -93,6 +93,7 @@ public static class FileHelpers
         {
             ".dll", [[0x4D, 0x5A]]
         },
+        { ".ts", [[0x47]] }
     };
 
     private static readonly Dictionary<string, string> MimeTypeMappings = new()
@@ -128,6 +129,7 @@ public static class FileHelpers
         { ".avi", "video/x-msvideo" },
         { ".mpeg", "video/mpeg" },
         { ".mpg", "video/mpeg" },
+        { ".ts", "video/mp2t" },
 
         // Document files
         { ".pdf", "application/pdf" },
@@ -155,6 +157,7 @@ public static class FileHelpers
         { ".py", "application/x-python-code" },
         { ".rb", "application/x-ruby" },
         { ".ps1", "application/x-powershell" },
+
 
         // Other
         { ".bin", "application/octet-stream" }

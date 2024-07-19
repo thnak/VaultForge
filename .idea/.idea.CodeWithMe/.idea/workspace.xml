@@ -20,7 +20,15 @@
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Utils/Helper/FileHelpers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Utils/Helper/FileHelpers.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Utils/StringExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/StringExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/UserInterfaces/StateContainer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/UserInterfaces/StateContainer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/_Imports.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/_Imports.razor" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,14 +46,16 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Runtime/CompilerServices/TaskAwaiter.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Runtime/ExceptionServices/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Threading/Tasks/Task.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/81cd7b5d4f9a4def98fcb318251a687f2db10/f8/43a65fbf/AntiforgeryStateProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/fd17b13cc7c64aec9c7787175bb271d31c8a0/eb/83833ed7/CookieAuthenticationHandler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/149c8ec0f552c5744c0d8b8f8b8cf0ca838b419952d4e3528eae89443f8f/BsonExtensionMethods.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/36483e83e1974f148aae3aae58ebd899261a994e4c84de57b5ffed0ebb/Palette.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/dd64d971b211e561438492e2fe2c86efc73fddfcf68dd93f231def1eaf/MudColor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e8aee3972f4f46ef190c2b4224be16d75e671b3496b06c7b50b6cbe2418e38/EndPointHelper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff953b52b66bae7a88dcb19328c1d616a77c12f477863fbca58acbd1631cf2/PaletteLight.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/CodeWithMe/WebApp/WebApp.Client/Layout/AppBar.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -60,69 +70,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.ResApi.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.Web: https.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.WebApp: https.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.ResApi.executor": "Debug",
+    ".NET Launch Settings Profile.Web: https.executor": "Debug",
+    ".NET Launch Settings Profile.WebApp: https.executor": "Debug",
+    ".NET Project.WebApp.Client.executor": "Debug",
+    "Publish to folder.ResApi.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;rider.external.source.directories&quot;: [
-      &quot;C:\\Users\\thanh\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache&quot;,
-      &quot;C:\\Users\\thanh\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache&quot;,
-      &quot;C:\\Users\\thanh\\AppData\\Local\\Symbols\\src&quot;
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\thanh\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
+      "C:\\Users\\thanh\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
+      "C:\\Users\\thanh\\AppData\\Local\\Symbols\\src"
     ]
   }
-}</component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.ResApi">
-    <configuration name="WebApp: FolderProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
-      <riderPublish configuration="Release" platform="Any CPU" publish_profile="FolderProfile.pubxml" pubxml_path="$PROJECT_DIR$/WebApp/WebApp/Properties/PublishProfiles/FolderProfile.pubxml" uuid_high="-212861499982460667" uuid_low="-5823181797240626509" />
+}]]></component>
+  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: https">
+    <configuration name="ResApi" type="DotNetFolderPublish" factoryName="Publish to folder">
+      <riderPublish configuration="Release" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/ResApi/bin/Release/net9.0/linux-x64/publish" target_framework="net9.0" uuid_high="5905353364384007298" uuid_low="-8333852158807631372" />
       <method v="2" />
-    </configuration>
-    <configuration name="WebApp.Client" type="DotNetProject" factoryName=".NET Project">
-      <option name="EXE_PATH" value="" />
-      <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="PASS_PARENT_ENVS" value="1" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="PROJECT_PATH" value="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" />
-      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
-      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
-      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
-      <option name="PROJECT_KIND" value="DotNetCore" />
-      <option name="PROJECT_TFM" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-    <configuration name="Web.Client" type="DotNetProject" factoryName=".NET Project">
-      <option name="EXE_PATH" value="" />
-      <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="PASS_PARENT_ENVS" value="1" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="PROJECT_PATH" value="$PROJECT_DIR$/Web/Web.Client/Web.Client.csproj" />
-      <option name="PROJECT_EXE_PATH_TRACKING" value="1" />
-      <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
-      <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
-      <option name="PROJECT_KIND" value="DotNetCore" />
-      <option name="PROJECT_TFM" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
     </configuration>
     <configuration name="ResApi" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/ResApi/ResApi.csproj" />
@@ -139,55 +115,10 @@
         <option name="Build" />
       </method>
     </configuration>
-    <configuration name="ResApi: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/ResApi/ResApi.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="IIS Express" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-    <configuration name="ResApi: https" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/ResApi/ResApi.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="https" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
     <configuration name="WebApp no browser" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/WebApp/WebApp/WebApp.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
       <option name="LAUNCH_PROFILE_NAME" value="no-browser" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-    <configuration name="WebApp: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/WebApp/WebApp/WebApp.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="IIS Express" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <option name="USE_MONO" value="0" />
       <option name="RUNTIME_ARGUMENTS" value="" />
@@ -218,21 +149,6 @@
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/WebApp/WebApp/WebApp.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
       <option name="LAUNCH_PROFILE_NAME" value="https" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-    <configuration name="Web: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Web/Web/Web.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="IIS Express" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <option name="USE_MONO" value="0" />
       <option name="RUNTIME_ARGUMENTS" value="" />
@@ -276,19 +192,13 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue=".NET Launch Settings Profile.WebApp: IIS Express" />
       <item itemvalue=".NET Launch Settings Profile.WebApp: http" />
       <item itemvalue=".NET Launch Settings Profile.WebApp: https" />
       <item itemvalue=".NET Launch Settings Profile.WebApp no browser" />
       <item itemvalue=".NET Launch Settings Profile.ResApi" />
-      <item itemvalue=".NET Launch Settings Profile.ResApi: https" />
-      <item itemvalue=".NET Launch Settings Profile.ResApi: IIS Express" />
       <item itemvalue=".NET Launch Settings Profile.Web: http" />
       <item itemvalue=".NET Launch Settings Profile.Web: https" />
-      <item itemvalue=".NET Launch Settings Profile.Web: IIS Express" />
-      <item itemvalue=".NET Project.WebApp.Client" />
-      <item itemvalue=".NET Project.Web.Client" />
-      <item itemvalue="Publish to IIS.WebApp: FolderProfile" />
+      <item itemvalue="Publish to folder.ResApi" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -307,6 +217,8 @@
       <workItem from="1721292295654" duration="6891000" />
       <workItem from="1721312635655" duration="7666000" />
       <workItem from="1721360822107" duration="4208000" />
+      <workItem from="1721384418465" duration="799000" />
+      <workItem from="1721401894905" duration="6279000" />
     </task>
     <task id="LOCAL-00001" summary="remove anti token">
       <option name="closed" value="true" />
@@ -372,7 +284,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721321148675</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="small update">
+      <option name="closed" value="true" />
+      <created>1721384550084</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1721384550084</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -387,9 +307,28 @@
     <MESSAGE value="add resource" />
     <MESSAGE value="sửa lỗi ko debug client được do AOT, trang trí lại SignInPage.razor" />
     <MESSAGE value="add browser listener" />
-    <MESSAGE value="small update" />
     <MESSAGE value="enchant token" />
     <MESSAGE value="shit" />
-    <option name="LAST_COMMIT_MESSAGE" value="shit" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/BusinessModels/Utils/StringExtension.cs</url>
+          <line>90</line>
+          <properties documentPath="C:\Users\thanh\Git\CodeWithMe\BusinessModels\Utils\StringExtension.cs" containingFunctionPresentation="Method 'DeSerialize'">
+            <startOffsets>
+              <option value="2517" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2546" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

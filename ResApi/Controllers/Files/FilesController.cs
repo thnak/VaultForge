@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Mime;
+using System.Text;
 using Business.Attribute;
 using Business.Business.Interfaces.FileSystem;
 using Business.Utils.Helper;
@@ -8,14 +9,11 @@ using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
-using MongoDB.Bson;
 
 namespace ResApi.Controllers.Files;
 
@@ -59,6 +57,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         {
             var file = fileServe.Get(id);
             if (file == null) continue;
+            file.AbsolutePath = string.Empty;
             files.Add(file);
         }
 
@@ -111,7 +110,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     {
         var folder = folderServe.GetRoot("");
         if (folder == null) return BadRequest("Folder not found");
-        return Content(StringExtension.ToJson(folder), MediaTypeNames.Application.Json);
+        return Content(folder.ToJson(), MediaTypeNames.Application.Json);
     }
 
     [HttpPost("upload-physical")]

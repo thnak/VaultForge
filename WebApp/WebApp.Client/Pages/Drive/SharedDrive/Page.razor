@@ -1,7 +1,16 @@
 ﻿@attribute [Route(PageRoutes.Drive.Shared)]
 @attribute [AllowAnonymous]
 
-<MudDropContainer Class="d-flex flex-column flex-grow-1" ItemDropped="ItemUpdated" Items="Items" ItemsSelector="@((item, dropzone) => item.Identifier == dropzone)" T="DropItem" >
+@if (Loading)
+{
+    <SectionContent SectionId="@AppBar.TopBarSection1">
+        <MudProgressCircular Color="Color.Primary" Size="Size.Small" Indeterminate="true"/>
+    </SectionContent>
+}
+
+<MudButton OnClick="GetRootFolderAsync">Load</MudButton>
+
+<MudDropContainer @ref="DropContainer" Class="d-flex flex-column flex-grow-1" ItemDropped="ItemUpdated" Items="Items" ItemsSelector="@((item, dropzone) => item.Identifier == dropzone)" T="DropItem" >
     <ChildContent>
         <MudListSubheader Class="mt-4 pb-2" >Folders</MudListSubheader>
         <div class="d-flex gap-4 mx-4" >
