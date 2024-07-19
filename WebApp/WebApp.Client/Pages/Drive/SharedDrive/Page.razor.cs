@@ -1,4 +1,6 @@
-﻿using BusinessModels.System.FileSystem;
+﻿using System.Net.Mime;
+using System.Text;
+using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -88,9 +90,8 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
     private async Task<List<FileInfoModel>> GetFiles(List<string> codes)
     {
-        MultipartFormDataContent formDataContent = new MultipartFormDataContent();
-        formDataContent.Add(new StringContent("listFiles"), codes.ToJson());
-        var response = await baseClientService.HttpClient.PostAsync("/api/Files/get-file-list", formDataContent);
+        var textPlant = new StringContent(codes.ToJson(), Encoding.UTF8, MediaTypeNames.Application.Json);
+        var response = await baseClientService.HttpClient.PostAsync("/api/Files/get-file-list", textPlant);
         if (response.IsSuccessStatusCode)
         {
             var textPlan = await response.Content.ReadAsStringAsync();
@@ -103,9 +104,9 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
     private async Task<List<FolderInfoModel>> GetFolders(string[] codes)
     {
-        MultipartFormDataContent formDataContent = new MultipartFormDataContent();
-        formDataContent.Add(new StringContent("listFolders"), codes.ToJson());
-        var response = await baseClientService.HttpClient.PostAsync("/api/Files/get-folder-list", formDataContent);
+        var textPlant = new StringContent(codes.ToJson(), Encoding.UTF8, MediaTypeNames.Application.Json);
+
+        var response = await baseClientService.HttpClient.PostAsync("/api/Files/get-folder-list", textPlant);
         if (response.IsSuccessStatusCode)
         {
             var textPlan = await response.Content.ReadAsStringAsync();
