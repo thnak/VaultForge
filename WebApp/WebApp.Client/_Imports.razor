@@ -21,6 +21,7 @@
 @using Blazored.Toast
 @using Blazored.Toast.Services
 @using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.Extensions.Localization
 @using WebApp.Client.Services.UserInterfaces
 @using WebApp.Client.Services.Http;
 
@@ -28,7 +29,7 @@
 @inject DocumentObjectModelEventListener EventListener
 @inject BaseHttpClientService ApiService
 @inject IJSRuntime JsRuntime
-
+@inject IStringLocalizer<AppLang> LangDict
 @inject ProtectedLocalStorage ProtectedLocalStorageService
 @inject ProtectedLocalStorage ProtectedSessionStorageService
 @inject NavigationManager Navigation

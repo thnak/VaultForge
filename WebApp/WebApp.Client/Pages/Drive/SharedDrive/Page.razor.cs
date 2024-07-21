@@ -24,11 +24,11 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
     private List<DropItem> Items { get; set; } =
     [
-        new DropItem() { Name = "Untitled document", Identifier = "Files" },
-        new DropItem() { Name = "GoonSwarmBestSwarm.png", Identifier = "Files" },
-        new DropItem() { Name = "co2traitors.txt", Identifier = "Files" },
-        new DropItem() { Name = "import.csv", Identifier = "Files" },
-        new DropItem() { Name = "planned_components_2022-2023.txt", Identifier = "Files" }
+        new DropItem() { Name = "Untitled document", Identifier = "File" },
+        new DropItem() { Name = "GoonSwarmBestSwarm.png", Identifier = "File" },
+        new DropItem() { Name = "co2traitors.txt", Identifier = "File" },
+        new DropItem() { Name = "import.csv", Identifier = "File" },
+        new DropItem() { Name = "planned_components_2022-2023.txt", Identifier = "File" }
     ];
 
     #region Models
@@ -37,6 +37,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     {
         public string Name { get; init; } = string.Empty;
         public string Identifier { get; set; } = string.Empty;
+        public string ContentType { get; set; } = string.Empty;
     }
 
     #endregion
@@ -71,8 +72,8 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             if (folder != null)
             {
                 RootFolder = folder;
-                var fileCodes = RootFolder.Contents.Where(x => x.Type == FolderContentType.File).Select(x => x.Id).ToList();
-                var folderCodes = RootFolder.Contents.Where(x => x.Type == FolderContentType.Folder).Select(x => x.Id).ToList();
+                var fileCodes = RootFolder.Contents.Where(x => x is { Type: FolderContentType.File or FolderContentType.DeletedFile or FolderContentType.HiddenFile }).Select(x => x.Id).ToList();
+                var folderCodes = RootFolder.Contents.Where(x => x is { Type: FolderContentType.Folder or FolderContentType.DeletedFolder or FolderContentType.HiddenFolder }).Select(x => x.Id).ToList();
                 var folders = await GetFolders([..folderCodes]);
                 var files = await GetFiles([..fileCodes]);
 
@@ -80,7 +81,8 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 {
                     Items.Add(new()
                     {
-                        Identifier = "Files",
+                        Identifier = "File",
+                        ContentType = file.ContentType,
                         Name = file.FileName
                     });
                 }
@@ -89,7 +91,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 {
                     Items.Add(new()
                     {
-                        Identifier = "Folders",
+                        Identifier = "Folder",
                         Name = file.FolderName
                     });
                 }

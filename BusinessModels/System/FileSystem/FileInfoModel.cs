@@ -13,7 +13,7 @@ public class FileInfoModel
     /// Dùng cho resource có nhiều biến thể như độ phân giải, chất lượng
     /// </summary>
     [Key(1)]
-    public List<string> ExtendResource { get; set; } = [];
+    public List<FileContents> ExtendResource { get; set; } = [];
 
     [Key(2)] public string FileName { get; set; } = string.Empty; // Name of the file
     [Key(3)] public string ContentType { get; set; } = string.Empty; // Extension of the file

@@ -14,14 +14,30 @@ public static class PageRoutes
 
     public static class Home
     {
-        public const string Root = "/home";
+        public static class Root
+        {
+            public const string Src = "/home";
+            public const string Title = "Home";
+            public const string Description = "My homeland page";
+        }
     }
 
     public static class Drive
     {
         public const string Name = "/drive";
-        public const string Index = Name + "/page";
-        public const string Shared = Name + "/shared";
+        public static class Index
+        {
+            public const string Src = Name + "/home";
+            public const string Title = "Drive";
+            public const string Description = "My drive";
+        }
+
+        public static class Shared
+        {
+            public const string Src = Name + "/shared";
+            public const string Title = "Shared drive";
+            public const string Description = "Share drive to comunity";
+        }
     }
 
     public static class Account

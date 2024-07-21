@@ -11,6 +11,7 @@ public static class JsRuntimeExtension
         var cookieVal = await jsRuntime.InvokeAsync<string?>("getCookie", cookieName);
         return cookieVal;
     }
+
     public static async Task SetCookie(this IJSRuntime jsRuntime, string cookieName, string cookieValue, int days)
     {
         await jsRuntime.InvokeVoidAsync("setCookie", cookieName, cookieValue, days);
@@ -38,7 +39,24 @@ public static class JsRuntimeExtension
     {
         var textPlan = await jsRuntime.InvokeAsync<string?>("localStorage.getItem", key);
         if (string.IsNullOrEmpty(textPlan)) return default;
-        return JsonSerializer.Deserialize<T?>(textPlan);
+        try
+        {
+            return JsonSerializer.Deserialize<T?>(textPlan);
+        }
+#if DEBUG
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception.Message);
+
+            return default;
+        }
+#else
+catch (Exception)
+                    {
+            
+                        return default!;
+                    }
+#endif
     }
 
     public static async Task RemoveLocalStorage(this IJSRuntime jsRuntime, string key)
@@ -61,6 +79,7 @@ public static class JsRuntimeExtension
     {
         await jsRuntime.InvokeVoidAsync("sessionStorage.setItem", key, value);
     }
+
     public static async Task<string?> GetSessionStorage(this IJSRuntime jsRuntime, string key)
     {
         return await jsRuntime.InvokeAsync<string?>("sessionStorage.getItem", key);
@@ -70,7 +89,24 @@ public static class JsRuntimeExtension
     {
         var textPlan = await jsRuntime.InvokeAsync<string?>("sessionStorage.getItem", key);
         if (string.IsNullOrEmpty(textPlan)) return default;
-        return JsonSerializer.Deserialize<T?>(textPlan);
+        try
+        {
+            return JsonSerializer.Deserialize<T?>(textPlan);
+        }
+#if DEBUG
+        catch (Exception exception)
+        {
+            Console.WriteLine(exception.Message);
+
+            return default;
+        }
+#else
+catch (Exception)
+                    {
+            
+                        return default!;
+                    }
+#endif
     }
 
     public static async Task RemoveSessionStorage(this IJSRuntime jsRuntime, string key)
@@ -93,6 +129,7 @@ public static class JsRuntimeExtension
     #region Culture
 
     private const string CultureKeyName = "Culture";
+
     public static async Task SetCulture(this IJSRuntime jsRuntime, string name)
     {
         await jsRuntime.SetLocalStorage(CultureKeyName, name);

@@ -58,6 +58,7 @@ namespace WebApp.Client
             });
 
             #endregion
+            builder.Services.AddLocalization();
 
             var host = builder.Build();
 

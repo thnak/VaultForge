@@ -1,0 +1,10 @@
+﻿User-agent: *
+Disallow: /admin/
+Disallow: /login/
+Disallow: /search/
+Disallow: /temp/
+Disallow: /scripts/
+
+# Allow all bots to access everything else
+User-agent: *
+Disallow:

@@ -207,7 +207,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
 
             foreach (var extend in query.ExtendResource)
             {
-                Delete(extend);
+                Delete(extend.Id);
             }
 
             return (true, AppLang.Delete_successfully);

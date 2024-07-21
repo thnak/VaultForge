@@ -1,11 +1,13 @@
-﻿@attribute [Route("/")]
-@attribute [Route(PageRoutes.Home.Root)]
+﻿@attribute [Route(PageRoutes.Home.Root.Src)]
 @attribute [Authorize]
 
-<PageTitle>@AppLang.Home_page</PageTitle>
+<PageTitle>@PageRoutes.Home.Root.Title</PageTitle>
+<HeadContent>
+    <meta name="description" content="@PageRoutes.Home.Root.Description">
+</HeadContent>
 
 
-<MudButton OnClick="@Crypting">Encrypt</MudButton>
-<MudButton OnClick="@DeCrypting">DeEncrypt</MudButton>
+<MudButton OnClick="@Crypting" >Encrypt</MudButton>
+<MudButton OnClick="@DeCrypting" >DeEncrypt</MudButton>
 
-<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@GetWeather">Get Weather</MudButton>
+<MudButton Color="Color.Primary" OnClick="@GetWeather" Variant="Variant.Filled" >Get Weather</MudButton>
