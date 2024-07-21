@@ -30,7 +30,7 @@ public static class IconContentExtensions
             MimeTypeNames.Video.Ts => "fa-solid fa-video",
             MimeTypeNames.Video.Mp4 => "fa-solid fa-video",
             MimeTypeNames.Video.Mpeg => "fa-solid fa-video",
-            _ => string.Empty
+            _ => "fa-solid fa-file-circle-question"
         };
     }
 }

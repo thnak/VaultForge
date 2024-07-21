@@ -18,29 +18,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FileContents.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BusinessModels/WebContent/MediaSource.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BusinessModels/WebContent/MimeTypeNames.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Utils/IconContentExtensions.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/robots.txt" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add some shit">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/PageRoutes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/PageRoutes.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FileInfoModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FileInfoModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FolderContent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FolderContent.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/NavMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/NavMenu.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Home.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Utils/JsRuntimeExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Utils/JsRuntimeExtension.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/_Imports.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/_Imports.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Utils/IconContentExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Utils/IconContentExtensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Components/App.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Components/App.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/site.manifest" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/site.manifest" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +53,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/dd64d971b211e561438492e2fe2c86efc73fddfcf68dd93f231def1eaf/MudColor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e8aee3972f4f46ef190c2b4224be16d75e671b3496b06c7b50b6cbe2418e38/EndPointHelper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff953b52b66bae7a88dcb19328c1d616a77c12f477863fbca58acbd1631cf2/PaletteLight.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/CodeWithMe/WebApp/WebApp.Client/_Imports.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -234,7 +218,7 @@
       <workItem from="1721384418465" duration="799000" />
       <workItem from="1721401894905" duration="6463000" />
       <workItem from="1721435266322" duration="11294000" />
-      <workItem from="1721529807006" duration="5184000" />
+      <workItem from="1721529807006" duration="10669000" />
     </task>
     <task id="LOCAL-00001" summary="remove anti token">
       <option name="closed" value="true" />
@@ -316,7 +300,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721408412393</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="add some shit">
+      <option name="closed" value="true" />
+      <created>1721535331910</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1721535331910</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -335,7 +327,8 @@
     <MESSAGE value="shit" />
     <MESSAGE value="small update" />
     <MESSAGE value="." />
-    <option name="LAST_COMMIT_MESSAGE" value="." />
+    <MESSAGE value="add some shit" />
+    <option name="LAST_COMMIT_MESSAGE" value="add some shit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

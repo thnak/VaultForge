@@ -8,8 +8,6 @@
 
 <HeadContent>
     <meta content="@PageRoutes.Drive.Shared.Description" name="description" >
-    <meta content="@CustomStateContainer.SharedPalette.Background" name="theme-color" >
-    <meta content="@CustomStateContainer.SharedPalette.Background" name="background-color" >
     <link href="@Navigation.Uri" hreflang="x-default" rel="alternate" />
 </HeadContent>
 
@@ -30,21 +28,23 @@
             @foreach (var x in Items.Where(x => x.Identifier == "Folder"))
             {
                 <MudDropZone Identifier="Work" @key="x" OnlyZone="true" T="DropItem" >
-                    <MudPaper Class="align-center d-flex gap-2 pa-3" Outlined="true" >
+                    <MudPaper Class="align-center d-flex gap-2 pa-2" Outlined="true" >
                         <MudIcon Color="Color.Inherit" Icon="fa-solid fa-folder" />
-                        @x.Name
+                        <span>@x.Name</span>
                     </MudPaper>
                 </MudDropZone>
             }
 
         </div>
         <MudListSubheader Class="mt-4 pb-2" >Files</MudListSubheader>
-        <MudDropZone Class="d-flex flex-grow-1 flex-wrap opa pa-2 rounded" Identifier="File" T="DropItem" />
+        <MudDropZone Class="d-flex flex-grow-1 flex-wrap opa pa-2 rounded-lg" Identifier="File" T="DropItem" />
     </ChildContent>
     <ItemRenderer>
-        <div Class="align-center d-flex ma-2 mud-paper-outlined pa-3 rounded" >
+        <div Class="align-center d-flex ma-2 mud-paper-outlined pa-2 rounded-lg" style="width: 250px">
             <MudIcon Class="mr-2" Color="Color.Inherit" Icon="@(context.ContentType.GetIcon())" />
-            @context.Name
+            <span>
+                @context.Name
+            </span>
         </div>
     </ItemRenderer>
 </MudDropContainer>
