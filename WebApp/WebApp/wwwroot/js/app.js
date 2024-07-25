@@ -7,7 +7,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-function deleteTemplateCache() {
+window.deleteTemplateCache = () => {
     caches.keys().then(function (names) {
         for (let name of names) caches.delete(name);
     });

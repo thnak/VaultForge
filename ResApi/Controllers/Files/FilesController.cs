@@ -112,6 +112,23 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         return Content(folder.ToJson(), MediaTypeNames.Application.Json);
     }
 
+    [HttpPost("create-shared-folder")]
+    public async Task<IActionResult> CreateSharedFolder([FromBody] RequestNewFolderModel request)
+    {
+        var folderRoot = folderServe.Get(request.RootId);
+        if (folderRoot == null) return NotFound("Can not be found");
+        folderServe.Get("ha", "h");
+        
+        var res = await folderServe.CreateAsync(request.NewFolder);
+        
+        
+        folderRoot.Contents.Add(new FolderContent()
+        {
+            
+        });
+        
+    }
+    
     [HttpPost("upload-physical")]
     [DisableFormValueModelBinding]
     [AllowAnonymous]

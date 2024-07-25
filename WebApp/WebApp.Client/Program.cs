@@ -26,7 +26,7 @@ namespace WebApp.Client
             builder.Services.AddSingleton<DocumentObjectModelEventListener>();
 
             #endregion
-            
+
             #region Authorize
 
             builder.Services.AddAuthorizationCore();
@@ -58,6 +58,7 @@ namespace WebApp.Client
             });
 
             #endregion
+
             builder.Services.AddLocalization();
 
             var host = builder.Build();
@@ -74,6 +75,7 @@ namespace WebApp.Client
             CultureInfo.DefaultThreadCurrentCulture = culture;
             CultureInfo.DefaultThreadCurrentUICulture = culture;
 
-            await host.RunAsync();        }
+            await host.RunAsync();
+        }
     }
 }

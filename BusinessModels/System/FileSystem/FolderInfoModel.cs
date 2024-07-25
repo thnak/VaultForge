@@ -43,6 +43,8 @@ public class FolderInfoModel
     /// </summary>
     public string RelativePath { get; set; } = string.Empty;
 
+    public string VersionId { get; set; } = string.Empty;
+    
     #region Front-End Properties
 
     [BsonIgnore] public long FolderSize { get; set; }

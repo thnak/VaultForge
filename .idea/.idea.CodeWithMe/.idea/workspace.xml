@@ -18,8 +18,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="fix">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/BusinessModels/System/FileSystem/RequestNewFolderModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BusinessModels/System/VersionControlModel/VersionRegisterModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FolderInfoModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FolderInfoModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Utils/DataTimeExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/DataTimeExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/js/app.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +48,7 @@
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Runtime/CompilerServices/TaskAwaiter.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Runtime/ExceptionServices/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Threading/Tasks/Task.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1cb5a31e42ba4c378d3e9344b1c94c52cc8a0/74/e07deca3/ResourceAssetCollection.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3ad9bbd3be4e4d5882cf0cfc65021d8624508/0c/9c59a66f/Enumerable.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/81cd7b5d4f9a4def98fcb318251a687f2db10/f8/43a65fbf/AntiforgeryStateProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/85ad600cadd14f1bbfea1aa4f4370f54698a0/fe/3ec89b69/MediaTypeNames.cs" root0="SKIP_HIGHLIGHTING" />
@@ -49,8 +58,6 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/dd64d971b211e561438492e2fe2c86efc73fddfcf68dd93f231def1eaf/MudColor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e8aee3972f4f46ef190c2b4224be16d75e671b3496b06c7b50b6cbe2418e38/EndPointHelper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff953b52b66bae7a88dcb19328c1d616a77c12f477863fbca58acbd1631cf2/PaletteLight.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/CodeWithMe/WebApp/WebApp.Client/_Imports.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/CodeWithMe/WebApp/WebApp/Components/App.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -215,7 +222,11 @@
       <workItem from="1721384418465" duration="799000" />
       <workItem from="1721401894905" duration="6463000" />
       <workItem from="1721435266322" duration="11294000" />
-      <workItem from="1721529807006" duration="11872000" />
+      <workItem from="1721529807006" duration="13239000" />
+      <workItem from="1721639498598" duration="1317000" />
+      <workItem from="1721695267457" duration="4068000" />
+      <workItem from="1721781260522" duration="4160000" />
+      <workItem from="1721797415787" duration="2434000" />
     </task>
     <task id="LOCAL-00001" summary="remove anti token">
       <option name="closed" value="true" />
@@ -313,7 +324,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721560543690</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="delete old project">
+      <option name="closed" value="true" />
+      <created>1721561493939</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1721561493939</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -334,25 +353,7 @@
     <MESSAGE value="." />
     <MESSAGE value="add some shit" />
     <MESSAGE value="fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/BusinessModels/Utils/StringExtension.cs</url>
-          <line>90</line>
-          <properties documentPath="C:\Users\thanh\Git\CodeWithMe\BusinessModels\Utils\StringExtension.cs" containingFunctionPresentation="Method 'DeSerialize'">
-            <startOffsets>
-              <option value="2517" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2546" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="delete old project" />
+    <option name="LAST_COMMIT_MESSAGE" value="delete old project" />
   </component>
 </project>
