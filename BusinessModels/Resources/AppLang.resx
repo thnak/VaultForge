@@ -279,4 +279,7 @@
     <data name="Could not delete root folder" xml:space="preserve">
         <value>Không thể xóa thư mục gốc</value>
     </data>
+    <data name="Other operations" xml:space="preserve">
+        <value>Thao tác khác</value>
+    </data>
 </root>

@@ -66,8 +66,10 @@ function PageHideEvent() {
     DotNet.invokeMethodAsync("WebApp.Client", 'PageHideEventEventListener')
 }
 
-function ContextMenuEvent() {
+function ContextMenuEvent(e) {
+    e.preventDefault();
     DotNet.invokeMethodAsync("WebApp.Client", 'ContextMenuEventListener')
+    DotNet.invokeMethodAsync("WebApp.Client", 'ContextMenuEventListenerWithParam', e.clientX, e.clientY)
 }
 
 function EnterClickEvent(event) {

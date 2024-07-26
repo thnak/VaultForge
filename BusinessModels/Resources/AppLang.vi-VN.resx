@@ -171,4 +171,7 @@
     <data name="Create failed" xml:space="preserve">
         <value>Tạo thất bại</value>
     </data>
+    <data name="Other operations" xml:space="preserve">
+        <value>Thao tác khác</value>
+    </data>
 </root>

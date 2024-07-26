@@ -38,6 +38,12 @@ public class DocumentObjectModelEventListener : IDisposable
         set => SelfContextMenuClickedAsync = value;
     }
 
+    public Func<int, int, Task>? ContextMenuClickedWithParamAsync
+    {
+        get => SelfContextMenuClickedWithParamAsync;
+        set => SelfContextMenuClickedWithParamAsync = value;
+    }
+
     public static Action? ContextMenuClicked
     {
         get => SelfContextMenuClicked;
@@ -45,6 +51,7 @@ public class DocumentObjectModelEventListener : IDisposable
     }
 
     private static Func<Task>? SelfContextMenuClickedAsync { get; set; }
+    private static Func<int, int, Task>? SelfContextMenuClickedWithParamAsync { get; set; }
     private static Action? SelfContextMenuClicked { get; set; }
 
     [JSInvokable]
@@ -52,6 +59,12 @@ public class DocumentObjectModelEventListener : IDisposable
     {
         SelfContextMenuClickedAsync?.Invoke();
         SelfContextMenuClicked?.Invoke();
+    }
+
+    [JSInvokable]
+    public static void ContextMenuEventListenerWithParam(int x, int y)
+    {
+        SelfContextMenuClickedWithParamAsync?.Invoke(x, y);
     }
 
     #endregion

@@ -50,9 +50,20 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         if (firstRender)
         {
             await GetRootFolderAsync();
+            EventListener.ContextMenuClickedWithParamAsync += ContextMenuClick;
         }
 
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    #endregion
+
+    #region Event
+
+    private Task ContextMenuClick(int x, int y)
+    {
+        Console.WriteLine($"ClientX: {x}\nClientY: {y}");
+        return Task.CompletedTask;
     }
 
     #endregion
@@ -138,6 +149,6 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
     public void Dispose()
     {
-        //
+        EventListener.ContextMenuClickedWithParamAsync -= ContextMenuClick;
     }
 }
