@@ -4,7 +4,6 @@ using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using MudBlazor.Utilities;
 using WebApp.Client.Services.Http;
 
 namespace WebApp.Client.Pages.Drive.SharedDrive;
@@ -18,30 +17,24 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
     private MudDropContainer<DropItem>? DropContainer { get; set; }
 
+    private List<DropItem> Items { get; } =
+    [
+        new DropItem { Name = "Untitled document", Identifier = "File" },
+        new DropItem { Name = "GoonSwarmBestSwarm.png", Identifier = "File" },
+        new DropItem { Name = "co2traitors.txt", Identifier = "File" },
+        new DropItem { Name = "import.csv", Identifier = "File" },
+        new DropItem { Name = "planned_components_2022-2023.txt", Identifier = "File" }
+    ];
+
+    public void Dispose()
+    {
+        EventListener.ContextMenuClickedWithParamAsync -= ContextMenuClick;
+    }
+
     private void ItemUpdated(MudItemDropInfo<DropItem> dropItem)
     {
         if (dropItem.Item != null) dropItem.Item.Identifier = dropItem.DropzoneIdentifier;
     }
-
-    private List<DropItem> Items { get; set; } =
-    [
-        new DropItem() { Name = "Untitled document", Identifier = "File" },
-        new DropItem() { Name = "GoonSwarmBestSwarm.png", Identifier = "File" },
-        new DropItem() { Name = "co2traitors.txt", Identifier = "File" },
-        new DropItem() { Name = "import.csv", Identifier = "File" },
-        new DropItem() { Name = "planned_components_2022-2023.txt", Identifier = "File" }
-    ];
-
-    #region Models
-
-    public class DropItem
-    {
-        public string Name { get; init; } = string.Empty;
-        public string Identifier { get; set; } = string.Empty;
-        public string ContentType { get; set; } = string.Empty;
-    }
-
-    #endregion
 
     #region Init
 
@@ -68,6 +61,22 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
     #endregion
 
+    private void OpenAddPopUp()
+    {
+        Open = true;
+    }
+
+    #region Models
+
+    public class DropItem
+    {
+        public string Name { get; init; } = string.Empty;
+        public string Identifier { get; set; } = string.Empty;
+        public string ContentType { get; set; } = string.Empty;
+    }
+
+    #endregion
+
     #region Get Data
 
     private async Task GetRootFolderAsync()
@@ -90,23 +99,19 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 var files = await GetFiles([..fileCodes]);
 
                 foreach (var file in files)
-                {
-                    Items.Add(new()
+                    Items.Add(new DropItem
                     {
                         Identifier = "File",
                         ContentType = file.ContentType,
                         Name = file.FileName
                     });
-                }
 
                 foreach (var file in folders)
-                {
-                    Items.Add(new()
+                    Items.Add(new DropItem
                     {
                         Identifier = "Folder",
                         Name = file.FolderName
                     });
-                }
             }
         }
 
@@ -146,14 +151,4 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     }
 
     #endregion
-
-    private void OpenAddPopUp()
-    {
-        Open = true;
-    }
-    
-    public void Dispose()
-    {
-        EventListener.ContextMenuClickedWithParamAsync -= ContextMenuClick;
-    }
 }

@@ -25,6 +25,7 @@ public static class PageRoutes
     public static class Drive
     {
         public const string Name = "/drive";
+
         public static class Index
         {
             public const string Src = Name + "/home";

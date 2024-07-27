@@ -10,9 +10,10 @@ public class RsaKeyProvider
     public RsaKeyProvider()
     {
         using var rsa = RSA.Create();
-        PrivateKey = rsa.ExportParameters(includePrivateParameters: true);
-        PublicKey = rsa.ExportParameters(includePrivateParameters: false);
+        PrivateKey = rsa.ExportParameters(true);
+        PublicKey = rsa.ExportParameters(false);
     }
+
     /// <summary>
     ///     Public key theo singleton
     /// </summary>
@@ -30,8 +31,8 @@ public class RsaKeyProvider
     public (RSAParameters, RSAParameters) GetRsa()
     {
         using var rsa = RSA.Create();
-        var privateKey = rsa.ExportParameters(includePrivateParameters: true);
-        var publicKey = rsa.ExportParameters(includePrivateParameters: false);
+        var privateKey = rsa.ExportParameters(true);
+        var publicKey = rsa.ExportParameters(false);
         return (privateKey, publicKey);
     }
 }

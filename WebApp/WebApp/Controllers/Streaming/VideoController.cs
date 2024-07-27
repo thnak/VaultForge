@@ -14,21 +14,15 @@ public class VideoController : ControllerBase
     {
         fileName = fileName.DecodeBase64String();
         var filePath = Path.Combine("C:/Users/thanh/Downloads", fileName);
-        if (!System.IO.File.Exists(filePath))
-        {
-            return NotFound();
-        }
+        if (!System.IO.File.Exists(filePath)) return NotFound();
         var cd = new ContentDisposition
         {
             FileName = fileName,
-            Inline = true// false = prompt the user for downloading;  true = browser to try to show the file inline
+            Inline = true // false = prompt the user for downloading;  true = browser to try to show the file inline
         };
         const int bufferSize = 4 * 1024 * 1024;
 
-        if (!FileSignatureValidator.ValidateFileSignature(filePath, FileSignatureValidator.Mp4Signature))
-        {
-            return BadRequest();
-        }
+        if (!FileSignatureValidator.ValidateFileSignature(filePath, FileSignatureValidator.Mp4Signature)) return BadRequest();
 
         var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize, FileOptions.Asynchronous);
 
@@ -36,6 +30,5 @@ public class VideoController : ControllerBase
         Response.Headers.Append("Content-Disposition", cd.ToString());
 
         return File(fileStream, "video/mp4", fileName, true);
-
     }
 }

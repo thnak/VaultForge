@@ -24,6 +24,7 @@ public interface IUserBusinessLayer : IBusinessLayerRepository<UserModel>
     /// <param name="userName">Chuỗi string chưa trải qua hàm băm</param>
     /// <returns></returns>
     List<Claim> GetAllClaim(string userName);
+
     /// <summary>
     ///     Lấy tất cả quyền thuộc về User
     /// </summary>

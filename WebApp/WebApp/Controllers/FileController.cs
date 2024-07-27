@@ -14,6 +14,7 @@ public class FileController : ControllerBase
     {
         return Ok();
     }
+
     [HttpPost("testfdsjhfids")]
     public IActionResult TestEndpoint(string name)
     {
@@ -26,15 +27,11 @@ public class FileController : ControllerBase
     [HttpPost("upload")]
     public async Task<IActionResult> UploadChunk([FromForm] FormChunk form)
     {
-
         var (chunk, chunkIndexString, totalChunksString, fileName) = (form.Chunk, form.ChunkIndexString, form.TotalChunksString, form.FileName);
         var chunkIndex = int.Parse(chunkIndexString);
         var totalChunks = int.Parse(totalChunksString);
 
-        if (chunk == null || chunk.Length == 0)
-        {
-            return BadRequest("No chunk uploaded");
-        }
+        if (chunk == null || chunk.Length == 0) return BadRequest("No chunk uploaded");
 
         var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
         Directory.CreateDirectory(uploadPath);
@@ -61,7 +58,8 @@ public class FileController : ControllerBase
                     {
                         await partStream.CopyToAsync(finalStream);
                     }
-                    System.IO.File.Delete(partPath);// Delete part file after merging
+
+                    System.IO.File.Delete(partPath); // Delete part file after merging
                 }
             }
 

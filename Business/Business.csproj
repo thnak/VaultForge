@@ -7,27 +7,27 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="MessagePack" Version="3.0.111-alpha" />
-        <PackageReference Include="MessagePack.Annotations" Version="3.0.111-alpha" />
+        <PackageReference Include="MessagePack" Version="3.0.111-alpha"/>
+        <PackageReference Include="MessagePack.Annotations" Version="3.0.111-alpha"/>
         <PackageReference Include="MessagePackAnalyzer" Version="3.0.111-alpha">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0-preview.6.24328.4" />
-        <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="9.0.0-preview.6.24328.4" />
-        <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="6.0.0-preview.4.21253.5" />
-        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.0-preview.6.24328.4" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.6.24327.4" />
-        <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0-preview.6.24327.7" />
-        <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0-preview.6.24327.7" />
-        <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.18.1" />
-        <PackageReference Include="MongoDB.Driver" Version="2.28.0" />
-        <PackageReference Include="MongoDB.EntityFrameworkCore" Version="8.0.3" />
-        <PackageReference Include="NAudio" Version="2.2.1" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.1" />
-        <PackageReference Include="System.Text.Encodings.Web" Version="9.0.0-preview.6.24327.7" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0-preview.6.24328.4"/>
+        <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="9.0.0-preview.6.24328.4"/>
+        <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="6.0.0-preview.4.21253.5"/>
+        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.0-preview.6.24328.4"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.6.24327.4"/>
+        <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0-preview.6.24327.7"/>
+        <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0-preview.6.24327.7"/>
+        <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.18.1"/>
+        <PackageReference Include="MongoDB.Driver" Version="2.28.0"/>
+        <PackageReference Include="MongoDB.EntityFrameworkCore" Version="8.0.3"/>
+        <PackageReference Include="NAudio" Version="2.2.1"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5"/>
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.1"/>
+        <PackageReference Include="System.Text.Encodings.Web" Version="9.0.0-preview.6.24327.7"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -40,16 +40,16 @@
             <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.0-preview.5.24306.11\Microsoft.AspNetCore.DataProtection.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.AspNetCore.Http.Features">
-          <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.0-preview.6.24328.4\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+            <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.0-preview.6.24328.4\Microsoft.AspNetCore.Http.Features.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.AspNetCore.WebUtilities">
-          <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.0-preview.6.24328.4\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
+            <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.0-preview.6.24328.4\Microsoft.AspNetCore.WebUtilities.dll</HintPath>
         </Reference>
         <Reference Include="Microsoft.Net.Http.Headers">
-          <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.0-preview.6.24328.4\Microsoft.Net.Http.Headers.dll</HintPath>
+            <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\9.0.0-preview.6.24328.4\Microsoft.Net.Http.Headers.dll</HintPath>
         </Reference>
     </ItemGroup>
     <ItemGroup>
-      <FrameworkReference Include="Microsoft.AspNetCore.App" />
+        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
     </ItemGroup>
 </Project>

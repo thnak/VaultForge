@@ -5,8 +5,8 @@ namespace Business.Utils.Helper;
 public static class MultipartRequestHelper
 {
     /// <summary>
-    /// Content-Type: multipart/form-data; boundary="----WebKitFormBoundarymx2fSWqWSd0OxQqq"
-    /// The spec at https://tools.ietf.org/html/rfc2046#section-5.1 states that 70 characters is a reasonable limit.
+    ///     Content-Type: multipart/form-data; boundary="----WebKitFormBoundarymx2fSWqWSd0OxQqq"
+    ///     The spec at https://tools.ietf.org/html/rfc2046#section-5.1 states that 70 characters is a reasonable limit.
     /// </summary>
     /// <param name="contentType"></param>
     /// <param name="lengthLimit"></param>

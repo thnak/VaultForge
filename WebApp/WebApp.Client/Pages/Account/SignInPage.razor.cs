@@ -50,13 +50,11 @@ public partial class SignInPage(HttpClient httpClient, AntiforgeryStateProvider 
         {
             CurrentErrorMessage = ErrorMessage;
             if (!string.IsNullOrEmpty(ErrorMessage))
-            {
                 if (FormUser != null)
                 {
                     FormUser.ResetValidation();
                     FormError = [ErrorMessage];
                 }
-            }
         }
 
         await base.OnAfterRenderAsync(first);

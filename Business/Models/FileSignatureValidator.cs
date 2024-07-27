@@ -19,9 +19,8 @@ public static class FileSignatureValidator
         using var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
 
         foreach (var signature in imageSignatures)
-        {
-            if (ValidateFileSignatureAndSeek(fileStream, signature)) return true;
-        }
+            if (ValidateFileSignatureAndSeek(fileStream, signature))
+                return true;
         return false;
     }
 

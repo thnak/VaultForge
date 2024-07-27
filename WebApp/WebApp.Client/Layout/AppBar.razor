@@ -1,4 +1,3 @@
-@using Microsoft.AspNetCore.Components.Sections
 @using AlignItems = MudBlazor.AlignItems
 @using Color = MudBlazor.Color
 @using MouseEvent = MudBlazor.MouseEvent
@@ -12,10 +11,10 @@
                    OnClick="@HandleDrawerOpen" />
 
     <MudSpacer />
-    
-    
+
+
     <MudStack AlignItems="AlignItems.Center" Row >
-        <SectionOutlet SectionId="@TopBarSection1"/>
+        <SectionOutlet SectionId="@TopBarSection1" />
         <SectionOutlet SectionId="@TopBarSection2" />
 
         <CultureSelector />

@@ -82,24 +82,15 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         var folder = Get(key);
         if (folder == null) return (false, AppLang.Folder_could_not_be_found);
 
-        if (folder.RelativePath == "/")
-        {
-            return (false, AppLang.Could_not_delete_root_folder);
-        }
+        if (folder.RelativePath == "/") return (false, AppLang.Could_not_delete_root_folder);
 
         var res = folderSystemService.Delete(key);
         if (res.Item1)
-        {
             foreach (var content in folder.Contents)
-            {
                 if (content is { Type: FolderContentType.File or FolderContentType.HiddenFile })
                     fileSystemService.Delete(content.Id);
                 else
-                {
                     Delete(content.Id);
-                }
-            }
-        }
 
         return res;
     }
@@ -119,7 +110,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         var folder = Get(user.Folder);
         if (folder == null)
         {
-            folder = new FolderInfoModel()
+            folder = new FolderInfoModel
             {
                 RelativePath = "/",
                 FolderName = "Home",
@@ -145,17 +136,14 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         var newIndex = folder.Contents.Count + 1;
         var dateString = DateTime.UtcNow.ToString("dd-MM-yyy");
         var path = Path.Combine(_workingDir, dateString);
-        if (!Directory.Exists(path))
-        {
-            Directory.CreateDirectory(path);
-        }
+        if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
         var filePath = Path.Combine(path, $"_file_{newIndex}.bin");
         file.AbsolutePath = filePath;
         var res = fileSystemService.CreateAsync(file).Result;
         if (res.Item1)
         {
-            folder.Contents.Add(new FolderContent()
+            folder.Contents.Add(new FolderContent
             {
                 Id = file.Id.ToString(),
                 Type = FolderContentType.File
@@ -185,27 +173,23 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         var folders = folderSystemService.Where(predicate, cancellationTokenSource);
         long total = 0;
         await foreach (var folder in folders)
-        {
-            foreach (var content in folder.Contents)
+        foreach (var content in folder.Contents)
+            if (content is { Type: FolderContentType.File or FolderContentType.HiddenFile })
             {
-                if (content is { Type: FolderContentType.File or FolderContentType.HiddenFile })
+                var file = fileSystemService.Get(content.Id);
+                if (file == null)
                 {
-                    var file = fileSystemService.Get(content.Id);
-                    if (file == null)
-                    {
-                        Console.WriteLine($@"[Error] file by id {content} can not be found");
-                        continue;
-                    }
+                    Console.WriteLine($@"[Error] file by id {content} can not be found");
+                    continue;
+                }
 
-                    total += file.FileSize;
-                }
-                else
-                {
-                    ObjectId id = ObjectId.Parse(content.Id);
-                    total += await GetFolderByteSize(e => e.Id == id, cancellationTokenSource);
-                }
+                total += file.FileSize;
             }
-        }
+            else
+            {
+                var id = ObjectId.Parse(content.Id);
+                total += await GetFolderByteSize(e => e.Id == id, cancellationTokenSource);
+            }
 
         return total;
     }
@@ -216,22 +200,18 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         long totalFolders = 0;
         long totalFiles = 0;
         await foreach (var folder in folders)
-        {
-            foreach (var content in folder.Contents)
+        foreach (var content in folder.Contents)
+            if (content is { Type: FolderContentType.File or FolderContentType.HiddenFile })
             {
-                if (content is { Type: FolderContentType.File or FolderContentType.HiddenFile })
-                {
-                    totalFiles++;
-                }
-                else
-                {
-                    ObjectId id = ObjectId.Parse(content.Id);
-                    var (numFolders, numFiles) = await GetFolderContentsSize(e => e.Id == id, cancellationTokenSource);
-                    totalFiles += numFiles;
-                    totalFolders += numFolders;
-                }
+                totalFiles++;
             }
-        }
+            else
+            {
+                var id = ObjectId.Parse(content.Id);
+                var (numFolders, numFiles) = await GetFolderContentsSize(e => e.Id == id, cancellationTokenSource);
+                totalFiles += numFiles;
+                totalFolders += numFolders;
+            }
 
         return (totalFolders, totalFiles);
     }
@@ -239,7 +219,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
     #region Private Mothods
 
     /// <summary>
-    /// Get user. if user by the name that is not found return Anonymous user
+    ///     Get user. if user by the name that is not found return Anonymous user
     /// </summary>
     /// <param name="username"></param>
     /// <returns></returns>

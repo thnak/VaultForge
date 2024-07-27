@@ -23,6 +23,7 @@ using BusinessModels.Resources;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
@@ -50,7 +51,7 @@ public abstract class Program
         builder.WebHost.UseKestrel(option =>
         {
             option.AddServerHeader = false;
-            option.Limits.MaxRequestBodySize = Int64.MaxValue;
+            option.Limits.MaxRequestBodySize = long.MaxValue;
         });
 
         // Add services to the container.
@@ -122,15 +123,15 @@ public abstract class Program
         builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddAuthorization(options =>
         {
-            options.AddPolicy(PolicyNamesAndRoles.Over18, configurePolicy: policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(18)));
-            options.AddPolicy(PolicyNamesAndRoles.Over14, configurePolicy: policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(14)));
-            options.AddPolicy(PolicyNamesAndRoles.Over7, configurePolicy: policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(7)));
+            options.AddPolicy(PolicyNamesAndRoles.Over18, policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(18)));
+            options.AddPolicy(PolicyNamesAndRoles.Over14, policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(14)));
+            options.AddPolicy(PolicyNamesAndRoles.Over7, policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(7)));
         });
 
         builder.Services.Configure<CookiePolicyOptions>(options =>
         {
             options.MinimumSameSitePolicy = SameSiteMode.None;
-            options.HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always;
+            options.HttpOnly = HttpOnlyPolicy.Always;
             options.Secure = CookieSecurePolicy.Always; // Ensure cookies are always sent over HTTPS
         });
 
@@ -198,10 +199,7 @@ public abstract class Program
 
                         var userId = userPrincipal.FindFirst(ClaimTypes.Name)?.Value;
                         var user = userId == null ? null : userManager.Get(userId);
-                        if (user == null)
-                        {
-                            await Reject();
-                        }
+                        if (user == null) await Reject();
                     }
                     else
                     {
@@ -239,7 +237,7 @@ public abstract class Program
                 {
                     OnMessageReceived = OnMessageReceived,
                     OnTokenValidated = OnTokenValidated,
-                    OnChallenge = OnChallenge,
+                    OnChallenge = OnChallenge
                 };
                 return;
 
@@ -297,7 +295,7 @@ public abstract class Program
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("AllowLocalOrigin",
-                configurePolicy: corsPolicyBuilder =>
+                corsPolicyBuilder =>
                 {
                     corsPolicyBuilder
                         .WithOrigins("https://localhost:7158", "https://thnakdevserver.ddns.net:5000")
@@ -374,7 +372,6 @@ public abstract class Program
         #region Caching
 
         if (!builder.Environment.IsDevelopment())
-        {
             builder.Services.AddResponseCompression(options =>
             {
                 options.MimeTypes = new[]
@@ -384,7 +381,6 @@ public abstract class Program
                 options.Providers.Add<BrotliCompressionProvider>();
                 options.Providers.Add<GzipCompressionProvider>();
             });
-        }
 
         builder.Services.AddDistributedMemoryCache(options => { options.ExpirationScanFrequency = TimeSpan.FromSeconds(30); });
 
@@ -403,15 +399,15 @@ public abstract class Program
             options.AddBasePolicy(outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(TimeSpan.FromSeconds(10)));
             options.DefaultExpirationTimeSpan = OutputCachingPolicy.Expire30;
 
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire10), build: outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire10));
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire20), build: outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire20));
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire30), build: outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire30));
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire40), build: outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire40));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire10), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire10));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire20), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire20));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire30), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire30));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire40), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire40));
 
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire50), build: outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire50));
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire60), build: outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire60));
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire120), build: outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire120));
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire240), build: outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire240));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire50), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire50));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire60), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire60));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire120), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire120));
+            options.AddPolicy(nameof(OutputCachingPolicy.Expire240), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire240));
         });
         builder.Services.AddResponseCaching();
 
@@ -421,7 +417,7 @@ public abstract class Program
 
         builder.Services.AddRateLimiter(options =>
         {
-            options.AddFixedWindowLimiter(PolicyNamesAndRoles.LimitRate.Fixed, configureOptions: opt =>
+            options.AddFixedWindowLimiter(PolicyNamesAndRoles.LimitRate.Fixed, opt =>
             {
                 opt.Window = TimeSpan.FromSeconds(10);
                 opt.PermitLimit = 4;
@@ -433,7 +429,7 @@ public abstract class Program
         });
         builder.Services.AddRateLimiter(options =>
         {
-            options.AddSlidingWindowLimiter(PolicyNamesAndRoles.LimitRate.Sliding, configureOptions: opt =>
+            options.AddSlidingWindowLimiter(PolicyNamesAndRoles.LimitRate.Sliding, opt =>
             {
                 opt.PermitLimit = 100;
                 opt.Window = TimeSpan.FromMinutes(30);
@@ -447,7 +443,7 @@ public abstract class Program
 
         builder.Services.AddRateLimiter(options =>
         {
-            options.AddTokenBucketLimiter(PolicyNamesAndRoles.LimitRate.Token, configureOptions: opt =>
+            options.AddTokenBucketLimiter(PolicyNamesAndRoles.LimitRate.Token, opt =>
             {
                 opt.TokenLimit = 100;
                 opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
@@ -462,7 +458,7 @@ public abstract class Program
 
         builder.Services.AddRateLimiter(options =>
         {
-            options.AddConcurrencyLimiter(PolicyNamesAndRoles.LimitRate.Concurrency, configureOptions: opt =>
+            options.AddConcurrencyLimiter(PolicyNamesAndRoles.LimitRate.Concurrency, opt =>
             {
                 opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
                 opt.QueueLimit = 10;
@@ -493,10 +489,7 @@ public abstract class Program
 
 
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapOpenApi();
-        }
+        if (app.Environment.IsDevelopment()) app.MapOpenApi();
 
         app.UseSession();
 

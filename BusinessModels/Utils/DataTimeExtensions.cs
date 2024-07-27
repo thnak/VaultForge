@@ -9,8 +9,8 @@ public static class DataTimeExtensions
 
     public static double ToUnixSecond(this DateTime self)
     {
-        DateTimeOffset dateTimeOffset = new DateTimeOffset(self);
-        DateTimeOffset min = new DateTimeOffset(new DateTime(1970, 0, 0));
+        var dateTimeOffset = new DateTimeOffset(self);
+        var min = new DateTimeOffset(new DateTime(1970, 0, 0));
         var span = dateTimeOffset - min;
         return span.TotalSeconds;
     }

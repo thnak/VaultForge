@@ -13,7 +13,6 @@ public class ProtectedLocalStorage(IJSRuntime jsRuntime)
 
     private async Task<string> InitializeKeyAsync()
     {
-
         // Check if a key already exists
         var key = await jsRuntime.InvokeAsync<string>("protectedLocalStorage.getItem", "encryptionKey");
         if (string.IsNullOrEmpty(key))
@@ -22,15 +21,13 @@ public class ProtectedLocalStorage(IJSRuntime jsRuntime)
             key = await jsRuntime.InvokeAsync<string>("protectedLocalStorage.generateKey");
             await jsRuntime.InvokeVoidAsync("protectedLocalStorage.setItem", "encryptionKey", key);
         }
+
         return key;
     }
 
     private Task<string> GetKey()
     {
-        if (KeyHandler != null)
-        {
-            return KeyHandler.Invoke();
-        }
+        if (KeyHandler != null) return KeyHandler.Invoke();
         return InitializeKeyAsync();
     }
 
@@ -61,10 +58,7 @@ public class ProtectedLocalStorage(IJSRuntime jsRuntime)
         var encryptedData = await jsRuntime.InvokeAsync<string>("protectedLocalStorage.getItem", key);
         var salt = await jsRuntime.InvokeAsync<string>("protectedLocalStorage.getItem", key + "_salt");
 
-        if (string.IsNullOrEmpty(iv) || string.IsNullOrEmpty(encryptedData) || string.IsNullOrEmpty(salt))
-        {
-            return string.Empty;
-        }
+        if (string.IsNullOrEmpty(iv) || string.IsNullOrEmpty(encryptedData) || string.IsNullOrEmpty(salt)) return string.Empty;
 
         return await jsRuntime.InvokeAsync<string>("protectedLocalStorage.decryptWithPassword", password, iv, encryptedData, salt);
     }
@@ -81,6 +75,7 @@ public class ProtectedLocalStorage(IJSRuntime jsRuntime)
         {
             //
         }
+
         return new ProtectedBrowserStorageResult<T>(false, default);
     }
 

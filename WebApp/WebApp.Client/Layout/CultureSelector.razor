@@ -1,16 +1,15 @@
-﻿
-<MudSelect AnchorOrigin="Origin.BottomCenter"
+﻿<MudSelect AnchorOrigin="Origin.BottomCenter"
            Class="culture-selector"
            Margin="Margin"
            T="CultureInfo"
            Value="@Culture"
            ValueChanged="Callback"
-           Variant="Variant.Outlined">
+           Variant="Variant.Outlined" >
 
     @foreach (var culture in AllowedCulture.SupportedCultures)
     {
-        <MudSelectItem Class="center-flag" @key="culture.Name" Value="@culture">
-            <img alt="@culture.NativeName" class="mr-1" height="14" src="@Flags[culture.Name]"/>
+        <MudSelectItem Class="center-flag" @key="culture.Name" Value="@culture" >
+            <img alt="@culture.NativeName" class="mr-1" height="14" src="@Flags[culture.Name]" />
         </MudSelectItem>
     }
 </MudSelect>
@@ -69,12 +68,12 @@
             var uriEscaped = Uri.EscapeDataString(uri);
             // Reload required
             Navigation.NavigateTo(
-            $"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}",
-            new NavigationOptions
-            {
-                ForceLoad = true,
-                ReplaceHistoryEntry = true
-            }
+                $"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}",
+                new NavigationOptions
+                {
+                    ForceLoad = true,
+                    ReplaceHistoryEntry = true
+                }
             );
         }
     }

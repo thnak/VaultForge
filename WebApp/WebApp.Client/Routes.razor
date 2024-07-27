@@ -1,36 +1,36 @@
 ﻿<MudDialogProvider MaxWidth="MaxWidth.False"
-                   Position="DialogPosition.Center"/>
-<MudSnackbarProvider/>
-<ThemeProvider/>
-<MudPopoverProvider/>
+                   Position="DialogPosition.Center" />
+<MudSnackbarProvider />
+<ThemeProvider />
+<MudPopoverProvider />
 <BlazoredToasts />
 
 <MudBreakpointProvider>
-    <Router AppAssembly="@typeof(Program).Assembly">
-        <Found Context="routeData">
+    <Router AppAssembly="@typeof(Program).Assembly" >
+        <Found Context="routeData" >
             <ErrorBoundary>
                 <ChildContent>
-                    
-                    <AuthorizeRouteView DefaultLayout="@typeof(MainLayout)" RouteData="@routeData">
+
+                    <AuthorizeRouteView DefaultLayout="@typeof(MainLayout)" RouteData="@routeData" >
                         <NotAuthorized>
-                            <AccessDenied/>
+                            <AccessDenied />
                         </NotAuthorized>
                         <Authorizing>
-                            <Loading/>
+                            <Loading />
                         </Authorizing>
                     </AuthorizeRouteView>
-                    
+
                 </ChildContent>
-                <ErrorContent Context="ex">
-                    <ErrorHanding ErrorMessage="@EncodeException(ex)"/>
+                <ErrorContent Context="ex" >
+                    <ErrorHanding ErrorMessage="@EncodeException(ex)" />
                 </ErrorContent>
             </ErrorBoundary>
         </Found>
         <NotFound>
-            <NotFoundComponent/>
+            <NotFoundComponent />
         </NotFound>
         <Navigating>
-            <Loading/>
+            <Loading />
         </Navigating>
     </Router>
 </MudBreakpointProvider>

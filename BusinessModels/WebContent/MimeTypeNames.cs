@@ -117,7 +117,7 @@ public static class MimeTypeNames
         public const string Mpg = "video/mpeg";
         public const string Ts = "video/mp2t";
     }
-    
+
     public static class Audio
     {
         public const string Mp3 = "audio/mpeg";
@@ -125,7 +125,7 @@ public static class MimeTypeNames
         public const string Ogg = "audio/ogg";
         public const string Flac = "audio/flac";
     }
-    
+
     /// <summary>Specifies the kind of multipart data in an email message attachment.</summary>
     public static class Multipart
     {

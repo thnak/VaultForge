@@ -24,7 +24,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
             var nameKey = Builders<UserModel>.IndexKeys.Ascending(x => x.UserName);
 
 
-            var indexModel = new CreateIndexModel<UserModel>(nameKey, new CreateIndexOptions() { Unique = true });
+            var indexModel = new CreateIndexModel<UserModel>(nameKey, new CreateIndexOptions { Unique = true });
 
             var searchIndexKeys = Builders<UserModel>.IndexKeys.Text(x => x.UserName).Text(x => x.FullName);
             var searchIndexOptions = new CreateIndexOptions
@@ -116,12 +116,8 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
         };
         var searchResults = await _dataDb.AggregateAsync<UserModel>(pipeline, null, cancellationTokenSource?.Token ?? default);
         while (await searchResults.MoveNextAsync(cancellationTokenSource?.Token ?? default))
-        {
             foreach (var user in searchResults.Current)
-            {
                 yield return user;
-            }
-        }
     }
 
     public IAsyncEnumerable<UserModel> FindAsync(FilterDefinition<UserModel> filter, CancellationTokenSource? cancellationTokenSource = default)
@@ -143,20 +139,16 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
     {
         var data = await _dataDb.FindAsync(predicate, new FindOptions<UserModel, UserModel>(), cancellationTokenSource?.Token ?? default);
         while (await data.MoveNextAsync(cancellationTokenSource?.Token ?? default))
-        {
             foreach (var user in data.Current)
-            {
                 yield return user;
-            }
-        }
     }
 
     public UserModel? Get(string key)
     {
         try
         {
-            var filter = Builders<UserModel>.Filter.Eq(field: x => x.UserName, key.ComputeSha256Hash());
-            filter |= Builders<UserModel>.Filter.Eq(field: x => x.UserName, key);
+            var filter = Builders<UserModel>.Filter.Eq(x => x.UserName, key.ComputeSha256Hash());
+            filter |= Builders<UserModel>.Filter.Eq(x => x.UserName, key);
             var result = _dataDb.Find(filter).Limit(1).FirstOrDefault();
             return result;
         }
@@ -169,10 +161,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
     public async IAsyncEnumerable<UserModel?> GetAsync(List<string> keys, CancellationTokenSource? cancellationTokenSource = default)
     {
         await _semaphore.WaitAsync();
-        foreach (var userName in keys.TakeWhile(_ => cancellationTokenSource is null or { IsCancellationRequested: false }))
-        {
-            yield return Get(userName);
-        }
+        foreach (var userName in keys.TakeWhile(_ => cancellationTokenSource is null or { IsCancellationRequested: false })) yield return Get(userName);
 
         _semaphore.Release();
     }
@@ -224,12 +213,9 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
         try
         {
             if (Get(model.UserName) == null) return (false, AppLang.User_is_not_exists);
-            var filter = Builders<UserModel>.Filter.Eq(field: x => x.UserName, model.UserName);
+            var filter = Builders<UserModel>.Filter.Eq(x => x.UserName, model.UserName);
             var result = await _dataDb.ReplaceOneAsync(filter, model);
-            if (result.IsAcknowledged)
-            {
-                return (true, AppLang.Success);
-            }
+            if (result.IsAcknowledged) return (true, AppLang.Success);
 
             return (false, AppLang.User_update_failed);
         }
@@ -269,7 +255,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
     public List<string> GetAllRoles(string userName)
     {
         userName = userName.ComputeSha256Hash();
-        var filter = Builders<UserModel>.Filter.Eq(field: x => x.UserName, userName);
+        var filter = Builders<UserModel>.Filter.Eq(x => x.UserName, userName);
         var project = Builders<UserModel>.Projection.Expression(x => new UserModel
         {
             Roles = x.Roles

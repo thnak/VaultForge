@@ -63,6 +63,5 @@ public class UserInfoModel
     [BsonElement("12")]
     public Dictionary<string, List<string>> Connections { get; set; } = new();
 
-    [Key(13)]
-    public string JwtAccessToken { get; set; } = string.Empty;
+    [Key(13)] public string JwtAccessToken { get; set; } = string.Empty;
 }

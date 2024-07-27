@@ -62,10 +62,7 @@ public class AccountController(
                 ExpiresUtc = DateTimeOffset.UtcNow.AddHours(ProtectorTime.CookieMaxAge)
             };
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimPrincipal, authProperties);
-            if (string.IsNullOrEmpty(request.ReturnUrl))
-            {
-                return Redirect("/");
-            }
+            if (string.IsNullOrEmpty(request.ReturnUrl)) return Redirect("/");
 
             return Redirect(request.ReturnUrl);
         }
@@ -104,10 +101,8 @@ public class AccountController(
         }
 
         foreach (var result in validationResults)
-        {
             if (result.ErrorMessage != null)
                 return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri(result.ErrorMessage));
-        }
 
         return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri(AppLang.Registration_failed));
     }
@@ -154,9 +149,8 @@ public class AccountController(
         var isNullOrEmpty = string.IsNullOrEmpty(cookieName);
         var tokens = isNullOrEmpty ? antiforgery.GetAndStoreTokens(HttpContext) : antiforgery.GetTokens(HttpContext);
         if (!isNullOrEmpty)
-        {
-            if (tokens.RequestToken != null) HttpContext.Response.Cookies.Append(cookieName!, tokens.RequestToken);
-        }
+            if (tokens.RequestToken != null)
+                HttpContext.Response.Cookies.Append(cookieName!, tokens.RequestToken);
 
         return new JsonResult(new
         {

@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Threading.Tasks;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -256,10 +251,7 @@ public static class FileHelpers
             else if (permittedExtensions.Any())
             {
                 var fileName = contentDisposition.FileName.Value;
-                if (fileName == null || !memoryStream.IsValidFileExtensionAndSignature(fileName, permittedExtensions))
-                {
-                    modelState.AddModelError("File", @"The file type isn't permitted or the file's signature doesn't match the file's extension.");
-                }
+                if (fileName == null || !memoryStream.IsValidFileExtensionAndSignature(fileName, permittedExtensions)) modelState.AddModelError("File", @"The file type isn't permitted or the file's signature doesn't match the file's extension.");
             }
             else
             {
@@ -281,7 +273,7 @@ public static class FileHelpers
         try
         {
             await using var targetStream = File.Create(path);
-            using MemoryStream memoryStream = new MemoryStream(FileSignature.Values.Max(x => x.Count));
+            using var memoryStream = new MemoryStream(FileSignature.Values.Max(x => x.Count));
             await section.Body.CopyToAsync(memoryStream);
 
             memoryStream.SeekBeginOrigin();
@@ -367,17 +359,14 @@ public static class FileHelpers
         stream.SeekBeginOrigin();
         try
         {
-            using BinaryReader reader = new BinaryReader(stream);
+            using var reader = new BinaryReader(stream);
             var headerBytes = reader.ReadBytes(FileSignature.Values.SelectMany(x => x).Max(m => m.Length));
 
             foreach (var ext in FileSignature.Keys)
             {
                 var signatures = FileSignature[ext];
                 var signature = signatures.Any(signature => headerBytes.Take(signature.Length).SequenceEqual(signature));
-                if (signature)
-                {
-                    return ext;
-                }
+                if (signature) return ext;
             }
 
             return defaultType ?? string.Empty;

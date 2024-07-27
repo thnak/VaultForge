@@ -25,6 +25,7 @@ public class MongoDbXmlKeyProtectorRepository(IMongoDataLayerContext context) : 
         var keys = _collection.Find(FilterDefinition<DataProtectionKey>.Empty).ToList();
         return keys.Select(k => XElement.Parse(k.Xml)).ToList();
     }
+
     public void StoreElement(XElement element, string friendlyName)
     {
         var key = new DataProtectionKey
@@ -37,7 +38,7 @@ public class MongoDbXmlKeyProtectorRepository(IMongoDataLayerContext context) : 
 
     public long CleanupOldKeys(DateTime cutoffDate)
     {
-        var filter = Builders<DataProtectionKey>.Filter.Lte(field: x => x.CreationTime, cutoffDate);
+        var filter = Builders<DataProtectionKey>.Filter.Lte(x => x.CreationTime, cutoffDate);
         var count = _collection.CountDocuments(filter);
         _collection.DeleteMany(filter);
         return count;

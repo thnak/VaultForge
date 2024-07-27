@@ -2,7 +2,6 @@ using Business.Data.Interfaces;
 using BusinessModels.General;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using MongoDB.Driver.Core.Compression;
 using MongoDB.Driver.Core.Configuration;
 
 namespace Business.Data.Repositories;
@@ -45,5 +44,6 @@ public class MongoDataLayerContext : IMongoDataLayerContext
         var dbContext = client.GetDatabase(dbName);
         MongoDatabase = dbContext ?? throw new Exception();
     }
+
     public IMongoDatabase MongoDatabase { get; }
 }

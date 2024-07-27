@@ -15,6 +15,11 @@ public partial class AppBar : ComponentBase, IDisposable
 
     private bool? IsDarkMode { get; set; }
 
+    public void Dispose()
+    {
+        CustomStateContainer.OnChanged -= StateHasChanged;
+    }
+
 
     protected override Task OnInitializedAsync()
     {
@@ -40,11 +45,6 @@ public partial class AppBar : ComponentBase, IDisposable
         }
     }
 
-    public void Dispose()
-    {
-        CustomStateContainer.OnChanged -= StateHasChanged;
-    }
-
     private async Task ThemeModeChanged()
     {
         switch (IsDarkMode)
@@ -67,10 +67,7 @@ public partial class AppBar : ComponentBase, IDisposable
         }
 
 
-        if (MudThemeProvider != null)
-        {
-            CustomStateContainer.IsDarkMode = MudThemeProvider.IsDarkMode;
-        }
+        if (MudThemeProvider != null) CustomStateContainer.IsDarkMode = MudThemeProvider.IsDarkMode;
 
         await InvokeAsync(StateHasChanged);
     }

@@ -14,13 +14,13 @@ public class CultureController : Controller
         {
             var cookieTextPlant = CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture, culture));
             HttpContext.Response.Cookies.Append(
-            CookieNames.Culture,
-            cookieTextPlant,
-            new CookieOptions
-            {
-                IsEssential = true,
-                Expires = DateTimeOffset.UtcNow.AddYears(1)
-            }
+                CookieNames.Culture,
+                cookieTextPlant,
+                new CookieOptions
+                {
+                    IsEssential = true,
+                    Expires = DateTimeOffset.UtcNow.AddYears(1)
+                }
             );
         }
 

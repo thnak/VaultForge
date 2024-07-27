@@ -10,15 +10,10 @@ public class FailedLoginTracker
     {
         if (_failedAttempts.TryGetValue(ipAddress, out var entry))
         {
-            if (entry.BlockUntil.HasValue && DateTime.UtcNow < entry.BlockUntil.Value)
-            {
-                return true;
-            }
-            if (entry.BlockUntil.HasValue && DateTime.UtcNow >= entry.BlockUntil.Value)
-            {
-                _failedAttempts.Remove(ipAddress);
-            }
+            if (entry.BlockUntil.HasValue && DateTime.UtcNow < entry.BlockUntil.Value) return true;
+            if (entry.BlockUntil.HasValue && DateTime.UtcNow >= entry.BlockUntil.Value) _failedAttempts.Remove(ipAddress);
         }
+
         return false;
     }
 
@@ -27,10 +22,7 @@ public class FailedLoginTracker
         if (_failedAttempts.TryGetValue(ipAddress, out var entry))
         {
             entry.AttemptCount++;
-            if (entry.AttemptCount >= _maxAttempts)
-            {
-                entry.BlockUntil = DateTime.UtcNow.Add(_blockDuration);
-            }
+            if (entry.AttemptCount >= _maxAttempts) entry.BlockUntil = DateTime.UtcNow.Add(_blockDuration);
             _failedAttempts[ipAddress] = entry;
         }
         else
@@ -41,9 +33,6 @@ public class FailedLoginTracker
 
     public void ResetFailedAttempts(string ipAddress)
     {
-        if (_failedAttempts.ContainsKey(ipAddress))
-        {
-            _failedAttempts.Remove(ipAddress);
-        }
+        if (_failedAttempts.ContainsKey(ipAddress)) _failedAttempts.Remove(ipAddress);
     }
 }

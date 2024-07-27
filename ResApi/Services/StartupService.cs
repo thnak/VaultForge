@@ -13,6 +13,7 @@ public class StartupService(IServiceScopeFactory serviceScopeFactory) : IHostedS
 
         return Task.CompletedTask;
     }
+
     public Task StopAsync(CancellationToken cancellationToken)
     {
         return Task.CompletedTask;

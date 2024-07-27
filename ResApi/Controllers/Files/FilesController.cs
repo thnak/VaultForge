@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
 
 namespace ResApi.Controllers.Files;
@@ -122,19 +121,21 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         var res = await folderServe.CreateAsync(request.NewFolder);
         if (res.Item1)
         {
-            folderRoot.Contents.Add(new FolderContent()
+            folderRoot.Contents.Add(new FolderContent
             {
                 Id = request.NewFolder.Id.ToString(),
                 Type = FolderContentType.Folder
             });
             res = await folderServe.UpdateAsync(folderRoot);
-            if(res.Item1)
+            if (res.Item1)
                 return Ok();
             ModelState.AddModelError("Folder", res.Item2);
         }
         else
+        {
             ModelState.AddModelError("Folder", res.Item2);
-        
+        }
+
         return BadRequest(ModelState);
     }
 
@@ -152,7 +153,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
                 return BadRequest(ModelState);
             }
 
-            HttpContext.Request.Headers.TryGetValue("Folder", out StringValues folderValues);
+            HttpContext.Request.Headers.TryGetValue("Folder", out var folderValues);
 
             var user = HttpContext.User.Identity?.Name ?? string.Empty;
             var folderCodes = folderValues.ToString();
@@ -187,9 +188,9 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
                     {
                         var trustedFileNameForDisplay = WebUtility.HtmlEncode(contentDisposition.FileName.Value) ?? Path.GetRandomFileName();
 
-                        FileInfoModel file = new FileInfoModel()
+                        var file = new FileInfoModel
                         {
-                            FileName = trustedFileNameForDisplay,
+                            FileName = trustedFileNameForDisplay
                         };
                         folderServe.CreateFile(folder, file);
                         (file.FileSize, file.ContentType) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState);

@@ -10,7 +10,7 @@ public class FileInfoModel
     [BsonId] [Key(0)] public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
 
     /// <summary>
-    /// Dùng cho resource có nhiều biến thể như độ phân giải, chất lượng
+    ///     Dùng cho resource có nhiều biến thể như độ phân giải, chất lượng
     /// </summary>
     [Key(1)]
     public List<FileContents> ExtendResource { get; set; } = [];
@@ -24,27 +24,27 @@ public class FileInfoModel
     [Key(6)] public string MetadataId { get; set; } = string.Empty;
 
     /// <summary>
-    /// Creation date of the file
+    ///     Creation date of the file
     /// </summary>
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(7)]
     public DateTime CreatedDate { get; set; }
 
     /// <summary>
-    /// Last modified date of the file
+    ///     Last modified date of the file
     /// </summary>
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(8)]
     public DateTime ModifiedDate { get; set; }
 
     /// <summary>
-    /// Absolute path for file storage
+    ///     Absolute path for file storage
     /// </summary>
     [Key(9)]
     public string AbsolutePath { get; set; } = string.Empty;
 
     /// <summary>
-    /// Relative path for UI display
+    ///     Relative path for UI display
     /// </summary>
     [Key(10)]
     public string RelativePath { get; set; } = string.Empty;
@@ -66,7 +66,10 @@ public class FileInfoModel
     }
 
     // ReSharper disable once NonReadonlyMemberInGetHashCode
-    public override int GetHashCode() => Id.ToString().GetHashCode();
+    public override int GetHashCode()
+    {
+        return Id.ToString().GetHashCode();
+    }
 
 
     public override string ToString()

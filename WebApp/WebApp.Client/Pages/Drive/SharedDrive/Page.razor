@@ -18,7 +18,7 @@
     </SectionContent>
 }
 
-<button class="add-button" @onclick="OpenAddPopUp">
+<button class="add-button" @onclick="OpenAddPopUp" >
     <i class="fa-plus fa-solid" ></i>
 </button>
 
@@ -54,7 +54,7 @@
                 @context.Name
             </span>
             <div class="icon-container-tag" >
-                <MudTooltip Arrow Placement="Placement.Top" Text="@AppLang.Other_operations" Color="Color.Secondary" Class="mud-width-full d-flex justify-center">
+                <MudTooltip Arrow Class="d-flex justify-center mud-width-full" Color="Color.Secondary" Placement="Placement.Top" Text="@AppLang.Other_operations" >
                     <MudText Typo="Typo.h6" >
                         <i class="fa-ellipsis-vertical fa-solid" ></i>
                     </MudText>

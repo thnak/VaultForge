@@ -1,4 +1,3 @@
-using System.Collections.Frozen;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
@@ -110,10 +109,7 @@ public class JsonWebTokenCertificateProvider : IJsonWebTokenCertificateProvider
             if (jwtSecurityToken.ValidTo == DateTime.MinValue)
             {
                 var claimTokenId = claimPri.Claims.FirstOrDefault(x => x.Type == TableName);
-                if (claimTokenId == null)
-                {
-                    return default;
-                }
+                if (claimTokenId == null) return default;
 
                 var tokenModel = GetNeverExpireToken(claimTokenId.Value);
                 if (tokenModel == null) return default;
@@ -133,7 +129,7 @@ public class JsonWebTokenCertificateProvider : IJsonWebTokenCertificateProvider
         var tokenHandler = new JwtSecurityTokenHandler();
         var model = new TokenModel
         {
-            CreateByUser = username,
+            CreateByUser = username
         };
 
         claims.Add(new Claim(TableName, model.Id.ToString()));
@@ -157,9 +153,9 @@ public class JsonWebTokenCertificateProvider : IJsonWebTokenCertificateProvider
 
     public TokenModel? GetNeverExpireToken(string id)
     {
-        if (ObjectId.TryParse(id, out ObjectId objectId))
+        if (ObjectId.TryParse(id, out var objectId))
         {
-            var filter = Builders<TokenModel>.Filter.Eq(field: x => x.Id, objectId);
+            var filter = Builders<TokenModel>.Filter.Eq(x => x.Id, objectId);
             var token = DataDb.Find(filter).FirstOrDefault();
             if (token == null) return default;
             return token.ExpireTime > DateTime.UtcNow ? default : token;

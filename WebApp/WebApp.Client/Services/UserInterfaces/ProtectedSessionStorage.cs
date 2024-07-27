@@ -13,7 +13,6 @@ public class ProtectedSessionStorage(IJSRuntime jsRuntime)
 
     private async Task<string> InitializeKeyAsync()
     {
-
         // Check if a key already exists
         var key = await jsRuntime.InvokeAsync<string>("protectedSessionStorage.getItem", "encryptionKey");
         if (string.IsNullOrEmpty(key))
@@ -22,15 +21,13 @@ public class ProtectedSessionStorage(IJSRuntime jsRuntime)
             key = await jsRuntime.InvokeAsync<string>("protectedSessionStorage.generateKey");
             await jsRuntime.InvokeVoidAsync("protectedSessionStorage.setItem", "encryptionKey", key);
         }
+
         return key;
     }
 
     private Task<string> GetKey()
     {
-        if (KeyHandler != null)
-        {
-            return KeyHandler.Invoke();
-        }
+        if (KeyHandler != null) return KeyHandler.Invoke();
         return InitializeKeyAsync();
     }
 
@@ -61,10 +58,7 @@ public class ProtectedSessionStorage(IJSRuntime jsRuntime)
         var encryptedData = await jsRuntime.InvokeAsync<string>("protectedSessionStorage.getItem", key);
         var salt = await jsRuntime.InvokeAsync<string>("protectedSessionStorage.getItem", key + "_salt");
 
-        if (string.IsNullOrEmpty(iv) || string.IsNullOrEmpty(encryptedData) || string.IsNullOrEmpty(salt))
-        {
-            return string.Empty;
-        }
+        if (string.IsNullOrEmpty(iv) || string.IsNullOrEmpty(encryptedData) || string.IsNullOrEmpty(salt)) return string.Empty;
 
         return await jsRuntime.InvokeAsync<string>("protectedSessionStorage.decryptWithPassword", password, iv, encryptedData, salt);
     }
@@ -81,6 +75,7 @@ public class ProtectedSessionStorage(IJSRuntime jsRuntime)
         {
             //
         }
+
         return new ProtectedBrowserStorageResult<T>(false, default);
     }
 

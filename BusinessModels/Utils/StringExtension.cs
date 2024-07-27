@@ -88,7 +88,7 @@ public static class StringExtension
         catch (Exception e)
         {
 #if DEBUG
-         Console.WriteLine(e.Message);   
+            Console.WriteLine(e.Message);
 #endif
             return default;
         }

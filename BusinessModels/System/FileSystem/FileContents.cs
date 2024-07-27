@@ -1,12 +1,13 @@
-﻿namespace BusinessModels.System.FileSystem;
+﻿using MessagePack;
 
-[MessagePack.MessagePackObject]
+namespace BusinessModels.System.FileSystem;
+
+[MessagePackObject]
 public class FileContents
 {
-    [MessagePack.Key(0)]
-    public string Id { get; set; } = string.Empty;
-    [MessagePack.Key(1)]
-    public FileContentType Type { get; set; }
+    [Key(0)] public string Id { get; set; } = string.Empty;
+
+    [Key(1)] public FileContentType Type { get; set; }
 }
 
 public enum FileContentType

@@ -9,13 +9,14 @@ public partial class ErrorPage : ComponentBase
 {
     [Parameter] public string ErrorMessage { get; set; } = string.Empty;
     [Parameter] public string ReturnUrl { get; set; } = "/";
-    [Parameter] public Exception? Exception { get; set; } = null;
+    [Parameter] public Exception? Exception { get; set; }
 
     private string? RequestId { get; set; }
     private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     private string HandingMessage { get; set; } = string.Empty;
     private ErrorRecordModel RecordModel { get; set; } = new();
     private bool SuccessHanding { get; set; }
+
     protected override void OnInitialized()
     {
         RequestId = Activity.Current?.Id ?? string.Empty;
@@ -45,6 +46,7 @@ public partial class ErrorPage : ComponentBase
                 await UpdateHandingMessage(RecordModel.Src);
                 await UpdateHandingMessage(RecordModel.Message);
             }
+
             await UpdateHandingMessage("Processing...");
             await UpdateHandingMessage("Now you can go back");
 
@@ -52,6 +54,7 @@ public partial class ErrorPage : ComponentBase
             await Task.Delay(1);
             await InvokeAsync(StateHasChanged);
         }
+
         await base.OnAfterRenderAsync(firstRender);
     }
 

@@ -4,6 +4,27 @@ namespace WebApp.Client.Services.UserInterfaces;
 
 public class DocumentObjectModelEventListener : IDisposable
 {
+    public void Dispose()
+    {
+        ScrollEventAsync = null;
+        ScrollEvent = null;
+
+        PageHideEvent = null;
+        PageHideEventAsync = null;
+
+        PageShowEvent = null;
+        PageShowEventAsync = null;
+
+        Online = null;
+        OnlineAsync = null;
+
+        Offline = null;
+        OfflineAsync = null;
+
+        ContextMenuClickedAsync = null;
+        ContextMenuClicked = null;
+    }
+
     #region Enter
 
     public Func<Task>? EnterClickedAsync
@@ -188,25 +209,4 @@ public class DocumentObjectModelEventListener : IDisposable
     }
 
     #endregion
-
-    public void Dispose()
-    {
-        ScrollEventAsync = null;
-        ScrollEvent = null;
-
-        PageHideEvent = null;
-        PageHideEventAsync = null;
-
-        PageShowEvent = null;
-        PageShowEventAsync = null;
-
-        Online = null;
-        OnlineAsync = null;
-
-        Offline = null;
-        OfflineAsync = null;
-
-        ContextMenuClickedAsync = null;
-        ContextMenuClicked = null;
-    }
 }

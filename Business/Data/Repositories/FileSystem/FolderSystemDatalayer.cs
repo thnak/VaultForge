@@ -22,7 +22,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
         try
         {
             var keys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RelativePath).Ascending(x => x.Username);
-            var indexModel = new CreateIndexModel<FolderInfoModel>(keys, new CreateIndexOptions() { Unique = true });
+            var indexModel = new CreateIndexModel<FolderInfoModel>(keys, new CreateIndexOptions { Unique = true });
 
             var searchIndexKeys = Builders<FolderInfoModel>.IndexKeys.Text(x => x.FolderName).Text(x => x.RelativePath);
             var searchIndexOptions = new CreateIndexOptions
@@ -93,10 +93,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
     public FolderInfoModel? Get(string key)
     {
         var filter = Builders<FolderInfoModel>.Filter.Eq(x => x.RelativePath, key);
-        if (ObjectId.TryParse(key, out ObjectId id))
-        {
-            filter |= Builders<FolderInfoModel>.Filter.Eq(x => x.Id, id);
-        }
+        if (ObjectId.TryParse(key, out var id)) filter |= Builders<FolderInfoModel>.Filter.Eq(x => x.Id, id);
 
         return _dataDb.Find(filter).Limit(1).FirstOrDefault();
     }
@@ -129,10 +126,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
         try
         {
             var folder = Get(model.Id.ToString());
-            if (folder != null)
-            {
-                return (false, AppLang.Folder_already_exists);
-            }
+            if (folder != null) return (false, AppLang.Folder_already_exists);
 
             await _dataDb.InsertOneAsync(model);
             return (true, AppLang.Create_successfully);
@@ -198,10 +192,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
         if (model != null)
         {
             if (string.IsNullOrEmpty(password)) return (default, AppLang.Incorrect_password);
-            if (model.Password == password.ComputeSha256Hash())
-            {
-                return (model, AppLang.Success);
-            }
+            if (model.Password == password.ComputeSha256Hash()) return (model, AppLang.Success);
 
             return (default, AppLang.Incorrect_password);
         }

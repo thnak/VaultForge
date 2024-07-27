@@ -24,20 +24,14 @@ public class OverYearOldRequirement(int old) : AuthorizationHandler<OverYearOldR
         {
             var dateOfBirth = Convert.ToDateTime(dobVal);
             var age = DateTime.Today.Year - dateOfBirth.Year;
-            if (dateOfBirth > DateTime.Today.AddYears(-age))
-            {
-                age--;
-            }
+            if (dateOfBirth > DateTime.Today.AddYears(-age)) age--;
 
             if (age >= old)
-            {
                 context.Succeed(requirement);
-            }
             else
-            {
                 context.Fail(new AuthorizationFailureReason(this, AppLang.This_resource_requires__0__years_old.AutoReplace($"{old}")));
-            }
         }
+
         return Task.CompletedTask;
     }
 }

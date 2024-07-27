@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using BusinessModels.System.FileSystem;
 using MongoDB.Driver;
 
 namespace Business.Data.Interfaces;
@@ -7,11 +6,12 @@ namespace Business.Data.Interfaces;
 public interface IDataLayerRepository<T> where T : class
 {
     /// <summary>
-    /// Lấy số lượng document
+    ///     Lấy số lượng document
     /// </summary>
     /// <param name="cancellationTokenSource"></param>
     /// <returns></returns>
     Task<long> GetDocumentSizeAsync(CancellationTokenSource? cancellationTokenSource = default);
+
     IAsyncEnumerable<T> Search(string queryString, int limit = 10, CancellationTokenSource? cancellationTokenSource = default);
 
     /// <summary>
@@ -21,6 +21,7 @@ public interface IDataLayerRepository<T> where T : class
     /// <param name="cancellationTokenSource"></param>
     /// <returns></returns>
     IAsyncEnumerable<T> FindAsync(FilterDefinition<T> filter, CancellationTokenSource? cancellationTokenSource = default);
+
     IAsyncEnumerable<T> FindAsync(string keyWord, CancellationTokenSource? cancellationTokenSource = default);
     IAsyncEnumerable<T> FindProjectAsync(string keyWord, int limit = 10, CancellationToken? cancellationToken = default);
 

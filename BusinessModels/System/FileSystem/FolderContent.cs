@@ -1,12 +1,13 @@
+using MessagePack;
+
 namespace BusinessModels.System.FileSystem;
 
-[MessagePack.MessagePackObject]
+[MessagePackObject]
 public class FolderContent
 {
-    [MessagePack.Key(0)]
-    public string Id { get; set; } = string.Empty;
-    [MessagePack.Key(1)]
-    public FolderContentType Type { get; set; }
+    [Key(0)] public string Id { get; set; } = string.Empty;
+
+    [Key(1)] public FolderContentType Type { get; set; }
 }
 
 public enum FolderContentType

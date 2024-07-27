@@ -1,7 +1,7 @@
 @implements IDisposable
 
-<CascadingValue Name="UsePopoverProvider" Value="false" IsFixed>
-    <MudThemeProvider @bind-IsDarkMode="@CustomStateContainer.IsDarkMode" @ref="MudThemeProvider" Theme="@CustomStateContainer.MudTheme"></MudThemeProvider>
+<CascadingValue IsFixed Name="UsePopoverProvider" Value="false" >
+    <MudThemeProvider @bind-IsDarkMode="@CustomStateContainer.IsDarkMode" @ref="MudThemeProvider" Theme="@CustomStateContainer.MudTheme" ></MudThemeProvider>
 </CascadingValue>
 
 @code {
@@ -55,4 +55,5 @@
         CustomStateContainer.OnChangedAsync -= ThemeChangeEvent;
         MudThemeProvider.Dispose();
     }
+
 }

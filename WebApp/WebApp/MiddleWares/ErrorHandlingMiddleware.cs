@@ -37,9 +37,9 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
 
 #if DEBUG
         throw exception;
-#endif
-
+#else
         context.Response.Redirect($"{PageRoutes.Error.ErrorPage.AppendAndEncodeBase64StringAsUri(recordModel.Encode2Base64String())}");
         return Task.CompletedTask;
+#endif
     }
 }

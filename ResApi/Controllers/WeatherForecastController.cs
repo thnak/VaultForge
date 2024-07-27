@@ -30,7 +30,8 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
     [Authorize(AuthenticationSchemes = $"{CookieAuthenticationDefaults.AuthenticationScheme}, {JwtBearerDefaults.AuthenticationScheme}")]
     public WeatherForecast[] Get()
     {
-        return memoryCache.GetOrCreate("api/WeatherForecast/GetWeatherForecast", factory: entry => {
+        return memoryCache.GetOrCreate("api/WeatherForecast/GetWeatherForecast", entry =>
+        {
             return Enumerable.Range(1, 50).Select(index => new WeatherForecast
                 {
                     Date = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(index)),

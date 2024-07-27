@@ -23,8 +23,8 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
             var absolutePathKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath);
             var relativePathKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath);
 
-            var absolutePathIndexModel = new CreateIndexModel<FileInfoModel>(absolutePathKey, new CreateIndexOptions() { Unique = true });
-            var relativePathIndexModel = new CreateIndexModel<FileInfoModel>(relativePathKey, new CreateIndexOptions() { Unique = true });
+            var absolutePathIndexModel = new CreateIndexModel<FileInfoModel>(absolutePathKey, new CreateIndexOptions { Unique = true });
+            var relativePathIndexModel = new CreateIndexModel<FileInfoModel>(relativePathKey, new CreateIndexOptions { Unique = true });
 
             var searchIndexKeys = Builders<FileInfoModel>.IndexKeys.Text(x => x.FileName).Text(x => x.RelativePath);
             var searchIndexOptions = new CreateIndexOptions
@@ -38,7 +38,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
             Console.WriteLine(@"[Init] File info data layer");
 
             var metaKey = Builders<FileMetadataModel>.IndexKeys.Ascending(x => x.ThumbnailAbsolutePath);
-            var metaIndexModel = new CreateIndexModel<FileMetadataModel>(metaKey, new CreateIndexOptions() { Unique = true });
+            var metaIndexModel = new CreateIndexModel<FileMetadataModel>(metaKey, new CreateIndexOptions { Unique = true });
             await _fileMetaDataDataDb.Indexes.CreateOneAsync(metaIndexModel);
 
             return (true, string.Empty);
@@ -88,10 +88,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
         var filter = Builders<FileInfoModel>.Filter.Eq(x => x.RelativePath, key);
         filter |= Builders<FileInfoModel>.Filter.Eq(x => x.AbsolutePath, key);
 
-        if (ObjectId.TryParse(key, out ObjectId id))
-        {
-            filter |= Builders<FileInfoModel>.Filter.Eq(x => x.Id, id);
-        }
+        if (ObjectId.TryParse(key, out var id)) filter |= Builders<FileInfoModel>.Filter.Eq(x => x.Id, id);
 
         return _fileDataDb.Find(filter).Limit(1).FirstOrDefault();
     }
@@ -195,20 +192,14 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
 
             var filter = Builders<FileInfoModel>.Filter.Eq(x => x.RelativePath, key);
             filter |= Builders<FileInfoModel>.Filter.Eq(x => x.RelativePath, key);
-            if (ObjectId.TryParse(key, out ObjectId id))
-            {
-                filter |= Builders<FileInfoModel>.Filter.Eq(x => x.Id, id);
-            }
+            if (ObjectId.TryParse(key, out var id)) filter |= Builders<FileInfoModel>.Filter.Eq(x => x.Id, id);
 
             _fileDataDb.DeleteMany(filter);
             File.Delete(query.AbsolutePath);
 
             DeleteMetadata(query.MetadataId);
 
-            foreach (var extend in query.ExtendResource)
-            {
-                Delete(extend.Id);
-            }
+            foreach (var extend in query.ExtendResource) Delete(extend.Id);
 
             return (true, AppLang.Delete_successfully);
         }
@@ -224,7 +215,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
 
     public FileMetadataModel? GetMetaData(string metaId)
     {
-        if (ObjectId.TryParse(metaId, out ObjectId id))
+        if (ObjectId.TryParse(metaId, out var id))
         {
             var filter = Builders<FileMetadataModel>.Filter.Eq(x => x.Id, id);
             return _fileMetaDataDataDb.Find(filter).Limit(1).FirstOrDefault();
@@ -235,7 +226,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
 
     public (bool, string) DeleteMetadata(string metaId)
     {
-        if (ObjectId.TryParse(metaId, out ObjectId id))
+        if (ObjectId.TryParse(metaId, out var id))
         {
             var metadata = GetMetaData(metaId);
             if (metadata == null) return (false, AppLang.Could_not_found_metadata);

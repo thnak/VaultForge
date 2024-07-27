@@ -25,7 +25,7 @@ public class StateContainer
             {
                 Primary = "#00a3e8",
                 DrawerIcon = "#68b7d9"
-            },
+            }
         };
         SharedPalette = _isDarkMode ? _mudTheme.PaletteDark : _mudTheme.PaletteLight;
     }
@@ -54,7 +54,6 @@ public class StateContainer
         }
     }
 
-    
 
     private void HandleChanged()
     {
