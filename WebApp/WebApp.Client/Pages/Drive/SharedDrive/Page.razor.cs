@@ -17,14 +17,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
     private MudDropContainer<DropItem>? DropContainer { get; set; }
 
-    private List<DropItem> Items { get; } =
-    [
-        new DropItem { Name = "Untitled document", Identifier = "File" },
-        new DropItem { Name = "GoonSwarmBestSwarm.png", Identifier = "File" },
-        new DropItem { Name = "co2traitors.txt", Identifier = "File" },
-        new DropItem { Name = "import.csv", Identifier = "File" },
-        new DropItem { Name = "planned_components_2022-2023.txt", Identifier = "File" }
-    ];
+    private List<DropItem> Items { get; } = [];
 
     public void Dispose()
     {

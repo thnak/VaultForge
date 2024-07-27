@@ -53,8 +53,4 @@
         </EmbeddedResource>
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="SerializerFactory\"/>
-    </ItemGroup>
-
 </Project>
