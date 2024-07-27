@@ -18,9 +18,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update">
-      <change beforePath="$PROJECT_DIR$/Business/Data/MongoDbEntityClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/MongoDbEntityClient.cs" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +53,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/dd64d971b211e561438492e2fe2c86efc73fddfcf68dd93f231def1eaf/MudColor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e8aee3972f4f46ef190c2b4224be16d75e671b3496b06c7b50b6cbe2418e38/EndPointHelper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff953b52b66bae7a88dcb19328c1d616a77c12f477863fbca58acbd1631cf2/PaletteLight.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/CodeWithMe/WebApp/WebApp.Client/_Imports.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/CodeWithMe/ResApi/Controllers/Files/FilesController.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -91,7 +93,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.ResApi">
+  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: https">
     <configuration name="ResApi" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/ResApi/bin/Release/net9.0/linux-x64/publish" target_framework="net9.0" uuid_high="5905353364384007298" uuid_low="-8333852158807631372" />
       <method v="2" />
@@ -222,7 +224,8 @@
       <workItem from="1721781260522" duration="4160000" />
       <workItem from="1721797415787" duration="2434000" />
       <workItem from="1721869654861" duration="3100000" />
-      <workItem from="1721953377874" duration="8266000" />
+      <workItem from="1721953377874" duration="9146000" />
+      <workItem from="1722038946209" duration="1758000" />
     </task>
     <task id="LOCAL-00001" summary="remove anti token">
       <option name="closed" value="true" />
@@ -352,7 +355,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721979938809</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="sua lại">
+      <option name="closed" value="true" />
+      <created>1721980520295</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1721980520295</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -377,6 +388,7 @@
     <MESSAGE value="sua ti" />
     <MESSAGE value="sưa" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="sua lại" />
+    <option name="LAST_COMMIT_MESSAGE" value="sua lại" />
   </component>
 </project>

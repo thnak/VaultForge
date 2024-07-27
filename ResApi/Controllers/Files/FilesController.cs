@@ -117,7 +117,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     {
         var folderRoot = folderServe.Get(request.RootId);
         if (folderRoot == null) return NotFound("Can not be found");
-        folderServe.Get("ha", "h");
+        folderServe.Get("", "/");
 
         var res = await folderServe.CreateAsync(request.NewFolder);
         if (res.Item1)

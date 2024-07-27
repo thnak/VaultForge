@@ -49,7 +49,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     {
         if (firstRender)
         {
-            await GetRootFolderAsync();
+            await GetRootFolderAsync().ConfigureAwait(false);
             EventListener.ContextMenuClickedWithParamAsync += ContextMenuClick;
         }
 
@@ -147,6 +147,11 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
     #endregion
 
+    private void OpenAddPopUp()
+    {
+        Open = true;
+    }
+    
     public void Dispose()
     {
         EventListener.ContextMenuClickedWithParamAsync -= ContextMenuClick;

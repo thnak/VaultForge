@@ -18,7 +18,7 @@
     </SectionContent>
 }
 
-<button class="add-button" >
+<button class="add-button" @onclick="OpenAddPopUp">
     <i class="fa-plus fa-solid" ></i>
 </button>
 
@@ -32,7 +32,7 @@
             @foreach (var x in Items.Where(x => x.Identifier == "Folder"))
             {
                 <MudDropZone Identifier="Work" @key="x" OnlyZone="true" T="DropItem" >
-                    <MudPaper Class="align-center d-flex gap-2 pa-2" Outlined="true" >
+                    <MudPaper Class="d-flex flex-grow-1 flex-wrap gap-2 pa-2 rounded-lg" Outlined="true" >
                         <MudIcon Color="Color.Inherit" Icon="fa-solid fa-folder" />
                         <span>@x.Name</span>
                     </MudPaper>
@@ -41,7 +41,7 @@
 
         </div>
         <MudListSubheader Class="mt-4 pb-2" >Files</MudListSubheader>
-        <MudDropZone Class="d-flex flex-grow-1 flex-wrap opa pa-2 rounded-lg" Identifier="File" T="DropItem" />
+        <MudDropZone Class="d-flex flex-grow-1 flex-wrap gap-2 pa-2 rounded-lg" Identifier="File" T="DropItem" />
     </ChildContent>
     <ItemRenderer>
         <div Class="align-center d-flex flex-row gap-2 mud-elevation-1 mud-paper mud-paper-outlined pa-2 rounded-lg" style="width: 250px" >
@@ -54,7 +54,7 @@
                 @context.Name
             </span>
             <div class="icon-container-tag" >
-                <MudTooltip Arrow Placement="Placement.Top" Text="@AppLang.Other_operations" Color="Color.Secondary">
+                <MudTooltip Arrow Placement="Placement.Top" Text="@AppLang.Other_operations" Color="Color.Secondary" Class="mud-width-full d-flex justify-center">
                     <MudText Typo="Typo.h6" >
                         <i class="fa-ellipsis-vertical fa-solid" ></i>
                     </MudText>
