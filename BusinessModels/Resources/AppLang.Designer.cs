@@ -60,6 +60,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hủy.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Không thể xóa thư mục gốc.
         /// </summary>
         public static string Could_not_delete_root_folder {
@@ -168,6 +177,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tên tập tin.
+        /// </summary>
+        public static string FileName {
+            get {
+                return ResourceManager.GetString("FileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thư mục đã tồn tại.
         /// </summary>
         public static string Folder_already_exists {
@@ -182,6 +200,15 @@ namespace BusinessModels.Resources {
         public static string Folder_could_not_be_found {
             get {
                 return ResourceManager.GetString("Folder could not be found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên thư mục.
+        /// </summary>
+        public static string FolderName {
+            get {
+                return ResourceManager.GetString("FolderName", resourceCulture);
             }
         }
         
@@ -366,6 +393,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Đổi tên.
+        /// </summary>
+        public static string ReName {
+            get {
+                return ResourceManager.GetString("ReName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Đăng nhập.
         /// </summary>
         public static string Sign_In {
@@ -389,6 +425,15 @@ namespace BusinessModels.Resources {
         public static string Sign_Out {
             get {
                 return ResourceManager.GetString("Sign Out", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gửi.
+        /// </summary>
+        public static string Submit {
+            get {
+                return ResourceManager.GetString("Submit", resourceCulture);
             }
         }
         
@@ -434,6 +479,15 @@ namespace BusinessModels.Resources {
         public static string This_resource_requires__0__years_old {
             get {
                 return ResourceManager.GetString("This resource requires {0} years old", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trường này là bắt buộc.
+        /// </summary>
+        public static string ThisFieldIsRequired {
+            get {
+                return ResourceManager.GetString("ThisFieldIsRequired", resourceCulture);
             }
         }
         

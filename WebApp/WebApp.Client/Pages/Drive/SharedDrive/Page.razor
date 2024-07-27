@@ -44,20 +44,29 @@
         <MudDropZone Class="d-flex flex-grow-1 flex-wrap gap-2 pa-2 rounded-lg" Identifier="File" T="DropItem" />
     </ChildContent>
     <ItemRenderer>
-        <div Class="align-center d-flex flex-row gap-2 mud-elevation-1 mud-paper mud-paper-outlined pa-2 rounded-lg" style="width: 250px" >
+        <div Class="align-center d-flex flex-row gap-2 mud-elevation-1 mud-paper mud-paper-outlined pa-2 rounded-lg" >
             <div class="icon-container-tag" >
                 <MudText Typo="Typo.h6" >
                     <i class="@(context.ContentType.GetIcon())" ></i>
                 </MudText>
             </div>
-            <span class="flex-1 text-ellipsis white-space-nowrap" >
-                @context.Name
-            </span>
+            <div class="flex-1" >
+                <span class="text-ellipsis white-space-nowrap" >
+                    @context.Name
+                </span>
+            </div>
             <div class="icon-container-tag" >
-                <MudTooltip Arrow Class="d-flex justify-center mud-width-full" Color="Color.Secondary" Placement="Placement.Top" Text="@AppLang.Other_operations" >
-                    <MudText Typo="Typo.h6" >
-                        <i class="fa-ellipsis-vertical fa-solid" ></i>
-                    </MudText>
+                <MudTooltip Arrow Color="@Color.Secondary" Placement="Placement.Top" Text="@AppLang.Other_operations" >
+                    <MudMenu AriaLabel="@AppLang.Other_operations" Icon="fa-ellipsis-vertical fa-solid" >
+                        <MudMenuItem Icon="fa-solid fa-arrow-down" OnClick="@context.Download" >Download</MudMenuItem>
+
+                        <MudMenuItem Icon="fa-solid fa-pencil" OnClick="@context.Rename" >Rename</MudMenuItem>
+                        <MudMenuItem Icon="fa-solid fa-share" OnClick="@context.Share" >Share</MudMenuItem>
+                        <MudMenuItem Icon="fa-solid fa-link" OnClick="@context.GetLink" >Get link</MudMenuItem>
+                        <MudMenuItem Icon="fa-solid fa-file-export" OnClick="@context.MoveTo" >Move to</MudMenuItem>
+                        <MudMenuItem Icon="fa-solid fa-info" OnClick="@context.GetInformation" >Info</MudMenuItem>
+                        <MudMenuItem Icon="fa-solid fa-delete-left" IconColor="Color.Error" OnClick="@context.Delete" >Delete</MudMenuItem>
+                    </MudMenu>
                 </MudTooltip>
             </div>
         </div>

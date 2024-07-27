@@ -282,4 +282,22 @@
     <data name="Other operations" xml:space="preserve">
         <value>Thao tác khác</value>
     </data>
+    <data name="Cancel" xml:space="preserve">
+        <value>Hủy</value>
+    </data>
+    <data name="Submit" xml:space="preserve">
+        <value>Gửi</value>
+    </data>
+    <data name="FileName" xml:space="preserve">
+        <value>Tên tập tin</value>
+    </data>
+    <data name="FolderName" xml:space="preserve">
+        <value>Tên thư mục</value>
+    </data>
+    <data name="ReName" xml:space="preserve">
+        <value>Đổi tên</value>
+    </data>
+    <data name="ThisFieldIsRequired" xml:space="preserve">
+        <value>Trường này là bắt buộc</value>
+    </data>
 </root>

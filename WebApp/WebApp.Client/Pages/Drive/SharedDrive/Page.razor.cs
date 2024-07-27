@@ -1,9 +1,11 @@
 ﻿using System.Net.Mime;
 using System.Text;
+using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using WebApp.Client.Components.ConfirmDialog;
 using WebApp.Client.Services.Http;
 
 namespace WebApp.Client.Pages.Drive.SharedDrive;
@@ -66,6 +68,13 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         public string Name { get; init; } = string.Empty;
         public string Identifier { get; set; } = string.Empty;
         public string ContentType { get; set; } = string.Empty;
+        public Action Download { get; set; } = () => { };
+        public Action Rename { get; set; } = () => { };
+        public Action Share { get; set; } = () => { };
+        public Action GetLink { get; set; } = () => { };
+        public Action MoveTo { get; set; } = () => { };
+        public Action Delete { get; set; } = () => { };
+        public Action GetInformation { get; set; } = () => { };
     }
 
     #endregion
@@ -78,11 +87,10 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         await Task.Delay(1);
         await InvokeAsync(StateHasChanged);
         Items.Clear();
-        var responseMessage = await baseClientService.HttpClient.GetAsync("/api/Files/get-shared-folder");
+        var responseMessage = await baseClientService.GetAsync<FolderInfoModel>("/api/Files/get-shared-folder");
         if (responseMessage.IsSuccessStatusCode)
         {
-            var textPlant = await responseMessage.Content.ReadAsStringAsync();
-            var folder = textPlant.DeSerialize<FolderInfoModel>();
+            var folder = responseMessage.Data;
             if (folder != null)
             {
                 RootFolder = folder;
@@ -96,7 +104,8 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                     {
                         Identifier = "File",
                         ContentType = file.ContentType,
-                        Name = file.FileName
+                        Name = file.FileName,
+                        Rename = () => RenameFile(file.Id.ToString(), file.FileName).ConfigureAwait(false)
                     });
 
                 foreach (var file in folders)
@@ -117,13 +126,13 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     private async Task<List<FileInfoModel>> GetFiles(List<string> codes)
     {
         var textPlant = new StringContent(codes.ToJson(), Encoding.UTF8, MediaTypeNames.Application.Json);
-        var response = await baseClientService.HttpClient.PostAsync("/api/Files/get-file-list", textPlant);
+        var response = await baseClientService.PostAsync<List<FileInfoModel>>("/api/Files/get-file-list", textPlant);
         if (response.IsSuccessStatusCode)
         {
-            var textPlan = await response.Content.ReadAsStringAsync();
-            var listFiles = textPlan.DeSerialize<List<FileInfoModel>>();
-            if (listFiles != null) return listFiles;
+            return response.Data ?? [];
         }
+
+        ToastService.ShowError("Empty files");
 
         return [];
     }
@@ -131,16 +140,60 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     private async Task<List<FolderInfoModel>> GetFolders(string[] codes)
     {
         var textPlant = new StringContent(codes.ToJson(), Encoding.UTF8, MediaTypeNames.Application.Json);
-
-        var response = await baseClientService.HttpClient.PostAsync("/api/Files/get-folder-list", textPlant);
+        var response = await baseClientService.PostAsync<List<FolderInfoModel>>("/api/Files/get-folder-list", textPlant);
         if (response.IsSuccessStatusCode)
         {
-            var textPlan = await response.Content.ReadAsStringAsync();
-            var listFiles = textPlan.DeSerialize<List<FolderInfoModel>>();
-            if (listFiles != null) return listFiles;
+            return response.Data ?? [];
         }
 
+        ToastService.ShowError("Empty foldes");
         return [];
+    }
+
+    #endregion
+
+    #region Event handler
+
+    private async Task RenameFile(string id, string oldName)
+    {
+        Loading = true;
+        await InvokeAsync(StateHasChanged);
+        var option = new DialogOptions()
+        {
+            FullWidth = true,
+            MaxWidth = MaxWidth.Small
+        };
+        var dialogParam = new DialogParameters<ConfirmWithFieldDialog>()
+        {
+            { x => x.FieldName, AppLang.FileName },
+            { x => x.OldValueField, oldName }
+        };
+        var dialog = await DialogService.ShowAsync<ConfirmWithFieldDialog>(AppLang.ReName, dialogParam, option);
+        var dialogResult = await dialog.Result;
+        if (dialogResult is { Canceled: false, Data: string newName })
+        {
+            MultipartFormDataContent formDataContent = new MultipartFormDataContent();
+            formDataContent.Add(new StringContent(newName), "newName");
+            formDataContent.Add(new StringContent(id), "objectId");
+
+            var response = await ApiService.PostAsync<string>("/api/files/re-name-file", formDataContent);
+            if (response.IsSuccessStatusCode)
+            {
+                ToastService.ShowSuccess(response.Message);
+                await GetRootFolderAsync().ConfigureAwait(false);
+            }
+            else
+            {
+                ToastService.ShowError(response.Message);
+            }
+        }
+
+        Loading = false;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task MoveFile(string id)
+    {
     }
 
     #endregion

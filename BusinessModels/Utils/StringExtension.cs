@@ -85,11 +85,20 @@ public static class StringExtension
         {
             return JsonSerializer.Deserialize<T>(self);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-#if DEBUG
-            Console.WriteLine(e.Message);
-#endif
+            return default;
+        }
+    }
+
+    public static T? DeSerialize<T>(this string self, JsonSerializerOptions options)
+    {
+        try
+        {
+            return JsonSerializer.Deserialize<T>(self, options);
+        }
+        catch (Exception)
+        {
             return default;
         }
     }

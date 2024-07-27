@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+using BusinessModels.Converter;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -5,6 +7,7 @@ namespace BusinessModels.System.FileSystem;
 
 public class FolderInfoModel
 {
+    [JsonConverter(typeof(ObjectIdConverter))]
     [BsonId] public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
 
     /// <summary>

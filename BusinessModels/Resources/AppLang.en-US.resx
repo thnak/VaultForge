@@ -181,4 +181,19 @@
     <data name="Could not delete root folder" xml:space="preserve">
         <value>Could not delete root folder</value>
     </data>
+    <data name="Submit" xml:space="preserve">
+        <value>Submit</value>
+    </data>
+    <data name="FileName" xml:space="preserve">
+        <value>File name</value>
+    </data>
+    <data name="FolderName" xml:space="preserve">
+        <value>Folder name</value>
+    </data>
+    <data name="ReName" xml:space="preserve">
+        <value>Re name</value>
+    </data>
+    <data name="ThisFieldIsRequired" xml:space="preserve">
+        <value>This field is required</value>
+    </data>
 </root>

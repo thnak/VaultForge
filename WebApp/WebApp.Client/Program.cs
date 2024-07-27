@@ -1,5 +1,7 @@
 using System.Globalization;
+using System.Text.Json;
 using Blazored.Toast;
+using BusinessModels.Converter;
 using BusinessModels.Resources;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -35,10 +37,23 @@ internal class Program
         builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddScoped<ProtectedLocalStorage>();
         builder.Services.AddScoped<ProtectedSessionStorage>();
+        builder.Services.AddSingleton(new JsonSerializerOptions
+        {
+            Converters = { new ObjectIdConverter() },
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            PropertyNameCaseInsensitive = true
+        });
 
         #endregion
 
         #region Http Client
+
+        builder.Services.AddScoped(_ =>
+        {
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+            return httpClient;
+        });
 
         builder.Services.AddScoped(_ =>
         {
@@ -48,13 +63,8 @@ internal class Program
 #else
             httpClient.BaseAddress = new Uri("https://thnakdevserver.ddns.net:5001");
 #endif
+
             return new BaseHttpClientService(httpClient);
-        });
-        builder.Services.AddScoped(_ =>
-        {
-            var httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
-            return httpClient;
         });
 
         #endregion

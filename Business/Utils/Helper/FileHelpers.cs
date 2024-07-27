@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
+using MongoDB.Bson;
 
 namespace Business.Utils.Helper;
 
@@ -375,6 +376,12 @@ public static class FileHelpers
         {
             stream.SeekBeginOrigin();
         }
+    }
+
+
+    public static string GetCorrectExtensionFormContentType(this string stream, string defaultExtension = ".bin")
+    {
+        return MimeTypeMappings.FirstOrDefault(x => x.Value == stream).Value ?? defaultExtension;
     }
 
     public static string GetMimeType(this string fileExtension)

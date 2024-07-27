@@ -4,6 +4,7 @@ using Business.Attribute;
 using Business.Business.Interfaces.FileSystem;
 using Business.Utils.Helper;
 using BusinessModels.General;
+using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -32,7 +33,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
-            FileName = file.FileName,
+            FileName = file.FileName.Replace(".bin", file.ContentType.GetCorrectExtensionFormContentType()),
             Inline = true, // false = prompt the user for downloading;  true = browser to try to show the file inline,
             CreationDate = now,
             ModificationDate = now,
@@ -79,7 +80,6 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     }
 
     [HttpGet("get-file-v2")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public IActionResult GetFile_v2(string id)
     {
         var file = fileServe.Get(id);
@@ -110,6 +110,32 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         if (folder == null) return BadRequest("Folder not found");
         return Content(folder.ToJson(), MediaTypeNames.Application.Json);
     }
+
+    [HttpPost("re-name-file")]
+    public async Task<IActionResult> ReNameFile([FromForm] string objectId, [FromForm] string newName)
+    {
+        var file = fileServe.Get(objectId);
+        if (file == null) return BadRequest(AppLang.File_not_found_);
+        if (string.IsNullOrEmpty(newName))
+            return BadRequest(AppLang.ThisFieldIsRequired);
+        file.FileName = newName;
+        var status = await fileServe.UpdateAsync(file);
+        return status.Item1 ? Ok(status.Item2) : BadRequest(status.Item2);
+    }
+    
+
+    [HttpPost("re-name-folder")]
+    public async Task<IActionResult> ReNameFolder([FromForm] string objectId, [FromForm] string newName)
+    {
+        var folder = folderServe.Get(objectId);
+        if (folder == null) return BadRequest(AppLang.Folder_could_not_be_found);
+        if (string.IsNullOrEmpty(newName))
+            return BadRequest(AppLang.ThisFieldIsRequired);
+        folder.FolderName = newName;
+        var status = await folderServe.UpdateAsync(folder);
+        return status.Item1 ? Ok(status.Item2) : BadRequest(status.Item2);
+    }
+
 
     [HttpPost("create-shared-folder")]
     public async Task<IActionResult> CreateSharedFolder([FromBody] RequestNewFolderModel request)

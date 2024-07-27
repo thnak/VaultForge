@@ -14,6 +14,7 @@ using Business.Data.Repositories.User;
 using Business.KeyManagement;
 using Business.Models;
 using Business.Services;
+using BusinessModels.Converter;
 using BusinessModels.General;
 using BusinessModels.Resources;
 using Microsoft.AspNetCore.Authentication;
@@ -407,8 +408,11 @@ public class Program
 
         #endregion
 
-        builder.Services.AddControllers();
-
+        builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new ObjectIdConverter());
+        });
+        
         var app = builder.Build();
 
         #region Localization Setup

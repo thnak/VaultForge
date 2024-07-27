@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+using BusinessModels.Converter;
 using MessagePack;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -7,6 +9,7 @@ namespace BusinessModels.System.FileSystem;
 [MessagePackObject]
 public class FileInfoModel
 {
+    [JsonConverter(typeof(ObjectIdConverter))]
     [BsonId] [Key(0)] public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
 
     /// <summary>

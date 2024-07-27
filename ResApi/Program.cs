@@ -18,6 +18,7 @@ using Business.Exceptions;
 using Business.KeyManagement;
 using Business.Models;
 using Business.Services;
+using BusinessModels.Converter;
 using BusinessModels.General;
 using BusinessModels.Resources;
 using Microsoft.AspNetCore.Authentication;
@@ -56,7 +57,11 @@ public abstract class Program
 
         // Add services to the container.
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new ObjectIdConverter());
+        });
+        
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
 
