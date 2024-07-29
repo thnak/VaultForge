@@ -4,9 +4,11 @@ using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using MudBlazor;
 using WebApp.Client.Components.ConfirmDialog;
 using WebApp.Client.Services.Http;
+using WebApp.Client.Utils;
 
 namespace WebApp.Client.Pages.Drive.SharedDrive;
 
@@ -105,7 +107,8 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                         Identifier = "File",
                         ContentType = file.ContentType,
                         Name = file.FileName,
-                        Rename = () => RenameFile(file.Id.ToString(), file.FileName).ConfigureAwait(false)
+                        Rename = () => RenameFile(file.Id.ToString(), file.FileName).ConfigureAwait(false),
+                        Download = ()=> Download(file.Id.ToString()).ConfigureAwait(false)
                     });
 
                 foreach (var file in folders)
@@ -173,8 +176,8 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         if (dialogResult is { Canceled: false, Data: string newName })
         {
             MultipartFormDataContent formDataContent = new MultipartFormDataContent();
-            formDataContent.Add(new StringContent(newName), "newName");
-            formDataContent.Add(new StringContent(id), "objectId");
+            formDataContent.Add(new StringContent(newName, Encoding.UTF8, MediaTypeNames.Application.Json), "newName");
+            formDataContent.Add(new StringContent(id, Encoding.UTF8, MediaTypeNames.Application.Json), "objectId");
 
             var response = await ApiService.PostAsync<string>("/api/files/re-name-file", formDataContent);
             if (response.IsSuccessStatusCode)
@@ -192,6 +195,16 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         await InvokeAsync(StateHasChanged);
     }
 
+    private async Task Download(string id)
+    {
+        await JsRuntime.Download($"{ApiService.GetBaseUrl()}api/files/download-file?id={id}");
+    }
+
+    private async Task DeleteFile(string id)
+    {
+        
+    }
+    
     private async Task MoveFile(string id)
     {
     }

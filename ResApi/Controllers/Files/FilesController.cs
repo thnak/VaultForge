@@ -7,9 +7,9 @@ using BusinessModels.General;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
@@ -26,6 +26,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
 
 
     [HttpGet("get-file")]
+    [IgnoreAntiforgeryToken]
     public IActionResult GetFile(string id)
     {
         var file = fileServe.Get(id);
@@ -35,6 +36,29 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         {
             FileName = file.FileName.Replace(".bin", file.ContentType.GetCorrectExtensionFormContentType()),
             Inline = true, // false = prompt the user for downloading;  true = browser to try to show the file inline,
+            CreationDate = now,
+            ModificationDate = now,
+            ReadDate = now
+        };
+        Response.Headers.Append("Content-Disposition", cd.ToString());
+        Response.ContentType = file.ContentType;
+        Response.Headers.ContentType = file.ContentType;
+        Response.StatusCode = 200;
+        Response.ContentLength = file.FileSize;
+        return PhysicalFile(file.AbsolutePath, file.ContentType, true);
+    }
+
+    [HttpGet("download-file")]
+    [IgnoreAntiforgeryToken]
+    public IActionResult DownloadFile(string id)
+    {
+        var file = fileServe.Get(id);
+        if (file == null) return NotFound(AppLang.File_not_found_);
+        var now = DateTime.UtcNow;
+        var cd = new ContentDisposition
+        {
+            FileName = file.FileName.Replace(".bin", file.ContentType.GetCorrectExtensionFormContentType()),
+            Inline = false, // false = prompt the user for downloading;  true = browser to try to show the file inline,
             CreationDate = now,
             ModificationDate = now,
             ReadDate = now
@@ -104,6 +128,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     [HttpGet("get-shared-folder")]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
+    [OutputCache(Duration=3600, NoStore=true)]
     public IActionResult GetSharedFolder()
     {
         var folder = folderServe.GetRoot("");
@@ -112,6 +137,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     }
 
     [HttpPost("re-name-file")]
+    [IgnoreAntiforgeryToken]
     public async Task<IActionResult> ReNameFile([FromForm] string objectId, [FromForm] string newName)
     {
         var file = fileServe.Get(objectId);
@@ -122,9 +148,29 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         var status = await fileServe.UpdateAsync(file);
         return status.Item1 ? Ok(status.Item2) : BadRequest(status.Item2);
     }
-    
+
+    [HttpPost("delete-file")]
+    public async Task<IActionResult> DeleteFile([FromForm] string fileId, [FromForm] string folderId)
+    {
+        var file = fileServe.Get(fileId);
+        if (file == null) return BadRequest(AppLang.File_not_found_);
+
+        var folder = folderServe.Get(folderId);
+        if (folder == null) return BadRequest(AppLang.Folder_could_not_be_found);
+
+        var fileDeleteStatus = fileServe.Delete(fileId);
+        if (fileDeleteStatus.Item1)
+        {
+            folder.Contents = folder.Contents.Where(x => x.Id != fileId).ToList();
+            await folderServe.UpdateAsync(folder);
+        }
+
+        return BadRequest(fileDeleteStatus.Item2);
+    }
+
 
     [HttpPost("re-name-folder")]
+    [IgnoreAntiforgeryToken]
     public async Task<IActionResult> ReNameFolder([FromForm] string objectId, [FromForm] string newName)
     {
         var folder = folderServe.Get(objectId);
@@ -138,6 +184,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
 
 
     [HttpPost("create-shared-folder")]
+    [IgnoreAntiforgeryToken]
     public async Task<IActionResult> CreateSharedFolder([FromBody] RequestNewFolderModel request)
     {
         var folderRoot = folderServe.Get(request.RootId);

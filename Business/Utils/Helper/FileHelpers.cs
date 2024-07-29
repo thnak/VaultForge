@@ -381,11 +381,14 @@ public static class FileHelpers
 
     public static string GetCorrectExtensionFormContentType(this string stream, string defaultExtension = ".bin")
     {
-        return MimeTypeMappings.FirstOrDefault(x => x.Value == stream).Value ?? defaultExtension;
+        return MimeTypeMappings.FirstOrDefault(x => x.Value == stream).Key ?? defaultExtension;
     }
 
     public static string GetMimeType(this string fileExtension)
     {
-        return MimeTypeMappings.GetValueOrDefault(fileExtension.ToLower(), "application/octet-stream"); // Default MIME type
+        List<string> values = MimeTypeMappings.Values.ToList();
+        var mime = values.FirstOrDefault(x => x == fileExtension);
+        if (mime == null) return "application/octet-stream";
+        return mime;
     }
 }

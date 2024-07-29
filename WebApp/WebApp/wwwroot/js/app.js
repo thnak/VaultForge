@@ -13,6 +13,15 @@ window.deleteTemplateCache = () => {
     });
 }
 
+window.Download = (url) => {
+    const ele = document.createElement("a");
+    ele.href = url;
+    ele.classList.add('d-none');
+    document.body.appendChild(ele);
+    ele.click();
+    document.body.removeChild(ele);
+}
+
 window.CloseProgressBar = () => {
     const progressWrapper = document.getElementById("progress-wrapper");
     progressWrapper.classList.add('closed');

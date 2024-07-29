@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Json;
 using Microsoft.JSInterop;
@@ -138,6 +139,15 @@ catch (Exception)
     public static async Task<string?> GetCulture(this IJSRuntime jsRuntime)
     {
         return await jsRuntime.GetLocalStorage(CultureKeyName);
+    }
+
+    #endregion
+
+    #region Download
+
+    public static ValueTask Download(this IJSRuntime jsRuntime, [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri)
+    {
+        return jsRuntime.InvokeVoidAsync("Download", requestUri);
     }
 
     #endregion

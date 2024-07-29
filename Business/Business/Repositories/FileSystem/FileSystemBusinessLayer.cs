@@ -70,7 +70,7 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
 
     public (bool, string) Delete(string key)
     {
-        throw new NotImplementedException();
+        return da.Delete(key);
     }
 
     public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
