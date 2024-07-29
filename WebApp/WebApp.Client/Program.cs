@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Text.Json;
 using Blazored.Toast;
+using BlazorWorker.Core;
 using BusinessModels.Converter;
 using BusinessModels.Resources;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -21,6 +22,7 @@ internal class Program
         var builder = WebAssemblyHostBuilder.CreateDefault(args);
         builder.Services.AddMudServices();
         builder.Services.AddBlazoredToast();
+        builder.Services.AddWorkerFactory();
 
         #region Event Service
 
@@ -35,6 +37,7 @@ internal class Program
         builder.Services.AddAuthenticationStateDeserialization();
         builder.Services.AddSingleton<AuthenticationStateProvider, PersistentAuthenticationStateProvider>();
         builder.Services.AddCascadingAuthenticationState();
+
         builder.Services.AddScoped<ProtectedLocalStorage>();
         builder.Services.AddScoped<ProtectedSessionStorage>();
         builder.Services.AddSingleton(new JsonSerializerOptions
@@ -50,7 +53,7 @@ internal class Program
 
         builder.Services.AddScoped(_ =>
         {
-            var httpClient = new HttpClient();
+            var httpClient = new HttpClient(new CookieHandler());
             httpClient.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
             return httpClient;
         });
@@ -58,13 +61,8 @@ internal class Program
         builder.Services.AddScoped(_ =>
         {
             var httpClient = new HttpClient(new CookieHandler());
-#if DEBUG
             httpClient.BaseAddress = new Uri("https://thnakdevserver.ddns.net:5001");
-#else
-            httpClient.BaseAddress = new Uri("https://thnakdevserver.ddns.net:5001");
-#endif
-
-            return new BaseHttpClientService(httpClient);
+            return new BaseHttpClientService(httpClient, builder.Services.BuildServiceProvider());
         });
 
         #endregion

@@ -41,4 +41,12 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
                 .ToArray();
         }) ?? [];
     }
+
+    [HttpGet("try-http-redirect")]
+    [IgnoreAntiforgeryToken]
+    [AllowAnonymous]
+    public IActionResult TryRedirect()
+    {
+        return Redirect(PageRoutes.Drive.Shared.Src);
+    }
 }

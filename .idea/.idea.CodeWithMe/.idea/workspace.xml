@@ -18,10 +18,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="thêm 1 eventListen mới">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/WeatherForecastController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/WeatherForecastController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Counter.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Counter.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/Http/BaseHttpClientService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/Http/BaseHttpClientService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/Http/CookieHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/Http/CookieHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/_Imports.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/_Imports.razor" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,10 +44,14 @@
     </option>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/f5084525411d53b81d9950b68616117750b674d4/src/Components/Components/src/RouteView.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/f5084525411d53b81d9950b68616117750b674d4/src/Components/Components/src/Routing/RouteData.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/f5084525411d53b81d9950b68616117750b674d4/src/Components/Endpoints/src/Assets/ImportMap.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/f5084525411d53b81d9950b68616117750b674d4/src/Http/Headers/src/HttpHeaderParser.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/f5084525411d53b81d9950b68616117750b674d4/src/JSInterop/Microsoft.JSInterop/src/JSRuntimeExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/f5084525411d53b81d9950b68616117750b674d4/src/Middleware/OutputCaching/src/OutputCacheAttribute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Net.Http/src/System/Net/Http/HttpClient.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Net.Http/src/System/Net/Http/HttpClientHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/CollectionExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Nullable.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Runtime/CompilerServices/TaskAwaiter.cs" root0="SKIP_HIGHLIGHTING" />
@@ -52,6 +61,7 @@
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Text.Json/src/System/Text/Json/Serialization/JsonConverterOfT.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/1cb5a31e42ba4c378d3e9344b1c94c52cc8a0/74/e07deca3/ResourceAssetCollection.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/3ad9bbd3be4e4d5882cf0cfc65021d8624508/0c/9c59a66f/Enumerable.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8157754722ed4199b43d29e4632af0d7378a0/f8/6710384f/HttpStatusCode.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/81cd7b5d4f9a4def98fcb318251a687f2db10/f8/43a65fbf/AntiforgeryStateProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/85ad600cadd14f1bbfea1aa4f4370f54698a0/fe/3ec89b69/MediaTypeNames.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/fd17b13cc7c64aec9c7787175bb271d31c8a0/eb/83833ed7/CookieAuthenticationHandler.cs" root0="SKIP_HIGHLIGHTING" />
@@ -99,7 +109,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: https">
+  <component name="RunManager" selected=".NET Launch Settings Profile.ResApi">
     <configuration name="ResApi" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/ResApi/bin/Release/net9.0/linux-x64/publish" target_framework="net9.0" uuid_high="5905353364384007298" uuid_low="-8333852158807631372" />
       <method v="2" />
@@ -241,7 +251,13 @@
       <workItem from="1722112655591" duration="5781000" />
       <workItem from="1722212648663" duration="2963000" />
       <workItem from="1722234512060" duration="3090000" />
-      <workItem from="1722246736256" duration="1795000" />
+      <workItem from="1722246736256" duration="1910000" />
+      <workItem from="1722267429195" duration="1479000" />
+      <workItem from="1722304608606" duration="4860000" />
+      <workItem from="1722386377501" duration="5552000" />
+      <workItem from="1722471660716" duration="6817000" />
+      <workItem from="1722560248552" duration="3677000" />
+      <workItem from="1722646515741" duration="1660000" />
     </task>
     <task id="LOCAL-00001" summary="remove anti token">
       <option name="closed" value="true" />
@@ -427,7 +443,23 @@
       <option name="project" value="LOCAL" />
       <updated>1722247189413</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="add new eventlistener">
+      <option name="closed" value="true" />
+      <created>1722249733048</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1722249733048</updated>
+    </task>
+    <task id="LOCAL-00025" summary="cap nhat">
+      <option name="closed" value="true" />
+      <created>1722268613263</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1722268613264</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -469,7 +501,9 @@
     <MESSAGE value="big update" />
     <MESSAGE value="messagepack resolver" />
     <MESSAGE value="thêm 1 eventListen mới" />
-    <option name="LAST_COMMIT_MESSAGE" value="thêm 1 eventListen mới" />
+    <MESSAGE value="add new eventlistener" />
+    <MESSAGE value="cap nhat" />
+    <option name="LAST_COMMIT_MESSAGE" value="cap nhat" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -499,6 +533,19 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/ResApi/Controllers/WeatherForecastController.cs</url>
+          <line>49</line>
+          <properties documentPath="C:\Users\thanh\Git\CodeWithMe\ResApi\Controllers\WeatherForecastController.cs" containingFunctionPresentation="Method 'TryRedirect'">
+            <startOffsets>
+              <option value="1707" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1752" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

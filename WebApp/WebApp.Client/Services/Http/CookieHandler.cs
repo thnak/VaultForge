@@ -8,7 +8,7 @@ public class CookieHandler : DelegatingHandler
     {
         InnerHandler = new HttpClientHandler
         {
-            AllowAutoRedirect = true
+            AllowAutoRedirect = false
         };
     }
 
