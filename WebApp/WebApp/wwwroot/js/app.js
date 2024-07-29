@@ -96,7 +96,18 @@ function OnlineEvent() {
     DotNet.invokeMethodAsync("WebApp.Client", 'OnlineEventListener')
 }
 
+let visibilityChange;
+if (typeof document.hidden !== "undefined") {
+    visibilityChange = "visibilitychange";
+} else if (typeof document.mozHidden !== "undefined") { // Firefox up to v17
+    visibilityChange = "mozvisibilitychange";
+} else if (typeof document.webkitHidden !== "undefined") { // Chrome up to v32, Android up to v4.4, Blackberry up to v10
+    visibilityChange = "webkitvisibilitychange";
+}
 
+function VisibilitychangeEvent() {
+    DotNet.invokeMethodAsync("Web.Client", 'VisibilityChangeEventListener', document.hidden === false)
+}
 //
 // Events Listener
 //
@@ -108,5 +119,6 @@ window.InitAppEventListener = () => {
     window.addEventListener("keydown", EnterClickEvent)
     window.addEventListener('online', OnlineEvent);
     window.addEventListener('offline', OfflineEvent);
+    window.addEventListener(visibilityChange, VisibilitychangeEvent);
 }
 

@@ -196,6 +196,32 @@ public class DocumentObjectModelEventListener : IDisposable
 
     #endregion
 
+    #region visibilitychange
+
+    public Func<bool, Task>? VisibilityChangeEventAsync
+    {
+        get => SelfVisibilityChangeEventAsync;
+        set => SelfVisibilityChangeEventAsync = value;
+    }
+
+    public Action? VisibilityChangeEvent
+    {
+        get => SelfVisibilityChangeEvent;
+        set => SelfVisibilityChangeEvent = value;
+    }
+    
+    private static Func<bool, Task>? SelfVisibilityChangeEventAsync { get; set; }
+    private static Action? SelfVisibilityChangeEvent { get; set; }
+
+    [JSInvokable]
+    public static void VisibilityChangeEventListener(bool visible)
+    {
+        SelfVisibilityChangeEventAsync?.Invoke(visible);
+        SelfVisibilityChangeEvent?.Invoke();
+    }
+
+    #endregion
+
     #region Scroll
 
     public static Func<Task>? ScrollEventAsync { get; set; }
