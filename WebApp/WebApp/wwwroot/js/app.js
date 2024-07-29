@@ -108,6 +108,11 @@ if (typeof document.hidden !== "undefined") {
 function VisibilitychangeEvent() {
     DotNet.invokeMethodAsync("Web.Client", 'VisibilityChangeEventListener', document.hidden === false)
 }
+
+function AppInstalledEvent(){
+    DotNet.invokeMethodAsync("Web.Client", 'InstalledEventListener')
+}
+
 //
 // Events Listener
 //
@@ -120,5 +125,6 @@ window.InitAppEventListener = () => {
     window.addEventListener('online', OnlineEvent);
     window.addEventListener('offline', OfflineEvent);
     window.addEventListener(visibilityChange, VisibilitychangeEvent);
+    window.addEventListener("appinstalled", AppInstalledEvent)
 }
 

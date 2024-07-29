@@ -23,6 +23,9 @@ public class DocumentObjectModelEventListener : IDisposable
 
         ContextMenuClickedAsync = null;
         ContextMenuClicked = null;
+
+        VisibilityChangeEvent = null;
+        VisibilityChangeEventAsync = null;
     }
 
     #region Enter
@@ -196,6 +199,32 @@ public class DocumentObjectModelEventListener : IDisposable
 
     #endregion
 
+    #region Installed
+
+    public Func<Task>? InstalledEventAsync
+    {
+        get => SelfInstalledEventAsync;
+        set => SelfInstalledEventAsync = value;
+    }
+
+    public Action? InstalledEvent
+    {
+        get => SelfInstalledEvent;
+        set => SelfInstalledEvent = value;
+    }
+
+    private static Func<Task>? SelfInstalledEventAsync { get; set; }
+    private static Action? SelfInstalledEvent { get; set; }
+
+    [JSInvokable]
+    public static void InstalledEventListener()
+    {
+        SelfInstalledEventAsync?.Invoke();
+        SelfInstalledEvent?.Invoke();
+    }
+
+    #endregion
+
     #region visibilitychange
 
     public Func<bool, Task>? VisibilityChangeEventAsync
@@ -209,7 +238,7 @@ public class DocumentObjectModelEventListener : IDisposable
         get => SelfVisibilityChangeEvent;
         set => SelfVisibilityChangeEvent = value;
     }
-    
+
     private static Func<bool, Task>? SelfVisibilityChangeEventAsync { get; set; }
     private static Action? SelfVisibilityChangeEvent { get; set; }
 
