@@ -31,12 +31,10 @@
         </EmbeddedResource>
         <EmbeddedResource Update="Resources\AppLang.vi-VN.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
-            <LastGenOutput>AppLang.vi-VN.Designer.cs</LastGenOutput>
             <DependentUpon>AppLang.resx</DependentUpon>
         </EmbeddedResource>
         <EmbeddedResource Update="Resources\AppLang.en-US.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
-            <LastGenOutput>AppLang.en-US.Designer.cs</LastGenOutput>
             <DependentUpon>AppLang.resx</DependentUpon>
         </EmbeddedResource>
         <EmbeddedResource Update="Resources\AppLang.de-DE.resx">
@@ -49,6 +47,9 @@
             <DependentUpon>AppLang.resx</DependentUpon>
         </EmbeddedResource>
         <EmbeddedResource Update="Resources\AppLang.ko-KR.resx">
+            <DependentUpon>AppLang.resx</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\AppLang.zh-CN.resx">
             <DependentUpon>AppLang.resx</DependentUpon>
         </EmbeddedResource>
     </ItemGroup>
