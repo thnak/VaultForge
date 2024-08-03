@@ -10,7 +10,7 @@ public static class StringExtension
         var index = 0;
         foreach (var text in text2Replace)
         {
-            self = self.Replace($"{{{index}}}", text);
+            self = self.Replace($"X{index}", text);
             index++;
         }
 

@@ -90,7 +90,7 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
 
         try
         {
-            if (user.BanTime > DateTime.UtcNow) return (false, AppLang.You_have_been_banned_from_logging_in__please_try_again_at__0_.AutoReplace([user.BanTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)]));
+            if (user.BanTime > DateTime.UtcNow) return (false, AppLang.You_have_been_banned_from_logging_in__please_try_again_at_X0.AutoReplace([user.BanTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)]));
 
             if (user.Password == model.Password.ComputeSha256Hash())
             {
@@ -128,7 +128,7 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         var user = userDl.Get(username);
         if (user == null) return (false, AppLang.User_is_not_exists);
 
-        if (user.BanTime > DateTime.UtcNow) return (false, AppLang.You_have_been_banned_from_logging_in__please_try_again_at__0_.AutoReplace([user.BanTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)]));
+        if (user.BanTime > DateTime.UtcNow) return (false, AppLang.You_have_been_banned_from_logging_in__please_try_again_at_X0.AutoReplace([user.BanTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)]));
 
         if (user.Password == password.ComputeSha256Hash()) return (true, AppLang.Hello);
 

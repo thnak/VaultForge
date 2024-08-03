@@ -11,14 +11,14 @@ public class OverYearOldRequirement(int old) : AuthorizationHandler<OverYearOldR
     {
         if (!context.User.HasClaim(c => c.Type == ClaimTypes.DateOfBirth))
         {
-            context.Fail(new AuthorizationFailureReason(this, AppLang.This_resource_requires__0__years_old.AutoReplace([$"{old}"])));
+            context.Fail(new AuthorizationFailureReason(this, AppLang.This_resource_requires_X0_years_old.AutoReplace([$"{old}"])));
             return Task.CompletedTask;
         }
 
         var dobVal = context.User.FindFirst(c => c.Type == ClaimTypes.DateOfBirth)?.Value;
         if (string.IsNullOrEmpty(dobVal))
         {
-            context.Fail(new AuthorizationFailureReason(this, AppLang.This_resource_requires__0__years_old.AutoReplace([$"{old}"])));
+            context.Fail(new AuthorizationFailureReason(this, AppLang.This_resource_requires_X0_years_old.AutoReplace([$"{old}"])));
         }
         else
         {
@@ -29,7 +29,7 @@ public class OverYearOldRequirement(int old) : AuthorizationHandler<OverYearOldR
             if (age >= old)
                 context.Succeed(requirement);
             else
-                context.Fail(new AuthorizationFailureReason(this, AppLang.This_resource_requires__0__years_old.AutoReplace($"{old}")));
+                context.Fail(new AuthorizationFailureReason(this, AppLang.This_resource_requires_X0_years_old.AutoReplace($"{old}")));
         }
 
         return Task.CompletedTask;
