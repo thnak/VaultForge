@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="User name is not valid" xml:space="preserve">
+    <value>Username is not valid</value>
+  </data>
+  <data name="User is not exists" xml:space="preserve">
+    <value>User is not exists</value>
+  </data>
+  <data name="User is already exists" xml:space="preserve">
+    <value>User is already exists</value>
+  </data>
+  <data name="Username or password incorrect" xml:space="preserve">
+    <value>Username or password incorrect</value>
+  </data>
+  <data name="User updated successfully" xml:space="preserve">
+    <value>User updated successfully</value>
+  </data>
+  <data name="User update failed" xml:space="preserve">
+    <value>User update failed</value>
+  </data>
+  <data name="There is nothing to show" xml:space="preserve">
+    <value>There is nothing to show</value>
+  </data>
+  <data name="One moment please" xml:space="preserve">
+    <value>One moment please</value>
+  </data>
+  <data name="User or password is incorrect" xml:space="preserve">
+    <value>User or password is incorrect</value>
+  </data>
+  <data name="User is authenticated" xml:space="preserve">
+    <value>User is authenticated</value>
+  </data>
+  <data name="The user has been authenticated" xml:space="preserve">
+    <value>The user has been authenticated</value>
+  </data>
+  <data name="User has been authenticated" xml:space="preserve">
+    <value>User has been authenticated</value>
+  </data>
+  <data name="Hello" xml:space="preserve">
+    <value>Hello</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="Logout and login again" xml:space="preserve">
+    <value>Logout and login again</value>
+  </data>
+  <data name="Logout successful" xml:space="preserve">
+    <value>Logout successful</value>
+  </data>
+  <data name="Logout from all devices" xml:space="preserve">
+    <value>Logout from all devices</value>
+  </data>
+  <data name="Dark mode" xml:space="preserve">
+    <value>Dark mode</value>
+  </data>
+  <data name="Light mode" xml:space="preserve">
+    <value>Light mode</value>
+  </data>
+  <data name="System preference" xml:space="preserve">
+    <value>System preference</value>
+  </data>
+  <data name="Home page" xml:space="preserve">
+    <value>Home page</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Register a new account" xml:space="preserve">
+    <value>Register a new account</value>
+  </data>
+  <data name="Passwords do not match." xml:space="preserve">
+    <value>Passwords do not match.</value>
+  </data>
+  <data name="Registration failed" xml:space="preserve">
+    <value>Registration failed</value>
+  </data>
+  <data name="Sign Out" xml:space="preserve">
+    <value>Sign Out</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Create Account" xml:space="preserve">
+    <value>Create Account</value>
+  </data>
+  <data name="Welcome back!" xml:space="preserve">
+    <value>Welcome back!</value>
+  </data>
+  <data name="To keep connected with us please login with your personal info" xml:space="preserve">
+    <value>To keep connected with us please login with your personal info</value>
+  </data>
+  <data name="Sign In" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Processing</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Enter password" xml:space="preserve">
+    <value>Enter password</value>
+  </data>
+  <data name="Sign in to your account" xml:space="preserve">
+    <value>Sign in to your account</value>
+  </data>
+  <data name="Do not use this token on a server that provides this token" xml:space="preserve">
+    <value>Do not use this token on a server that provides this token</value>
+  </data>
+  <data name="File could not be found" xml:space="preserve">
+    <value>File could not be found</value>
+  </data>
+  <data name="File not found " xml:space="preserve">
+    <value>File not found
+</value>
+  </data>
+  <data name="Incorrect metadata" xml:space="preserve">
+    <value>Incorrect metadata</value>
+  </data>
+  <data name="Incorrect metadata ID" xml:space="preserve">
+    <value>Incorrect metadata ID</value>
+  </data>
+  <data name="Could not found metadata" xml:space="preserve">
+    <value>Could not found metadata</value>
+  </data>
+  <data name="Delete successfully" xml:space="preserve">
+    <value>Delete successfully</value>
+  </data>
+  <data name="File is already exsists" xml:space="preserve">
+    <value>File is already exsists</value>
+  </data>
+  <data name="Create successfully" xml:space="preserve">
+    <value>Create successfully</value>
+  </data>
+  <data name="Folder already exists" xml:space="preserve">
+    <value>Folder already exists</value>
+  </data>
+  <data name="Incorrect password" xml:space="preserve">
+    <value>Incorrect password</value>
+  </data>
+  <data name="Folder could not be found" xml:space="preserve">
+    <value>Folder could not be found</value>
+  </data>
+  <data name="Create failed" xml:space="preserve">
+    <value>Create failed</value>
+  </data>
+  <data name="Could not delete root folder" xml:space="preserve">
+    <value>Could not delete root folder</value>
+  </data>
+  <data name="Other operations" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>File name</value>
+  </data>
+  <data name="FolderName" xml:space="preserve">
+    <value>Folder name</value>
+  </data>
+  <data name="ReName" xml:space="preserve">
+    <value>Re name</value>
+  </data>
+  <data name="ThisFieldIsRequired" xml:space="preserve">
+    <value>This field is required</value>
+  </data>
+  <data name="You have been banned from logging in, please try again at X0" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="This resource requires X0 years old" xml:space="preserve">
+    <value>.</value>
+  </data>
+</root>

@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Success" xml:space="preserve">
+    <value>Thành công</value>
+  </data>
+  <data name="User name is not valid" xml:space="preserve">
+    <value>Tên người dùng không hợp lệ</value>
+  </data>
+  <data name="User is not exists" xml:space="preserve">
+    <value>Người dùng không tồn tại</value>
+  </data>
+  <data name="User is already exists" xml:space="preserve">
+    <value>Người dùng đã tồn tại</value>
+  </data>
+  <data name="Username or password incorrect" xml:space="preserve">
+    <value>Tài khoản hoặc mật khẩu không đúng</value>
+  </data>
+  <data name="User updated successfully" xml:space="preserve">
+    <value>Cập nhật người dùng thành công</value>
+  </data>
+  <data name="User update failed" xml:space="preserve">
+    <value>Cập nhật người dùng không thành công</value>
+  </data>
+    <data name="There is nothing to show" xml:space="preserve">
+    <value>Không có gì ở đây để hiển thị</value>
+  </data>
+  <data name="One moment please" xml:space="preserve">
+    <value>Vui lòng đợi một lát</value>
+  </data>
+  <data name="User or password is incorrect" xml:space="preserve">
+    <value>Tài khoản hoặc mật khẩu không đúng</value>
+  </data>
+  <data name="User is authenticated" xml:space="preserve">
+    <value>Người dùng được xác thực</value>
+  </data>
+  <data name="The user has been authenticated" xml:space="preserve">
+    <value>Người dùng đã được xác thực</value>
+  </data>
+  <data name="User has been authenticated" xml:space="preserve">
+    <value>Người dùng đã được xác thực</value>
+  </data>
+  <data name="Hello" xml:space="preserve">
+    <value>Xin chào</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Hồ sơ</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Đăng xuất</value>
+  </data>
+  <data name="Logout and login again" xml:space="preserve">
+    <value>Đăng xuất và đăng nhập lại</value>
+  </data>
+  <data name="Logout successful" xml:space="preserve">
+    <value>Đăng xuất thành công</value>
+  </data>
+  <data name="Logout from all devices" xml:space="preserve">
+    <value>Đăng xuất khỏi tất cả các thiết bị</value>
+  </data>
+  <data name="Dark mode" xml:space="preserve">
+    <value>Chế độ tối</value>
+  </data>
+  <data name="Light mode" xml:space="preserve">
+    <value>Chế độ sáng</value>
+  </data>
+  <data name="System preference" xml:space="preserve">
+    <value>Tùy chọn hệ thống</value>
+  </data>
+  <data name="Home page" xml:space="preserve">
+    <value>Trang chủ</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Đăng nhập</value>
+  </data>
+    <data name="Register a new account" xml:space="preserve">
+    <value>Đăng ký tài khoản mới</value>
+  </data>
+  <data name="Passwords do not match." xml:space="preserve">
+    <value>Mật khẩu không hợp lệ.</value>
+  </data>
+  <data name="Registration failed" xml:space="preserve">
+    <value>Đăng ký không thành công</value>
+  </data>
+  <data name="Sign Out" xml:space="preserve">
+    <value>Đăng xuất</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Mật khẩu</value>
+  </data>
+  <data name="Create Account" xml:space="preserve">
+    <value>Tạo tài khoản</value>
+  </data>
+  <data name="Welcome back!" xml:space="preserve">
+    <value>Chào mừng trở lại!</value>
+  </data>
+  <data name="To keep connected with us please login with your personal info" xml:space="preserve">
+    <value>Để duy trì kết nối với chúng tôi vui lòng đăng nhập bằng thông tin cá nhân của bạn</value>
+  </data>
+  <data name="Sign In" xml:space="preserve">
+    <value>Đăng nhập</value>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Đang xử lý</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Tiếp theo</value>
+  </data>
+  <data name="Enter password" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="Sign in to your account" xml:space="preserve">
+    <value>Đăng nhập vào tài khoản của bạn</value>
+  </data>
+  <data name="Do not use this token on a server that provides this token" xml:space="preserve">
+    <value>Không sử dụng mã thông báo này trên máy chủ cung cấp mã thông báo này</value>
+  </data>
+  <data name="File could not be found" xml:space="preserve">
+    <value>Không tìm thấy tệp</value>
+  </data>
+  <data name="File not found " xml:space="preserve">
+    <value>Không tìm thấy tệp</value>
+  </data>
+  <data name="Incorrect metadata" xml:space="preserve">
+    <value>Siêu dữ liệu không chính xác</value>
+  </data>
+  <data name="Incorrect metadata ID" xml:space="preserve">
+    <value>ID siêu dữ liệu không chính xác</value>
+  </data>
+  <data name="Could not found metadata" xml:space="preserve">
+    <value>Không tìm thấy siêu dữ liệu</value>
+  </data>
+  <data name="Delete successfully" xml:space="preserve">
+    <value>Xóa thành công</value>
+  </data>
+  <data name="File is already exsists" xml:space="preserve">
+    <value>Tệp đã tồn tại</value>
+  </data>
+  <data name="Create successfully" xml:space="preserve">
+    <value>Tạo thành công</value>
+  </data>
+  <data name="Folder already exists" xml:space="preserve">
+    <value>Thư mục đã tồn tại</value>
+  </data>
+  <data name="Incorrect password" xml:space="preserve">
+    <value>Mật khẩu không đúng</value>
+  </data>
+  <data name="Folder could not be found" xml:space="preserve">
+    <value>Không tìm thấy thư mục</value>
+  </data>
+  <data name="Create failed" xml:space="preserve">
+    <value>Tạo thất bại</value>
+  </data>
+  <data name="Could not delete root folder" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="Other operations" xml:space="preserve">
+    <value>Thao tác khác</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="FileName" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="FolderName" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="ReName" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="ThisFieldIsRequired" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="You have been banned from logging in, please try again at X0" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="This resource requires X0 years old" xml:space="preserve">
+    <value>.</value>
+  </data>
+</root>
