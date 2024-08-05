@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
+using BusinessModels.Resources;
 using BusinessModels.Utils;
 using BusinessModels.WebContent;
 using Microsoft.AspNetCore.Components;
@@ -51,7 +52,7 @@ public class BaseHttpClientService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(AppLang.BaseHttpClientService_PostAsync__ERROR___0_, e.Message);
         }
 
         return responseData;
@@ -84,7 +85,7 @@ public class BaseHttpClientService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(AppLang.BaseHttpClientService_PutAsync__ERROR___0_, e.Message);
         }
 
         return responseData;
@@ -117,7 +118,7 @@ public class BaseHttpClientService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(AppLang.BaseHttpClientService_GetAsync__ERROR___0_, e.Message);
         }
 
         return responseData;
@@ -150,7 +151,7 @@ public class BaseHttpClientService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(AppLang.BaseHttpClientService_DeleteAsync__ERROR___0_, e.Message);
         }
 
         return responseData;

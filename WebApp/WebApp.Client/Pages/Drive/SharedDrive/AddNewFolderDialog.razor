@@ -1,7 +1,7 @@
 ﻿<MudDialog>
     <DialogContent>
-        <MudForm Model="@Name" @ref="Form" Validation="@(Validator.ValidateValue)" >
-            <MudTextField @bind-Value="Name" For="@(() => Name)" Label="@AppLang.FolderName" Required RequiredError="@AppLang.ThisFieldIsRequired" T="string" Variant="Variant.Outlined" />
+        <MudForm Model="@Name" @ref="Form" >
+            <MudTextField @bind-Value="Name" For="@(() => Name)" Validation="@Validator.Validation" Label="@AppLang.FolderName" Required T="string" Variant="Variant.Outlined" />
         </MudForm>
     </DialogContent>
     <DialogActions>

@@ -66,17 +66,9 @@ public class ProtectedLocalStorage(IJSRuntime jsRuntime)
     public async Task<ProtectedBrowserStorageResult<T>> GetAsync<T>(string key)
     {
         var textPlan = await GetAsync(key);
-        try
-        {
-            var re = JsonSerializer.Deserialize<T>(textPlan);
-            return new ProtectedBrowserStorageResult<T>(true, re);
-        }
-        catch (Exception)
-        {
-            //
-        }
 
-        return new ProtectedBrowserStorageResult<T>(false, default);
+        var re = JsonSerializer.Deserialize<T>(textPlan);
+        return new ProtectedBrowserStorageResult<T>(true, re);
     }
 
     public async Task RemoveAsync(string key)

@@ -22,7 +22,7 @@ public static class JsRuntimeExtension
     {
         return jsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", message);
     }
-    
+
     #region Local Storage
 
     public static async Task SetLocalStorage(this IJSRuntime jsRuntime, string key, string value)
@@ -45,24 +45,8 @@ public static class JsRuntimeExtension
     {
         var textPlan = await jsRuntime.InvokeAsync<string?>("localStorage.getItem", key);
         if (string.IsNullOrEmpty(textPlan)) return default;
-        try
-        {
-            return JsonSerializer.Deserialize<T?>(textPlan);
-        }
-#if DEBUG
-        catch (Exception exception)
-        {
-            Console.WriteLine(exception.Message);
 
-            return default;
-        }
-#else
-catch (Exception)
-                    {
-            
-                        return default!;
-                    }
-#endif
+        return JsonSerializer.Deserialize<T?>(textPlan);
     }
 
     public static async Task RemoveLocalStorage(this IJSRuntime jsRuntime, string key)
@@ -95,24 +79,8 @@ catch (Exception)
     {
         var textPlan = await jsRuntime.InvokeAsync<string?>("sessionStorage.getItem", key);
         if (string.IsNullOrEmpty(textPlan)) return default;
-        try
-        {
-            return JsonSerializer.Deserialize<T?>(textPlan);
-        }
-#if DEBUG
-        catch (Exception exception)
-        {
-            Console.WriteLine(exception.Message);
 
-            return default;
-        }
-#else
-catch (Exception)
-                    {
-            
-                        return default!;
-                    }
-#endif
+        return JsonSerializer.Deserialize<T?>(textPlan);
     }
 
     public static async Task RemoveSessionStorage(this IJSRuntime jsRuntime, string key)

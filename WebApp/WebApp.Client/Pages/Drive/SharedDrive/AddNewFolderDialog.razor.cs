@@ -1,4 +1,8 @@
-﻿using BusinessModels.Validator.Folder;
+﻿using BusinessModels.Resources;
+using BusinessModels.Utils;
+using BusinessModels.Validator;
+using BusinessModels.Validator.Folder;
+using FluentValidation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
@@ -11,8 +15,15 @@ public partial class AddNewFolderDialog : ComponentBase, IDisposable
     private MudForm Form { get; set; }
     private string Name { get; set; } = string.Empty;
 
-    private FolderNameFluentValidator Validator { get; set; } = new();
-    
+    private SimpleFluentValueValidator<string> Validator { get; set; } = new(x => x
+        .NotEmpty().WithMessage(AppLang.ThisFieldIsRequired)
+        .Length(1, 100)
+        .Must(s => s.ValidateSystemPathName()).WithMessage(s =>
+        {
+            s.ValidateSystemPathName(out char? c);
+            return string.Format(AppLang.Folder_name_contains_invalid_character__x, c);
+        }));
+
     private void Cancel(MouseEventArgs obj)
     {
         DialogInstance.Cancel();

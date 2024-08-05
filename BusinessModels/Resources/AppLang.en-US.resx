@@ -362,4 +362,19 @@ ClientY: {1}</value>
   <data name="User information is required" xml:space="preserve">
     <value>User information is required</value>
   </data>
+  <data name="BaseHttpClientService_DeleteAsync__ERROR___0_" xml:space="preserve">
+    <value>[ERROR] {0}</value>
+  </data>
+  <data name="BaseHttpClientService_GetAsync__ERROR___0_" xml:space="preserve">
+    <value>[ERROR] {0}</value>
+  </data>
+  <data name="BaseHttpClientService_PutAsync__ERROR___0_" xml:space="preserve">
+    <value>[ERROR] {0}</value>
+  </data>
+  <data name="BaseHttpClientService_PostAsync__ERROR___0_" xml:space="preserve">
+    <value>[ERROR] {0}</value>
+  </data>
+  <data name="ProtectedSessionStorage_GetAsync__ERROR___0_" xml:space="preserve">
+    <value>[ERROR] {0}</value>
+  </data>
 </root>

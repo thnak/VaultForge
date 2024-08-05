@@ -60,6 +60,42 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to [ERROR] {0}.
+        /// </summary>
+        public static string BaseHttpClientService_DeleteAsync__ERROR___0_ {
+            get {
+                return ResourceManager.GetString("BaseHttpClientService_DeleteAsync__ERROR___0_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [ERROR] {0}.
+        /// </summary>
+        public static string BaseHttpClientService_GetAsync__ERROR___0_ {
+            get {
+                return ResourceManager.GetString("BaseHttpClientService_GetAsync__ERROR___0_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [ERROR] {0}.
+        /// </summary>
+        public static string BaseHttpClientService_PostAsync__ERROR___0_ {
+            get {
+                return ResourceManager.GetString("BaseHttpClientService_PostAsync__ERROR___0_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [ERROR] {0}.
+        /// </summary>
+        public static string BaseHttpClientService_PutAsync__ERROR___0_ {
+            get {
+                return ResourceManager.GetString("BaseHttpClientService_PutAsync__ERROR___0_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hủy.
         /// </summary>
         public static string Cancel {
@@ -480,6 +516,15 @@ namespace BusinessModels.Resources {
         public static string Profile {
             get {
                 return ResourceManager.GetString("Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [ERROR] {0}.
+        /// </summary>
+        public static string ProtectedSessionStorage_GetAsync__ERROR___0_ {
+            get {
+                return ResourceManager.GetString("ProtectedSessionStorage_GetAsync__ERROR___0_", resourceCulture);
             }
         }
         

@@ -5,6 +5,8 @@ namespace BusinessModels.Utils;
 
 public static class StringExtension
 {
+    private static readonly char[] InvalidCharPath = ['/', '\\', '*', '@', '%'];
+
     public static string AutoReplace(this string self, params string[] text2Replace)
     {
         var index = 0;
@@ -119,10 +121,9 @@ public static class StringExtension
 
     public static bool ValidateSystemPathName(this string self)
     {
-        char[] invalidChars = Path.GetInvalidPathChars();
         foreach (char c in self)
         {
-            if (Array.Exists(invalidChars, invalidChar => invalidChar == c))
+            if (Array.Exists(InvalidCharPath, invalidChar => invalidChar == c))
             {
                 return false;
             }
@@ -133,10 +134,9 @@ public static class StringExtension
 
     public static bool ValidateSystemPathName(this string self, out char? keyword)
     {
-        char[] invalidChars = Path.GetInvalidPathChars();
         foreach (char c in self)
         {
-            if (Array.Exists(invalidChars, invalidChar => invalidChar == c))
+            if (Array.Exists(InvalidCharPath, invalidChar => invalidChar == c))
             {
                 keyword = c;
                 return false;

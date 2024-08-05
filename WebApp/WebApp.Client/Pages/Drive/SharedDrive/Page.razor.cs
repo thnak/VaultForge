@@ -18,7 +18,7 @@ namespace WebApp.Client.Pages.Drive.SharedDrive;
 
 public partial class Page(BaseHttpClientService baseClientService) : ComponentBase, IDisposable
 {
-    [Parameter] public string FolderId { get; set; } = string.Empty;
+    [Parameter] public string? FolderId { get; set; } = string.Empty;
     private bool Open { get; set; }
     private bool Loading { get; set; }
     private bool ShouldRen { get; set; } = true;

@@ -58,14 +58,7 @@ public class StateContainer
     private void HandleChanged()
     {
         SharedPalette = _isDarkMode ? _mudTheme.PaletteDark : _mudTheme.PaletteLight;
-        try
-        {
-            OnChanged?.Invoke();
-            OnChangedAsync?.Invoke();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
+        OnChanged?.Invoke();
+        OnChangedAsync?.Invoke();
     }
 }

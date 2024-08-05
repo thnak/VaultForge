@@ -1,4 +1,5 @@
 using System.Text.Json;
+using BusinessModels.Resources;
 using Microsoft.JSInterop;
 using WebApp.Client.Models;
 
@@ -71,9 +72,9 @@ public class ProtectedSessionStorage(IJSRuntime jsRuntime)
             var re = JsonSerializer.Deserialize<T>(textPlan);
             return new ProtectedBrowserStorageResult<T>(true, re);
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            //
+            Console.WriteLine(AppLang.ProtectedSessionStorage_GetAsync__ERROR___0_, e.Message);
         }
 
         return new ProtectedBrowserStorageResult<T>(false, default);

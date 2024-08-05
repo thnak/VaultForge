@@ -17,7 +17,7 @@ public partial class ThemeModeSelector : ComponentBase, IDisposable
             CustomStateContainer.OnChanged += StateHasChanged;
             Theme = CustomStateContainer.MudTheme;
             if (MudThemeProvider != null) await MudThemeProvider.WatchSystemPreference(WatchSystemPreference);
-            var isDarkMode = await JsRuntime.GetLocalStorage<string?>(nameof(CustomStateContainer.IsDarkMode));
+            var isDarkMode = await JsRuntime.GetLocalStorage(nameof(CustomStateContainer.IsDarkMode));
             if (isDarkMode != null)
             {
                 IsDarkMode = bool.Parse(isDarkMode);
