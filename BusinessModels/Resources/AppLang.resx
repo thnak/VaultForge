@@ -298,6 +298,67 @@
     <value>Bạn đã bị cấm đăng nhập, vui lòng thử lại lúc X0</value>
   </data>
   <data name="This resource requires X0 years old" xml:space="preserve">
-    <value>Tài nguyên này yêu cầu X0 tuổi</value>
+    <value>Tài nguyên này yêu cầu {0} tuổi</value>
+  </data>
+  <data name="Root folder could not be found" xml:space="preserve">
+    <value>Thư mục gốc không được tìm thấy</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Chú ý</value>
+  </data>
+  <data name="Copied" xml:space="preserve">
+    <value>Đã sao chép</value>
+  </data>
+  <data name="Routes_PageShow_The_page_has_been_displayed" xml:space="preserve">
+    <value>Trang đã được hiển thị</value>
+  </data>
+  <data name="Routes_PageHide_The_page_has_been_hidden" xml:space="preserve">
+    <value>Trang đã bị ẩn</value>
+  </data>
+  <data name="Routes_Offline_Offline" xml:space="preserve">
+    <value>Ngoại tuyến</value>
+  </data>
+  <data name="Routes_Online_Online" xml:space="preserve">
+    <value>Trực tuyến</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>Mới</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>Tập tin</value>
+  </data>
+  <data name="Folder" xml:space="preserve">
+    <value>Thư mục</value>
+  </data>
+  <data name="New folder" xml:space="preserve">
+    <value>Thư mực mới</value>
+  </data>
+  <data name="Current folder could not have found" xml:space="preserve">
+    <value>Không tìm thấy thư mục hiện tại</value>
+  </data>
+  <data name="Target folder could not have found" xml:space="preserve">
+    <value>Thư mục đích không được tìm thấy</value>
+  </data>
+  <data name="Folder moved successfully" xml:space="preserve">
+    <value>Di chuyển thư mục thành công</value>
+  </data>
+  <data name="File moved successfully" xml:space="preserve">
+    <value>Di chuyển tập tin thành công</value>
+  </data>
+  <data name="Exception" xml:space="preserve">
+    <value>Ngoại lệ</value>
+  </data>
+  <data name="Page_ContextMenuClick_" xml:space="preserve">
+    <value>ClientX: {0} 
+ClientY: {1}</value>
+  </data>
+  <data name="Folder name contains invalid character: x" xml:space="preserve">
+    <value>Tên thư mục chứa ký tự không hợp lệ: {0}</value>
+  </data>
+  <data name="File name contains invalid character: x" xml:space="preserve">
+    <value>Tên tập tin mục chứa ký tự không hợp lệ: {0}</value>
+  </data>
+  <data name="User information is required" xml:space="preserve">
+    <value>Thông tin người dùng là bắt buộc</value>
   </data>
 </root>

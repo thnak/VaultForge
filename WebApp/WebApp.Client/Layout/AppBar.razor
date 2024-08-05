@@ -9,21 +9,18 @@
     <MudIconButton Color="Color.Inherit"
                    Icon="@Icons.Material.Filled.Menu"
                    OnClick="@HandleDrawerOpen" />
-
+    
+    <SectionOutlet SectionId="BreadCrumb"/>
+    
     <MudSpacer />
 
 
     <MudStack AlignItems="AlignItems.Center" Row >
         <SectionOutlet SectionId="@TopBarSection1" />
         <SectionOutlet SectionId="@TopBarSection2" />
-
-        <CultureSelector />
-
-        <MudIconButton Class="blazor-SmAndDown-hidden" Color="Color.Inherit"
-                       Icon="@(IsDarkMode.HasValue ? IsDarkMode.Value ? Icons.Material.Filled.DarkMode : Icons.Material.Filled.LightMode : Icons.Material.Filled.AutoMode)"
-                       OnClick="@ThemeModeChanged" >
-            @(IsDarkMode.HasValue ? IsDarkMode.Value ? AppLang.Dark_mode : AppLang.Light_mode : AppLang.System_preference)
-        </MudIconButton>
+        <SectionOutlet SectionId="@TopBarSection3" />
+        
+        
 
         <MudMenu ActivationEvent="@MouseEvent.LeftClick" AnchorOrigin="Origin.BottomCenter"
                  TransformOrigin="Origin.TopRight" >

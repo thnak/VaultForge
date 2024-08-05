@@ -5,7 +5,8 @@ namespace Business.Business.Interfaces.FileSystem;
 
 public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInfoModel>
 {
-    public FolderInfoModel? Get(string username, string relativePath, bool hashed = true);
+    public FolderInfoModel? Get(string username, string relativePath);
+    public List<FolderInfoModel> GetFolderBloodLine(string username, string folderId);
     public FolderInfoModel? GetRoot(string username);
 
     /// <summary>
@@ -17,7 +18,10 @@ public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInf
     public (bool, string) CreateFile(FolderInfoModel folder, FileInfoModel file);
 
     public (bool, string) CreateFile(string userName, FileInfoModel file);
+    public Task<(bool, string)> CreateFolder(string userName, string targetFolderId, string folderName);
 
+    public Task<(bool, string)> CreateFolder(RequestNewFolderModel request);
+    
     public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default);
     public Task<long> GetFolderByteSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default);
 

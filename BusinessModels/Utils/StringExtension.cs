@@ -10,7 +10,7 @@ public static class StringExtension
         var index = 0;
         foreach (var text in text2Replace)
         {
-            self = self.Replace($"X{index}", text);
+            self = self.Replace($"{{{index}}}", text);
             index++;
         }
 
@@ -115,5 +115,35 @@ public static class StringExtension
         }
 
         return stringBuilder.ToString();
+    }
+
+    public static bool ValidateSystemPathName(this string self)
+    {
+        char[] invalidChars = Path.GetInvalidPathChars();
+        foreach (char c in self)
+        {
+            if (Array.Exists(invalidChars, invalidChar => invalidChar == c))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static bool ValidateSystemPathName(this string self, out char? keyword)
+    {
+        char[] invalidChars = Path.GetInvalidPathChars();
+        foreach (char c in self)
+        {
+            if (Array.Exists(invalidChars, invalidChar => invalidChar == c))
+            {
+                keyword = c;
+                return false;
+            }
+        }
+
+        keyword = default;
+        return true;
     }
 }

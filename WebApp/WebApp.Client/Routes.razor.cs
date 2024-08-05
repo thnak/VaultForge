@@ -1,4 +1,5 @@
-﻿using BusinessModels.System;
+﻿using BusinessModels.Resources;
+using BusinessModels.System;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -21,6 +22,7 @@ public partial class Routes : ComponentBase, IDisposable
     {
         if (firstRender)
         {
+            
             await JsRuntime.InvokeVoidAsync("CloseProgressBar");
             await JsRuntime.InvokeVoidAsync("InitAppEventListener");
 
@@ -48,22 +50,22 @@ public partial class Routes : ComponentBase, IDisposable
 
     private void PageHide()
     {
-        Console.WriteLine("The page has been hidden");
+        Console.WriteLine(AppLang.Routes_PageHide_The_page_has_been_hidden);
     }
 
     private void PageShow()
     {
-        Console.WriteLine("The page has been displayed");
+        Console.WriteLine(AppLang.Routes_PageShow_The_page_has_been_displayed);
     }
 
     private void Offline()
     {
-        Console.WriteLine("Offline");
+        Console.WriteLine(AppLang.Routes_Offline_Offline);
     }
 
     private void Online()
     {
-        Console.WriteLine("Online");
+        Console.WriteLine(AppLang.Routes_Online_Online);
     }
 
     private string EncodeException(Exception e)

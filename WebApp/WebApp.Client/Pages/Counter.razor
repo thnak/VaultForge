@@ -31,7 +31,7 @@
     </div>
 </div>
 
-<MudButton OnClick="@TryToRedirect">Try redirect</MudButton>
+<MudButton OnClick="@TryToRedirect" >Try redirect</MudButton>
 
 @code {
 
@@ -146,11 +146,10 @@
         public int Progress { get; set; }
     }
 
-    List<ProgressRef> piProgress = new List<ProgressRef>();
-    List<IWorker> workers = new List<IWorker>();
+    List<ProgressRef> piProgress = new();
+    List<IWorker> workers = new();
 
-    List<IWorkerBackgroundService<MathsService>> backgroundServices =
-        new List<IWorkerBackgroundService<MathsService>>();
+    List<IWorkerBackgroundService<MathsService>> backgroundServices = new();
 
     string RunDisabled => Running ? "disabled" : null;
     bool Running = false;
@@ -172,11 +171,14 @@
                 var worker = await WorkerFactory.CreateAsync();
                 workers.Add(worker);
                 var service = await worker.CreateBackgroundServiceAsync<MathsService>();
+                
+                
+                
                 backgroundServices.Add(service);
                 var progressRef = new ProgressRef();
                 piProgress.Add(progressRef);
-                await service.RegisterEventListenerAsync(nameof(MathsService.Pi),
-                    (object s, PiProgress eventInfo) =>
+                await service.RegisterEventListenerAsync<PiProgress>(nameof(MathsService.Pi),
+                    (_, eventInfo) =>
                     {
                         progressRef.Progress = (int)Math.Floor((100 * ((decimal)eventInfo.Progress / sliceSize)));
                         StateHasChanged();
@@ -232,5 +234,5 @@
         var response = await ApiService.GetAsync<string>("/WeatherForecast/try-http-redirect");
         ToastService.ShowSuccess(response.Message);
     }
-    
+
 }

@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using BusinessModels.Converter;
+using BusinessModels.General.EnumModel;
 using MessagePack;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -10,7 +11,9 @@ namespace BusinessModels.System.FileSystem;
 public class FileInfoModel
 {
     [JsonConverter(typeof(ObjectIdConverter))]
-    [BsonId] [Key(0)] public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
+    [BsonId]
+    [Key(0)]
+    public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
 
     /// <summary>
     ///     Dùng cho resource có nhiều biến thể như độ phân giải, chất lượng
@@ -54,9 +57,11 @@ public class FileInfoModel
 
     [Key(11)] public string Thumbnail { get; set; } = string.Empty;
 
+    [Key(12)] public FileContentType Type { get; set; }
+
     #region Font-End Properties
 
-    [BsonIgnore] [Key(12)] public FileMetadataModel Metadata { get; set; } = new();
+    [BsonIgnore] [Key(13)] public FileMetadataModel Metadata { get; set; } = new();
 
     #endregion
 

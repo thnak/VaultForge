@@ -1,4 +1,5 @@
-﻿using MessagePack;
+﻿using BusinessModels.General.EnumModel;
+using MessagePack;
 
 namespace BusinessModels.System.FileSystem;
 
@@ -8,12 +9,4 @@ public class FileContents
     [Key(0)] public string Id { get; set; } = string.Empty;
 
     [Key(1)] public FileContentType Type { get; set; }
-}
-
-public enum FileContentType
-{
-    File,
-    HiddenFile,
-    DeletedFile,
-    ThumbnailFile
 }

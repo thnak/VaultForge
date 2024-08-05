@@ -1,9 +1,15 @@
-﻿<MudDialogProvider MaxWidth="MaxWidth.False"
-                   Position="DialogPosition.Center" />
+﻿<MudDialogProvider MaxWidth="MaxWidth.False" Position="DialogPosition.Center" />
 <MudSnackbarProvider />
 <ThemeProvider />
 <MudPopoverProvider />
-<BlazoredToasts />
+<BlazoredToasts Position="ToastPosition.BottomRight"
+                Timeout="10"
+                IconType="IconType.FontAwesome"
+                ErrorIcon="fa-solid fa-bug"
+                InfoIcon="fa-solid fa-info"
+                SuccessIcon="fa-regular fa-circle-check"
+                WarningIcon="fa-solid fa-triangle-exclamation" 
+                ShowProgressBar="true" PauseProgressOnHover="true"/>
 
 <MudBreakpointProvider>
     <Router AppAssembly="@typeof(Program).Assembly" >

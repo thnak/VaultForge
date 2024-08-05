@@ -1,0 +1,21 @@
+﻿<div class="d-flex flex-row gap-1" >
+    <div>
+        <MudTooltip Text="Theme" Placement="Placement.Right" Arrow Color="Color.Secondary">
+            <MudIconButton Class="blazor-SmAndDown-hidden" Color="Color.Inherit"
+                           Icon="@(IsDarkMode.HasValue ? IsDarkMode.Value ? Icons.Material.Filled.DarkMode : Icons.Material.Filled.LightMode : Icons.Material.Filled.AutoMode)"
+                           OnClick="@ThemeModeChanged" >
+                @(IsDarkMode.HasValue ? IsDarkMode.Value ? AppLang.Dark_mode : AppLang.Light_mode : AppLang.System_preference)
+            </MudIconButton>
+        </MudTooltip>
+    </div>
+    <div>
+        <MudSelect AnchorOrigin="Origin.BottomCenter"
+                   Class="culture-selector"
+                   Margin="Margin.Dense"
+                   T="MudTheme"
+                   @bind-Value="@Theme"
+                   Variant="Variant.Filled" >
+        </MudSelect>
+    </div>
+
+</div>

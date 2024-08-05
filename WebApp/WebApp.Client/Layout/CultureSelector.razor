@@ -1,15 +1,16 @@
 ﻿<MudSelect AnchorOrigin="Origin.BottomCenter"
            Class="culture-selector"
-           Margin="Margin"
+           Margin="Margin.Dense"
            T="CultureInfo"
            Value="@Culture"
            ValueChanged="Callback"
-           Variant="Variant.Outlined" >
+           Variant="Variant.Filled" >
 
     @foreach (var culture in AllowedCulture.SupportedCultures)
     {
         <MudSelectItem Class="center-flag" @key="culture.Name" Value="@culture" >
             <img alt="@culture.NativeName" class="mr-1" height="14" src="@Flags[culture.Name]" />
+            @culture.NativeName
         </MudSelectItem>
     }
 </MudSelect>
@@ -25,9 +26,7 @@
 </style>
 
 @code {
-
-    [Parameter] public Margin Margin { get; set; } = Margin.Dense;
-
+    
     private static readonly Dictionary<string, string> Flags = new()
     {
         {

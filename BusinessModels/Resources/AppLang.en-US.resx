@@ -275,10 +275,10 @@
     <value>Could not delete root folder</value>
   </data>
   <data name="Other operations" xml:space="preserve">
-    <value>.</value>
+    <value>Other operation</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>.</value>
+    <value>Cancel</value>
   </data>
   <data name="Submit" xml:space="preserve">
     <value>Submit</value>
@@ -296,9 +296,70 @@
     <value>This field is required</value>
   </data>
   <data name="You have been banned from logging in, please try again at X0" xml:space="preserve">
-    <value>.</value>
+    <value>You have been banned from logging in, please try again at X0</value>
   </data>
   <data name="This resource requires X0 years old" xml:space="preserve">
-    <value>.</value>
+    <value>This resource requires {0} years old</value>
+  </data>
+  <data name="Root folder could not be found" xml:space="preserve">
+    <value>Root folder could not be found</value>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="Copied" xml:space="preserve">
+    <value>Copied</value>
+  </data>
+  <data name="Routes_PageShow_The_page_has_been_displayed" xml:space="preserve">
+    <value>The page has been displayed</value>
+  </data>
+  <data name="Routes_PageHide_The_page_has_been_hidden" xml:space="preserve">
+    <value>The page has been hidden</value>
+  </data>
+  <data name="Routes_Offline_Offline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="Routes_Online_Online" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="Folder" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="New folder" xml:space="preserve">
+    <value>New folder</value>
+  </data>
+  <data name="Current folder could not have found" xml:space="preserve">
+    <value>Current folder could not have found</value>
+  </data>
+  <data name="Target folder could not have found" xml:space="preserve">
+    <value>Target folder could not have found</value>
+  </data>
+  <data name="Folder moved successfully" xml:space="preserve">
+    <value>Folder moved successfully</value>
+  </data>
+  <data name="File moved successfully" xml:space="preserve">
+    <value>File moved successfully</value>
+  </data>
+  <data name="Exception" xml:space="preserve">
+    <value>Exception</value>
+  </data>
+  <data name="Page_ContextMenuClick_" xml:space="preserve">
+    <value>ClientX: {0} 
+ClientY: {1}</value>
+  </data>
+  <data name="Folder name contains invalid character: x" xml:space="preserve">
+    <value>Folder name contains invalid character: {0}</value>
+  </data>
+  <data name="File name contains invalid character: x" xml:space="preserve">
+    <value>File name contains invalid character: {0}</value>
+  </data>
+  <data name="User information is required" xml:space="preserve">
+    <value>User information is required</value>
   </data>
 </root>

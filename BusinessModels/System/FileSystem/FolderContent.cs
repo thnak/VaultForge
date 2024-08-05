@@ -1,3 +1,4 @@
+using BusinessModels.General.EnumModel;
 using MessagePack;
 
 namespace BusinessModels.System.FileSystem;
@@ -10,12 +11,3 @@ public class FolderContent
     [Key(1)] public FolderContentType Type { get; set; }
 }
 
-public enum FolderContentType
-{
-    Folder,
-    HiddenFolder,
-    DeletedFolder,
-    File,
-    HiddenFile,
-    DeletedFile
-}

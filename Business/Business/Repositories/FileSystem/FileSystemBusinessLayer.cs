@@ -65,7 +65,7 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
 
     public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FileInfoModel> models, CancellationTokenSource? cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        return da.CreateAsync(models, cancellationTokenSource);
     }
 
     public (bool, string) Delete(string key)

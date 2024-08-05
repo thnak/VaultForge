@@ -1,12 +1,16 @@
-﻿using System.Net.Mime;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Net.Mime;
 using System.Text;
+using BusinessModels.General.EnumModel;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
+using BusinessModels.WebContent;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
+using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 using WebApp.Client.Components.ConfirmDialog;
+using WebApp.Client.Models;
 using WebApp.Client.Services.Http;
 using WebApp.Client.Utils;
 
@@ -14,14 +18,18 @@ namespace WebApp.Client.Pages.Drive.SharedDrive;
 
 public partial class Page(BaseHttpClientService baseClientService) : ComponentBase, IDisposable
 {
+    [Parameter] public string FolderId { get; set; } = string.Empty;
     private bool Open { get; set; }
     private bool Loading { get; set; }
-
+    private bool ShouldRen { get; set; } = true;
     private FolderInfoModel RootFolder { get; set; } = new();
 
     private MudDropContainer<DropItem>? DropContainer { get; set; }
 
-    private List<DropItem> Items { get; } = [];
+    private List<BreadcrumbItem> BreadcrumbItems { get; set; } = [];
+
+    private List<DropItem> FileItemList { get; } = [];
+    private List<DropItem> FolderItemList { get; set; } = [];
 
     public void Dispose()
     {
@@ -30,29 +38,44 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
     private void ItemUpdated(MudItemDropInfo<DropItem> dropItem)
     {
-        if (dropItem.Item != null) dropItem.Item.Identifier = dropItem.DropzoneIdentifier;
+        if (dropItem.Item != null)
+        {
+            dropItem.Item.Identifier = dropItem.DropzoneIdentifier;
+        }
     }
 
     #region Init
+
+    protected override bool ShouldRender()
+    {
+        return ShouldRen;
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await GetRootFolderAsync().ConfigureAwait(false);
+            _ = Task.Run(GetRootFolderAsync);
             EventListener.ContextMenuClickedWithParamAsync += ContextMenuClick;
         }
 
         await base.OnAfterRenderAsync(firstRender);
     }
 
+    private async Task Render()
+    {
+        ShouldRen = true;
+        await InvokeAsync(StateHasChanged);
+        ShouldRen = false;
+    }
+    
     #endregion
 
     #region Event
 
     private Task ContextMenuClick(int x, int y)
     {
-        Console.WriteLine($"ClientX: {x}\nClientY: {y}");
+        Console.WriteLine(AppLang.Page_ContextMenuClick_, x, y);
         return Task.CompletedTask;
     }
 
@@ -63,6 +86,40 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         Open = true;
     }
 
+    private async Task OpenAddNewFolder(MouseEventArgs obj)
+    {
+        var option = new DialogOptions()
+        {
+            FullWidth = true,
+            MaxWidth = MaxWidth.Small
+        };
+        var dialog = await DialogService.ShowAsync<AddNewFolderDialog>(AppLang.New_folder, option);
+        var dialogResult = await dialog.Result;
+        if (dialogResult is { Canceled: false, Data: string name })
+        {
+            RequestNewFolderModel model = new RequestNewFolderModel()
+            {
+                NewFolder = new FolderInfoModel()
+                {
+                    FolderName = name
+                },
+                RootId = RootFolder.Id.ToString(),
+                RootPassWord = RootFolder.Password
+            };
+            StringContent content = new StringContent(model.ToJson(), Encoding.Unicode, MimeTypeNames.Application.Json);
+            var response = await ApiService.PutAsync<string>("api/Files/create-folder", content);
+            if (response.IsSuccessStatusCode)
+            {
+                ToastService.ShowSuccess(response.Message);
+                _ = Task.Run(GetRootFolderAsync);
+            }
+            else
+            {
+                Console.WriteLine(response.Message);
+            }
+        }
+    }
+
     #region Models
 
     public class DropItem
@@ -70,13 +127,15 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         public string Name { get; init; } = string.Empty;
         public string Identifier { get; set; } = string.Empty;
         public string ContentType { get; set; } = string.Empty;
-        public Action Download { get; set; } = () => { };
-        public Action Rename { get; set; } = () => { };
-        public Action Share { get; set; } = () => { };
-        public Action GetLink { get; set; } = () => { };
-        public Action MoveTo { get; set; } = () => { };
-        public Action Delete { get; set; } = () => { };
-        public Action GetInformation { get; set; } = () => { };
+        public string ItemClassList { get; set; } = string.Empty;
+        public ButtonAction Download { get; set; } = new();
+        public ButtonAction Rename { get; set; } = new();
+        public ButtonAction Share { get; set; } = new();
+        public ButtonAction GetLink { get; set; } = new();
+        public ButtonAction MoveTo { get; set; } = new();
+        public ButtonAction Delete { get; set; } = new();
+        public ButtonAction GetInformation { get; set; } = new();
+        public ButtonAction DbLickEvent { get; set; } = new();
     }
 
     #endregion
@@ -86,44 +145,82 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     private async Task GetRootFolderAsync()
     {
         Loading = true;
-        await Task.Delay(1);
-        await InvokeAsync(StateHasChanged);
-        Items.Clear();
-        var responseMessage = await baseClientService.GetAsync<FolderInfoModel>("/api/Files/get-shared-folder");
+        await Render();
+        FileItemList.Clear();
+        FolderItemList.Clear();
+        var responseMessage = await baseClientService.GetAsync<FolderInfoModel>($"/api/Files/get-shared-folder?id={FolderId}");
         if (responseMessage.IsSuccessStatusCode)
         {
             var folder = responseMessage.Data;
             if (folder != null)
             {
                 RootFolder = folder;
+                
+
                 var fileCodes = RootFolder.Contents.Where(x => x is { Type: FolderContentType.File or FolderContentType.DeletedFile or FolderContentType.HiddenFile }).Select(x => x.Id).ToList();
                 var folderCodes = RootFolder.Contents.Where(x => x is { Type: FolderContentType.Folder or FolderContentType.DeletedFolder or FolderContentType.HiddenFolder }).Select(x => x.Id).ToList();
                 var folders = await GetFolders([..folderCodes]);
                 var files = await GetFiles([..fileCodes]);
 
                 foreach (var file in files)
-                    Items.Add(new DropItem
+                    FileItemList.Add(new DropItem
                     {
                         Identifier = "File",
                         ContentType = file.ContentType,
                         Name = file.FileName,
-                        Rename = () => RenameFile(file.Id.ToString(), file.FileName).ConfigureAwait(false),
-                        Download = ()=> Download(file.Id.ToString()).ConfigureAwait(false)
+                        Rename = new ButtonAction()
+                        {
+                            Action = () => RenameFile(file.Id.ToString(), file.FileName).ConfigureAwait(false)
+                        },
+                        Download = new()
+                        {
+                            Action = () => Download(file.Id.ToString()).ConfigureAwait(false)
+                        },
+                        Delete = new()
+                        {
+                            Action = () => DeleteFile(file).ConfigureAwait(false)
+                        },
+                        GetLink = new()
+                        {
+                            Action = () => Copy2ClipBoard($"{ApiService.GetBaseUrl()}api/Files/download-file?id={file.Id}")
+                        },
+                        ItemClassList = "align-center justify-center d-flex flex-row gap-2 mud-elevation-1 mud-paper mud-paper-outlined pa-2 rounded-lg".ItemOpacityClass(file.Type)
                     });
 
-                foreach (var file in folders)
-                    Items.Add(new DropItem
+                foreach (var f in folders)
+                    FolderItemList.Add(new DropItem
                     {
                         Identifier = "Folder",
-                        Name = file.FolderName
+                        Name = f.FolderName,
+                        ItemClassList = "align-center justify-center d-flex flex-row gap-2 mud-elevation-1 mud-paper mud-paper-outlined pa-2 rounded-lg".ItemOpacityClass(f.Type),
+                        DbLickEvent = new ButtonAction()
+                        {
+                            Action = () => OpenFolder(f.Id.ToString())
+                        }
                     });
             }
         }
 
         Loading = false;
         DropContainer?.Refresh();
-        await Task.Delay(1);
-        await InvokeAsync(StateHasChanged);
+        await Render();
+        _ = Task.Run(InitBreadcrumb);
+    }
+
+    private async Task InitBreadcrumb()
+    {
+        BreadcrumbItems = [];
+        var response = await ApiService.GetAsync<List<FolderInfoModel>>($"/api/files/get-folder-blood-line?id={RootFolder.Id.ToString()}");
+        if (response.IsSuccessStatusCode)
+        {
+            if (response.Data != null)
+                foreach (var folderInfoModel in response.Data)
+                {
+                    BreadcrumbItems.Add(new BreadcrumbItem(text: folderInfoModel.FolderName, href: PageRoutes.Drive.Shared.Src + $"/{folderInfoModel.Id.ToString()}"));
+                }
+        }
+
+        await Render();
     }
 
     private async Task<List<FileInfoModel>> GetFiles(List<string> codes)
@@ -160,7 +257,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     private async Task RenameFile(string id, string oldName)
     {
         Loading = true;
-        await InvokeAsync(StateHasChanged);
+        await Render();
         var option = new DialogOptions()
         {
             FullWidth = true,
@@ -175,20 +272,28 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         var dialogResult = await dialog.Result;
         if (dialogResult is { Canceled: false, Data: string newName })
         {
-            MultipartFormDataContent formDataContent = new MultipartFormDataContent();
-            formDataContent.Add(new StringContent(newName, Encoding.UTF8, MediaTypeNames.Application.Json), "newName");
-            formDataContent.Add(new StringContent(id, Encoding.UTF8, MediaTypeNames.Application.Json), "objectId");
-
-            var response = await ApiService.PostAsync<string>("/api/files/re-name-file", formDataContent);
-            if (response.IsSuccessStatusCode)
+            if (newName.ValidateSystemPathName(out char? keyword))
             {
-                ToastService.ShowSuccess(response.Message);
-                await GetRootFolderAsync().ConfigureAwait(false);
+                MultipartFormDataContent formDataContent = new MultipartFormDataContent();
+                formDataContent.Add(new StringContent(newName, Encoding.UTF8, MediaTypeNames.Application.Json), "newName");
+                formDataContent.Add(new StringContent(id, Encoding.UTF8, MediaTypeNames.Application.Json), "objectId");
+
+                var response = await ApiService.PostAsync<string>("/api/files/re-name-file", formDataContent);
+                if (response.IsSuccessStatusCode)
+                {
+                    ToastService.ShowSuccess(response.Message);
+                    _ = Task.Run(GetRootFolderAsync);
+                }
+                else
+                {
+                    ToastService.ShowError(response.Message);
+                }
             }
             else
             {
-                ToastService.ShowError(response.Message);
+                ToastService.ShowError(string.Format(AppLang.File_name_contains_invalid_character__x, keyword));
             }
+            
         }
 
         Loading = false;
@@ -200,11 +305,50 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         await JsRuntime.Download($"{ApiService.GetBaseUrl()}api/files/download-file?id={id}");
     }
 
-    private async Task DeleteFile(string id)
+    private void Copy2ClipBoard([StringSyntax(StringSyntaxAttribute.Uri)] string link)
     {
-        
+        JsRuntime.CopyToClipBoard(link);
+        ToastService.ShowSuccess(AppLang.Copied);
     }
-    
+
+    private void OpenFolder(string id)
+    {
+        Navigation.NavigateTo(PageRoutes.Drive.Shared.Src + $"/{id}");
+    }
+
+    private async Task DeleteFile(FileInfoModel file)
+    {
+        var data = new DialogConfirmDataModel()
+        {
+            Fragment = builder =>
+            {
+                builder.OpenElement(0, "span");
+                builder.SetKey(file);
+                builder.AddContent(1, "Chuyển vào thùng rác?");
+                builder.CloseElement();
+            },
+            Title = AppLang.Warning,
+            Icon = "fa-solid fa-triangle-exclamation",
+            Color = Color.Error
+        };
+        var option = new DialogOptions()
+        {
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true
+        };
+        var parameter = new DialogParameters<ConfirmDialog>()
+        {
+            { x => x.DataModel, data }
+        };
+
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>("", parameter, option);
+        var dialogResult = await dialog.Result;
+        if (dialogResult is { Canceled: false })
+        {
+            ToastService.ShowSuccess(AppLang.Delete_successfully);
+        }
+    }
+
     private async Task MoveFile(string id)
     {
     }

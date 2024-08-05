@@ -18,6 +18,11 @@ public static class JsRuntimeExtension
         await jsRuntime.InvokeVoidAsync("setCookie", cookieName, cookieValue, days);
     }
 
+    public static ValueTask CopyToClipBoard(this IJSRuntime jsRuntime, string message)
+    {
+        return jsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", message);
+    }
+    
     #region Local Storage
 
     public static async Task SetLocalStorage(this IJSRuntime jsRuntime, string key, string value)

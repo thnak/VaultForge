@@ -4,15 +4,19 @@ using Business.Attribute;
 using Business.Business.Interfaces.FileSystem;
 using Business.Utils.Helper;
 using BusinessModels.General;
+using BusinessModels.General.EnumModel;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
+using BusinessModels.WebContent;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
+using MongoDB.Driver.Linq;
+using Protector.Utils;
 
 namespace ResApi.Controllers.Files;
 
@@ -20,11 +24,6 @@ namespace ResApi.Controllers.Files;
 [ApiController]
 public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessLayer fileServe, IFolderSystemBusinessLayer folderServe) : ControllerBase
 {
-    private const long MaxFileSize = 10L * 1024L * 1024L * 1024L; // 10GB, adjust to your need
-    private readonly string[] _permittedExtensions = [];
-    private readonly string _targetFilePath = options.Value.FileFolder;
-
-
     [HttpGet("get-file")]
     [IgnoreAntiforgeryToken]
     public IActionResult GetFile(string id)
@@ -128,13 +127,25 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     [HttpGet("get-shared-folder")]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
-    [OutputCache(Duration=3600, NoStore=true)]
-    public IActionResult GetSharedFolder()
+    [OutputCache(Duration = 3600, NoStore = true)]
+    public IActionResult GetSharedFolder(string? id)
     {
-        var folder = folderServe.GetRoot("");
-        if (folder == null) return BadRequest("Folder not found");
+        var folder = string.IsNullOrEmpty(id) ? folderServe.GetRoot("") : folderServe.Get(id);
+        if (folder == null) return BadRequest(AppLang.Folder_could_not_be_found);
+        folder.Password = string.Empty;
         return Content(folder.ToJson(), MediaTypeNames.Application.Json);
     }
+
+    [HttpGet("get-folder-blood-line")]
+    [AllowAnonymous]
+    [IgnoreAntiforgeryToken]
+    public IActionResult GetFolderBloodLine(string id)
+    {
+        var userName = User.Identity?.Name ?? string.Empty;
+        var folders = folderServe.GetFolderBloodLine(userName, id);
+        return Content(folders.ToJson(), MimeTypeNames.Application.Json);
+    }
+
 
     [HttpPost("re-name-file")]
     [IgnoreAntiforgeryToken]
@@ -149,7 +160,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         return status.Item1 ? Ok(status.Item2) : BadRequest(status.Item2);
     }
 
-    [HttpPost("delete-file")]
+    [HttpDelete("delete-file")]
     public async Task<IActionResult> DeleteFile([FromForm] string fileId, [FromForm] string folderId)
     {
         var file = fileServe.Get(fileId);
@@ -168,6 +179,17 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         return BadRequest(fileDeleteStatus.Item2);
     }
 
+    [HttpDelete("safe-delete-file")]
+    public async Task<IActionResult> SafeDeleteFile([FromForm] string code)
+    {
+        var file = fileServe.Get(code);
+        if (file == default) return NotFound(AppLang.File_not_found_);
+
+        file.Type = FileContentType.DeletedFile;
+        var result = await fileServe.UpdateAsync(file);
+        return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
+    }
+
 
     [HttpPost("re-name-folder")]
     [IgnoreAntiforgeryToken]
@@ -183,34 +205,104 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     }
 
 
-    [HttpPost("create-shared-folder")]
+    [HttpPut("create-folder")]
     [IgnoreAntiforgeryToken]
     public async Task<IActionResult> CreateSharedFolder([FromBody] RequestNewFolderModel request)
     {
-        var folderRoot = folderServe.Get(request.RootId);
-        if (folderRoot == null) return NotFound("Can not be found");
-        folderServe.Get("", "/");
-
-        var res = await folderServe.CreateAsync(request.NewFolder);
-        if (res.Item1)
-        {
-            folderRoot.Contents.Add(new FolderContent
-            {
-                Id = request.NewFolder.Id.ToString(),
-                Type = FolderContentType.Folder
-            });
-            res = await folderServe.UpdateAsync(folderRoot);
-            if (res.Item1)
-                return Ok();
-            ModelState.AddModelError("Folder", res.Item2);
-        }
-        else
-        {
-            ModelState.AddModelError("Folder", res.Item2);
-        }
-
-        return BadRequest(ModelState);
+        var result = await folderServe.CreateFolder(request);
+        return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
     }
+
+
+    [HttpPut("move-file-to-folder")]
+    [IgnoreAntiforgeryToken]
+    public async Task<IActionResult> MoveFile2([FromForm] List<string> fileCodes, [FromForm] string currentFolderCode, [FromForm] string targetFolderCode, [FromForm] string? password)
+    {
+        var currentFolder = folderServe.Get(currentFolderCode);
+        if (currentFolder == null) return NotFound(AppLang.Current_folder_could_not_have_found);
+
+        var targetFolder = folderServe.Get(targetFolderCode);
+        if (targetFolder == null) return NotFound(AppLang.Target_folder_could_not_have_found);
+
+
+        if (!string.IsNullOrEmpty(currentFolder.Password))
+        {
+            if (!string.IsNullOrEmpty(password))
+            {
+                if (currentFolder.Password != password.ComputeSha256Hash())
+                    return BadRequest(AppLang.Passwords_do_not_match_);
+            }
+            else
+            {
+                return BadRequest(AppLang.Incorrect_password);
+            }
+        }
+
+        var files = fileCodes.Select(fileServe.Get).Where(x => x != default).ToList();
+
+        Dictionary<string, FolderContent> contentsDict = new();
+        foreach (var file in currentFolder.Contents)
+        {
+            contentsDict.TryAdd(file.Id, file);
+        }
+        
+        
+        foreach (var file in files)
+        {
+            if (file == default)
+            {
+                ModelState.AddModelError("File", AppLang.File_not_found_);
+                continue;
+            }
+
+            var fileName = file.RelativePath.Split("/").Last();
+            file.RelativePath = targetFolder.RelativePath + '/' + fileName;
+
+            var fileId = file.Id.ToString();
+            contentsDict.Remove(fileId);
+            targetFolder.Contents.Add(new FolderContent()
+            {
+                Id = file.Id.ToString(),
+                Type = FolderContentType.File
+            });
+        }
+
+        currentFolder.Contents = contentsDict.Values.ToList();
+        
+        await folderServe.UpdateAsync(targetFolder);
+        await folderServe.UpdateAsync(currentFolder);
+        await foreach (var x in fileServe.UpdateAsync(files!))
+        {
+            if (!x.Item1)
+                ModelState.AddModelError("File", x.Item2);
+        }
+        
+
+        return Ok(ModelState.Any() ? ModelState : AppLang.File_moved_successfully);
+    }
+
+    [HttpPut("move-folder-to-folder")]
+    [IgnoreAntiforgeryToken]
+    public async Task<IActionResult> MoveFolder2Folder([FromForm] string folderCode, [FromForm] string targetFolderCode)
+    {
+        var targetFolder = folderServe.Get(targetFolderCode);
+        if (targetFolder == null) return NotFound(AppLang.Target_folder_could_not_have_found);
+
+        var folder = folderServe.Get(folderCode);
+        if (folder == default) return NotFound(AppLang.Folder_could_not_be_found);
+
+        folder.RelativePath = targetFolder.RelativePath + '/' + folder.FolderName;
+        targetFolder.Contents.Add(new FolderContent()
+        {
+            Id = folderCode,
+            Type = FolderContentType.Folder
+        });
+
+        await folderServe.UpdateAsync(targetFolder);
+        await folderServe.UpdateAsync(folder);
+        return Ok(AppLang.Folder_moved_successfully);
+    }
+
 
     [HttpPost("upload-physical")]
     [DisableFormValueModelBinding]
@@ -218,11 +310,13 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     [IgnoreAntiforgeryToken]
     public async Task<IActionResult> UploadPhysical()
     {
+        var folderKeyString = AppLang.Folder;
+        var fileKeyString = AppLang.File;
         try
         {
             if (string.IsNullOrEmpty(Request.ContentType) || !MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
             {
-                ModelState.AddModelError("File", "The request couldn't be processed (Error 1).");
+                ModelState.AddModelError(fileKeyString, "The request couldn't be processed (Error 1).");
                 return BadRequest(ModelState);
             }
 
@@ -241,7 +335,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
             var folder = folderServe.Get(user, folderCodes);
             if (folder == null)
             {
-                ModelState.AddModelError("Folder", "Folder not found");
+                ModelState.AddModelError(folderKeyString, AppLang.Folder_could_not_be_found);
                 return BadRequest(ModelState);
             }
 
@@ -255,7 +349,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
                 {
                     if (!contentDisposition.HasFileContentDisposition())
                     {
-                        ModelState.AddModelError("File", "The request couldn't be processed (Error 2).");
+                        ModelState.AddModelError(fileKeyString, "The request couldn't be processed (Error 2).");
                     }
                     else
                     {
@@ -278,7 +372,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         }
         catch (Exception e)
         {
-            ModelState.AddModelError("Exception", e.Message);
+            ModelState.AddModelError(AppLang.Exception, e.Message);
             return StatusCode(500, ModelState);
         }
     }

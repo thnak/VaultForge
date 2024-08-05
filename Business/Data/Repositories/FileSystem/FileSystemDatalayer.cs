@@ -175,9 +175,15 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
         }
     }
 
-    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FileInfoModel> models, CancellationTokenSource? cancellationTokenSource = default)
+    public async IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FileInfoModel> models, CancellationTokenSource? cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        foreach (var file in models.TakeWhile(_ => cancellationTokenSource is not { IsCancellationRequested: true }))
+        {
+            var result = await UpdateAsync(file);
+            yield return (true, result.Item2, file.Id.ToString());
+        }
+
+        yield return (true, AppLang.Success, string.Empty);
     }
 
     public (bool, string) Delete(string key)

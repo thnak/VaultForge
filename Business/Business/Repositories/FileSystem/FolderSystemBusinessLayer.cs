@@ -3,9 +3,11 @@ using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.User;
 using Business.Data.Interfaces.FileSystem;
 using BusinessModels.General;
+using BusinessModels.General.EnumModel;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
+using BusinessModels.Validator.Folder;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -95,11 +97,45 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return res;
     }
 
-    public FolderInfoModel? Get(string username, string relativePath, bool hashed = true)
+    public FolderInfoModel? Get(string username, string relativePath)
     {
-        username = hashed ? username : username.ComputeSha256Hash();
         var user = GetUser(username);
         return folderSystemService.Get(user?.UserName ?? string.Empty, relativePath);
+    }
+
+    public List<FolderInfoModel> GetFolderBloodLine(string username, string folderId)
+    {
+        var user = GetUser(username);
+        if (user == null) return [];
+        List<string> allPath = [];
+
+        var rootFolder = Get(folderId);
+        if (rootFolder == null)
+            return [];
+
+        var allFolderName = rootFolder.RelativePath.Split('/').Where(x => !string.IsNullOrEmpty(x)).ToArray();
+        for (int i = 0; i < allFolderName.Length; i++)
+        {
+            var path = $"/{allFolderName[i]}";
+            if (i > 0)
+            {
+                allPath.Add(allPath[i - 1] + path);
+            }
+            else
+            {
+                allPath.Add(path);
+            }
+        }
+
+        List<FolderInfoModel> folderInfoModels = [];
+        foreach (var path in allPath)
+        {
+            var folder = Get(user.UserName, path);
+            if (folder != null)
+                folderInfoModels.Add(folder);
+        }
+
+        return folderInfoModels;
     }
 
     public FolderInfoModel? GetRoot(string username)
@@ -112,7 +148,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         {
             folder = new FolderInfoModel
             {
-                RelativePath = "/",
+                RelativePath = "/root",
                 FolderName = "Home",
                 ModifiedDate = DateTime.UtcNow,
                 Username = user.UserName
@@ -149,8 +185,8 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
                 Type = FolderContentType.File
             });
             UpdateAsync(folder);
-            var _folder = Get(folder.Id.ToString())!;
-            folder.Contents = _folder.Contents;
+            var folderInfoModel = Get(folder.Id.ToString())!;
+            folder.Contents = folderInfoModel.Contents;
         }
 
         return res;
@@ -161,6 +197,83 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         var user = userService.Get(userName) ?? userService.GetAnonymous();
         var folder = GetRoot(user.UserName)!;
         return CreateFile(folder, file);
+    }
+
+    public async Task<(bool, string)> CreateFolder(string userName, string targetFolderId, string folderName)
+    {
+        var folder = Get(targetFolderId);
+        if (folder == null) return (false, AppLang.Folder_could_not_be_found);
+        var user = GetUser(userName);
+        if (user == null) return (false, AppLang.User_is_not_exists);
+
+        FolderInfoModel newFolder = new FolderInfoModel()
+        {
+            FolderName = folderName,
+            RelativePath = folder.RelativePath + $"/{folderName}",
+            Username = user.UserName
+        };
+
+        if (Get(user.UserName, newFolder.RelativePath) != null)
+            return (false, AppLang.Folder_already_exists);
+
+        var createNewFolderResult = await CreateAsync(newFolder);
+        if (createNewFolderResult is { Item1: true })
+        {
+            folder.Contents.Add(new FolderContent()
+            {
+                Type = FolderContentType.Folder,
+                Id = newFolder.Id.ToString()
+            });
+            await UpdateAsync(folder);
+        }
+
+        return createNewFolderResult;
+    }
+
+    public async Task<(bool, string)> CreateFolder(RequestNewFolderModel request)
+    {
+        FolderNameFluentValidator validator = new();
+        var validationResult = await validator.ValidateAsync(request.NewFolder.FolderName);
+        if (!validationResult.IsValid)
+        {
+            foreach (var error in validationResult.Errors)
+            {
+                return (false, error?.ErrorMessage ?? string.Empty);
+            }
+        }
+
+        var folderRoot = Get(request.RootId);
+        if (folderRoot == null) return (false, AppLang.Root_folder_could_not_be_found);
+
+        if (!string.IsNullOrEmpty(folderRoot.Password))
+            if (folderRoot.Password != request.RootPassWord.ComputeSha256Hash())
+                return (false, AppLang.Passwords_do_not_match_);
+
+        if (string.IsNullOrEmpty(request.NewFolder.RelativePath))
+        {
+            request.NewFolder.RelativePath = folderRoot.RelativePath + '/' + request.NewFolder.FolderName;
+        }
+
+        if (string.IsNullOrEmpty(request.NewFolder.Username))
+            request.NewFolder.Username = folderRoot.Username;
+
+        if (Get(folderRoot.Username, request.NewFolder.RelativePath) != null)
+            return (false, AppLang.Folder_already_exists);
+
+        var res = await CreateAsync(request.NewFolder);
+        if (res.Item1)
+        {
+            folderRoot.Contents.Add(new FolderContent
+            {
+                Id = request.NewFolder.Id.ToString(),
+                Type = FolderContentType.Folder,
+            });
+            res = await UpdateAsync(folderRoot);
+            if (res.Item1)
+                return (true, AppLang.Create_successfully);
+        }
+
+        return (false, AppLang.Create_failed);
     }
 
     public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)

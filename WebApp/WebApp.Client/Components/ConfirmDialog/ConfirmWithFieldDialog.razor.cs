@@ -10,7 +10,7 @@ public partial class ConfirmWithFieldDialog : ComponentBase, IDisposable
     [Parameter] public string OldValueField { get; set; } = string.Empty;
 
     private string NewValueField { get; set; } = string.Empty;
-    
+
     private MudForm? Form { get; set; }
 
     protected override void OnParametersSet()
@@ -31,8 +31,6 @@ public partial class ConfirmWithFieldDialog : ComponentBase, IDisposable
         }
     }
 
-   
-    
     private void Cancel()
     {
         DialogInstance.Cancel();

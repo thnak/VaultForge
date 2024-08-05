@@ -1,8 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
 <MudLayout Style="@("background-color:var(--mud-palette-background-grey)")" >
-    <AppBar HandleDrawerOpen="@DrawerToggle"
-            MudThemeProvider="@MudThemeProvider" />
+    <AppBar HandleDrawerOpen="@DrawerToggle"/>
     <MudDrawer Anchor="Anchor.Start"
                @bind-Open="@_drawerOpen"
                Breakpoint="Breakpoint.Xl"
@@ -14,6 +13,9 @@
         <MudNavMenu>
             <NavMenu />
         </MudNavMenu>
+        <MudSpacer/>
+        <ThemeModeSelector MudThemeProvider="@MudThemeProvider"/>
+        <CultureSelector />
     </MudDrawer>
     <MudMainContent>
         @Body
@@ -22,3 +24,9 @@
         <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.ArrowUpward" ></MudFab>
     </MudScrollToTop>
 </MudLayout>
+
+<style>
+    .mud-drawer-content > .mud-select{
+        flex-grow: unset !important;
+    }
+</style>
