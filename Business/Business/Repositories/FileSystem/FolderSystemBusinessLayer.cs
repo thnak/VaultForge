@@ -278,7 +278,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
 
     public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        return fileSystemService.GetFileSize(predicate, cancellationTokenSource);
     }
 
     public async Task<long> GetFolderByteSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)

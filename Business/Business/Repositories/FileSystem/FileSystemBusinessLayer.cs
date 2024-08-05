@@ -75,6 +75,6 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
 
     public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        return da.GetFileSize(predicate, cancellationTokenSource);
     }
 }
