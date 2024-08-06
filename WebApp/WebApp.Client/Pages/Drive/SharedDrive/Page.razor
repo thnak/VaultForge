@@ -29,8 +29,6 @@
     </MudMenu>
 </SectionContent>
 
-<MudButton OnClick="GetRootFolderAsync" >Load</MudButton>
-
 <MudDropContainer Class="d-flex flex-column flex-grow-1 gap-3" ItemDropped="ItemUpdated" Items="FileItemList" ItemsSelector="@((item, dropzone) => item.Identifier == dropzone)" @ref="DropContainer" T="DropItem" >
     <ChildContent>
         <MudListSubheader Class="mt-4 pb-2" >Folders</MudListSubheader>
