@@ -15,7 +15,6 @@ using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
-using MongoDB.Driver.Linq;
 using Protector.Utils;
 
 namespace ResApi.Controllers.Files;
@@ -241,12 +240,9 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         var files = fileCodes.Select(fileServe.Get).Where(x => x != default).ToList();
 
         Dictionary<string, FolderContent> contentsDict = new();
-        foreach (var file in currentFolder.Contents)
-        {
-            contentsDict.TryAdd(file.Id, file);
-        }
-        
-        
+        foreach (var file in currentFolder.Contents) contentsDict.TryAdd(file.Id, file);
+
+
         foreach (var file in files)
         {
             if (file == default)
@@ -260,7 +256,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
 
             var fileId = file.Id.ToString();
             contentsDict.Remove(fileId);
-            targetFolder.Contents.Add(new FolderContent()
+            targetFolder.Contents.Add(new FolderContent
             {
                 Id = file.Id.ToString(),
                 Type = FolderContentType.File
@@ -268,15 +264,13 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         }
 
         currentFolder.Contents = contentsDict.Values.ToList();
-        
+
         await folderServe.UpdateAsync(targetFolder);
         await folderServe.UpdateAsync(currentFolder);
         await foreach (var x in fileServe.UpdateAsync(files!))
-        {
             if (!x.Item1)
                 ModelState.AddModelError("File", x.Item2);
-        }
-        
+
 
         return Ok(ModelState.Any() ? ModelState : AppLang.File_moved_successfully);
     }
@@ -292,7 +286,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         if (folder == default) return NotFound(AppLang.Folder_could_not_be_found);
 
         folder.RelativePath = targetFolder.RelativePath + '/' + folder.FolderName;
-        targetFolder.Contents.Add(new FolderContent()
+        targetFolder.Contents.Add(new FolderContent
         {
             Id = folderCode,
             Type = FolderContentType.Folder

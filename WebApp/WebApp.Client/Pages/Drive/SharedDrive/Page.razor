@@ -44,7 +44,7 @@
                                 @x.Name
                             </span>
                         </div>
-                        
+
                         <div class="icon-container-tag" >
                             <MudTooltip Arrow Color="@Color.Secondary" Placement="Placement.Top" Text="@AppLang.Other_operations" >
                                 <MudMenu AriaLabel="@AppLang.Other_operations" Icon="fa-ellipsis-vertical fa-solid" >
@@ -67,7 +67,7 @@
         <MudDropZone Class="d-flex flex-grow-1 flex-wrap gap-2 pa-2 rounded-lg" Identifier="File" T="DropItem" />
     </ChildContent>
     <ItemRenderer>
-        <div class="@context.ItemClassList" @ondblclick="context.DbLickEvent.Action" @key="context">
+        <div class="@context.ItemClassList" @key="context" @ondblclick="context.DbLickEvent.Action" >
             <div class="icon-container-tag" >
                 <MudText Typo="Typo.h6" >
                     <i class="@(context.ContentType.GetIcon())" ></i>

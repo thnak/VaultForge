@@ -121,27 +121,21 @@ public static class StringExtension
 
     public static bool ValidateSystemPathName(this string self)
     {
-        foreach (char c in self)
-        {
+        foreach (var c in self)
             if (Array.Exists(InvalidCharPath, invalidChar => invalidChar == c))
-            {
                 return false;
-            }
-        }
 
         return true;
     }
 
     public static bool ValidateSystemPathName(this string self, out char? keyword)
     {
-        foreach (char c in self)
-        {
+        foreach (var c in self)
             if (Array.Exists(InvalidCharPath, invalidChar => invalidChar == c))
             {
                 keyword = c;
                 return false;
             }
-        }
 
         keyword = default;
         return true;

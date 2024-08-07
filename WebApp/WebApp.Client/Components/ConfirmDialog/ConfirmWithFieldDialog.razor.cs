@@ -13,6 +13,11 @@ public partial class ConfirmWithFieldDialog : ComponentBase, IDisposable
 
     private MudForm? Form { get; set; }
 
+    public void Dispose()
+    {
+        Form?.Dispose();
+    }
+
     protected override void OnParametersSet()
     {
         NewValueField = OldValueField;
@@ -24,20 +29,12 @@ public partial class ConfirmWithFieldDialog : ComponentBase, IDisposable
         if (Form != null)
         {
             await Form.Validate();
-            if (Form.IsValid)
-            {
-                DialogInstance.Close(DialogResult.Ok(NewValueField));
-            }
+            if (Form.IsValid) DialogInstance.Close(DialogResult.Ok(NewValueField));
         }
     }
 
     private void Cancel()
     {
         DialogInstance.Cancel();
-    }
-
-    public void Dispose()
-    {
-        Form?.Dispose();
     }
 }

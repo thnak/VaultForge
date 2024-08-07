@@ -23,6 +23,15 @@ public static class JsRuntimeExtension
         return jsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", message);
     }
 
+    #region Download
+
+    public static ValueTask Download(this IJSRuntime jsRuntime, [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri)
+    {
+        return jsRuntime.InvokeVoidAsync("Download", requestUri);
+    }
+
+    #endregion
+
     #region Local Storage
 
     public static async Task SetLocalStorage(this IJSRuntime jsRuntime, string key, string value)
@@ -56,9 +65,7 @@ public static class JsRuntimeExtension
 
     public static async Task ClearLocalStorage(this IJSRuntime jsRuntime)
     {
-        var culture = await jsRuntime.GetCulture();
         await jsRuntime.InvokeVoidAsync("localStorage.clear");
-        await jsRuntime.SetCulture(culture ?? CultureInfo.CurrentCulture.Name);
     }
 
     #endregion
@@ -116,11 +123,16 @@ public static class JsRuntimeExtension
 
     #endregion
 
-    #region Download
+    #region Screen
 
-    public static ValueTask Download(this IJSRuntime jsRuntime, [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri)
+    public static ValueTask FullScreen(this IJSRuntime self)
     {
-        return jsRuntime.InvokeVoidAsync("Download", requestUri);
+        return self.InvokeVoidAsync("RequestFullScreen");
+    }
+
+    public static ValueTask ExitFullScreen(this IJSRuntime self)
+    {
+        return self.InvokeVoidAsync("document.exitFullscreen");
     }
 
     #endregion

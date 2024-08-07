@@ -1,7 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
 <MudLayout Style="@("background-color:var(--mud-palette-background-grey)")" >
-    <AppBar HandleDrawerOpen="@DrawerToggle"/>
+    <AppBar HandleDrawerOpen="@DrawerToggle" />
     <MudDrawer Anchor="Anchor.Start"
                @bind-Open="@_drawerOpen"
                Breakpoint="Breakpoint.Xl"
@@ -13,8 +13,8 @@
         <MudNavMenu>
             <NavMenu />
         </MudNavMenu>
-        <MudSpacer/>
-        <ThemeModeSelector MudThemeProvider="@MudThemeProvider"/>
+        <MudSpacer />
+        <ThemeModeSelector MudThemeProvider="@MudThemeProvider" />
         <CultureSelector />
     </MudDrawer>
     <MudMainContent>

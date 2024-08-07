@@ -10,9 +10,9 @@ public class ObjectIdFormatter : IMessagePackFormatter<ObjectId>
 {
     public void Serialize(ref MessagePackWriter writer, ObjectId value, MessagePackSerializerOptions options)
     {
-        byte[] byteArray = Encoding.UTF8.GetBytes(value.ToString());
-        ReadOnlyMemory<byte> readOnlyMemory = new ReadOnlyMemory<byte>(byteArray);
-        ReadOnlySequence<byte> readOnlySequence = new ReadOnlySequence<byte>(readOnlyMemory);
+        var byteArray = Encoding.UTF8.GetBytes(value.ToString());
+        var readOnlyMemory = new ReadOnlyMemory<byte>(byteArray);
+        var readOnlySequence = new ReadOnlySequence<byte>(readOnlyMemory);
         writer.WriteString(readOnlySequence);
     }
 

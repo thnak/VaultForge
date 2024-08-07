@@ -26,6 +26,9 @@ public class DocumentObjectModelEventListener : IDisposable
 
         VisibilityChangeEvent = null;
         VisibilityChangeEventAsync = null;
+
+        FullScreenChangeEventAsync = null;
+        FullScreenChangeEvent = null;
     }
 
     #region Enter
@@ -247,6 +250,52 @@ public class DocumentObjectModelEventListener : IDisposable
     {
         SelfVisibilityChangeEventAsync?.Invoke(visible);
         SelfVisibilityChangeEvent?.Invoke();
+    }
+
+    #endregion
+
+    #region Full creen changed
+
+    public Func<bool, Task>? FullScreenChangeEventAsync
+    {
+        get => SelfFullScreenChangeEventAsync;
+        set => SelfFullScreenChangeEventAsync = value;
+    }
+
+    public Action<bool>? FullScreenChangeEvent
+    {
+        get => SelfFullScreenChangeEvent;
+        set => SelfFullScreenChangeEvent = value;
+    }
+
+    private static Func<bool, Task>? SelfFullScreenChangeEventAsync { get; set; }
+    private static Action<bool>? SelfFullScreenChangeEvent { get; set; }
+
+
+    [JSInvokable]
+    public static void FullScreenChangeEventListener(bool value)
+    {
+        SelfFullScreenChangeEventAsync?.Invoke(value);
+        SelfFullScreenChangeEvent?.Invoke(value);
+    }
+
+    #endregion
+
+    #region Key Press
+
+    public Func<string, Task>? KeyPressChangeEventAsync
+    {
+        get => SelfKeyPressChangeEventAsync;
+        set => SelfKeyPressChangeEventAsync = value;
+    }
+
+    private static Func<string, Task>? SelfKeyPressChangeEventAsync { get; set; }
+
+
+    [JSInvokable]
+    public static void KeyPressChangeEventListener(string key)
+    {
+        SelfKeyPressChangeEventAsync?.Invoke(key);
     }
 
     #endregion

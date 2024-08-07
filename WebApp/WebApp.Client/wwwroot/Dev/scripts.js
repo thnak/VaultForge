@@ -165,7 +165,6 @@ function handleMouseMove(e) {
     if (originHeight - mouseY < 0)
         mouseY = 0;
 
-   
 
     if (isDrawing) {
 
@@ -239,10 +238,9 @@ function handleMouseUp() {
 
         if (startX < 0 || startY < 0 || rectHeight <= 10 || rectWidth <= 10 || typeof (rectHeight) === undefined || typeof (rectWidth) === undefined) {
             redrawCanvas();
-        }
-        else {
+        } else {
 
-            rectangles.push({ x: startX, y: startY, width: rectWidth, height: rectHeight });
+            rectangles.push({x: startX, y: startY, width: rectWidth, height: rectHeight});
             redrawCanvas();
         }
 
@@ -333,10 +331,10 @@ function drawHandles(x, y, width, height) {
 
 function getHandles(x, y, width, height) {
     return [
-        { x: x, y: y },
-        { x: x + width, y: y },
-        { x: x, y: y + height },
-        { x: x + width, y: y + height }
+        {x: x, y: y},
+        {x: x + width, y: y},
+        {x: x, y: y + height},
+        {x: x + width, y: y + height}
     ];
 }
 
@@ -354,6 +352,7 @@ function getHandleAtPoint(x, y) {
     }
     return null;
 }
+
 function getRectangleAtPoint(x, y) {
     var actualHandleSize = getRealHandleSize() / 2;
     for (const rect of rectangles) {

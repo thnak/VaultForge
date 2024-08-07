@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
-using MongoDB.Bson;
 
 namespace Business.Utils.Helper;
 
@@ -386,7 +385,7 @@ public static class FileHelpers
 
     public static string GetMimeType(this string fileExtension)
     {
-        List<string> values = MimeTypeMappings.Values.ToList();
+        var values = MimeTypeMappings.Values.ToList();
         var mime = values.FirstOrDefault(x => x == fileExtension);
         if (mime == null) return "application/octet-stream";
         return mime;

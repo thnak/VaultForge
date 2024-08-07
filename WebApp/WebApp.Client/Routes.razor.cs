@@ -16,13 +16,13 @@ public partial class Routes : ComponentBase, IDisposable
         EventListener.PageHideEvent -= PageHide;
         EventListener.Online -= Online;
         EventListener.Offline -= Offline;
+        EventListener.InstalledEventAsync -= InstalledWpa;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            
             await JsRuntime.InvokeVoidAsync("CloseProgressBar");
             await JsRuntime.InvokeVoidAsync("InitAppEventListener");
 
@@ -32,9 +32,16 @@ public partial class Routes : ComponentBase, IDisposable
             EventListener.PageHideEvent += PageHide;
             EventListener.Online += Online;
             EventListener.Offline += Offline;
+            EventListener.InstalledEventAsync += InstalledWpa;
         }
 
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private Task InstalledWpa()
+    {
+        ToastService.ShowSuccess("Thank you for your supports!");
+        return Task.CompletedTask;
     }
 
     private async Task OnChangedAsync()

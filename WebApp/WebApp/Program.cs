@@ -1,8 +1,3 @@
-using System.Globalization;
-using System.Security.Claims;
-using System.Threading.RateLimiting;
-using Business.Authenticate.AuthorizationRequirement;
-using Business.Authenticate.TokenProvider;
 using Business.Business.Interfaces.User;
 using Business.Business.Repositories.User;
 using Business.Data.Interfaces;
@@ -11,31 +6,16 @@ using Business.Data.Interfaces.User;
 using Business.Data.Repositories;
 using Business.Data.Repositories.FileSystem;
 using Business.Data.Repositories.User;
-using Business.KeyManagement;
 using Business.Models;
 using Business.Services;
 using BusinessModels.Converter;
 using BusinessModels.General;
 using BusinessModels.Resources;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.CookiePolicy;
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Options;
-using Protector;
 using Protector.Certificates.Models;
-using Protector.KeyProvider;
-using Protector.Tracer;
 using WebApp.Authenticate;
 using WebApp.Components;
 using WebApp.MiddleWares;
@@ -64,17 +44,12 @@ public class Program
 
 
         #region Additionnal services
-
-        // builder.Services.AddScoped<MongoDbEntityClient>();
-
+        
         builder.Services.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
         builder.Services.AddSingleton<IUserDataLayer, UserDataLayer>();
         builder.Services.AddSingleton<IUserBusinessLayer, UserBusinessLayer>();
         builder.Services.AddSingleton<IFolderSystemDatalayer, FolderSystemDatalayer>();
         builder.Services.AddSingleton<IFileSystemDatalayer, FileSystemDatalayer>();
-
-        builder.Services.AddSingleton<IMongoDbXmlKeyProtectorRepository, MongoDbXmlKeyProtectorRepository>();
-
 
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
 
@@ -126,36 +101,7 @@ public class Program
 
         #region Cultures
 
-        builder.Services.AddLocalization();
-        builder.Services.Configure<RequestLocalizationOptions>(options =>
-        {
-            var supportedCultures = AllowedCulture.SupportedCultures.ToArray();
-            foreach (var culture in supportedCultures)
-            {
-                culture.NumberFormat = NumberFormatInfo.InvariantInfo;
-                culture.DateTimeFormat = DateTimeFormatInfo.InvariantInfo;
-            }
-
-            options.SetDefaultCulture(supportedCultures[0].Name);
-            options.DefaultRequestCulture = new RequestCulture(supportedCultures[0]);
-            options.SupportedCultures = supportedCultures;
-            options.SupportedUICultures = supportedCultures;
-            options.ApplyCurrentCultureToResponseHeaders = true;
-            options.RequestCultureProviders = new List<IRequestCultureProvider>
-            {
-                new CookieRequestCultureProvider
-                {
-                    CookieName = CookieNames.Culture,
-                    Options = new RequestLocalizationOptions()
-                },
-                new QueryStringRequestCultureProvider
-                {
-                    QueryStringKey = CookieNames.Culture,
-                    UIQueryStringKey = $"{CookieNames.Culture}-UI"
-                },
-                new AcceptLanguageHeaderRequestCultureProvider()
-            };
-        });
+        builder.Services.AddCultureService();
 
         #endregion
 
@@ -169,250 +115,20 @@ public class Program
 
         #region Authenticate & Protection
 
-        builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        builder.Services.AddSingleton<FailedLoginTracker>();
-        builder.Services.AddSingleton<IJsonWebTokenCertificateProvider, JsonWebTokenCertificateProvider>();
-        builder.Services.AddSingleton<RsaKeyProvider>();
         builder.Services.AddScoped<AuthenticationStateProvider, PersistingServerAuthenticationStateProvider>();
-        builder.Services.AddCascadingAuthenticationState();
-        builder.Services.AddAuthorization(options =>
-        {
-            options.AddPolicy(PolicyNamesAndRoles.Over18, policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(18)));
-            options.AddPolicy(PolicyNamesAndRoles.Over14, policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(14)));
-            options.AddPolicy(PolicyNamesAndRoles.Over7, policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(7)));
-        });
-
-        builder.Services.Configure<CookiePolicyOptions>(options =>
-        {
-            options.MinimumSameSitePolicy = SameSiteMode.None;
-            options.HttpOnly = HttpOnlyPolicy.Always;
-            options.Secure = CookieSecurePolicy.Always; // Ensure cookies are always sent over HTTPS
-        });
-
-        builder.Services.ConfigureApplicationCookie(options =>
-        {
-            options.Cookie.Name = CookieNames.AuthorizeCookie;
-            options.Cookie.Domain = CookieNames.Domain;
-            options.Cookie.HttpOnly = true;
-            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-            options.Cookie.SameSite = SameSiteMode.Lax;
-        });
-
-        builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(options =>
-            {
-                options.SlidingExpiration = true;
-                options.LoginPath = PageRoutes.Account.SignIn;
-                options.LogoutPath = PageRoutes.Account.Logout;
-                options.AccessDeniedPath = PageRoutes.Account.Denied;
-                options.ExpireTimeSpan = TimeSpan.FromHours(ProtectorTime.CookieExpireTimeSpan);
-                options.Cookie = new CookieBuilder
-                {
-                    MaxAge = TimeSpan.FromHours(ProtectorTime.CookieMaxAge),
-                    Name = CookieNames.AuthorizeCookie,
-                    SameSite = SameSiteMode.Lax,
-                    IsEssential = true,
-                    HttpOnly = true,
-                    SecurePolicy = CookieSecurePolicy.Always,
-                    Domain = CookieNames.Domain,
-                    Path = "/"
-                };
-                options.Events = new CookieAuthenticationEvents
-                {
-                    OnValidatePrincipal = ValidateAsync
-                };
-
-                #region Cookie Event Handler
-
-                async Task ValidateAsync(CookieValidatePrincipalContext context)
-                {
-                    var userPrincipal = context.Principal;
-                    if (userPrincipal == null)
-                    {
-                        await Reject();
-                        return;
-                    }
-
-                    var authenticationType = userPrincipal.Identity?.AuthenticationType ?? string.Empty;
-                    if (authenticationType == CookieNames.AuthenticationType)
-                    {
-                        // Example: Check if the user's security stamp is still valid
-                        var userManager = context.HttpContext.RequestServices.GetRequiredService<IUserBusinessLayer>();
-                        var jswProvider = context.HttpContext.RequestServices.GetRequiredService<IJsonWebTokenCertificateProvider>();
-
-                        var jwt = userPrincipal.FindFirst(ClaimTypes.UserData)?.Value;
-                        if (!string.IsNullOrEmpty(jwt))
-                        {
-                            var claimsPrincipal = jswProvider.GetClaimsFromToken(jwt);
-                            if (claimsPrincipal == null)
-                            {
-                                await Reject();
-                                return;
-                            }
-                        }
-
-
-                        var userId = userPrincipal.FindFirst(ClaimTypes.Name)?.Value;
-                        var user = userId == null ? null : userManager.Get(userId);
-                        if (user == null) await Reject();
-                    }
-                    else
-                    {
-                        await Reject();
-                    }
-
-                    return;
-
-                    async Task Reject()
-                    {
-                        context.RejectPrincipal();
-                        await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                    }
-                }
-
-                #endregion
-            });
-
-        builder.Services.AddSession(options =>
-        {
-            options.IdleTimeout = TimeSpan.FromHours(ProtectorTime.SessionIdleTimeout);
-            options.Cookie = new CookieBuilder
-            {
-                MaxAge = TimeSpan.FromHours(ProtectorTime.SessionCookieMaxAge),
-                Name = CookieNames.Session,
-                SameSite = SameSiteMode.Strict,
-                Expiration = TimeSpan.FromHours(ProtectorTime.SessionCookieMaxAge),
-                IsEssential = true,
-                HttpOnly = true,
-                SecurePolicy = CookieSecurePolicy.SameAsRequest,
-                Domain = CookieNames.Domain
-            };
-        });
-
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy("AllowAllOrigins",
-                policyBuilder => policyBuilder
-                    .WithOrigins("localhost:5217", "https://thnakdevserver.ddns.net:5001")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials());
-        });
-
-        builder.Services.AddAntiforgery(options =>
-        {
-            options.Cookie = new CookieBuilder
-            {
-                MaxAge = TimeSpan.FromHours(ProtectorTime.AntiforgeryCookieMaxAge),
-                Name = CookieNames.Antiforgery,
-                SameSite = SameSiteMode.Unspecified,
-                IsEssential = false,
-                HttpOnly = false,
-                SecurePolicy = CookieSecurePolicy.SameAsRequest,
-                Domain = CookieNames.Domain
-            };
-        });
-
-        builder.Services.AddControllersWithViews(options => { options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); });
-
-
-        builder.Services.AddDataProtection()
-            .UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration
-            {
-                EncryptionAlgorithm = EncryptionAlgorithm.AES_256_GCM,
-                ValidationAlgorithm = ValidationAlgorithm.HMACSHA512
-            })
-            .SetApplicationName(CookieNames.Name)
-            .SetDefaultKeyLifetime(TimeSpan.FromDays(7))
-            .AddKeyManagementOptions(options =>
-            {
-                options.AuthenticatedEncryptorConfiguration = new AuthenticatedEncryptorConfiguration
-                {
-                    EncryptionAlgorithm = EncryptionAlgorithm.AES_256_GCM,
-                    ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
-                };
-#pragma warning disable ASP0000
-                options.XmlRepository = builder.Services.BuildServiceProvider().GetService<IMongoDbXmlKeyProtectorRepository>();
-#pragma warning restore ASP0000
-                options.AutoGenerateKeys = true;
-            });
-
-        builder.Services.Configure<ForwardedHeadersOptions>(options =>
-        {
-            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-            options.RequireHeaderSymmetry = false;
-            options.ForwardLimit = null;
-            options.KnownNetworks.Clear();
-            options.KnownProxies.Clear();
-        });
-
-
-        builder.Services.Configure<SecurityStampValidatorOptions>(options => { options.ValidationInterval = TimeSpan.FromMinutes(5); });
+        builder.Services.AddAuthenticateService();
+        builder.Services.AddProtectorService();
 
         #endregion
 
         #region Rate Limit
 
-        builder.Services.AddRateLimiter(options =>
-        {
-            options.AddFixedWindowLimiter(PolicyNamesAndRoles.LimitRate.Fixed, opt =>
-            {
-                opt.Window = TimeSpan.FromSeconds(10);
-                opt.PermitLimit = 4;
-                opt.QueueLimit = 2;
-                opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-            });
-
-            options.RejectionStatusCode = 429;
-        });
-        builder.Services.AddRateLimiter(options =>
-        {
-            options.AddSlidingWindowLimiter(PolicyNamesAndRoles.LimitRate.Sliding, opt =>
-            {
-                opt.PermitLimit = 100;
-                opt.Window = TimeSpan.FromMinutes(30);
-                opt.SegmentsPerWindow = 3;
-                opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-                opt.QueueLimit = 10;
-            });
-
-            options.RejectionStatusCode = 429;
-        });
-
-        builder.Services.AddRateLimiter(options =>
-        {
-            options.AddTokenBucketLimiter(PolicyNamesAndRoles.LimitRate.Token, opt =>
-            {
-                opt.TokenLimit = 100;
-                opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-                opt.QueueLimit = 10;
-                opt.ReplenishmentPeriod = TimeSpan.FromSeconds(10);
-                opt.TokensPerPeriod = 10; //Rate at which you want to fill
-                opt.AutoReplenishment = true;
-            });
-
-            options.RejectionStatusCode = 429;
-        });
-
-        builder.Services.AddRateLimiter(options =>
-        {
-            options.AddConcurrencyLimiter(PolicyNamesAndRoles.LimitRate.Concurrency, opt =>
-            {
-                opt.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-                opt.QueueLimit = 10;
-                opt.PermitLimit = 100;
-            });
-
-            options.RejectionStatusCode = 429;
-        });
+        builder.Services.AddRateLimitService();
 
         #endregion
 
-        builder.Services.AddControllers().AddJsonOptions(options =>
-        {
-            options.JsonSerializerOptions.Converters.Add(new ObjectIdConverter());
-        });
-        
+        builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new ObjectIdConverter()); });
+
         var app = builder.Build();
 
         #region Localization Setup
@@ -455,15 +171,7 @@ public class Program
         app.MapRazorComponents<App>()
             .AddInteractiveWebAssemblyRenderMode(options => options.ServeMultithreadingHeaders = false)
             .AddAdditionalAssemblies(typeof(_Imports).Assembly);
-        // app.Use(async (context, next) => {
-        //     ApplyHeaders(context.Response.Headers);
-        //     await next();
-        // });
+        
         app.Run();
     }
-    // private static void ApplyHeaders(IHeaderDictionary headers)
-    // {
-    //     headers.Append("Cross-Origin-Embedder-Policy", "require-corp");
-    //     headers.Append("Cross-Origin-Opener-Policy", "same-origin");
-    // }
 }

@@ -9,6 +9,8 @@ public class SimpleFluentValueValidator<T> : AbstractValidator<T>
         rule(RuleFor(x => x));
     }
 
+    public Func<T, IEnumerable<string>> Validation => ValidateValue;
+
     private IEnumerable<string> ValidateValue(T arg)
     {
         var result = Validate(arg);
@@ -16,6 +18,4 @@ public class SimpleFluentValueValidator<T> : AbstractValidator<T>
             return Array.Empty<string>();
         return result.Errors.Select(e => e.ErrorMessage);
     }
-
-    public Func<T, IEnumerable<string>> Validation => ValidateValue;
 }

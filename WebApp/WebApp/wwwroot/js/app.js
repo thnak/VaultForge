@@ -67,6 +67,19 @@ window.setCookie = (cname, cvalue, exdays) => {
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
+window.RequestFullScreen = () => {
+    var elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+    }
+}
+
 function PageShowEvent() {
     DotNet.invokeMethodAsync("WebApp.Client", 'PageShowEventEventListener')
 }
@@ -81,10 +94,14 @@ function ContextMenuEvent(e) {
     DotNet.invokeMethodAsync("WebApp.Client", 'ContextMenuEventListenerWithParam', e.clientX, e.clientY)
 }
 
-function EnterClickEvent(event) {
+function KeyDownEvent(event) {
     if (event.key === "Enter") {
-        DotNet.invokeMethodAsync("WebApp.Client", 'EnterEventListener')
+        DotNet.invokeMethodAsync("WebApp.Client", 'EnterEventListener');
     }
+    if (event.keyCode === 122) {
+        FullScreenEvent();
+    }
+    DotNet.invokeMethodAsync("WebApp.Client", 'KeyPressChangeEventListener', event.keyCode);
 }
 
 function OfflineEvent() {
@@ -109,8 +126,16 @@ function VisibilitychangeEvent() {
     DotNet.invokeMethodAsync("WebApp.Client", 'VisibilityChangeEventListener', document.hidden === false)
 }
 
-function AppInstalledEvent(){
+function AppInstalledEvent() {
     DotNet.invokeMethodAsync("WebApp.Client", 'InstalledEventListener')
+}
+
+function FullScreenEvent() {
+    DotNet.invokeMethodAsync("WebApp.Client", 'FullScreenChangeEventListener', document.fullscreenElement != null || window.innerHeight === screen.height)
+}
+
+function PageChangeSize() {
+    FullScreenEvent();
 }
 
 //
@@ -121,10 +146,12 @@ window.InitAppEventListener = () => {
     window.addEventListener("pagehide", PageHideEvent);
     window.addEventListener("pageshow", PageShowEvent);
     window.addEventListener("contextmenu", ContextMenuEvent);
-    window.addEventListener("keydown", EnterClickEvent)
+    window.addEventListener("keydown", KeyDownEvent);
     window.addEventListener('online', OnlineEvent);
     window.addEventListener('offline', OfflineEvent);
     window.addEventListener(visibilityChange, VisibilitychangeEvent);
-    window.addEventListener("appinstalled", AppInstalledEvent)
+    window.addEventListener("appinstalled", AppInstalledEvent);
+    document.addEventListener("fullscreenchange", FullScreenEvent);
+    window.addEventListener('resize', PageChangeSize);
+    console.log("Init event listener");
 }
-

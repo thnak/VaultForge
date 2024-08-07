@@ -1,4 +1,5 @@
-﻿@attribute [Route("/counter")]
+﻿@using System.Diagnostics
+@attribute [Route("/counter")]
 
 <div class="row" >
     <div class="col-6 col-xs-12" >
@@ -27,7 +28,6 @@
 </pre>
     </div>
     <div class="col-6 col-xs-12" >
-        <GithubSource RelativePath="Pages/BackgroundServiceMulti.razor" />
     </div>
 </div>
 
@@ -44,7 +44,7 @@
 
 
     /// <summary>
-    /// This service runs insinde the worker.
+    ///     This service runs insinde the worker.
     /// </summary>
     private class MathsService
     {
@@ -62,7 +62,7 @@
             }
             else
             {
-                i = (start * 2) - 1;
+                i = start * 2 - 1;
                 flip = start % 2 == 0;
             }
 
@@ -73,20 +73,20 @@
         {
             var lastReport = 0;
             await Task.Delay(100);
-            return (4 * AlternatingSequence().Take(sumLength)
+            return 4 * AlternatingSequence().Take(sumLength)
                 .Select((x, i) =>
                 {
                     // Keep reporting events down a bit, serialization is expensive!
-                    var progressDelta = (Math.Abs(i - lastReport) / (double)sumLength) * 100;
+                    var progressDelta = Math.Abs(i - lastReport) / (double)sumLength * 100;
                     if (progressDelta > 3 || i >= sumLength - 1)
                     {
                         lastReport = i;
-                        Pi?.Invoke(this, new PiProgress() { Progress = i });
+                        Pi?.Invoke(this, new PiProgress { Progress = i });
                     }
 
                     return x;
                 })
-                .Sum(x => 1.0 / x));
+                .Sum(x => 1.0 / x);
         }
 
         public double EstimatePISlice(int sumStart, int sumLength)
@@ -98,11 +98,11 @@
                 .Select((x, i) =>
                 {
                     // Keep reporting events down a bit, serialization is expensive!
-                    var progressDelta = (Math.Abs(i - lastReport) / (double)sumLength) * 100;
+                    var progressDelta = Math.Abs(i - lastReport) / (double)sumLength * 100;
                     if (progressDelta > 3 || i >= sumLength - 1)
                     {
                         lastReport = i;
-                        Pi?.Invoke(this, new PiProgress() { Progress = i });
+                        Pi?.Invoke(this, new PiProgress { Progress = i });
                     }
 
                     return x;
@@ -146,13 +146,13 @@
         public int Progress { get; set; }
     }
 
-    List<ProgressRef> piProgress = new();
-    List<IWorker> workers = new();
+    readonly List<ProgressRef> piProgress = new();
+    readonly List<IWorker> workers = new();
 
-    List<IWorkerBackgroundService<MathsService>> backgroundServices = new();
+    readonly List<IWorkerBackgroundService<MathsService>> backgroundServices = new();
 
     string RunDisabled => Running ? "disabled" : null;
-    bool Running = false;
+    bool Running;
 
     public async Task OnClick(EventArgs _)
     {
@@ -171,22 +171,21 @@
                 var worker = await WorkerFactory.CreateAsync();
                 workers.Add(worker);
                 var service = await worker.CreateBackgroundServiceAsync<MathsService>();
-                
-                
-                
+
+
                 backgroundServices.Add(service);
                 var progressRef = new ProgressRef();
                 piProgress.Add(progressRef);
                 await service.RegisterEventListenerAsync<PiProgress>(nameof(MathsService.Pi),
                     (_, eventInfo) =>
                     {
-                        progressRef.Progress = (int)Math.Floor((100 * ((decimal)eventInfo.Progress / sliceSize)));
+                        progressRef.Progress = (int)Math.Floor(100 * ((decimal)eventInfo.Progress / sliceSize));
                         StateHasChanged();
                     });
             }
 
             var start = 0;
-            var sw = new System.Diagnostics.Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
             var allTasks = new List<Task<double>>();
             var servicesStarted = 0;

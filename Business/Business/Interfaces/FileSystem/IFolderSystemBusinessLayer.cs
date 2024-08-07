@@ -21,7 +21,7 @@ public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInf
     public Task<(bool, string)> CreateFolder(string userName, string targetFolderId, string folderName);
 
     public Task<(bool, string)> CreateFolder(RequestNewFolderModel request);
-    
+
     public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default);
     public Task<long> GetFolderByteSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default);
 

@@ -114,17 +114,13 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
             return [];
 
         var allFolderName = rootFolder.RelativePath.Split('/').Where(x => !string.IsNullOrEmpty(x)).ToArray();
-        for (int i = 0; i < allFolderName.Length; i++)
+        for (var i = 0; i < allFolderName.Length; i++)
         {
             var path = $"/{allFolderName[i]}";
             if (i > 0)
-            {
                 allPath.Add(allPath[i - 1] + path);
-            }
             else
-            {
                 allPath.Add(path);
-            }
         }
 
         List<FolderInfoModel> folderInfoModels = [];
@@ -206,7 +202,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         var user = GetUser(userName);
         if (user == null) return (false, AppLang.User_is_not_exists);
 
-        FolderInfoModel newFolder = new FolderInfoModel()
+        var newFolder = new FolderInfoModel
         {
             FolderName = folderName,
             RelativePath = folder.RelativePath + $"/{folderName}",
@@ -219,7 +215,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         var createNewFolderResult = await CreateAsync(newFolder);
         if (createNewFolderResult is { Item1: true })
         {
-            folder.Contents.Add(new FolderContent()
+            folder.Contents.Add(new FolderContent
             {
                 Type = FolderContentType.Folder,
                 Id = newFolder.Id.ToString()
@@ -235,12 +231,8 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         FolderNameFluentValidator validator = new();
         var validationResult = await validator.ValidateAsync(request.NewFolder.FolderName);
         if (!validationResult.IsValid)
-        {
             foreach (var error in validationResult.Errors)
-            {
                 return (false, error?.ErrorMessage ?? string.Empty);
-            }
-        }
 
         var folderRoot = Get(request.RootId);
         if (folderRoot == null) return (false, AppLang.Root_folder_could_not_be_found);
@@ -249,10 +241,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
             if (folderRoot.Password != request.RootPassWord.ComputeSha256Hash())
                 return (false, AppLang.Passwords_do_not_match_);
 
-        if (string.IsNullOrEmpty(request.NewFolder.RelativePath))
-        {
-            request.NewFolder.RelativePath = folderRoot.RelativePath + '/' + request.NewFolder.FolderName;
-        }
+        if (string.IsNullOrEmpty(request.NewFolder.RelativePath)) request.NewFolder.RelativePath = folderRoot.RelativePath + '/' + request.NewFolder.FolderName;
 
         if (string.IsNullOrEmpty(request.NewFolder.Username))
             request.NewFolder.Username = folderRoot.Username;
@@ -266,7 +255,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
             folderRoot.Contents.Add(new FolderContent
             {
                 Id = request.NewFolder.Id.ToString(),
-                Type = FolderContentType.Folder,
+                Type = FolderContentType.Folder
             });
             res = await UpdateAsync(folderRoot);
             if (res.Item1)

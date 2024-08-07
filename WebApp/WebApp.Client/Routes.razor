@@ -2,14 +2,14 @@
 <MudSnackbarProvider />
 <ThemeProvider />
 <MudPopoverProvider />
-<BlazoredToasts Position="ToastPosition.BottomRight"
-                Timeout="10"
+<BlazoredToasts ErrorIcon="fa-solid fa-bug"
                 IconType="IconType.FontAwesome"
-                ErrorIcon="fa-solid fa-bug"
                 InfoIcon="fa-solid fa-info"
+                PauseProgressOnHover="true"
+                Position="ToastPosition.BottomRight"
+                ShowProgressBar="true"
                 SuccessIcon="fa-regular fa-circle-check"
-                WarningIcon="fa-solid fa-triangle-exclamation" 
-                ShowProgressBar="true" PauseProgressOnHover="true"/>
+                Timeout="10" WarningIcon="fa-solid fa-triangle-exclamation" />
 
 <MudBreakpointProvider>
     <Router AppAssembly="@typeof(Program).Assembly" >

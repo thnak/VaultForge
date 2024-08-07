@@ -1,6 +1,6 @@
 ﻿<div class="d-flex flex-row gap-1" >
     <div>
-        <MudTooltip Text="Theme" Placement="Placement.Right" Arrow Color="Color.Secondary">
+        <MudTooltip Arrow Color="Color.Secondary" Placement="Placement.Right" Text="Theme" >
             <MudIconButton Class="blazor-SmAndDown-hidden" Color="Color.Inherit"
                            Icon="@(IsDarkMode.HasValue ? IsDarkMode.Value ? Icons.Material.Filled.DarkMode : Icons.Material.Filled.LightMode : Icons.Material.Filled.AutoMode)"
                            OnClick="@ThemeModeChanged" >
@@ -10,10 +10,10 @@
     </div>
     <div>
         <MudSelect AnchorOrigin="Origin.BottomCenter"
+                   @bind-Value="@Theme"
                    Class="culture-selector"
                    Margin="Margin.Dense"
                    T="MudTheme"
-                   @bind-Value="@Theme"
                    Variant="Variant.Filled" >
         </MudSelect>
     </div>

@@ -10,4 +10,3 @@ public class FolderContent
 
     [Key(1)] public FolderContentType Type { get; set; }
 }
-

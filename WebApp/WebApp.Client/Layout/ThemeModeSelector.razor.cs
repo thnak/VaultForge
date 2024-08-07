@@ -10,6 +10,11 @@ public partial class ThemeModeSelector : ComponentBase, IDisposable
     private bool? IsDarkMode { get; set; }
     private MudTheme? Theme { get; set; }
 
+    public void Dispose()
+    {
+        CustomStateContainer.OnChanged -= StateHasChanged;
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -33,13 +38,11 @@ public partial class ThemeModeSelector : ComponentBase, IDisposable
     private Task WatchSystemPreference(bool mode)
     {
         if (IsDarkMode == null)
-        {
             if (MudThemeProvider != null)
             {
                 CustomStateContainer.IsDarkMode = mode;
                 InvokeAsync(StateHasChanged);
             }
-        }
 
         return Task.CompletedTask;
     }
@@ -69,10 +72,5 @@ public partial class ThemeModeSelector : ComponentBase, IDisposable
         if (MudThemeProvider != null) CustomStateContainer.IsDarkMode = MudThemeProvider.IsDarkMode;
 
         await InvokeAsync(StateHasChanged);
-    }
-
-    public void Dispose()
-    {
-        CustomStateContainer.OnChanged -= StateHasChanged;
     }
 }

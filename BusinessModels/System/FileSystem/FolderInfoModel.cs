@@ -58,15 +58,13 @@ public class FolderInfoModel
     [Key(7)]
     public string RelativePath { get; set; } = string.Empty;
 
-    [Key(8)]
-    public string VersionId { get; set; } = string.Empty;
+    [Key(8)] public string VersionId { get; set; } = string.Empty;
 
-    [Key(9)]
-    public FolderContentType Type { get; set; }
+    [Key(9)] public FolderContentType Type { get; set; }
 
     #region Front-End Properties
 
-    [BsonIgnore][Key(10)] public long FolderSize { get; set; }
+    [BsonIgnore] [Key(10)] public long FolderSize { get; set; }
 
     #endregion
 
