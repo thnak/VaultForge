@@ -19,21 +19,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Business/Services/Caching.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/FrontEnd.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Utils/EventUtil.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/js/eventListener.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Counter.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Counter.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/_Imports.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/_Imports.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Utils/JsRuntimeExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Utils/JsRuntimeExtension.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Components/App.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Components/App.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/appsettings.Development.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/robots.txt" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/robots.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,6 +75,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/dd64d971b211e561438492e2fe2c86efc73fddfcf68dd93f231def1eaf/MudColor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e8aee3972f4f46ef190c2b4224be16d75e671b3496b06c7b50b6cbe2418e38/EndPointHelper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff953b52b66bae7a88dcb19328c1d616a77c12f477863fbca58acbd1631cf2/PaletteLight.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/CodeWithMe/WebApp/WebApp.Client/_Imports.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -275,7 +269,8 @@
       <workItem from="1722993854300" duration="15118000" />
       <workItem from="1723099466439" duration="691000" />
       <workItem from="1723108348878" duration="3549000" />
-      <workItem from="1723162566084" duration="1225000" />
+      <workItem from="1723162566084" duration="2535000" />
+      <workItem from="1723186780888" duration="4434000" />
     </task>
     <task id="LOCAL-00001" summary="remove anti token">
       <option name="closed" value="true" />
@@ -533,7 +528,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723012642873</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="update someshit">
+      <option name="closed" value="true" />
+      <created>1723163844982</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1723163844982</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -554,7 +557,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="sửa lỗi ko debug client được do AOT, trang trí lại SignInPage.razor" />
     <MESSAGE value="add browser listener" />
     <MESSAGE value="enchant token" />
     <MESSAGE value="shit" />
@@ -579,7 +581,8 @@
     <MESSAGE value="remove load btn" />
     <MESSAGE value="format code" />
     <MESSAGE value="add file" />
-    <option name="LAST_COMMIT_MESSAGE" value="add file" />
+    <MESSAGE value="update someshit" />
+    <option name="LAST_COMMIT_MESSAGE" value="update someshit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

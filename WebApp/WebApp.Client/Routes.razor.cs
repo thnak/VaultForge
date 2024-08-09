@@ -11,12 +11,7 @@ public partial class Routes : ComponentBase, IDisposable
     public void Dispose()
     {
         CustomStateContainer.OnChangedAsync -= OnChangedAsync;
-        EventListener.ContextMenuClickedAsync -= ContextMenuClicked;
-        EventListener.PageShowEvent -= PageShow;
-        EventListener.PageHideEvent -= PageHide;
-        EventListener.Online -= Online;
-        EventListener.Offline -= Offline;
-        EventListener.InstalledEventAsync -= InstalledWpa;
+        EventListener.Dispose();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

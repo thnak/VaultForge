@@ -6,8 +6,16 @@ public class DocumentObjectModelEventListener : IDisposable
 {
     public void Dispose()
     {
-        ScrollEventAsync = null;
-        ScrollEvent = null;
+        
+        
+        ContextMenuClickedAsync = null;
+        ContextMenuClicked = null;
+
+        Offline = null;
+        OfflineAsync = null;
+
+        Online = null;
+        OnlineAsync = null;
 
         PageHideEvent = null;
         PageHideEventAsync = null;
@@ -15,48 +23,21 @@ public class DocumentObjectModelEventListener : IDisposable
         PageShowEvent = null;
         PageShowEventAsync = null;
 
-        Online = null;
-        OnlineAsync = null;
-
-        Offline = null;
-        OfflineAsync = null;
-
-        ContextMenuClickedAsync = null;
-        ContextMenuClicked = null;
+        InstalledEvent = null;
+        InstalledEventAsync = null;
 
         VisibilityChangeEvent = null;
         VisibilityChangeEventAsync = null;
 
         FullScreenChangeEventAsync = null;
         FullScreenChangeEvent = null;
+
+        KeyPressChangeEventAsync = null;
+
+        ScrollEventAsync = null;
+        ScrollEvent = null;
     }
-
-    #region Enter
-
-    public Func<Task>? EnterClickedAsync
-    {
-        get => SelfEnterClickedAsync;
-        set => SelfEnterClickedAsync = value;
-    }
-
-    public Action? EnterClicked
-    {
-        get => SelfEnterClicked;
-        set => SelfEnterClicked = value;
-    }
-
-    private static Func<Task>? SelfEnterClickedAsync { get; set; }
-    private static Action? SelfEnterClicked { get; set; }
-
-    [JSInvokable]
-    public static void EnterEventListener()
-    {
-        SelfEnterClickedAsync?.Invoke();
-        SelfEnterClicked?.Invoke();
-    }
-
-    #endregion
-
+    
     #region Context Menu
 
     public Func<Task>? ContextMenuClickedAsync

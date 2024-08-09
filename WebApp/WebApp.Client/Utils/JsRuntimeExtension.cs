@@ -57,6 +57,20 @@ public static class JsRuntimeExtension
 
         return JsonSerializer.Deserialize<T?>(textPlan);
     }
+    
+    public static async Task<T> GetLocalStorage<T>(this IJSRuntime jsRuntime, string key, T defaultValue)
+    {
+        var textPlan = await jsRuntime.InvokeAsync<string?>("localStorage.getItem", key);
+        if (string.IsNullOrEmpty(textPlan)) return defaultValue;
+        try
+        {
+            return JsonSerializer.Deserialize<T?>(textPlan) ?? defaultValue;
+        }
+        catch (Exception)
+        {
+            return defaultValue;
+        }
+    }
 
     public static async Task RemoveLocalStorage(this IJSRuntime jsRuntime, string key)
     {
@@ -136,4 +150,15 @@ public static class JsRuntimeExtension
     }
 
     #endregion
+    
+    public static Task SetPreventKey(this IJSRuntime self, params string[] key)
+    {
+        var listKey = key.ToList();
+        return self.SetLocalStorage("PreventKey", listKey);
+    }
+
+    public static Task<List<string>> GetPreventKey(this IJSRuntime self)
+    {
+        return self.GetLocalStorage<List<string>>("PreventKey", []);
+    }
 }
