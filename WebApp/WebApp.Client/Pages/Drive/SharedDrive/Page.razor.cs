@@ -34,6 +34,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     public void Dispose()
     {
         EventListener.ContextMenuClickedWithParamAsync -= ContextMenuClick;
+        EventListener.KeyPressChangeEventAsync -= KeyPressChangeEventAsync;
     }
 
     private void ItemUpdated(MudItemDropInfo<DropItem> dropItem)
@@ -122,10 +123,18 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         if (firstRender)
         {
             _ = Task.Run(GetRootFolderAsync);
+            EventListener.KeyPressChangeEventAsync += KeyPressChangeEventAsync;
             EventListener.ContextMenuClickedWithParamAsync += ContextMenuClick;
         }
 
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private Task KeyPressChangeEventAsync(string arg)
+    {
+        if (arg == KeyBoardNames.Enter)
+            return GetRootFolderAsync();
+        return Task.CompletedTask;
     }
 
     private async Task Render()
@@ -167,7 +176,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                         Name = file.FileName,
                         Rename = new ButtonAction
                         {
-                            Action = () => RenameFile(file.Id.ToString(), file.FileName).ConfigureAwait(false)
+                            Action = () => RenameFile(file.Id.ToString(), file.FileName, "/api/files/re-name-file").ConfigureAwait(false)
                         },
                         Download = new ButtonAction
                         {
@@ -193,7 +202,11 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                         DbLickEvent = new ButtonAction
                         {
                             Action = () => OpenFolder(f.Id.ToString())
-                        }
+                        },
+                        Rename = new ButtonAction
+                        {
+                            Action = () => RenameFile(f.Id.ToString(), f.FolderName, "/api/files/re-name-folder").ConfigureAwait(false)
+                        },
                     });
             }
         }
@@ -241,7 +254,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
     #region Event handler
 
-    private async Task RenameFile(string id, string oldName)
+    private async Task RenameFile(string id, string oldName, [StringSyntax("Uri")] string url)
     {
         Loading = true;
         await Render();
@@ -265,7 +278,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 formDataContent.Add(new StringContent(newName, Encoding.UTF8, MediaTypeNames.Application.Json), "newName");
                 formDataContent.Add(new StringContent(id, Encoding.UTF8, MediaTypeNames.Application.Json), "objectId");
 
-                var response = await ApiService.PostAsync<string>("/api/files/re-name-file", formDataContent);
+                var response = await ApiService.PostAsync<string>(url, formDataContent);
                 if (response.IsSuccessStatusCode)
                 {
                     ToastService.ShowSuccess(response.Message);
@@ -285,6 +298,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         Loading = false;
         await InvokeAsync(StateHasChanged);
     }
+
 
     private async Task Download(string id)
     {

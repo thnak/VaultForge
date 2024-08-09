@@ -159,6 +159,19 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         return status.Item1 ? Ok(status.Item2) : BadRequest(status.Item2);
     }
 
+    [HttpPost("re-name-folder")]
+    [IgnoreAntiforgeryToken]
+    public async Task<IActionResult> ReNameFolder([FromForm] string objectId, [FromForm] string newName)
+    {
+        var folder = folderServe.Get(objectId);
+        if (folder == null) return BadRequest(AppLang.Folder_could_not_be_found);
+        if (string.IsNullOrEmpty(newName))
+            return BadRequest(AppLang.ThisFieldIsRequired);
+        folder.FolderName = newName;
+        var status = await folderServe.UpdateAsync(folder);
+        return status.Item1 ? Ok(status.Item2) : BadRequest(status.Item2);
+    }
+    
     [HttpDelete("delete-file")]
     public async Task<IActionResult> DeleteFile([FromForm] string fileId, [FromForm] string folderId)
     {
@@ -187,20 +200,6 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         file.Type = FileContentType.DeletedFile;
         var result = await fileServe.UpdateAsync(file);
         return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
-    }
-
-
-    [HttpPost("re-name-folder")]
-    [IgnoreAntiforgeryToken]
-    public async Task<IActionResult> ReNameFolder([FromForm] string objectId, [FromForm] string newName)
-    {
-        var folder = folderServe.Get(objectId);
-        if (folder == null) return BadRequest(AppLang.Folder_could_not_be_found);
-        if (string.IsNullOrEmpty(newName))
-            return BadRequest(AppLang.ThisFieldIsRequired);
-        folder.FolderName = newName;
-        var status = await folderServe.UpdateAsync(folder);
-        return status.Item1 ? Ok(status.Item2) : BadRequest(status.Item2);
     }
 
 

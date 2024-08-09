@@ -1,7 +1,6 @@
 ﻿User-agent: *
 Disallow: /admin/
 Disallow: /login/
-Disallow: /search/
 Disallow: /temp/
 Disallow: /scripts/
 

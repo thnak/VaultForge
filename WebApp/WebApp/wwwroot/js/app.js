@@ -95,12 +95,14 @@ function ContextMenuEvent(e) {
 }
 
 function KeyDownEvent(event) {
+    event.preventDefault();
     if (event.key === "Enter") {
         DotNet.invokeMethodAsync("WebApp.Client", 'EnterEventListener');
     }
     if (event.keyCode === 122) {
         FullScreenEvent();
     }
+    
     DotNet.invokeMethodAsync("WebApp.Client", 'KeyPressChangeEventListener', event.keyCode);
 }
 

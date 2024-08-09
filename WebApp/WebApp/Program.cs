@@ -6,17 +6,16 @@ using Business.Data.Interfaces.User;
 using Business.Data.Repositories;
 using Business.Data.Repositories.FileSystem;
 using Business.Data.Repositories.User;
-using Business.Models;
 using Business.Services;
 using BusinessModels.Converter;
 using BusinessModels.General;
 using BusinessModels.Resources;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Options;
 using Protector.Certificates.Models;
 using WebApp.Authenticate;
+using WebApp.Client.Services;
+using WebApp.Client.Services.Http;
 using WebApp.Components;
 using WebApp.MiddleWares;
 using _Imports = WebApp.Client._Imports;
@@ -32,8 +31,33 @@ public class Program
         // Add services to the container.
         builder.Services.AddRazorComponents()
             .AddInteractiveWebAssemblyComponents()
+            .AddInteractiveServerComponents(options => options.DetailedErrors = builder.Environment.IsDevelopment())
             .AddAuthenticationStateSerialization();
+        
+        
+        builder.Services.AddFrontEndService();
+        builder.Services.AddFrontEndScopeService();
+        
+        #region Http Client for client side
 
+        builder.Services.AddScoped(_ =>
+        {
+            var httpClient = new HttpClient(new CookieHandler());
+            // httpClient.BaseAddress = new Uri(builder.Environment.);
+            return httpClient;
+        });
+
+        builder.Services.AddScoped(_ =>
+        {
+            var httpClient = new HttpClient(new CookieHandler());
+            httpClient.BaseAddress = new Uri("https://thnakdevserver.ddns.net:5001");
+#pragma warning disable ASP0000
+            return new BaseHttpClientService(httpClient, builder.Services.BuildServiceProvider());
+#pragma warning restore ASP0000
+        });
+
+        #endregion
+        
         #region Configure Setting
 
         builder.Services.Configure<DbSettingModel>(builder.Configuration.GetSection("DBSetting"));
@@ -57,45 +81,7 @@ public class Program
 
         #region Caching
 
-        if (!builder.Environment.IsDevelopment())
-            builder.Services.AddResponseCompression(options =>
-            {
-                options.MimeTypes = new[]
-                {
-                    "text/html", "text/css"
-                };
-                options.Providers.Add<BrotliCompressionProvider>();
-                options.Providers.Add<GzipCompressionProvider>();
-            });
-
-        builder.Services.AddDistributedMemoryCache(options => { options.ExpirationScanFrequency = TimeSpan.FromSeconds(30); });
-
-        builder.Services.AddHybridCache(options =>
-        {
-            options.DefaultEntryOptions = new HybridCacheEntryOptions
-            {
-                Expiration = TimeSpan.FromSeconds(30),
-                LocalCacheExpiration = TimeSpan.FromSeconds(30),
-                Flags = HybridCacheEntryFlags.None
-            };
-        });
-
-        builder.Services.AddOutputCache(options =>
-        {
-            options.AddBasePolicy(outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(TimeSpan.FromSeconds(10)));
-            options.DefaultExpirationTimeSpan = OutputCachingPolicy.Expire30;
-
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire10), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire10));
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire20), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire20));
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire30), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire30));
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire40), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire40));
-
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire50), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire50));
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire60), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire60));
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire120), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire120));
-            options.AddPolicy(nameof(OutputCachingPolicy.Expire240), outputCachePolicyBuilder => outputCachePolicyBuilder.Expire(OutputCachingPolicy.Expire240));
-        });
-        builder.Services.AddResponseCaching();
+        builder.Services.AddCachingService();
 
         #endregion
 
@@ -170,6 +156,7 @@ public class Program
 
         app.MapRazorComponents<App>()
             .AddInteractiveWebAssemblyRenderMode(options => options.ServeMultithreadingHeaders = false)
+            .AddInteractiveServerRenderMode()
             .AddAdditionalAssemblies(typeof(_Imports).Assembly);
         
         app.Run();

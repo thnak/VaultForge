@@ -9,11 +9,11 @@
 
         <br /><br />
         Pi estimation demo. Specify number of iterations.<br />
-        <MudNumericField @bind-Value="piIterations" T="int" ></MudNumericField>
+        <MudNumericField @bind-Value="_piIterations" T="int" ></MudNumericField>
         Specify number of workers to use.<br />
-        <input @bind="workerNum" placeholder="Number of workers" type="text" /><br /><br />
+        <input @bind="WorkerNum" placeholder="Number of workers" type="text" /><br /><br />
         <button class="btn btn-primary" @onclick="OnClick" >Run Test</button><br />
-        @foreach (var workerProgress in piProgress.Take(workerNum))
+        @foreach (var workerProgress in _piProgress.Take(WorkerNum))
         {
             <progress max="100" value="@(workerProgress.Progress)" ></progress>
             <br />
@@ -24,7 +24,7 @@
         <strong>Output:</strong>
         <hr />
         <pre>
-@output
+@Output
 </pre>
     </div>
     <div class="col-6 col-xs-12" >
@@ -39,16 +39,27 @@
 
     private class PiProgress
     {
-        public int Progress { get; set; }
+        public int Progress { get; init; }
     }
 
+    private IWorkerFactory? WorkerFactory { get; set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            WorkerFactory = new WorkerFactory(JsRuntime);
+        }
+
+        base.OnAfterRender(firstRender);
+    }
 
     /// <summary>
-    ///     This service runs insinde the worker.
+    ///     This service runs inside the worker.
     /// </summary>
     private class MathsService
     {
-        public event EventHandler<PiProgress> Pi;
+        public event EventHandler<PiProgress>? Pi;
 
         private IEnumerable<int> AlternatingSequence(int start = 0)
         {
@@ -66,32 +77,13 @@
                 flip = start % 2 == 0;
             }
 
-            while (true) yield return ((flip = !flip) ? -1 : 1) * (i += 2);
+            while (true) yield return ((flip == !flip) ? -1 : 1) * (i += 2);
+            // ReSharper disable once IteratorNeverReturns
         }
 
-        public async Task<double> EstimatePI(int sumLength)
+        public double EstimatePiSlice(int sumStart, int sumLength)
         {
-            var lastReport = 0;
-            await Task.Delay(100);
-            return 4 * AlternatingSequence().Take(sumLength)
-                .Select((x, i) =>
-                {
-                    // Keep reporting events down a bit, serialization is expensive!
-                    var progressDelta = Math.Abs(i - lastReport) / (double)sumLength * 100;
-                    if (progressDelta > 3 || i >= sumLength - 1)
-                    {
-                        lastReport = i;
-                        Pi?.Invoke(this, new PiProgress { Progress = i });
-                    }
-
-                    return x;
-                })
-                .Sum(x => 1.0 / x);
-        }
-
-        public double EstimatePISlice(int sumStart, int sumLength)
-        {
-            Console.WriteLine($"EstimatePISlice({sumStart},{sumLength})");
+            Console.WriteLine($@"EstimatePISlice({sumStart},{sumLength})");
             var lastReport = 0;
             return AlternatingSequence(sumStart)
                 .Take(sumLength)
@@ -114,12 +106,12 @@
     #endregion
 
 
-    int piIterations = 5_000_000;
-    int sliceSize;
+    int _piIterations = 5_000_000;
+    int _sliceSize;
 
     int _workerNum = 1;
 
-    int workerNum
+    int WorkerNum
     {
         get => _workerNum;
         set
@@ -139,49 +131,49 @@
         }
     }
 
-    string output;
+    string Output { get; set; } = string.Empty;
 
     public class ProgressRef
     {
         public int Progress { get; set; }
     }
 
-    readonly List<ProgressRef> piProgress = new();
-    readonly List<IWorker> workers = new();
+    readonly List<ProgressRef> _piProgress = new();
+    readonly List<IWorker> _workers = new();
 
-    readonly List<IWorkerBackgroundService<MathsService>> backgroundServices = new();
+    readonly List<IWorkerBackgroundService<MathsService>> _backgroundServices = new();
 
-    string RunDisabled => Running ? "disabled" : null;
-    bool Running;
 
     public async Task OnClick(EventArgs _)
     {
-        Running = true;
-        piProgress.ForEach(p => p.Progress = 0);
-        output = "";
+        _piProgress.ForEach(p => p.Progress = 0);
+        Output = "";
         var rn = Environment.NewLine;
         try
         {
-            sliceSize = (int)Math.Floor((decimal)piIterations / workerNum);
+            _sliceSize = (int)Math.Floor((decimal)_piIterations / WorkerNum);
 
-            while (workers.Count() < workerNum)
+            while (_workers.Count() < WorkerNum)
             {
-                output += $"{rn}{LogDate()} Initializing a worker.";
+                Output += $"{rn}{LogDate()} Initializing a worker.";
                 StateHasChanged();
-                var worker = await WorkerFactory.CreateAsync();
-                workers.Add(worker);
-                var service = await worker.CreateBackgroundServiceAsync<MathsService>();
+                if (WorkerFactory != null)
+                {
+                    var worker = await WorkerFactory.CreateAsync();
+                    _workers.Add(worker);
+                    var service = await worker.CreateBackgroundServiceAsync<MathsService>();
 
 
-                backgroundServices.Add(service);
-                var progressRef = new ProgressRef();
-                piProgress.Add(progressRef);
-                await service.RegisterEventListenerAsync<PiProgress>(nameof(MathsService.Pi),
-                    (_, eventInfo) =>
-                    {
-                        progressRef.Progress = (int)Math.Floor(100 * ((decimal)eventInfo.Progress / sliceSize));
-                        StateHasChanged();
-                    });
+                    _backgroundServices.Add(service);
+                    var progressRef = new ProgressRef();
+                    _piProgress.Add(progressRef);
+                    await service.RegisterEventListenerAsync<PiProgress>(nameof(MathsService.Pi),
+                        (_, eventInfo) =>
+                        {
+                            progressRef.Progress = (int)Math.Floor(100 * ((decimal)eventInfo.Progress / _sliceSize));
+                            StateHasChanged();
+                        });
+                }
             }
 
             var start = 0;
@@ -189,37 +181,33 @@
             sw.Start();
             var allTasks = new List<Task<double>>();
             var servicesStarted = 0;
-            foreach (var backgroundService in backgroundServices.Take(workerNum))
+            foreach (var backgroundService in _backgroundServices.Take(WorkerNum))
             {
-                var end = start + sliceSize;
+                var end = start + _sliceSize;
 
                 var localStart = start;
-                var localSliceSize = sliceSize;
-                output += $"{rn}{LogDate()} Worker {servicesStarted + 1}: EstimatePISlice({localStart},{localSliceSize})...";
-                var task = backgroundService.RunAsync(s => s.EstimatePISlice(localStart, localSliceSize));
+                var localSliceSize = _sliceSize;
+                Output += $"{rn}{LogDate()} Worker {servicesStarted + 1}: EstimatePISlice({localStart},{localSliceSize})...";
+                var task = backgroundService.RunAsync(s => s.EstimatePiSlice(localStart, localSliceSize));
                 allTasks.Add(task);
 
                 start = end;
                 servicesStarted++;
             }
 
-            var result = await Task.WhenAll(allTasks.ToArray()).ContinueWith(t => { return 4 * t.Result.Sum(); });
+            var result = await Task.WhenAll(allTasks.ToArray()).ContinueWith(t => 4 * t.Result.Sum());
 
             sw.Stop();
-            output += $"{rn}{LogDate()} All calls complete.";
-            output += $"{rn}{LogDate()} EstimatePISlice({piIterations}) = {result}" +
-                      $"{rn}   (Workers: {workerNum} Time: {sw.Elapsed})";
-            piProgress.ForEach(p => p.Progress = 100);
+            Output += $"{rn}{LogDate()} All calls complete.";
+            Output += $"{rn}{LogDate()} EstimatePISlice({_piIterations}) = {result}" +
+                      $"{rn}   (Workers: {WorkerNum} Time: {sw.Elapsed})";
+            _piProgress.ForEach(p => p.Progress = 100);
 
             StateHasChanged();
         }
         catch (Exception e)
         {
-            output = $"{rn}Error = {e}";
-        }
-        finally
-        {
-            Running = false;
+            Output = $"{rn}Error = {e}";
         }
     }
 

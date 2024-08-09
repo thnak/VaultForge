@@ -18,7 +18,9 @@
         <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="6.0.0-preview.4.21253.5"/>
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.0-preview.6.24328.4"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.6.24327.4"/>
+        <PackageReference Include="Microsoft.Extensions.Caching.Hybrid" Version="9.0.0-preview.6.24328.4" />
         <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.0-preview.6.24327.7"/>
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.0-preview.6.24328.4" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0-preview.6.24327.7"/>
         <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.18.1"/>
         <PackageReference Include="MongoDB.Driver" Version="2.28.0"/>
