@@ -1,4 +1,4 @@
-const assemblyName = 'Web.Client';
+const assemblyName = 'WebApp.Client';
 let preventKey = [];
 
 window.deleteTemplateCache = () => {
