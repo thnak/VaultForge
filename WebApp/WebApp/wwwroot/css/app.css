@@ -15,11 +15,13 @@
     transition-behavior: allow-discrete;
     opacity: 1;
     scale: 1;
+    z-index: 9999;
 }
 
 .progress-wrapper.closed {
     display: none;
     opacity: 0;
+    z-index: 0;
 }
 
 .progress-wrapper .progress-box-wrap {

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using MudBlazor;
 
-namespace WebApp.Client.Pages.Drive.SharedDrive;
+namespace WebApp.Client.Pages.Drive;
 
 public partial class AddNewFolderDialog : ComponentBase, IDisposable
 {

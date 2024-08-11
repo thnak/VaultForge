@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using BusinessModels.Converter;
 using BusinessModels.General.EnumModel;
@@ -70,6 +71,12 @@ public class FolderInfoModel
 
     #region Front-End Methods
 
+    public FolderInfoModel Copy()
+    {
+        var textPlan = JsonSerializer.Serialize(this);
+        return JsonSerializer.Deserialize<FolderInfoModel>(textPlan)!;
+    }
+    
     public override bool Equals(object? o)
     {
         var other = o as FileInfoModel;

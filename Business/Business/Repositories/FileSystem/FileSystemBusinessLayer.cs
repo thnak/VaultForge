@@ -8,6 +8,16 @@ namespace Business.Business.Repositories.FileSystem;
 
 public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusinessLayer
 {
+    public IAsyncEnumerable<FileInfoModel> Search(string queryString, int limit = 10, CancellationTokenSource? cancellationTokenSource = default)
+    {
+        return da.Search(queryString, limit, cancellationTokenSource);
+    }
+
+    public IAsyncEnumerable<FileInfoModel> Search(string queryString, int limit = 10, CancellationToken? cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
     public IAsyncEnumerable<FileInfoModel> FindAsync(FilterDefinition<FileInfoModel> filter, CancellationTokenSource? cancellationTokenSource = default)
     {
         throw new NotImplementedException();
@@ -21,6 +31,16 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
     public IAsyncEnumerable<FileInfoModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken? cancellationToken = default)
     {
         throw new NotImplementedException();
+    }
+
+    public IAsyncEnumerable<FileInfoModel> Where(Expression<Func<FileInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
+    {
+        return da.Where(predicate, cancellationTokenSource);
+    }
+
+    public IAsyncEnumerable<FileInfoModel> Where(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken? cancellationToken = default)
+    {
+        return da.Where(predicate, cancellationToken);
     }
 
     public FileInfoModel? Get(string key)

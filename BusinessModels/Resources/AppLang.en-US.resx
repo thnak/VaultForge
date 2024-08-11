@@ -377,4 +377,16 @@ ClientY: {1}</value>
     <data name="ProtectedSessionStorage_GetAsync__ERROR___0_" xml:space="preserve">
     <value>[ERROR] {0}</value>
   </data>
+    <data name="Could not remove root folder" xml:space="preserve">
+      <value>Could not remove root folder</value>
+    </data>
+    <data name="Move _0_" xml:space="preserve">
+      <value>Move {0}</value>
+    </data>
+    <data name="Current location" xml:space="preserve">
+      <value>Current location</value>
+    </data>
+    <data name="Search" xml:space="preserve">
+      <value>Search</value>
+    </data>
 </root>

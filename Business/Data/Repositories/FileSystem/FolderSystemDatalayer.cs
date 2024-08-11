@@ -60,10 +60,54 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FolderInfoModel> Search(string queryString, int limit = 10,
-        CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<FolderInfoModel> Search(string queryString, int limit = 10, CancellationTokenSource? cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        return Search(queryString, limit, cancellationTokenSource?.Token ?? default);
+    }
+
+    public async IAsyncEnumerable<FolderInfoModel> Search(string queryString, int limit = 10, CancellationToken? cancellationToken = default)
+    {
+        var searchStage = new BsonDocument
+        {
+            {
+                "$search", new BsonDocument
+                {
+                    {
+                        "index", SearchIndexString
+                    }, // Specify the name of your search index
+                    {
+                        "text", new BsonDocument
+                        {
+                            {
+                                "query", queryString
+                            }, // Specify the search term
+                            {
+                                "path", new BsonArray
+                                {
+                                    nameof(FolderInfoModel.FolderName),
+                                    nameof(FolderInfoModel.RelativePath)
+                                }
+                            } // Specify the fields to search
+                        }
+                    }
+                }
+            }
+        };
+        var pipeline = new[]
+        {
+            searchStage,
+            new()
+            {
+                {
+                    "$limit", limit
+                }
+            } // Limit the number of results
+        };
+        var searchResults = await _dataDb.AggregateAsync<FolderInfoModel>(pipeline, null, cancellationToken ?? default);
+        while (await searchResults.MoveNextAsync(cancellationToken ?? default))
+            foreach (var user in searchResults.Current)
+                if (user != default)
+                    yield return user;
     }
 
     public IAsyncEnumerable<FolderInfoModel> FindAsync(FilterDefinition<FolderInfoModel> filter,
@@ -87,7 +131,20 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
     public IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate,
         CancellationTokenSource? cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        return Where(predicate, cancellationTokenSource?.Token ?? default);
+    }
+
+    public async IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken? cancellationToken = default)
+    {
+        var cursor = await _dataDb.FindAsync(predicate);
+        while (await cursor.MoveNextAsync(cancellationToken ?? default))
+        {
+            foreach (var model in cursor.Current)
+            {
+                if(model != default)
+                    yield return model;
+            }
+        }
     }
 
     public FolderInfoModel? Get(string key)

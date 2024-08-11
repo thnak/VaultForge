@@ -15,23 +15,44 @@ using Protector.Utils;
 
 namespace Business.Business.Repositories.FileSystem;
 
-public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemService, IFileSystemBusinessLayer fileSystemService, IUserBusinessLayer userService, IOptions<AppSettings> options) : IFolderSystemBusinessLayer
+public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemService, IFileSystemBusinessLayer fileSystemService, 
+    IUserBusinessLayer userService, IOptions<AppSettings> options) : IFolderSystemBusinessLayer
 {
     private readonly string _workingDir = options.Value.FileFolder;
 
+    public IAsyncEnumerable<FolderInfoModel> Search(string queryString, int limit = 10, CancellationTokenSource? cancellationTokenSource = default)
+    {
+        return folderSystemService.Search(queryString, limit, cancellationTokenSource);
+    }
+
+    public IAsyncEnumerable<FolderInfoModel> Search(string queryString, int limit = 10, CancellationToken? cancellationToken = default)
+    {
+        return folderSystemService.Search(queryString, limit, cancellationToken);
+    }
+
     public IAsyncEnumerable<FolderInfoModel> FindAsync(FilterDefinition<FolderInfoModel> filter, CancellationTokenSource? cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        return folderSystemService.FindAsync(filter, cancellationTokenSource);
     }
 
     public IAsyncEnumerable<FolderInfoModel> FindAsync(string keyWord, CancellationTokenSource? cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        return folderSystemService.FindAsync(keyWord, cancellationTokenSource);
     }
 
     public IAsyncEnumerable<FolderInfoModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken? cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return folderSystemService.FindProjectAsync(keyWord, limit, cancellationToken);
+    }
+
+    public IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
+    {
+        return folderSystemService.Where(predicate, cancellationTokenSource);
+    }
+
+    public IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken? cancellationToken = default)
+    {
+        return folderSystemService.Where(predicate, cancellationToken);
     }
 
     public FolderInfoModel? Get(string key)
@@ -161,6 +182,11 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         }
 
         return folder;
+    }
+
+    public IAsyncEnumerable<FolderInfoModel> Search(string queryString, string? username, int limit = 10, CancellationTokenSource? cancellationTokenSource = default)
+    {
+        throw new NotImplementedException();
     }
 
     public (bool, string) CreateFile(FolderInfoModel folder, FileInfoModel file)
@@ -325,7 +351,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
     /// </summary>
     /// <param name="username"></param>
     /// <returns></returns>
-    private UserModel? GetUser(string username)
+    public UserModel? GetUser(string username)
     {
         if (string.IsNullOrEmpty(username)) username = "Anonymous";
         var user = userService.Get(username);

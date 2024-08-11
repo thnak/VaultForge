@@ -1,0 +1,73 @@
+﻿@using BusinessModels.System.FileSystem
+
+
+
+
+<MudDialog>
+    <TitleContent>
+        <div class="d-flex flex-row justify-space-between" >
+            <div class="d-flex flex-1 flex-column justify-start" >
+                <b>
+                    <MudText Typo="Typo.h5" >@DialogInstance.Title</MudText>
+                </b>
+            </div>
+            <div>
+                @if (Loading)
+                {
+                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small" />
+                }
+                else
+                {
+                    <MudIconButton Color="Color.Secondary" Icon="@Icons.Material.Filled.CreateNewFolder" OnClick="@AddNewFolder" />
+                }
+            </div>
+        </div>
+    </TitleContent>
+    <DialogContent>
+        <MudPaper Elevation="0" >
+
+            <MudDataGrid Filterable="false" FixedFooter FixedHeader Height="450px" @ref="DataGrid" ServerData="ServerReload" T="FolderInfoModel" >
+                <ToolBarContent>
+                    <div>
+                        <MudTooltip Arrow Color="Color.Secondary" Placement="Placement.Top" Text="@Folder.RelativePath" >
+                            <MudText >
+                                @AppLang.Current_location: @Folder.FolderName
+                            </MudText>
+                        </MudTooltip>
+                    </div>
+                    <MudSpacer />
+                    <div style="width: 300px" >
+                        <MudAutocomplete Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mt-0" Clearable ToStringFunc="ToStringFunc"
+                                         CoerceText CoerceValue IconSize="Size.Medium" Placeholder="@AppLang.Search" SearchFunc="SearchFolder" ShowProgressIndicator
+                                         T="FolderInfoModel?" Value="@SearchString" ValueChanged="FolderSearchChanged" Variant="Variant.Outlined" >
+                            <ItemTemplate Context="templateContext" >
+                                <div class="d-flex flex-column gap-0" >
+                                    <MudText>@templateContext?.FolderName</MudText>
+                                    <MudText Typo="Typo.subtitle2" >@templateContext?.RelativePath</MudText>
+                                </div>
+                            </ItemTemplate>
+                            <ItemSelectedTemplate Context="templateContext" >
+                                <div class="d-flex flex-column gap-0" >
+                                    <MudText>@templateContext?.FolderName</MudText>
+                                    <MudText Typo="Typo.subtitle2" >@templateContext?.RelativePath</MudText>
+                                </div>
+                            </ItemSelectedTemplate>
+                        </MudAutocomplete>
+                    </div>
+                </ToolBarContent>
+                <Columns>
+                    <PropertyColumn Property="x => x.FolderName" Title="@AppLang.FolderName" />
+                    <PropertyColumn Property="x => x.FolderSize" />
+                </Columns>
+                <PagerContent>
+                    <MudDataGridPager T="FolderInfoModel" />
+                </PagerContent>
+            </MudDataGrid>
+
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Error" OnClick="@Cancel" Variant="Variant.Outlined" >@AppLang.Cancel</MudButton>
+        <MudButton Color="Color.Success" OnClick="@Submit" Variant="Variant.Filled" >@AppLang.Submit</MudButton>
+    </DialogActions>
+</MudDialog>

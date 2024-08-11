@@ -376,4 +376,16 @@ ClientY: {1}</value>
     <data name="ProtectedSessionStorage_GetAsync__ERROR___0_" xml:space="preserve">
     <value>[ERROR] {0}</value>
   </data>
+    <data name="Could not remove root folder" xml:space="preserve">
+      <value>Không thể xóa thư mục gốc</value>
+    </data>
+    <data name="Move _0_" xml:space="preserve">
+      <value>Di chuyển {0}</value>
+    </data>
+    <data name="Current location" xml:space="preserve">
+      <value>Vị trí hiện tại</value>
+    </data>
+    <data name="Search" xml:space="preserve">
+      <value>Tìm kiếm</value>
+    </data>
 </root>

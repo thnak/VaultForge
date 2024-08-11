@@ -1,0 +1,27 @@
+Index: BusinessModels/Validator/ExtendFluentValidator.cs
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/BusinessModels/Validator/ExtendFluentValidator.cs b/BusinessModels/Validator/ExtendFluentValidator.cs
+new file mode 100644
+--- /dev/null	(date 1723007044793)
++++ b/BusinessModels/Validator/ExtendFluentValidator.cs	(date 1723007044793)
+@@ -0,0 +1,16 @@
++using FluentValidation;
++
++namespace BusinessModels.Validator;
++
++/// <summary>
++/// Mở rộng tụi Validator cho client
++/// </summary>
++/// <typeparam name="T"></typeparam>
++public class ExtendFluentValidator<T> : AbstractValidator<T>
++{
++    public Func<object, string, Task<IEnumerable<string>>> ValidateValueAsync => async (model, propertyName) =>
++    {
++        var result = await ValidateAsync(ValidationContext<T>.CreateWithOptions((T)model, x => x.IncludeProperties(propertyName)));
++        return result.IsValid ? [] : result.Errors.Select(e => e.ErrorMessage);
++    };
++}
+\ No newline at end of file

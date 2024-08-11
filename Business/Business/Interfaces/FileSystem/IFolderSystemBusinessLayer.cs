@@ -1,14 +1,23 @@
 using System.Linq.Expressions;
+using BusinessModels.People;
 using BusinessModels.System.FileSystem;
 
 namespace Business.Business.Interfaces.FileSystem;
 
 public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInfoModel>
 {
+    /// <summary>
+    /// Lấy người dùng theo tên hoặc lấy mặc định Anonymous
+    /// </summary>
+    /// <param name="username"></param>
+    /// <returns>Anonymous when string is empty</returns>
+    UserModel? GetUser(string username);
     public FolderInfoModel? Get(string username, string relativePath);
     public List<FolderInfoModel> GetFolderBloodLine(string username, string folderId);
     public FolderInfoModel? GetRoot(string username);
-
+    
+    IAsyncEnumerable<FolderInfoModel> Search(string queryString, string? username, int limit = 10, CancellationTokenSource? cancellationTokenSource = default);
+    
     /// <summary>
     ///     Regis new file with auto init absolute path
     /// </summary>

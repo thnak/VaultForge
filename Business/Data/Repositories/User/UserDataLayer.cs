@@ -76,7 +76,12 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
         return _dataDb.EstimatedDocumentCountAsync();
     }
 
-    public async IAsyncEnumerable<UserModel> Search(string queryString, int limit = 10, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<UserModel> Search(string queryString, int limit = 10, CancellationTokenSource? cancellationTokenSource = default)
+    {
+        return Search(queryString, limit, cancellationTokenSource?.Token ?? default);
+    }
+
+    public async IAsyncEnumerable<UserModel> Search(string queryString, int limit = 10, CancellationToken? cancellationToken = default)
     {
         var searchStage = new BsonDocument
         {
@@ -114,10 +119,11 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
                 }
             } // Limit the number of results
         };
-        var searchResults = await _dataDb.AggregateAsync<UserModel>(pipeline, null, cancellationTokenSource?.Token ?? default);
-        while (await searchResults.MoveNextAsync(cancellationTokenSource?.Token ?? default))
+        var searchResults = await _dataDb.AggregateAsync<UserModel>(pipeline, null, cancellationToken ?? default);
+        while (await searchResults.MoveNextAsync(cancellationToken ?? default))
             foreach (var user in searchResults.Current)
-                yield return user;
+                if (user != default)
+                    yield return user;
     }
 
     public IAsyncEnumerable<UserModel> FindAsync(FilterDefinition<UserModel> filter, CancellationTokenSource? cancellationTokenSource = default)
@@ -135,12 +141,21 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
         throw new NotImplementedException();
     }
 
-    public async IAsyncEnumerable<UserModel> Where(Expression<Func<UserModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<UserModel> Where(Expression<Func<UserModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
     {
-        var data = await _dataDb.FindAsync(predicate, new FindOptions<UserModel, UserModel>(), cancellationTokenSource?.Token ?? default);
-        while (await data.MoveNextAsync(cancellationTokenSource?.Token ?? default))
-            foreach (var user in data.Current)
-                yield return user;
+        return Where(predicate, cancellationTokenSource?.Token ?? default);
+    }
+
+    public async IAsyncEnumerable<UserModel> Where(Expression<Func<UserModel, bool>> predicate, CancellationToken? cancellationToken = default)
+    {
+        var cursor = await _dataDb.FindAsync(predicate);
+        while (await cursor.MoveNextAsync(cancellationToken ?? default))
+        {
+            foreach (var model in cursor.Current)
+            {
+                yield return model;
+            }
+        }
     }
 
     public UserModel? Get(string key)

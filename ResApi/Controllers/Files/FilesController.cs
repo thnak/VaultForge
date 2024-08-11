@@ -5,6 +5,7 @@ using Business.Business.Interfaces.FileSystem;
 using Business.Utils.Helper;
 using BusinessModels.General;
 using BusinessModels.General.EnumModel;
+using BusinessModels.People;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
@@ -74,11 +75,15 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     public IActionResult GetFiles([FromBody] List<string> listFiles)
     {
         List<FileInfoModel> files = [];
-        foreach (var id in listFiles)
+        var cancelToken = HttpContext.RequestAborted;
+
+        foreach (var id in listFiles.TakeWhile(_ => cancelToken is not { IsCancellationRequested: true }))
         {
             var file = fileServe.Get(id);
             if (file == null) continue;
             file.AbsolutePath = string.Empty;
+            if (file is { Type: FileContentType.DeletedFile or FileContentType.HiddenFile or FileContentType.ThumbnailFile })
+                continue;
             files.Add(file);
         }
 
@@ -91,7 +96,8 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     public IActionResult GetFolderList([FromBody] List<string> listFolders)
     {
         List<FolderInfoModel> files = [];
-        foreach (var id in listFolders)
+        var cancelToken = HttpContext.RequestAborted;
+        foreach (var id in listFolders.TakeWhile(_ => cancelToken is not { IsCancellationRequested: true }))
         {
             var file = folderServe.Get(id);
             if (file == null) continue;
@@ -102,6 +108,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     }
 
     [HttpGet("get-file-v2")]
+    [IgnoreAntiforgeryToken]
     public IActionResult GetFile_v2(string id)
     {
         var file = fileServe.Get(id);
@@ -123,16 +130,49 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         return PhysicalFile(file.AbsolutePath, file.ContentType, true);
     }
 
-    [HttpGet("get-shared-folder")]
+    [HttpGet("get-folder")]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
-    [OutputCache(Duration = 3600, NoStore = true)]
+    [OutputCache(Duration = 5, NoStore = true)]
     public IActionResult GetSharedFolder(string? id)
     {
         var folder = string.IsNullOrEmpty(id) ? folderServe.GetRoot("") : folderServe.Get(id);
         if (folder == null) return BadRequest(AppLang.Folder_could_not_be_found);
         folder.Password = string.Empty;
         return Content(folder.ToJson(), MediaTypeNames.Application.Json);
+    }
+
+    [HttpPost("search-folder")]
+    [IgnoreAntiforgeryToken]
+    [OutputCache(Duration = 10, NoStore = true)]
+    public async Task<IActionResult> SearchFolder([FromForm] string? username, [FromForm] string searchString)
+    {
+        List<FolderInfoModel> folderList = [];
+        var cancelToken = HttpContext.RequestAborted;
+
+        var user = folderServe.GetUser(string.Empty) ?? new UserModel();
+
+        try
+        {
+            await foreach (var x in folderServe.Where(x => x.FolderName.Contains(searchString) ||
+                                                           x.RelativePath.Contains(searchString) &&
+                                                           x.Username == user.UserName &&
+                                                           x.Type == FolderContentType.Folder, cancelToken).WithCancellation(cancelToken))
+            {
+                x.Password = string.Empty;
+                x.SharedTo = [];
+                x.Contents = [];
+                folderList.Add(x);
+                if (folderList.Count == 10)
+                    break;
+            }
+        }
+        catch (Exception)
+        {
+            //
+        }
+
+        return Content(folderList.ToJson(), MimeTypeNames.Application.Json);
     }
 
     [HttpGet("get-folder-blood-line")]
@@ -171,7 +211,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         var status = await folderServe.UpdateAsync(folder);
         return status.Item1 ? Ok(status.Item2) : BadRequest(status.Item2);
     }
-    
+
     [HttpDelete("delete-file")]
     public async Task<IActionResult> DeleteFile([FromForm] string fileId, [FromForm] string folderId)
     {
@@ -192,14 +232,40 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     }
 
     [HttpDelete("safe-delete-file")]
-    public async Task<IActionResult> SafeDeleteFile([FromForm] string code)
+    [IgnoreAntiforgeryToken]
+    public async Task<IActionResult> SafeDeleteFile(string code)
     {
         var file = fileServe.Get(code);
         if (file == default) return NotFound(AppLang.File_not_found_);
+        if (file is { Type: FileContentType.File or FileContentType.HiddenFile })
+        {
+            file.Type = FileContentType.DeletedFile;
+            var result = await fileServe.UpdateAsync(file);
+            return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
+        }
 
-        file.Type = FileContentType.DeletedFile;
-        var result = await fileServe.UpdateAsync(file);
-        return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
+        return NotFound(AppLang.File_not_found_);
+    }
+
+    [HttpDelete("safe-delete-folder")]
+    [IgnoreAntiforgeryToken]
+    public async Task<IActionResult> SafeDeleteFolder(string code)
+    {
+        var folder = folderServe.Get(code);
+        if (folder == default) return NotFound(AppLang.Folder_could_not_be_found);
+
+        if (folder.RelativePath == "/root")
+            return BadRequest(AppLang.Could_not_remove_root_folder);
+
+        if (folder is { Type: FolderContentType.Folder or FolderContentType.HiddenFolder })
+        {
+            folder.Type = FolderContentType.DeletedFolder;
+            var updateResult = await folderServe.UpdateAsync(folder);
+
+            return updateResult.Item1 ? Ok(updateResult.Item2) : BadRequest(updateResult.Item2);
+        }
+
+        return NotFound(AppLang.Folder_could_not_be_found);
     }
 
 
@@ -246,7 +312,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         {
             if (file == default)
             {
-                ModelState.AddModelError("File", AppLang.File_not_found_);
+                ModelState.AddModelError(AppLang.File, AppLang.File_not_found_);
                 continue;
             }
 
@@ -268,7 +334,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         await folderServe.UpdateAsync(currentFolder);
         await foreach (var x in fileServe.UpdateAsync(files!))
             if (!x.Item1)
-                ModelState.AddModelError("File", x.Item2);
+                ModelState.AddModelError(AppLang.File, x.Item2);
 
 
         return Ok(ModelState.Any() ? ModelState : AppLang.File_moved_successfully);

@@ -17,6 +17,11 @@ public class UserEntityDataLayer(EntityDataContext entityDataContext) : IDataLay
         throw new NotImplementedException();
     }
 
+    public IAsyncEnumerable<UserModel> Search(string queryString, int limit = 10, CancellationToken? cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
     public IAsyncEnumerable<UserModel> FindAsync(FilterDefinition<UserModel> filter, CancellationTokenSource? cancellationTokenSource = default)
     {
         throw new NotImplementedException();
@@ -35,6 +40,11 @@ public class UserEntityDataLayer(EntityDataContext entityDataContext) : IDataLay
     public IAsyncEnumerable<UserModel> Where(Expression<Func<UserModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
     {
         var data = entityDataContext.UserContext.Where(predicate);
+        throw new NotImplementedException();
+    }
+
+    public IAsyncEnumerable<UserModel> Where(Expression<Func<UserModel, bool>> predicate, CancellationToken? cancellationToken = default)
+    {
         throw new NotImplementedException();
     }
 

@@ -63,6 +63,11 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
         throw new NotImplementedException();
     }
 
+    public IAsyncEnumerable<FileInfoModel> Search(string queryString, int limit = 10, CancellationToken? cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
     public IAsyncEnumerable<FileInfoModel> FindAsync(FilterDefinition<FileInfoModel> filter, CancellationTokenSource? cancellationTokenSource = default)
     {
         throw new NotImplementedException();
@@ -80,7 +85,19 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
 
     public IAsyncEnumerable<FileInfoModel> Where(Expression<Func<FileInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        return Where(predicate, cancellationTokenSource?.Token ?? default);
+    }
+
+    public async IAsyncEnumerable<FileInfoModel> Where(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken? cancellationToken = default)
+    {
+        var cursor = await _fileDataDb.FindAsync(predicate);
+        while (await cursor.MoveNextAsync(cancellationToken ?? default))
+        {
+            foreach (var model in cursor.Current)
+            {
+                yield return model;
+            }
+        }
     }
 
     public FileInfoModel? Get(string key)

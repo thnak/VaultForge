@@ -154,7 +154,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         await Render();
         FileItemList.Clear();
         FolderItemList.Clear();
-        var responseMessage = await baseClientService.GetAsync<FolderInfoModel>($"/api/Files/get-shared-folder?id={FolderId}");
+        var responseMessage = await baseClientService.GetAsync<FolderInfoModel>($"/api/Files/get-folder?id={FolderId}");
         if (responseMessage.IsSuccessStatusCode)
         {
             var folder = responseMessage.Data;
@@ -190,6 +190,10 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                         {
                             Action = () => Copy2ClipBoard($"{ApiService.GetBaseUrl()}api/Files/download-file?id={file.Id}")
                         },
+                        MoveTo = new ButtonAction()
+                        {
+                            Action = () => MoveFile2Folder(file).ConfigureAwait(false)
+                        },
                         ItemClassList = "align-center justify-center d-flex flex-row gap-2 mud-elevation-1 mud-paper mud-paper-outlined pa-2 rounded-lg".ItemOpacityClass(file.Type)
                     });
 
@@ -207,6 +211,10 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                         {
                             Action = () => RenameFile(f.Id.ToString(), f.FolderName, "/api/files/re-name-folder").ConfigureAwait(false)
                         },
+                        Delete = new ButtonAction()
+                        {
+                            Action = () => DeleteFolder(f).ConfigureAwait(false)
+                        }
                     });
             }
         }
@@ -343,12 +351,81 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
         var dialog = await DialogService.ShowAsync<ConfirmDialog>("", parameter, option);
         var dialogResult = await dialog.Result;
-        if (dialogResult is { Canceled: false }) ToastService.ShowSuccess(AppLang.Delete_successfully);
+        if (dialogResult is { Canceled: false })
+        {
+            var response = await ApiService.DeleteAsync<string>($"/api/Files/safe-delete-file?code={file.Id.ToString()}");
+            if (response.IsSuccessStatusCode)
+            {
+                await GetRootFolderAsync();
+                ToastService.ShowSuccess(AppLang.Delete_successfully);
+            }
+            else
+            {
+                ToastService.ShowError(response.Message);
+            }
+        }
     }
 
-    private async Task MoveFile(string id)
+
+    private async Task DeleteFolder(FolderInfoModel folder)
     {
-        await Task.Delay(1);
+        var data = new DialogConfirmDataModel
+        {
+            Fragment = builder =>
+            {
+                builder.OpenElement(0, "span");
+                builder.SetKey(folder.Id);
+                builder.AddContent(1, "Chuyển vào thùng rác?");
+                builder.CloseElement();
+            },
+            Title = AppLang.Warning,
+            Icon = "fa-solid fa-triangle-exclamation",
+            Color = Color.Error
+        };
+        var option = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true
+        };
+        var parameter = new DialogParameters<ConfirmDialog>
+        {
+            { x => x.DataModel, data }
+        };
+
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>("", parameter, option);
+        var dialogResult = await dialog.Result;
+        if (dialogResult is { Canceled: false })
+        {
+            var response = await ApiService.DeleteAsync<string>($"/api/Files/safe-delete-folder?code={folder.Id.ToString()}");
+            if (response.IsSuccessStatusCode)
+            {
+                await GetRootFolderAsync();
+                ToastService.ShowSuccess(AppLang.Delete_successfully);
+            }
+            else
+            {
+                ToastService.ShowError(response.Message);
+            }
+        }
+    }
+
+    private async Task MoveFile2Folder(FileInfoModel file)
+    {
+        var option = new DialogOptions()
+        {
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true
+        };
+        var param = new DialogParameters<FolderSelectorDialog>()
+        {
+            { x => x.Folder, RootFolder },
+        };
+        var dialog = await DialogService.ShowAsync<FolderSelectorDialog>($"{AppLang.Move__0_.AutoReplace(file.FileName)}", param, option);
+        var dialogResult = await dialog.Result;
+        if (dialogResult is { Canceled: false, Data: true })
+        {
+            await GetRootFolderAsync();
+        }
     }
 
     #endregion

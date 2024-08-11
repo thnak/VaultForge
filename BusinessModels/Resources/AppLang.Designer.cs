@@ -132,6 +132,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Không thể xóa thư mục gốc.
+        /// </summary>
+        public static string Could_not_remove_root_folder {
+            get {
+                return ResourceManager.GetString("Could not remove root folder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tạo tài khoản.
         /// </summary>
         public static string Create_Account {
@@ -164,6 +173,15 @@ namespace BusinessModels.Resources {
         public static string Current_folder_could_not_have_found {
             get {
                 return ResourceManager.GetString("Current folder could not have found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vị trí hiện tại.
+        /// </summary>
+        public static string Current_location {
+            get {
+                return ResourceManager.GetString("Current location", resourceCulture);
             }
         }
         
@@ -429,6 +447,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Di chuyển {0}.
+        /// </summary>
+        public static string Move__0_ {
+            get {
+                return ResourceManager.GetString("Move _0_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mới.
         /// </summary>
         public static string New {
@@ -597,6 +624,15 @@ namespace BusinessModels.Resources {
         public static string Routes_PageShow_The_page_has_been_displayed {
             get {
                 return ResourceManager.GetString("Routes_PageShow_The_page_has_been_displayed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tìm kiếm.
+        /// </summary>
+        public static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
             }
         }
         
