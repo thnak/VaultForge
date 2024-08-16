@@ -8,6 +8,7 @@
         <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
         <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
         <!-- <WasmEnableThreads>true</WasmEnableThreads> -->
+        <BlazorWebAssemblyJiterpreter>false</BlazorWebAssemblyJiterpreter>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
@@ -24,8 +25,8 @@
 
     <ItemGroup>
         <PackageReference Include="Blazored.Toast" Version="4.2.1"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0-preview.6.24328.4"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.0-preview.6.24328.4"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0-preview.7.24406.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.0-preview.7.24406.2" />
         <PackageReference Include="MudBlazor" Version="7.6.0" />
         <PackageReference Include="Tewr.BlazorWorker.BackgroundService" Version="4.1.2"/>
     </ItemGroup>

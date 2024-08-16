@@ -155,7 +155,7 @@ public class Program
         app.UseMiddleware<ErrorHandlingMiddleware>();
 
         app.MapRazorComponents<App>()
-            .AddInteractiveWebAssemblyRenderMode(options => options.ServeMultithreadingHeaders = false)
+            .AddInteractiveWebAssemblyRenderMode(options => options.ServeMultithreadingHeaders = true)
             .AddInteractiveServerRenderMode()
             .AddAdditionalAssemblies(typeof(_Imports).Assembly);
         

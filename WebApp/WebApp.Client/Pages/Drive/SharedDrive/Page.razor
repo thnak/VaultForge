@@ -70,7 +70,7 @@
         <div class="@context.ItemClassList" @key="context" @ondblclick="context.DbLickEvent.Action" >
             <div class="icon-container-tag" >
                 <MudText Typo="Typo.h6" >
-                    <i class="@(context.ContentType.GetIcon())" ></i>
+                    <i class="@context.ContentType.GetIcon()" ></i>
                 </MudText>
             </div>
             <div class="flex-1" >
@@ -95,7 +95,7 @@
     </ItemRenderer>
 </MudDropContainer>
 
-<MudDrawer Anchor="Anchor.Right" @bind-Open="@Open" Color="Color.Primary" Elevation="0" Variant="@DrawerVariant.Temporary" Width="min(700px, 100vw)" >
+<MudDrawer Anchor="Anchor.Right" @bind-Open="@Open" Color="Color.Primary" Elevation="0" Variant="@DrawerVariant.Temporary" Width="min(1200px, 100vw)" >
     <MudDrawerHeader>
         <MudText Typo="Typo.h6" >File upload</MudText>
     </MudDrawerHeader>
