@@ -1,5 +1,5 @@
 ﻿<MudDialogProvider MaxWidth="MaxWidth.False" Position="DialogPosition.Center" />
-<MudSnackbarProvider />
+<MudSnackbarProvider Class="toast-move-right-2-left"/>
 <ThemeProvider />
 <MudPopoverProvider />
 <BlazoredToasts ErrorIcon="fa-solid fa-bug"
@@ -8,8 +8,10 @@
                 PauseProgressOnHover="true"
                 Position="ToastPosition.BottomRight"
                 ShowProgressBar="true"
+                ShowCloseButton="true"
                 SuccessIcon="fa-regular fa-circle-check"
-                Timeout="10" WarningIcon="fa-solid fa-triangle-exclamation" />
+                Timeout="10" WarningIcon="fa-solid fa-triangle-exclamation"
+                MaxToastCount="10"/>
 
 <MudBreakpointProvider>
     <Router AppAssembly="@typeof(Program).Assembly" >

@@ -1,6 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Net.Mime;
+using System.Runtime.InteropServices.JavaScript;
+using System.Runtime.Versioning;
 using System.Text;
+using Blazored.Toast.Configuration;
 using BusinessModels.General.EnumModel;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
@@ -8,6 +11,7 @@ using BusinessModels.Utils;
 using BusinessModels.WebContent;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using MongoDB.Bson;
 using MudBlazor;
 using WebApp.Client.Components.ConfirmDialog;
 using WebApp.Client.Models;
@@ -16,17 +20,30 @@ using WebApp.Client.Utils;
 
 namespace WebApp.Client.Pages.Drive.SharedDrive;
 
+[SupportedOSPlatform("browser")]
 public partial class Page(BaseHttpClientService baseClientService) : ComponentBase, IDisposable
 {
+    #region Js Module
+
+    [JSImport("getMessage", nameof(Page))]
+    internal static partial string GetWelcomeMessage();
+
+    #endregion
+
     [Parameter] public string? FolderId { get; set; } = string.Empty;
     private bool Open { get; set; }
     private bool Loading { get; set; }
     private bool ShouldRen { get; set; } = true;
     private FolderInfoModel RootFolder { get; set; } = new();
-
     private MudDropContainer<DropItem>? DropContainer { get; set; }
-
     private List<BreadcrumbItem> BreadcrumbItems { get; set; } = [];
+
+    #region Upload properties
+
+    private List<FileInfoModel> FileUploadList { get; set; } = [];
+    private Dictionary<ObjectId, float> UploadProgress { get; set; } = [];
+
+    #endregion
 
     private List<DropItem> FileItemList { get; } = [];
     private List<DropItem> FolderItemList { get; } = [];
@@ -77,11 +94,13 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 RootId = RootFolder.Id.ToString(),
                 RootPassWord = RootFolder.Password
             };
-            var content = new StringContent(model.ToJson(), Encoding.Unicode, MimeTypeNames.Application.Json);
+            var content = new StringContent(StringExtension.ToJson(model), Encoding.Unicode, MimeTypeNames.Application.Json);
             var response = await ApiService.PutAsync<string>("api/Files/create-folder", content);
             if (response.IsSuccessStatusCode)
             {
-                ToastService.ShowSuccess(response.Message);
+                ToastService.ShowSuccess(response.Message, ToastSettings);
+
+
                 _ = Task.Run(GetRootFolderAsync);
             }
             else
@@ -89,6 +108,11 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 Console.WriteLine(response.Message);
             }
         }
+    }
+
+    void ToastSettings(ToastSettings toastSettings)
+    {
+        toastSettings.AdditionalClasses = "toast-move-right-2-left";
     }
 
     #region Models
@@ -123,6 +147,9 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         if (firstRender)
         {
             _ = Task.Run(GetRootFolderAsync);
+#pragma warning disable CA1416
+            await JSHost.ImportAsync(nameof(Page), $"/Pages/Drive/SharedDrive/{nameof(Page)}.razor.js");
+#pragma warning restore CA1416
             EventListener.KeyPressChangeEventAsync += KeyPressChangeEventAsync;
             EventListener.ContextMenuClickedWithParamAsync += ContextMenuClick;
         }
@@ -194,7 +221,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                         {
                             Action = () => MoveFile2Folder(file).ConfigureAwait(false)
                         },
-                        ItemClassList = "align-center justify-center d-flex flex-row gap-2 mud-elevation-1 mud-paper mud-paper-outlined pa-2 rounded-lg".ItemOpacityClass(file.Type)
+                        ItemClassList = InitStyleElement(file.Type)
                     });
 
                 foreach (var f in folders)
@@ -202,7 +229,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                     {
                         Identifier = "Folder",
                         Name = f.FolderName,
-                        ItemClassList = "align-center justify-center d-flex flex-row gap-2 mud-elevation-1 mud-paper mud-paper-outlined pa-2 rounded-lg".ItemOpacityClass(f.Type),
+                        ItemClassList = InitStyleElement(f.Type),
                         DbLickEvent = new ButtonAction
                         {
                             Action = () => OpenFolder(f.Id.ToString())
@@ -219,42 +246,54 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             }
         }
 
+
         Loading = false;
         DropContainer?.Refresh();
         await Render();
+        ShouldRen = true;
         _ = Task.Run(InitBreadcrumb);
+    }
+
+    string InitStyleElement(FolderContentType type)
+    {
+        return "align-center justify-center d-flex flex-row gap-2 mud-elevation-1 mud-paper mud-paper-outlined pa-2 rounded-lg smooth-appear".ItemOpacityClass(type);
+    }
+
+    string InitStyleElement(FileContentType type)
+    {
+        return "align-center justify-center d-flex flex-row gap-2 mud-elevation-1 mud-paper mud-paper-outlined pa-2 rounded-lg smooth-appear".ItemOpacityClass(type);
     }
 
     private async Task InitBreadcrumb()
     {
         BreadcrumbItems = [];
         var response = await ApiService.GetAsync<List<FolderInfoModel>>($"/api/files/get-folder-blood-line?id={RootFolder.Id.ToString()}");
-        if (response.IsSuccessStatusCode)
-            if (response.Data != null)
-                foreach (var folderInfoModel in response.Data)
-                    BreadcrumbItems.Add(new BreadcrumbItem(folderInfoModel.FolderName, PageRoutes.Drive.Shared.Src + $"/{folderInfoModel.Id.ToString()}"));
+        if (response is { IsSuccessStatusCode: true, Data: not null })
+            foreach (var folderInfoModel in response.Data)
+                BreadcrumbItems.Add(new BreadcrumbItem(folderInfoModel.FolderName, PageRoutes.Drive.Shared.Src + $"/{folderInfoModel.Id.ToString()}"));
 
         await Render();
+        ShouldRen = true;
     }
 
     private async Task<List<FileInfoModel>> GetFiles(List<string> codes)
     {
-        var textPlant = new StringContent(codes.ToJson(), Encoding.UTF8, MediaTypeNames.Application.Json);
+        var textPlant = new StringContent(StringExtension.ToJson(codes), Encoding.UTF8, MediaTypeNames.Application.Json);
         var response = await baseClientService.PostAsync<List<FileInfoModel>>("/api/Files/get-file-list", textPlant);
         if (response.IsSuccessStatusCode) return response.Data ?? [];
 
-        ToastService.ShowError("Empty files");
+        ToastService.ShowError("Empty files", ToastSettings);
 
         return [];
     }
 
     private async Task<List<FolderInfoModel>> GetFolders(string[] codes)
     {
-        var textPlant = new StringContent(codes.ToJson(), Encoding.UTF8, MediaTypeNames.Application.Json);
+        var textPlant = new StringContent(StringExtension.ToJson(codes), Encoding.UTF8, MediaTypeNames.Application.Json);
         var response = await baseClientService.PostAsync<List<FolderInfoModel>>("/api/Files/get-folder-list", textPlant);
         if (response.IsSuccessStatusCode) return response.Data ?? [];
 
-        ToastService.ShowError("Empty foldes");
+        ToastService.ShowError("Empty folders", ToastSettings);
         return [];
     }
 
@@ -289,21 +328,23 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 var response = await ApiService.PostAsync<string>(url, formDataContent);
                 if (response.IsSuccessStatusCode)
                 {
-                    ToastService.ShowSuccess(response.Message);
+                    ToastService.ShowSuccess(response.Message, ToastSettings);
                     _ = Task.Run(GetRootFolderAsync);
                 }
                 else
                 {
-                    ToastService.ShowError(response.Message);
+                    ToastService.ShowError(response.Message, ToastSettings);
                 }
             }
             else
             {
-                ToastService.ShowError(string.Format(AppLang.File_name_contains_invalid_character__x, keyword));
+                ToastService.ShowError(string.Format(AppLang.File_name_contains_invalid_character__x, keyword), ToastSettings);
             }
         }
 
         Loading = false;
+        await Render();
+        ShouldRen = true;
         await InvokeAsync(StateHasChanged);
     }
 
@@ -316,7 +357,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     private void Copy2ClipBoard([StringSyntax(StringSyntaxAttribute.Uri)] string link)
     {
         JsRuntime.CopyToClipBoard(link);
-        ToastService.ShowSuccess(AppLang.Copied);
+        ToastService.ShowSuccess(AppLang.Copied, ToastSettings);
     }
 
     private void OpenFolder(string id)
@@ -357,11 +398,11 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             if (response.IsSuccessStatusCode)
             {
                 await GetRootFolderAsync();
-                ToastService.ShowSuccess(AppLang.Delete_successfully);
+                ToastService.ShowSuccess(AppLang.Delete_successfully, ToastSettings);
             }
             else
             {
-                ToastService.ShowError(response.Message);
+                ToastService.ShowError(response.Message, ToastSettings);
             }
         }
     }
@@ -400,11 +441,11 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             if (response.IsSuccessStatusCode)
             {
                 await GetRootFolderAsync();
-                ToastService.ShowSuccess(AppLang.Delete_successfully);
+                ToastService.ShowSuccess(AppLang.Delete_successfully, ToastSettings);
             }
             else
             {
-                ToastService.ShowError(response.Message);
+                ToastService.ShowError(response.Message, ToastSettings);
             }
         }
     }

@@ -7,7 +7,10 @@ namespace Business.Services.OllamaToolCallingServices.Interfaces;
 public interface IMathService
 {
     [Description("get the current timestamp in dd-MM-yyyy HH:mm:ss format")]
-    public Task<string> GetCurrentTime([Description("set true to get current timestamp in UTC. otherwise get GMT+7")] bool useUtc, CancellationToken cancellationToken = default);
+    public Task<string> GetCurrentTimeStamp([Description("set true to get current timestamp in UTC. otherwise get GMT+7")] bool useUtc, CancellationToken cancellationToken = default);
+    
+    [Description("get the current hour in HH:mm format")]
+    public Task<string> GetCurrentHour([Description("set true to get current hour in UTC. otherwise get GMT+7")] bool useUtc, CancellationToken cancellationToken = default);
 
     [Description("compares two timestamp in the same format as provided. It returns 1 if the first time is later, -1 if the second time is later, and 0 if they are equal.")]
     public Task<string> CompareTime([Description("The first timestamp")] string firstTime, [Description("The second timestamp")] string secondTime, [Description("time format in c#. For example hh:MM:ss")] string timeFormat = "hh:MM:ss", CancellationToken cancellationToken = default);
@@ -31,6 +34,9 @@ public interface IMathService
     [Description("divides the first number by the second. It raises an error if the denominator is zero or inputs are invalid.")]
     public Task<string> Divide([Description("The numerator number")] string numberA, [Description("The denominator number")] string numberB, CancellationToken cancellationToken = default);
 
+    [Description("pow two number")]
+    public Task<string> Pow([Description("the first number")] string numberA, [Description("the second number")] string numberB, CancellationToken cancellationToken = default);
+    
     [Description("sorts a list of numbers and returns the sorted.")]
     public Task<List<double>> SortListOfNumber([Description("The list of numbers to be sorted, for example [0, 3, 5, 9]")] string listNumbers, CancellationToken cancellationToken = default);
 }

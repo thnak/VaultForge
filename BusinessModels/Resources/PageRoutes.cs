@@ -18,7 +18,14 @@ public static class PageRoutes
         {
             public const string Src = "/home";
             public const string Title = "Home";
-            public const string Description = "My homeland page";
+
+            public static readonly List<Dictionary<string, string>> MetaData =
+            [
+                new()
+                {
+                    { "description", "My home page" }
+                }
+            ];
         }
     }
 
@@ -30,14 +37,20 @@ public static class PageRoutes
         {
             public const string Src = Name + "/home";
             public const string Title = "Drive";
-            public const string Description = "My drive";
         }
 
         public static class Shared
         {
             public const string Src = Name + "/shared";
             public const string Title = "Shared drive";
-            public const string Description = "Share drive to comunity";
+
+            public static readonly List<Dictionary<string, string>> MetaData =
+            [
+                new()
+                {
+                    { "description", "Share drive to community" }
+                }
+            ];
         }
     }
 

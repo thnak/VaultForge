@@ -1,9 +1,9 @@
 ﻿@attribute [Route(PageRoutes.Home.Root.Src)]
 @attribute [Authorize]
 
-<PageTitle>@PageRoutes.Home.Root.Title</PageTitle>
+<PageTitle>@LangDict[PageRoutes.Home.Root.Title]</PageTitle>
 <HeadContent>
-    <meta content="@PageRoutes.Home.Root.Description" name="description" >
+    <HeadContentContainer MetaProperty="@PageRoutes.Home.Root.MetaData"/>
 </HeadContent>
 
 

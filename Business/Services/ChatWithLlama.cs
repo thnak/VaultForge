@@ -9,6 +9,11 @@ public class ChatWithLlama : IDisposable
     private readonly OllamaApiClient _ollamaApiClient;
     private readonly Chat _chatClient;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="systemPrompt"></param>
+    /// <param name="uri">default value is http://localhost:11434/api</param>
     public ChatWithLlama(string systemPrompt, Uri uri)
     {
         _ollamaApiClient = new OllamaApiClient(null, uri);

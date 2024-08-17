@@ -6,11 +6,23 @@ namespace Business.Services.OllamaToolCallingServices;
 
 public class MathService : IMathService
 {
-    public Task<string> GetCurrentTime(bool useUtc, CancellationToken cancellationToken = default)
+    public Task<string> GetCurrentTimeStamp(bool useUtc, CancellationToken cancellationToken = default)
     {
         try
         {
             return Task.FromResult(useUtc ? DateTime.UtcNow.ToString("dd-MM-yyyy HH:mm:ss") : DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
+        }
+        catch (Exception e)
+        {
+            return Task.FromResult(e.Message);
+        }
+    }
+
+    public Task<string> GetCurrentHour(bool useUtc, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            return Task.FromResult(useUtc ? DateTime.UtcNow.ToString("HH:mm") : DateTime.Now.ToString("HH:mm"));
         }
         catch (Exception e)
         {
@@ -153,6 +165,23 @@ public class MathService : IMathService
                 return Task.FromResult<string>($"{nameof(numberB)} is not a number. please try again");
 
             return Task.FromResult($"{value1 / value2}");
+        }
+        catch (Exception e)
+        {
+            return Task.FromResult(e.Message);
+        }
+    }
+
+    public Task<string> Pow(string numberA, string numberB, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            if (!double.TryParse(numberA, NumberFormatInfo.InvariantInfo, out double value1))
+                return Task.FromResult($"{nameof(numberA)} is not a number. please try again");
+            if (!double.TryParse(numberB, NumberFormatInfo.InvariantInfo, out double value2))
+                return Task.FromResult<string>($"{nameof(numberB)} is not a number. please try again");
+
+            return Task.FromResult($"{Math.Pow(value1, value2)}");
         }
         catch (Exception e)
         {

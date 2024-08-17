@@ -4,11 +4,11 @@
 @attribute [AllowAnonymous]
 
 <PageTitle>
-    @PageRoutes.Drive.Shared.Title
+    @LangDict[PageRoutes.Drive.Shared.Title]
 </PageTitle>
 
 <HeadContent>
-    <HeadContentContainer Description="@PageRoutes.Drive.Shared.Description" Uri="@Navigation.Uri" />
+    <HeadContentContainer MetaProperty="@PageRoutes.Drive.Shared.MetaData"/>
 </HeadContent>
 
 <SectionContent SectionId="@AppBar.BreadCrumb" >
@@ -23,7 +23,7 @@
 }
 
 <SectionContent SectionId="@AppBar.TopBarSection2" >
-    <MudMenu AnchorOrigin="Origin.BottomLeft" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Label="@AppLang.New" StartIcon="fa-plus fa-solid" TransformOrigin="Origin.TopLeft" >
+    <MudMenu AnchorOrigin="Origin.BottomLeft" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Dense IconColor="Color.Secondary" Label="@AppLang.New" StartIcon="fa-plus fa-solid" TransformOrigin="Origin.TopLeft" >
         <MudMenuItem Icon="@Icons.Material.Filled.AttachFile" OnClick="@OpenAddPopUp" >@AppLang.File</MudMenuItem>
         <MudMenuItem Icon="@Icons.Material.Filled.Folder" OnClick="@OpenAddNewFolder" >@AppLang.Folder</MudMenuItem>
     </MudMenu>
@@ -32,7 +32,7 @@
 <MudDropContainer Class="d-flex flex-column flex-grow-1 gap-3" ItemDropped="ItemUpdated" Items="FileItemList" ItemsSelector="@((item, dropzone) => item.Identifier == dropzone)" @ref="DropContainer" T="DropItem" >
     <ChildContent>
         <MudListSubheader Class="mt-4 pb-2" >Folders</MudListSubheader>
-        <div class="d-flex flex-wrap gap-4 mx-4" >
+        <div class="d-flex flex-wrap gap-4 mx-4 " >
 
             @foreach (var x in FolderItemList)
             {
@@ -47,7 +47,7 @@
 
                         <div class="icon-container-tag" >
                             <MudTooltip Arrow Color="@Color.Secondary" Placement="Placement.Top" Text="@AppLang.Other_operations" >
-                                <MudMenu AriaLabel="@AppLang.Other_operations" Icon="fa-ellipsis-vertical fa-solid" >
+                                <MudMenu AriaLabel="@AppLang.Other_operations" Icon="fa-ellipsis-vertical fa-solid" Dense>
                                     <MudMenuItem Disabled="@x.Download.Disabled" Icon="@Icons.Material.Filled.CloudDownload" OnClick="@x.Download.Action" >Download</MudMenuItem>
                                     <MudMenuItem Disabled="@x.Rename.Disabled" Icon="@Icons.Material.Filled.Edit" OnClick="@x.Rename.Action" >Rename</MudMenuItem>
                                     <MudMenuItem Disabled="@x.Share.Disabled" Icon="@Icons.Material.Filled.Share" OnClick="@x.Share.Action" >Share</MudMenuItem>
@@ -95,22 +95,30 @@
     </ItemRenderer>
 </MudDropContainer>
 
-<MudDrawer Anchor="Anchor.Right" @bind-Open="@Open" Color="Color.Primary" Elevation="0" Variant="@DrawerVariant.Temporary" Width="min(1200px, 100vw)" >
+<MudDrawer Anchor="Anchor.End" @bind-Open="Open" Color="Color.Primary" Elevation="0" Variant="@DrawerVariant.Temporary" OverlayAutoClose Width="min(300px, 90vw)">
     <MudDrawerHeader>
         <MudText Typo="Typo.h6" >File upload</MudText>
     </MudDrawerHeader>
     <div class="container" >
         <div class="header" >
-            <svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" >
-                <g id="SVGRepo_bgCarrier" stroke-width="0" ></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" ></g>
-                <g id="SVGRepo_iconCarrier" >
-                    <path d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.43285 10 7.84965 10.0688 8.24006 10.1959M12 12V21M12 12L15 15M12 12L9 15"
-                          stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" />
-                </g>
-            </svg>
-            <p>Browse File to upload!</p>
+            <MudText Typo="Typo.h1">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+            </MudText>
+            <MudText Align="Align.Center">Browse File to upload!</MudText>
         </div>
-
+        <div class="file-list-upload" >
+            @foreach (var x in FileUploadList)
+            {
+                <div @key="x.Id">
+                    <div class="icon" >
+                        <i class="@x.ContentType.GetIcon()"></i>
+                    </div>
+                    <div class="d-flex flex-row gap-0" >
+                        <MudText>@x.FileName</MudText>
+                        <MudProgressCircular Color="Color.Primary" Size="Size.Small" Value="@UploadProgress[x.Id]"/>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
 </MudDrawer>

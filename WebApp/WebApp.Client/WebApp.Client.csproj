@@ -9,6 +9,7 @@
         <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
         <!-- <WasmEnableThreads>true</WasmEnableThreads> -->
         <BlazorWebAssemblyJiterpreter>false</BlazorWebAssemblyJiterpreter>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

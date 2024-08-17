@@ -17,29 +17,20 @@ public class ChatWithLlamaController(IMemoryCache memoryCache) : ControllerBase
     [IgnoreAntiforgeryToken]
     public async Task<IActionResult> ChatLama([FromForm] string systemPrompt, [FromForm] string question, [FromForm] List<string>? images)
     {
-        try
+        List<Message> messages = memoryCache.GetOrCreate<List<Message>>(nameof(ChatWithLlamaController) + systemPrompt, entry =>
         {
-            List<Message> messages = memoryCache.GetOrCreate<List<Message>>(nameof(ChatWithLlamaController) + systemPrompt, entry =>
-            {
-                entry.Priority = CacheItemPriority.NeverRemove;
-                return [];
-            }) ?? [];
+            entry.Priority = CacheItemPriority.NeverRemove;
+            return [];
+        }) ?? [];
 
-            var chat = new ChatWithLlama(systemPrompt);
-            chat.History = messages.Any() ? [..messages] : chat.History;
-            var mess = images != default ? await chat.ChatAsync(question, images, HttpContext.RequestAborted) : await chat.ChatAsync(question, HttpContext.RequestAborted);
-            HttpContext.Response.RegisterForDispose(chat);
+        var chat = new ChatWithLlama(systemPrompt, new Uri("http://192.168.1.18:11434/api"));
+        chat.History = messages.Any() ? [..messages] : chat.History;
+        var mess = images != default ? await chat.ChatAsync(question, images, HttpContext.RequestAborted) : await chat.ChatAsync(question, HttpContext.RequestAborted);
+        HttpContext.Response.RegisterForDispose(chat);
 
-            memoryCache.Set<List<Message>>(nameof(ChatWithLlamaController) + systemPrompt, [..chat.History], new MemoryCacheEntryOptions() { Priority = CacheItemPriority.NeverRemove });
+        memoryCache.Set<List<Message>>(nameof(ChatWithLlamaController) + systemPrompt, [..chat.History], new MemoryCacheEntryOptions() { Priority = CacheItemPriority.NeverRemove });
 
-            var obj = new { Message = mess.Content, Histories = chat.History };
-            return Content(obj.ToJson(), MimeTypeNames.Application.Json);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Source);
-            Console.WriteLine(e.Message);
-            return StatusCode(StatusCodes.Status500InternalServerError);
-        }
+        var obj = new { Message = mess.Content, Histories = chat.History };
+        return Content(obj.ToJson(), MimeTypeNames.Application.Json);
     }
 }
