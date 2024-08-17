@@ -29,7 +29,7 @@ public class JsonWebTokenCertificateProvider : IJsonWebTokenCertificateProvider
 
     public JsonWebTokenCertificateProvider(IOptions<AppCertificate> settings, IMongoDataLayerContext context)
     {
-        X509Certificate2 certificate = new(settings.Value.FilePath, settings.Value.Password);
+        X509Certificate2 certificate = X509CertificateLoader.LoadPkcs12FromFile(settings.Value.FilePath, settings.Value.Password);
         Key = new X509SecurityKey(certificate);
 
         DataDb = context.MongoDatabase.GetCollection<TokenModel>(TableName);

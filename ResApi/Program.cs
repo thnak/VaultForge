@@ -224,7 +224,7 @@ public abstract class Program
             .AddJwtBearer(options =>
             {
                 var cert = builder.Configuration.GetSection(nameof(AppCertificate)).Get<AppCertificate>()!;
-                var certificate = new X509Certificate2(cert.FilePath, cert.Password);
+                var certificate =  X509CertificateLoader.LoadPkcs12FromFile(cert.FilePath, cert.Password);
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,

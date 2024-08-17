@@ -19,20 +19,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Business/Services/ChatWithLlama.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Interfaces/IMathService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/MathService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ResApi/Controllers/Chats/ChatWithLlamaController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/shelf/Uncommitted_changes_before_Update_at_8_7_2024_13_37_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/shelf/Uncommitted_changes_before_Update_at_8_7_2024_13_37__Changes_.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Interfaces/IWeatherService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Interfaces/WeatherService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BusinessModels/Resources/Unit.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BusinessModels/forecast/WeatherModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Authenticate/TokenProvider/JsonWebTokenCertificateProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Authenticate/TokenProvider/JsonWebTokenCertificateProvider.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Business/Business.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Protector/Protector.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Protector/Protector.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/ResApi.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/ResApi.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/WebApp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/WebApp.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/ChatWithLlama.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/ChatWithLlama.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Interfaces/IMathService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Interfaces/IMathService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/MathService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/MathService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Chats/ChatWithLlamaController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/Chats/ChatWithLlamaController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,8 +82,9 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/263916d29a71c2c47d3e7818b202b1d5caf7c2398f5ca6faaf627f73e388ac/Ollama.Models.Message.g.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/36483e83e1974f148aae3aae58ebd899261a994e4c84de57b5ffed0ebb/Palette.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/42891b716d89c30bb358ed162b88b247f8b20de483f14b79d7821e6a688b872/Ollama.OllamaApiClient.g.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7d8720c839d5ada927ab1825561b36278b7c292ecf16986b53d4571337192d/Chat.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7e4fdb3de1385c07a4ac0ba2d7717fc3da31092ddce896bbca88da51e511b/RetryableReadContext.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/804a55618dd77ae6d4a58ded254f8ef1b58af48646e96e0efca1d38bb797ff1/Chat.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/804a55618dd77ae6d4a58ded254f8ef1b58af48646e96e0efca1d38bb797ff1/Chat.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a1ff3a3987e6b9f09eaeb7dcec5a1a9ef795b5f73778516194919b7029375e1b/Server.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a2562b57f033e61a280d969597cef5ae7f2a7a83cdf38b4174bb4d94d34415/Ollama.ChatClient.g.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c8115f1aadd1de24c838681e7d23e5513206a14da562ca2942664b5942385/Ollama.Models.MessageRole.g.cs" root0="SKIP_HIGHLIGHTING" />
@@ -293,7 +292,9 @@
       <workItem from="1723547276459" duration="1590000" />
       <workItem from="1723597707335" duration="3034000" />
       <workItem from="1723631944619" duration="1104000" />
-      <workItem from="1723768940662" duration="17976000" />
+      <workItem from="1723768940662" duration="20204000" />
+      <workItem from="1723804757511" duration="4315000" />
+      <workItem from="1723854235856" duration="7345000" />
     </task>
     <task id="LOCAL-00001" summary="remove anti token">
       <option name="closed" value="true" />
@@ -575,7 +576,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723361884925</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="add chat with llama">
+      <option name="closed" value="true" />
+      <created>1723802565263</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1723802565263</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -596,7 +605,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="enchant token" />
     <MESSAGE value="shit" />
     <MESSAGE value="add some shit" />
     <MESSAGE value="delete old project" />
@@ -621,7 +629,8 @@
     <MESSAGE value="update someshit" />
     <MESSAGE value="small update" />
     <MESSAGE value="sua" />
-    <option name="LAST_COMMIT_MESSAGE" value="sua" />
+    <MESSAGE value="add chat with llama" />
+    <option name="LAST_COMMIT_MESSAGE" value="add chat with llama" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
