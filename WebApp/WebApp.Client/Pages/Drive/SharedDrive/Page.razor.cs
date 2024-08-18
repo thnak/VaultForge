@@ -68,6 +68,8 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     #endregion
 
     [Parameter] public string? FolderId { get; set; } = string.Empty;
+    private CancellationTokenSource _cts = new();
+
     private bool Open { get; set; }
     private bool Loading { get; set; }
     private bool ShouldRen { get; set; } = true;
@@ -175,41 +177,6 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     #endregion
 
 
-    private async Task OpenAddNewFolder(MouseEventArgs obj)
-    {
-        var option = new DialogOptions
-        {
-            FullWidth = true,
-            MaxWidth = MaxWidth.Small
-        };
-        var dialog = await DialogService.ShowAsync<AddNewFolderDialog>(AppLang.New_folder, option);
-        var dialogResult = await dialog.Result;
-        if (dialogResult is { Canceled: false, Data: string name })
-        {
-            var model = new RequestNewFolderModel
-            {
-                NewFolder = new FolderInfoModel
-                {
-                    FolderName = name
-                },
-                RootId = RootFolder.Id.ToString(),
-                RootPassWord = RootFolder.Password
-            };
-            var content = new StringContent(StringExtension.ToJson(model), Encoding.Unicode, MimeTypeNames.Application.Json);
-            var response = await ApiService.PutAsync<string>("api/Files/create-folder", content);
-            if (response.IsSuccessStatusCode)
-            {
-                ToastService.ShowSuccess(response.Message, ToastSettings);
-
-
-                _ = Task.Run(GetRootFolderAsync);
-            }
-            else
-            {
-                Console.WriteLine(response.Message);
-            }
-        }
-    }
 
     void ToastSettings(ToastSettings toastSettings)
     {
@@ -250,6 +217,8 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         ProgressEvent -= UpdateProgressBar;
         OnErrorEvent -= OnError;
         OnCompleteEvent -= OnComplete;
+        _cts.Cancel();
+        _cts.Dispose();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -257,9 +226,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         if (firstRender)
         {
             _ = Task.Run(GetRootFolderAsync);
-#pragma warning disable CA1416
-            await JSHost.ImportAsync(nameof(Page), $"/Pages/Drive/SharedDrive/{nameof(Page)}.razor.js");
-#pragma warning restore CA1416
+            await JSHost.ImportAsync(nameof(Page), $"/Pages/Drive/SharedDrive/{nameof(Page)}.razor.js", _cts.Token);
             EventListener.KeyPressChangeEventAsync += KeyPressChangeEventAsync;
             EventListener.ContextMenuClickedWithParamAsync += ContextMenuClick;
             ProgressEvent += UpdateProgressBar;
@@ -374,7 +341,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     private async Task InitBreadcrumb()
     {
         BreadcrumbItems = [];
-        var response = await ApiService.GetAsync<List<FolderInfoModel>>($"/api/files/get-folder-blood-line?id={RootFolder.Id.ToString()}");
+        var response = await ApiService.GetAsync<List<FolderInfoModel>>($"/api/files/get-folder-blood-line?id={RootFolder.Id.ToString()}", _cts.Token);
         if (response is { IsSuccessStatusCode: true, Data: not null })
             foreach (var folderInfoModel in response.Data)
                 BreadcrumbItems.Add(new BreadcrumbItem(folderInfoModel.FolderName, PageRoutes.Drive.Shared.Src + $"/{folderInfoModel.Id.ToString()}"));
@@ -386,7 +353,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     private async Task<List<FileInfoModel>> GetFiles(List<string> codes)
     {
         var textPlant = new StringContent(StringExtension.ToJson(codes), Encoding.UTF8, MediaTypeNames.Application.Json);
-        var response = await baseClientService.PostAsync<List<FileInfoModel>>("/api/Files/get-file-list", textPlant);
+        var response = await baseClientService.PostAsync<List<FileInfoModel>>("/api/Files/get-file-list", textPlant, _cts.Token);
         if (response.IsSuccessStatusCode) return response.Data ?? [];
 
         ToastService.ShowError("Empty files", ToastSettings);
@@ -397,7 +364,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     private async Task<List<FolderInfoModel>> GetFolders(string[] codes)
     {
         var textPlant = new StringContent(StringExtension.ToJson(codes), Encoding.UTF8, MediaTypeNames.Application.Json);
-        var response = await baseClientService.PostAsync<List<FolderInfoModel>>("/api/Files/get-folder-list", textPlant);
+        var response = await baseClientService.PostAsync<List<FolderInfoModel>>("/api/Files/get-folder-list", textPlant, _cts.Token);
         if (response.IsSuccessStatusCode) return response.Data ?? [];
 
         ToastService.ShowError("Empty folders", ToastSettings);
@@ -407,6 +374,42 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     #endregion
 
     #region Event handler
+
+    private async Task OpenAddNewFolder(MouseEventArgs obj)
+    {
+        var option = new DialogOptions
+        {
+            FullWidth = true,
+            MaxWidth = MaxWidth.Small
+        };
+        var dialog = await DialogService.ShowAsync<AddNewFolderDialog>(AppLang.New_folder, option);
+        var dialogResult = await dialog.Result;
+        if (dialogResult is { Canceled: false, Data: string name })
+        {
+            var model = new RequestNewFolderModel
+            {
+                NewFolder = new FolderInfoModel
+                {
+                    FolderName = name
+                },
+                RootId = RootFolder.Id.ToString(),
+                RootPassWord = RootFolder.Password
+            };
+            var content = new StringContent(StringExtension.ToJson(model), Encoding.Unicode, MimeTypeNames.Application.Json);
+            var response = await ApiService.PutAsync<string>("api/Files/create-folder", content, _cts.Token);
+            if (response.IsSuccessStatusCode)
+            {
+                ToastService.ShowSuccess(response.Message, ToastSettings);
+
+
+                _ = Task.Run(GetRootFolderAsync);
+            }
+            else
+            {
+                Console.WriteLine(response.Message);
+            }
+        }
+    }
 
     private async Task RenameFile(string id, string oldName, [StringSyntax("Uri")] string url)
     {
@@ -432,7 +435,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 formDataContent.Add(new StringContent(newName, Encoding.UTF8, MediaTypeNames.Application.Json), "newName");
                 formDataContent.Add(new StringContent(id, Encoding.UTF8, MediaTypeNames.Application.Json), "objectId");
 
-                var response = await ApiService.PostAsync<string>(url, formDataContent);
+                var response = await ApiService.PostAsync<string>(url, formDataContent, _cts.Token);
                 if (response.IsSuccessStatusCode)
                 {
                     ToastService.ShowSuccess(response.Message, ToastSettings);
@@ -501,7 +504,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         var dialogResult = await dialog.Result;
         if (dialogResult is { Canceled: false })
         {
-            var response = await ApiService.DeleteAsync<string>($"/api/Files/safe-delete-file?code={file.Id.ToString()}");
+            var response = await ApiService.DeleteAsync<string>($"/api/Files/safe-delete-file?code={file.Id.ToString()}", _cts.Token);
             if (response.IsSuccessStatusCode)
             {
                 await GetRootFolderAsync();
@@ -544,7 +547,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         var dialogResult = await dialog.Result;
         if (dialogResult is { Canceled: false })
         {
-            var response = await ApiService.DeleteAsync<string>($"/api/Files/safe-delete-folder?code={folder.Id.ToString()}");
+            var response = await ApiService.DeleteAsync<string>($"/api/Files/safe-delete-folder?code={folder.Id.ToString()}", _cts.Token);
             if (response.IsSuccessStatusCode)
             {
                 await GetRootFolderAsync();
