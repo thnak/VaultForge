@@ -442,6 +442,9 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
                 section = await reader.ReadNextSectionAsync();
             }
 
+            if (ModelState.IsValid)
+                return Ok(AppLang.Successfully_uploaded);
+            
             return Ok(ModelState);
         }
         catch (OperationCanceledException ex)

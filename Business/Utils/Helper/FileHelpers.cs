@@ -24,7 +24,13 @@ public static class FileHelpers
         { ".png", [[0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]] },
         { ".jpeg", [[0xFF, 0xD8, 0xFF, 0xE0], [0xFF, 0xD8, 0xFF, 0xE2], [0xFF, 0xD8, 0xFF, 0xE3]] },
         { ".jpg", [[0xFF, 0xD8, 0xFF, 0xE0], [0xFF, 0xD8, 0xFF, 0xE1], [0xFF, 0xD8, 0xFF, 0xE8]] },
-        { ".zip", [[0x50, 0x4B, 0x03, 0x04], "PKLITE"u8.ToArray(), "PKSpX"u8.ToArray(), [0x50, 0x4B, 0x05, 0x06], [0x50, 0x4B, 0x07, 0x08], "WinZip"u8.ToArray()] },
+        {
+            ".zip",
+            [
+                [0x50, 0x4B, 0x03, 0x04], "PKLITE"u8.ToArray(), "PKSpX"u8.ToArray(), [0x50, 0x4B, 0x05, 0x06],
+                [0x50, 0x4B, 0x07, 0x08], "WinZip"u8.ToArray()
+            ]
+        },
         { ".bmp", [[0x42, 0x4D]] },
         { ".pdf", [[0x25, 0x50, 0x44, 0x46]] },
         { ".doc", [[0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1]] },
@@ -166,7 +172,8 @@ public static class FileHelpers
     // systems. For more information, see the topic that accompanies this sample
     // app.
 
-    public static async Task<byte[]> ProcessFormFile<T>(this IFormFile formFile, ModelStateDictionary modelState, string[] permittedExtensions, long sizeLimit)
+    public static async Task<byte[]> ProcessFormFile<T>(this IFormFile formFile, ModelStateDictionary modelState,
+        string[] permittedExtensions, long sizeLimit)
     {
         var fieldDisplayName = string.Empty;
 
@@ -174,7 +181,8 @@ public static class FileHelpers
         // property associated with this IFormFile. If a display
         // name isn't found, error messages simply won't show
         // a display name.
-        MemberInfo? property = typeof(T).GetProperty(formFile.Name.Substring(formFile.Name.IndexOf(".", StringComparison.Ordinal) + 1));
+        MemberInfo? property =
+            typeof(T).GetProperty(formFile.Name.Substring(formFile.Name.IndexOf(".", StringComparison.Ordinal) + 1));
 
         if (property != null)
             if (property.GetCustomAttribute(typeof(DisplayAttribute)) is
@@ -212,10 +220,12 @@ public static class FileHelpers
             // Check the content length in case the file's only
             // content was a BOM and the content is actually
             // empty after removing the BOM.
-            if (memoryStream.Length == 0) modelState.AddModelError(formFile.Name, $@"{fieldDisplayName}({trustedFileNameForDisplay}) is empty.");
+            if (memoryStream.Length == 0)
+                modelState.AddModelError(formFile.Name, $@"{fieldDisplayName}({trustedFileNameForDisplay}) is empty.");
 
             if (!memoryStream.IsValidFileExtensionAndSignature(formFile.FileName, permittedExtensions))
-                modelState.AddModelError(formFile.Name, $@"{fieldDisplayName}({trustedFileNameForDisplay}) file type isn't permitted or the file's signature doesn't match the file's extension.");
+                modelState.AddModelError(formFile.Name,
+                    $@"{fieldDisplayName}({trustedFileNameForDisplay}) file type isn't permitted or the file's signature doesn't match the file's extension.");
             else
                 return memoryStream.ToArray();
         }
@@ -252,7 +262,9 @@ public static class FileHelpers
             else if (permittedExtensions.Any())
             {
                 var fileName = contentDisposition.FileName.Value;
-                if (fileName == null || !memoryStream.IsValidFileExtensionAndSignature(fileName, permittedExtensions)) modelState.AddModelError(AppLang.File, @"The file type isn't permitted or the file's signature doesn't match the file's extension.");
+                if (fileName == null || !memoryStream.IsValidFileExtensionAndSignature(fileName, permittedExtensions))
+                    modelState.AddModelError(AppLang.File,
+                        @"The file type isn't permitted or the file's signature doesn't match the file's extension.");
             }
             else
             {
@@ -261,7 +273,8 @@ public static class FileHelpers
         }
         catch (Exception ex)
         {
-            modelState.AddModelError(AppLang.File, @"The upload failed. Please contact the Help Desk " + $@" for support. Error: {ex.Message}");
+            modelState.AddModelError(AppLang.File,
+                @"The upload failed. Please contact the Help Desk " + $@" for support. Error: {ex.Message}");
             // Log the exception
         }
 
@@ -274,9 +287,12 @@ public static class FileHelpers
         try
         {
             await using var targetStream = File.Create(path);
-            using var memoryStream = new MemoryStream(FileSignature.Values.Max(x => x.Count));
-            await section.Body.CopyToAsync(memoryStream, cancellationToken: cancellationToken ?? default);
+            var capacity = FileSignature.Values.SelectMany(x => x).Max(z => z.Length);
+            using var memoryStream = new MemoryStream(capacity);
+            byte[] buffer = new byte[capacity];
 
+            _ = await section.Body.ReadAsync(buffer, 0, capacity, cancellationToken ?? default);
+            await memoryStream.WriteAsync(buffer, cancellationToken ?? default);
             memoryStream.SeekBeginOrigin();
 
             await memoryStream.CopyToAsync(targetStream, cancellationToken: cancellationToken ?? default);
@@ -296,13 +312,15 @@ public static class FileHelpers
         }
         catch (Exception ex)
         {
-            modelState.AddModelError(AppLang.File, @"The upload failed. Please contact the Help Desk " + $@" for support. Error: {ex.Message}");
+            modelState.AddModelError(AppLang.File,
+                @"The upload failed. Please contact the Help Desk " + $@" for support. Error: {ex.Message}");
             return (-1, string.Empty);
         }
     }
 
 
-    private static bool IsValidFileExtensionAndSignature(this Stream? data, string fileName, params string[] permittedExtensions)
+    private static bool IsValidFileExtensionAndSignature(this Stream? data, string fileName,
+        params string[] permittedExtensions)
     {
         if (string.IsNullOrEmpty(fileName) || data == null || data.Length == 0) return false;
 

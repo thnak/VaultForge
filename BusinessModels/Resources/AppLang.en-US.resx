@@ -389,4 +389,7 @@ ClientY: {1}</value>
     <data name="Search" xml:space="preserve">
       <value>Search</value>
     </data>
+    <data name="Successfully uploaded" xml:space="preserve">
+      <value>Successfully uploaded</value>
+    </data>
 </root>

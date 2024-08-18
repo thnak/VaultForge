@@ -682,6 +682,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tải lên thành công.
+        /// </summary>
+        public static string Successfully_uploaded {
+            get {
+                return ResourceManager.GetString("Successfully uploaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tùy chọn hệ thống.
         /// </summary>
         public static string System_preference {

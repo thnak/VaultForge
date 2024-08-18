@@ -388,4 +388,7 @@ ClientY: {1}</value>
     <data name="Search" xml:space="preserve">
       <value>Tìm kiếm</value>
     </data>
+    <data name="Successfully uploaded" xml:space="preserve">
+      <value>Tải lên thành công</value>
+    </data>
 </root>

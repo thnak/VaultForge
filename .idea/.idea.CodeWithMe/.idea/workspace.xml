@@ -4,6 +4,7 @@
     <projectFile profileName="IIS Express">ResApi/ResApi.csproj</projectFile>
     <projectFile profileName="ResApi">ResApi/ResApi.csproj</projectFile>
     <projectFile profileName="https">ResApi/ResApi.csproj</projectFile>
+    <projectFile pubXmlPath="ResApi/Properties/PublishProfiles/FolderProfile.pubxml">ResApi/ResApi.csproj</projectFile>
     <projectFile>Web/Web.Client/Web.Client.csproj</projectFile>
     <projectFile profileName="IIS Express">Web/Web/Web.csproj</projectFile>
     <projectFile profileName="http">Web/Web/Web.csproj</projectFile>
@@ -18,7 +19,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Utils/Helper/FileHelpers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Utils/Helper/FileHelpers.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.Designer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.en-US.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.en-US.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.vi-VN.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.vi-VN.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Utils/StreamExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/StreamExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -136,6 +146,10 @@
       <riderPublish configuration="Release" platform="Any CPU" runtime="win-x64" self_contained="true" target_folder="$PROJECT_DIR$/WebApp/WebApp/bin/Release/net9.0/win-x64/publish" target_framework="net9.0" uuid_high="-212861499982460667" uuid_low="-5823181797240626509" />
       <method v="2" />
     </configuration>
+    <configuration name="ResApi: FolderProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
+      <riderPublish configuration="Release" platform="Any CPU" publish_profile="FolderProfile.pubxml" pubxml_path="$PROJECT_DIR$/ResApi/Properties/PublishProfiles/FolderProfile.pubxml" uuid_high="5905353364384007298" uuid_low="-8333852158807631372" />
+      <method v="2" />
+    </configuration>
     <configuration name="ResApi" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/ResApi/ResApi.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
@@ -236,6 +250,7 @@
       <item itemvalue=".NET Launch Settings Profile.Web: https" />
       <item itemvalue="Publish to folder.Unnamed" />
       <item itemvalue="Publish to folder.ResApi" />
+      <item itemvalue="Publish to IIS.ResApi: FolderProfile" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -291,6 +306,8 @@
       <workItem from="1723854235856" duration="12517000" />
       <workItem from="1723891291981" duration="19667000" />
       <workItem from="1723923820742" duration="9851000" />
+      <workItem from="1724026838048" duration="4247000" />
+      <workItem from="1724015792809" duration="193000" />
     </task>
     <task id="LOCAL-00001" summary="remove anti token">
       <option name="closed" value="true" />
