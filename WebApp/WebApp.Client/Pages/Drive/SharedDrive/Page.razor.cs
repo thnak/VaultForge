@@ -113,7 +113,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
     private Task SendForm()
     {
-        Loading = true;
+        Uploading = true;
         UpLoadFilesJs(ApiService.GetBaseUrl() + "api/Files/upload-physical", RootFolder.Id.ToString());
         return Task.CompletedTask;
     }
@@ -149,14 +149,14 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
     private Task OnError(int arg1, string arg2)
     {
-        Loading = false;
+        Uploading = false;
         ToastService.ShowError(arg2, ToastSettings);
         return InvokeAsync(StateHasChanged);
     }
 
     private Task OnComplete(int arg1, string arg2)
     {
-        Loading = false;
+        Uploading = false;
         foreach (var pa in UploadProgress.Keys)
         {
             UploadProgress[pa] = 100;
