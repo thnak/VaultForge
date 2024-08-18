@@ -8,11 +8,11 @@
 </PageTitle>
 
 <HeadContent>
-    <HeadContentContainer MetaProperty="@PageRoutes.Drive.Shared.MetaData"/>
+    <HeadContentContainer MetaProperty="@PageRoutes.Drive.Shared.MetaData" />
 </HeadContent>
 
 <SectionContent SectionId="@AppBar.BreadCrumb" >
-    <MudBreadcrumbs Class="d-none d-md-flex" Items="@BreadcrumbItems" ></MudBreadcrumbs>
+    <MudBreadcrumbs Class="d-md-flex d-none" Items="@BreadcrumbItems" ></MudBreadcrumbs>
 </SectionContent>
 
 @if (Loading)
@@ -23,7 +23,7 @@
 }
 
 <SectionContent SectionId="@AppBar.TopBarSection2" >
-    <MudMenu AnchorOrigin="Origin.BottomLeft" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" Dense IconColor="Color.Secondary" Label="@AppLang.New" StartIcon="fa-plus fa-solid" TransformOrigin="Origin.TopLeft" >
+    <MudMenu AnchorOrigin="Origin.BottomLeft" Dense EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Label="@AppLang.New" StartIcon="fa-plus fa-solid" TransformOrigin="Origin.TopLeft" >
         <MudMenuItem Icon="@Icons.Material.Filled.AttachFile" OnClick="@OpenAddPopUp" >@AppLang.File</MudMenuItem>
         <MudMenuItem Icon="@Icons.Material.Filled.Folder" OnClick="@OpenAddNewFolder" >@AppLang.Folder</MudMenuItem>
     </MudMenu>
@@ -47,7 +47,7 @@
 
                         <div class="icon-container-tag" >
                             <MudTooltip Arrow Color="@Color.Secondary" Placement="Placement.Top" Text="@AppLang.Other_operations" >
-                                <MudMenu AriaLabel="@AppLang.Other_operations" Icon="fa-ellipsis-vertical fa-solid" Dense>
+                                <MudMenu AriaLabel="@AppLang.Other_operations" Dense Icon="fa-ellipsis-vertical fa-solid" >
                                     <MudMenuItem Disabled="@x.Download.Disabled" Icon="@Icons.Material.Filled.CloudDownload" OnClick="@x.Download.Action" >Download</MudMenuItem>
                                     <MudMenuItem Disabled="@x.Rename.Disabled" Icon="@Icons.Material.Filled.Edit" OnClick="@x.Rename.Action" >Rename</MudMenuItem>
                                     <MudMenuItem Disabled="@x.Share.Disabled" Icon="@Icons.Material.Filled.Share" OnClick="@x.Share.Action" >Share</MudMenuItem>
@@ -95,27 +95,42 @@
     </ItemRenderer>
 </MudDropContainer>
 
-<MudDrawer Anchor="Anchor.End" @bind-Open="Open" Color="Color.Primary" Elevation="0" Variant="@DrawerVariant.Temporary" OverlayAutoClose Width="min(300px, 90vw)">
+<MudDrawer Anchor="Anchor.End" @bind-Open="Open" Color="Color.Primary" Elevation="0" OverlayAutoClose Variant="@DrawerVariant.Temporary" Width="min(300px, 90vw)" >
     <MudDrawerHeader>
         <MudText Typo="Typo.h6" >File upload</MudText>
     </MudDrawerHeader>
     <div class="container" >
         <div class="header" >
-            <MudText Typo="Typo.h1">
-                <i class="fa-solid fa-cloud-arrow-up"></i>
+            <label for="file1" disabled="@Uploading"></label>
+            <MudText Typo="Typo.h1" >
+                <i class="fa-cloud-arrow-up fa-solid" ></i>
             </MudText>
-            <MudText Align="Align.Center">Browse File to upload!</MudText>
+            <MudText Align="Align.Center" >Browse File to upload!</MudText>
+
+            <form enctype="multipart/form-data" id="upload_form" method="post" >
+                <AntiforgeryToken />
+                <input class="d-none" disabled="@Uploading" id="file1" multiple name="file1" @onchange="FileInputChanged" type="file" >
+            </form>
+
         </div>
+
+        <div class="d-flex flex-row gap-3 justify-end mud-width-full" >
+            <MudButton Color="Color.Error" Disabled="Uploading" OnClick="@ClearSelectedFile" Variant="Variant.Filled" >Clear</MudButton>
+            <MudButton Color="Color.Success" Disabled="Uploading" OnClick="@SendForm" Variant="Variant.Filled" >Send</MudButton>
+        </div>
+
         <div class="file-list-upload" >
             @foreach (var x in FileUploadList)
             {
-                <div @key="x.Id">
-                    <div class="icon" >
-                        <i class="@x.ContentType.GetIcon()"></i>
+                <div class="d-flex flex-row gap-2 mud-paper pa-3" @key="x.Id" >
+                    <div class="align-center d-flex justify-center" >
+                        <MudText>
+                            <i class="@x.ContentType.GetIcon()" ></i>
+                        </MudText>
                     </div>
-                    <div class="d-flex flex-row gap-0" >
+                    <div class="d-flex flex-column gap-0 flex-1" >
                         <MudText>@x.FileName</MudText>
-                        <MudProgressCircular Color="Color.Primary" Size="Size.Small" Value="@UploadProgress[x.Id]"/>
+                        <MudProgressLinear Striped Color="Color.Primary" Size="Size.Small" Value="@UploadProgress[x.Id]" Max="100"/>
                     </div>
                 </div>
             }

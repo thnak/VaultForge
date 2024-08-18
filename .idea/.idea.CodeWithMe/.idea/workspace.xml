@@ -19,24 +19,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/ChatWithLlama.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/ChatWithLlama.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Interfaces/IMathService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Interfaces/IMathService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/MathService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/MathService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Utils/Helper/FileHelpers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Utils/Helper/FileHelpers.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/PageRoutes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/PageRoutes.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Chats/ChatWithLlamaController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/Chats/ChatWithLlamaController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/Container/HeadContentContainer.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/Container/HeadContentContainer.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/Container/HeadContentContainer.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/Container/HeadContentContainer.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Account/SignInPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Account/SignInPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Account/SignInPage.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Account/SignInPage.razor.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Home.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Components/App.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Components/App.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/wwwroot/css/app.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,8 +79,10 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/81cd7b5d4f9a4def98fcb318251a687f2db10/f8/43a65fbf/AntiforgeryStateProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/85ad600cadd14f1bbfea1aa4f4370f54698a0/fe/3ec89b69/MediaTypeNames.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/86ab6f801fa84623ad0705d2ade8232c8200/3a/b8891699/IWorker.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/bf014c91586d41c8ad0560191359307346d108/b8/7d683206/MethodBaseInvoker.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ce03b6f552ef4bda898ec2aeb67d4db38b2400/45/116d8977/TreeItemData`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ce03b6f552ef4bda898ec2aeb67d4db38b2400/49/24515b13/MudPaper.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e86c4eb8711a4164b5bbe129245e4897ff10/91/8168bce1/DotNetDispatcher.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/fd17b13cc7c64aec9c7787175bb271d31c8a0/eb/83833ed7/CookieAuthenticationHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1094df7a57317b3dd8cdc428d49b163fe7b8cbe1c51076caec23118480557289/Anchor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/149c8ec0f552c5744c0d8b8f8b8cf0ca838b419952d4e3528eae89443f8f/BsonExtensionMethods.cs" root0="SKIP_HIGHLIGHTING" />
@@ -305,7 +303,8 @@
       <workItem from="1723768940662" duration="20204000" />
       <workItem from="1723804757511" duration="4315000" />
       <workItem from="1723854235856" duration="12517000" />
-      <workItem from="1723891291981" duration="15267000" />
+      <workItem from="1723891291981" duration="19667000" />
+      <workItem from="1723923820742" duration="9724000" />
     </task>
     <task id="LOCAL-00001" summary="remove anti token">
       <option name="closed" value="true" />
@@ -603,7 +602,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723868979537</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="update">
+      <option name="closed" value="true" />
+      <created>1723918815451</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1723918815451</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -654,19 +661,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Business/Utils/Helper/FileHelpers.cs</url>
-          <line>288</line>
-          <properties documentPath="C:\Users\thanh\Git\CodeWithMe\Business\Utils\Helper\FileHelpers.cs" containingFunctionPresentation="Method 'ProcessStreamedFileAndSave'">
-            <startOffsets>
-              <option value="11160" />
-            </startOffsets>
-            <endOffsets>
-              <option value="11189" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ResApi/Controllers/WeatherForecastController.cs</url>
           <line>49</line>

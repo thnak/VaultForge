@@ -21,10 +21,8 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
         try
         {
             var absolutePathKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath);
-            var relativePathKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath);
 
             var absolutePathIndexModel = new CreateIndexModel<FileInfoModel>(absolutePathKey, new CreateIndexOptions { Unique = true });
-            var relativePathIndexModel = new CreateIndexModel<FileInfoModel>(relativePathKey, new CreateIndexOptions { Unique = true });
 
             var searchIndexKeys = Builders<FileInfoModel>.IndexKeys.Text(x => x.FileName).Text(x => x.RelativePath);
             var searchIndexOptions = new CreateIndexOptions
@@ -33,7 +31,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
             };
 
             var searchIndexModel = new CreateIndexModel<FileInfoModel>(searchIndexKeys, searchIndexOptions);
-            await _fileDataDb.Indexes.CreateManyAsync([searchIndexModel, absolutePathIndexModel, relativePathIndexModel]);
+            await _fileDataDb.Indexes.CreateManyAsync([searchIndexModel, absolutePathIndexModel]);
 
             Console.WriteLine(@"[Init] File info data layer");
 
@@ -213,8 +211,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
             var query = Get(key);
             if (query == null) return (false, AppLang.File_not_found_);
 
-            var filter = Builders<FileInfoModel>.Filter.Eq(x => x.RelativePath, key);
-            filter |= Builders<FileInfoModel>.Filter.Eq(x => x.RelativePath, key);
+            var filter = Builders<FileInfoModel>.Filter.Eq(x => x.AbsolutePath, key);
             if (ObjectId.TryParse(key, out var id)) filter |= Builders<FileInfoModel>.Filter.Eq(x => x.Id, id);
 
             _fileDataDb.DeleteMany(filter);

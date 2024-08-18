@@ -41,22 +41,26 @@ public partial class HeadContentContainer : ComponentBase, IDisposable
             ..MetaProperty,
             new Dictionary<string, string>
             {
-                { "theme-color", CustomStateContainer.SharedPalette.Primary.Value }
+                { "name", "theme-color" },
+                { "content", CustomStateContainer.SharedPalette.Primary.Value }
             },
 
             new Dictionary<string, string>
             {
-                { "background-color", CustomStateContainer.SharedPalette.AppbarBackground.Value }
+                { "name", "background-color" },
+                { "content", CustomStateContainer.SharedPalette.AppbarBackground.Value }
             },
 
             new Dictionary<string, string>
             {
-                { "type", "website" }
+                { "name", "type" },
+                { "content", "website" }
             },
 
             new Dictionary<string, string>
             {
-                { "robots", "noodp, noydir, max-image-preview:large" }
+                { "name", "robot" },
+                { "content", "noodp, noydir, max-image-preview:large" }
             }
         ];
 

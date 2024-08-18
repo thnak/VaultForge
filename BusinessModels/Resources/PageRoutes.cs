@@ -23,7 +23,8 @@ public static class PageRoutes
             [
                 new()
                 {
-                    { "description", "My home page" }
+                    { "name", "description" },
+                    { "content", "My home page" }
                 }
             ];
         }
@@ -48,7 +49,9 @@ public static class PageRoutes
             [
                 new()
                 {
-                    { "description", "Share drive to community" }
+                    { "name", "description" },
+                    { "content", "Share drive to community"
+                }
                 }
             ];
         }

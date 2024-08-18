@@ -52,6 +52,11 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
         username = hashed ? username : username.ComputeSha256Hash();
         var filter = Builders<FolderInfoModel>.Filter.Eq(x => x.RelativePath, relative);
         filter &= Builders<FolderInfoModel>.Filter.Eq(x => x.Username, username);
+        if (ObjectId.TryParse(relative, out ObjectId id))
+        {
+            filter |= Builders<FolderInfoModel>.Filter.Eq(x => x.Id, id);
+        }
+
         return _dataDb.Find(filter).FirstOrDefault();
     }
 
@@ -141,7 +146,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
         {
             foreach (var model in cursor.Current)
             {
-                if(model != default)
+                if (model != default)
                     yield return model;
             }
         }

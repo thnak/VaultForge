@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Reflection;
+using BusinessModels.Resources;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -241,17 +242,17 @@ public static class FileHelpers
             // Check if the file is empty or exceeds the size limit.
             if (memoryStream.Length == 0)
             {
-                modelState.AddModelError("File", @"The file is empty.");
+                modelState.AddModelError(AppLang.File, @"The file is empty.");
             }
             else if (memoryStream.Length > sizeLimit)
             {
                 var megabyteSizeLimit = sizeLimit / 1048576;
-                modelState.AddModelError("File", $@"The file exceeds {megabyteSizeLimit:N1} MB.");
+                modelState.AddModelError(AppLang.File, $@"The file exceeds {megabyteSizeLimit:N1} MB.");
             }
             else if (permittedExtensions.Any())
             {
                 var fileName = contentDisposition.FileName.Value;
-                if (fileName == null || !memoryStream.IsValidFileExtensionAndSignature(fileName, permittedExtensions)) modelState.AddModelError("File", @"The file type isn't permitted or the file's signature doesn't match the file's extension.");
+                if (fileName == null || !memoryStream.IsValidFileExtensionAndSignature(fileName, permittedExtensions)) modelState.AddModelError(AppLang.File, @"The file type isn't permitted or the file's signature doesn't match the file's extension.");
             }
             else
             {
@@ -260,7 +261,7 @@ public static class FileHelpers
         }
         catch (Exception ex)
         {
-            modelState.AddModelError("File", @"The upload failed. Please contact the Help Desk " + $@" for support. Error: {ex.Message}");
+            modelState.AddModelError(AppLang.File, @"The upload failed. Please contact the Help Desk " + $@" for support. Error: {ex.Message}");
             // Log the exception
         }
 
@@ -268,19 +269,19 @@ public static class FileHelpers
     }
 
     public static async Task<(long, string)> ProcessStreamedFileAndSave(this MultipartSection section, string path,
-        ModelStateDictionary modelState)
+        ModelStateDictionary modelState, CancellationToken? cancellationToken = default)
     {
         try
         {
             await using var targetStream = File.Create(path);
             using var memoryStream = new MemoryStream(FileSignature.Values.Max(x => x.Count));
-            await section.Body.CopyToAsync(memoryStream);
+            await section.Body.CopyToAsync(memoryStream, cancellationToken: cancellationToken ?? default);
 
             memoryStream.SeekBeginOrigin();
 
-            await memoryStream.CopyToAsync(targetStream);
+            await memoryStream.CopyToAsync(targetStream, cancellationToken: cancellationToken ?? default);
 
-            await section.Body.CopyToAsync(targetStream);
+            await section.Body.CopyToAsync(targetStream, cancellationToken: cancellationToken ?? default);
 
             var fileExtension = memoryStream.GetCorrectExtension(section.ContentType);
             var contentType = fileExtension.GetMimeType();
@@ -288,10 +289,15 @@ public static class FileHelpers
             var length = new FileInfo(path).Length;
             return (length, contentType);
         }
+        catch (OperationCanceledException ex)
+        {
+            modelState.AddModelError(AppLang.File, ex.Message);
+            return (-1, ex.Message);
+        }
         catch (Exception ex)
         {
-            modelState.AddModelError("File", @"The upload failed. Please contact the Help Desk " + $@" for support. Error: {ex.Message}");
-            return (0, string.Empty);
+            modelState.AddModelError(AppLang.File, @"The upload failed. Please contact the Help Desk " + $@" for support. Error: {ex.Message}");
+            return (-1, string.Empty);
         }
     }
 

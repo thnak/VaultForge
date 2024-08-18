@@ -1,7 +1,6 @@
 ﻿
 body {
     font-family: 'Poppins', sans-serif;
-    background: #ececec;
 }
 
 /*------------ Login container ------------*/
@@ -39,7 +38,6 @@ body {
     max-width: 1400px;
     display: flex;
     flex-direction: row;
-    background-color: white;
     padding: 1rem;
     margin: 1rem;
     border-radius: 2rem;

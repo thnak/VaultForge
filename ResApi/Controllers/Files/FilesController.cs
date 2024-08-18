@@ -401,7 +401,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
             var boundary = MediaTypeHeaderValue.Parse(Request.ContentType).GetBoundary(int.MaxValue);
             var reader = new MultipartReader(boundary, HttpContext.Request.Body);
             var section = await reader.ReadNextSectionAsync();
-            while (section != null)
+            while (section != null && HttpContext.RequestAborted is { IsCancellationRequested: false })
             {
                 var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition);
                 if (hasContentDispositionHeader && contentDisposition != null)
@@ -412,15 +412,30 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
                     }
                     else
                     {
-                        var trustedFileNameForDisplay = WebUtility.HtmlEncode(contentDisposition.FileName.Value) ?? Path.GetRandomFileName();
+                        var trustedFileNameForDisplay = contentDisposition.FileName.Value ?? Path.GetRandomFileName();
 
                         var file = new FileInfoModel
                         {
                             FileName = trustedFileNameForDisplay
                         };
+                        folder = folderServe.Get(user, folderCodes);
+                        if (folder == null)
+                        {
+                            ModelState.AddModelError(folderKeyString, AppLang.Folder_could_not_be_found);
+                            return BadRequest(ModelState);
+                        }
+
                         folderServe.CreateFile(folder, file);
-                        (file.FileSize, file.ContentType) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState);
-                        await fileServe.UpdateAsync(file);
+                        (file.FileSize, file.ContentType) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState, HttpContext.RequestAborted);
+                        if (file.FileSize > 0)
+                            await fileServe.UpdateAsync(file);
+                        else
+                        {
+                            fileServe.Delete(file.Id.ToString());
+                            folder = folderServe.Get(user, folderCodes)!;
+                            folder.Contents = folder.Contents.Where(x => x.Id != file.Id.ToString()).ToList();
+                            await folderServe.UpdateAsync(folder);
+                        }
                     }
                 }
 
@@ -428,6 +443,10 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
             }
 
             return Ok(ModelState);
+        }
+        catch (OperationCanceledException ex)
+        {
+            return Ok(ex.Message);
         }
         catch (Exception e)
         {

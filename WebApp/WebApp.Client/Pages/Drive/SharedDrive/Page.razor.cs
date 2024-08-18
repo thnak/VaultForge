@@ -11,6 +11,7 @@ using BusinessModels.Utils;
 using BusinessModels.WebContent;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using MongoDB.Bson;
 using MudBlazor;
 using WebApp.Client.Components.ConfirmDialog;
@@ -26,7 +27,43 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     #region Js Module
 
     [JSImport("getMessage", nameof(Page))]
-    internal static partial string GetWelcomeMessage();
+    internal static partial string GetWelcomeMessageJs();
+
+    [JSImport("uploadFile", nameof(Page))]
+    internal static partial void UpLoadFilesJs([StringSyntax(StringSyntaxAttribute.Uri)] string api, string folder);
+
+    [JSImport("getSelectedFiles", nameof(Page))]
+    internal static partial string[] GetSelectedFilesJs();
+
+    [JSImport("clearSelectedFiles", nameof(Page))]
+    internal static partial void ClearSelectedFileJs();
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="values">total, current</param>
+    [JSInvokable("UpFileLoadProgressJsInvoke")]
+    public static void UpFileLoadProgressJsInvoke(double[] values)
+    {
+        ProgressEvent?.Invoke(values);
+    }
+
+    [JSInvokable("OnComplete")]
+    public static void OnUpLoadCompleteJs(int status, string response)
+    {
+        OnCompleteEvent?.Invoke(status, response);
+    }
+
+    [JSInvokable("OnError")]
+    public static void OnUpLoadErrorJs(int status, string response)
+    {
+        OnErrorEvent?.Invoke(status, response);
+    }
+
+    private static Func<int, string, Task>? OnCompleteEvent { get; set; }
+    private static Func<int, string, Task>? OnErrorEvent { get; set; }
+    private static Func<double[], Task>? ProgressEvent { get; set; }
 
     #endregion
 
@@ -41,18 +78,13 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     #region Upload properties
 
     private List<FileInfoModel> FileUploadList { get; set; } = [];
-    private Dictionary<ObjectId, float> UploadProgress { get; set; } = [];
+    private Dictionary<ObjectId, double> UploadProgress { get; set; } = [];
 
     #endregion
 
     private List<DropItem> FileItemList { get; } = [];
     private List<DropItem> FolderItemList { get; } = [];
-
-    public void Dispose()
-    {
-        EventListener.ContextMenuClickedWithParamAsync -= ContextMenuClick;
-        EventListener.KeyPressChangeEventAsync -= KeyPressChangeEventAsync;
-    }
+    private bool Uploading { get; set; }
 
     private void ItemUpdated(MudItemDropInfo<DropItem> dropItem)
     {
@@ -67,12 +99,81 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         return Task.CompletedTask;
     }
 
-    #endregion
+    private Task FileInputChanged()
+    {
+        var list = GetSelectedFilesJs();
+        return LoadedFileList(list);
+    }
+
+    private Task ClearSelectedFile()
+    {
+        ClearSelectedFileJs();
+        return FileInputChanged();
+    }
+
+    private Task SendForm()
+    {
+        Loading = true;
+        UpLoadFilesJs(ApiService.GetBaseUrl() + "api/Files/upload-physical", RootFolder.Id.ToString());
+        return Task.CompletedTask;
+    }
 
     private void OpenAddPopUp()
     {
         Open = true;
     }
+
+    private Task LoadedFileList(IEnumerable<string> arg)
+    {
+        FileUploadList.Clear();
+        UploadProgress.Clear();
+        foreach (var fileName in arg)
+        {
+            FileInfoModel model = new FileInfoModel() { FileName = fileName };
+            FileUploadList.Add(model);
+            UploadProgress.Add(model.Id, 0);
+        }
+
+        return InvokeAsync(StateHasChanged);
+    }
+
+    private Task UpdateProgressBar(double[] arg)
+    {
+        var percent = arg[1] / arg[0] * 100;
+        foreach (var pa in UploadProgress.Keys)
+        {
+            UploadProgress[pa] = percent;
+        }
+        return InvokeAsync(StateHasChanged);
+    }
+
+    private Task OnError(int arg1, string arg2)
+    {
+        Loading = false;
+        ToastService.ShowError(arg2, ToastSettings);
+        return InvokeAsync(StateHasChanged);
+    }
+
+    private Task OnComplete(int arg1, string arg2)
+    {
+        Loading = false;
+        foreach (var pa in UploadProgress.Keys)
+        {
+            UploadProgress[pa] = 100;
+        }
+        ToastService.ShowSuccess(arg2, ToastSettings);
+        return InvokeAsync(StateHasChanged);
+    }
+
+    private Task KeyPressChangeEventAsync(string arg)
+    {
+        if (arg == KeyBoardNames.Enter)
+            return GetRootFolderAsync();
+        return InvokeAsync(StateHasChanged);
+    }
+
+    #endregion
+
 
     private async Task OpenAddNewFolder(MouseEventArgs obj)
     {
@@ -142,6 +243,15 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         return ShouldRen;
     }
 
+    public void Dispose()
+    {
+        EventListener.ContextMenuClickedWithParamAsync -= ContextMenuClick;
+        EventListener.KeyPressChangeEventAsync -= KeyPressChangeEventAsync;
+        ProgressEvent -= UpdateProgressBar;
+        OnErrorEvent -= OnError;
+        OnCompleteEvent -= OnComplete;
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -152,17 +262,14 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 #pragma warning restore CA1416
             EventListener.KeyPressChangeEventAsync += KeyPressChangeEventAsync;
             EventListener.ContextMenuClickedWithParamAsync += ContextMenuClick;
+            ProgressEvent += UpdateProgressBar;
+            OnErrorEvent += OnError;
+            OnCompleteEvent += OnComplete;
         }
 
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private Task KeyPressChangeEventAsync(string arg)
-    {
-        if (arg == KeyBoardNames.Enter)
-            return GetRootFolderAsync();
-        return Task.CompletedTask;
-    }
 
     private async Task Render()
     {

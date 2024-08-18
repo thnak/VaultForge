@@ -17,15 +17,22 @@
     border: 2px dashed #ffffff;
     border-radius: 10px;
     display: flex;
+    position: relative;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 }
 
+.header > label{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
 .container > .file-list-upload{
     display: flex;
     width: 100%;
-    flex-direction: row;
+    flex-direction: column;
     gap: 8px;
     overflow-x: hidden;
     overflow-y: scroll;
