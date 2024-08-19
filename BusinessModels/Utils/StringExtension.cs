@@ -23,8 +23,12 @@ public static class StringExtension
     {
         try
         {
-            var base64Bytes = Convert.FromBase64String(base64String);
-            var plainText = Encoding.Unicode.GetString(base64Bytes);
+            string plainText = DecodeBase64String(base64String);
+            if(typeof(T) == typeof(string))
+            {
+                return (T)(object)plainText;
+            }
+                        
             var json = JsonSerializer.Deserialize<T>(plainText);
             return json;
         }
@@ -45,7 +49,7 @@ public static class StringExtension
         }
         catch (Exception)
         {
-            return base64String;
+            return string.Empty;
         }
     }
 

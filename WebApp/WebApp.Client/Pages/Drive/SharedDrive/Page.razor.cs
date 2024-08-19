@@ -68,7 +68,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     #endregion
 
     [Parameter] public string? FolderId { get; set; } = string.Empty;
-    private CancellationTokenSource _cts = new();
+    private readonly CancellationTokenSource _cts = new();
 
     private bool Open { get; set; }
     private bool Loading { get; set; }

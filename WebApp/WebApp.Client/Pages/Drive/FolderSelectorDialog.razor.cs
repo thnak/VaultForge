@@ -14,6 +14,7 @@ public partial class FolderSelectorDialog : ComponentBase, IDisposable
     private MudDataGrid<FolderInfoModel> DataGrid { get; set; } = default!;
 
     private bool Loading { get; set; } = true;
+
     private FolderInfoModel? SearchString { get; set; }
 
     private FolderInfoModel CurrentFolder { get; set; } = new();
@@ -43,7 +44,7 @@ public partial class FolderSelectorDialog : ComponentBase, IDisposable
         return response.Data ?? [];
     }
 
-    private Task FolderSearchChanged(FolderInfoModel? obj)
+    private Task FolderSearchChanged(FolderInfoModel obj)
     {
         SearchString = obj;
         return DataGrid.ReloadServerData();
