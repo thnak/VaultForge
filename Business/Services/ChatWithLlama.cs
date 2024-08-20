@@ -14,22 +14,23 @@ public class ChatWithLlama : IDisposable
     /// </summary>
     /// <param name="systemPrompt"></param>
     /// <param name="uri">default value is http://localhost:11434/api</param>
-    public ChatWithLlama(string systemPrompt, Uri uri)
+    /// <param name="model"></param>
+    public ChatWithLlama(string systemPrompt, Uri uri, string model = "llama3.1")
     {
         _ollamaApiClient = new OllamaApiClient(null, uri);
         _chatClient = _ollamaApiClient.Chat(
-            model: "llama3.1",
+            model: model,
             systemMessage: systemPrompt,
             autoCallTools: true);
 
         InitCallService();
     }
 
-    public ChatWithLlama(string systemPrompt)
+    public ChatWithLlama(string systemPrompt, string model = "llama3.1")
     {
         _ollamaApiClient = new OllamaApiClient();
         _chatClient = _ollamaApiClient.Chat(
-            model: "llama3.1",
+            model: model,
             systemMessage: systemPrompt,
             autoCallTools: true);
 

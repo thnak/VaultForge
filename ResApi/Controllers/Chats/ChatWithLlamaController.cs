@@ -15,7 +15,7 @@ public class ChatWithLlamaController(IMemoryCache memoryCache) : ControllerBase
     [HttpPost("chat")]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
-    public async Task<IActionResult> ChatLama([FromForm] string systemPrompt, [FromForm] string question, [FromForm] List<string>? images)
+    public async Task<IActionResult> ChatLama([FromForm] string systemPrompt, [FromForm] string question, [FromForm] string model, [FromForm] List<string>? images)
     {
         List<Message> messages = memoryCache.GetOrCreate<List<Message>>(nameof(ChatWithLlamaController) + systemPrompt, entry =>
         {
@@ -23,7 +23,7 @@ public class ChatWithLlamaController(IMemoryCache memoryCache) : ControllerBase
             return [];
         }) ?? [];
 
-        var chat = new ChatWithLlama(systemPrompt, new Uri("http://192.168.1.18:11434/api"));
+        var chat = new ChatWithLlama(systemPrompt, new Uri("http://192.168.1.18:11434/api"), model);
         chat.History = messages.Any() ? [..messages] : chat.History;
         var mess = images != default ? await chat.ChatAsync(question, images, HttpContext.RequestAborted) : await chat.ChatAsync(question, HttpContext.RequestAborted);
         HttpContext.Response.RegisterForDispose(chat);
