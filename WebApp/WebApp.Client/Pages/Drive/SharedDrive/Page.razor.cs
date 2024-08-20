@@ -476,7 +476,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
     private void OpenFolder(string id)
     {
-        Navigation.NavigateTo(PageRoutes.Drive.Shared.Src + $"/{id}");
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameters(PageRoutes.Drive.Shared.Src, new Dictionary<string, object?> { { "FolderId", id } }));
     }
 
     private async Task DeleteFile(FileInfoModel file)
