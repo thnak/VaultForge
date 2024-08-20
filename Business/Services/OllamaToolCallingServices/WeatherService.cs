@@ -1,7 +1,8 @@
-﻿using BusinessModels.forecast;
+﻿using Business.Services.OllamaToolCallingServices.Interfaces;
+using BusinessModels.forecast;
 using BusinessModels.Resources;
 
-namespace Business.Services.OllamaToolCallingServices.Interfaces;
+namespace Business.Services.OllamaToolCallingServices;
 
 public class WeatherService : IWeatherService
 {

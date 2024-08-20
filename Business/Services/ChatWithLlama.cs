@@ -40,7 +40,9 @@ public class ChatWithLlama : IDisposable
     private void InitCallService()
     {
         var service = new MathService();
+        var timeService = new TimeService();
         var weatherService = new WeatherService();
+        _chatClient.AddToolService(timeService.AsTools(), timeService.AsCalls());
         _chatClient.AddToolService(service.AsTools(), service.AsCalls());
         _chatClient.AddToolService(weatherService.AsTools(), weatherService.AsCalls());
     }

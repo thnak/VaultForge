@@ -67,7 +67,9 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
     #endregion
 
-    [Parameter] public string? FolderId { get; set; } = string.Empty;
+    [SupplyParameterFromQuery(Name = "FolderId")]
+    public string? FolderId { get; set; } = string.Empty;
+
     private readonly CancellationTokenSource _cts = new();
 
     private bool Open { get; set; }
@@ -146,6 +148,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         {
             UploadProgress[pa] = percent;
         }
+
         return InvokeAsync(StateHasChanged);
     }
 
@@ -163,6 +166,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         {
             UploadProgress[pa] = 100;
         }
+
         ToastService.ShowSuccess(arg2, ToastSettings);
         return InvokeAsync(StateHasChanged);
     }
@@ -175,7 +179,6 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     }
 
     #endregion
-
 
 
     void ToastSettings(ToastSettings toastSettings)
@@ -344,7 +347,8 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         var response = await ApiService.GetAsync<List<FolderInfoModel>>($"/api/files/get-folder-blood-line?id={RootFolder.Id.ToString()}", _cts.Token);
         if (response is { IsSuccessStatusCode: true, Data: not null })
             foreach (var folderInfoModel in response.Data)
-                BreadcrumbItems.Add(new BreadcrumbItem(folderInfoModel.FolderName, PageRoutes.Drive.Shared.Src + $"/{folderInfoModel.Id.ToString()}"));
+                BreadcrumbItems.Add(new BreadcrumbItem(folderInfoModel.FolderName, 
+                    Navigation.GetUriWithQueryParameters(PageRoutes.Drive.Shared.Src, new Dictionary<string, object?> { { "FolderId", folderInfoModel.Id.ToString() } })));
 
         await Render();
         ShouldRen = true;
