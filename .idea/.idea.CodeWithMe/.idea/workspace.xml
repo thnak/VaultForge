@@ -19,7 +19,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update someshit" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Program.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -289,7 +292,10 @@
       <workItem from="1724139682810" duration="2548000" />
       <workItem from="1724163825775" duration="2569000" />
       <workItem from="1724166592113" duration="305000" />
-      <workItem from="1724167150950" duration="324000" />
+      <workItem from="1724167150950" duration="923000" />
+      <workItem from="1724202086084" duration="849000" />
+      <workItem from="1724214808915" duration="1850000" />
+      <workItem from="1724287430350" duration="972000" />
     </task>
     <task id="LOCAL-00001" summary="remove anti token">
       <option name="closed" value="true" />

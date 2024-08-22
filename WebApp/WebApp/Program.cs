@@ -6,6 +6,7 @@ using Business.Data.Interfaces.User;
 using Business.Data.Repositories;
 using Business.Data.Repositories.FileSystem;
 using Business.Data.Repositories.User;
+using Business.Exceptions;
 using Business.Services;
 using BusinessModels.Converter;
 using BusinessModels.General;
@@ -29,9 +30,12 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        builder.Services.AddRazorComponents()
+        builder.Services.AddRazorComponents(options => options.DetailedErrors = builder.Environment.IsDevelopment())
             .AddInteractiveWebAssemblyComponents()
-            .AddInteractiveServerComponents(options => options.DetailedErrors = builder.Environment.IsDevelopment())
+            .AddInteractiveServerComponents(options =>
+            {
+                options.DetailedErrors = builder.Environment.IsDevelopment();
+            })
             .AddAuthenticationStateSerialization();
         
         
@@ -113,6 +117,11 @@ public class Program
 
         #endregion
 
+        #region Exception Handler
+
+        builder.Services.AddExceptionHandler<ErrorHandling>();
+
+        #endregion
         builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new ObjectIdConverter()); });
 
         var app = builder.Build();
@@ -153,6 +162,7 @@ public class Program
         app.MapStaticAssets();
         app.MapControllers();
         app.UseMiddleware<ErrorHandlingMiddleware>();
+        app.UseExceptionHandler(_ => { });
 
         app.MapRazorComponents<App>()
             .AddInteractiveWebAssemblyRenderMode(options => options.ServeMultithreadingHeaders = true)
