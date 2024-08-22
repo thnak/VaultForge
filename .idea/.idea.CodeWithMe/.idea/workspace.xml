@@ -20,8 +20,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/BusinessModels/Attribute/JsonDescriptionAttribute.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BusinessModels/Converter/JsonDescriptionConverter.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BusinessModels/Forecast/CurrentModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BusinessModels/Forecast/LocationModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Interfaces/IWeatherService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Interfaces/IWeatherService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/WeatherService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/WeatherService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/forecast/WeatherModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Forecast/WeatherModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,34 +58,12 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/thnak/CodeWithMe&quot;,
-    &quot;accountId&quot;: &quot;78be24ae-e6e7-4f51-9064-0f0e98755edc&quot;
+    &quot;accountId&quot;: &quot;49ba6e6c-c502-4d5e-9b05-4a5e7a34c1c7&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/abc2c7226ff616316cd1e05d76e6c36b49ce06a1/src/Components/Web/src/Head/HeadContent.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/abc2c7226ff616316cd1e05d76e6c36b49ce06a1/src/Mvc/Mvc.Core/src/ApplicationModels/InferParameterBindingInfoConvention.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/f5084525411d53b81d9950b68616117750b674d4/src/Components/Components/src/Rendering/RenderTreeBuilder.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/f5084525411d53b81d9950b68616117750b674d4/src/Http/Headers/src/HttpHeaderParser.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/f5084525411d53b81d9950b68616117750b674d4/src/JSInterop/Microsoft.JSInterop/src/JSRuntimeExtensions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/f5084525411d53b81d9950b68616117750b674d4/src/Middleware/OutputCaching/src/OutputCacheAttribute.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/f5084525411d53b81d9950b68616117750b674d4/src/Mvc/Mvc.Core/src/Infrastructure/ActionMethodExecutor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/08338fcaa5c9b9a8190abb99222fed12aaba956c/src/libraries/System.Private.CoreLib/src/System/Diagnostics/ConditionalAttribute.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/0d79e6de8dbc26a44dde336a9a680940e92e9904/src/coreclr/nativeaot/Runtime.Base/src/System/Runtime/StackFrameIterator.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/0d79e6de8dbc26a44dde336a9a680940e92e9904/src/libraries/Common/src/System/Security/Cryptography/X509Certificates/X509CertificateLoader.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/coreclr/nativeaot/Runtime.Base/src/System/Runtime/StackFrameIterator.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/Microsoft.Extensions.DependencyInjection/src/ServiceProvider.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Net.Http/src/System/Net/Http/HttpClient.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Net.Http/src/System/Net/Http/HttpClientHandler.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Collections/Generic/CollectionExtensions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Nullable.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Runtime/CompilerServices/DefaultInterpolatedStringHandler.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Runtime/CompilerServices/TaskAwaiter.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Runtime/ExceptionServices/ExceptionDispatchInfo.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Threading/Tasks/Task.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Security.Cryptography/src/System/Security/Cryptography/X509Certificates/CertificatePal.Windows.Import.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Text.Json/src/System/Text/Json/Serialization/JsonConverterOfT.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8c938872ea46f09bfea168eeb5f111556fbd2c5e818e2eed82d4846fd1469/OllamaToolsAttribute.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///usr/share/dotnet/packs/Microsoft.NET.Runtime.WebAssembly.Sdk/9.0.0-preview.7.24405.7/Sdk/WasmApp.Common.targets" root0="SKIP_INSPECTION" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -97,6 +82,7 @@
   &quot;keyToString&quot;: {
     &quot;.NET Launch Settings Profile.ResApi.executor&quot;: &quot;Debug&quot;,
     &quot;.NET Launch Settings Profile.Web: https.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.WebApp no browser.executor&quot;: &quot;Debug&quot;,
     &quot;.NET Launch Settings Profile.WebApp: https.executor&quot;: &quot;Debug&quot;,
     &quot;.NET Project.WebApp.Client.executor&quot;: &quot;Debug&quot;,
     &quot;Publish to folder.ResApi.executor&quot;: &quot;Run&quot;,
@@ -114,7 +100,47 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Publish to folder.ResApi">
+  <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
+    <layout>
+      <window_info id="Bookmarks" show_stripe_button="false" side_tool="true" />
+      <window_info id="Merge Requests" show_stripe_button="false" />
+      <window_info id="Commit_Guest" show_stripe_button="false" />
+      <window_info id="Pull Requests" show_stripe_button="false" />
+      <window_info id="Learn" show_stripe_button="false" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10758464" />
+      <window_info id="Commit" order="1" weight="0.10758464" />
+      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
+      <window_info anchor="bottom" id="TypeScript" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Dynamic Program Analysis" show_stripe_button="false" />
+      <window_info anchor="bottom" id="TODO" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Unit Tests" show_stripe_button="false" />
+      <window_info anchor="bottom" id="dotTrace Profiler" show_stripe_button="false" />
+      <window_info anchor="bottom" id="File Transfer" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" />
+      <window_info anchor="bottom" id="dotMemory" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="0" />
+      <window_info anchor="bottom" id="Problems" order="1" />
+      <window_info active="true" anchor="bottom" id="Problems View" order="2" visible="true" weight="0.32976258" />
+      <window_info anchor="bottom" id="Terminal" order="3" weight="0.32976258" />
+      <window_info anchor="bottom" id="NuGet" order="4" weight="0.32976258" />
+      <window_info anchor="bottom" id="Build" order="5" weight="0.32976258" />
+      <window_info anchor="bottom" id="Debug" order="6" weight="0.32976258" />
+      <window_info anchor="bottom" id="Services" order="7" />
+      <window_info anchor="right" id="Endpoints" show_stripe_button="false" />
+      <window_info anchor="right" id="Monitoring" show_stripe_button="false" />
+      <window_info anchor="right" id="IL" show_stripe_button="false" />
+      <window_info anchor="right" id="documentation.v2" side_tool="true" />
+      <window_info anchor="right" id="Coverage" show_stripe_button="false" side_tool="true" />
+      <window_info anchor="right" id="Test Coverage" show_stripe_button="false" />
+      <window_info anchor="right" content_ui="combo" id="Notifications" order="0" weight="0.25" />
+      <window_info anchor="right" id="AIAssistant" order="1" weight="0.25" />
+      <window_info anchor="right" id="Database" order="2" weight="0.25" />
+      <window_info anchor="right" id="Gradle" order="3" weight="0.25" />
+      <window_info anchor="right" id="Maven" order="4" weight="0.25" />
+    </layout>
+  </component>
+  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp no browser">
     <configuration name="ResApi" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/ResApi/bin/Release/net9.0/linux-x64/publish" target_framework="net9.0" uuid_high="5905353364384007298" uuid_low="-8333852158807631372" />
       <method v="2" />
@@ -153,6 +179,7 @@
       <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
       <option name="SEND_DEBUG_REQUEST" value="1" />
       <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+      <option name="RUNTIME_TYPE" value="coreclr" />
       <method v="2">
         <option name="Build" />
       </method>
@@ -296,6 +323,12 @@
       <workItem from="1724202086084" duration="849000" />
       <workItem from="1724214808915" duration="1850000" />
       <workItem from="1724287430350" duration="972000" />
+      <workItem from="1724167150950" duration="324000" />
+      <workItem from="1724288492770" duration="5000" />
+      <workItem from="1724290201424" duration="920000" />
+      <workItem from="1724294612731" duration="332000" />
+      <workItem from="1724299693875" duration="576000" />
+      <workItem from="1724309737750" duration="6767000" />
     </task>
     <task id="LOCAL-00001" summary="remove anti token">
       <option name="closed" value="true" />
@@ -696,17 +729,14 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ResApi/Controllers/WeatherForecastController.cs</url>
           <line>49</line>
-          <properties documentPath="C:\Users\thanh\Git\CodeWithMe\ResApi\Controllers\WeatherForecastController.cs" containingFunctionPresentation="Method 'TryRedirect'">
-            <startOffsets>
-              <option value="1707" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1752" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="C:\Users\thanh\Git\CodeWithMe\ResApi\Controllers\WeatherForecastController.cs" containingFunctionPresentation="Method 'TryRedirect'" />
           <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

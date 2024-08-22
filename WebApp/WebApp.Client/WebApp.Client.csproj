@@ -10,6 +10,9 @@
         <!-- <WasmEnableThreads>true</WasmEnableThreads> -->
         <BlazorWebAssemblyJiterpreter>false</BlazorWebAssemblyJiterpreter>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <NeutralLanguage>en</NeutralLanguage>
+        <PublicSign>false</PublicSign>
+        <DelaySign>true</DelaySign>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
