@@ -18,8 +18,8 @@ public partial class Routes : ComponentBase, IDisposable
     {
         if (firstRender)
         {
-            await JsRuntime.InvokeVoidAsync("CloseProgressBar");
-            await JsRuntime.InvokeVoidAsync("InitAppEventListener");
+            await JsRuntime.InvokeVoidAsync("CloseProgressBar").ConfigureAwait(false);
+            await JsRuntime.InvokeVoidAsync("InitAppEventListener").ConfigureAwait(false);
 
             CustomStateContainer.OnChangedAsync += OnChangedAsync;
             EventListener.ContextMenuClickedAsync += ContextMenuClicked;
@@ -30,7 +30,7 @@ public partial class Routes : ComponentBase, IDisposable
             EventListener.InstalledEventAsync += InstalledWpa;
         }
 
-        await base.OnAfterRenderAsync(firstRender);
+        await base.OnAfterRenderAsync(firstRender).ConfigureAwait(false);
     }
 
     private Task InstalledWpa()
@@ -39,9 +39,9 @@ public partial class Routes : ComponentBase, IDisposable
         return Task.CompletedTask;
     }
 
-    private async Task OnChangedAsync()
+    private Task OnChangedAsync()
     {
-        await InvokeAsync(StateHasChanged);
+        return InvokeAsync(StateHasChanged);
     }
 
     private Task ContextMenuClicked()

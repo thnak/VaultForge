@@ -20,15 +20,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/BusinessModels/Attribute/JsonDescriptionAttribute.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BusinessModels/Converter/JsonDescriptionConverter.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BusinessModels/Forecast/CurrentModel.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BusinessModels/Forecast/LocationModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/NavMenu/Drive/DriveNavMenu.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Interfaces/IWeatherService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Interfaces/IWeatherService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/WeatherService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/WeatherService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/forecast/WeatherModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Forecast/WeatherModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/PageRoutes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/PageRoutes.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/MainLayout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/MainLayout.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/MainLayout.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/MainLayout.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/NavMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/NavMenu/NavMenu.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/NavMenu.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/NavMenu/NavMenu.razor.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Home.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/_Imports.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/_Imports.razor" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +124,7 @@
       <window_info anchor="bottom" id="dotMemory" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="Problems" order="1" />
-      <window_info active="true" anchor="bottom" id="Problems View" order="2" visible="true" weight="0.32976258" />
+      <window_info anchor="bottom" id="Problems View" order="2" weight="0.32976258" />
       <window_info anchor="bottom" id="Terminal" order="3" weight="0.32976258" />
       <window_info anchor="bottom" id="NuGet" order="4" weight="0.32976258" />
       <window_info anchor="bottom" id="Build" order="5" weight="0.32976258" />
@@ -328,7 +331,8 @@
       <workItem from="1724290201424" duration="920000" />
       <workItem from="1724294612731" duration="332000" />
       <workItem from="1724299693875" duration="576000" />
-      <workItem from="1724309737750" duration="6767000" />
+      <workItem from="1724309737750" duration="7016000" />
+      <workItem from="1724373548879" duration="2137000" />
     </task>
     <task id="LOCAL-00001" summary="remove anti token">
       <option name="closed" value="true" />
@@ -674,7 +678,15 @@
       <option name="project" value="LOCAL" />
       <updated>1724167185533</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="add some shit">
+      <option name="closed" value="true" />
+      <created>1724323215417</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1724323215417</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -696,7 +708,6 @@
   <component name="VcsManagerConfiguration">
     <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="add some shit" />
     <MESSAGE value="delete old project" />
     <MESSAGE value="sua ti" />
     <MESSAGE value="sưa" />
@@ -721,7 +732,8 @@
     <MESSAGE value="." />
     <MESSAGE value="chinh" />
     <MESSAGE value="update someshit" />
-    <option name="LAST_COMMIT_MESSAGE" value="update someshit" />
+    <MESSAGE value="add some shit" />
+    <option name="LAST_COMMIT_MESSAGE" value="add some shit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

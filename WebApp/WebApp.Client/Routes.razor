@@ -1,7 +1,24 @@
-﻿<MudDialogProvider MaxWidth="MaxWidth.False" Position="DialogPosition.Center" />
+﻿@using WebApp.Client.NavMenu.Drive
+@using NavigationContext = Microsoft.AspNetCore.Components.Routing.NavigationContext
+
+@code {
+    private RenderFragment? NavBar { get; set; }
+
+    private Task Navigating(NavigationContext arg)
+    {
+        if (arg.Path.Contains(PageRoutes.Drive.Name))
+        {
+            NavBar = @<DriveNavMenu/>;
+        }
+
+        return Task.CompletedTask;
+    }
+}
+
+<MudDialogProvider MaxWidth="MaxWidth.False" Position="DialogPosition.Center"/>
 <MudSnackbarProvider Class="toast-move-right-2-left"/>
-<ThemeProvider />
-<MudPopoverProvider />
+<ThemeProvider/>
+<MudPopoverProvider/>
 <BlazoredToasts ErrorIcon="fa-solid fa-bug"
                 IconType="IconType.FontAwesome"
                 InfoIcon="fa-solid fa-info"
@@ -13,32 +30,37 @@
                 Timeout="10" WarningIcon="fa-solid fa-triangle-exclamation"
                 MaxToastCount="10"/>
 
+
 <MudBreakpointProvider>
-    <Router AppAssembly="@typeof(Program).Assembly" >
-        <Found Context="routeData" >
+    <Router AppAssembly="@typeof(Program).Assembly" OnNavigateAsync="Navigating">
+        <Found Context="routeData">
             <ErrorBoundary>
                 <ChildContent>
 
-                    <AuthorizeRouteView DefaultLayout="@typeof(MainLayout)" RouteData="@routeData" >
+                    <AuthorizeRouteView DefaultLayout="@typeof(MainLayout)" RouteData="@routeData">
                         <NotAuthorized>
-                            <AccessDenied />
+                            <AccessDenied/>
                         </NotAuthorized>
                         <Authorizing>
-                            <Loading />
+                            <Loading/>
                         </Authorizing>
                     </AuthorizeRouteView>
 
                 </ChildContent>
-                <ErrorContent Context="ex" >
-                    <ErrorHanding ErrorMessage="@EncodeException(ex)" />
+                <ErrorContent Context="ex">
+                    <ErrorHanding ErrorMessage="@EncodeException(ex)"/>
                 </ErrorContent>
             </ErrorBoundary>
         </Found>
         <NotFound>
-            <NotFoundComponent />
+            <NotFoundComponent/>
         </NotFound>
         <Navigating>
-            <Loading />
+            <Loading/>
         </Navigating>
     </Router>
 </MudBreakpointProvider>
+
+<SectionContent SectionId="@MainLayout.NavMenu">
+    @NavBar
+</SectionContent>
