@@ -6,7 +6,7 @@
 
     private Task Navigating(NavigationContext arg)
     {
-        if (arg.Path.Contains(PageRoutes.Drive.Name))
+        if (arg.Path.StartsWith(PageRoutes.Drive.Name[1..]))
         {
             NavBar = @<DriveNavMenu/>;
         }

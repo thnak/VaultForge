@@ -27,7 +27,6 @@
         <WasmStripILAfterAOT>true</WasmStripILAfterAOT>
         <WasmEnableExceptionHandling>false</WasmEnableExceptionHandling>
 	    <BlazorEnableCompression>true</BlazorEnableCompression>
-        <PublishTrimmed>true</PublishTrimmed>
     </PropertyGroup>
 
     <ItemGroup>

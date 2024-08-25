@@ -135,23 +135,38 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     [IgnoreAntiforgeryToken]
     [OutputCache(Duration = 5, NoStore = true)]
     public IActionResult GetSharedFolder([FromForm] string? id, [FromForm] string? password,
-        [FromForm] int page, [FromForm] int pageSize, [FromForm] FolderContentType[]? contentTypes)
+        [FromForm] int page, [FromForm] int pageSize, [FromForm] string? contentTypes)
     {
         var folder = string.IsNullOrEmpty(id) ? folderServe.GetRoot("") : folderServe.Get(id);
         if (folder == null) return BadRequest(AppLang.Folder_could_not_be_found);
-        if (!string.IsNullOrEmpty(password))
+        if (!string.IsNullOrEmpty(folder.Password))
         {
-            if (password.ComputeSha256Hash() != folder.Password)
-                return Unauthorized();
+            if (password == null || password.ComputeSha256Hash() != folder.Password)
+                return Unauthorized(AppLang.This_resource_is_protected_by_password);
         }
 
         folder.Password = string.Empty;
         var size = (int)Math.Ceiling(folder.Contents.Count / (float)pageSize);
 
-        if (contentTypes == default)
-            contentTypes = Enum.GetValues<FolderContentType>().ToArray();
+        List<FolderContentType> contentTypesList;
 
-        folder.Contents = folder.Contents.Where(x => contentTypes.Contains(x.Type)).Skip(page * pageSize).Take(pageSize).ToList();
+        if (!string.IsNullOrEmpty(contentTypes))
+        {
+            var listString = contentTypes.DeSerialize<List<string>>();
+            if (listString != null) contentTypesList = listString.Select(Enum.Parse<FolderContentType>).ToList();
+            else
+            {
+                contentTypesList = contentTypes.DeSerialize<List<FolderContentType>>() ?? [];
+            }
+        }
+        else
+        {
+            contentTypesList = Enum.GetValues<FolderContentType>().ToList();
+        }
+
+        page -= 1;
+
+        folder.Contents = folder.Contents.Where(x => contentTypesList.Contains(x.Type)).Skip(page * pageSize).Take(pageSize).ToList();
         FolderRequest folderRequest = new FolderRequest()
         {
             Folder = folder,
@@ -261,8 +276,11 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
             var result = await fileServe.UpdateAsync(file);
             return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
         }
-
-        return NotFound(AppLang.File_not_found_);
+        else
+        {
+            var result = fileServe.Delete(file.Id.ToString());
+            return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
+        }
     }
 
     [HttpDelete("safe-delete-folder")]
@@ -279,11 +297,14 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         {
             folder.Type = FolderContentType.DeletedFolder;
             var updateResult = await folderServe.UpdateAsync(folder);
-
             return updateResult.Item1 ? Ok(updateResult.Item2) : BadRequest(updateResult.Item2);
         }
 
-        return NotFound(AppLang.Folder_could_not_be_found);
+        else
+        {
+            var updateResult = folderServe.Delete(folder.Id.ToString());
+            return updateResult.Item1 ? Ok(updateResult.Item2) : BadRequest(updateResult.Item2);
+        }
     }
 
 

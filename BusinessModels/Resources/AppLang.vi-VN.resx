@@ -403,4 +403,10 @@ ClientY: {1}</value>
     <data name="Community" xml:space="preserve">
       <value>Cộng đồng</value>
     </data>
+    <data name="Browse File to upload" xml:space="preserve">
+      <value>Duyệt tập tin để tải lên</value>
+    </data>
+    <data name="File upload" xml:space="preserve">
+      <value>Tải tập tin lên</value>
+    </data>
 </root>

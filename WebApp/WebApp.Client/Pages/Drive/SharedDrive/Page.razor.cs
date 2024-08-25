@@ -85,10 +85,12 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     private bool Open { get; set; }
     private bool Loading { get; set; }
 
+    private string Password { get; set; } = string.Empty;
+
     #region Pagination fiels
 
-    private int CurrentPage { get; set; }
-    private int PageSize { get; set; }
+    private int CurrentPage { get; set; } = 1;
+    private int PageSize { get; set; } = 50;
     private int TotalPages { get; set; }
 
     #endregion
@@ -305,8 +307,9 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         if (password != null)
             formData.Add(new StringContent(password), "password");
 
-        if (PageStatus != "deleted")
+        if (PageStatus == "deleted")
         {
+            ShowHidden = true;
             FolderContentType[] types = [FolderContentType.DeletedFile, FolderContentType.DeletedFolder];
             formData.Add(new StringContent(types.ToJson()), "contentTypes");
         }
@@ -386,7 +389,9 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             var dialogResult = await dialog.Result;
             if (dialogResult is { Canceled: false, Data: string pass })
             {
+                Password = pass;
                 await GetRootFolderAsync(pass);
+                return;
             }
         }
 
@@ -400,16 +405,16 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
     #region Element style
 
-    private string ElementStyle => "align-center justify-center d-flex flex-row gap-2 mud-elevation-1 mud-paper mud-paper-outlined pa-2 rounded-lg smooth-appear";
+    private string ElementStyle => "mud-height-full align-center justify-center d-flex flex-row gap-2 mud-elevation-1 mud-paper mud-paper-outlined pa-2 rounded-lg smooth-appear";
 
     string InitStyleElement(FolderContentType type)
     {
-        return ShowHidden ? ElementStyle.ItemOpacityClass(type) : "d-none";
+        return ElementStyle.ItemOpacityClass(type, ShowHidden);
     }
 
     string InitStyleElement(FileContentType type)
     {
-        return ShowHidden ? ElementStyle.ItemOpacityClass(type) : "d-none";
+        return ElementStyle.ItemOpacityClass(type, ShowHidden);
     }
 
     #endregion
@@ -422,7 +427,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         if (response is { IsSuccessStatusCode: true, Data: not null })
             foreach (var folderInfoModel in response.Data)
                 BreadcrumbItems.Add(new BreadcrumbItem(folderInfoModel.FolderName,
-                    Navigation.GetUriWithQueryParameters(PageRoutes.Drive.Shared.Src, new Dictionary<string, object?> { { "FolderId", folderInfoModel.Id.ToString() } })));
+                    Navigation.GetUriWithQueryParameters(Navigation.Uri, new Dictionary<string, object?> { { "FolderId", folderInfoModel.Id.ToString() } })));
 
         await Render();
         ShouldRen = true;
@@ -447,6 +452,12 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
         ToastService.ShowError("Empty folders", ToastSettings);
         return [];
+    }
+
+    private Task PageChanged(int obj)
+    {
+        CurrentPage = obj;
+        return GetRootFolderAsync(Password);
     }
 
     #endregion

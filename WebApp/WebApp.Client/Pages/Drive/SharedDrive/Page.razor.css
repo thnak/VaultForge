@@ -23,13 +23,13 @@
     flex-direction: column;
 }
 
-.header > label{
+.header > label {
     position: absolute;
     height: 100%;
     width: 100%;
 }
 
-.container > .file-list-upload{
+.container > .file-list-upload {
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -37,4 +37,14 @@
     overflow-x: hidden;
     overflow-y: scroll;
     flex: 1;
+}
+
+
+
+.text-limit {
+    overflow: hidden;
+    width: 100%;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
 }

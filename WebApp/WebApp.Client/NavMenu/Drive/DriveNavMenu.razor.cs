@@ -11,7 +11,8 @@ public partial class DriveNavMenu : ComponentBase
     {
         if (firstRender)
         {
-            DeletedShared = Navigation.GetUriWithQueryParameters(PageRoutes.Drive.Shared.Src, new Dictionary<string, object?>() { { "status", "deleted" } });
+            DeletedShared = Navigation.GetUriWithQueryParameters(PageRoutes.Drive.Trash.Src, new Dictionary<string, object?>() { { "status", "deleted" } });
+            StateHasChanged();
         }
 
         base.OnAfterRender(firstRender);

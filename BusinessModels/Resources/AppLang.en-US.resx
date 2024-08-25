@@ -404,4 +404,10 @@ ClientY: {1}</value>
     <data name="Community" xml:space="preserve">
       <value>Community</value>
     </data>
+    <data name="Browse File to upload" xml:space="preserve">
+      <value>Browse File to upload</value>
+    </data>
+    <data name="File upload" xml:space="preserve">
+      <value>File upload</value>
+    </data>
 </root>

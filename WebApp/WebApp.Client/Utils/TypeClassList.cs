@@ -4,33 +4,31 @@ namespace WebApp.Client.Utils;
 
 public static class TypeClassList
 {
-    public static string ItemOpacityClass(this string self, FileContentType fileContentType)
+    public static string ItemOpacityClass(this string self, FileContentType fileContentType, bool showHidden = false)
     {
-        var opacity = string.Empty;
         switch (fileContentType)
         {
             case FileContentType.HiddenFile:
             {
-                opacity = "opacity-5";
-                break;
+                var opacity = showHidden ? "opacity-5" : "d-none";
+                return self + $" {opacity}";
             }
+            default:
+                return self;
         }
-
-        return self + $" {opacity}";
     }
 
-    public static string ItemOpacityClass(this string self, FolderContentType fileContentType)
+    public static string ItemOpacityClass(this string self, FolderContentType fileContentType, bool showHidden = false)
     {
-        var opacity = string.Empty;
         switch (fileContentType)
         {
             case FolderContentType.HiddenFolder:
             {
-                opacity = "opacity-5";
-                break;
+                var opacity = showHidden ? "opacity-5" : "d-none";
+                return self + $" {opacity}";
             }
+            default:
+                return self;
         }
-
-        return self + $" {opacity}";
     }
 }

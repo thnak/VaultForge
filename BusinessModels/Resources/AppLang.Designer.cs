@@ -96,6 +96,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Duyệt tập tin để tải lên.
+        /// </summary>
+        public static string Browse_File_to_upload {
+            get {
+                return ResourceManager.GetString("Browse File to upload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hủy.
         /// </summary>
         public static string Cancel {
@@ -290,6 +299,15 @@ namespace BusinessModels.Resources {
         public static string File_not_found_ {
             get {
                 return ResourceManager.GetString("File not found ", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tải tập tin lên.
+        /// </summary>
+        public static string File_upload {
+            get {
+                return ResourceManager.GetString("File upload", resourceCulture);
             }
         }
         

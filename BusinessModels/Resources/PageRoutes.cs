@@ -64,7 +64,21 @@ public static class PageRoutes
                 }
             ];
         }
-        
+        public static class Trash
+        {
+            public const string Src = Name + "/trash";
+            public const string Title = "trash";
+
+            public static readonly List<Dictionary<string, string>> MetaData =
+            [
+                new()
+                {
+                    { "name", "description" },
+                    { "content", "deleted resources"
+                    }
+                }
+            ];
+        }
         
     }
 
