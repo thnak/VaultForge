@@ -38,6 +38,15 @@ public static class PageRoutes
         {
             public const string Src = Name + "/home";
             public const string Title = "Drive";
+            public static readonly List<Dictionary<string, string>> MetaData =
+            [
+                new()
+                {
+                    { "name", "description" },
+                    { "content", "My Drive"
+                    }
+                }
+            ];
         }
 
         public static class Shared

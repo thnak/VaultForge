@@ -105,6 +105,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cộng đồng.
+        /// </summary>
+        public static string Community {
+            get {
+                return ResourceManager.GetString("Community", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Đã sao chép.
         /// </summary>
         public static string Copied {
@@ -456,6 +465,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drive của tôi.
+        /// </summary>
+        public static string My_Drive {
+            get {
+                return ResourceManager.GetString("My Drive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mới.
         /// </summary>
         public static string New {
@@ -552,6 +570,15 @@ namespace BusinessModels.Resources {
         public static string ProtectedSessionStorage_GetAsync__ERROR___0_ {
             get {
                 return ResourceManager.GetString("ProtectedSessionStorage_GetAsync__ERROR___0_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thùng rác.
+        /// </summary>
+        public static string Recycle_bin {
+            get {
+                return ResourceManager.GetString("Recycle bin", resourceCulture);
             }
         }
         
@@ -723,6 +750,15 @@ namespace BusinessModels.Resources {
         public static string There_is_nothing_to_show {
             get {
                 return ResourceManager.GetString("There is nothing to show", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tài nguyên này được bảo vệ bởi mật khẩu.
+        /// </summary>
+        public static string This_resource_is_protected_by_password {
+            get {
+                return ResourceManager.GetString("This resource is protected by password", resourceCulture);
             }
         }
         

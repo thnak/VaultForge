@@ -391,4 +391,16 @@ ClientY: {1}</value>
     <data name="Successfully uploaded" xml:space="preserve">
       <value>Tải lên thành công</value>
     </data>
+    <data name="This resource is protected by password" xml:space="preserve">
+      <value>Tài nguyên này được bảo vệ bởi mật khẩu</value>
+    </data>
+    <data name="My Drive" xml:space="preserve">
+      <value>Drive của tôi</value>
+    </data>
+    <data name="Recycle bin" xml:space="preserve">
+      <value>Thùng rác</value>
+    </data>
+    <data name="Community" xml:space="preserve">
+      <value>Cộng đồng</value>
+    </data>
 </root>

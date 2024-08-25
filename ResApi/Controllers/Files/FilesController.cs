@@ -1,4 +1,3 @@
-using System.Net;
 using System.Net.Mime;
 using Business.Attribute;
 using Business.Business.Interfaces.FileSystem;
@@ -10,6 +9,7 @@ using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
 using BusinessModels.WebContent;
+using BusinessModels.WebContent.Drive;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
@@ -130,16 +130,34 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         return PhysicalFile(file.AbsolutePath, file.ContentType, true);
     }
 
-    [HttpGet("get-folder")]
+    [HttpPost("get-folder")]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
     [OutputCache(Duration = 5, NoStore = true)]
-    public IActionResult GetSharedFolder(string? id)
+    public IActionResult GetSharedFolder([FromForm] string? id, [FromForm] string? password,
+        [FromForm] int page, [FromForm] int pageSize, [FromForm] FolderContentType[]? contentTypes)
     {
         var folder = string.IsNullOrEmpty(id) ? folderServe.GetRoot("") : folderServe.Get(id);
         if (folder == null) return BadRequest(AppLang.Folder_could_not_be_found);
+        if (!string.IsNullOrEmpty(password))
+        {
+            if (password.ComputeSha256Hash() != folder.Password)
+                return Unauthorized();
+        }
+
         folder.Password = string.Empty;
-        return Content(folder.ToJson(), MediaTypeNames.Application.Json);
+        var size = (int)Math.Ceiling(folder.Contents.Count / (float)pageSize);
+
+        if (contentTypes == default)
+            contentTypes = Enum.GetValues<FolderContentType>().ToArray();
+
+        folder.Contents = folder.Contents.Where(x => contentTypes.Contains(x.Type)).Skip(page * pageSize).Take(pageSize).ToList();
+        FolderRequest folderRequest = new FolderRequest()
+        {
+            Folder = folder,
+            TotalPages = size
+        };
+        return Content(folderRequest.ToJson(), MediaTypeNames.Application.Json);
     }
 
     [HttpPost("search-folder")]
@@ -444,7 +462,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
 
             if (ModelState.IsValid)
                 return Ok(AppLang.Successfully_uploaded);
-            
+
             return Ok(ModelState);
         }
         catch (OperationCanceledException ex)
