@@ -52,4 +52,10 @@
         </EmbeddedResource>
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="MudBlazor">
+        <HintPath>..\..\..\.nuget\packages\mudblazor\7.6.0\lib\net8.0\MudBlazor.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
