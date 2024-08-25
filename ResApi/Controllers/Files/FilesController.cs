@@ -146,7 +146,6 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         }
 
         folder.Password = string.Empty;
-        var size = (int)Math.Ceiling(folder.Contents.Count / (float)pageSize);
 
         List<FolderContentType> contentTypesList;
 
@@ -166,7 +165,9 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
 
         page -= 1;
 
-        folder.Contents = folder.Contents.Where(x => contentTypesList.Contains(x.Type)).Skip(page * pageSize).Take(pageSize).ToList();
+        folder.Contents = folder.Contents.Where(x => contentTypesList.Contains(x.Type)).ToList();
+        var size = (int)Math.Ceiling(folder.Contents.Count / (float)pageSize);
+        folder.Contents = folder.Contents.Skip((page - 1) * size).Take(size).ToList();
         FolderRequest folderRequest = new FolderRequest()
         {
             Folder = folder,
