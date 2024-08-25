@@ -167,7 +167,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
 
         folder.Contents = folder.Contents.Where(x => contentTypesList.Contains(x.Type)).ToList();
         var size = (int)Math.Ceiling(folder.Contents.Count / (float)pageSize);
-        folder.Contents = folder.Contents.Skip((page - 1) * size).Take(size).ToList();
+        folder.Contents = folder.Contents.Skip(page * pageSize).Take(pageSize).ToList();
         FolderRequest folderRequest = new FolderRequest()
         {
             Folder = folder,
