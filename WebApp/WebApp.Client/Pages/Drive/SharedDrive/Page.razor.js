@@ -44,6 +44,18 @@ export function getSelectedFiles() {
     return fileNameList;
 }
 
+export function getSelectedFileSize() {
+    const files = document.getElementById("file1").files;
+    const formdata = new FormData();
+    const fileNameList = [];
+    for (var i = 0; i < files.length; i++) {
+        formdata.append(`file ${i}`, files[i], files[i].name);
+        fileNameList.push(files[i].size);
+    }
+
+    return fileNameList;
+}
+
 export function clearSelectedFiles() {
     document.getElementById("file1").value = '';
 }
@@ -65,7 +77,18 @@ async function progressHandler(event) {
  * @param {ProgressEvent} event
  */
 async function completeHandler(event) {
-    await DotNet.invokeMethodAsync(ASSEMBLY_NAME, 'OnComplete', event.target.status, event.target.responseText);
+    switch (event.target.readyState) {
+        case "loading":
+            // The document is still loading.
+            break;
+        case "interactive":
+            // The document has finished loading. We can now access the DOM elements.
+            break;
+        case "complete":
+            // The document and all sub-resources have finished loading.
+            await DotNet.invokeMethodAsync(ASSEMBLY_NAME, 'OnComplete', event.target.status, event.target.responseText);
+            break;
+    }
 }
 
 /**

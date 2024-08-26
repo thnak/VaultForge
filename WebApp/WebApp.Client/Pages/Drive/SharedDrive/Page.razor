@@ -39,7 +39,7 @@
 <MudDropContainer Class="d-flex flex-column flex-grow-1 gap-3" ItemDropped="ItemUpdated" Items="FileItemList" ItemsSelector="@((item, dropzone) => item.Identifier == dropzone)" @ref="DropContainer" T="DropItem">
     <ChildContent>
         <MudListSubheader Class="mt-4 pb-2">@AppLang.Folder</MudListSubheader>
-        <div class="d-flex flex-wrap gap-4 mx-4 ">
+        <div class="d-flex flex-wrap gap-2">
 
             @foreach (var x in FolderItemList)
             {
@@ -137,9 +137,9 @@
                             <i class="@x.ContentType.GetIcon()"></i>
                         </MudText>
                     </div>
-                    <div class="d-flex flex-column gap-0 flex-1">
-                        <MudText>@x.FileName</MudText>
-                        <MudProgressLinear Striped Color="Color.Primary" Size="Size.Small" Value="@UploadProgress[x.Id]" Max="100"/>
+                    <div class="d-flex flex-column gap-0 flex-1 overflow-hidden">
+                        <span class="text-limit">@x.FileName</span>
+                        <MudProgressLinear Striped Color="Color.Primary" Size="Size.Small" Value="@UploadProgress[x.Id]" Max="@x.FileSize"/>
                     </div>
                 </div>
             }
