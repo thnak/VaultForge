@@ -22,6 +22,7 @@ public static class FrontEnd
             config.SnackbarConfiguration.HideTransitionDuration = 500;
             config.SnackbarConfiguration.ShowTransitionDuration = 500;
             config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
+            config.PopoverOptions.CheckForPopoverProvider = false;
         });
         service.AddBlazoredToast();
         service.AddScoped<ProtectedLocalStorage>();

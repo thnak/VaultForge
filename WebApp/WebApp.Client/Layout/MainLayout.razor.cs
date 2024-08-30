@@ -6,7 +6,7 @@ namespace WebApp.Client.Layout;
 public partial class MainLayout
 {
     private bool _drawerOpen;
-    internal static object NavMenu { get; } = new();
+    public static object NavMenu { get; } = new();
     [CascadingParameter] private MudThemeProvider MudThemeProvider { get; set; } = default!;
 
     private void DrawerToggle()
