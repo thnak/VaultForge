@@ -12,7 +12,7 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
         {
             context.Response.OnStarting(() =>
             {
-                context.Response.Headers.Append("Content-Security-Policy", "*");
+                // context.Response.Headers.Append("Content-Security-Policy", "*");
                 context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
                 context.Response.Headers.Append("X-Frame-Options", "SAMEORIGIN");
 
