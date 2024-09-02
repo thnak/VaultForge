@@ -51,7 +51,7 @@ public static class Authenticate
             .AddCookie(options =>
             {
                 options.SlidingExpiration = true;
-                options.LoginPath = PageRoutes.Account.SignIn;
+                options.LoginPath = PageRoutes.Account.SignIn.Src;
                 options.LogoutPath = PageRoutes.Account.Logout;
                 options.AccessDeniedPath = PageRoutes.Account.Denied;
                 options.ExpireTimeSpan = TimeSpan.FromHours(ProtectorTime.CookieExpireTimeSpan);
@@ -142,7 +142,7 @@ public static class Authenticate
         {
             options.AddPolicy("AllowAllOrigins",
                 policyBuilder => policyBuilder
-                    .WithOrigins("localhost:5217", "https://thnakdevserver.ddns.net:5001", "http://thnak.myddns.me/", "http://34.199.8.144:80", "https://34.199.8.144:80")
+                    .WithOrigins("localhost:5217", "https://thnakdevserver.ddns.net:5001", "http://34.199.8.144:80", "https://34.199.8.144:80")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials());

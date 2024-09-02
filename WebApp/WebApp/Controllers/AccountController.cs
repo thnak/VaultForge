@@ -68,8 +68,8 @@ public class AccountController(
         }
 
         if (!string.IsNullOrEmpty(request.ReturnUrl))
-            return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri([authenticateState.Item2, request.ReturnUrl]));
-        return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri(authenticateState.Item2));
+            return Redirect(PageRoutes.Account.SignInError.Src.AppendAndEncodeBase64StringAsUri([authenticateState.Item2, request.ReturnUrl]));
+        return Redirect(PageRoutes.Account.SignInError.Src.AppendAndEncodeBase64StringAsUri(authenticateState.Item2));
     }
 
 
@@ -79,7 +79,7 @@ public class AccountController(
     public async Task<IActionResult> AccountSignUp([FromForm] RequestRegisterModel request)
     {
         var user = userBl.Get(request.Username);
-        if (user != null) return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri(AppLang.User_is_already_exists));
+        if (user != null) return Redirect(PageRoutes.Account.SignInError.Src.AppendAndEncodeBase64StringAsUri(AppLang.User_is_already_exists));
 
         var validateContext = new ValidationContext(request, null, null);
         var validationResults = new List<ValidationResult>();
@@ -97,14 +97,14 @@ public class AccountController(
             });
 
             if (createResult.Item1) return Redirect("/api/Account/login");
-            return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri(createResult.Item2));
+            return Redirect(PageRoutes.Account.SignInError.Src.AppendAndEncodeBase64StringAsUri(createResult.Item2));
         }
 
         foreach (var result in validationResults)
             if (result.ErrorMessage != null)
-                return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri(result.ErrorMessage));
+                return Redirect(PageRoutes.Account.SignInError.Src.AppendAndEncodeBase64StringAsUri(result.ErrorMessage));
 
-        return Redirect(PageRoutes.Account.SignInError.AppendAndEncodeBase64StringAsUri(AppLang.Registration_failed));
+        return Redirect(PageRoutes.Account.SignInError.Src.AppendAndEncodeBase64StringAsUri(AppLang.Registration_failed));
     }
 
     [HttpGet("sign-out")]
@@ -112,7 +112,7 @@ public class AccountController(
     public async Task<IActionResult> AccountSignOut()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return Redirect(PageRoutes.Account.SignIn);
+        return Redirect(PageRoutes.Account.SignIn.Src);
     }
 
     [HttpPost("getJwt")]

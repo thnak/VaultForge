@@ -224,7 +224,7 @@ public abstract class Program
             .AddJwtBearer(options =>
             {
                 var cert = builder.Configuration.GetSection(nameof(AppCertificate)).Get<AppCertificate>()!;
-                var certificate =  X509CertificateLoader.LoadPkcs12FromFile(cert.FilePath, cert.Password);
+                var certificate = X509CertificateLoader.LoadPkcs12FromFile(cert.FilePath, cert.Password);
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
@@ -300,7 +300,7 @@ public abstract class Program
                 corsPolicyBuilder =>
                 {
                     corsPolicyBuilder
-                        .WithOrigins("https://localhost:7158", "https://thnakdevserver.ddns.net:5000")
+                        .WithOrigins("https://localhost:7158", "https://thnakdevserver.ddns.net", "http://thnakdevserver.ddns.net")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();

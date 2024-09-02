@@ -10,6 +10,7 @@ public partial class AppBar : ComponentBase
     internal static object TopBarSection2 = new();
     internal static object TopBarSection3 = new();
     [Parameter] public EventCallback HandleDrawerOpen { get; set; }
+    private Dictionary<string, object?> MenuBarButtonAttribute => new() { { "aria-label", "nav menu button" } };
 
 
     private async Task LogOut()

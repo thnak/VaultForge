@@ -1,4 +1,5 @@
 .container {
+    height: 100%;
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
     margin: 0;
@@ -9,17 +10,6 @@
     flex-direction: column;
 }
 
-@media (orientation: landscape) {
-    .container {
-        height: calc(100vh - var(--mud-appbar-height) - 16px);
-    }
-}
-
-@media (orientation: portrait) {
-    .container {
-        height: calc(100vh - var(--mud-appbar-height) - 4px);
-    }
-}
 
 h1 {
     font-size: 3em;

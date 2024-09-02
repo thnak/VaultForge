@@ -67,6 +67,9 @@
 </SectionContent>
 
 <script>
-    const progressWrapper = document.getElementById("progress-wrapper");
-    progressWrapper.classList.add('closed');
+    function closeLoading() {
+        const progressWrapper = document.getElementById("progress-wrapper");
+        progressWrapper.classList.add('closed');
+    }
+    closeLoading();
 </script>

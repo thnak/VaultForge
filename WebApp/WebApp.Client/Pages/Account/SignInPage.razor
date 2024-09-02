@@ -1,44 +1,48 @@
-﻿@rendermode InteractiveAuto
-@attribute [Route(PageRoutes.Account.SignIn)]
-@attribute [Route(PageRoutes.Account.SignInError + "/{ErrorMessage}")]
+﻿@rendermode InteractiveServer
+@attribute [Route(PageRoutes.Account.SignIn.Src)]
+@attribute [Route(PageRoutes.Account.SignInError.Src + "/{ErrorMessage}")]
 @layout SignInLayout
 
 <PageTitle>@AppLang.Sign_in_to_your_account</PageTitle>
 
-<div class="sign-up-form mud-paper" >
-    <div class="align-center d-flex flex-column justify-center" >
+<HeadContent>
+    <HeadContentContainer MetaProperty="@PageRoutes.Account.SignIn.MetaData"/>
+</HeadContent>
+
+<div class="sign-up-form mud-paper">
+    <div class="align-center d-flex flex-column justify-center">
         <div>
-            <img alt="" class="img-fluid" src="images/1.png" style="width: 250px;" >
+            <img alt="" class="img-fluid" src="images/1.png" style="width: 250px;">
         </div>
-        <p class="fs-2 text-white" style="font-family: 'Courier New', Courier, monospace; font-weight: 600;" >Be Verified</p>
-        <small class="text-center text-white text-wrap" style="width: 17rem;font-family: 'Courier New', Courier, monospace;" >
+        <p class="fs-2 text-white" style="font-family: 'Courier New', Courier, monospace; font-weight: 600;">Be Verified</p>
+        <small class="text-center text-white text-wrap" style="width: 17rem;font-family: 'Courier New', Courier, monospace;">
             Join experienced Designers on this platform.
         </small>
     </div>
 
-    <div class="main-form" >
-        <MudCarousel AutoCycle="false" @bind-SelectedIndex="CurrentIndex" Class="mud-width-full" EnableSwipeGesture="false" @ref="CarouselLogin" ShowArrows="false" ShowBullets="false" TData="object" >
-            <MudCarouselItem Color="@Color.Default" Transition="Transition.Slide" >
-                <div class="d-flex mud-height-full mud-width-full" >
-                    <MudForm @bind-Errors="@FormError" @bind-IsValid="IsValid" Class="align-center justify-center mud-width-full" @ref="FormUser" >
-                        <div class="form gap-3" >
-                            <AntiforgeryToken />
-                            <MudText Align="Align.Center" Color="Color.Primary" Typo="Typo.h5" >@AppLang.Create_Account</MudText>
+    <div class="main-form">
+        <MudCarousel AutoCycle="false" @bind-SelectedIndex="CurrentIndex" Class="mud-width-full" EnableSwipeGesture="false" @ref="CarouselLogin" ShowArrows="false" ShowBullets="false" TData="object">
+            <MudCarouselItem Color="@Color.Default" Transition="Transition.Slide">
+                <div class="d-flex mud-height-full mud-width-full">
+                    <MudForm @bind-Errors="@FormError" @bind-IsValid="IsValid" Class="align-center justify-center mud-width-full" @ref="FormUser">
+                        <div class="form gap-3">
+                            <AntiforgeryToken/>
+                            <MudText Align="Align.Center" Color="Color.Primary" Typo="Typo.h5">@AppLang.Create_Account</MudText>
                             <MudTextField Adornment="Adornment.Start" AdornmentColor="Color.Primary" AdornmentIcon="fa-solid fa-user" @bind-Value="CurrentRequestModel.UserName"
                                           Class="mud-width-full"
                                           Error="@(!string.IsNullOrEmpty(UserErrorText))" ErrorText="@UserErrorText" For="() => CurrentRequestModel.UserName" InputType="InputType.Text"
                                           OnAdornmentClick="UsernameClickEvent" Placeholder="@AppLang.Username"
-                                          Required T="string" UserAttributes="@(new Dictionary<string, object> { { "name", "Username" }, { "autocomplete", "current-username" } })" Variant="Variant.Outlined" >
+                                          Required T="string" UserAttributes="@(new Dictionary<string, object> { { "name", "Username" }, { "autocomplete", "current-username" } })" Variant="Variant.Outlined">
                             </MudTextField>
 
                             <MudButton Class="rounded-pill" Color="Color.Primary"
                                        Disabled="@Loading" FullWidth
                                        OnClick="UsernameProcess"
-                                       Style="max-width: 400px" Variant="Variant.Filled" >
+                                       Style="max-width: 400px" Variant="Variant.Filled">
                                 @if (Loading)
                                 {
-                                    <MudProgressCircular Class="ms-n1" Indeterminate="true" Size="Size.Small" />
-                                    <MudText Class="ms-2" >@AppLang.Processing</MudText>
+                                    <MudProgressCircular Class="ms-n1" Indeterminate="true" Size="Size.Small"/>
+                                    <MudText Class="ms-2">@AppLang.Processing</MudText>
                                 }
                                 else
                                 {
@@ -50,29 +54,29 @@
                 </div>
             </MudCarouselItem>
             @* Password *@
-            <MudCarouselItem Color="@Color.Default" Transition="Transition.Slide" >
-                <div class="d-flex mud-height-full mud-width-full" >
-                    <MudForm @bind-Errors="@FormError" @bind-IsValid="IsValid" Class="align-center justify-center mud-width-full" @ref="PasswordForm" >
-                        <div class="form gap-3" >
-                            <AntiforgeryToken />
-                            <MudText Align="Align.Center" Color="Color.Primary" Typo="Typo.h5" >@AppLang.Enter_password</MudText>
+            <MudCarouselItem Color="@Color.Default" Transition="Transition.Slide">
+                <div class="d-flex mud-height-full mud-width-full">
+                    <MudForm @bind-Errors="@FormError" @bind-IsValid="IsValid" Class="align-center justify-center mud-width-full" @ref="PasswordForm">
+                        <div class="form gap-3">
+                            <AntiforgeryToken/>
+                            <MudText Align="Align.Center" Color="Color.Primary" Typo="Typo.h5">@AppLang.Enter_password</MudText>
 
                             <MudTextField Adornment="Adornment.Start" AdornmentColor="Color.Primary" AdornmentIcon="@PasswordIcon" @bind-Value="CurrentRequestModel.Password"
                                           Class="mud-width-full"
                                           Error="@(!string.IsNullOrEmpty(PasswordErrorText))" ErrorText="@PasswordErrorText" For="() => CurrentRequestModel.Password"
                                           InputType="PasswordInput" OnAdornmentClick="PasswordShowEvent"
                                           Placeholder="@AppLang.Password" Required T="string" UserAttributes="@(new Dictionary<string, object> { { "name", "Password" }, { "autocomplete", "current-password" } })"
-                                          Variant="Variant.Outlined" >
+                                          Variant="Variant.Outlined">
                             </MudTextField>
 
                             <MudButton Class="rounded-pill" Color="Color.Primary"
                                        Disabled="@Loading" FullWidth
                                        OnClick="PasswordProcess"
-                                       Style="max-width: 400px" Variant="Variant.Filled" >
+                                       Style="max-width: 400px" Variant="Variant.Filled">
                                 @if (Loading)
                                 {
-                                    <MudProgressCircular Class="ms-n1" Indeterminate="true" Size="Size.Small" />
-                                    <MudText Class="ms-2" >@AppLang.Processing</MudText>
+                                    <MudProgressCircular Class="ms-n1" Indeterminate="true" Size="Size.Small"/>
+                                    <MudText Class="ms-2">@AppLang.Processing</MudText>
                                 }
                                 else
                                 {
@@ -86,27 +90,27 @@
             @* Password *@
 
 
-            <MudCarouselItem Color="@Color.Default" Transition="Transition.Fade" >
-                <div class="align-center d-flex flex-column justify-center mud-height-full mud-width-full" >
-                    <div class="mud-width-full" >
-                        <MudText Align="Align.Center" Typo="Typo.h5" >@AppLang.One_moment_please</MudText>
-                        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" />
-                        <div class="d-none" >
-                            <form action="/api/Account/login" id="loginForm" method="post" >
-                                <AntiforgeryToken />
+            <MudCarouselItem Color="@Color.Default" Transition="Transition.Fade">
+                <div class="align-center d-flex flex-column justify-center mud-height-full mud-width-full">
+                    <div class="mud-width-full">
+                        <MudText Align="Align.Center" Typo="Typo.h5">@AppLang.One_moment_please</MudText>
+                        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
+                        <div class="d-none">
+                            <form action="/api/Account/login" id="loginForm" method="post">
+                                <AntiforgeryToken/>
                                 <div>
-                                    <label for="UserName" >Username:</label>
-                                    <input id="UserName" name="username" required type="text" value="@CurrentRequestModel.UserName" >
+                                    <label for="UserName">Username:</label>
+                                    <input id="UserName" name="username" required type="text" value="@CurrentRequestModel.UserName">
                                 </div>
                                 <div>
-                                    <label for="Password" >Password:</label>
-                                    <input id="Password" name="password" required type="password" value="@CurrentRequestModel.Password" >
+                                    <label for="Password">Password:</label>
+                                    <input id="Password" name="password" required type="password" value="@CurrentRequestModel.Password">
                                 </div>
                                 <div>
-                                    <label for="ReturnUrl" >Password:</label>
-                                    <input id="ReturnUrl" name="ReturnUrl" type="text" value="@CurrentRequestModel.ReturnUrl" >
+                                    <label for="ReturnUrl">Password:</label>
+                                    <input id="ReturnUrl" name="ReturnUrl" type="text" value="@CurrentRequestModel.ReturnUrl">
                                 </div>
-                                <button id="login-btn" type="submit" >Login</button>
+                                <button id="login-btn" type="submit">Login</button>
                             </form>
                         </div>
                     </div>
@@ -117,4 +121,4 @@
     </div>
 </div>
 
-<script src="./Pages/Account/SignInPage.razor.js" ></script>
+<script src="./Pages/Account/SignInPage.razor.js"></script>

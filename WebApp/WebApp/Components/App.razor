@@ -4,7 +4,7 @@
 <head>
     <title>HelloWorld</title>
     <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+    <meta content="width=device-width,initial-scale=1,shrink-to-fit=no,viewport-fit=cover" name="viewport"/>
     <base href="/"/>
     <link href="@Assets["css/app.css"]" rel="stylesheet"/>
     <link href="@Assets["apple-touch-icon.png"]" rel="apple-touch-icon" sizes="180x180">
@@ -18,7 +18,7 @@
     <link href="@Assets["WebApp.styles.css"]" rel="stylesheet"/>
     <ImportMap/>
     <link href="@Assets["favicon.ico"]" rel="icon" type="image/x-icon"/>
-    <HeadOutlet @rendermode="@RenderModeForPage"/>
+    <HeadOutlet @rendermode="@RenderModeForPage()"/>
 </head>
 
 <body>
@@ -41,7 +41,7 @@
 
 @* Loading Progress *@
 
-<Routes @rendermode="@RenderModeForPage"/>
+<Routes @rendermode="@RenderModeForPage()"/>
 
 
 <script src="_framework/blazor.web.js"></script>
@@ -57,9 +57,26 @@
 @code
 {
     private string Lang { get; } = Thread.CurrentThread.CurrentCulture.Name;
-    private static readonly InteractiveWebAssemblyRenderMode RenderMode = new(true);
     [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
 
-    private IComponentRenderMode? RenderModeForPage => HttpContext.GetEndpoint()?.Metadata.GetMetadata<RenderModeAttribute>()?.Mode;
+    private IComponentRenderMode? RenderModeForPage()
+    {
+        var mode = HttpContext.GetEndpoint()?.Metadata.GetMetadata<RenderModeAttribute>()?.Mode;
+        if (mode == null) return null;
+
+        if (mode == InteractiveWebAssembly)
+        {
+            return new InteractiveWebAssemblyRenderMode(false);
+        }
+
+        if (mode == InteractiveServer)
+        {
+            return new InteractiveServerRenderMode();
+        }
+
+        if (mode == InteractiveAuto) return new InteractiveAutoRenderMode(false);
+
+        return default;
+    }
 
 }

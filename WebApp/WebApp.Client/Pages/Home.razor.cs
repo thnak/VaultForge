@@ -10,9 +10,18 @@ public partial class Home : ComponentBase, IDisposable
         ProtectedLocalStorageService.KeyHandler -= GetKey;
     }
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            ProtectedLocalStorageService.KeyHandler += GetKey;
+        }
+
+        base.OnAfterRender(firstRender);
+    }
+
     private async Task Crypting(MouseEventArgs obj)
     {
-        ProtectedLocalStorageService.KeyHandler += GetKey;
         await ProtectedLocalStorageService.SetAsync("exampleKey", "This is a protected value");
     }
 

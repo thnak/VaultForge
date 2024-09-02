@@ -5,6 +5,24 @@ public static class PageRoutes
     public static class Error
     {
         public const string Name = "/Error";
+
+        public static class GeneralError
+        {
+            public const string Src = Name + "/error";
+            public const string Title = "Error";
+
+            public static readonly List<Dictionary<string, string>> MetaData =
+            [
+                new()
+                {
+                    { "name", "description" },
+                    {
+                        "content", "a general error was reported"
+                    }
+                }
+            ];
+        }
+
         public const string ErrorPage = Name + "/error-page";
         public const string Default403 = "/403";
         public const string NotFound = Name + "/404";
@@ -38,12 +56,14 @@ public static class PageRoutes
         {
             public const string Src = Name + "/home";
             public const string Title = "Drive";
+
             public static readonly List<Dictionary<string, string>> MetaData =
             [
                 new()
                 {
                     { "name", "description" },
-                    { "content", "My Drive"
+                    {
+                        "content", "My Drive"
                     }
                 }
             ];
@@ -59,11 +79,13 @@ public static class PageRoutes
                 new()
                 {
                     { "name", "description" },
-                    { "content", "Share drive to community"
-                }
+                    {
+                        "content", "Share drive to community"
+                    }
                 }
             ];
         }
+
         public static class Trash
         {
             public const string Src = Name + "/trash";
@@ -74,20 +96,54 @@ public static class PageRoutes
                 new()
                 {
                     { "name", "description" },
-                    { "content", "deleted resources"
+                    {
+                        "content", "deleted resources"
                     }
                 }
             ];
         }
-        
     }
 
     public static class Account
     {
         public const string Name = "/Account";
         public const string Profile = Name + "/profile";
-        public const string SignIn = Name + "/login";
-        public const string SignInError = SignIn + "/error";
+
+        public static class SignIn
+        {
+            public const string Src = Name + "/login";
+            public const string Title = "Login to your account";
+
+            public static readonly List<Dictionary<string, string>> MetaData =
+            [
+                new()
+                {
+                    { "name", "description" },
+                    {
+                        "content", "login to your account"
+                    }
+                }
+            ];
+        }
+
+
+        public static class SignInError
+        {
+            public const string Src = Name + "/login-error";
+            public const string Title = "Login to your account error";
+
+            public static readonly List<Dictionary<string, string>> MetaData =
+            [
+                new()
+                {
+                    { "name", "description" },
+                    {
+                        "content", "login to your account has an error"
+                    }
+                }
+            ];
+        }
+
 
         public const string SignUp = Name + "register";
         public const string SignUpError = SignUp + "/error";
