@@ -23,7 +23,7 @@ public class ChatWithLlamaController(IMemoryCache memoryCache) : ControllerBase
             return [];
         }) ?? [];
 
-        var chat = new ChatWithLlama(systemPrompt, new Uri("http://192.168.1.18:11434/api"), model);
+        var chat = new ChatWithLlama(systemPrompt, new Uri("http://localhost:11434/api"), model);
         chat.History = messages.Any() ? [..messages] : chat.History;
         var mess = images != default ? await chat.ChatAsync(question, images, HttpContext.RequestAborted) : await chat.ChatAsync(question, HttpContext.RequestAborted);
         HttpContext.Response.RegisterForDispose(chat);

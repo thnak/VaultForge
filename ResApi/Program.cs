@@ -150,7 +150,7 @@ public abstract class Program
             .AddCookie(options =>
             {
                 options.SlidingExpiration = true;
-                options.LoginPath = PageRoutes.Account.SignIn;
+                options.LoginPath = PageRoutes.Account.SignIn.Src;
                 options.LogoutPath = PageRoutes.Account.Logout;
                 options.AccessDeniedPath = PageRoutes.Account.Denied;
                 options.ExpireTimeSpan = TimeSpan.FromHours(ProtectorTime.CookieExpireTimeSpan);
