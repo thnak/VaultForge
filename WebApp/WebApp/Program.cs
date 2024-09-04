@@ -143,10 +143,8 @@ public class Program
         else
         {
             app.UseResponseCompression();
-            app.UseHsts();
         }
 
-        app.UseHttpsRedirection();
         app.UseAntiforgery();
 
         app.UseCors("AllowAllOrigins");

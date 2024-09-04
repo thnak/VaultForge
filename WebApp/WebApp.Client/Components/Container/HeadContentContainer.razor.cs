@@ -61,7 +61,12 @@ public partial class HeadContentContainer : ComponentBase, IDisposable
             {
                 { "name", "robot" },
                 { "content", "noodp, noydir, max-image-preview:large" }
-            }
+            },
+            new Dictionary<string, string>
+            {
+                { "name", "google" },
+                { "content", "notranslate" }
+            },
         ];
 
 

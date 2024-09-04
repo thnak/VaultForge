@@ -42,9 +42,12 @@ public class ChatWithLlama : IDisposable
         var service = new MathService();
         var timeService = new TimeService();
         var weatherService = new WeatherService("http://api.weatherapi.com");
+        var webCrawler = new LamaWebCrawlerService();
+
         _chatClient.AddToolService(timeService.AsTools(), timeService.AsCalls());
         _chatClient.AddToolService(service.AsTools(), service.AsCalls());
         _chatClient.AddToolService(weatherService.AsTools(), weatherService.AsCalls());
+        _chatClient.AddToolService(webCrawler.AsTools(), webCrawler.AsCalls());
     }
 
     public Task<Message> ChatAsync(string prompt, CancellationToken cancellationToken = default)

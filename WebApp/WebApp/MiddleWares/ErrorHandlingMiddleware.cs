@@ -12,8 +12,12 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
         {
             context.Response.OnStarting(() =>
             {
-                context.Response.Headers.Append("Cross-Origin-Embedder-Policy", "require-corp");
-                context.Response.Headers.Append("Cross-Origin-Opener-Policy", "same-origin");
+                // context.Response.Headers.Append("Content-Security-Policy", "*");
+                context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
+                context.Response.Headers.Append("X-Frame-Options", "SAMEORIGIN");
+
+                // context.Response.Headers.Append("Cross-Origin-Embedder-Policy", "require-corp");
+                // context.Response.Headers.Append("Cross-Origin-Opener-Policy", "same-origin");
 
                 return Task.CompletedTask;
             });

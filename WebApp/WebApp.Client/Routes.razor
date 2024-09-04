@@ -13,6 +13,7 @@
 
         return Task.CompletedTask;
     }
+
 }
 
 <MudDialogProvider MaxWidth="MaxWidth.False" Position="DialogPosition.Center"/>
@@ -64,3 +65,11 @@
 <SectionContent SectionId="@MainLayout.NavMenu">
     @NavBar
 </SectionContent>
+
+<script>
+    function closeLoading() {
+        const progressWrapper = document.getElementById("progress-wrapper");
+        progressWrapper.classList.add('closed');
+    }
+    closeLoading();
+</script>
