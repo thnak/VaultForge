@@ -1,0 +1,11 @@
+﻿@attribute [Route(PageRoutes.Advertisement.Index.Src)]
+@attribute [AllowAnonymous]
+@layout BlankLayout
+
+<PageTitle>@Title</PageTitle>
+
+<HeadContent>
+    <HeadContentContainer MetaProperty="@Metadata"/>
+</HeadContent>
+
+@PageRenderFragment

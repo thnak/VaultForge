@@ -67,6 +67,11 @@ public partial class HeadContentContainer : ComponentBase, IDisposable
                 { "name", "google" },
                 { "content", "notranslate" }
             },
+            new Dictionary<string, string>
+            {
+                { "name", "site_author" },
+                { "content", "https://github.com/thnak" }
+            },
         ];
 
 

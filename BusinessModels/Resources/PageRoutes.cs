@@ -151,4 +151,16 @@ public static class PageRoutes
         public const string Logout = Name + "/logout";
         public const string Denied = Name + "/403";
     }
+
+    public static class Advertisement
+    {
+        public const string Name = "/advertisement";
+
+        public static class Index
+        {
+            public const string Src = Name + "/page";
+            public const string Title = "";
+            public static readonly List<Dictionary<string, string>> MetaData = [];
+        }
+    }
 }
