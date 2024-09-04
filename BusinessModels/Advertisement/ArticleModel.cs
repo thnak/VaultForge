@@ -14,7 +14,7 @@ public class ArticleModel
     [Key(4)] public string Author { get; set; } = string.Empty;
     [Key(5)] public DateTime PublishDate { get; set; }
     [Key(6)] public string Summary { get; set; } = string.Empty;
-
+    [Key(7)] public List<Dictionary<string, string>> MetaData { get; set; } = new();
 
     #region Methods
 

@@ -69,7 +69,7 @@ public partial class HeadContentContainer : ComponentBase, IDisposable
             },
             new Dictionary<string, string>
             {
-                { "name", "site_author" },
+                { "name", "author" },
                 { "content", "https://github.com/thnak" }
             },
         ];
@@ -88,16 +88,35 @@ public partial class HeadContentContainer : ComponentBase, IDisposable
     private RenderFragment CreateComponent() => builder =>
     {
         int index = 0;
+        string[] extendMetaKeys = ["title", "description", "image", "site_name", "url", "type", "card"];
+        string[] extend = ["ogg", "twitter"];
         foreach (var dictionary in PreviousMetaProperties)
         {
-            builder.OpenElement(index++, "meta");
-            int attributeIndex = 0;
-            foreach (var pair in dictionary)
+            if (dictionary.Keys.Any(x => extendMetaKeys.Contains(x)))
             {
-                builder.AddAttribute(attributeIndex++, pair.Key, pair.Value);
-            }
+                foreach (var ex in extend)
+                {
+                    builder.OpenElement(index++, "meta");
+                    int attributeIndex = 0;
+                    foreach (var pair in dictionary)
+                    {
+                        builder.AddAttribute(attributeIndex++, $"{ex}:{pair.Key}", pair.Value);
+                    }
 
-            builder.CloseElement();
+                    builder.CloseElement();
+                }
+            }
+            else
+            {
+                builder.OpenElement(index++, "meta");
+                int attributeIndex = 0;
+                foreach (var pair in dictionary)
+                {
+                    builder.AddAttribute(attributeIndex++, pair.Key, pair.Value);
+                }
+
+                builder.CloseElement();
+            }
         }
 
         builder.OpenElement(index++, "link");

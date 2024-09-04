@@ -12,6 +12,7 @@ using Business.Data.Repositories.FileSystem;
 using Business.Data.Repositories.User;
 using Business.Exceptions;
 using Business.Services;
+using Business.SocketHubs;
 using BusinessModels.Converter;
 using BusinessModels.General;
 using BusinessModels.Resources;
@@ -121,6 +122,17 @@ public class Program
 
         #endregion
 
+        #region SignalR
+
+        builder.Services.AddSignalR(options =>
+        {
+            options.EnableDetailedErrors = true;
+            options.MaximumReceiveMessageSize = int.MaxValue;
+            options.MaximumParallelInvocationsPerClient = 100;
+        });
+
+        #endregion
+
         #region Exception Handler
 
         builder.Services.AddExceptionHandler<ErrorHandling>();
@@ -137,9 +149,6 @@ public class Program
         app.UseRequestLocalization(localizationOptions);
 
         #endregion
-
-        app.UseStatusCodePagesWithRedirects(PageRoutes.Error.Default404);
-
 
         if (app.Environment.IsDevelopment())
         {
@@ -171,7 +180,7 @@ public class Program
             .AddInteractiveWebAssemblyRenderMode(options => options.ServeMultithreadingHeaders = true)
             .AddInteractiveServerRenderMode()
             .AddAdditionalAssemblies(typeof(_Imports).Assembly);
-
+        app.MapHub<PageCreatorHub>("/PageCreatorHub");
         app.Run();
     }
 }

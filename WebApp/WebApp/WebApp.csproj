@@ -4,6 +4,11 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <ApplicationIcon>wwwroot\favicon.ico</ApplicationIcon>
+        <Authors>https://github.com/thnak</Authors>
+        <PackageProjectUrl>https://github.com/thnak/CodeWithMe</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/thnak/CodeWithMe</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/thnak/CodeWithMe</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
