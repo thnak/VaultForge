@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Components;
 
 namespace WebApp.Components.Pages.Advertisement;
 
@@ -8,6 +9,9 @@ public partial class SamplePage : ComponentBase
 
     [SupplyParameterFromQuery(Name = "content_id")]
     public string? ContentId { get; set; }
+
+    [SupplyParameterFromQuery(Name = "language")]
+    public string? Language { get; set; }
 
     #endregion
 
@@ -22,6 +26,14 @@ public partial class SamplePage : ComponentBase
 
     protected override void OnInitialized()
     {
+        // if (string.IsNullOrEmpty(Language))
+        // {
+        //     Language = CultureInfo.CurrentCulture.Name;
+        //     var uri = Navigation.GetUriWithQueryParameters(Navigation.Uri, new Dictionary<string, object?>() { { "language", Language } });
+        //     Navigation.NavigateTo(uri, replace: true);
+        //     return;
+        // }
+
         switch (ContentId)
         {
             case "1":
@@ -508,6 +520,22 @@ public partial class SamplePage : ComponentBase
 
         base.OnInitialized();
     }
+
+    // protected override void OnAfterRender(bool firstRender)
+    // {
+    //     if (firstRender)
+    //     {
+    //         if (string.IsNullOrEmpty(Language))
+    //         {
+    //             Language = CultureInfo.CurrentCulture.Name;
+    //             var uri = Navigation.GetUriWithQueryParameters(Navigation.Uri, new Dictionary<string, object?>() { { "language", Language } });
+    //             Navigation.NavigateTo(uri, replace: true);
+    //             return;
+    //         }
+    //     }
+    //
+    //     base.OnAfterRender(firstRender);
+    // }
 
 
     private void RenderPage(string htmlContent)

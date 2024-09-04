@@ -40,6 +40,10 @@ public class Program
             .AddInteractiveServerComponents(options => { options.DetailedErrors = builder.Environment.IsDevelopment(); })
             .AddAuthenticationStateSerialization();
 
+        builder.WebHost.ConfigureKestrel(options =>
+        {
+            options.AddServerHeader = false;
+        });
 
         builder.Services.AddFrontEndService();
         builder.Services.AddFrontEndScopeService();
@@ -173,7 +177,7 @@ public class Program
 
         app.MapStaticAssets();
         app.MapControllers();
-        app.UseMiddleware<ErrorHandlingMiddleware>();
+        app.UseMiddleware<Middleware>();
         app.UseExceptionHandler(_ => { });
 
         app.MapRazorComponents<App>()
