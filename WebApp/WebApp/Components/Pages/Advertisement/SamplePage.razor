@@ -1,5 +1,7 @@
-﻿@attribute [Route(PageRoutes.Advertisement.Index.Src)]
+﻿@using Microsoft.AspNetCore.OutputCaching
+@attribute [Route(PageRoutes.Advertisement.Index.Src)]
 @attribute [AllowAnonymous]
+@attribute [OutputCache(Duration = 60)]
 @layout BlankLayout
 
 <PageTitle>@Title</PageTitle>
