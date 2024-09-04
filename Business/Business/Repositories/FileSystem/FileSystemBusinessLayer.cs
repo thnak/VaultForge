@@ -8,7 +8,7 @@ namespace Business.Business.Repositories.FileSystem;
 
 public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusinessLayer
 {
-    public IAsyncEnumerable<FileInfoModel> Search(string queryString, int limit = 10, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<FileInfoModel> Search(string queryString, int limit = 10, CancellationToken cancellationTokenSource = default)
     {
         return da.Search(queryString, limit, cancellationTokenSource);
     }
@@ -18,12 +18,12 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FileInfoModel> FindAsync(FilterDefinition<FileInfoModel> filter, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<FileInfoModel> FindAsync(FilterDefinition<FileInfoModel> filter, CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FileInfoModel> FindAsync(string keyWord, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<FileInfoModel> FindAsync(string keyWord, CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
@@ -33,7 +33,7 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FileInfoModel> Where(Expression<Func<FileInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<FileInfoModel> Where(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
     {
         return da.Where(predicate, cancellationTokenSource);
     }
@@ -48,17 +48,17 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
         return da.Get(key);
     }
 
-    public IAsyncEnumerable<FileInfoModel?> GetAsync(List<string> keys, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<FileInfoModel?> GetAsync(List<string> keys, CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(FileInfoModel[], long)> GetAllAsync(int page, int size, CancellationTokenSource? cancellationTokenSource = default)
+    public Task<(FileInfoModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FileInfoModel> GetAllAsync(CancellationTokenSource cancellationTokenSource)
+    public IAsyncEnumerable<FileInfoModel> GetAllAsync(CancellationToken cancellationTokenSource)
     {
         throw new NotImplementedException();
     }
@@ -73,7 +73,7 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
         return da.CreateAsync(model);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FileInfoModel> models, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FileInfoModel> models, CancellationToken cancellationTokenSource = default)
     {
         return da.CreateAsync(models, cancellationTokenSource);
     }
@@ -83,7 +83,7 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
         return da.UpdateAsync(model);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FileInfoModel> models, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FileInfoModel> models, CancellationToken cancellationTokenSource = default)
     {
         return da.CreateAsync(models, cancellationTokenSource);
     }
@@ -93,7 +93,7 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
         return da.Delete(key);
     }
 
-    public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
+    public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
     {
         return da.GetFileSize(predicate, cancellationTokenSource);
     }

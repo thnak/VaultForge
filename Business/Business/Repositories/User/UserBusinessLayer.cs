@@ -14,22 +14,17 @@ namespace Business.Business.Repositories.User;
 
 public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
 {
-    public IAsyncEnumerable<UserModel> Search(string queryString, int limit = 10, CancellationTokenSource? cancellationTokenSource = default)
-    {
-        return Search(queryString, limit, cancellationTokenSource?.Token ?? default);
-    }
-
     public IAsyncEnumerable<UserModel> Search(string queryString, int limit = 10, CancellationToken? cancellationToken = default)
     {
         return userDl.Search(queryString, limit, cancellationToken);
     }
 
-    public IAsyncEnumerable<UserModel> FindAsync(FilterDefinition<UserModel> filter, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<UserModel> FindAsync(FilterDefinition<UserModel> filter, CancellationToken cancellationTokenSource = default)
     {
         return userDl.FindAsync(filter, cancellationTokenSource);
     }
 
-    public IAsyncEnumerable<UserModel> FindAsync(string keyWord, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<UserModel> FindAsync(string keyWord, CancellationToken cancellationTokenSource = default)
     {
         return userDl.FindAsync(keyWord, cancellationTokenSource);
     }
@@ -39,10 +34,6 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         return userDl.FindProjectAsync(keyWord, limit, cancellationToken);
     }
 
-    public IAsyncEnumerable<UserModel> Where(Expression<Func<UserModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
-    {
-        return userDl.Where(predicate, cancellationTokenSource);
-    }
 
     public IAsyncEnumerable<UserModel> Where(Expression<Func<UserModel, bool>> predicate, CancellationToken? cancellationToken = default)
     {
@@ -54,17 +45,17 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         return userDl.Get(key);
     }
 
-    public IAsyncEnumerable<UserModel?> GetAsync(List<string> keys, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<UserModel?> GetAsync(List<string> keys, CancellationToken cancellationTokenSource = default)
     {
         return userDl.GetAsync(keys, cancellationTokenSource);
     }
 
-    public Task<(UserModel[], long)> GetAllAsync(int page, int size, CancellationTokenSource? cancellationTokenSource = default)
+    public Task<(UserModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationTokenSource = default)
     {
         return userDl.GetAllAsync(page, size, cancellationTokenSource);
     }
 
-    public IAsyncEnumerable<UserModel> GetAllAsync(CancellationTokenSource cancellationTokenSource)
+    public IAsyncEnumerable<UserModel> GetAllAsync(CancellationToken cancellationTokenSource)
     {
         throw new NotImplementedException();
     }
@@ -79,7 +70,7 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         return userDl.CreateAsync(model);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<UserModel> models, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<UserModel> models, CancellationToken cancellationTokenSource = default)
     {
         return userDl.CreateAsync(models, cancellationTokenSource);
     }
@@ -89,7 +80,7 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         return userDl.UpdateAsync(model);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<UserModel> models, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<UserModel> models, CancellationToken cancellationTokenSource = default)
     {
         return userDl.UpdateAsync(models, cancellationTokenSource);
     }

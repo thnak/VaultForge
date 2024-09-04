@@ -60,14 +60,9 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
         return _dataDb.Find(filter).FirstOrDefault();
     }
 
-    public Task<long> GetDocumentSizeAsync(CancellationTokenSource? cancellationTokenSource = default)
+    public Task<long> GetDocumentSizeAsync(CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
-    }
-
-    public IAsyncEnumerable<FolderInfoModel> Search(string queryString, int limit = 10, CancellationTokenSource? cancellationTokenSource = default)
-    {
-        return Search(queryString, limit, cancellationTokenSource?.Token ?? default);
     }
 
     public async IAsyncEnumerable<FolderInfoModel> Search(string queryString, int limit = 10, CancellationToken? cancellationToken = default)
@@ -116,13 +111,13 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
     }
 
     public IAsyncEnumerable<FolderInfoModel> FindAsync(FilterDefinition<FolderInfoModel> filter,
-        CancellationTokenSource? cancellationTokenSource = default)
+        CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
 
     public IAsyncEnumerable<FolderInfoModel> FindAsync(string keyWord,
-        CancellationTokenSource? cancellationTokenSource = default)
+        CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
@@ -133,11 +128,6 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate,
-        CancellationTokenSource? cancellationTokenSource = default)
-    {
-        return Where(predicate, cancellationTokenSource?.Token ?? default);
-    }
 
     public async IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken? cancellationToken = default)
     {
@@ -161,36 +151,37 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
     }
 
     public IAsyncEnumerable<FolderInfoModel?> GetAsync(List<string> keys,
-        CancellationTokenSource? cancellationTokenSource = default)
+        CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
 
     public Task<(FolderInfoModel[], long)> GetAllAsync(int page, int size,
-        CancellationTokenSource? cancellationTokenSource = default)
+        CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FolderInfoModel> GetAllAsync(CancellationTokenSource cancellationTokenSource)
+    public IAsyncEnumerable<FolderInfoModel> GetAllAsync(CancellationToken cancellationTokenSource)
     {
         throw new NotImplementedException();
     }
+
 
     public (bool, string) UpdateProperties(string key, Dictionary<string, dynamic> properties)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> CreateAsync(FolderInfoModel model)
+    public async Task<(bool, string)> CreateAsync(FolderInfoModel model, CancellationToken cancellationTokenSource = default)
     {
-        await _semaphore.WaitAsync();
+        await _semaphore.WaitAsync(cancellationTokenSource);
         try
         {
             var folder = Get(model.Id.ToString());
             if (folder != null) return (false, AppLang.Folder_already_exists);
 
-            await _dataDb.InsertOneAsync(model);
+            await _dataDb.InsertOneAsync(model, cancellationToken: cancellationTokenSource);
             return (true, AppLang.Create_successfully);
         }
         catch (Exception e)
@@ -204,14 +195,14 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
     }
 
     public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FolderInfoModel> models,
-        CancellationTokenSource? cancellationTokenSource = default)
+        CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> UpdateAsync(FolderInfoModel model)
+    public async Task<(bool, string)> UpdateAsync(FolderInfoModel model, CancellationToken cancellationTokenSource = default)
     {
-        await _semaphore.WaitAsync();
+        await _semaphore.WaitAsync(cancellationTokenSource);
         try
         {
             var file = Get(model.Id.ToString());
@@ -223,7 +214,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
             {
                 model.ModifiedDate = DateTime.UtcNow;
                 var filter = Builders<FolderInfoModel>.Filter.Eq(x => x.Id, model.Id);
-                await _dataDb.ReplaceOneAsync(filter, model);
+                await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationTokenSource);
                 return (true, AppLang.Create_successfully);
             }
         }
@@ -237,8 +228,9 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
         }
     }
 
+
     public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FolderInfoModel> models,
-        CancellationTokenSource? cancellationTokenSource = default)
+        CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }

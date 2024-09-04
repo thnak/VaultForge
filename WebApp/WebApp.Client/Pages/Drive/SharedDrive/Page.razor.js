@@ -77,17 +77,9 @@ async function progressHandler(event) {
  * @param {ProgressEvent} event
  */
 async function completeHandler(event) {
-    switch (event.target.readyState) {
-        case "loading":
-            // The document is still loading.
-            break;
-        case "interactive":
-            // The document has finished loading. We can now access the DOM elements.
-            break;
-        case "complete":
-            // The document and all sub-resources have finished loading.
-            await DotNet.invokeMethodAsync(ASSEMBLY_NAME, 'OnComplete', event.target.status, event.target.responseText);
-            break;
+    if (event.target.readyState === 4 || event.target.readyState === "complete") {
+        // The document and all sub-resources have finished loading.
+        await DotNet.invokeMethodAsync(ASSEMBLY_NAME, 'OnComplete', event.target.status, event.target.responseText);
     }
 }
 

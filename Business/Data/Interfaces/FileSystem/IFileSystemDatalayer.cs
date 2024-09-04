@@ -7,5 +7,5 @@ public interface IFileSystemDatalayer : IMongoDataInitializer, IDataLayerReposit
 {
     public FileMetadataModel? GetMetaData(string metaId);
     public (bool, string) DeleteMetadata(string metaId);
-    public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default);
+    public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default);
 }

@@ -12,12 +12,13 @@ public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInf
     /// <param name="username"></param>
     /// <returns>Anonymous when string is empty</returns>
     UserModel? GetUser(string username);
+
     public FolderInfoModel? Get(string username, string relativePath);
     public List<FolderInfoModel> GetFolderBloodLine(string username, string folderId);
     public FolderInfoModel? GetRoot(string username);
-    
-    IAsyncEnumerable<FolderInfoModel> Search(string queryString, string? username, int limit = 10, CancellationTokenSource? cancellationTokenSource = default);
-    
+
+    IAsyncEnumerable<FolderInfoModel> Search(string queryString, string? username, int limit = 10, CancellationToken cancellationTokenSource = default);
+
     /// <summary>
     ///     Regis new file with auto init absolute path
     /// </summary>
@@ -31,13 +32,13 @@ public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInf
 
     public Task<(bool, string)> CreateFolder(RequestNewFolderModel request);
 
-    public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default);
-    public Task<long> GetFolderByteSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default);
+    public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default);
+    public Task<long> GetFolderByteSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default);
 
     /// <summary>
     /// </summary>
     /// <param name="predicate"></param>
     /// <param name="cancellationTokenSource"></param>
     /// <returns>Total folders, total files</returns>
-    public Task<(long, long)> GetFolderContentsSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default);
+    public Task<(long, long)> GetFolderContentsSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default);
 }

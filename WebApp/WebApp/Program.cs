@@ -1,9 +1,13 @@
+using Business.Business.Interfaces.Advertisement;
 using Business.Business.Interfaces.User;
+using Business.Business.Repositories.Advertisement;
 using Business.Business.Repositories.User;
 using Business.Data.Interfaces;
+using Business.Data.Interfaces.Advertisement;
 using Business.Data.Interfaces.FileSystem;
 using Business.Data.Interfaces.User;
 using Business.Data.Repositories;
+using Business.Data.Repositories.Advertisement;
 using Business.Data.Repositories.FileSystem;
 using Business.Data.Repositories.User;
 using Business.Exceptions;
@@ -32,16 +36,13 @@ public class Program
         // Add services to the container.
         builder.Services.AddRazorComponents(options => options.DetailedErrors = builder.Environment.IsDevelopment())
             .AddInteractiveWebAssemblyComponents()
-            .AddInteractiveServerComponents(options =>
-            {
-                options.DetailedErrors = builder.Environment.IsDevelopment();
-            })
+            .AddInteractiveServerComponents(options => { options.DetailedErrors = builder.Environment.IsDevelopment(); })
             .AddAuthenticationStateSerialization();
-        
-        
+
+
         builder.Services.AddFrontEndService();
         builder.Services.AddFrontEndScopeService();
-        
+
         #region Http Client for client side
 
         builder.Services.AddScoped(_ =>
@@ -61,7 +62,7 @@ public class Program
         });
 
         #endregion
-        
+
         #region Configure Setting
 
         builder.Services.Configure<DbSettingModel>(builder.Configuration.GetSection("DBSetting"));
@@ -72,12 +73,15 @@ public class Program
 
 
         #region Additionnal services
-        
+
         builder.Services.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
         builder.Services.AddSingleton<IUserDataLayer, UserDataLayer>();
         builder.Services.AddSingleton<IUserBusinessLayer, UserBusinessLayer>();
         builder.Services.AddSingleton<IFolderSystemDatalayer, FolderSystemDatalayer>();
         builder.Services.AddSingleton<IFileSystemDatalayer, FileSystemDatalayer>();
+
+        builder.Services.AddSingleton<IAdvertisementDataLayer, AdvertisementDataLayer>();
+        builder.Services.AddSingleton<IAdvertisementBusinessLayer, AdvertisementBusinessLayer>();
 
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
 
@@ -122,6 +126,7 @@ public class Program
         builder.Services.AddExceptionHandler<ErrorHandling>();
 
         #endregion
+
         builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new ObjectIdConverter()); });
 
         var app = builder.Build();
@@ -166,7 +171,7 @@ public class Program
             .AddInteractiveWebAssemblyRenderMode(options => options.ServeMultithreadingHeaders = true)
             .AddInteractiveServerRenderMode()
             .AddAdditionalAssemblies(typeof(_Imports).Assembly);
-        
+
         app.Run();
     }
 }

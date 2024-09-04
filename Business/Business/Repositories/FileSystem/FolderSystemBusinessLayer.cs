@@ -20,7 +20,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
 {
     private readonly string _workingDir = options.Value.FileFolder;
 
-    public IAsyncEnumerable<FolderInfoModel> Search(string queryString, int limit = 10, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<FolderInfoModel> Search(string queryString, int limit = 10, CancellationToken cancellationTokenSource = default)
     {
         return folderSystemService.Search(queryString, limit, cancellationTokenSource);
     }
@@ -30,12 +30,12 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return folderSystemService.Search(queryString, limit, cancellationToken);
     }
 
-    public IAsyncEnumerable<FolderInfoModel> FindAsync(FilterDefinition<FolderInfoModel> filter, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<FolderInfoModel> FindAsync(FilterDefinition<FolderInfoModel> filter, CancellationToken cancellationTokenSource = default)
     {
         return folderSystemService.FindAsync(filter, cancellationTokenSource);
     }
 
-    public IAsyncEnumerable<FolderInfoModel> FindAsync(string keyWord, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<FolderInfoModel> FindAsync(string keyWord, CancellationToken cancellationTokenSource = default)
     {
         return folderSystemService.FindAsync(keyWord, cancellationTokenSource);
     }
@@ -45,7 +45,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return folderSystemService.FindProjectAsync(keyWord, limit, cancellationToken);
     }
 
-    public IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
     {
         return folderSystemService.Where(predicate, cancellationTokenSource);
     }
@@ -60,17 +60,17 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return folderSystemService.Get(key);
     }
 
-    public IAsyncEnumerable<FolderInfoModel?> GetAsync(List<string> keys, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<FolderInfoModel?> GetAsync(List<string> keys, CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(FolderInfoModel[], long)> GetAllAsync(int page, int size, CancellationTokenSource? cancellationTokenSource = default)
+    public Task<(FolderInfoModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FolderInfoModel> GetAllAsync(CancellationTokenSource cancellationTokenSource)
+    public IAsyncEnumerable<FolderInfoModel> GetAllAsync(CancellationToken cancellationTokenSource)
     {
         throw new NotImplementedException();
     }
@@ -85,7 +85,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return folderSystemService.CreateAsync(model);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FolderInfoModel> models, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FolderInfoModel> models, CancellationToken cancellationTokenSource = default)
     {
         return folderSystemService.CreateAsync(models, cancellationTokenSource);
     }
@@ -95,7 +95,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return folderSystemService.UpdateAsync(model);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FolderInfoModel> models, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FolderInfoModel> models, CancellationToken cancellationTokenSource = default)
     {
         return folderSystemService.UpdateAsync(models, cancellationTokenSource);
     }
@@ -184,7 +184,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return folder;
     }
 
-    public IAsyncEnumerable<FolderInfoModel> Search(string queryString, string? username, int limit = 10, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<FolderInfoModel> Search(string queryString, string? username, int limit = 10, CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
@@ -291,12 +291,12 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return (false, AppLang.Create_failed);
     }
 
-    public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
+    public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
     {
         return fileSystemService.GetFileSize(predicate, cancellationTokenSource);
     }
 
-    public async Task<long> GetFolderByteSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
+    public async Task<long> GetFolderByteSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
     {
         var folders = folderSystemService.Where(predicate, cancellationTokenSource);
         long total = 0;
@@ -322,7 +322,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return total;
     }
 
-    public async Task<(long, long)> GetFolderContentsSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
+    public async Task<(long, long)> GetFolderContentsSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
     {
         var folders = folderSystemService.Where(predicate, cancellationTokenSource);
         long totalFolders = 0;

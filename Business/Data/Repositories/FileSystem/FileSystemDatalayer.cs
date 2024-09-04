@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.FileSystem;
 using BusinessModels.Resources;
@@ -51,12 +52,12 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
         }
     }
 
-    public Task<long> GetDocumentSizeAsync(CancellationTokenSource? cancellationTokenSource = default)
+    public Task<long> GetDocumentSizeAsync(CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FileInfoModel> Search(string queryString, int limit = 10, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<FileInfoModel> Search(string queryString, int limit = 10, CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
@@ -66,12 +67,12 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FileInfoModel> FindAsync(FilterDefinition<FileInfoModel> filter, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<FileInfoModel> FindAsync(FilterDefinition<FileInfoModel> filter, CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FileInfoModel> FindAsync(string keyWord, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<FileInfoModel> FindAsync(string keyWord, CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
@@ -79,11 +80,6 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
     public IAsyncEnumerable<FileInfoModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken? cancellationToken = default)
     {
         throw new NotImplementedException();
-    }
-
-    public IAsyncEnumerable<FileInfoModel> Where(Expression<Func<FileInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
-    {
-        return Where(predicate, cancellationTokenSource?.Token ?? default);
     }
 
     public async IAsyncEnumerable<FileInfoModel> Where(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken? cancellationToken = default)
@@ -108,29 +104,30 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
         return _fileDataDb.Find(filter).Limit(1).FirstOrDefault();
     }
 
-    public IAsyncEnumerable<FileInfoModel?> GetAsync(List<string> keys, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<FileInfoModel?> GetAsync(List<string> keys, CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(FileInfoModel[], long)> GetAllAsync(int page, int size, CancellationTokenSource? cancellationTokenSource = default)
+    public Task<(FileInfoModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FileInfoModel> GetAllAsync(CancellationTokenSource cancellationTokenSource)
+    public IAsyncEnumerable<FileInfoModel> GetAllAsync(CancellationToken cancellationTokenSource)
     {
         throw new NotImplementedException();
     }
+
 
     public (bool, string) UpdateProperties(string key, Dictionary<string, dynamic> properties)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> CreateAsync(FileInfoModel model)
+    public async Task<(bool, string)> CreateAsync(FileInfoModel model, CancellationToken cancellationTokenSource = default)
     {
-        await _semaphore.WaitAsync();
+        await _semaphore.WaitAsync(cancellationTokenSource);
         try
         {
             var file = Get(model.Id.ToString());
@@ -138,7 +135,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
             {
                 model.CreatedDate = DateTime.UtcNow;
                 model.ModifiedDate = model.CreatedDate;
-                await _fileDataDb.InsertOneAsync(model);
+                await _fileDataDb.InsertOneAsync(model, cancellationToken: cancellationTokenSource);
                 return (true, AppLang.Create_successfully);
             }
             else
@@ -156,14 +153,14 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
         }
     }
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FileInfoModel> models, CancellationTokenSource? cancellationTokenSource = default)
+    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FileInfoModel> models, CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> UpdateAsync(FileInfoModel model)
+    public async Task<(bool, string)> UpdateAsync(FileInfoModel model, CancellationToken cancellationTokenSource = default)
     {
-        await _semaphore.WaitAsync();
+        await _semaphore.WaitAsync(cancellationTokenSource);
         try
         {
             var file = Get(model.Id.ToString());
@@ -176,7 +173,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
                 model.CreatedDate = DateTime.UtcNow;
                 model.ModifiedDate = model.CreatedDate;
                 var filter = Builders<FileInfoModel>.Filter.Eq(x => x.Id, model.Id);
-                await _fileDataDb.ReplaceOneAsync(filter, model);
+                await _fileDataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationTokenSource);
                 return (true, AppLang.Create_successfully);
             }
         }
@@ -190,11 +187,12 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
         }
     }
 
-    public async IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FileInfoModel> models, CancellationTokenSource? cancellationTokenSource = default)
+
+    public async IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FileInfoModel> models, [EnumeratorCancellation] CancellationToken cancellationTokenSource = default)
     {
         foreach (var file in models.TakeWhile(_ => cancellationTokenSource is not { IsCancellationRequested: true }))
         {
-            var result = await UpdateAsync(file);
+            var result = await UpdateAsync(file, cancellationTokenSource);
             yield return (true, result.Item2, file.Id.ToString());
         }
 
@@ -275,7 +273,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
         return (false, AppLang.Incorrect_metadata_ID);
     }
 
-    public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationTokenSource? cancellationTokenSource = default)
+    public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
