@@ -1,56 +1,56 @@
 ﻿<!DOCTYPE html>
 <!--suppress HtmlRequiredTitleElement -->
-<html lang="@Lang">
+<html>
 
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width,initial-scale=1,shrink-to-fit=no,viewport-fit=cover" name="viewport"/>
-    <meta name="google-site-verification" content="lsN6bSc4Yd1CLrf9JE_0ytdHW7rw0KKxupfVdu28aoc" />
-    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-    <base href="/"/>
-    <link href="@Assets["css/app.css"]" rel="stylesheet"/>
-    <link href="@Assets["apple-touch-icon.png"]" rel="apple-touch-icon" sizes="180x180">
-    <link href="@Assets["favicon-32x32.png"]" rel="icon" sizes="32x32" type="image/png">
-    <link href="@Assets["favicon-16x16.png"]" rel="icon" sizes="16x16" type="image/png">
-    <link href="@Assets["site.manifest"]" rel="manifest">
-    <link href="@Assets["css/google-api.css"]" rel="stylesheet" type="text/css"/>
-    <link href="@Assets["fontawesome-free-6.5.2-web/css/all.css"]" rel="stylesheet"/>
-    <link href="@Assets["_content/MudBlazor/MudBlazor.min.css"]" rel="stylesheet"/>
-    <link href="@Assets["WebApp.styles.css"]" rel="stylesheet"/>
-    <ImportMap/>
-    <link href="@Assets["favicon.ico"]" rel="icon" type="image/x-icon"/>
-    <HeadOutlet @rendermode="@RenderModeForPage()"/>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1,shrink-to-fit=no,viewport-fit=cover" name="viewport" />
+    <meta content="lsN6bSc4Yd1CLrf9JE_0ytdHW7rw0KKxupfVdu28aoc" name="google-site-verification" />
+    <meta content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" name="googlebot" >
+    <meta content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" name="bingbot" >
+    <base href="/" />
+    <link href="@Assets["css/app.css"]" rel="stylesheet" />
+    <link href="@Assets["apple-touch-icon.png"]" rel="apple-touch-icon" sizes="180x180" >
+    <link href="@Assets["favicon-32x32.png"]" rel="icon" sizes="32x32" type="image/png" >
+    <link href="@Assets["favicon-16x16.png"]" rel="icon" sizes="16x16" type="image/png" >
+    <link href="@Assets["site.manifest"]" rel="manifest" >
+    <link href="@Assets["css/google-api.css"]" rel="stylesheet" type="text/css" />
+    <link href="@Assets["fontawesome-free-6.5.2-web/css/all.css"]" rel="stylesheet" />
+    <link href="@Assets["_content/MudBlazor/MudBlazor.min.css"]" rel="stylesheet" />
+    <link href="@Assets["WebApp.styles.css"]" rel="stylesheet" />
+    <ImportMap />
+    <link href="@Assets["favicon.ico"]" rel="icon" type="image/x-icon" />
+    <HeadOutlet @rendermode="@RenderModeForPage()" />
 </head>
 
 <body>
 
 @* Loading Progress *@
 
-<div class="progress-wrapper" id="progress-wrapper">
-    <div class="progress-box-wrap">
-        <div class="box one"></div>
-        <div class="box two"></div>
-        <div class="box three"></div>
-        <div class="box four"></div>
-        <div class="box five"></div>
-        <div class="box six"></div>
+<div class="progress-wrapper" id="progress-wrapper" >
+    <div class="progress-box-wrap" >
+        <div class="box one" ></div>
+        <div class="box two" ></div>
+        <div class="box three" ></div>
+        <div class="box four" ></div>
+        <div class="box five" ></div>
+        <div class="box six" ></div>
     </div>
-    <div class="progress-bar">
-        <div class="progress"></div>
+    <div class="progress-bar" >
+        <div class="progress" ></div>
     </div>
 </div>
 
 @* Loading Progress *@
 
-<Routes @rendermode="@RenderModeForPage()"/>
+<Routes @rendermode="@RenderModeForPage()" />
 
 
-<script src="_framework/blazor.web.js"></script>
-<script src="@Assets["_content/MudBlazor/MudBlazor.min.js"]"></script>
-<script src="@Assets["js/app.js"]"></script>
-<script src="@Assets["js/eventListener.js"]"></script>
-<script src="@Assets["js/encryption.js"]"></script>
+<script src="_framework/blazor.web.js" ></script>
+<script src="@Assets["_content/MudBlazor/MudBlazor.min.js"]" ></script>
+<script src="@Assets["js/app.js"]" ></script>
+<script src="@Assets["js/eventListener.js"]" ></script>
+<script src="@Assets["js/encryption.js"]" ></script>
 
 </body>
 
@@ -58,7 +58,6 @@
 
 @code
 {
-    private string Lang { get; } = Thread.CurrentThread.CurrentCulture.Name;
     [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
 
     private IComponentRenderMode? RenderModeForPage()

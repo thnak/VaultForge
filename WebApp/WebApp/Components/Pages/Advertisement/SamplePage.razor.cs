@@ -51,22 +51,6 @@ public partial class SamplePage : ComponentBase
         base.OnInitialized();
     }
 
-    // protected override void OnAfterRender(bool firstRender)
-    // {
-    //     if (firstRender)
-    //     {
-    //         if (string.IsNullOrEmpty(Language))
-    //         {
-    //             Language = CultureInfo.CurrentCulture.Name;
-    //             var uri = Navigation.GetUriWithQueryParameters(Navigation.Uri, new Dictionary<string, object?>() { { "language", Language } });
-    //             Navigation.NavigateTo(uri, replace: true);
-    //             return;
-    //         }
-    //     }
-    //
-    //     base.OnAfterRender(firstRender);
-    // }
-
 
     private void RenderPage(string htmlContent)
     {

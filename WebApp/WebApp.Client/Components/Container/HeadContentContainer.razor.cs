@@ -72,6 +72,16 @@ public partial class HeadContentContainer : ComponentBase, IDisposable
                 { "name", "author" },
                 { "content", "https://github.com/thnak" }
             },
+            new Dictionary<string, string>
+            {
+                { "name", "url" },
+                { "content", Navigation.Uri }
+            },
+            new Dictionary<string, string>
+            {
+                { "name", "site_name" },
+                { "content", "thnak dev app" }
+            },
         ];
 
 
@@ -88,35 +98,39 @@ public partial class HeadContentContainer : ComponentBase, IDisposable
     private RenderFragment CreateComponent() => builder =>
     {
         int index = 0;
-        string[] extendMetaKeys = ["title", "description", "image", "site_name", "url", "type", "card"];
+        string[] extendMetaNames = ["title", "description", "image", "site_name", "url", "type", "card"];
         string[] extend = ["ogg", "twitter"];
-        foreach (var dictionary in PreviousMetaProperties)
+
+
+        foreach (var meta in Properties.ToArray())
         {
-            if (dictionary.Keys.Any(x => extendMetaKeys.Contains(x)))
+            foreach (var name in extendMetaNames)
             {
-                foreach (var ex in extend)
+                if (meta.ContainsValue(name))
                 {
-                    builder.OpenElement(index++, "meta");
-                    int attributeIndex = 0;
-                    foreach (var pair in dictionary)
+                    foreach (var value in extend)
                     {
-                        builder.AddAttribute(attributeIndex++, $"{ex}:{pair.Key}", pair.Value);
+                        var newPair = new Dictionary<string, string> { { "name", $"{value}:{Properties[index]["name"]}" }, { "content", Properties[index]["content"] } };
+                        Properties.Add(newPair);
                     }
-
-                    builder.CloseElement();
                 }
             }
-            else
+
+            index += 1;
+        }
+
+        index = 0;
+
+        foreach (var dictionary in Properties)
+        {
+            builder.OpenElement(index++, "meta");
+            int attributeIndex = 0;
+            foreach (var pair in dictionary)
             {
-                builder.OpenElement(index++, "meta");
-                int attributeIndex = 0;
-                foreach (var pair in dictionary)
-                {
-                    builder.AddAttribute(attributeIndex++, pair.Key, pair.Value);
-                }
-
-                builder.CloseElement();
+                builder.AddAttribute(attributeIndex++, pair.Key, pair.Value);
             }
+
+            builder.CloseElement();
         }
 
         builder.OpenElement(index++, "link");

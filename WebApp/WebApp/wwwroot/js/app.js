@@ -1,4 +1,3 @@
-
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/js/service-worker.js')
         .then(function (registration) {
@@ -19,6 +18,7 @@ window.requestNotificationPermission = async () => {
         console.log('Notification permission not granted.');
     }
 }
+
 window.subscribeUserToPush = async () => {
     const register = await navigator.serviceWorker.ready;
     const subscription = await register.pushManager.subscribe({
@@ -28,5 +28,46 @@ window.subscribeUserToPush = async () => {
     return {
         endpoint: subscription.endpoint, p256dh: btoa(String.fromCharCode.apply(null, new Uint8Array(subscription.getKey('p256dh')))), auth: btoa(String.fromCharCode.apply(null, new Uint8Array(subscription.getKey('auth'))))
     };
-};
+}
 
+window.getCultureFromCookie = (cookieName = 'WhatupHomieCulture') => {
+    // Get the cookie string
+    const cookieString = document.cookie;
+
+    // Find the culture cookie by name
+    const cultureCookie = cookieString.split('; ').find(row => row.startsWith(cookieName + '='));
+
+    if (cultureCookie) {
+        // Decode the cookie value (URL decoding)
+        const decodedValue = decodeURIComponent(cultureCookie.split('=')[1]);
+
+        // Split the value to get both culture (c) and UI culture (uic)
+        const cultureInfo = decodedValue.split('%7C'); // %7C is the encoded form of "|"
+
+        // Extract the 'c=' part (culture)
+        const culture = cultureInfo[0].split('=')[1]; // 'c=vi-VN' -> 'vi-VN'
+
+        return culture.split('|')[0];
+    }
+
+    // Return null if no culture cookie is found
+    return null;
+}
+
+window.setCultureCookie = (culture, uiCulture, cookieName = 'WhatupHomieCulture', daysToExpire = 7) => {
+    // Encode the cookie value (culture and uiCulture)
+    const cookieValue = encodeURIComponent(`c=${culture}|uic=${uiCulture}`);
+
+    // Calculate the expiration date
+    const date = new Date();
+    date.setTime(date.getTime() + (daysToExpire * 24 * 60 * 60 * 1000)); // Convert days to milliseconds
+
+    // Create the cookie with the name, value, and expiration date
+    document.cookie = `${cookieName}=${cookieValue};expires=${date.toUTCString()};path=/`;
+    const htmlElement = document.documentElement;
+
+    // Set the lang attribute to the provided culture code
+    htmlElement.setAttribute('lang', culture);
+}
+
+document.documentElement.setAttribute('lang', window.getCultureFromCookie());

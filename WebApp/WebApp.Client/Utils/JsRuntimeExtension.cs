@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Json;
+using BusinessModels.Resources;
 using Microsoft.JSInterop;
 
 namespace WebApp.Client.Utils;
@@ -57,7 +58,7 @@ public static class JsRuntimeExtension
 
         return JsonSerializer.Deserialize<T?>(textPlan);
     }
-    
+
     public static async Task<T> GetLocalStorage<T>(this IJSRuntime jsRuntime, string key, T defaultValue)
     {
         var textPlan = await jsRuntime.InvokeAsync<string?>("localStorage.getItem", key);
@@ -127,12 +128,12 @@ public static class JsRuntimeExtension
 
     public static async Task SetCulture(this IJSRuntime jsRuntime, string name)
     {
-        await jsRuntime.SetLocalStorage(CultureKeyName, name);
+        await jsRuntime.InvokeVoidAsync("setCultureCookie", name, name, CookieNames.Culture, 365);
     }
 
     public static async Task<string?> GetCulture(this IJSRuntime jsRuntime)
     {
-        return await jsRuntime.GetLocalStorage(CultureKeyName);
+        return await jsRuntime.InvokeAsync<string>("getCultureFromCookie", CookieNames.Culture);
     }
 
     #endregion
@@ -150,7 +151,7 @@ public static class JsRuntimeExtension
     }
 
     #endregion
-    
+
     public static Task SetPreventKey(this IJSRuntime self, params string[] key)
     {
         var listKey = key.ToList();
