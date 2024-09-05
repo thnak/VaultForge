@@ -21,6 +21,9 @@
 
 @using Blazored.Toast
 @using Blazored.Toast.Services
+@using Business.Business.Interfaces.Advertisement
+@using Business.Business.Interfaces.FileSystem
+@using Business.Business.Interfaces.User
 
 @inject IJSRuntime JsRuntime
 @inject DocumentObjectModelEventListener EventListener
@@ -31,3 +34,10 @@
 @inject IDialogService DialogService
 @inject IStringLocalizer<AppLang> LangDict
 @using Microsoft.AspNetCore.Authorization
+
+
+@* Services *@
+@inject IAdvertisementBusinessLayer AdvertisementService
+@inject IUserBusinessLayer UserService
+@inject IFileSystemBusinessLayer FileSystemService
+@inject IFolderSystemBusinessLayer FolderSystemService

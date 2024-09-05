@@ -219,12 +219,13 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     private Task OnComplete(int arg1, string arg2)
     {
         Uploading = false;
+        Open = false;
         int index = 0;
         foreach (var pa in UploadProgress.Keys)
         {
             UploadProgress[pa] = FileUploadList[index++].FileSize;
         }
-
+    
         ToastService.ShowSuccess(arg2, ToastSettings);
         return GetRootFolderAsync(Password);
     }

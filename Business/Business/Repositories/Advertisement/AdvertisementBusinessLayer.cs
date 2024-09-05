@@ -1,11 +1,12 @@
 ﻿using System.Linq.Expressions;
 using Business.Business.Interfaces.Advertisement;
+using Business.Data.Interfaces.Advertisement;
 using BusinessModels.Advertisement;
 using MongoDB.Driver;
 
 namespace Business.Business.Repositories.Advertisement;
 
-public class AdvertisementBusinessLayer : IAdvertisementBusinessLayer
+public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAdvertisementBusinessLayer
 {
     public IAsyncEnumerable<ArticleModel> Search(string queryString, int limit = 10, CancellationToken? cancellationToken = default)
     {
@@ -80,5 +81,10 @@ public class AdvertisementBusinessLayer : IAdvertisementBusinessLayer
     public (bool, string) Delete(string key)
     {
         throw new NotImplementedException();
+    }
+
+    public ArticleModel? Get(string title, string lang)
+    {
+        return dataLayer.Get(title, lang);
     }
 }

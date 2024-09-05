@@ -1,3 +1,4 @@
+using Business.Data.Interfaces.Advertisement;
 using Business.Data.Interfaces.FileSystem;
 using Business.Data.Interfaces.User;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,7 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
         scope.ServiceProvider.GetService<IUserDataLayer>()!.InitializeAsync();
         scope.ServiceProvider.GetService<IFileSystemDatalayer>()?.InitializeAsync();
         scope.ServiceProvider.GetService<IFolderSystemDatalayer>()?.InitializeAsync();
+        scope.ServiceProvider.GetService<IAdvertisementDataLayer>()?.InitializeAsync();
     }
 
     private void OnStopping()

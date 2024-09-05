@@ -100,12 +100,17 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context) : IAdvertise
         throw new NotImplementedException();
     }
 
+    public ArticleModel? Get(string title, string lang)
+    {
+        return _dataDb.Find(x => x.Title == title && x.Language == lang).FirstOrDefault();
+    }
+
     public async Task<(bool, string)> InitializeAsync()
     {
         try
         {
             await _dataDb.Indexes.CreateManyAsync([
-                new CreateIndexModel<ArticleModel>(Builders<ArticleModel>.IndexKeys.Ascending(x => x.Title), new CreateIndexOptions { Unique = true }),
+                new CreateIndexModel<ArticleModel>(Builders<ArticleModel>.IndexKeys.Ascending(x => x.Title).Ascending(x => x.Language), new CreateIndexOptions { Unique = true }),
                 new CreateIndexModel<ArticleModel>(Builders<ArticleModel>.IndexKeys.Ascending(x => x.PublishDate), new CreateIndexOptions { Unique = false }),
                 new CreateIndexModel<ArticleModel>(Builders<ArticleModel>.IndexKeys.Text(x => x.Title).Text(x => x.Summary), new CreateIndexOptions { Name = SearchIndexString })
             ]);

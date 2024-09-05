@@ -1,6 +1,8 @@
 using Business.Business.Interfaces.Advertisement;
+using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.User;
 using Business.Business.Repositories.Advertisement;
+using Business.Business.Repositories.FileSystem;
 using Business.Business.Repositories.User;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.Advertisement;
@@ -15,7 +17,6 @@ using Business.Services;
 using Business.SocketHubs;
 using BusinessModels.Converter;
 using BusinessModels.General;
-using BusinessModels.Resources;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Options;
 using Protector.Certificates.Models;
@@ -40,10 +41,7 @@ public class Program
             .AddInteractiveServerComponents(options => { options.DetailedErrors = builder.Environment.IsDevelopment(); })
             .AddAuthenticationStateSerialization();
 
-        builder.WebHost.ConfigureKestrel(options =>
-        {
-            options.AddServerHeader = false;
-        });
+        builder.WebHost.ConfigureKestrel(options => { options.AddServerHeader = false; });
 
         builder.Services.AddFrontEndService();
         builder.Services.AddFrontEndScopeService();
@@ -80,10 +78,15 @@ public class Program
         #region Additionnal services
 
         builder.Services.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
+        
         builder.Services.AddSingleton<IUserDataLayer, UserDataLayer>();
         builder.Services.AddSingleton<IUserBusinessLayer, UserBusinessLayer>();
+
         builder.Services.AddSingleton<IFolderSystemDatalayer, FolderSystemDatalayer>();
+        builder.Services.AddSingleton<IFolderSystemBusinessLayer, FolderSystemBusinessLayer>();
+
         builder.Services.AddSingleton<IFileSystemDatalayer, FileSystemDatalayer>();
+        builder.Services.AddSingleton<IFileSystemBusinessLayer, FileSystemBusinessLayer>();
 
         builder.Services.AddSingleton<IAdvertisementDataLayer, AdvertisementDataLayer>();
         builder.Services.AddSingleton<IAdvertisementBusinessLayer, AdvertisementBusinessLayer>();
