@@ -18,9 +18,12 @@ public class Middleware(RequestDelegate next)
                 if (context.Request.Query.TryGetValue("lang", out var lang))
                 {
                     var langCode = lang.ToString();
-                    if (!string.IsNullOrWhiteSpace(langCode))
+                    if (AllowedCulture.SupportedCultures.Any(x => x.Name == langCode))
                     {
-                        SetLanguageCookie(context, langCode);
+                        if (!string.IsNullOrWhiteSpace(langCode))
+                        {
+                            SetLanguageCookie(context, langCode);
+                        }
                     }
                 }
                 else
@@ -30,12 +33,14 @@ public class Middleware(RequestDelegate next)
                         if (context.Request.Headers.TryGetValue("Accept-Language", out var acceptLang))
                         {
                             var langCode = acceptLang.ToString();
-                            var preferredLanguage = langCode.Split(',').FirstOrDefault();
-                            if (!string.IsNullOrWhiteSpace(preferredLanguage)) SetLanguageCookie(context, preferredLanguage);
+                            if (AllowedCulture.SupportedCultures.Any(x => x.Name == langCode))
+                            {
+                                var preferredLanguage = langCode.Split(',').FirstOrDefault();
+                                if (!string.IsNullOrWhiteSpace(preferredLanguage)) SetLanguageCookie(context, preferredLanguage);
+                            }
                         }
                     }
                 }
-
 
                 return Task.CompletedTask;
             });

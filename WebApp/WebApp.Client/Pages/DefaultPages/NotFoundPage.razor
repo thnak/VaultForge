@@ -1,10 +1,13 @@
-@rendermode InteractiveAuto
+@rendermode InteractiveServer
 @attribute [Route(PageRoutes.Error.NotFound)]
 @attribute [Route(PageRoutes.Error.Default404)]
 @layout BlankLayout
 
 <PageTitle>404 Not Found</PageTitle>
 
+<HeadContent>
+    <HeadContentContainer MetaProperty="@Metadata"/>
+</HeadContent>
 
 <div class="container" >
     <h1>404 Not Found</h1>

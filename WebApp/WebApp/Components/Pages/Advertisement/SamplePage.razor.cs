@@ -15,6 +15,9 @@ public partial class SamplePage : ComponentBase
     [SupplyParameterFromQuery(Name = "content_id")]
     public string? ContentId { get; set; }
 
+    [SupplyParameterFromQuery(Name = "edit")]
+    public bool? Editable { get; set; }
+
     #endregion
 
     #region Fields
@@ -41,7 +44,7 @@ public partial class SamplePage : ComponentBase
             }
         }
 
-        if (articleModel == null)
+        if (articleModel == null && Editable is not true)
         {
             HttpContext?.RedirectTo(PageRoutes.Error.NotFound);
             return;

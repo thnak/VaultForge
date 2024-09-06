@@ -98,8 +98,8 @@ public partial class HeadContentContainer : ComponentBase, IDisposable
     private RenderFragment CreateComponent() => builder =>
     {
         int index = 0;
-        string[] extendMetaNames = ["title", "description", "image", "site_name", "url", "type", "card"];
-        string[] extend = ["ogg", "twitter"];
+        string[] extendMetaNames = ["title", "description", "image", "site_name", "url", "type", "card", "author"];
+        string[] extend = ["ogg", "twitter", "facebook", "linkedin"];
 
 
         foreach (var meta in Properties.ToArray())
