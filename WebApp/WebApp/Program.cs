@@ -164,6 +164,7 @@ public class Program
         else
         {
             app.UseResponseCompression();
+            app.UseHsts();
         }
 
         app.UseAntiforgery();

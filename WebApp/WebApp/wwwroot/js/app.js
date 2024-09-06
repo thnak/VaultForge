@@ -30,7 +30,7 @@ window.subscribeUserToPush = async () => {
     };
 }
 
-window.getCultureFromCookie = (cookieName = 'WhatupHomieCulture') => {
+window.getCultureFromCookie = (cookieName = 'thnakdevserverCulture') => {
     // Get the cookie string
     const cookieString = document.cookie;
 
@@ -54,7 +54,7 @@ window.getCultureFromCookie = (cookieName = 'WhatupHomieCulture') => {
     return null;
 }
 
-window.setCultureCookie = (culture, uiCulture, cookieName = 'WhatupHomieCulture', daysToExpire = 7) => {
+window.setCultureCookie = (culture, uiCulture, cookieName = 'thnakdevserverCulture', daysToExpire = 7) => {
     // Encode the cookie value (culture and uiCulture)
     const cookieValue = encodeURIComponent(`c=${culture}|uic=${uiCulture}`);
 
