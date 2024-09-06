@@ -14,7 +14,7 @@ namespace Business.Business.Repositories.User;
 
 public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
 {
-    public IAsyncEnumerable<UserModel> Search(string queryString, int limit = 10, CancellationToken? cancellationToken = default)
+    public IAsyncEnumerable<UserModel> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default)
     {
         return userDl.Search(queryString, limit, cancellationToken);
     }
@@ -29,13 +29,13 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         return userDl.FindAsync(keyWord, cancellationTokenSource);
     }
 
-    public IAsyncEnumerable<UserModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken? cancellationToken = default)
+    public IAsyncEnumerable<UserModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default)
     {
         return userDl.FindProjectAsync(keyWord, limit, cancellationToken);
     }
 
 
-    public IAsyncEnumerable<UserModel> Where(Expression<Func<UserModel, bool>> predicate, CancellationToken? cancellationToken = default)
+    public IAsyncEnumerable<UserModel> Where(Expression<Func<UserModel, bool>> predicate, CancellationToken cancellationToken = default)
     {
         return userDl.Where(predicate, cancellationToken);
     }

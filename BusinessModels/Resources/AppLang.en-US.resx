@@ -410,4 +410,7 @@ ClientY: {1}</value>
     <data name="File upload" xml:space="preserve">
       <value>File upload</value>
     </data>
+    <data name="The page you were looking for does not exist. Don't worry, it happens to the best of us!" xml:space="preserve">
+      <value>The page you were looking for does not exist. Don't worry, it happens to the best of us!</value>
+    </data>
 </root>

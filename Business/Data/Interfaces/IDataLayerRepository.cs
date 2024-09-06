@@ -19,7 +19,7 @@ public interface IDataLayerRepository<T> where T : class
     /// <param name="limit"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>    
-    IAsyncEnumerable<T> Search(string queryString, int limit = 10, CancellationToken? cancellationToken = default);
+    IAsyncEnumerable<T> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Tìm kiếm với từ khóa biết trước
@@ -44,9 +44,9 @@ public interface IDataLayerRepository<T> where T : class
     /// <param name="limit"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    IAsyncEnumerable<T> FindProjectAsync(string keyWord, int limit = 10, CancellationToken? cancellationToken = default);
+    IAsyncEnumerable<T> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default);
 
-    IAsyncEnumerable<T> Where(Expression<Func<T, bool>> predicate, CancellationToken? cancellationToken = default);
+    IAsyncEnumerable<T> Where(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default);
     T? Get(string key);
     IAsyncEnumerable<T?> GetAsync(List<string> keys, CancellationToken cancellationTokenSource = default);
     Task<(T[], long)> GetAllAsync(int page, int size, CancellationToken cancellationTokenSource = default);

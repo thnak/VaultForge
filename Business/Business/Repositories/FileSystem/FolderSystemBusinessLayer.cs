@@ -20,12 +20,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
 {
     private readonly string _workingDir = options.Value.FileFolder;
 
-    public IAsyncEnumerable<FolderInfoModel> Search(string queryString, int limit = 10, CancellationToken cancellationTokenSource = default)
-    {
-        return folderSystemService.Search(queryString, limit, cancellationTokenSource);
-    }
-
-    public IAsyncEnumerable<FolderInfoModel> Search(string queryString, int limit = 10, CancellationToken? cancellationToken = default)
+    public IAsyncEnumerable<FolderInfoModel> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default)
     {
         return folderSystemService.Search(queryString, limit, cancellationToken);
     }
@@ -40,17 +35,12 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return folderSystemService.FindAsync(keyWord, cancellationTokenSource);
     }
 
-    public IAsyncEnumerable<FolderInfoModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken? cancellationToken = default)
+    public IAsyncEnumerable<FolderInfoModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default)
     {
         return folderSystemService.FindProjectAsync(keyWord, limit, cancellationToken);
     }
 
-    public IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
-    {
-        return folderSystemService.Where(predicate, cancellationTokenSource);
-    }
-
-    public IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken? cancellationToken = default)
+    public IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationToken = default)
     {
         return folderSystemService.Where(predicate, cancellationToken);
     }

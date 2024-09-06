@@ -15,15 +15,16 @@ public class ChatWithLlama : IDisposable
     /// <param name="systemPrompt"></param>
     /// <param name="uri">default value is http://localhost:11434/api</param>
     /// <param name="model"></param>
-    public ChatWithLlama(string systemPrompt, Uri uri, string model = "llama3.1")
+    /// <param name="autoCallTools"></param>
+    public ChatWithLlama(string systemPrompt, Uri uri, string model = "llama3.1", bool autoCallTools = false)
     {
         _ollamaApiClient = new OllamaApiClient(null, uri);
         _chatClient = _ollamaApiClient.Chat(
             model: model,
             systemMessage: systemPrompt,
-            autoCallTools: true);
-
-        InitCallService();
+            autoCallTools: autoCallTools);
+        if(autoCallTools)
+            InitCallService();
     }
 
     public ChatWithLlama(string systemPrompt, string model = "llama3.1")

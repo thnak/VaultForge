@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.FileSystem;
 using BusinessModels.Resources;
@@ -65,7 +66,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
         throw new NotImplementedException();
     }
 
-    public async IAsyncEnumerable<FolderInfoModel> Search(string queryString, int limit = 10, CancellationToken? cancellationToken = default)
+    public async IAsyncEnumerable<FolderInfoModel> Search(string queryString, int limit = 10, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         var searchStage = new BsonDocument
         {
@@ -103,8 +104,8 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
                 }
             } // Limit the number of results
         };
-        var searchResults = await _dataDb.AggregateAsync<FolderInfoModel>(pipeline, null, cancellationToken ?? default);
-        while (await searchResults.MoveNextAsync(cancellationToken ?? default))
+        var searchResults = await _dataDb.AggregateAsync<FolderInfoModel>(pipeline, null, cancellationToken );
+        while (await searchResults.MoveNextAsync(cancellationToken ))
             foreach (var user in searchResults.Current)
                 if (user != default)
                     yield return user;
@@ -123,16 +124,16 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
     }
 
     public IAsyncEnumerable<FolderInfoModel> FindProjectAsync(string keyWord, int limit = 10,
-        CancellationToken? cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
 
-    public async IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken? cancellationToken = default)
+    public async IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        var cursor = await _dataDb.FindAsync(predicate);
-        while (await cursor.MoveNextAsync(cancellationToken ?? default))
+        var cursor = await _dataDb.FindAsync(predicate, cancellationToken: cancellationToken);
+        while (await cursor.MoveNextAsync(cancellationToken))
         {
             foreach (var model in cursor.Current)
             {

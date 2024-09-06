@@ -754,6 +754,16 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Trang bạn đang tìm kiếm không tồn tại. Đừng lo lắng, điều đó sẽ xảy ra với những người tốt nhất trong chúng ta!.
+        /// </summary>
+        public static string The_page_you_were_looking_for_does_not_exist__Don_t_worry__it_happens_to_the_best_of_us_ {
+            get {
+                return ResourceManager.GetString("The page you were looking for does not exist. Don\'t worry, it happens to the best" +
+                        " of us!", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Người dùng đã được xác thực.
         /// </summary>
         public static string The_user_has_been_authenticated {

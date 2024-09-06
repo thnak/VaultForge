@@ -3,15 +3,15 @@
 @attribute [Route(PageRoutes.Error.Default404)]
 @layout BlankLayout
 
-<PageTitle>404 Not Found</PageTitle>
+<PageTitle>@Title</PageTitle>
 
 <HeadContent>
-    <HeadContentContainer MetaProperty="@Metadata"/>
+    <HeadContentContainer MetaProperty="@Metadata" />
 </HeadContent>
 
 <div class="container" >
     <h1>404 Not Found</h1>
-    <p>Oops! The page you are looking for could not be found.</p>
+    <p>Oops! @AppLang.The_page_you_were_looking_for_does_not_exist__Don_t_worry__it_happens_to_the_best_of_us_</p>
     <p>
         Please check the URL in the address bar, or
         <a href="/" >click here</a> to go back to the homepage.

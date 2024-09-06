@@ -282,7 +282,7 @@ public static class FileHelpers
     }
 
     public static async Task<(long, string)> ProcessStreamedFileAndSave(this MultipartSection section, string path,
-        ModelStateDictionary modelState, CancellationToken? cancellationToken = default)
+        ModelStateDictionary modelState, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -291,13 +291,13 @@ public static class FileHelpers
             using var memoryStream = new MemoryStream(capacity);
             byte[] buffer = new byte[capacity];
 
-            _ = await section.Body.ReadAsync(buffer, 0, capacity, cancellationToken ?? default);
-            await memoryStream.WriteAsync(buffer, cancellationToken ?? default);
+            _ = await section.Body.ReadAsync(buffer, 0, capacity, cancellationToken);
+            await memoryStream.WriteAsync(buffer, cancellationToken);
             memoryStream.SeekBeginOrigin();
 
-            await memoryStream.CopyToAsync(targetStream, cancellationToken: cancellationToken ?? default);
+            await memoryStream.CopyToAsync(targetStream, cancellationToken: cancellationToken);
 
-            await section.Body.CopyToAsync(targetStream, cancellationToken: cancellationToken ?? default);
+            await section.Body.CopyToAsync(targetStream, cancellationToken: cancellationToken);
 
             var fileExtension = memoryStream.GetCorrectExtension(section.ContentType);
             var contentType = fileExtension.GetMimeType();
@@ -389,7 +389,8 @@ public static class FileHelpers
             foreach (var ext in FileSignature.Keys)
             {
                 var signatures = FileSignature[ext];
-                var signature = signatures.Any(signature => headerBytes.Take(signature.Length).SequenceEqual(signature));
+                var signature =
+                    signatures.Any(signature => headerBytes.Take(signature.Length).SequenceEqual(signature));
                 if (signature) return ext;
             }
 

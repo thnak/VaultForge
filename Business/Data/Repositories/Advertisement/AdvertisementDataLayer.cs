@@ -1,8 +1,11 @@
 ﻿using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.Advertisement;
-using BusinessModels.Advertisement;
+using BusinessModels.Resources;
+using MongoDB.Bson;
 using MongoDB.Driver;
+using ArticleModel = BusinessModels.Advertisement.ArticleModel;
 
 namespace Business.Data.Repositories.Advertisement;
 
@@ -17,12 +20,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context) : IAdvertise
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<ArticleModel> Search(string queryString, int limit = 10, CancellationToken cancellationTokenSource = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IAsyncEnumerable<ArticleModel> Search(string queryString, int limit = 10, CancellationToken? cancellationToken = default)
+    public IAsyncEnumerable<ArticleModel> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -37,24 +35,64 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context) : IAdvertise
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<ArticleModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken? cancellationToken = default)
+    public async IAsyncEnumerable<ArticleModel> FindProjectAsync(string keyWord, int limit = 10, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var projection = new FindOptions<ArticleModel, ArticleModel>()
+        {
+            Projection = new FindExpressionProjectionDefinition<ArticleModel, ArticleModel>(x => new ArticleModel()
+            {
+                Id = x.Id,
+                Title = x.Title,
+                Language = x.Language,
+                ModifiedDate = x.ModifiedDate,
+                PublishDate = x.PublishDate,
+                Author = x.Author,
+            }),
+        };
+
+        var filter = Builders<ArticleModel>.Filter.Where(x => x.Author.Contains(keyWord) || x.Title.Contains(keyWord));
+
+        var cursor = await _dataDb.FindAsync(filter, projection, cancellationToken);
+        while (await cursor.MoveNextAsync(cancellationToken))
+        {
+            foreach (var model in cursor.Current)
+            {
+                yield return model;
+            }
+        }
     }
 
-    public IAsyncEnumerable<ArticleModel> Where(Expression<Func<ArticleModel, bool>> predicate, CancellationToken? cancellationToken = default)
+    public async IAsyncEnumerable<ArticleModel> Where(Expression<Func<ArticleModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var cursor = await _dataDb.FindAsync(predicate, cancellationToken: cancellationToken);
+        while (await cursor.MoveNextAsync(cancellationToken))
+        {
+            foreach (var model in cursor.Current)
+            {
+                yield return model;
+            }
+        }
     }
 
     public ArticleModel? Get(string key)
     {
-        throw new NotImplementedException();
+        if (ObjectId.TryParse(key, out ObjectId objectId))
+        {
+            return _dataDb.Find(x => x.Id == objectId).FirstOrDefault();
+        }
+
+        return _dataDb.Find(x => x.Title == key).FirstOrDefault();
     }
 
-    public IAsyncEnumerable<ArticleModel?> GetAsync(List<string> keys, CancellationToken cancellationTokenSource = default)
+    public async IAsyncEnumerable<ArticleModel?> GetAsync(List<string> keys, [EnumeratorCancellation] CancellationToken cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        await _semaphore.WaitAsync(cancellationTokenSource);
+        foreach (var key in keys.TakeWhile(_ => cancellationTokenSource.IsCancellationRequested == false))
+        {
+            yield return Get(key);
+        }
+
+        _semaphore.Release();
     }
 
     public Task<(ArticleModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationTokenSource = default)
@@ -73,20 +111,70 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context) : IAdvertise
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> CreateAsync(ArticleModel model, CancellationToken cancellationTokenSource = default)
+    public async Task<(bool, string)> CreateAsync(ArticleModel model, CancellationToken cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        await _semaphore.WaitAsync(cancellationTokenSource);
+        try
+        {
+            var file = Get(model.Id.ToString());
+            if (file == null)
+            {
+                model.PublishDate = DateTime.UtcNow;
+                model.ModifiedDate = model.PublishDate;
+                await _dataDb.InsertOneAsync(model, cancellationToken: cancellationTokenSource);
+                return (true, AppLang.Create_successfully);
+            }
+            else
+            {
+                return (false, AppLang.File_is_already_exsists);
+            }
+        }
+        catch (Exception e)
+        {
+            return (false, e.Message);
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
     }
 
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<ArticleModel> models, CancellationToken cancellationTokenSource = default)
+    public async IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<ArticleModel> models, [EnumeratorCancellation] CancellationToken cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        foreach (var model in models.TakeWhile(_ => cancellationTokenSource.IsCancellationRequested == false))
+        {
+            var result = await CreateAsync(model, cancellationTokenSource);
+            yield return (result.Item1, result.Item2, "");
+        }
     }
 
-    public Task<(bool, string)> UpdateAsync(ArticleModel model, CancellationToken cancellationTokenSource = default)
+    public async Task<(bool, string)> UpdateAsync(ArticleModel model, CancellationToken cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        await _semaphore.WaitAsync(cancellationTokenSource);
+        try
+        {
+            var file = Get(model.Id.ToString());
+            if (file == null)
+            {
+                return (false, AppLang.File_could_not_be_found);
+            }
+            else
+            {
+                model.ModifiedDate = DateTime.UtcNow;
+                var filter = Builders<ArticleModel>.Filter.Eq(x => x.Id, model.Id);
+                await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationTokenSource);
+                return (true, AppLang.Create_successfully);
+            }
+        }
+        catch (Exception e)
+        {
+            return (false, e.Message);
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
     }
 
 

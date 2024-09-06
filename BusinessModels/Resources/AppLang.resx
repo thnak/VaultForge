@@ -409,4 +409,7 @@ ClientY: {1}</value>
     <data name="File upload" xml:space="preserve">
       <value>Tải tập tin lên</value>
     </data>
+    <data name="The page you were looking for does not exist. Don't worry, it happens to the best of us!" xml:space="preserve">
+      <value>Trang bạn đang tìm kiếm không tồn tại. Đừng lo lắng, điều đó sẽ xảy ra với những người tốt nhất trong chúng ta!</value>
+    </data>
 </root>

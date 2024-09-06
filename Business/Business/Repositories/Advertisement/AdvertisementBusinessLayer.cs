@@ -8,7 +8,7 @@ namespace Business.Business.Repositories.Advertisement;
 
 public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAdvertisementBusinessLayer
 {
-    public IAsyncEnumerable<ArticleModel> Search(string queryString, int limit = 10, CancellationToken? cancellationToken = default)
+    public IAsyncEnumerable<ArticleModel> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -23,12 +23,12 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<ArticleModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken? cancellationToken = default)
+    public IAsyncEnumerable<ArticleModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<ArticleModel> Where(Expression<Func<ArticleModel, bool>> predicate, CancellationToken? cancellationToken = default)
+    public IAsyncEnumerable<ArticleModel> Where(Expression<Func<ArticleModel, bool>> predicate, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

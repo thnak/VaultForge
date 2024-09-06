@@ -24,13 +24,13 @@ public class BaseHttpClientService
         return HttpClient.BaseAddress?.ToString() ?? string.Empty;
     }
 
-    public async Task<ResponseData<T>> PostAsync<T>([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, HttpContent? content = default, CancellationToken? cancellationToken = default, bool forceRedirect = true)
+    public async Task<ResponseData<T>> PostAsync<T>([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, HttpContent? content = default, CancellationToken cancellationToken = default, bool forceRedirect = true)
     {
         var responseData = new ResponseData<T>();
 
         try
         {
-            var responseMessage = await HttpClient.PostAsync(requestUri, content, cancellationToken ?? default);
+            var responseMessage = await HttpClient.PostAsync(requestUri, content, cancellationToken);
             if (responseMessage is { StatusCode: HttpStatusCode.Redirect or HttpStatusCode.MovedPermanently })
                 if (responseMessage.Headers.Location != null)
                     Navigation.NavigateTo(responseMessage.Headers.Location.ToString(), forceRedirect);
@@ -38,7 +38,7 @@ public class BaseHttpClientService
             responseData.IsSuccessStatusCode = responseMessage.IsSuccessStatusCode;
             responseData.StatusCode = responseMessage.StatusCode;
 
-            var responseText = await responseMessage.Content.ReadAsStringAsync();
+            var responseText = await responseMessage.Content.ReadAsStringAsync(cancellationToken);
             if (responseMessage.IsSuccessStatusCode)
             {
                 var data = responseText.DeSerialize<T>();
@@ -57,20 +57,20 @@ public class BaseHttpClientService
         return responseData;
     }
 
-    public async Task<ResponseData<T>> PutAsync<T>([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, HttpContent? content = default, CancellationToken? cancellationToken = default, bool forceRedirect = true)
+    public async Task<ResponseData<T>> PutAsync<T>([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, HttpContent? content = default, CancellationToken cancellationToken = default, bool forceRedirect = true)
     {
         var responseData = new ResponseData<T>();
 
         try
         {
-            var responseMessage = await HttpClient.PutAsync(requestUri, content, cancellationToken ?? default);
+            var responseMessage = await HttpClient.PutAsync(requestUri, content, cancellationToken);
             if (responseMessage is { StatusCode: HttpStatusCode.Redirect or HttpStatusCode.MovedPermanently })
                 if (responseMessage.Headers.Location != null)
                     Navigation.NavigateTo(responseMessage.Headers.Location.ToString(), forceRedirect);
 
             responseData.IsSuccessStatusCode = responseMessage.IsSuccessStatusCode;
             responseData.StatusCode = responseMessage.StatusCode;
-            var responseText = await responseMessage.Content.ReadAsStringAsync();
+            var responseText = await responseMessage.Content.ReadAsStringAsync(cancellationToken);
             if (responseMessage.IsSuccessStatusCode)
             {
                 var data = responseText.DeSerialize<T>();
@@ -89,20 +89,20 @@ public class BaseHttpClientService
         return responseData;
     }
 
-    public async Task<ResponseData<T>> GetAsync<T>([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, CancellationToken? cancellationToken = default, bool forceRedirect = true)
+    public async Task<ResponseData<T>> GetAsync<T>([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, CancellationToken cancellationToken = default, bool forceRedirect = true)
     {
         var responseData = new ResponseData<T>();
 
         try
         {
-            var responseMessage = await HttpClient.GetAsync(requestUri, cancellationToken ?? default);
+            var responseMessage = await HttpClient.GetAsync(requestUri, cancellationToken);
             if (responseMessage is { StatusCode: HttpStatusCode.Redirect or HttpStatusCode.MovedPermanently })
                 if (responseMessage.Headers.Location != null)
                     Navigation.NavigateTo(responseMessage.Headers.Location.ToString(), forceRedirect);
 
             responseData.IsSuccessStatusCode = responseMessage.IsSuccessStatusCode;
             responseData.StatusCode = responseMessage.StatusCode;
-            var responseText = await responseMessage.Content.ReadAsStringAsync();
+            var responseText = await responseMessage.Content.ReadAsStringAsync(cancellationToken);
             if (responseMessage.IsSuccessStatusCode)
             {
                 var data = responseText.DeSerialize<T>();
@@ -121,20 +121,20 @@ public class BaseHttpClientService
         return responseData;
     }
 
-    public async Task<ResponseData<T>> DeleteAsync<T>([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, CancellationToken? cancellationToken = default, bool forceRedirect = true)
+    public async Task<ResponseData<T>> DeleteAsync<T>([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, CancellationToken cancellationToken = default, bool forceRedirect = true)
     {
         var responseData = new ResponseData<T>();
 
         try
         {
-            var responseMessage = await HttpClient.DeleteAsync(requestUri, cancellationToken ?? default);
+            var responseMessage = await HttpClient.DeleteAsync(requestUri, cancellationToken);
             if (responseMessage is { StatusCode: HttpStatusCode.Redirect or HttpStatusCode.MovedPermanently })
                 if (responseMessage.Headers.Location != null)
                     Navigation.NavigateTo(responseMessage.Headers.Location.ToString(), forceRedirect);
 
             responseData.IsSuccessStatusCode = responseMessage.IsSuccessStatusCode;
             responseData.StatusCode = responseMessage.StatusCode;
-            var responseText = await responseMessage.Content.ReadAsStringAsync();
+            var responseText = await responseMessage.Content.ReadAsStringAsync(cancellationToken);
             if (responseMessage.IsSuccessStatusCode)
             {
                 var data = responseText.DeSerialize<T>();
