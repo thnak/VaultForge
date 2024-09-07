@@ -46,28 +46,28 @@ public partial class Routes : ComponentBase, IDisposable
 
     private Task ContextMenuClicked()
     {
-        Console.WriteLine("Context click");
+        
         return Task.CompletedTask;
     }
 
     private void PageHide()
     {
-        Console.WriteLine(AppLang.Routes_PageHide_The_page_has_been_hidden);
+        
     }
 
     private void PageShow()
     {
-        Console.WriteLine(AppLang.Routes_PageShow_The_page_has_been_displayed);
+        
     }
 
     private void Offline()
     {
-        Console.WriteLine(AppLang.Routes_Offline_Offline);
+        
     }
 
     private void Online()
     {
-        Console.WriteLine(AppLang.Routes_Online_Online);
+        
     }
 
     private string EncodeException(Exception e)

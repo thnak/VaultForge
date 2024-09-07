@@ -60,6 +60,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thêm thẻ.
+        /// </summary>
+        public static string Add_tags {
+            get {
+                return ResourceManager.GetString("Add tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tác giả.
         /// </summary>
         public static string Author {
@@ -146,6 +155,15 @@ namespace BusinessModels.Resources {
         public static string Content_creator {
             get {
                 return ResourceManager.GetString("Content creator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hệ thống quản lý nội dung.
+        /// </summary>
+        public static string Content_management_system {
+            get {
+                return ResourceManager.GetString("Content management system", resourceCulture);
             }
         }
         
@@ -840,6 +858,24 @@ namespace BusinessModels.Resources {
         public static string System_preference {
             get {
                 return ResourceManager.GetString("System preference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thẻ.
+        /// </summary>
+        public static string Tags {
+            get {
+                return ResourceManager.GetString("Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kiểm soát nội dung và chức năng của ứng dụng của bạn bằng CMS không đầu.
+        /// </summary>
+        public static string Take_control_of_your_application_s_content_and_functionality_with_a_Headless_CMS {
+            get {
+                return ResourceManager.GetString("Take control of your application\'s content and functionality with a Headless CMS", resourceCulture);
             }
         }
         

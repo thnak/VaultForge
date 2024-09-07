@@ -7,6 +7,7 @@ namespace WebApp.Client.Pages.DefaultPages;
 
 public partial class ErrorPage : ComponentBase
 {
+    [Parameter] public int? ErrorId { get; set; }
     [Parameter] public string ErrorMessage { get; set; } = string.Empty;
     [Parameter] public string ReturnUrl { get; set; } = "/";
     [Parameter] public Exception? Exception { get; set; }

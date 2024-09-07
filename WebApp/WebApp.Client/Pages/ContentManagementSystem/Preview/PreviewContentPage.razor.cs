@@ -86,7 +86,22 @@ public partial class PreviewContentPage : ComponentBase, IDisposable, IAsyncDisp
     private Task ReceiveArticleData(ArticleModel arg)
     {
         Title = arg.Title;
-        Content = builder => builder.AddMarkupContent(0, arg.Content);
+        MetaData.Clear();
+        MetaData.Add(new Dictionary<string, string>() { { "name", "title" }, { "content", arg.Title } });
+        MetaData.Add(new Dictionary<string, string>() { { "name", "description" }, { "content", arg.Summary } });
+        MetaData.Add(new Dictionary<string, string>() { { "name", "keywords" }, { "content", string.Join(", ", arg.Keywords) } });
+        MetaData.Add(new Dictionary<string, string>() { { "name", "image" }, { "content", arg.Image } });
+
+        int index = 0;
+        Content = builder =>
+        {
+            builder.OpenElement(index++, "style");
+            builder.AddMarkupContent(index++, arg.StyleSheet);
+            builder.CloseElement();
+
+            builder.AddMarkupContent(index++, arg.HtmlSheet);
+            builder.AddMarkupContent(index++, arg.JavaScriptSheet);
+        };
         return InvokeAsync(StateHasChanged);
     }
 

@@ -6,6 +6,7 @@ using BusinessModels.Converter;
 using BusinessModels.Resources;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.JSInterop;
 using MudBlazor;
 
 namespace WebApp.Client.Pages.ContentManagementSystem.Editor;
@@ -24,12 +25,15 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
 
     private string Title { get; set; } = string.Empty;
     private List<Dictionary<string, string>> MetaData { get; set; } = [];
-    private StandaloneCodeEditor Editor { get; set; } = default!;
+    private StandaloneCodeEditor HtmlEditor { get; set; } = default!;
+    private StandaloneCodeEditor CssEditor { get; set; } = default!;
+    private StandaloneCodeEditor JavascriptEditor { get; set; } = default!;
+
     private HubConnection? HubConnection { get; set; }
     private CancellationTokenSource TokenSource { get; set; } = new();
 
 
-    private ArticleModel Article { get; set; } = new();
+    private static ArticleModel Article { get; set; } = new();
 
     protected override void OnInitialized()
     {
@@ -62,49 +66,124 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
             await HubConnection.StartAsync();
             if (ContentId != null)
             {
-                _ = Task.Run(async () => await HubConnection.InvokeAsync("ReceiveMessage", ContentId));
+                _ = Task.Run(async () => await HubConnection.InvokeAsync("GetMessages", ContentId));
             }
         }
 
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private Task ReceiveArticleData(ArticleModel arg)
+    [JSInvokable]
+    public static Task<string> GetCurrentStyle()
+    {
+        return Task.FromResult(Article.StyleSheet);
+    }
+
+    private async Task ReceiveArticleData(ArticleModel arg)
     {
         Article = arg;
         Title = arg.Title;
-        return Editor.SetValue(arg.Content);
+        MetaData.Clear();
+        MetaData.Add(new Dictionary<string, string>() { { "name", "title" }, { "content", arg.Title } });
+        MetaData.Add(new Dictionary<string, string>() { { "name", "description" }, { "content", arg.Summary } });
+        MetaData.Add(new Dictionary<string, string>() { { "name", "keywords" }, { "content", string.Join(", ", arg.Keywords) } });
+        MetaData.Add(new Dictionary<string, string>() { { "name", "image" }, { "content", arg.Image } });
+
+        await HtmlEditor.SetValue(arg.HtmlSheet);
+        await CssEditor.SetValue(arg.StyleSheet);
+        await JavascriptEditor.SetValue(arg.JavaScriptSheet);
     }
 
 
-    private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
+    private StandaloneEditorConstructionOptions HtmlEditorConstructionOptions(StandaloneCodeEditor editor)
     {
         return new StandaloneEditorConstructionOptions
         {
             AutomaticLayout = true,
-            Theme = "Visual Studio Dark",
+            Theme = "vs-dark",
             Language = "html",
             Value = "",
             AcceptSuggestionOnCommitCharacter = true,
             InlineCompletionsAccessibilityVerbose = true,
             DetectIndentation = true,
-            Suggest = new SuggestOptions() { ShowClasses = true, ShowColors = true, ShowConstructors = true, ShowConstants = true, ShowDeprecated = true, ShowIcons = true, ShowWords = true }
+            Suggest = new SuggestOptions() { ShowClasses = true, ShowColors = true, ShowConstructors = true, ShowConstants = true, ShowDeprecated = true, ShowIcons = true, ShowWords = true },
         };
     }
 
-    private Task KeyUp(KeyboardEvent arg)
+    private StandaloneEditorConstructionOptions CssEditorConstructionOptions(StandaloneCodeEditor editor)
     {
-        return HandleCode();
+        return new StandaloneEditorConstructionOptions
+        {
+            AutomaticLayout = true,
+            Theme = "vs-dark",
+            Language = "css",
+            Value = "",
+            AcceptSuggestionOnCommitCharacter = true,
+            InlineCompletionsAccessibilityVerbose = true,
+            DetectIndentation = true,
+            Suggest = new SuggestOptions() { ShowClasses = true, ShowColors = true, ShowConstructors = true, ShowConstants = true, ShowDeprecated = true, ShowIcons = true, ShowWords = true },
+        };
+    }
+
+    private StandaloneEditorConstructionOptions JavascriptEditorConstructionOptions(StandaloneCodeEditor editor)
+    {
+        return new StandaloneEditorConstructionOptions
+        {
+            AutomaticLayout = true,
+            Theme = "vs-dark",
+            Language = "javascript",
+            Value = "",
+            AcceptSuggestionOnCommitCharacter = true,
+            InlineCompletionsAccessibilityVerbose = true,
+            DetectIndentation = true,
+            Suggest = new SuggestOptions() { ShowClasses = true, ShowColors = true, ShowConstructors = true, ShowConstants = true, ShowDeprecated = true, ShowIcons = true, ShowWords = true },
+        };
+    }
+
+    private Task KeyHtmlUp(KeyboardEvent arg)
+    {
+        return HandleHtmlCode();
     }
 
 
-    private async Task HandleCode()
+    private async Task HandleHtmlCode()
     {
-        var text = await Editor!.GetValue();
-
+        var text = await HtmlEditor!.GetValue();
         if (HubConnection != null)
         {
-            Article.Content = text;
+            Article.HtmlSheet = text;
+            await HubConnection.SendAsync("SendMessage", Article);
+        }
+    }
+
+    private Task KeyCssUp(KeyboardEvent arg)
+    {
+        return HandleCssCode();
+    }
+
+
+    private async Task HandleCssCode()
+    {
+        var text = await CssEditor!.GetValue();
+        if (HubConnection != null)
+        {
+            Article.StyleSheet = text;
+            await HubConnection.SendAsync("SendMessage", Article);
+        }
+    }
+
+    private Task KeyJavascriptUp(KeyboardEvent arg)
+    {
+        return HandleJavascriptCode();
+    }
+
+
+    private async Task HandleJavascriptCode()
+    {
+        var text = await CssEditor!.GetValue();
+        if (HubConnection != null)
+        {
+            Article.JavaScriptSheet = text;
             await HubConnection.SendAsync("SendMessage", Article);
         }
     }
@@ -112,7 +191,10 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
 
     public void Dispose()
     {
-        Editor.Dispose();
+        HtmlEditor.Dispose();
+        CssEditor.Dispose();
+        JavascriptEditor.Dispose();
+
         TokenSource.Cancel();
         TokenSource.Dispose();
     }
@@ -126,7 +208,7 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
 
     private async Task AddNewArticle()
     {
-        await OpenEditDialog(null);
+        await OpenEditDialog(Article);
     }
 
     #endregion

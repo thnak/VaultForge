@@ -9,10 +9,9 @@
                 align-items: center !important;
             }
         </style>
-        <MudForm Class="d-flex flex-column gap-3" Model="@_article" @ref="_form" >
+        <MudForm Class="d-flex flex-column gap-2" Model="@_article" @ref="_form" >
 
             <MudTextField @bind-Value="_article.Title" For="@(() => _article.Title)" Immediate Label="@AppLang.Title" T="string" Variant="Variant.Outlined" ></MudTextField>
-            <MudTextField @bind-Value="_article.Summary" For="@(() => _article.Summary)" Immediate Label="@AppLang.Description" T="string" Variant="Variant.Outlined" ></MudTextField>
 
             <MudSelect @bind-Value="_article.Language" For="@(() => _article.Language)" Immediate Label="@AppLang.Language" T="string" Variant="Variant.Outlined" >
 
@@ -25,7 +24,18 @@
                 }
             </MudSelect>
 
+            <MudTextField @bind-Value="_article.Summary" For="@(() => _article.Summary)" Immediate Label="@AppLang.Description" T="string" Variant="Variant.Outlined" ></MudTextField>
+
             <MudTextField @bind-Value="_article.Author" For="@(() => _article.Author)" Immediate Label="@AppLang.Author" T="string" Variant="Variant.Outlined" ></MudTextField>
+
+            <MudTextField Adornment="Adornment.End" AdornmentAriaLabel="@AppLang.Add_tags" AdornmentIcon="@Icons.Material.Filled.Add" Immediate @bind-Value="CurrentTag" Label="@AppLang.Add_tags" OnAdornmentClick="@AddTag" Variant="Variant.Outlined" />
+            
+            <MudField Label="@AppLang.Tags" Variant="Variant.Outlined" Class="d-flex flex-row gap-2 flex-wrap">
+                @foreach (var x in _article.Keywords.ToArray())
+                {
+                    <MudChip T="string" Color="@RandomColor()" @key="x">@x</MudChip>
+                }
+            </MudField>
 
 
         </MudForm>

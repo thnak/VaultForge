@@ -4,10 +4,11 @@
 @using BlazorMonaco.Editor
 
 
+<!--suppress CssUnresolvedCustomProperty -->
 <PageTitle>@Title</PageTitle>
 
 <SectionContent SectionId="@AppBar.TopBarSection1" >
-    <MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.Add" OnClick="@AddNewArticle"></MudIconButton>
+    <MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.Add" OnClick="@AddNewArticle" ></MudIconButton>
 </SectionContent>
 
 <HeadContent>
@@ -16,17 +17,81 @@
 
 <script src="_content/BlazorMonaco/jsInterop.js" ></script>
 <script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js" ></script>
+<script>
+    // var require = { paths: { vs: '_content/BlazorMonaco/lib/monaco-editor/min/vs' } };
+    require(['vs/editor/editor.main'], function () {
+
+        // Function to extract CSS classes from the CSS editor content
+        function extractCSSClasses(cssCode) {
+            const regex = /\.([a-zA-Z0-9_-]+)\s*{/g;
+            const classes = [];
+            let match;
+            while ((match = regex.exec(cssCode)) !== null) {
+                classes.push(match[1]);
+            }
+            return classes;
+        }
+
+        // Register a completion provider for the HTML editor
+        monaco.languages.registerCompletionItemProvider('html', {
+            provideCompletionItems: async function () {
+                let cssContent = await DotNet.invokeMethodAsync('WebApp.Client', 'GetCurrentStyle');
+                const cssClasses = extractCSSClasses(cssContent);
+                const suggestions = cssClasses.map(cssClass => ({
+                    label: cssClass,
+                    kind: monaco.languages.CompletionItemKind.Keyword,
+                    insertText: cssClass,
+                    range: null
+                }));
+                return { suggestions: suggestions };
+            }
+        });
+    });
+
+
+</script>
 <script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js" ></script>
 
 <style>
-    
 
-    #my-editor-instance-id { /* for a specific editor instance */
-        height: calc(100dvh - var(--mud-appbar-height));
+    .grid-editor {
+        display: grid;
+        grid-template-areas:
+        'html-editor css-editor'
+        'html-editor javascript-editor';
+        gap: 10px;
+        background-color: var(--mud-palette-primary);
+        padding: 10px;
+        height: calc(100dvh - var(--mud-appbar-height) + 16px);
+        width: 100%;
     }
 
-    
+
+    #my-html-editor-instance-id { /* for a specific editor instance */
+        height: 100%;
+        grid-area: html-editor;
+    }
+
+    #my-css-editor-instance-id { /* for a specific editor instance */
+        height: 100%;
+        grid-area: css-editor;
+    }
+
+    #my-javascript-editor-instance-id { /* for a specific editor instance */
+        height: 100%;
+        grid-area: javascript-editor;
+    }
+
+
 </style>
 
-<StandaloneCodeEditor ConstructionOptions="EditorConstructionOptions" Id="my-editor-instance-id" OnKeyUp="@KeyUp"
-                      @ref="Editor" />
+<div class="grid-editor" >
+
+    @* <div id="my-html-editor-instance-id"></div> *@
+    @* <div id="my-css-editor-instance-id"></div> *@
+    @* <div id="my-javascript-editor-instance-id"></div>     *@
+    <StandaloneCodeEditor ConstructionOptions="HtmlEditorConstructionOptions" Id="my-html-editor-instance-id" OnKeyUp="@KeyHtmlUp" @ref="HtmlEditor" />
+    <StandaloneCodeEditor ConstructionOptions="CssEditorConstructionOptions" Id="my-css-editor-instance-id" OnKeyUp="@KeyCssUp" @ref="CssEditor" />
+    <StandaloneCodeEditor ConstructionOptions="JavascriptEditorConstructionOptions" Id="my-javascript-editor-instance-id" OnKeyUp="@KeyJavascriptUp" @ref="JavascriptEditor" />
+
+</div>

@@ -18,6 +18,7 @@ using Business.Services;
 using Business.SocketHubs;
 using BusinessModels.Converter;
 using BusinessModels.General;
+using BusinessModels.Resources;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Services;
 using Microsoft.Extensions.Options;
@@ -138,10 +139,7 @@ public class Program
             options.EnableDetailedErrors = true;
             options.MaximumReceiveMessageSize = int.MaxValue;
             options.MaximumParallelInvocationsPerClient = 100;
-        }).AddJsonProtocol(options =>
-        {
-            options.PayloadSerializerOptions.Converters.Add(new ObjectIdConverter());
-        });
+        }).AddJsonProtocol(options => { options.PayloadSerializerOptions.Converters.Add(new ObjectIdConverter()); });
 
         #endregion
 
@@ -155,6 +153,9 @@ public class Program
         builder.Services.AddScoped<LazyAssemblyLoader>();
 
         var app = builder.Build();
+
+        app.UseStatusCodePagesWithRedirects($"{PageRoutes.Error.Name}/{{0}}");
+
 
         #region Localization Setup
 

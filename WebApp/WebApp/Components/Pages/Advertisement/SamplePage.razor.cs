@@ -41,11 +41,13 @@ public partial class SamplePage : ComponentBase
 
             if (articleModel != null)
             {
-                Metadata = articleModel.MetaData;
                 Metadata.Add(new Dictionary<string, string>() { { "name", "title" }, { "content", articleModel.Title } });
                 Metadata.Add(new Dictionary<string, string>() { { "name", "description" }, { "content", articleModel.Summary } });
+                Metadata.Add(new Dictionary<string, string>() { { "name", "keywords" }, { "content", string.Join(", ", articleModel.Keywords) } });
+                Metadata.Add(new Dictionary<string, string>() { { "name", "image" }, { "content", articleModel.Image } });
+
                 Title = articleModel.Title;
-                RenderPage(articleModel.Content);
+                RenderPage(articleModel.StyleSheet, articleModel.HtmlSheet, articleModel.JavaScriptSheet);
             }
         }
 
@@ -60,9 +62,27 @@ public partial class SamplePage : ComponentBase
     }
 
 
-    private void RenderPage(string htmlContent)
+    private void RenderPage(params string[] htmlContent)
     {
-        PageRenderFragment = builder => builder.AddMarkupContent(0, htmlContent);
+        int index = 0;
+        PageRenderFragment = builder =>
+        {
+            foreach (var content in htmlContent)
+            {
+                if (index == 0)
+                {
+                    builder.OpenElement(index++, "style");
+                    builder.AddMarkupContent(index++, content);
+                    builder.CloseElement();
+                }
+                else
+                {
+                    builder.AddMarkupContent(index++, content);
+
+                }
+            }
+        };
+
         InvokeAsync(StateHasChanged);
     }
 }

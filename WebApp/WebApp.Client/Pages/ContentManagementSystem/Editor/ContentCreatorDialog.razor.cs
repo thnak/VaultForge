@@ -48,6 +48,7 @@ public partial class ContentCreatorDialog : ComponentBase, IDisposable, IAsyncDi
     private bool Processing { get; set; }
     private HubConnection? Hub { get; set; }
     private CancellationTokenSource _cts = new();
+    private string CurrentTag { get; set; } = string.Empty;
 
     #region Validate model
 
@@ -103,10 +104,7 @@ public partial class ContentCreatorDialog : ComponentBase, IDisposable, IAsyncDi
         _article = Article != null ? Article.Copy() : _article;
         Hub = new HubConnectionBuilder()
             .WithUrl(Navigation.ToAbsoluteUri("/PageCreatorHub"))
-            .AddJsonProtocol(options =>
-            {
-                options.PayloadSerializerOptions.Converters.Add(new ObjectIdConverter());
-            })
+            .AddJsonProtocol(options => { options.PayloadSerializerOptions.Converters.Add(new ObjectIdConverter()); })
             .Build();
 
         await Hub.StartAsync();
@@ -154,5 +152,20 @@ public partial class ContentCreatorDialog : ComponentBase, IDisposable, IAsyncDi
     public async ValueTask DisposeAsync()
     {
         if (Hub != null) await Hub.DisposeAsync();
+    }
+
+    private Task AddTag()
+    {
+        _article.Keywords.Add(CurrentTag);
+        CurrentTag = string.Empty;
+        return InvokeAsync(StateHasChanged);
+    }
+
+    private Color? RandomColor()
+    {
+        var random = new Random();
+        Color[] colors = [Color.Dark, Color.Default, Color.Error, Color.Info, Color.Success, Color.Primary, Color.Secondary, Color.Tertiary];
+        int index = random.Next(colors.Length);
+        return colors[index];
     }
 }

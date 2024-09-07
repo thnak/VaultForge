@@ -3,6 +3,18 @@
 @rendermode InteractiveServer
 @attribute [AllowAnonymous]
 
+
+<PageTitle>@Title</PageTitle>
+
+<SectionContent SectionId="@AppBar.TopBarSection1" >
+    <MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.Add" OnClick="@AddNewArticle" ></MudIconButton>
+</SectionContent>
+
+<HeadContent>
+    <HeadContentContainer MetaProperty="@Metadata" />
+</HeadContent>
+
+
 <MudDataGrid Filterable FixedHeader Height="calc(100dvh - var(--mud-appbar-height) * 2)" ItemSize="52.68f" @ref="DataGrid" ServerData="ServerDataFunc" T="ArticleModel" Virtualize="true" >
     <Columns>
         <PropertyColumn Property="x => x.Id" Title="ID" />

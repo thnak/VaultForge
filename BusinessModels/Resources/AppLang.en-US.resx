@@ -452,4 +452,16 @@ ClientY: {1}</value>
     <data name="Update successfully" xml:space="preserve">
       <value>Update successfully</value>
     </data>
+    <data name="Content management system" xml:space="preserve">
+      <value>Content management system</value>
+    </data>
+    <data name="Take control of your application's content and functionality with a Headless CMS" xml:space="preserve">
+      <value>Take control of your application's content and functionality with a Headless CMS</value>
+    </data>
+    <data name="Add tags" xml:space="preserve">
+      <value>Add tags</value>
+    </data>
+    <data name="Tags" xml:space="preserve">
+      <value>Tags</value>
+    </data>
 </root>
