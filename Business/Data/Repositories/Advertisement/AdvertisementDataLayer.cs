@@ -95,9 +95,16 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context) : IAdvertise
         _semaphore.Release();
     }
 
-    public Task<(ArticleModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationTokenSource = default)
+    public async Task<(ArticleModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        var skip = page * size;
+        long totalCount = await _dataDb.CountDocumentsAsync(FilterDefinition<ArticleModel>.Empty, cancellationToken: cancellationTokenSource);
+        var data = await _dataDb.Find(FilterDefinition<ArticleModel>.Empty)
+            .Skip(skip)
+            .Limit(size)
+            .ToListAsync(cancellationTokenSource);
+
+        return (data.ToArray(), totalCount);
     }
 
     public IAsyncEnumerable<ArticleModel> GetAllAsync(CancellationToken cancellationTokenSource)
@@ -157,17 +164,21 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context) : IAdvertise
             var file = Get(model.Id.ToString());
             if (file == null)
             {
-                return (false, AppLang.File_could_not_be_found);
+                file = Get(model.Title, model.Language);
+                if (file == null)
+                    return (false, AppLang.File_could_not_be_found);
             }
-            else
-            {
-                model.ModifiedDate = DateTime.UtcNow;
-                var filter = Builders<ArticleModel>.Filter.Eq(x => x.Id, model.Id);
-                await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationTokenSource);
-                return (true, AppLang.Create_successfully);
-            }
+
+            model.ModifiedDate = DateTime.UtcNow;
+            var filter = Builders<ArticleModel>.Filter.Eq(x => x.Id, model.Id);
+            await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationTokenSource);
+            return (true, AppLang.Update_successfully);
         }
-        catch (Exception e)
+        catch (MongoException e)
+        {
+            return (false, e.Message);
+        }
+        catch (TaskCanceledException e)
         {
             return (false, e.Message);
         }

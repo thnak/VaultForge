@@ -60,6 +60,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tác giả.
+        /// </summary>
+        public static string Author {
+            get {
+                return ResourceManager.GetString("Author", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to [ERROR] {0}.
         /// </summary>
         public static string BaseHttpClientService_DeleteAsync__ERROR___0_ {
@@ -123,6 +132,24 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Content already exists.
+        /// </summary>
+        public static string Content_already_exists {
+            get {
+                return ResourceManager.GetString("Content already exists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nhà sản xuất nội dung.
+        /// </summary>
+        public static string Content_creator {
+            get {
+                return ResourceManager.GetString("Content creator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Đã sao chép.
         /// </summary>
         public static string Copied {
@@ -177,6 +204,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tạo mới.
+        /// </summary>
+        public static string Create_new {
+            get {
+                return ResourceManager.GetString("Create new", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tạo thành công.
         /// </summary>
         public static string Create_successfully {
@@ -213,6 +249,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Xóa bỏ.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Xóa thành công.
         /// </summary>
         public static string Delete_successfully {
@@ -222,11 +267,38 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mô tả.
+        /// </summary>
+        public static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Không sử dụng mã thông báo này trên máy chủ cung cấp mã thông báo này.
         /// </summary>
         public static string Do_not_use_this_token_on_a_server_that_provides_this_token {
             get {
                 return ResourceManager.GetString("Do not use this token on a server that provides this token", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chỉnh sửa.
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Biên tập viên.
+        /// </summary>
+        public static string Editor {
+            get {
+                return ResourceManager.GetString("Editor", resourceCulture);
             }
         }
         
@@ -420,11 +492,29 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ngôn ngữ.
+        /// </summary>
+        public static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chế độ sáng.
         /// </summary>
         public static string Light_mode {
             get {
                 return ResourceManager.GetString("Light mode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đang tải.
+        /// </summary>
+        public static string Loading {
+            get {
+                return ResourceManager.GetString("Loading", resourceCulture);
             }
         }
         
@@ -470,6 +560,15 @@ namespace BusinessModels.Resources {
         public static string Logout_successful {
             get {
                 return ResourceManager.GetString("Logout successful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quản lý.
+        /// </summary>
+        public static string Management {
+            get {
+                return ResourceManager.GetString("Management", resourceCulture);
             }
         }
         
@@ -809,11 +908,29 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tiêu đề.
+        /// </summary>
+        public static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Để duy trì kết nối với chúng tôi vui lòng đăng nhập bằng thông tin cá nhân của bạn.
         /// </summary>
         public static string To_keep_connected_with_us_please_login_with_your_personal_info {
             get {
                 return ResourceManager.GetString("To keep connected with us please login with your personal info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cập nhật thành công.
+        /// </summary>
+        public static string Update_successfully {
+            get {
+                return ResourceManager.GetString("Update successfully", resourceCulture);
             }
         }
         

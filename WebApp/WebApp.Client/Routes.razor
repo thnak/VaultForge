@@ -1,17 +1,24 @@
-﻿@using WebApp.Client.NavMenu.Drive
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Services
+@using WebApp.Client.NavMenu.Drive
 @using NavigationContext = Microsoft.AspNetCore.Components.Routing.NavigationContext
+@using WebApp.Client.NavMenu.ContentManagement
+@inject LazyAssemblyLoader AssemblyLoader;
 
 @code {
     private RenderFragment? NavBar { get; set; }
 
-    private Task Navigating(NavigationContext arg)
+    private async Task Navigating(NavigationContext arg)
     {
         if (arg.Path.StartsWith(PageRoutes.Drive.Name[1..]))
         {
             NavBar = @<DriveNavMenu/>;
         }
 
-        return Task.CompletedTask;
+        if (arg.Path.StartsWith(PageRoutes.ContentCreator.Index.Src))
+        {
+            NavBar = @<ContentManagementNavMenu/>;
+            await AssemblyLoader.LoadAssembliesAsync(["BlazorMonaco.dll"]);
+        }
     }
 
 }
@@ -23,13 +30,13 @@
 <BlazoredToasts ErrorIcon="fa-solid fa-bug"
                 IconType="IconType.FontAwesome"
                 InfoIcon="fa-solid fa-info"
+                MaxToastCount="10"
                 PauseProgressOnHover="true"
                 Position="ToastPosition.BottomRight"
-                ShowProgressBar="true"
                 ShowCloseButton="true"
-                SuccessIcon="fa-regular fa-circle-check"
-                Timeout="10" WarningIcon="fa-solid fa-triangle-exclamation"
-                MaxToastCount="10"/>
+                ShowProgressBar="true"
+                SuccessIcon="fa-regular fa-circle-check" Timeout="10"
+                WarningIcon="fa-solid fa-triangle-exclamation"/>
 
 
 <MudBreakpointProvider>

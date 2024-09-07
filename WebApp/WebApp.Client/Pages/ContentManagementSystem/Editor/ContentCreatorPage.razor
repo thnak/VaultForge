@@ -1,0 +1,32 @@
+﻿@attribute [Route(PageRoutes.ContentCreator.Index.Src)]
+@rendermode InteractiveServer
+@attribute [AllowAnonymous]
+@using BlazorMonaco.Editor
+
+
+<PageTitle>@Title</PageTitle>
+
+<SectionContent SectionId="@AppBar.TopBarSection1" >
+    <MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.Add" OnClick="@AddNewArticle"></MudIconButton>
+</SectionContent>
+
+<HeadContent>
+    <HeadContentContainer MetaProperty="@MetaData" />
+</HeadContent>
+
+<script src="_content/BlazorMonaco/jsInterop.js" ></script>
+<script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js" ></script>
+<script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js" ></script>
+
+<style>
+    
+
+    #my-editor-instance-id { /* for a specific editor instance */
+        height: calc(100dvh - var(--mud-appbar-height));
+    }
+
+    
+</style>
+
+<StandaloneCodeEditor ConstructionOptions="EditorConstructionOptions" Id="my-editor-instance-id" OnKeyUp="@KeyUp"
+                      @ref="Editor" />

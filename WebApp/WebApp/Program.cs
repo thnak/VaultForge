@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Business.Business.Interfaces.Advertisement;
 using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.User;
@@ -18,6 +19,7 @@ using Business.SocketHubs;
 using BusinessModels.Converter;
 using BusinessModels.General;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.WebAssembly.Services;
 using Microsoft.Extensions.Options;
 using Protector.Certificates.Models;
 using WebApp.Authenticate;
@@ -78,7 +80,7 @@ public class Program
         #region Additionnal services
 
         builder.Services.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
-        
+
         builder.Services.AddSingleton<IUserDataLayer, UserDataLayer>();
         builder.Services.AddSingleton<IUserBusinessLayer, UserBusinessLayer>();
 
@@ -136,6 +138,9 @@ public class Program
             options.EnableDetailedErrors = true;
             options.MaximumReceiveMessageSize = int.MaxValue;
             options.MaximumParallelInvocationsPerClient = 100;
+        }).AddJsonProtocol(options =>
+        {
+            options.PayloadSerializerOptions.Converters.Add(new ObjectIdConverter());
         });
 
         #endregion
@@ -147,6 +152,7 @@ public class Program
         #endregion
 
         builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new ObjectIdConverter()); });
+        builder.Services.AddScoped<LazyAssemblyLoader>();
 
         var app = builder.Build();
 

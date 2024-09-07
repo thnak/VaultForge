@@ -413,4 +413,43 @@ ClientY: {1}</value>
     <data name="The page you were looking for does not exist. Don't worry, it happens to the best of us!" xml:space="preserve">
       <value>The page you were looking for does not exist. Don't worry, it happens to the best of us!</value>
     </data>
+    <data name="Content creator" xml:space="preserve">
+      <value>Content creator</value>
+    </data>
+    <data name="Title" xml:space="preserve">
+      <value>Title</value>
+    </data>
+    <data name="Description" xml:space="preserve">
+      <value>Description</value>
+    </data>
+    <data name="Language" xml:space="preserve">
+      <value>Language</value>
+    </data>
+    <data name="Author" xml:space="preserve">
+      <value>Author</value>
+    </data>
+    <data name="Create new" xml:space="preserve">
+      <value>Create new</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+      <value>Edit</value>
+    </data>
+    <data name="Content already exists" xml:space="preserve">
+      <value>Content already exists</value>
+    </data>
+    <data name="Loading" xml:space="preserve">
+      <value>Loading</value>
+    </data>
+    <data name="Editor" xml:space="preserve">
+      <value>Biên tập viên</value>
+    </data>
+    <data name="Management" xml:space="preserve">
+      <value>Management</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+      <value>Delete</value>
+    </data>
+    <data name="Update successfully" xml:space="preserve">
+      <value>Update successfully</value>
+    </data>
 </root>

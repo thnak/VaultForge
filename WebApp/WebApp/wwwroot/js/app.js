@@ -70,4 +70,12 @@ window.setCultureCookie = (culture, uiCulture, cookieName = 'thnakdevserverCultu
     htmlElement.setAttribute('lang', culture);
 }
 
+window.AddScriptElement = (url) => {
+    const script = document.createElement('script');
+    script.src = url;
+    script.type = 'text/javascript';
+    script.async = false; // Optional: load asynchronously
+  //  document.head.appendChild(script); // 
+}
+
 document.documentElement.setAttribute('lang', window.getCultureFromCookie());

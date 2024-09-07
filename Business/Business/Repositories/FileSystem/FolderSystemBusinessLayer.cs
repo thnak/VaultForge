@@ -70,9 +70,9 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> CreateAsync(FolderInfoModel model)
+    public Task<(bool, string)> CreateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
     {
-        return folderSystemService.CreateAsync(model);
+        return folderSystemService.CreateAsync(model, cancellationToken);
     }
 
     public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FolderInfoModel> models, CancellationToken cancellationTokenSource = default)
@@ -80,14 +80,14 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return folderSystemService.CreateAsync(models, cancellationTokenSource);
     }
 
-    public Task<(bool, string)> UpdateAsync(FolderInfoModel model)
+    public Task<(bool, string)> UpdateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
     {
-        return folderSystemService.UpdateAsync(model);
+        return folderSystemService.UpdateAsync(model, cancellationToken);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FolderInfoModel> models, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FolderInfoModel> models, CancellationToken cancellationToken = default)
     {
-        return folderSystemService.UpdateAsync(models, cancellationTokenSource);
+        return folderSystemService.UpdateAsync(models, cancellationToken);
     }
 
     public (bool, string) Delete(string key)

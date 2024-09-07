@@ -162,4 +162,9 @@ public static class JsRuntimeExtension
     {
         return self.GetLocalStorage<List<string>>("PreventKey", []);
     }
+
+    public static ValueTask AddScriptResource(this IJSRuntime self, params string[] resourceName)
+    {
+        return self.InvokeVoidAsync("AddScriptElement", resourceName);
+    }
 }

@@ -15,6 +15,9 @@ public class Middleware(RequestDelegate next)
             {
                 context.Response.Headers.Append("Access-Control-Allow-Origin", "*");
                 context.Response.Headers.Append("X-Frame-Options", "SAMEORIGIN");
+                context.Response.Headers.Append("Cross-Origin-Embedder-Policy", "require-corp");
+                context.Response.Headers.Append("Cross-Origin-Resource-Policy", "cross-origin");
+
                 if (context.Request.Query.TryGetValue("lang", out var lang))
                 {
                     var langCode = lang.ToString();

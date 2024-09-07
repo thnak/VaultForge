@@ -2,6 +2,7 @@ using System.Globalization;
 using BusinessModels.Resources;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.AspNetCore.Components.WebAssembly.Services;
 using Microsoft.JSInterop;
 using WebApp.Client.Authenticate;
 using WebApp.Client.Services;
@@ -47,7 +48,7 @@ internal class Program
         #endregion
 
         builder.Services.AddLocalization();
-
+        builder.Services.AddScoped<LazyAssemblyLoader>();
         var host = builder.Build();
 
         var defaultCulture = AllowedCulture.SupportedCultures.Select(x => x.Name).ToArray().First();

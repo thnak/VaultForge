@@ -1,0 +1,13 @@
+﻿@attribute [Route(PageRoutes.ContentCreator.Preview.Src)]
+@rendermode InteractiveServer
+@attribute [AllowAnonymous]
+@layout BlankLayout
+
+<PageTitle>@Title</PageTitle>
+
+
+<HeadContent>
+    <HeadContentContainer MetaProperty="@MetaData" />
+</HeadContent>
+
+@Content

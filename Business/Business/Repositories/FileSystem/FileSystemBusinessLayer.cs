@@ -59,9 +59,9 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> CreateAsync(FileInfoModel model)
+    public Task<(bool, string)> CreateAsync(FileInfoModel model, CancellationToken cancellationToken = default)
     {
-        return da.CreateAsync(model);
+        return da.CreateAsync(model, cancellationToken);
     }
 
     public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FileInfoModel> models, CancellationToken cancellationTokenSource = default)
@@ -69,14 +69,14 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
         return da.CreateAsync(models, cancellationTokenSource);
     }
 
-    public Task<(bool, string)> UpdateAsync(FileInfoModel model)
+    public Task<(bool, string)> UpdateAsync(FileInfoModel model, CancellationToken cancellationToken = default)
     {
-        return da.UpdateAsync(model);
+        return da.UpdateAsync(model, cancellationToken);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FileInfoModel> models, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FileInfoModel> models, CancellationToken cancellationToken = default)
     {
-        return da.CreateAsync(models, cancellationTokenSource);
+        return da.CreateAsync(models, cancellationToken);
     }
 
     public (bool, string) Delete(string key)

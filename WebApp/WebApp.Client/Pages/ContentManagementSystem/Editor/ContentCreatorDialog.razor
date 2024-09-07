@@ -1,0 +1,47 @@
+﻿<MudDialog>
+    <DialogContent>
+        <style>
+            .mud-input-slot.mud-input-root.mud-input-root-outlined.mud-input-root-adorned-end.mud-input-root-margin-dense.mud-select-input,
+            .center-flag > .mud-list-item-text > .mud-typography.mud-typography-body1 {
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 8px;
+                align-items: center !important;
+            }
+        </style>
+        <MudForm Class="d-flex flex-column gap-3" Model="@_article" @ref="_form" >
+
+            <MudTextField @bind-Value="_article.Title" For="@(() => _article.Title)" Immediate Label="@AppLang.Title" T="string" Variant="Variant.Outlined" ></MudTextField>
+            <MudTextField @bind-Value="_article.Summary" For="@(() => _article.Summary)" Immediate Label="@AppLang.Description" T="string" Variant="Variant.Outlined" ></MudTextField>
+
+            <MudSelect @bind-Value="_article.Language" For="@(() => _article.Language)" Immediate Label="@AppLang.Language" T="string" Variant="Variant.Outlined" >
+
+                @foreach (var culture in AllowedCulture.SupportedCultures)
+                {
+                    <MudSelectItem Class="center-flag" @key="culture.Name" Value="@culture.Name" >
+                        <img alt="@culture.NativeName" class="mr-1" height="14" src="@Flags[culture.Name]" />
+                        @culture.NativeName
+                    </MudSelectItem>
+                }
+            </MudSelect>
+
+            <MudTextField @bind-Value="_article.Author" For="@(() => _article.Author)" Immediate Label="@AppLang.Author" T="string" Variant="Variant.Outlined" ></MudTextField>
+
+
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Error" OnClick="@Cancel" Variant="Variant.Outlined" >@AppLang.Cancel</MudButton>
+        <MudButton Color="Color.Success" Disabled="@Processing" OnClick="DialogSubmit" Variant="Variant.Filled" >
+            @if (Processing)
+            {
+                <MudProgressCircular Class="ms-n1" Indeterminate="true" Size="Size.Small" />
+                <MudText Class="ms-2" >@AppLang.Processing</MudText>
+            }
+            else
+            {
+                <MudText>@AppLang.Submit</MudText>
+            }
+        </MudButton>
+    </DialogActions>
+</MudDialog>

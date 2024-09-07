@@ -65,9 +65,9 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> CreateAsync(UserModel model)
+    public Task<(bool, string)> CreateAsync(UserModel model, CancellationToken cancellationToken = default)
     {
-        return userDl.CreateAsync(model);
+        return userDl.CreateAsync(model, cancellationToken);
     }
 
     public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<UserModel> models, CancellationToken cancellationTokenSource = default)
@@ -75,14 +75,14 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         return userDl.CreateAsync(models, cancellationTokenSource);
     }
 
-    public Task<(bool, string)> UpdateAsync(UserModel model)
+    public Task<(bool, string)> UpdateAsync(UserModel model, CancellationToken cancellationToken = default)
     {
-        return userDl.UpdateAsync(model);
+        return userDl.UpdateAsync(model, cancellationToken);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<UserModel> models, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<UserModel> models, CancellationToken cancellationToken = default)
     {
-        return userDl.UpdateAsync(models, cancellationTokenSource);
+        return userDl.UpdateAsync(models, cancellationToken);
     }
 
     public (bool, string) Delete(string key)

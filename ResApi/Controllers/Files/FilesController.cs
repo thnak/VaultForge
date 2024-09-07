@@ -1,4 +1,5 @@
 using System.Net.Mime;
+using System.Web;
 using Business.Attribute;
 using Business.Business.Interfaces.FileSystem;
 using Business.Utils.Helper;
@@ -33,7 +34,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
-            FileName = file.FileName.Replace(".bin", file.ContentType.GetCorrectExtensionFormContentType()),
+            FileName = HttpUtility.UrlEncode(file.FileName.Replace(".bin", file.ContentType.GetCorrectExtensionFormContentType())),
             Inline = true, // false = prompt the user for downloading;  true = browser to try to show the file inline,
             CreationDate = now,
             ModificationDate = now,
@@ -56,7 +57,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
-            FileName = file.FileName.Replace(".bin", file.ContentType.GetCorrectExtensionFormContentType()),
+            FileName = HttpUtility.UrlEncode(file.FileName.Replace(".bin", file.ContentType.GetCorrectExtensionFormContentType())),
             Inline = false, // false = prompt the user for downloading;  true = browser to try to show the file inline,
             CreationDate = now,
             ModificationDate = now,

@@ -163,4 +163,26 @@ public static class PageRoutes
             public static readonly List<Dictionary<string, string>> MetaData = [];
         }
     }
+
+    public static class ContentCreator
+    {
+        public const string Name = "contentcreator";
+
+        public static class Index
+        {
+            public const string Src = Name + "/page";
+            public const string Title = "Content Creator";
+            public static readonly List<Dictionary<string, string>> MetaData = [];
+        }
+
+        public static class Management
+        {
+            public const string Src = Name + "/management";
+        }
+
+        public static class Preview
+        {
+            public const string Src = Name + "/preview";
+        }
+    }
 }

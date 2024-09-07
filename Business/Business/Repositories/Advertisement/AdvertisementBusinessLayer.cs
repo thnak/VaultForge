@@ -35,7 +35,7 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
 
     public ArticleModel? Get(string key)
     {
-        throw new NotImplementedException();
+        return dataLayer.Get(key);
     }
 
     public IAsyncEnumerable<ArticleModel?> GetAsync(List<string> keys, CancellationToken cancellationTokenSource = default)
@@ -45,7 +45,7 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
 
     public Task<(ArticleModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        return dataLayer.GetAllAsync(page, size, cancellationTokenSource);
     }
 
     public IAsyncEnumerable<ArticleModel> GetAllAsync(CancellationToken cancellationTokenSource)
@@ -58,9 +58,9 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> CreateAsync(ArticleModel model)
+    public Task<(bool, string)> CreateAsync(ArticleModel model, CancellationToken cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        return dataLayer.CreateAsync(model, cancellationTokenSource);
     }
 
     public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<ArticleModel> models, CancellationToken cancellationTokenSource = default)
@@ -68,12 +68,12 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> UpdateAsync(ArticleModel model)
+    public Task<(bool, string)> UpdateAsync(ArticleModel model, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return dataLayer.UpdateAsync(model, cancellationToken);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<ArticleModel> models, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<ArticleModel> models, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
