@@ -23,6 +23,8 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
 
     #endregion
 
+    #region Fields
+
     private string Title { get; set; } = string.Empty;
     private List<Dictionary<string, string>> MetaData { get; set; } = [];
     private StandaloneCodeEditor HtmlEditor { get; set; } = default!;
@@ -34,6 +36,12 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
 
 
     private static ArticleModel Article { get; set; } = new();
+
+    #endregion
+    
+  
+
+    #region Init
 
     protected override void OnInitialized()
     {
@@ -73,12 +81,6 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    [JSInvokable]
-    public static Task<string> GetCurrentStyle()
-    {
-        return Task.FromResult(Article.StyleSheet);
-    }
-
     private async Task ReceiveArticleData(ArticleModel arg)
     {
         Article = arg;
@@ -94,6 +96,21 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
         await JavascriptEditor.SetValue(arg.JavaScriptSheet);
     }
 
+    #endregion
+
+
+    #region Static Js methods
+
+    [JSInvokable]
+    public static Task<string> GetCurrentStyle()
+    {
+        return Task.FromResult(Article.StyleSheet);
+    }
+
+    #endregion
+
+
+    #region Init editor
 
     private StandaloneEditorConstructionOptions HtmlEditorConstructionOptions(StandaloneCodeEditor editor)
     {
@@ -188,6 +205,15 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
         }
     }
 
+    #endregion
+
+
+    #region Dispose
+
+    public async ValueTask DisposeAsync()
+    {
+        if (HubConnection != null) await HubConnection.DisposeAsync();
+    }
 
     public void Dispose()
     {
@@ -199,20 +225,12 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
         TokenSource.Dispose();
     }
 
-    #region Dispose
-
-    public async ValueTask DisposeAsync()
-    {
-        if (HubConnection != null) await HubConnection.DisposeAsync();
-    }
+    #endregion
 
     private async Task AddNewArticle()
     {
         await OpenEditDialog(Article);
     }
-
-    #endregion
-
 
     private async Task OpenEditDialog(ArticleModel? articleModel)
     {

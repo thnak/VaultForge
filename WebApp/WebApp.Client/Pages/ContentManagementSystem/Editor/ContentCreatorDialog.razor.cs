@@ -17,7 +17,7 @@ public partial class ContentCreatorDialog : ComponentBase, IDisposable, IAsyncDi
 
     private MudForm? _form;
 
-    private ArticleModel _article = new ArticleModel();
+    private ArticleModel _article = new();
 
     private static readonly Dictionary<string, string> Flags = new()
     {
@@ -47,8 +47,9 @@ public partial class ContentCreatorDialog : ComponentBase, IDisposable, IAsyncDi
     private OrderModelFluentValidator? _fluentValidator;
     private bool Processing { get; set; }
     private HubConnection? Hub { get; set; }
-    private CancellationTokenSource _cts = new();
+    private readonly CancellationTokenSource _cts = new();
     private string CurrentTag { get; set; } = string.Empty;
+    private Random Random { get; } = new();
 
     #region Validate model
 
@@ -163,9 +164,8 @@ public partial class ContentCreatorDialog : ComponentBase, IDisposable, IAsyncDi
 
     private Color? RandomColor()
     {
-        var random = new Random();
         Color[] colors = [Color.Dark, Color.Default, Color.Error, Color.Info, Color.Success, Color.Primary, Color.Secondary, Color.Tertiary];
-        int index = random.Next(colors.Length);
+        int index = Random.Next(colors.Length);
         return colors[index];
     }
 }
