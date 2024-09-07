@@ -38,7 +38,7 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
     protected override void OnInitialized()
     {
         var culture = CultureInfo.CurrentUICulture.Name;
-        Title = AppLang.Content_creator;
+        Title = AppLang.Content_editor;
         switch (culture)
         {
             case "vi-VN":
@@ -230,8 +230,7 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
         {
             if (dialogResult is { Canceled: false, Data: ArticleModel model })
             {
-                Article = model;
-                Navigation.NavigateTo(Navigation.GetUriWithQueryParameters(Navigation.Uri, new Dictionary<string, object?>() { { "id", model.Id.ToString() }, { "edit", true } }));
+                Navigation.NavigateTo(Navigation.GetUriWithQueryParameters(Navigation.Uri, new Dictionary<string, object?>() { { "id", model.Id.ToString() }, { "edit", Editable } }), new NavigationOptions() { ForceLoad = true });
             }
         }
     }

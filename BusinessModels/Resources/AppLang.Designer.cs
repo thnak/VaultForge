@@ -159,6 +159,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Biên tập nội dung.
+        /// </summary>
+        public static string Content_editor {
+            get {
+                return ResourceManager.GetString("Content editor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hệ thống quản lý nội dung.
         /// </summary>
         public static string Content_management_system {

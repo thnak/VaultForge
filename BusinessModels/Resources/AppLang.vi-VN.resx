@@ -463,4 +463,7 @@ ClientY: {1}</value>
     <data name="Tags" xml:space="preserve">
       <value>Thẻ</value>
     </data>
+    <data name="Content editor" xml:space="preserve">
+      <value>Biên tập nội dung</value>
+    </data>
 </root>
