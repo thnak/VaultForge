@@ -15,41 +15,6 @@
     <HeadContentContainer MetaProperty="@MetaData" />
 </HeadContent>
 
-<script src="_content/BlazorMonaco/jsInterop.js" ></script>
-<script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js" ></script>
-<script>
-    require(['vs/editor/editor.main'], function () {
-
-        // Function to extract CSS classes from the CSS editor content
-        function extractCSSClasses(cssCode) {
-            const regex = /\.([a-zA-Z0-9_-]+)\s*{/g;
-            const classes = [];
-            let match;
-            while ((match = regex.exec(cssCode)) !== null) {
-                classes.push(match[1]);
-            }
-            return classes;
-        }
-
-        // Register a completion provider for the HTML editor
-        monaco.languages.registerCompletionItemProvider('html', {
-            provideCompletionItems: async function () {
-                let cssContent = await DotNet.invokeMethodAsync('WebApp.Client', 'GetCurrentStyle');
-                const cssClasses = extractCSSClasses(cssContent);
-                const suggestions = cssClasses.map(cssClass => ({
-                    label: cssClass,
-                    kind: monaco.languages.CompletionItemKind.Keyword,
-                    insertText: cssClass,
-                    range: null
-                }));
-                return { suggestions: suggestions };
-            }
-        });
-    });
-
-
-</script>
-<script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js" ></script>
 
 <style>
 
@@ -58,6 +23,8 @@
         grid-template-areas:
         'html-editor css-editor'
         'html-editor javascript-editor';
+        grid-template-columns: 2fr 1fr;
+        grid-template-rows: 1fr 1fr;
         gap: 10px;
         background-color: var(--mud-palette-primary);
         padding: 10px;
@@ -85,12 +52,13 @@
 </style>
 
 <div class="grid-editor" >
-
-    @* <div id="my-html-editor-instance-id"></div> *@
-    @* <div id="my-css-editor-instance-id"></div> *@
-    @* <div id="my-javascript-editor-instance-id"></div>     *@
-    <StandaloneCodeEditor ConstructionOptions="HtmlEditorConstructionOptions" Id="my-html-editor-instance-id" OnKeyUp="@KeyHtmlUp" @ref="HtmlEditor" />
-    <StandaloneCodeEditor ConstructionOptions="CssEditorConstructionOptions" Id="my-css-editor-instance-id" OnKeyUp="@KeyCssUp" @ref="CssEditor" />
-    <StandaloneCodeEditor ConstructionOptions="JavascriptEditorConstructionOptions" Id="my-javascript-editor-instance-id" OnKeyUp="@KeyJavascriptUp" @ref="JavascriptEditor" />
+    
+    @if (ShowEditor)
+    {
+        <StandaloneCodeEditor ConstructionOptions="HtmlEditorConstructionOptions" Id="my-html-editor-instance-id" OnKeyUp="@KeyHtmlUp" @ref="HtmlEditor" />
+        <StandaloneCodeEditor ConstructionOptions="CssEditorConstructionOptions" Id="my-css-editor-instance-id" OnKeyUp="@KeyCssUp" @ref="CssEditor" />
+        <StandaloneCodeEditor ConstructionOptions="JavascriptEditorConstructionOptions" Id="my-javascript-editor-instance-id" OnKeyUp="@KeyJavascriptUp" @ref="JavascriptEditor" />
+    }
+  
 
 </div>

@@ -12,7 +12,7 @@
                 width: 100%;
             }
         </style>
-        <MudForm Class="d-flex flex-column gap-2" Model="@_article" @ref="_form" Validation="@(_fluentValidator!.ValidateValue)" >
+        <MudForm Class="d-flex flex-column gap-2" Model="@_article" @ref="_form" Validation="@(_fluentValidator?.ValidateValue)" >
 
             <MudTextField @bind-Value="_article.Title" For="@(() => _article.Title)" Immediate Label="@AppLang.Title" T="string" Variant="Variant.Outlined" ></MudTextField>
 

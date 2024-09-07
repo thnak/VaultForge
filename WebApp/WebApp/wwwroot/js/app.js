@@ -71,11 +71,35 @@ window.setCultureCookie = (culture, uiCulture, cookieName = 'thnakdevserverCultu
 }
 
 window.AddScriptElement = (url) => {
-    const script = document.createElement('script');
-    script.src = url;
-    script.type = 'text/javascript';
-    script.async = false; // Optional: load asynchronously
-  //  document.head.appendChild(script); // 
+    return new Promise(function (resolve, reject) {
+        // Check if the script is already loaded
+        if (document.getElementById(url)) {
+            resolve(); // Already loaded, resolve the promise
+            return;
+        }
+
+        var script = document.createElement('script');
+        script.src = url; // Path to your JavaScript file
+        script.id = url;
+
+        // Resolve the promise when the script loads successfully
+        script.onload = function () {
+            resolve();
+        };
+
+        // Reject the promise if there's an error
+        script.onerror = function () {
+            reject(new Error('Failed to load the script.'));
+        };
+
+        document.body.appendChild(script);
+    });
+    // const script = document.createElement('script');
+    // script.src = url;
+    // script.type = 'text/javascript';
+    // script.id = url;
+    // script.async = false; // Optional: load asynchronously
+    // document.head.appendChild(script); // 
 }
 
 document.documentElement.setAttribute('lang', window.getCultureFromCookie());

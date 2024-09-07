@@ -41,10 +41,14 @@ public partial class SamplePage : ComponentBase
 
             if (articleModel != null)
             {
-                Metadata.Add(new Dictionary<string, string>() { { "name", "title" }, { "content", articleModel.Title } });
-                Metadata.Add(new Dictionary<string, string>() { { "name", "description" }, { "content", articleModel.Summary } });
-                Metadata.Add(new Dictionary<string, string>() { { "name", "keywords" }, { "content", string.Join(", ", articleModel.Keywords) } });
-                Metadata.Add(new Dictionary<string, string>() { { "name", "image" }, { "content", articleModel.Image } });
+                Metadata.Add(
+                    new Dictionary<string, string>() { { "name", "title" }, { "content", articleModel.Title } });
+                Metadata.Add(new Dictionary<string, string>()
+                    { { "name", "description" }, { "content", articleModel.Summary } });
+                Metadata.Add(new Dictionary<string, string>()
+                    { { "name", "keywords" }, { "content", string.Join(", ", articleModel.Keywords) } });
+                Metadata.Add(
+                    new Dictionary<string, string>() { { "name", "image" }, { "content", articleModel.Image } });
 
                 Title = articleModel.Title;
                 RenderPage(articleModel.StyleSheet, articleModel.HtmlSheet, articleModel.JavaScriptSheet);
@@ -64,23 +68,17 @@ public partial class SamplePage : ComponentBase
 
     private void RenderPage(params string[] htmlContent)
     {
-        int index = 0;
         PageRenderFragment = builder =>
         {
-            foreach (var content in htmlContent)
-            {
-                if (index == 0)
-                {
-                    builder.OpenElement(index++, "style");
-                    builder.AddMarkupContent(index++, content);
-                    builder.CloseElement();
-                }
-                else
-                {
-                    builder.AddMarkupContent(index++, content);
+            builder.OpenElement(0, "style");
+            builder.AddMarkupContent(0, htmlContent[0]);
+            builder.CloseElement();
 
-                }
-            }
+            builder.AddMarkupContent(1, htmlContent[1]);
+
+            builder.OpenElement(2, "script");
+            builder.AddMarkupContent(0, htmlContent[2]);
+            builder.CloseElement();
         };
 
         InvokeAsync(StateHasChanged);

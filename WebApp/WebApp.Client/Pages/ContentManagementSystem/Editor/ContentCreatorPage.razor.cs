@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.JSInterop;
 using MudBlazor;
+using WebApp.Client.Utils;
 
 namespace WebApp.Client.Pages.ContentManagementSystem.Editor;
 
@@ -34,12 +35,12 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
     private HubConnection? HubConnection { get; set; }
     private CancellationTokenSource TokenSource { get; set; } = new();
 
-
     private static ArticleModel Article { get; set; } = new();
 
+    private bool ShowEditor { get; set; }
+
     #endregion
-    
-  
+
 
     #region Init
 
@@ -65,20 +66,38 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
     {
         if (firstRender)
         {
-            HubConnection = new HubConnectionBuilder()
-                .WithUrl(Navigation.ToAbsoluteUri("/PageCreatorHub"))
-                .AddJsonProtocol(options => { options.PayloadSerializerOptions.Converters.Add(new ObjectIdConverter()); })
-                .Build();
-
-            HubConnection.On<ArticleModel>("ReceiveMessage", ReceiveArticleData);
-            await HubConnection.StartAsync();
-            if (ContentId != null)
-            {
-                _ = Task.Run(async () => await HubConnection.InvokeAsync("GetMessages", ContentId));
-            }
+            _ = Task.Run(InitEditorResource);
         }
 
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task InitEditorResource()
+    {
+        await JsRuntime.AddScriptResource("_content/BlazorMonaco/jsInterop.js");
+        await JsRuntime.AddScriptResource("_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js");
+        await JsRuntime.AddScriptResource("/Pages/ContentManagementSystem/Editor/ContentCreatorPage.razor.js");
+        await JsRuntime.AddScriptResource("_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js");
+        ShowEditor = true;
+        await InvokeAsync(StateHasChanged);
+        _ = Task.Run(InitHub);
+    }
+
+    private async Task InitHub()
+    {
+        HubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/PageCreatorHub"))
+            .AddJsonProtocol(options => { options.PayloadSerializerOptions.Converters.Add(new ObjectIdConverter()); })
+            .Build();
+
+        await JsRuntime.AddScriptResource();
+
+        HubConnection.On<ArticleModel>("ReceiveMessage", ReceiveArticleData);
+        await HubConnection.StartAsync();
+        if (ContentId != null)
+        {
+            _ = Task.Run(async () => await HubConnection.InvokeAsync("GetMessages", ContentId));
+        }
     }
 
     private async Task ReceiveArticleData(ArticleModel arg)
@@ -165,7 +184,7 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
 
     private async Task HandleHtmlCode()
     {
-        var text = await HtmlEditor!.GetValue();
+        var text = await HtmlEditor.GetValue();
         if (HubConnection != null)
         {
             Article.HtmlSheet = text;
@@ -181,7 +200,7 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
 
     private async Task HandleCssCode()
     {
-        var text = await CssEditor!.GetValue();
+        var text = await CssEditor.GetValue();
         if (HubConnection != null)
         {
             Article.StyleSheet = text;
@@ -197,7 +216,7 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
 
     private async Task HandleJavascriptCode()
     {
-        var text = await CssEditor!.GetValue();
+        var text = await JavascriptEditor.GetValue();
         if (HubConnection != null)
         {
             Article.JavaScriptSheet = text;

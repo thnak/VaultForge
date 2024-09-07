@@ -17,10 +17,9 @@
         if (arg.Path.StartsWith(PageRoutes.ContentCreator.Index.Src))
         {
             NavBar = @<ContentManagementNavMenu/>;
-            await AssemblyLoader.LoadAssembliesAsync(["BlazorMonaco.dll"]);
+            await AssemblyLoader.LoadAssembliesAsync(["BlazorMonaco.wasm"]);
         }
     }
-
 }
 
 <MudDialogProvider MaxWidth="MaxWidth.False" Position="DialogPosition.Center"/>

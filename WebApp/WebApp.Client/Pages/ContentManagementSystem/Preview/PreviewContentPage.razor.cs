@@ -96,11 +96,14 @@ public partial class PreviewContentPage : ComponentBase, IDisposable, IAsyncDisp
         Content = builder =>
         {
             builder.OpenElement(index++, "style");
-            builder.AddMarkupContent(index++, arg.StyleSheet);
+            builder.AddMarkupContent(0, arg.StyleSheet);
             builder.CloseElement();
 
             builder.AddMarkupContent(index++, arg.HtmlSheet);
-            builder.AddMarkupContent(index++, arg.JavaScriptSheet);
+
+            builder.OpenElement(index++, "script");
+            builder.AddMarkupContent(0, arg.JavaScriptSheet);
+            builder.CloseElement();
         };
         return InvokeAsync(StateHasChanged);
     }
