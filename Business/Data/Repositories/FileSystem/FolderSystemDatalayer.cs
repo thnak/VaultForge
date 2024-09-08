@@ -216,7 +216,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
                 model.ModifiedDate = DateTime.UtcNow;
                 var filter = Builders<FolderInfoModel>.Filter.Eq(x => x.Id, model.Id);
                 await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationTokenSource);
-                return (true, AppLang.Create_successfully);
+                return (true, AppLang.Update_successfully);
             }
         }
         catch (Exception e)

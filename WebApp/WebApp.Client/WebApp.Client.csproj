@@ -23,8 +23,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
-		<RunAOTCompilation>false</RunAOTCompilation>
-		<WasmStripILAfterAOT>false</WasmStripILAfterAOT>
+		<RunAOTCompilation>true</RunAOTCompilation>
+		<WasmStripILAfterAOT>true</WasmStripILAfterAOT>
 		<WasmEnableExceptionHandling>false</WasmEnableExceptionHandling>
 		<BlazorEnableCompression>true</BlazorEnableCompression>
 	</PropertyGroup>
@@ -40,10 +40,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<BlazorWebAssemblyLazyLoad Include="BlazorMonaco.wasm" />
+		<!-- <BlazorWebAssemblyLazyLoad Include="BlazorMonaco.wasm" /> -->
 		<!-- <BlazorWebAssemblyLazyLoad Include="MessagePack.Annotations.wasm" /> -->
-		<BlazorWebAssemblyLazyLoad Include="BlazorWorker.BackgroundServiceFactory.wasm" />
-		<BlazorWebAssemblyLazyLoad Include="BlazorWorker.Core.wasm" />
+		<!-- <BlazorWebAssemblyLazyLoad Include="BlazorWorker.BackgroundServiceFactory.wasm" /> -->
+		<!-- <BlazorWebAssemblyLazyLoad Include="BlazorWorker.Core.wasm" /> -->
 	</ItemGroup>
 
 	<ItemGroup>

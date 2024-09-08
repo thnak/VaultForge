@@ -466,4 +466,34 @@ ClientY: {1}</value>
     <data name="Content editor" xml:space="preserve">
       <value>Biên tập nội dung</value>
     </data>
+    <data name="The resource you are looking for does not exist" xml:space="preserve">
+      <value>Tài nguyên bạn đang tìm không tồn tại</value>
+    </data>
+    <data name="Incorrect operation" xml:space="preserve">
+      <value>Thao tác không đúng</value>
+    </data>
+    <data name="Move to recycle bin" xml:space="preserve">
+      <value>Di chuyển vào thùng rác</value>
+    </data>
+    <data name="Delete forever" xml:space="preserve">
+      <value>Xóa vĩnh viễn</value>
+    </data>
+    <data name="Download" xml:space="preserve">
+      <value>Tải xuống</value>
+    </data>
+    <data name="Open" xml:space="preserve">
+      <value>Mở</value>
+    </data>
+    <data name="Share" xml:space="preserve">
+      <value>Chia sẻ</value>
+    </data>
+    <data name="Get link" xml:space="preserve">
+      <value>Nhận liên kết</value>
+    </data>
+    <data name="Move to" xml:space="preserve">
+      <value>Di chuyển đến</value>
+    </data>
+    <data name="Info" xml:space="preserve">
+      <value>Thông tin</value>
+    </data>
 </root>

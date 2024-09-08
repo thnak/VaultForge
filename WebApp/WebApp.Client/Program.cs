@@ -41,7 +41,7 @@ internal class Program
         builder.Services.AddScoped(_ =>
         {
             var httpClient = new HttpClient(new CookieHandler());
-            httpClient.BaseAddress = new Uri("https://thnakdevserver.ddns.net:5001");
+            httpClient.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
             return new BaseHttpClientService(httpClient, builder.Services.BuildServiceProvider());
         });
 

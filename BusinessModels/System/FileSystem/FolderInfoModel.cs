@@ -63,9 +63,11 @@ public class FolderInfoModel
 
     [Key(9)] public FolderContentType Type { get; set; }
 
+    [Key(10)] public string Icon { get; set; } = string.Empty;
+    
     #region Front-End Properties
 
-    [BsonIgnore] [Key(10)] public long FolderSize { get; set; }
+    [BsonIgnore] [Key(11)] public long FolderSize { get; set; }
 
     #endregion
 

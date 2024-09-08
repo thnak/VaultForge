@@ -41,14 +41,10 @@ public partial class SamplePage : ComponentBase
 
             if (articleModel != null)
             {
-                Metadata.Add(
-                    new Dictionary<string, string>() { { "name", "title" }, { "content", articleModel.Title } });
-                Metadata.Add(new Dictionary<string, string>()
-                    { { "name", "description" }, { "content", articleModel.Summary } });
-                Metadata.Add(new Dictionary<string, string>()
-                    { { "name", "keywords" }, { "content", string.Join(", ", articleModel.Keywords) } });
-                Metadata.Add(
-                    new Dictionary<string, string>() { { "name", "image" }, { "content", articleModel.Image } });
+                Metadata.Add(new Dictionary<string, string>() { { "name", "title" }, { "content", articleModel.Title } });
+                Metadata.Add(new Dictionary<string, string>() { { "name", "description" }, { "content", articleModel.Summary } });
+                Metadata.Add(new Dictionary<string, string>() { { "name", "keywords" }, { "content", string.Join(", ", articleModel.Keywords) } });
+                Metadata.Add(new Dictionary<string, string>() { { "name", "image" }, { "content", articleModel.Image } });
 
                 Title = articleModel.Title;
                 RenderPage(articleModel.StyleSheet, articleModel.HtmlSheet, articleModel.JavaScriptSheet);

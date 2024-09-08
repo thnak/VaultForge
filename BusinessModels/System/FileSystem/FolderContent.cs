@@ -9,4 +9,9 @@ public class FolderContent
     [Key(0)] public string Id { get; set; } = string.Empty;
 
     [Key(1)] public FolderContentType Type { get; set; }
+
+    public override string ToString()
+    {
+        return Id;
+    }
 }
