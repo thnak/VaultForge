@@ -142,7 +142,13 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
             AcceptSuggestionOnCommitCharacter = true,
             InlineCompletionsAccessibilityVerbose = true,
             DetectIndentation = true,
-            Suggest = new SuggestOptions() { ShowClasses = true, ShowColors = true, ShowConstructors = true, ShowConstants = true, ShowDeprecated = true, ShowIcons = true, ShowWords = true },
+            Suggest = new SuggestOptions()
+            {
+                ShowClasses = true, ShowColors = true, ShowConstructors = true, ShowConstants = true,
+                ShowDeprecated = true, ShowIcons = true, ShowWords = true, Preview = true, ShowEnums = true, ShowEvents = true,
+                ShowFields = true, ShowFiles = true, ShowFolders = true, ShowFunctions = true, ShowInterfaces = true, ShowIssues = true,
+                ShowProperties = true
+            },
         };
     }
 
@@ -157,7 +163,13 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
             AcceptSuggestionOnCommitCharacter = true,
             InlineCompletionsAccessibilityVerbose = true,
             DetectIndentation = true,
-            Suggest = new SuggestOptions() { ShowClasses = true, ShowColors = true, ShowConstructors = true, ShowConstants = true, ShowDeprecated = true, ShowIcons = true, ShowWords = true },
+            Suggest = new SuggestOptions()
+            {
+                ShowClasses = true, ShowColors = true, ShowConstructors = true, ShowConstants = true,
+                ShowDeprecated = true, ShowIcons = true, ShowWords = true, Preview = true, ShowEnums = true, ShowEvents = true,
+                ShowFields = true, ShowFiles = true, ShowFolders = true, ShowFunctions = true, ShowInterfaces = true, ShowIssues = true,
+                ShowProperties = true
+            },
         };
     }
 
@@ -172,7 +184,13 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
             AcceptSuggestionOnCommitCharacter = true,
             InlineCompletionsAccessibilityVerbose = true,
             DetectIndentation = true,
-            Suggest = new SuggestOptions() { ShowClasses = true, ShowColors = true, ShowConstructors = true, ShowConstants = true, ShowDeprecated = true, ShowIcons = true, ShowWords = true },
+            Suggest = new SuggestOptions()
+            {
+                ShowClasses = true, ShowColors = true, ShowConstructors = true, ShowConstants = true,
+                ShowDeprecated = true, ShowIcons = true, ShowWords = true, Preview = true, ShowEnums = true, ShowEvents = true,
+                ShowFields = true, ShowFiles = true, ShowFolders = true, ShowFunctions = true, ShowInterfaces = true, ShowIssues = true,
+                ShowProperties = true
+            }
         };
     }
 

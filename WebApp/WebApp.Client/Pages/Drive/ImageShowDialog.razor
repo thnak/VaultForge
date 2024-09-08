@@ -1,5 +1,5 @@
 ﻿<MudDialog>
-   
+
     <DialogContent>
         <style>
             .mud-dialog-title{
@@ -11,9 +11,9 @@
             }
 
         </style>
-        <MudPaper Class="mud-height-full mud-width-full" Style="overflow:hidden; position:relative;" Elevation="0">
+        <MudPaper Class="mud-height-full mud-width-full" Elevation="0" Style="overflow:hidden; position:relative;" >
             <MudDrawerContainer Class="mud-height-full" >
-                <MudDrawer @bind-Open="@_open" Color="Color.Primary" Anchor="Anchor.End" Elevation="0" Variant="@DrawerVariant.Persistent" >
+                <MudDrawer Anchor="Anchor.End" @bind-Open="@_open" Color="Color.Primary" Elevation="0" Variant="@DrawerVariant.Persistent" >
                     <MudDrawerHeader>
                         <MudText Typo="Typo.h6" >@File.FileName</MudText>
                     </MudDrawerHeader>
@@ -26,23 +26,39 @@
                 </MudDrawer>
 
                 <div class="d-flex flex-column mud-height-full" >
-                    <MudListSubheader Class="d-flex flex-row mt-4 pb-2 gap-2" >
-                        <MudIconButton Class="rounded-circle aspect-1-1" Color="Color.Primary" Icon="@Icons.Material.Filled.Close" OnClick="@CloseDialog" Size="Size.Medium" Variant="Variant.Outlined" />
-                        <MudChip Color="Color.Primary" Class="ma-0" Icon="@Icons.Material.Filled.FormatPaint" T="string" >Remix</MudChip>
-                        <MudChip Color="Color.Secondary" Class="ma-0" Icon="@Icons.Material.Filled.Bookmark" T="string" >Save</MudChip>
-                        <MudChip Color="Color.Tertiary" Class="ma-0" Icon="@Icons.Material.Filled.Image" T="string" >View post</MudChip>
-                        <MudChip Color="Color.Tertiary" Class="ma-0" Icon="@Icons.Material.Filled.Bolt" T="string" >Tip</MudChip>
+                    <MudListSubheader Class="align-center d-flex flex-row gap-2 pb-2" >
+
+                        <MudTooltip Arrow Color="Color.Secondary" Placement="Placement.Bottom" Text="@AppLang.Close" >
+                            <MudIconButton Class="aspect-1-1 mr-3 rounded-circle" Color="Color.Default" Icon="@Icons.Material.Filled.Close" OnClick="@CloseDialog" Size="Size.Small" Variant="Variant.Outlined" />
+                        </MudTooltip>
+
+                        <MudChip Class="ma-0" Color="Color.Primary" Icon="@Icons.Material.Filled.FormatPaint" Size="Size.Small" T="string" >Remix</MudChip>
+                        <MudChip Class="ma-0" Color="Color.Secondary" Icon="@Icons.Material.Filled.Bookmark" Size="Size.Small" T="string" >Save</MudChip>
+                        <MudChip Class="ma-0" Color="Color.Tertiary" Icon="@Icons.Material.Filled.Image" Size="Size.Small" T="string" >View post</MudChip>
+                        <MudChip Class="ma-0" Color="Color.Tertiary" Icon="@Icons.Material.Filled.Bolt" Size="Size.Small" T="string" >Tip</MudChip>
 
                         <MudSpacer />
-                        <MudIconButton Class="rounded-circle aspect-1-1" Color="Color.Primary" Icon="@Icons.Material.Filled.ArrowDownward" Size="Size.Medium" Variant="Variant.Outlined" />
-                        <MudIconButton Class="rounded-circle aspect-1-1" Color="Color.Primary" Icon="@Icons.Material.Filled.Share" Size="Size.Medium" Variant="Variant.Outlined" />
-                        <MudIconButton Class="rounded-circle aspect-1-1" Color="Color.Primary" Icon="@Icons.Material.Filled.Flag" Size="Size.Medium" Variant="Variant.Outlined" />
-                        <MudIconButton Class="rounded-circle aspect-1-1" Color="Color.Primary" Icon="@(_open ? Icons.Material.Filled.SwitchRight : Icons.Material.Filled.SwitchLeft)" OnClick="@ChangeSideBar" Size="Size.Medium" Variant="Variant.Outlined" />
+                        <MudTooltip Arrow Color="Color.Secondary" Placement="Placement.Bottom" Text="@AppLang.Download" >
+                            <MudIconButton Class="aspect-1-1 rounded-circle" Color="Color.Default" Icon="@Icons.Material.Filled.ArrowDownward" Size="Size.Small" Variant="Variant.Outlined" />
+                        </MudTooltip>
+
+                        <MudTooltip Arrow Color="Color.Secondary" Placement="Placement.Bottom" Text="@AppLang.Share" >
+                            <MudIconButton Class="aspect-1-1 rounded-circle" Color="Color.Default" Icon="@Icons.Material.Filled.Share" Size="Size.Small" Variant="Variant.Outlined" />
+                        </MudTooltip>
+                        <MudTooltip Arrow Color="Color.Secondary" Placement="Placement.Bottom" Text="@AppLang.Bookmark" >
+                            <MudIconButton Class="aspect-1-1 rounded-circle" Color="Color.Default" Icon="@Icons.Material.Filled.Flag" Size="Size.Small" Variant="Variant.Outlined" />
+                        </MudTooltip>
+
+                        <MudTooltip Arrow Color="Color.Secondary" Placement="Placement.Bottom" Text="@AppLang.Sidebar" >
+                            <MudIconButton Class="aspect-1-1 ml-3 rounded-circle" Color="Color.Default" Icon="@(_open ? Icons.Material.Filled.SwitchRight : Icons.Material.Filled.SwitchLeft)" OnClick="@ChangeSideBar" Size="Size.Small" Variant="Variant.Outlined" />
+                        </MudTooltip>
 
 
                     </MudListSubheader>
 
-                    <MudImage Fluid Src="@ImageUrl" UserAttributes="@ImageAttribute" ></MudImage>
+                    <div class="align-center d-flex flex-1 justify-center" >
+                        <img alt="@File.FileName" src="@ImageUrl" />
+                    </div>
 
 
                 </div>

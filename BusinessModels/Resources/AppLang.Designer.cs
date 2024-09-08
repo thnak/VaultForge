@@ -114,6 +114,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Đánh dấu.
+        /// </summary>
+        public static string Bookmark {
+            get {
+                return ResourceManager.GetString("Bookmark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duyệt tập tin để tải lên.
         /// </summary>
         public static string Browse_File_to_upload {
@@ -128,6 +137,15 @@ namespace BusinessModels.Resources {
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đóng.
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
             }
         }
         
@@ -885,6 +903,15 @@ namespace BusinessModels.Resources {
         public static string Share {
             get {
                 return ResourceManager.GetString("Share", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thanh bên.
+        /// </summary>
+        public static string Sidebar {
+            get {
+                return ResourceManager.GetString("Sidebar", resourceCulture);
             }
         }
         

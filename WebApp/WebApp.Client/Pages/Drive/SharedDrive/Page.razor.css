@@ -40,11 +40,35 @@
 }
 
 
-
 .text-limit {
     overflow: hidden;
     width: 100%;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
+}
+
+.file-item-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.file-item-grid > .icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 5rem;
+    flex: 1;
+}
+
+.file-item-grid > .info {
+    overflow: hidden;
+    font-size: 1.25rem;
+}
+
+.file-item-grid > .menu {
+    position: fixed;
+    top: 0px;
+    right: 0px;
 }

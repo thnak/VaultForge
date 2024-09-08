@@ -803,6 +803,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         }
 
         FolderLayoutSelects[list] = true;
+        DropContainer?.Refresh();
         return InvokeAsync(StateHasChanged);
     }
 
@@ -814,6 +815,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         }
 
         FileLayoutSelects[list] = true;
+        DropContainer?.Refresh();
         return InvokeAsync(StateHasChanged);
     }
 }

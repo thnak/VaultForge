@@ -497,4 +497,13 @@ ClientY: {1}</value>
     <data name="Info" xml:space="preserve">
       <value>Info</value>
     </data>
+    <data name="Close" xml:space="preserve">
+      <value>Close</value>
+    </data>
+    <data name="Bookmark" xml:space="preserve">
+      <value>Bookmark</value>
+    </data>
+    <data name="Sidebar" xml:space="preserve">
+      <value>Sidebar</value>
+    </data>
 </root>

@@ -496,4 +496,13 @@ ClientY: {1}</value>
     <data name="Info" xml:space="preserve">
       <value>Thông tin</value>
     </data>
+    <data name="Close" xml:space="preserve">
+      <value>Đóng</value>
+    </data>
+    <data name="Bookmark" xml:space="preserve">
+      <value>Đánh dấu</value>
+    </data>
+    <data name="Sidebar" xml:space="preserve">
+      <value>Thanh bên</value>
+    </data>
 </root>

@@ -12,13 +12,11 @@ public partial class ImageShowDialog : ComponentBase
 
     private bool _open;
     private string ImageUrl { get; set; } = string.Empty;
-    public Dictionary<string, object?> ImageAttribute { get; set; } = [];
 
 
     protected override void OnParametersSet()
     {
         ImageUrl = $"api/files/get-file?id={File.Id.ToString()}";
-        ImageAttribute.Add("alt", File.FileName);
         base.OnParametersSet();
     }
 
