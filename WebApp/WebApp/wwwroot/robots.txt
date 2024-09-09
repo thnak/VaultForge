@@ -1,4 +1,4 @@
 ﻿User-agent: *
 Allow: /
 
-Sitemap: https://thnakdevserver.ddns.net/sitemap.xml
+Allow: Sitemap: https://thnakdevserver.ddns.net/sitemap.xml

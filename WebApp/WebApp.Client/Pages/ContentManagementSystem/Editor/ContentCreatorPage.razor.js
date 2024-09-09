@@ -30,12 +30,18 @@ function handle() {
 
         // Function to extract CSS classes from the CSS editor content
         function extractCSSClasses(cssCode) {
-            const regex = /\.([a-zA-Z0-9_-]+)\s*{/g;
+            const classRegex = /\.([a-zA-Z0-9_-]+)\s*\{/g;
+            const variableRegex = /--([a-zA-Z0-9_-]+)\s*:/g;
+
             const classes = [];
             let match;
-            while ((match = regex.exec(cssCode)) !== null) {
+            while ((match = classRegex.exec(cssCode)) !== null) {
                 classes.push(match[1]);
             }
+            while ((match = variableRegex.exec(cssCode)) !== null) {
+                classes.push(`--${match[1]}`);
+            }
+            
             return classes;
         }
 
