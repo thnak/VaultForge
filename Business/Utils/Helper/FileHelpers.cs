@@ -388,7 +388,7 @@ public static class FileHelpers
             using var reader = new BinaryReader(stream);
             stream.SeekBeginOrigin();
 
-            var headerBytes = reader.ReadBytes(FileSignature.Values.SelectMany(x => x).Max(m => m.Length));
+            var headerBytes = reader.ReadBytes(FileSignature.Values.SelectMany(x => x).Max(m => m.Length) * 2);
 
             foreach (var ext in FileSignature.Keys)
             {
