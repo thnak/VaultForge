@@ -74,6 +74,16 @@ public partial class HeadContentContainer : ComponentBase, IDisposable
             },
             new Dictionary<string, string>
             {
+                { "name", "publisher" },
+                { "content", "https://github.com/thnak" }
+            },
+            new Dictionary<string, string>
+            {
+                { "name", "copyright" },
+                { "content", "https://github.com/thnak" }
+            },
+            new Dictionary<string, string>
+            {
                 { "name", "url" },
                 { "content", Navigation.Uri }
             },

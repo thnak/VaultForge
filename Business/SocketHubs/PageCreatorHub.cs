@@ -71,7 +71,7 @@ public class PageCreatorHub(IMemoryCache memoryCache, IAdvertisementBusinessLaye
             return new SignalRResult() { Message = result.Item2, Success = result.Item1 };
         }
 
-        memoryCache.Set($"{nameof(ArticleModel)}{article.Title}", article, new MemoryCacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10) });
+        memoryCache.Set($"{nameof(ArticleModel)}{article.Title}", article, new MemoryCacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(1) });
 
         return new SignalRResult() { Message = result.Item2, Success = result.Item1 };
     }
@@ -87,10 +87,9 @@ public class PageCreatorHub(IMemoryCache memoryCache, IAdvertisementBusinessLaye
     {
         var data = memoryCache.GetOrCreate<ArticleModel?>($"{nameof(ArticleModel)}{articleId}", entry =>
         {
-            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10);
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(1);
             return businessLayer.Get(articleId);
         });
-
 
         await Clients.Caller.SendAsync("ReceiveMessage", data, CancellationTokenSource.Token);
     }

@@ -45,6 +45,7 @@ public partial class ManagementPage : ComponentBase, IAsyncDisposable, IDisposab
         Metadata.Add(new Dictionary<string, string>() { { "name", "description" }, { "content", AppLang.Take_control_of_your_application_s_content_and_functionality_with_a_Headless_CMS } });
         Metadata.Add(new Dictionary<string, string>() { { "name", "keywords" }, { "content", "CMS, content management system, self host" } });
         Metadata.Add(new Dictionary<string, string>() { { "name", "title" }, { "content", AppLang.Content_management_system } });
+        Metadata.Add(new Dictionary<string, string>() { { "name", "robots" }, { "content", "max-image-preview:large, index" } });
 
 
         Hub = new HubConnectionBuilder()

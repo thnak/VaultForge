@@ -45,6 +45,7 @@ public partial class SamplePage : ComponentBase
                 Metadata.Add(new Dictionary<string, string>() { { "name", "description" }, { "content", articleModel.Summary } });
                 Metadata.Add(new Dictionary<string, string>() { { "name", "keywords" }, { "content", string.Join(", ", articleModel.Keywords) } });
                 Metadata.Add(new Dictionary<string, string>() { { "name", "image" }, { "content", articleModel.Image } });
+                Metadata.Add(new Dictionary<string, string>() { { "name", "robots" }, { "content", "max-image-preview:large, index" } });
 
                 Title = articleModel.Title;
                 RenderPage(articleModel.StyleSheet, articleModel.HtmlSheet, articleModel.JavaScriptSheet);
