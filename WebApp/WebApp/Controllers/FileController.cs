@@ -150,7 +150,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         }
         else
         {
-            contentTypesList = [FolderContentType.File, FolderContentType.File];
+            contentTypesList = [FolderContentType.File, FolderContentType.Folder];
         }
 
         page -= 1;
