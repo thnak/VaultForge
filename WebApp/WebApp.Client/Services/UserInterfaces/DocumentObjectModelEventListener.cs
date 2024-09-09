@@ -6,8 +6,6 @@ public class DocumentObjectModelEventListener : IDisposable
 {
     public void Dispose()
     {
-        
-        
         ContextMenuClickedAsync = null;
         ContextMenuClicked = null;
 
@@ -36,8 +34,10 @@ public class DocumentObjectModelEventListener : IDisposable
 
         ScrollEventAsync = null;
         ScrollEvent = null;
+
+        ScrollToReloadEventAsync = null;
     }
-    
+
     #region Context Menu
 
     public Func<Task>? ContextMenuClickedAsync
@@ -291,6 +291,30 @@ public class DocumentObjectModelEventListener : IDisposable
     {
         ScrollEventAsync?.Invoke();
         ScrollEvent?.Invoke();
+    }
+
+    #endregion
+
+    #region Scroll to reload
+
+    public  Func<Task<bool>>? ScrollToReloadEventAsync
+    {
+        get => SelfScrollToReloadEventAsync;
+        set => SelfScrollToReloadEventAsync = value;
+    }
+
+    private static Func<Task<bool>>? SelfScrollToReloadEventAsync { get; set; }
+
+    [JSInvokable]
+    public static async Task<bool> ScrollToReloadEventListener()
+    {
+        if (SelfScrollToReloadEventAsync != null)
+        {
+            var result = await SelfScrollToReloadEventAsync.Invoke();
+            return result;
+        }
+
+        return false;
     }
 
     #endregion

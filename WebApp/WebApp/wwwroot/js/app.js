@@ -102,4 +102,44 @@ window.AddScriptElement = (url) => {
     // document.head.appendChild(script); // 
 }
 
+// override reload 
+
+let startY = 0;
+let isPulling = false;
+const refreshIcon = document.getElementById('refreshIcon');
+
+window.addEventListener('touchstart', (e) => {
+    if (window.scrollY === 0) {
+        startY = e.touches[0].clientY;
+        isPulling = true;
+    }
+});
+
+window.addEventListener('touchmove', (e) => {
+    if (isPulling) {
+        const moveY = e.touches[0].clientY - startY;
+        if (moveY > 0) {
+            refreshIcon.style.top = `${Math.min(moveY - 50, 20)}px`;
+        }
+    }
+});
+
+window.addEventListener('touchend', () => {
+    if (isPulling) {
+        isPulling = false;
+        if (parseInt(refreshIcon.style.top) > 10) {
+            refreshIcon.style.top = '-50px';
+            DotNet.invokeMethodAsync('WebApp.Client', 'ScrollToReloadEventListener')
+                .then(data => {
+                    if (data) {
+                        location.reload();
+                    }
+                });
+        } else {
+            refreshIcon.style.top = '-50px';
+        }
+    }
+});
+
+
 document.documentElement.setAttribute('lang', window.getCultureFromCookie());

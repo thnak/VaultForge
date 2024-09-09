@@ -339,6 +339,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bạn có thực sự muốn tải lại trang?.
+        /// </summary>
+        public static string Do_you_really_want_to_reload_the_page_ {
+            get {
+                return ResourceManager.GetString("Do you really want to reload the page?", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tải xuống.
         /// </summary>
         public static string Download {
@@ -831,6 +840,15 @@ namespace BusinessModels.Resources {
         public static string Registration_failed {
             get {
                 return ResourceManager.GetString("Registration failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tải lại.
+        /// </summary>
+        public static string Reload {
+            get {
+                return ResourceManager.GetString("Reload", resourceCulture);
             }
         }
         

@@ -506,4 +506,10 @@ ClientY: {1}</value>
     <data name="Sidebar" xml:space="preserve">
       <value>Sidebar</value>
     </data>
+    <data name="Reload" xml:space="preserve">
+      <value>Reload</value>
+    </data>
+    <data name="Do you really want to reload the page?" xml:space="preserve">
+      <value>Do you really want to reload the page?</value>
+    </data>
 </root>

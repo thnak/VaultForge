@@ -3,6 +3,9 @@ using BusinessModels.System;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MudBlazor;
+using WebApp.Client.Components.ConfirmDialog;
+using WebApp.Client.Models;
 
 namespace WebApp.Client;
 
@@ -28,9 +31,42 @@ public partial class Routes : ComponentBase, IDisposable
             EventListener.Online += Online;
             EventListener.Offline += Offline;
             EventListener.InstalledEventAsync += InstalledWpa;
+            EventListener.ScrollToReloadEventAsync += ScrollToReloadEventAsync;
         }
 
         await base.OnAfterRenderAsync(firstRender).ConfigureAwait(false);
+    }
+
+    private async Task<bool> ScrollToReloadEventAsync()
+    {
+        var option = new DialogOptions()
+        {
+            MaxWidth = MaxWidth.Small,
+        };
+        var dataModel = new DialogConfirmDataModel()
+        {
+            Icon = "fa-solid fa-rotate-right",
+            Color = Color.Secondary,
+            Title = AppLang.Reload,
+            Fragment = builder =>
+            {
+                builder.OpenElement(0, "span");
+                builder.AddContent(0, AppLang.Do_you_really_want_to_reload_the_page_);
+                builder.CloseElement();
+            }
+        };
+        var param = new DialogParameters<ConfirmDialog>()
+        {
+            { x => x.DataModel, dataModel }
+        };
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>("", param, option);
+        var dialogResult = await dialog.Result;
+        if (dialogResult is { Canceled: false })
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private Task InstalledWpa()
@@ -46,28 +82,23 @@ public partial class Routes : ComponentBase, IDisposable
 
     private Task ContextMenuClicked()
     {
-        
         return Task.CompletedTask;
     }
 
     private void PageHide()
     {
-        
     }
 
     private void PageShow()
     {
-        
     }
 
     private void Offline()
     {
-        
     }
 
     private void Online()
     {
-        
     }
 
     private string EncodeException(Exception e)

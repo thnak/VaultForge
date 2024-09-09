@@ -452,3 +452,27 @@
     visibility: visible;
     opacity: 1;
 }
+
+/* reload bar */
+.refresh-icon {
+    position: fixed;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+    transition: top 0.3s ease;
+    z-index: 9999;
+}
+
+.refresh-icon > img {
+    border-radius: 50%;
+    max-width: 100%;
+    max-height: 100%;
+}

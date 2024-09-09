@@ -505,4 +505,10 @@ ClientY: {1}</value>
     <data name="Sidebar" xml:space="preserve">
       <value>Thanh bên</value>
     </data>
+    <data name="Reload" xml:space="preserve">
+      <value>Tải lại</value>
+    </data>
+    <data name="Do you really want to reload the page?" xml:space="preserve">
+      <value>Bạn có thực sự muốn tải lại trang?</value>
+    </data>
 </root>
