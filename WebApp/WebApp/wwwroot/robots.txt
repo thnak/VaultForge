@@ -1,12 +1,5 @@
 ﻿User-agent: *
-Disallow: /admin/
-Disallow: /login/
-Disallow: /temp/
-Disallow: /scripts/
+Disallow: /_framework/
+Disallow: /_content/
 
-# Allow all bots to access everything else
-User-agent: *
-Disallow:
-
-User-agent: *
-Allow: /sitemap.xml
+Sitemap: https://thnakdevserver.ddns.net/sitemap.xml
