@@ -161,6 +161,16 @@ public partial class ContentCreatorDialog : ComponentBase, IDisposable, IAsyncDi
         CurrentTag = string.Empty;
         return InvokeAsync(StateHasChanged);
     }
+    
+    private Task RemoveKeyWords(MudChip<string> obj)
+    {
+        if (obj.Value != null)
+        {
+            _article.Keywords.Remove(obj.Value);
+        }
+
+        return InvokeAsync(StateHasChanged);
+    }
 
     private Color? RandomColor()
     {

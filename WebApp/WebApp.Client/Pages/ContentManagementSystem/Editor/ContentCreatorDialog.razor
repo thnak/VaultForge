@@ -1,4 +1,5 @@
-﻿<MudDialog>
+﻿
+<MudDialog>
     <DialogContent>
         <style>
             .mud-input-slot.mud-input-root.mud-input-root-outlined.mud-input-root-adorned-end.mud-input-root-margin-dense.mud-select-input,
@@ -36,7 +37,7 @@
             <MudField Class="d-flex flex-row flex-wrap gap-2" Label="@AppLang.Tags" Variant="Variant.Outlined" >
                 @foreach (var x in _article.Keywords.ToArray())
                 {
-                    <MudChip Color="@RandomColor()" @key="x" T="string" >@x</MudChip>
+                    <MudChip Color="@RandomColor()" @key="x" T="string" OnClose="@RemoveKeyWords">@x</MudChip>
                 }
             </MudField>
 
