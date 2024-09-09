@@ -26,9 +26,13 @@
                 <div class="d-flex flex-row gap-3 align-center" >
                     <MudLink Href="@CreateEditLink(context.Item)" >Edit Link</MudLink>
                     <MudLink Href="@CreatePreviewLink(context.Item)" >Preview Link</MudLink>
+                    <MudTooltip Arrow Color="Color.Secondary" Placement="Placement.Top" Text="Copy" >
+                        <MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.FileCopy" OnClick="@(() => CopyLink(context.Item))" ></MudIconButton>
+                    </MudTooltip>
                     <MudTooltip Arrow Color="Color.Secondary" Placement="Placement.Top" Text="@AppLang.Delete" >
                         <MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteItem(context.Item))" ></MudIconButton>
                     </MudTooltip>
+                    
                 </div>
             </CellTemplate>
         </PropertyColumn>

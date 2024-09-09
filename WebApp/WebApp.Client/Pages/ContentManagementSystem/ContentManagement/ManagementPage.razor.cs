@@ -1,4 +1,5 @@
-﻿using BusinessModels.Advertisement;
+﻿using System.Web;
+using BusinessModels.Advertisement;
 using BusinessModels.Converter;
 using BusinessModels.Resources;
 using BusinessModels.System;
@@ -8,6 +9,7 @@ using MudBlazor;
 using WebApp.Client.Components.ConfirmDialog;
 using WebApp.Client.Models;
 using WebApp.Client.Pages.ContentManagementSystem.Editor;
+using WebApp.Client.Utils;
 
 namespace WebApp.Client.Pages.ContentManagementSystem.ContentManagement;
 
@@ -137,5 +139,12 @@ public partial class ManagementPage : ComponentBase, IAsyncDisposable, IDisposab
                 await DataGrid.ReloadServerData();
             }
         }
+    }
+
+    private async Task CopyLink(ArticleModel contextItem)
+    {
+        var text = Navigation.GetUriWithQueryParameters(PageRoutes.Advertisement.Index.Src, new Dictionary<string, object?>() { { "content_id", HttpUtility.UrlEncode(contextItem.Title) }, { "lang", contextItem.Language } });
+        await JsRuntime.CopyToClipBoard(text);
+        ToastService.ShowSuccess(AppLang.Copied);
     }
 }
