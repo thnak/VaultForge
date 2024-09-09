@@ -43,7 +43,12 @@ public class Program
             .AddInteractiveServerComponents(options => { options.DetailedErrors = builder.Environment.IsDevelopment(); })
             .AddAuthenticationStateSerialization();
 
-        builder.WebHost.ConfigureKestrel(options => { options.AddServerHeader = false; });
+        builder.WebHost.ConfigureKestrel(options =>
+        {
+            options.AddServerHeader = false;
+            options.Limits.MaxRequestBodySize = int.MaxValue;
+            options.Limits.MinRequestBodyDataRate = null;
+        });
 
         builder.Services.AddFrontEndService();
         builder.Services.AddFrontEndScopeService();

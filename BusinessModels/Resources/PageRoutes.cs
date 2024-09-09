@@ -82,7 +82,14 @@ public static class PageRoutes
                     {
                         "content", "Share drive to community"
                     }
-                }
+                },
+                new()
+                {
+                    { "name", "robots" },
+                    {
+                        "content", "max-image-preview:large, index"
+                    }
+                },
             ];
         }
 

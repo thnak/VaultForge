@@ -1,5 +1,4 @@
 ﻿User-agent: *
-Disallow: /_framework/
-Disallow: /_content/
+Allow: /
 
 Sitemap: https://thnakdevserver.ddns.net/sitemap.xml
