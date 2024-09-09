@@ -40,13 +40,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<!-- <BlazorWebAssemblyLazyLoad Include="BlazorMonaco.wasm" /> -->
-		<!-- <BlazorWebAssemblyLazyLoad Include="MessagePack.Annotations.wasm" /> -->
-		<!-- <BlazorWebAssemblyLazyLoad Include="BlazorWorker.BackgroundServiceFactory.wasm" /> -->
-		<!-- <BlazorWebAssemblyLazyLoad Include="BlazorWorker.Core.wasm" /> -->
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\..\BusinessModels\BusinessModels.csproj" />
 
 		<EmbeddedResource Update="..\..\BusinessModels\Resources\AppLang.resx">

@@ -1,6 +1,12 @@
-/*
+﻿/*
  Progress loading
  */
+
+html, body {
+    /* disable pull-to-reload */
+    overscroll-behavior-y: contain;
+}
+
 
 .progress-wrapper {
     position: absolute;

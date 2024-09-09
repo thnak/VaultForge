@@ -18,6 +18,7 @@ using MongoDB.Bson;
 using MudBlazor;
 using WebApp.Client.Components.ConfirmDialog;
 using WebApp.Client.Models;
+using WebApp.Client.Pages.Drive.View.Dialog;
 using WebApp.Client.Services.Http;
 using WebApp.Client.Utils;
 
@@ -400,9 +401,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                         Name = file.FileName,
                         Rename = new ButtonAction
                         {
-                            Action = () =>
-                                RenameFile(file.Id.ToString(), file.FileName, "/api/files/re-name-file")
-                                    .ConfigureAwait(false)
+                            Action = () => RenameFile(file.Id.ToString(), file.FileName, "/api/files/re-name-file").ConfigureAwait(false)
                         },
                         Open = new ButtonAction()
                         {

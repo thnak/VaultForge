@@ -119,8 +119,6 @@ window.addEventListener('touchmove', (e) => {
     if (isPulling) {
         const moveY = e.touches[0].clientY - startY;
         if (moveY > 0) {
-            document.getElementsByTagName('html')[0].style.overflow = 'hidden';
-            document.getElementsByTagName('html')[0].style.overscroll = 'none';
             refreshIcon.style.top = `${Math.min(moveY - 50, 20)}px`;
         }
     }
@@ -129,8 +127,6 @@ window.addEventListener('touchmove', (e) => {
 window.addEventListener('touchend', () => {
     if (isPulling) {
         isPulling = false;
-        document.getElementsByTagName('html')[0].style.overflow = 'auto';
-        document.getElementsByTagName('html')[0].style.overscroll = 'auto';
         if (parseInt(refreshIcon.style.top) > 10) {
             refreshIcon.style.top = '-50px';
             DotNet.invokeMethodAsync('WebApp.Client', 'ScrollToReloadEventListener')

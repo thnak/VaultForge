@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace WebApp.Client.Pages.Drive;
+namespace WebApp.Client.Pages.Drive.View.Dialog;
 
 public partial class ImageShowDialog : ComponentBase
 {
