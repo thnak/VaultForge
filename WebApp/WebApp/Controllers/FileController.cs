@@ -150,7 +150,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         }
         else
         {
-            contentTypesList = Enum.GetValues<FolderContentType>().ToList();
+            contentTypesList = [FolderContentType.File, FolderContentType.File];
         }
 
         page -= 1;
@@ -271,7 +271,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         if (actualFileCode == null) return NotFound(AppLang.The_resource_you_are_looking_for_does_not_exist);
 
         var file = fileServe.Get(actualFileCode.Id);
-        if (file == default) return NotFound(AppLang.File_not_found_);
+        if (file == null) return NotFound(AppLang.File_not_found_);
 
         if (actualFileCode is { Type: FolderContentType.Folder or FolderContentType.DeletedFolder or FolderContentType.HiddenFolder })
         {
@@ -434,6 +434,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
     {
         var folderKeyString = AppLang.Folder;
         var fileKeyString = AppLang.File;
+        var cancelToken = HttpContext.RequestAborted;
         try
         {
             if (string.IsNullOrEmpty(Request.ContentType) || !MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
@@ -463,7 +464,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
 
             var boundary = MediaTypeHeaderValue.Parse(Request.ContentType).GetBoundary(int.MaxValue);
             var reader = new MultipartReader(boundary, HttpContext.Request.Body);
-            var section = await reader.ReadNextSectionAsync();
+            var section = await reader.ReadNextSectionAsync(cancelToken);
             while (section != null && HttpContext.RequestAborted is { IsCancellationRequested: false })
             {
                 var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition);
@@ -489,20 +490,20 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                         }
 
                         folderServe.CreateFile(folder, file);
-                        (file.FileSize, file.ContentType) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState, HttpContext.RequestAborted);
+                        (file.FileSize, file.ContentType) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState, cancelToken);
                         if (file.FileSize > 0)
-                            await fileServe.UpdateAsync(file);
+                            await fileServe.UpdateAsync(file, cancelToken);
                         else
                         {
                             fileServe.Delete(file.Id.ToString());
                             folder = folderServe.Get(user, folderCodes)!;
                             folder.Contents = folder.Contents.Where(x => x.Id != file.Id.ToString()).ToList();
-                            await folderServe.UpdateAsync(folder);
+                            await folderServe.UpdateAsync(folder, cancelToken);
                         }
                     }
                 }
 
-                section = await reader.ReadNextSectionAsync();
+                section = await reader.ReadNextSectionAsync(cancelToken);
             }
 
             if (ModelState.IsValid)

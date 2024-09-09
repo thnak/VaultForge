@@ -286,12 +286,13 @@ public static class FileHelpers
     {
         try
         {
-            await using var targetStream = File.Create(path);
+            var targetStream = File.Create(path);
             var capacity = FileSignature.Values.SelectMany(x => x).Max(z => z.Length);
             using var memoryStream = new MemoryStream(capacity);
             byte[] buffer = new byte[capacity];
 
-            _ = await section.Body.ReadAsync(buffer, 0, capacity, cancellationToken);
+            var readBytes = await section.Body.ReadAsync(buffer, 0, capacity, cancellationToken);
+
             await memoryStream.WriteAsync(buffer, cancellationToken);
             memoryStream.SeekBeginOrigin();
 
@@ -299,6 +300,7 @@ public static class FileHelpers
 
             await section.Body.CopyToAsync(targetStream, cancellationToken: cancellationToken);
 
+            await targetStream.DisposeAsync();
             var fileExtension = memoryStream.GetCorrectExtension(section.ContentType);
             var contentType = fileExtension.GetMimeType();
 
@@ -380,25 +382,26 @@ public static class FileHelpers
 
     private static string GetCorrectExtension(this Stream stream, string? defaultType = null)
     {
-        stream.SeekBeginOrigin();
         try
         {
+            stream.SeekBeginOrigin();
             using var reader = new BinaryReader(stream);
+            stream.SeekBeginOrigin();
+
             var headerBytes = reader.ReadBytes(FileSignature.Values.SelectMany(x => x).Max(m => m.Length));
 
             foreach (var ext in FileSignature.Keys)
             {
                 var signatures = FileSignature[ext];
-                var signature =
-                    signatures.Any(signature => headerBytes.Take(signature.Length).SequenceEqual(signature));
+                var signature = signatures.Any(signature => headerBytes.Take(signature.Length).SequenceEqual(signature));
                 if (signature) return ext;
             }
 
             return defaultType ?? string.Empty;
         }
-        finally
+        catch (Exception _)
         {
-            stream.SeekBeginOrigin();
+            return defaultType ?? string.Empty;
         }
     }
 
