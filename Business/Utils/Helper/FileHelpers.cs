@@ -302,7 +302,7 @@ public static class FileHelpers
 
             await targetStream.DisposeAsync();
             var fileExtension = memoryStream.GetCorrectExtension(section.ContentType);
-            var contentType = fileExtension.GetMimeType();
+            var contentType = fileExtension.GetMimeTypeFromExtension();
 
             var length = new FileInfo(path).Length;
             return (length, contentType);
@@ -393,8 +393,11 @@ public static class FileHelpers
             foreach (var ext in FileSignature.Keys)
             {
                 var signatures = FileSignature[ext];
-                var signature = signatures.Any(signature => headerBytes.Take(signature.Length).SequenceEqual(signature));
-                if (signature) return ext;
+                var result = signatures.Any(signature => IsSubArray(headerBytes, signature));
+                if (result)
+                {
+                    return ext;
+                }
             }
 
             return defaultType ?? string.Empty;
@@ -405,17 +408,40 @@ public static class FileHelpers
         }
     }
 
+    public static bool IsSubArray(byte[] largerArray, byte[] subArray)
+    {
+        if (subArray.Length == 0 || largerArray.Length < subArray.Length)
+            return false;
+
+        for (int i = 0; i <= largerArray.Length - subArray.Length; i++)
+        {
+            bool isMatch = true;
+            for (int j = 0; j < subArray.Length; j++)
+            {
+                if (largerArray[i + j] != subArray[j])
+                {
+                    isMatch = false;
+                    break;
+                }
+            }
+
+            if (isMatch)
+                return true;
+        }
+
+        return false;
+    }
 
     public static string GetCorrectExtensionFormContentType(this string stream, string defaultExtension = ".bin")
     {
         return MimeTypeMappings.FirstOrDefault(x => x.Value == stream).Key ?? defaultExtension;
     }
 
-    public static string GetMimeType(this string fileExtension)
+    public static string GetMimeTypeFromExtension(this string fileExtension)
     {
-        var values = MimeTypeMappings.Values.ToList();
-        var mime = values.FirstOrDefault(x => x == fileExtension);
-        if (mime == null) return "application/octet-stream";
-        return mime;
+        var values = MimeTypeMappings.TryGetValue(fileExtension, out var type);
+        if (values == false || type == null)
+            return "application/octet-stream";
+        return type;
     }
 }
