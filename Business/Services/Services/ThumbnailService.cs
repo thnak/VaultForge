@@ -145,6 +145,7 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
             Type = FileContentType.ThumbnailFile,
             CreatedDate = DateTime.Now,
             ModifiedDate = DateTime.Now,
+            ContentType = "image/webp"
         };
 
         // Update the fileInfo with the thumbnail path

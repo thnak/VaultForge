@@ -253,6 +253,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         public string ContentType { get; set; } = string.Empty;
         public string ItemClassList { get; set; } = string.Empty;
         public string Icon { get; set; } = "fa-solid fa-folder";
+        public string Thumbnail { get; set; } = string.Empty;
         public ButtonAction Open { get; set; } = new();
         public ButtonAction Download { get; set; } = new();
         public ButtonAction Rename { get; set; } = new();
@@ -423,7 +424,8 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                         {
                             Action = () => MoveFile2Folder(file).ConfigureAwait(false)
                         },
-                        ItemClassList = InitStyleElement(file.Type)
+                        ItemClassList = InitStyleElement(file.Type),
+                        Thumbnail = string.IsNullOrEmpty(file.Thumbnail) ? "" : $"{baseClientService.GetBaseUrl()}api/Files/get-file?id={file.Thumbnail}"
                     });
 
                 FolderItemList.Clear();

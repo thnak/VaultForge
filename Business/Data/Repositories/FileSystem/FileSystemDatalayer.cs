@@ -209,7 +209,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
             if (ObjectId.TryParse(key, out var id)) filter |= Builders<FileInfoModel>.Filter.Eq(x => x.Id, id);
 
             _fileDataDb.DeleteMany(filter);
-
+            
             try
             {
                 File.Delete(query.AbsolutePath);
@@ -219,6 +219,10 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
                 //
             }
 
+            if (!string.IsNullOrEmpty(query.Thumbnail))
+            {
+                Delete(query.Thumbnail);
+            }
             DeleteMetadata(query.MetadataId);
 
             foreach (var extend in query.ExtendResource) Delete(extend.Id);

@@ -113,12 +113,19 @@
             <div @key="context" @ondblclick="context.DbLickEvent.Action" >
                 <div class="file-item-grid mud-elevation-1 mud-paper pa-6" >
                     <div class="icon" >
-                        <i class="@context.Icon" ></i>
+                        @if (context.Thumbnail == "")
+                        {
+                            <i class="@context.Icon" ></i>
+                        }
+                        else
+                        {
+                            <img alt="@context.Name" src="@context.Thumbnail" class="thumbnail-image"/>
+                        }
                     </div>
                     <div class="info" >
-                    <span class="text-limit" >
-                        @context.Name
-                    </span>
+                        <span class="text-limit" >
+                            @context.Name
+                        </span>
                     </div>
                     <div class="menu" >
                         <MudTooltip Arrow Color="@Color.Secondary" Placement="Placement.Top" Text="@AppLang.Other_operations" >
@@ -170,7 +177,7 @@
     </ItemRenderer>
 </MudDropContainer>
 
-<MudPagination BoundaryCount="2" Count="@TotalPages" MiddleCount="0" Class="pa-3" Selected="@CurrentPage" SelectedChanged="@PageChanged" />
+<MudPagination BoundaryCount="2" Class="pa-3" Count="@TotalPages" MiddleCount="0" Selected="@CurrentPage" SelectedChanged="@PageChanged" />
 
 <MudDrawer Anchor="Anchor.End" @bind-Open="Open" Color="Color.Primary" Elevation="0" OverlayAutoClose Variant="@DrawerVariant.Temporary" Width="min(300px, 90vw)" >
     <MudDrawerHeader>

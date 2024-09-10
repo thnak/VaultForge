@@ -60,6 +60,12 @@
     align-items: center;
     font-size: 5rem;
     flex: 1;
+    overflow: hidden;
+}
+
+.file-item-grid > .icon > img.thumbnail-image {
+    max-height: 100%;
+    max-width: 100%;
 }
 
 .file-item-grid > .info {
