@@ -4,12 +4,13 @@ using Business.Data.Interfaces;
 using Business.Data.Interfaces.FileSystem;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Business.Data.Repositories.FileSystem;
 
-public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDatalayer
+public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSystemDatalayer> logger) : IFileSystemDatalayer
 {
     private const string SearchIndexString = "FileInfoSearchIndex";
     private readonly IMongoCollection<FileInfoModel> _fileDataDb = context.MongoDatabase.GetCollection<FileInfoModel>("FileInfo");
@@ -34,12 +35,12 @@ public class FileSystemDatalayer(IMongoDataLayerContext context) : IFileSystemDa
             var searchIndexModel = new CreateIndexModel<FileInfoModel>(searchIndexKeys, searchIndexOptions);
             await _fileDataDb.Indexes.CreateManyAsync([searchIndexModel, absolutePathIndexModel]);
 
-            Console.WriteLine(@"[Init] File info data layer");
+            logger.LogInformation(@"[Init] File info data layer");
 
             var metaKey = Builders<FileMetadataModel>.IndexKeys.Ascending(x => x.ThumbnailAbsolutePath);
             var metaIndexModel = new CreateIndexModel<FileMetadataModel>(metaKey, new CreateIndexOptions { Unique = true });
             await _fileMetaDataDataDb.Indexes.CreateOneAsync(metaIndexModel);
-
+            
             return (true, string.Empty);
         }
         catch (MongoException ex)

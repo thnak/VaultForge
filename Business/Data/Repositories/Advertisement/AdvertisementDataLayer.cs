@@ -3,13 +3,14 @@ using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.Advertisement;
 using BusinessModels.Resources;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using ArticleModel = BusinessModels.Advertisement.ArticleModel;
 
 namespace Business.Data.Repositories.Advertisement;
 
-public class AdvertisementDataLayer(IMongoDataLayerContext context) : IAdvertisementDataLayer
+public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<AdvertisementDataLayer> logger) : IAdvertisementDataLayer
 {
     private const string SearchIndexString = "ArticleModelAdvertisements";
     private readonly IMongoCollection<ArticleModel> _dataDb = context.MongoDatabase.GetCollection<ArticleModel>("Article");
@@ -214,7 +215,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context) : IAdvertise
                 new CreateIndexModel<ArticleModel>(Builders<ArticleModel>.IndexKeys.Text(x => x.Title).Text(x => x.Summary), new CreateIndexOptions { Name = SearchIndexString })
             ]);
 
-            Console.WriteLine(@"[Init] Article data layer");
+            logger.LogInformation(@"[Init] Article data layer");
             return (true, string.Empty);
         }
         catch (MongoException ex)

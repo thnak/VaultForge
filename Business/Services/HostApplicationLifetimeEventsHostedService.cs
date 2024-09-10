@@ -4,10 +4,11 @@ using Business.Data.Interfaces.User;
 using Business.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Business.Services;
 
-public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime hostApplicationLifetime, IServiceScopeFactory serviceScopeFactory) : IHostedService
+public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime hostApplicationLifetime, IServiceScopeFactory serviceScopeFactory, ILogger<HostApplicationLifetimeEventsHostedService> logger) : IHostedService
 {
     private readonly CancellationTokenSource _cancellationTokenSource = new();
 
@@ -27,6 +28,7 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
 
     private void OnStarted()
     {
+        logger.LogInformation("OnStarted");
         using var scope = serviceScopeFactory.CreateScope();
         scope.ServiceProvider.GetService<IUserDataLayer>()!.InitializeAsync();
         scope.ServiceProvider.GetService<IFileSystemDatalayer>()?.InitializeAsync();
@@ -41,12 +43,11 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
 
     private void OnStopping()
     {
-        Console.WriteLine(@"OnStopping");
-        // ...
+        logger.LogInformation("OnStopping");
     }
 
     private void OnStopped()
     {
-        Console.WriteLine(@"OnStopped");
+        logger.LogInformation("OnStopped");
     }
 }

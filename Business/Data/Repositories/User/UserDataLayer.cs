@@ -4,13 +4,14 @@ using Business.Data.Interfaces;
 using Business.Data.Interfaces.User;
 using BusinessModels.People;
 using BusinessModels.Resources;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Protector.Utils;
 
 namespace Business.Data.Repositories.User;
 
-public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
+public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer> logger) : IUserDataLayer
 {
     private const string SearchIndexString = "UserSearchIndex";
     private readonly IMongoCollection<UserModel> _dataDb = context.MongoDatabase.GetCollection<UserModel>("User");
@@ -63,7 +64,7 @@ public class UserDataLayer(IMongoDataLayerContext context) : IUserDataLayer
                 });
             }
 
-            Console.WriteLine(@"[Init] User data layer");
+            logger.LogInformation(@"[Init] User data layer");
             return (true, string.Empty);
         }
         catch (MongoException ex)

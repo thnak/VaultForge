@@ -4,13 +4,14 @@ using Business.Data.Interfaces;
 using Business.Data.Interfaces.FileSystem;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Protector.Utils;
 
 namespace Business.Data.Repositories.FileSystem;
 
-public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSystemDatalayer
+public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<FolderSystemDatalayer> logger) : IFolderSystemDatalayer
 {
     private const string SearchIndexString = "FolderInfoSearchIndex";
     private readonly IMongoCollection<FolderInfoModel> _dataDb = context.MongoDatabase.GetCollection<FolderInfoModel>("FolderInfo");
@@ -35,7 +36,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context) : IFolderSyst
             await _dataDb.Indexes.CreateOneAsync(searchIndexModel);
             await _dataDb.Indexes.CreateOneAsync(indexModel);
 
-            Console.WriteLine(@"[Init] Folder info data layer");
+            logger.LogInformation(@"[Init] Folder info data layer");
             return (true, string.Empty);
         }
         catch (MongoException ex)

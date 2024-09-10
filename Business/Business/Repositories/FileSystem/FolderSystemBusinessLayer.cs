@@ -8,6 +8,7 @@ using BusinessModels.People;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Validator.Folder;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -16,7 +17,7 @@ using Protector.Utils;
 namespace Business.Business.Repositories.FileSystem;
 
 public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemService, IFileSystemBusinessLayer fileSystemService, 
-    IUserBusinessLayer userService, IOptions<AppSettings> options) : IFolderSystemBusinessLayer
+    IUserBusinessLayer userService, IOptions<AppSettings> options, ILogger<FolderSystemBusinessLayer> logger) : IFolderSystemBusinessLayer
 {
     private readonly string _workingDir = options.Value.FileFolder;
 
@@ -297,7 +298,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
                 var file = fileSystemService.Get(content.Id);
                 if (file == null)
                 {
-                    Console.WriteLine($@"[Error] file by id {content} can not be found");
+                    logger.LogInformation($@"[Error] file by id {content} can not be found");
                     continue;
                 }
 
