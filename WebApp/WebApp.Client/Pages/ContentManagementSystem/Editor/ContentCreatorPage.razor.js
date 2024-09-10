@@ -62,6 +62,23 @@ function handle() {
                 return {suggestions: suggestions};
             }
         });
+
+        monaco.languages.registerCompletionItemProvider('css', {
+            provideCompletionItems: async function () {
+                let cssContent = await DotNet.invokeMethodAsync('WebApp.Client', 'GetCurrentStyle');
+                const allCSSContent = extractCSSClasses(await loadAllCSS());
+                const cssClasses = extractCSSClasses(cssContent);
+                cssClasses.push(...allCSSContent);
+
+                const suggestions = cssClasses.map(cssClass => ({
+                    label: cssClass,
+                    kind: monaco.languages.CompletionItemKind.Keyword,
+                    insertText: cssClass,
+                    range: null
+                }));
+                return {suggestions: suggestions};
+            }
+        });
     });
 }
 

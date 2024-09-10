@@ -1,4 +1,5 @@
-﻿using BusinessModels.General.EnumModel;
+﻿using Blazored.Toast.Configuration;
+using BusinessModels.General.EnumModel;
 
 namespace WebApp.Client.Utils;
 
@@ -30,5 +31,10 @@ public static class TypeClassList
             default:
                 return self;
         }
+    }
+
+    public static void ToastDefaultSetting(ToastSettings toastSettings)
+    {
+        toastSettings.AdditionalClasses = "toast-move-right-2-left";
     }
 }

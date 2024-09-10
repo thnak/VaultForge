@@ -4,7 +4,6 @@ using System.Net.Mime;
 using System.Runtime.InteropServices.JavaScript;
 using System.Runtime.Versioning;
 using System.Text;
-using Blazored.Toast.Configuration;
 using BusinessModels.General.EnumModel;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
@@ -216,7 +215,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     private Task OnError(int arg1, string arg2)
     {
         Uploading = false;
-        ToastService.ShowError(arg2, ToastSettings);
+        ToastService.ShowError(arg2, TypeClassList.ToastDefaultSetting);
         return InvokeAsync(StateHasChanged);
     }
 
@@ -230,7 +229,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             UploadProgress[pa] = FileUploadList[index++].FileSize;
         }
 
-        ToastService.ShowSuccess(arg2, ToastSettings);
+        ToastService.ShowSuccess(arg2, TypeClassList.ToastDefaultSetting);
         return GetRootFolderAsync(Password);
     }
 
@@ -239,10 +238,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     #endregion
 
 
-    void ToastSettings(ToastSettings toastSettings)
-    {
-        toastSettings.AdditionalClasses = "toast-move-right-2-left";
-    }
+    
 
     #region Models
 
@@ -507,7 +503,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 BreadcrumbItems.Add(new BreadcrumbItem(folderInfoModel.FolderName,
                     Navigation.GetUriWithQueryParameters(Navigation.Uri, new Dictionary<string, object?> { { "FolderId", folderInfoModel.Id.ToString() } }),
                     false,
-                    folderInfoModel.Icon));
+                    folderInfoModel.Icon == "" ? null : folderInfoModel.Icon));
             }
         }
 
@@ -521,7 +517,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         var response = await baseClientService.PostAsync<List<FileInfoModel>>("/api/Files/get-file-list", textPlant, _cts.Token);
         if (response.IsSuccessStatusCode) return response.Data ?? [];
 
-        ToastService.ShowError("Empty files", ToastSettings);
+        ToastService.ShowError("Empty files", TypeClassList.ToastDefaultSetting);
 
         return [];
     }
@@ -533,7 +529,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             await baseClientService.PostAsync<List<FolderInfoModel>>("/api/Files/get-folder-list", textPlant, _cts.Token);
         if (response.IsSuccessStatusCode) return response.Data ?? [];
 
-        ToastService.ShowError("Empty folders", ToastSettings);
+        ToastService.ShowError("Empty folders", TypeClassList.ToastDefaultSetting);
         return [];
     }
 
@@ -572,7 +568,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             var response = await baseClientService.PutAsync<string>("api/Files/create-folder", content, _cts.Token);
             if (response.IsSuccessStatusCode)
             {
-                ToastService.ShowSuccess(response.Message, ToastSettings);
+                ToastService.ShowSuccess(response.Message, TypeClassList.ToastDefaultSetting);
                 _ = Task.Run(() => GetRootFolderAsync());
             }
             else
@@ -610,18 +606,18 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 var response = await baseClientService.PostAsync<string>(url, formDataContent, _cts.Token);
                 if (response.IsSuccessStatusCode)
                 {
-                    ToastService.ShowSuccess(response.Message, ToastSettings);
+                    ToastService.ShowSuccess(response.Message, TypeClassList.ToastDefaultSetting);
                     _ = Task.Run(() => GetRootFolderAsync());
                 }
                 else
                 {
-                    ToastService.ShowError(response.Message, ToastSettings);
+                    ToastService.ShowError(response.Message, TypeClassList.ToastDefaultSetting);
                 }
             }
             else
             {
                 ToastService.ShowError(string.Format(AppLang.File_name_contains_invalid_character__x, keyword),
-                    ToastSettings);
+                    TypeClassList.ToastDefaultSetting);
             }
         }
 
@@ -663,7 +659,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     private void Copy2ClipBoard([StringSyntax(StringSyntaxAttribute.Uri)] string link)
     {
         JsRuntime.CopyToClipBoard(link);
-        ToastService.ShowSuccess(AppLang.Copied, ToastSettings);
+        ToastService.ShowSuccess(AppLang.Copied, TypeClassList.ToastDefaultSetting);
     }
 
     private void OpenFolder(string id)
@@ -705,11 +701,11 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             if (response.IsSuccessStatusCode)
             {
                 await GetRootFolderAsync();
-                ToastService.ShowSuccess(AppLang.Delete_successfully, ToastSettings);
+                ToastService.ShowSuccess(AppLang.Delete_successfully, TypeClassList.ToastDefaultSetting);
             }
             else
             {
-                ToastService.ShowError(response.Message, ToastSettings);
+                ToastService.ShowError(response.Message, TypeClassList.ToastDefaultSetting);
             }
         }
     }
@@ -750,11 +746,11 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             if (response.IsSuccessStatusCode)
             {
                 await GetRootFolderAsync();
-                ToastService.ShowSuccess(AppLang.Delete_successfully, ToastSettings);
+                ToastService.ShowSuccess(AppLang.Delete_successfully, TypeClassList.ToastDefaultSetting);
             }
             else
             {
-                ToastService.ShowError(response.Message, ToastSettings);
+                ToastService.ShowError(response.Message, TypeClassList.ToastDefaultSetting);
             }
         }
     }
