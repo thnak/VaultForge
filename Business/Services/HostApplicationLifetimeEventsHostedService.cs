@@ -1,6 +1,7 @@
 using Business.Data.Interfaces.Advertisement;
 using Business.Data.Interfaces.FileSystem;
 using Business.Data.Interfaces.User;
+using Business.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -8,18 +9,20 @@ namespace Business.Services;
 
 public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime hostApplicationLifetime, IServiceScopeFactory serviceScopeFactory) : IHostedService
 {
+    private readonly CancellationTokenSource _cancellationTokenSource = new();
+
     public Task StartAsync(CancellationToken cancellationToken)
     {
         hostApplicationLifetime.ApplicationStarted.Register(OnStarted);
         hostApplicationLifetime.ApplicationStopping.Register(OnStopping);
         hostApplicationLifetime.ApplicationStopped.Register(OnStopped);
-
         return Task.CompletedTask;
     }
 
-    public Task StopAsync(CancellationToken cancellationToken)
+
+    public async Task StopAsync(CancellationToken cancellationToken)
     {
-        return Task.CompletedTask;
+        await _cancellationTokenSource.CancelAsync();
     }
 
     private void OnStarted()
@@ -29,6 +32,11 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
         scope.ServiceProvider.GetService<IFileSystemDatalayer>()?.InitializeAsync();
         scope.ServiceProvider.GetService<IFolderSystemDatalayer>()?.InitializeAsync();
         scope.ServiceProvider.GetService<IAdvertisementDataLayer>()?.InitializeAsync();
+        var thumbnailService = scope.ServiceProvider.GetService<IThumbnailService>();
+        if (thumbnailService != null)
+        {
+            _ = Task.Run(() => thumbnailService.StartAsync(_cancellationTokenSource.Token));
+        }
     }
 
     private void OnStopping()

@@ -13,7 +13,7 @@
         </style>
         <MudPaper Class="mud-height-full mud-width-full" Elevation="0" Style="overflow:hidden; position:relative;" >
             <MudDrawerContainer Class="mud-height-full" >
-                <MudDrawer Anchor="Anchor.End" @bind-Open="@_open" Color="Color.Default" Elevation="0" Variant="@DrawerVariant.Persistent" >
+                <MudDrawer Anchor="Anchor.End" @bind-Open="@_open" Color="Color.Default" Width="min(500px, 100vw)" Elevation="0" Variant="@DrawerVariant.Persistent" >
                     <MudDrawerHeader>
                         <MudText Typo="Typo.h6" >@File.FileName</MudText>
                     </MudDrawerHeader>

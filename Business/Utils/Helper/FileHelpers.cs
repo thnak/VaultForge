@@ -24,6 +24,7 @@ public static class FileHelpers
         { ".png", [[0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]] },
         { ".jpeg", [[0xFF, 0xD8, 0xFF, 0xE0], [0xFF, 0xD8, 0xFF, 0xE2], [0xFF, 0xD8, 0xFF, 0xE3]] },
         { ".jpg", [[0xFF, 0xD8, 0xFF, 0xE0], [0xFF, 0xD8, 0xFF, 0xE1], [0xFF, 0xD8, 0xFF, 0xE8]] },
+        { ".webp", [[0x57, 0x45, 0x42, 0x50]] },
         {
             ".zip",
             [
@@ -118,6 +119,7 @@ public static class FileHelpers
         { ".tiff", "image/tiff" },
         { ".tif", "image/tiff" },
         { ".ico", "image/x-icon" },
+        { ".webp", "image/webp" },
 
         // Audio files
         { ".mp3", "audio/mpeg" },
@@ -284,28 +286,28 @@ public static class FileHelpers
     public static async Task<(long, string)> ProcessStreamedFileAndSave(this MultipartSection section, string path,
         ModelStateDictionary modelState, CancellationToken cancellationToken = default)
     {
+        const int bufferSize = 10 * 1024 * 1024; // 80 KB buffer size (you can adjust this size based on performance needs)
         try
         {
-            var targetStream = File.Create(path);
-            var capacity = FileSignature.Values.SelectMany(x => x).Max(z => z.Length);
-            using var memoryStream = new MemoryStream(capacity);
-            byte[] buffer = new byte[capacity];
+            // Open target stream for writing the file to disk
+            await using var targetStream = File.Create(path);
+            var buffer = new byte[bufferSize];
+            long totalBytesRead = 0;
 
-            var readBytes = await section.Body.ReadAsync(buffer, 0, capacity, cancellationToken);
+            // Stream the file in chunks from section.Body to disk, avoiding memory overload
+            int bytesRead;
+            while ((bytesRead = await section.Body.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) > 0)
+            {
+                await targetStream.WriteAsync(buffer, 0, bytesRead, cancellationToken);
+                totalBytesRead += bytesRead; // Keep track of the total bytes read
+            }
 
-            await memoryStream.WriteAsync(buffer, cancellationToken);
-            memoryStream.SeekBeginOrigin();
-
-            await memoryStream.CopyToAsync(targetStream, cancellationToken: cancellationToken);
-
-            await section.Body.CopyToAsync(targetStream, cancellationToken: cancellationToken);
-
-            await targetStream.DisposeAsync();
-            var fileExtension = memoryStream.GetCorrectExtension(section.ContentType);
+            // Determine file extension and MIME type (you can implement based on content type)
+            var fileExtension = targetStream.GetCorrectExtension(section.ContentType);
             var contentType = fileExtension.GetMimeTypeFromExtension();
 
-            var length = new FileInfo(path).Length;
-            return (length, contentType);
+            // Return the total file size and MIME type
+            return (totalBytesRead, contentType);
         }
         catch (OperationCanceledException ex)
         {
@@ -380,7 +382,7 @@ public static class FileHelpers
         return signatures.Any(signature => headerBytes.Take(signature.Length).SequenceEqual(signature));
     }
 
-    private static string GetCorrectExtension(this Stream stream, string? defaultType = null)
+    public static string GetCorrectExtension(this Stream stream, string? defaultType = null)
     {
         try
         {
@@ -443,5 +445,11 @@ public static class FileHelpers
         if (values == false || type == null)
             return "application/octet-stream";
         return type;
+    }
+
+    public static bool IsImageFile(this string contentType)
+    {
+        string[] imageContentTypes = ["image/jpeg", "image/pjpeg", "image/gif", "image/x-png", "image/png", "image/bmp", "image/tiff"];
+        return imageContentTypes.Contains(contentType);
     }
 }

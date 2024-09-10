@@ -2,6 +2,7 @@ using System.Net.Mime;
 using System.Web;
 using Business.Attribute;
 using Business.Business.Interfaces.FileSystem;
+using Business.Services.Interfaces;
 using Business.Utils.Helper;
 using BusinessModels.General.EnumModel;
 using BusinessModels.People;
@@ -23,7 +24,7 @@ namespace WebApp.Controllers;
 [IgnoreAntiforgeryToken]
 [Route("api/[controller]")]
 [ApiController]
-public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBusinessLayer folderServe) : ControllerBase
+public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBusinessLayer folderServe, IThumbnailService thumbnailService) : ControllerBase
 {
     [HttpGet("get-file")]
     [IgnoreAntiforgeryToken]
@@ -492,7 +493,10 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                         folderServe.CreateFile(folder, file);
                         (file.FileSize, file.ContentType) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState, cancelToken);
                         if (file.FileSize > 0)
+                        {
                             await fileServe.UpdateAsync(file, cancelToken);
+                            thumbnailService.AddThumbnailRequest(file.Id.ToString());
+                        }
                         else
                         {
                             fileServe.Delete(file.Id.ToString());

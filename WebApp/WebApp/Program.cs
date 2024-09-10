@@ -14,6 +14,8 @@ using Business.Data.Repositories.FileSystem;
 using Business.Data.Repositories.User;
 using Business.Exceptions;
 using Business.Services;
+using Business.Services.Interfaces;
+using Business.Services.Services;
 using Business.SocketHubs;
 using BusinessModels.Converter;
 using BusinessModels.General;
@@ -98,7 +100,10 @@ public class Program
         builder.Services.AddSingleton<IAdvertisementDataLayer, AdvertisementDataLayer>();
         builder.Services.AddSingleton<IAdvertisementBusinessLayer, AdvertisementBusinessLayer>();
 
+        builder.Services.AddSingleton<IThumbnailService, ThumbnailService>();
+        
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
+        
 
         #endregion
 
