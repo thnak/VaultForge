@@ -24,7 +24,7 @@ namespace WebApp.Controllers;
 [IgnoreAntiforgeryToken]
 [Route("api/[controller]")]
 [ApiController]
-public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBusinessLayer folderServe, IThumbnailService thumbnailService) : ControllerBase
+public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBusinessLayer folderServe, IThumbnailService thumbnailService, ILogger<FilesController> logger) : ControllerBase
 {
     [HttpGet("get-file")]
     [IgnoreAntiforgeryToken]
@@ -346,6 +346,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
     [IgnoreAntiforgeryToken]
     public async Task<IActionResult> MoveFile2([FromForm] List<string> fileCodes, [FromForm] string currentFolderCode, [FromForm] string targetFolderCode, [FromForm] string? password)
     {
+        var cancelToken = HttpContext.RequestAborted;
         var currentFolder = folderServe.Get(currentFolderCode);
         if (currentFolder == null) return NotFound(AppLang.Current_folder_could_not_have_found);
 
@@ -394,9 +395,9 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
 
         currentFolder.Contents = contentsDict.Values.ToList();
 
-        await folderServe.UpdateAsync(targetFolder);
-        await folderServe.UpdateAsync(currentFolder);
-        await foreach (var x in fileServe.UpdateAsync(files!))
+        await folderServe.UpdateAsync(targetFolder, cancelToken);
+        await folderServe.UpdateAsync(currentFolder, cancelToken);
+        await foreach (var x in fileServe.UpdateAsync(files!, cancelToken))
             if (!x.Item1)
                 ModelState.AddModelError(AppLang.File, x.Item2);
 
@@ -446,7 +447,6 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
 
             HttpContext.Request.Headers.TryGetValue("Folder", out var folderValues);
 
-            var user = HttpContext.User.Identity?.Name ?? string.Empty;
             var folderCodes = folderValues.ToString();
 
             if (string.IsNullOrEmpty(folderCodes))
@@ -455,8 +455,8 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                 return BadRequest(ModelState);
             }
 
-            folderServe.GetRoot(user);
-            var folder = folderServe.Get(user, folderCodes);
+            // folderServe.GetRoot(user);
+            var folder = folderServe.Get(folderCodes);
             if (folder == null)
             {
                 ModelState.AddModelError(folderKeyString, AppLang.Folder_could_not_be_found);
@@ -483,13 +483,8 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                         {
                             FileName = trustedFileNameForDisplay
                         };
-                        folder = folderServe.Get(user, folderCodes);
-                        if (folder == null)
-                        {
-                            ModelState.AddModelError(folderKeyString, AppLang.Folder_could_not_be_found);
-                            return BadRequest(ModelState);
-                        }
-
+                        
+                        folder = folderServe.Get(folderCodes)!;
                         folderServe.CreateFile(folder, file);
                         (file.FileSize, file.ContentType) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState, cancelToken);
                         if (file.FileSize > 0)
@@ -500,7 +495,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                         else
                         {
                             fileServe.Delete(file.Id.ToString());
-                            folder = folderServe.Get(user, folderCodes)!;
+                            folder = folderServe.Get(folderCodes)!;
                             folder.Contents = folder.Contents.Where(x => x.Id != file.Id.ToString()).ToList();
                             await folderServe.UpdateAsync(folder, cancelToken);
                         }
@@ -517,11 +512,13 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         }
         catch (OperationCanceledException ex)
         {
+            logger.LogError(ex, null);
             return Ok(ex.Message);
         }
         catch (Exception e)
         {
             ModelState.AddModelError(AppLang.Exception, e.Message);
+            logger.LogError(e, null);
             return StatusCode(500, ModelState);
         }
     }
