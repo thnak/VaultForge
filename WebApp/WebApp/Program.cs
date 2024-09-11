@@ -201,7 +201,7 @@ public class Program
         app.UseExceptionHandler(_ => { });
 
         app.MapRazorComponents<App>()
-            .AddInteractiveWebAssemblyRenderMode(options => options.ServeMultithreadingHeaders = true)
+            .AddInteractiveWebAssemblyRenderMode()
             .AddInteractiveServerRenderMode()
             .AddAdditionalAssemblies(typeof(_Imports).Assembly);
         app.MapHub<PageCreatorHub>("/PageCreatorHub");
