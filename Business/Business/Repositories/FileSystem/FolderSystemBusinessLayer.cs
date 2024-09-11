@@ -36,14 +36,14 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return folderSystemService.FindAsync(keyWord, cancellationTokenSource);
     }
 
-    public IAsyncEnumerable<FolderInfoModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default)
+    public IAsyncEnumerable<FolderInfoModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
     {
-        return folderSystemService.FindProjectAsync(keyWord, limit, cancellationToken);
+        return folderSystemService.FindProjectAsync(keyWord, limit, cancellationToken, fieldsToFetch);
     }
 
-    public IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationToken = default)
+    public IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
     {
-        return folderSystemService.Where(predicate, cancellationToken);
+        return folderSystemService.Where(predicate, cancellationToken, fieldsToFetch);
     }
 
     public FolderInfoModel? Get(string key)
@@ -101,7 +101,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         var res = folderSystemService.Delete(key);
         if (res.Item1)
             foreach (var content in folder.Contents)
-                if (content is { Type: FolderContentType.File or FolderContentType.HiddenFile })
+                if (content is { Type: FolderContentType.File or FolderContentType.HiddenFile or FolderContentType.DeletedFile })
                     fileSystemService.Delete(content.Id);
                 else
                     Delete(content.Id);
@@ -180,16 +180,16 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         throw new NotImplementedException();
     }
 
-    public (bool, string) CreateFile(FolderInfoModel folder, FileInfoModel file)
+    public async Task<(bool, string)> CreateFileAsync(FolderInfoModel folder, FileInfoModel file, CancellationToken cancellationTokenSource = default)
     {
         var newIndex = folder.Contents.Count + 1;
         var dateString = DateTime.UtcNow.ToString("dd-MM-yyy");
-        var path = Path.Combine(_workingDir, dateString);
-        if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
-        var filePath = Path.Combine(path, $"_file_{newIndex}.bin");
+        var filePath = Path.Combine(_workingDir, dateString, folder.FolderName, $"_file_{newIndex}.bin");
+        Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
+        
         file.AbsolutePath = filePath;
-        var res = fileSystemService.CreateAsync(file).Result;
+        var res = await fileSystemService.CreateAsync(file, cancellationTokenSource);
         if (res.Item1)
         {
             folder.Contents.Add(new FolderContent
@@ -197,7 +197,10 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
                 Id = file.Id.ToString(),
                 Type = FolderContentType.File
             });
-            UpdateAsync(folder);
+            var folderUpdateResult = await UpdateAsync(folder, cancellationTokenSource);
+            if(!folderUpdateResult.Item1)
+                return folderUpdateResult;
+            
             var folderInfoModel = Get(folder.Id.ToString())!;
             folder.Contents = folderInfoModel.Contents;
         }
@@ -205,11 +208,11 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return res;
     }
 
-    public (bool, string) CreateFile(string userName, FileInfoModel file)
+    public async Task<(bool, string)> CreateFileAsync(string userName, FileInfoModel file, CancellationToken cancellationToken = default)
     {
         var user = userService.Get(userName) ?? userService.GetAnonymous();
         var folder = GetRoot(user.UserName)!;
-        return CreateFile(folder, file);
+        return await CreateFileAsync(folder, file, cancellationToken);
     }
 
     public async Task<(bool, string)> CreateFolder(string userName, string targetFolderId, string folderName)

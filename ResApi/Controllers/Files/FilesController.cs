@@ -185,18 +185,16 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         List<FolderInfoModel> folderList = [];
         var cancelToken = HttpContext.RequestAborted;
 
-        var user = folderServe.GetUser(string.Empty) ?? new UserModel();
+        var user = string.IsNullOrEmpty(username) ? folderServe.GetUser(string.Empty) : new UserModel();
 
         try
         {
             await foreach (var x in folderServe.Where(x => x.FolderName.Contains(searchString) ||
                                                            x.RelativePath.Contains(searchString) &&
-                                                           x.Username == user.UserName &&
-                                                           x.Type == FolderContentType.Folder, cancelToken).WithCancellation(cancelToken))
+                                                           (user == null || x.Username == user.UserName) &&
+                                                           x.Type == FolderContentType.Folder, cancelToken, 
+                               model => model.FolderName, model => model.Type, model => model.Icon, model => model.ModifiedDate, model => model.Id))
             {
-                x.Password = string.Empty;
-                x.SharedTo = [];
-                x.Contents = [];
                 folderList.Add(x);
                 if (folderList.Count == 10)
                     break;
@@ -466,7 +464,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
                             return BadRequest(ModelState);
                         }
 
-                        folderServe.CreateFile(folder, file);
+                        folderServe.CreateFileAsync(folder, file);
                         (file.FileSize, file.ContentType) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState, HttpContext.RequestAborted);
                         if (file.FileSize > 0)
                             await fileServe.UpdateAsync(file);

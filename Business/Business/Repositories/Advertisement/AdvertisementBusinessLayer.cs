@@ -23,14 +23,14 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<ArticleModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default)
+    public IAsyncEnumerable<ArticleModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default, params Expression<Func<ArticleModel, object>>[] fieldsToFetch)
     {
-        throw new NotImplementedException();
+        return dataLayer.FindProjectAsync(keyWord, limit, cancellationToken, fieldsToFetch);
     }
 
-    public IAsyncEnumerable<ArticleModel> Where(Expression<Func<ArticleModel, bool>> predicate, CancellationToken cancellationToken = default)
+    public IAsyncEnumerable<ArticleModel> Where(Expression<Func<ArticleModel, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<ArticleModel, object>>[] fieldsToFetch)
     {
-        throw new NotImplementedException();
+        return dataLayer.Where(predicate, cancellationToken, fieldsToFetch);
     }
 
     public ArticleModel? Get(string key)

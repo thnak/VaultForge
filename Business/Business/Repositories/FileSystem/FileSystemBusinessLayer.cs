@@ -23,15 +23,15 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FileInfoModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default)
+    public IAsyncEnumerable<FileInfoModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
     {
-        throw new NotImplementedException();
+        return da.FindProjectAsync(keyWord, limit, cancellationToken, fieldsToFetch);
     }
 
 
-    public IAsyncEnumerable<FileInfoModel> Where(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationToken = default)
+    public IAsyncEnumerable<FileInfoModel> Where(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
     {
-        return da.Where(predicate, cancellationToken);
+        return da.Where(predicate, cancellationToken, fieldsToFetch);
     }
 
     public FileInfoModel? Get(string key)

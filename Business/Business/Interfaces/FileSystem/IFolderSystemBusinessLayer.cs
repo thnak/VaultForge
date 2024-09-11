@@ -24,10 +24,11 @@ public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInf
     /// </summary>
     /// <param name="folder"></param>
     /// <param name="file"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public (bool, string) CreateFile(FolderInfoModel folder, FileInfoModel file);
+    public Task<(bool, string)> CreateFileAsync(FolderInfoModel folder, FileInfoModel file, CancellationToken cancellationToken = default);
 
-    public (bool, string) CreateFile(string userName, FileInfoModel file);
+    public Task<(bool, string)> CreateFileAsync(string userName, FileInfoModel file, CancellationToken cancellationToken = default);
     public Task<(bool, string)> CreateFolder(string userName, string targetFolderId, string folderName);
 
     public Task<(bool, string)> CreateFolder(RequestNewFolderModel request);

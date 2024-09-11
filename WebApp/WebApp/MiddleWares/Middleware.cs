@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Localization;
 
 namespace WebApp.MiddleWares;
 
-public class Middleware(RequestDelegate next)
+public class Middleware(RequestDelegate next, ILogger<Middleware> logger)
 {
     public async Task InvokeAsync(HttpContext context)
     {
@@ -55,7 +55,7 @@ public class Middleware(RequestDelegate next)
         }
     }
 
-    private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         var recordModel = new ErrorRecordModel
         {
@@ -64,7 +64,7 @@ public class Middleware(RequestDelegate next)
             Src = exception.Source ?? string.Empty,
             Href = context.Request.Path
         };
-
+        logger.LogError(exception, context.Request.Method + " " + context.Request.PathBase + context.Request.Path + context.Request.QueryString);
 #if DEBUG
         throw exception;
 #else

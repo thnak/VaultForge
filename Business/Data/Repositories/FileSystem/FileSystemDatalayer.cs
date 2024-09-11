@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.FileSystem;
+using Business.Utils;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using Microsoft.Extensions.Logging;
@@ -40,11 +41,12 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             var metaKey = Builders<FileMetadataModel>.IndexKeys.Ascending(x => x.ThumbnailAbsolutePath);
             var metaIndexModel = new CreateIndexModel<FileMetadataModel>(metaKey, new CreateIndexOptions { Unique = true });
             await _fileMetaDataDataDb.Indexes.CreateOneAsync(metaIndexModel);
-            
+
             return (true, string.Empty);
         }
         catch (MongoException ex)
         {
+            logger.LogError(ex, null);
             return (false, ex.Message);
         }
         finally
@@ -74,14 +76,35 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FileInfoModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default)
+    public async IAsyncEnumerable<FileInfoModel> FindProjectAsync(string keyWord, int limit = 10, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
     {
-        throw new NotImplementedException();
+        var filter = Builders<FileInfoModel>.Filter.Where(f => f.FileName.Contains(keyWord));
+        // Build projection
+        ProjectionDefinition<FileInfoModel>? projection = fieldsToFetch.ProjectionBuilder();
+
+        // Fetch the documents from the database
+        var options = new FindOptions<FileInfoModel, FileInfoModel>
+        {
+            Projection = projection
+        };
+
+        var cursor = await _fileDataDb.FindAsync(filter, options, cancellationToken);
+        while (await cursor.MoveNextAsync(cancellationToken))
+        {
+            foreach (var document in cursor.Current)
+            {
+                yield return document;
+            }
+        }
     }
 
-    public async IAsyncEnumerable<FileInfoModel> Where(Expression<Func<FileInfoModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    public async IAsyncEnumerable<FileInfoModel> Where(Expression<Func<FileInfoModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
     {
-        var cursor = await _fileDataDb.FindAsync(predicate, cancellationToken: cancellationToken);
+        var options = new FindOptions<FileInfoModel, FileInfoModel>
+        {
+            Projection = fieldsToFetch.ProjectionBuilder()
+        };
+        var cursor = await _fileDataDb.FindAsync(predicate, options: options, cancellationToken: cancellationToken);
         while (await cursor.MoveNextAsync(cancellationToken))
         {
             foreach (var model in cursor.Current)
@@ -142,6 +165,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         }
         catch (Exception e)
         {
+            logger.LogError(e, null);
             return (false, e.Message);
         }
         finally
@@ -176,6 +200,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         }
         catch (Exception e)
         {
+            logger.LogError(e, null);
             return (false, e.Message);
         }
         finally
@@ -210,20 +235,21 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             if (ObjectId.TryParse(key, out var id)) filter |= Builders<FileInfoModel>.Filter.Eq(x => x.Id, id);
 
             _fileDataDb.DeleteMany(filter);
-            
+
             try
             {
                 File.Delete(query.AbsolutePath);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //
+                logger.LogError(e, null);
             }
 
             if (!string.IsNullOrEmpty(query.Thumbnail))
             {
                 Delete(query.Thumbnail);
             }
+
             DeleteMetadata(query.MetadataId);
 
             foreach (var extend in query.ExtendResource) Delete(extend.Id);
@@ -232,6 +258,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         }
         catch (Exception ex)
         {
+            logger.LogError(ex, null);
             return (false, ex.Message);
         }
         finally
@@ -263,9 +290,9 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             {
                 File.Delete(metadata.ThumbnailAbsolutePath);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //
+                logger.LogError(e, null);
             }
 
             return (true, AppLang.Delete_successfully);

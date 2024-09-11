@@ -179,18 +179,16 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         List<FolderInfoModel> folderList = [];
         var cancelToken = HttpContext.RequestAborted;
 
-        var user = folderServe.GetUser(string.Empty) ?? new UserModel();
+        var user = string.IsNullOrEmpty(username) ? folderServe.GetUser(string.Empty) : new UserModel();
 
         try
         {
             await foreach (var x in folderServe.Where(x => x.FolderName.Contains(searchString) ||
                                                            x.RelativePath.Contains(searchString) &&
-                                                           x.Username == user.UserName &&
-                                                           x.Type == FolderContentType.Folder, cancelToken))
+                                                           (user == null || x.Username == user.UserName) &&
+                                                           x.Type == FolderContentType.Folder, cancelToken, 
+                               model => model.FolderName, model => model.Type, model => model.Icon, model => model.ModifiedDate, model => model.Id))
             {
-                x.Password = string.Empty;
-                x.SharedTo = [];
-                x.Contents = [];
                 folderList.Add(x);
                 if (folderList.Count == 10)
                     break;
@@ -437,6 +435,8 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         var folderKeyString = AppLang.Folder;
         var fileKeyString = AppLang.File;
         var cancelToken = HttpContext.RequestAborted;
+        
+        
         try
         {
             if (string.IsNullOrEmpty(Request.ContentType) || !MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
@@ -484,30 +484,50 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                             FileName = trustedFileNameForDisplay
                         };
                         
-                        folder = folderServe.Get(folderCodes)!;
-                        folderServe.CreateFile(folder, file);
-                        (file.FileSize, file.ContentType) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState, cancelToken);
-                        if (file.FileSize > 0)
+                        folder = folderServe.Get(folderCodes);
+                        if (folder == null)
                         {
-                            await fileServe.UpdateAsync(file, cancelToken);
-                            thumbnailService.AddThumbnailRequest(file.Id.ToString());
+                            if (ModelState.IsValid)
+                                return Ok(AppLang.Successfully_uploaded);
+                            return BadRequest(ModelState);
                         }
-                        else
+                        
+                        var createFileResult = await folderServe.CreateFileAsync(folder, file, cancelToken);
+                        if (createFileResult.Item1)
                         {
-                            fileServe.Delete(file.Id.ToString());
-                            folder = folderServe.Get(folderCodes)!;
-                            folder.Contents = folder.Contents.Where(x => x.Id != file.Id.ToString()).ToList();
-                            await folderServe.UpdateAsync(folder, cancelToken);
+                            (file.FileSize, file.ContentType) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState, cancelToken);
+                            if (file.FileSize > 0)
+                            {
+                                var updateResult = await fileServe.UpdateAsync(file, cancelToken);
+                                if (updateResult.Item1)
+                                {
+                                    thumbnailService.AddThumbnailRequest(file.Id.ToString());
+                                }
+                                else
+                                {
+                                    logger.LogError(updateResult.Item2);
+                                }
+                            }
+                            else
+                            {
+                                fileServe.Delete(file.Id.ToString());
+                                folder = folderServe.Get(folderCodes)!;
+                                folder.Contents = folder.Contents.Where(x => x.Id != file.Id.ToString()).ToList();
+                                var result = await folderServe.UpdateAsync(folder, cancelToken);
+                                if (!result.Item1) logger.LogError(result.Item2);
+                            }
                         }
+                        
                     }
                 }
 
                 section = await reader.ReadNextSectionAsync(cancelToken);
             }
 
+            logger.LogInformation(ModelState.ToString());
             if (ModelState.IsValid)
                 return Ok(AppLang.Successfully_uploaded);
-
+            
             return Ok(ModelState);
         }
         catch (OperationCanceledException ex)

@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.Advertisement;
+using Business.Utils;
 using BusinessModels.Resources;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
@@ -36,19 +37,11 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         throw new NotImplementedException();
     }
 
-    public async IAsyncEnumerable<ArticleModel> FindProjectAsync(string keyWord, int limit = 10, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    public async IAsyncEnumerable<ArticleModel> FindProjectAsync(string keyWord, int limit = 10, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<ArticleModel, object>>[] fieldsToFetch)
     {
         var projection = new FindOptions<ArticleModel, ArticleModel>()
         {
-            Projection = new FindExpressionProjectionDefinition<ArticleModel, ArticleModel>(x => new ArticleModel()
-            {
-                Id = x.Id,
-                Title = x.Title,
-                Language = x.Language,
-                ModifiedDate = x.ModifiedDate,
-                PublishDate = x.PublishDate,
-                Author = x.Author,
-            }),
+            Projection = fieldsToFetch.ProjectionBuilder(),
         };
 
         var filter = Builders<ArticleModel>.Filter.Where(x => x.Author.Contains(keyWord) || x.Title.Contains(keyWord));
@@ -63,9 +56,13 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         }
     }
 
-    public async IAsyncEnumerable<ArticleModel> Where(Expression<Func<ArticleModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    public async IAsyncEnumerable<ArticleModel> Where(Expression<Func<ArticleModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<ArticleModel, object>>[] fieldsToFetch)
     {
-        var cursor = await _dataDb.FindAsync(predicate, cancellationToken: cancellationToken);
+        var options = new FindOptions<ArticleModel, ArticleModel>
+        {
+            Projection = fieldsToFetch.ProjectionBuilder(),
+        };
+        var cursor = await _dataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);
         while (await cursor.MoveNextAsync(cancellationToken))
         {
             foreach (var model in cursor.Current)

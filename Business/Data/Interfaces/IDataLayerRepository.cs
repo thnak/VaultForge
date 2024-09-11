@@ -43,10 +43,11 @@ public interface IDataLayerRepository<T> where T : class
     /// <param name="keyWord"></param>
     /// <param name="limit"></param>
     /// <param name="cancellationToken"></param>
+    /// <param name="fieldsToFetch"></param>
     /// <returns></returns>
-    IAsyncEnumerable<T> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default);
+    IAsyncEnumerable<T> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] fieldsToFetch);
 
-    IAsyncEnumerable<T> Where(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default);
+    IAsyncEnumerable<T> Where(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] fieldsToFetch);
     T? Get(string key);
     IAsyncEnumerable<T?> GetAsync(List<string> keys, CancellationToken cancellationTokenSource = default);
     Task<(T[], long)> GetAllAsync(int page, int size, CancellationToken cancellationTokenSource = default);

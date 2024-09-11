@@ -1,5 +1,8 @@
+using System.Linq.Expressions;
 using Business.Data.Interfaces;
 using Business.Data.Repositories;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace Business.Utils;
 
@@ -9,4 +12,42 @@ public static class DatabaseExtensions
     {
         if (Activator.CreateInstance(typeof(T), initializer) is IMongoDataInitializer service) await service.InitializeAsync();
     }
+    
+    public static string GetFieldName<T>(this Expression<Func<T, object>> expression)
+    {
+        if (expression.Body is UnaryExpression unaryExpression)
+        {
+            // For value types boxed to object
+            return ((MemberExpression)unaryExpression.Operand).Member.Name;
+        }
+
+        if (expression.Body is MemberExpression memberExpression)
+        {
+            // For reference types
+            return memberExpression.Member.Name;
+        }
+
+        throw new InvalidOperationException("Invalid expression");
+    }
+
+    public static ProjectionDefinition<T>? ProjectionBuilder<T>(this Expression<Func<T, object>>[] expression)
+    {
+        ProjectionDefinition<T>? projection = null;
+
+        if (expression.Length > 0)
+        {
+            var projectionBuilder = Builders<T>.Projection;
+            var bsonProjection = new BsonDocument();
+
+            // Convert the expressions to field names
+            foreach (var field in expression)
+            {
+                var fieldName = field.GetFieldName();
+                bsonProjection.Add(fieldName, 1);
+            }
+
+            projection = projectionBuilder.Combine(bsonProjection);
+        }
+        return projection;
+    } 
 }
