@@ -1,0 +1,12 @@
+﻿@using Microsoft.AspNetCore.OutputCaching
+@attribute [Route("/")]
+@attribute [OutputCache(Duration = 60)]
+@layout BlankLayout
+
+<PageTitle>@Title</PageTitle>
+
+<HeadContent>
+    <HeadContentContainer MetaProperty="@Metadata"/>
+</HeadContent>
+
+@PageRenderFragment

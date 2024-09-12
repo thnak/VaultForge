@@ -51,7 +51,7 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
 
     public IAsyncEnumerable<FileInfoModel> GetAllAsync(CancellationToken cancellationTokenSource)
     {
-        throw new NotImplementedException();
+        return da.GetAllAsync(cancellationTokenSource);
     }
 
     public (bool, string) UpdateProperties(string key, Dictionary<string, dynamic> properties)

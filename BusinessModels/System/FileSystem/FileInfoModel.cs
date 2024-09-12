@@ -54,14 +54,17 @@ public class FileInfoModel
     /// </summary>
     [Key(10)]
     public string RelativePath { get; set; } = string.Empty;
+    
+    [Key(11)] public string RootFolder { get; set; } = string.Empty;
 
-    [Key(11)] public string Thumbnail { get; set; } = string.Empty;
 
-    [Key(12)] public FileContentType Type { get; set; }
+    [Key(12)] public string Thumbnail { get; set; } = string.Empty;
+
+    [Key(13)] public FileContentType Type { get; set; }
 
     #region Font-End Properties
 
-    [BsonIgnore] [Key(13)] public FileMetadataModel Metadata { get; set; } = new();
+    [BsonIgnore] [Key(14)] public FileMetadataModel Metadata { get; set; } = new();
 
     #endregion
 

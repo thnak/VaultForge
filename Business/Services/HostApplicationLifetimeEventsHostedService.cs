@@ -29,15 +29,16 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
     private void OnStarted()
     {
         logger.LogInformation("OnStarted");
+        var cancelToken = _cancellationTokenSource.Token;
         using var scope = serviceScopeFactory.CreateScope();
-        scope.ServiceProvider.GetService<IUserDataLayer>()!.InitializeAsync();
-        scope.ServiceProvider.GetService<IFileSystemDatalayer>()?.InitializeAsync();
-        scope.ServiceProvider.GetService<IFolderSystemDatalayer>()?.InitializeAsync();
-        scope.ServiceProvider.GetService<IAdvertisementDataLayer>()?.InitializeAsync();
+        scope.ServiceProvider.GetService<IUserDataLayer>()!.InitializeAsync(cancelToken);
+        scope.ServiceProvider.GetService<IFileSystemDatalayer>()?.InitializeAsync(cancelToken);
+        scope.ServiceProvider.GetService<IFolderSystemDatalayer>()?.InitializeAsync(cancelToken);
+        scope.ServiceProvider.GetService<IAdvertisementDataLayer>()?.InitializeAsync(cancelToken);
         var thumbnailService = scope.ServiceProvider.GetService<IThumbnailService>();
         if (thumbnailService != null)
         {
-            _ = Task.Run(() => thumbnailService.StartAsync(_cancellationTokenSource.Token));
+            _ = Task.Run(() => thumbnailService.StartAsync(cancelToken), cancelToken);
         }
     }
 

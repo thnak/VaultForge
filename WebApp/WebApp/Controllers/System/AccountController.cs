@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.RateLimiting;
 using Protector;
 using Protector.Utils;
 
-namespace WebApp.Controllers;
+namespace WebApp.Controllers.System;
 
 [Route("api/[controller]")]
 [ApiController]

@@ -202,7 +202,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         return _dataDb.Find(x => x.Title == title && x.Language == lang).FirstOrDefault();
     }
 
-    public async Task<(bool, string)> InitializeAsync()
+    public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
         try
         {
@@ -210,7 +210,34 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
                 new CreateIndexModel<ArticleModel>(Builders<ArticleModel>.IndexKeys.Ascending(x => x.Title).Ascending(x => x.Language), new CreateIndexOptions { Unique = true }),
                 new CreateIndexModel<ArticleModel>(Builders<ArticleModel>.IndexKeys.Ascending(x => x.PublishDate), new CreateIndexOptions { Unique = false }),
                 new CreateIndexModel<ArticleModel>(Builders<ArticleModel>.IndexKeys.Text(x => x.Title).Text(x => x.Summary), new CreateIndexOptions { Name = SearchIndexString })
-            ]);
+            ], cancellationToken);
+
+            const string key = "Index";
+            foreach (var culture in AllowedCulture.SupportedCultures)
+            {
+                ArticleModel? model = Get(key, culture.Name);
+                if (model == null)
+                {
+                    model = new ArticleModel()
+                    {
+                        Author = "System",
+                        Title = "Index",
+                        Language = culture.Name,
+                        ModifiedDate = DateTime.Now,
+                        PublishDate = DateTime.Now
+                    };
+                    var result = await CreateAsync(model, cancellationToken);
+                    if (result.Item1)
+                    {
+                        logger.LogInformation($"[Initialize] Article: {model.Title} - {model.PublishDate} - {model.Language}]");
+                    }
+                    else
+                    {
+                        logger.LogInformation($"[Initialize Failed] Article: {model.Title} - {model.ModifiedDate} - {model.Language}]");
+                        logger.LogError(result.Item2);
+                    }
+                }
+            }
 
             logger.LogInformation(@"[Init] Article data layer");
             return (true, string.Empty);

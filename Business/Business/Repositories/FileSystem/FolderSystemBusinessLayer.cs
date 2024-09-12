@@ -58,12 +58,12 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
 
     public Task<(FolderInfoModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        return folderSystemService.GetAllAsync(page, size, cancellationTokenSource);
     }
 
     public IAsyncEnumerable<FolderInfoModel> GetAllAsync(CancellationToken cancellationTokenSource)
     {
-        throw new NotImplementedException();
+        return folderSystemService.GetAllAsync(cancellationTokenSource);
     }
 
     public (bool, string) UpdateProperties(string key, Dictionary<string, dynamic> properties)

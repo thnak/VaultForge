@@ -20,27 +20,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp/Components/Pages/Test.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp/Components/Pages/Test.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/WebApp/Components/Pages/Test.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp/Components/Pages/LandPage.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp/Components/Pages/LandPage.razor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp/Components/Pages/LandPage.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/WebApp/Controllers/ContentServing/FixContentController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/Authenticate.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Authenticate.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/PageRoutes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/PageRoutes.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/Container/HeadContentContainer.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Components/Container/HeadContentContainer.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/AppBar.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/AppBar.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/AppBar.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Layout/AppBar.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FileSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FileSystemBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Interfaces/IMongoDataInitializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Interfaces/IMongoDataInitializer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Advertisement/AdvertisementDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Advertisement/AdvertisementDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/MongoDataInitializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/MongoDataInitializer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/HostApplicationLifetimeEventsHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostApplicationLifetimeEventsHostedService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FileInfoModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FileInfoModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FolderInfoModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FolderInfoModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Account/SignInPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Account/SignInPage.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/NotFoundPage.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/NotFoundPage.razor.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/ContentManagementSystem/ContentManagement/ManagementPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/ContentManagementSystem/ContentManagement/ManagementPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/ContentManagementSystem/Editor/ContentCreatorPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/ContentManagementSystem/Editor/ContentCreatorPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/ContentManagementSystem/Preview/PreviewContentPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/ContentManagementSystem/Preview/PreviewContentPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/AccessDeniedPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/AccessDeniedPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/ErrorPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/ErrorPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/NotFoundPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/DefaultPages/NotFoundPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Home.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Home.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Pages/Home.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/Routes.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.Client/WebApp.Client.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Components/App.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Components/App.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Components/Pages/Error.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Components/Pages/Error.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Components/_Imports.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Components/_Imports.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Controllers/AccountController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Controllers/System/AccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Controllers/CultureController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Controllers/System/CultureController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Controllers/FileController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Controllers/ContentServing/FileController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp/Controllers/Streaming/VideoController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp/Controllers/Streaming/VideoController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,9 +109,7 @@
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Threading/Tasks/Task.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Security.Cryptography/src/System/Security/Cryptography/X509Certificates/CertificatePal.Windows.Import.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Text.Json/src/System/Text/Json/Serialization/JsonConverterOfT.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8c938872ea46f09bfea168eeb5f111556fbd2c5e818e2eed82d4846fd1469/OllamaToolsAttribute.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a360c7589ee5ab6c7d46272e049ae4c2b1551db251193539f9ad85ccd7b15/ComponentState.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/cb84b0c6366bb07e1e6831d31e321b5f2dee508d7317ddd6e8e62b6ce82b5d/Enum.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/918aa32966267955c2bcd6ecbee8af7ab7d84b7cb6cef6443c7b1cd33546d6e/AuthorizationMiddleware.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -129,7 +135,7 @@
     &quot;Publish to folder.ResApi.executor&quot;: &quot;Run&quot;,
     &quot;Publish to folder.Unnamed.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;make-render-mode-greater&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/thanh/Downloads&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
@@ -379,6 +385,8 @@
       <workItem from="1724978657166" duration="419000" />
       <workItem from="1724979102434" duration="1679000" />
       <workItem from="1725247538822" duration="2788000" />
+      <workItem from="1726100351798" duration="95000" />
+      <workItem from="1726100464276" duration="11475000" />
     </task>
     <task id="LOCAL-00001" summary="remove anti token">
       <option name="closed" value="true" />
@@ -820,6 +828,38 @@
     <MESSAGE value="small fix" />
     <MESSAGE value="update" />
     <option name="LAST_COMMIT_MESSAGE" value="update" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/WebApp/WebApp/MiddleWares/Middleware.cs</url>
+          <line>66</line>
+          <properties documentPath="C:\Users\thanh\Git\CodeWithMe\WebApp\WebApp\MiddleWares\Middleware.cs" containingFunctionPresentation="Method 'HandleExceptionAsync'">
+            <startOffsets>
+              <option value="2608" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2745" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/WebApp/WebApp/MiddleWares/Middleware.cs</url>
+          <line>59</line>
+          <properties documentPath="C:\Users\thanh\Git\CodeWithMe\WebApp\WebApp\MiddleWares\Middleware.cs" containingFunctionPresentation="Method 'HandleExceptionAsync'">
+            <startOffsets>
+              <option value="2358" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2599" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

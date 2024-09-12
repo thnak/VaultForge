@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
 using Protector.Utils;
 
-namespace WebApp.Controllers;
+namespace WebApp.Controllers.ContentServing;
 
 [AllowAnonymous]
 [IgnoreAntiforgeryToken]

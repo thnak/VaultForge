@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApp.Controllers;
+namespace WebApp.Controllers.System;
 
 [Route("[controller]/[action]")]
 public class CultureController : Controller

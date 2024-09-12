@@ -20,7 +20,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
     private readonly SemaphoreSlim _semaphore = new(1, 1);
 
 
-    public async Task<(bool, string)> InitializeAsync()
+    public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
         try
         {
@@ -36,7 +36,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
             };
 
             var searchIndexModel = new CreateIndexModel<UserModel>(searchIndexKeys, searchIndexOptions);
-            await _dataDb.Indexes.CreateManyAsync([indexModel, searchIndexModel]);
+            await _dataDb.Indexes.CreateManyAsync([indexModel, searchIndexModel], cancellationToken);
 
             var defaultUser = "System".ComputeSha256Hash();
             var system = Get(defaultUser);
@@ -49,7 +49,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
                     Password = passWord.ComputeSha256Hash(),
                     JoinDate = DateTime.UtcNow,
                     Roles = [..PolicyNamesAndRoles.System.Roles.Split(",")]
-                });
+                }, cancellationToken);
             }
 
             defaultUser = "Anonymous".ComputeSha256Hash();
@@ -62,7 +62,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
                     UserName = defaultUser,
                     Password = passWord.ComputeSha256Hash(),
                     JoinDate = DateTime.UtcNow
-                });
+                }, cancellationToken);
             }
 
             logger.LogInformation(@"[Init] User data layer");

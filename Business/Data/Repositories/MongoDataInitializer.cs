@@ -4,7 +4,7 @@ namespace Business.Data.Repositories;
 
 public class MongoDataInitializer : IMongoDataInitializer
 {
-    public Task<(bool, string)> InitializeAsync()
+    public Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

@@ -19,9 +19,9 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     private readonly SemaphoreSlim _semaphore = new(1, 1);
 
 
-    public async Task<(bool, string)> InitializeAsync()
+    public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync();
+        await _semaphore.WaitAsync(cancellationToken);
         try
         {
             var keys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RelativePath).Ascending(x => x.Username);
@@ -34,8 +34,22 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             };
 
             var searchIndexModel = new CreateIndexModel<FolderInfoModel>(searchIndexKeys, searchIndexOptions);
-            await _dataDb.Indexes.CreateOneAsync(searchIndexModel);
-            await _dataDb.Indexes.CreateOneAsync(indexModel);
+            await _dataDb.Indexes.CreateManyAsync([indexModel, searchIndexModel], cancellationToken: cancellationToken);
+
+            var anonymousUser = "Anonymous".ComputeSha256Hash();
+            var wallPaperFolder = new FolderInfoModel()
+            {
+                Username = anonymousUser,
+                FolderName = "WallPaper",
+            };
+            var anonymousFolder = new FolderInfoModel()
+            {
+                Username = anonymousUser,
+                RelativePath = "/",
+                ModifiedDate = DateTime.Now,
+                FolderName = "Root",
+            };
+
 
             logger.LogInformation(@"[Init] Folder info data layer");
             return (true, string.Empty);
@@ -53,8 +67,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     public FolderInfoModel? Get(string username, string relative, bool hashed = true)
     {
         username = hashed ? username : username.ComputeSha256Hash();
-        var filter = Builders<FolderInfoModel>.Filter.Eq(x => x.RelativePath, relative);
-        filter &= Builders<FolderInfoModel>.Filter.Eq(x => x.Username, username);
+        var filter = Builders<FolderInfoModel>.Filter.Where(x => x.RelativePath == relative && x.Username == username || x.Username == username && x.Username == relative);
         if (ObjectId.TryParse(relative, out ObjectId id))
         {
             filter |= Builders<FolderInfoModel>.Filter.Eq(x => x.Id, id);
@@ -106,8 +119,8 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
                 }
             } // Limit the number of results
         };
-        var searchResults = await _dataDb.AggregateAsync<FolderInfoModel>(pipeline, null, cancellationToken );
-        while (await searchResults.MoveNextAsync(cancellationToken ))
+        var searchResults = await _dataDb.AggregateAsync<FolderInfoModel>(pipeline, null, cancellationToken);
+        while (await searchResults.MoveNextAsync(cancellationToken))
             foreach (var user in searchResults.Current)
                 if (user != default)
                     yield return user;
@@ -169,9 +182,17 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FolderInfoModel> GetAllAsync(CancellationToken cancellationTokenSource)
+    public async IAsyncEnumerable<FolderInfoModel> GetAllAsync([EnumeratorCancellation] CancellationToken cancellationTokenSource)
     {
-        throw new NotImplementedException();
+        var filter = Builders<FolderInfoModel>.Filter.Empty;
+        var cursor = await _dataDb.FindAsync(filter, cancellationToken: cancellationTokenSource);
+        while (await cursor.MoveNextAsync(cancellationTokenSource))
+        {
+            foreach (var model in cursor.Current)
+            {
+                yield return model;
+            }
+        }
     }
 
 

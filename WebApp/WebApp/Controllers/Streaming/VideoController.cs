@@ -14,7 +14,7 @@ public class VideoController : ControllerBase
     {
         fileName = fileName.DecodeBase64String();
         var filePath = Path.Combine("C:/Users/thanh/Downloads", fileName);
-        if (!System.IO.File.Exists(filePath)) return NotFound();
+        if (!global::System.IO.File.Exists(filePath)) return NotFound();
         var cd = new ContentDisposition
         {
             FileName = fileName,

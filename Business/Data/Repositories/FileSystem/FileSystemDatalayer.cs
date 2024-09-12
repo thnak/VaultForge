@@ -18,9 +18,9 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
     private readonly IMongoCollection<FileMetadataModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileMetadataModel>("FileMetaData");
     private readonly SemaphoreSlim _semaphore = new(1, 1);
 
-    public async Task<(bool, string)> InitializeAsync()
+    public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync();
+        await _semaphore.WaitAsync(cancellationToken);
         try
         {
             var absolutePathKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath);
@@ -34,13 +34,13 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             };
 
             var searchIndexModel = new CreateIndexModel<FileInfoModel>(searchIndexKeys, searchIndexOptions);
-            await _fileDataDb.Indexes.CreateManyAsync([searchIndexModel, absolutePathIndexModel]);
+            await _fileDataDb.Indexes.CreateManyAsync([searchIndexModel, absolutePathIndexModel], cancellationToken);
 
             logger.LogInformation(@"[Init] File info data layer");
 
             var metaKey = Builders<FileMetadataModel>.IndexKeys.Ascending(x => x.ThumbnailAbsolutePath);
             var metaIndexModel = new CreateIndexModel<FileMetadataModel>(metaKey, new CreateIndexOptions { Unique = true });
-            await _fileMetaDataDataDb.Indexes.CreateOneAsync(metaIndexModel);
+            await _fileMetaDataDataDb.Indexes.CreateOneAsync(metaIndexModel, cancellationToken: cancellationToken);
 
             return (true, string.Empty);
         }
@@ -134,9 +134,17 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FileInfoModel> GetAllAsync(CancellationToken cancellationTokenSource)
+    public async IAsyncEnumerable<FileInfoModel> GetAllAsync([EnumeratorCancellation] CancellationToken cancellationTokenSource)
     {
-        throw new NotImplementedException();
+        var filter = Builders<FileInfoModel>.Filter.Empty;
+        var cursor = await _fileDataDb.FindAsync(filter, cancellationToken: cancellationTokenSource);
+        while (await cursor.MoveNextAsync(cancellationTokenSource))
+        {
+            foreach (var model in cursor.Current)
+            {
+                yield return model;
+            }
+        }
     }
 
 
