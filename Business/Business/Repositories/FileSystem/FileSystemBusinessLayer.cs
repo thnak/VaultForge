@@ -54,9 +54,9 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
         return da.GetAllAsync(cancellationTokenSource);
     }
 
-    public (bool, string) UpdateProperties(string key, Dictionary<string, dynamic> properties)
+    public Task<(bool, string)> UpdatePropertiesAsync(string key, Dictionary<Expression<Func<FileInfoModel, object>>, object> updates, CancellationToken cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        return da.UpdatePropertiesAsync(key, updates, cancellationTokenSource);
     }
 
     public Task<(bool, string)> CreateAsync(FileInfoModel model, CancellationToken cancellationToken = default)

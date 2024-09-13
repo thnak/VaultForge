@@ -66,9 +66,9 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return folderSystemService.GetAllAsync(cancellationTokenSource);
     }
 
-    public (bool, string) UpdateProperties(string key, Dictionary<string, dynamic> properties)
+    public Task<(bool, string)> UpdatePropertiesAsync(string key, Dictionary<Expression<Func<FolderInfoModel, object>>, object> updates, CancellationToken cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        return folderSystemService.UpdatePropertiesAsync(key, updates, cancellationTokenSource);
     }
 
     public Task<(bool, string)> CreateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)

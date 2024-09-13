@@ -52,7 +52,7 @@ public interface IDataLayerRepository<T> where T : class
     IAsyncEnumerable<T?> GetAsync(List<string> keys, CancellationToken cancellationTokenSource = default);
     Task<(T[], long)> GetAllAsync(int page, int size, CancellationToken cancellationTokenSource = default);
     IAsyncEnumerable<T> GetAllAsync(CancellationToken cancellationTokenSource);
-    (bool, string) UpdateProperties(string key, Dictionary<string, dynamic> properties);
+    Task<(bool, string)> UpdatePropertiesAsync(string key, Dictionary<Expression<Func<T, object>>, object> updates, CancellationToken cancellationTokenSource = default);
     Task<(bool, string)> CreateAsync(T model, CancellationToken cancellationTokenSource = default);
     IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<T> models, CancellationToken cancellationTokenSource = default);
     Task<(bool, string)> UpdateAsync(T model, CancellationToken cancellationTokenSource = default);

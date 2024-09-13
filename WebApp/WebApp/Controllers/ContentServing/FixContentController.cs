@@ -44,8 +44,9 @@ public class FixContentController(IFileSystemBusinessLayer fileServe, IFolderSys
                     folder.RootFolder = rootFolder.Id.ToString();
                 }
 
+                var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount - 1, CancellationToken = cancelToken };
 
-                await Parallel.ForEachAsync(folder.Contents, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount - 1, CancellationToken = cancelToken }, async (folderContent, token) =>
+                async ValueTask Body(FolderContent folderContent, CancellationToken token)
                 {
                     if (folderContent is { Type: FolderContentType.File or FolderContentType.DeletedFile or FolderContentType.HiddenFile })
                     {
@@ -54,7 +55,10 @@ public class FixContentController(IFileSystemBusinessLayer fileServe, IFolderSys
                             await UpdateFile(file, folder, token);
                         }
                     }
-                });
+                }
+
+
+                await Parallel.ForEachAsync(folder.Contents, parallelOptions, Body);
 
 
                 var folderUpdateResult = await folderServe.UpdateAsync(folder, cancelToken);

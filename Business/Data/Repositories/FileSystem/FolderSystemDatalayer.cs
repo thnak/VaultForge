@@ -196,9 +196,53 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     }
 
 
-    public (bool, string) UpdateProperties(string key, Dictionary<string, dynamic> properties)
+    public async Task<(bool, string)> UpdatePropertiesAsync(string key, Dictionary<Expression<Func<FolderInfoModel, object>>, object> updates, CancellationToken cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _semaphore.WaitAsync(cancellationTokenSource);
+
+            ObjectId.TryParse(key, out var id);
+            var filter = Builders<FolderInfoModel>.Filter.Eq(f => f.Id, id);
+
+            // Build the update definition by combining multiple updates
+            var updateDefinitionBuilder = Builders<FolderInfoModel>.Update;
+            var updateDefinitions = new List<UpdateDefinition<FolderInfoModel>>();
+
+            if (updates.Any())
+            {
+                foreach (var update in updates)
+                {
+                    var fieldName = update.Key.GetFieldName();
+                    var fieldValue = update.Value;
+
+                    // Add the field-specific update to the list
+                    updateDefinitions.Add(updateDefinitionBuilder.Set(fieldName, fieldValue));
+                }
+
+                // Combine all update definitions into one
+                var combinedUpdate = updateDefinitionBuilder.Combine(updateDefinitions);
+
+                await _dataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationTokenSource);
+            }
+            else
+            {
+                var model = Get(key);
+                if (model == null) return (false, AppLang.File_could_not_be_found);
+                await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationTokenSource);
+            }
+
+            return (true, AppLang.Update_successfully);
+        }
+        catch (OperationCanceledException e)
+        {
+            logger.LogError(e, null);
+            return (false, e.Message);
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
     }
 
     public async Task<(bool, string)> CreateAsync(FolderInfoModel model, CancellationToken cancellationTokenSource = default)

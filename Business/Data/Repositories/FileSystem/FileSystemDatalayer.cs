@@ -147,10 +147,53 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         }
     }
 
-
-    public (bool, string) UpdateProperties(string key, Dictionary<string, dynamic> properties)
+    public async Task<(bool, string)> UpdatePropertiesAsync(string key, Dictionary<Expression<Func<FileInfoModel, object>>, object> updates, CancellationToken cancellationTokenSource = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _semaphore.WaitAsync(cancellationTokenSource);
+
+            ObjectId.TryParse(key, out var id);
+            var filter = Builders<FileInfoModel>.Filter.Eq(f => f.Id, id);
+
+            // Build the update definition by combining multiple updates
+            var updateDefinitionBuilder = Builders<FileInfoModel>.Update;
+            var updateDefinitions = new List<UpdateDefinition<FileInfoModel>>();
+
+            if (updates.Any())
+            {
+                foreach (var update in updates)
+                {
+                    var fieldName = update.Key.GetFieldName();
+                    var fieldValue = update.Value;
+
+                    // Add the field-specific update to the list
+                    updateDefinitions.Add(updateDefinitionBuilder.Set(fieldName, fieldValue));
+                }
+
+                // Combine all update definitions into one
+                var combinedUpdate = updateDefinitionBuilder.Combine(updateDefinitions);
+
+                await _fileDataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationTokenSource);
+            }
+            else
+            {
+                var model = Get(key);
+                if (model == null) return (false, AppLang.File_could_not_be_found);
+                await _fileDataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationTokenSource);
+            }
+
+            return (true, AppLang.Update_successfully);
+        }
+        catch (OperationCanceledException e)
+        {
+            logger.LogError(e, null);
+            return (false, e.Message);
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
     }
 
     public async Task<(bool, string)> CreateAsync(FileInfoModel model, CancellationToken cancellationTokenSource = default)

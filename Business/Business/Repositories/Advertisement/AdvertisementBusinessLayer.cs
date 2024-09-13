@@ -53,7 +53,7 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
         throw new NotImplementedException();
     }
 
-    public (bool, string) UpdateProperties(string key, Dictionary<string, dynamic> properties)
+    public Task<(bool, string)> UpdatePropertiesAsync(string key, Dictionary<Expression<Func<ArticleModel, object>>, object> updates, CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }

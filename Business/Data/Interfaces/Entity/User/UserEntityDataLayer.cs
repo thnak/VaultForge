@@ -71,7 +71,7 @@ public class UserEntityDataLayer(EntityDataContext entityDataContext) : IDataLay
         throw new NotImplementedException();
     }
 
-    public (bool, string) UpdateProperties(string key, Dictionary<string, dynamic> properties)
+    public Task<(bool, string)> UpdatePropertiesAsync(string key, Dictionary<Expression<Func<UserModel, object>>, object> updates, CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
     }
