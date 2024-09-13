@@ -27,7 +27,8 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build
-    - name: Publish
-      run: dotnet publish /home/thnak/git-actions/actions-runner/my-home-center-work/CodeWithMe/CodeWithMe/WebApp/WebApp/WebApp.csproj --runtime linux-x64 --self-contained true
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Publish
+      run: dotnet publish /home/thnak/git-actions/actions-runner/my-home-center-work/CodeWithMe/CodeWithMe/WebApp/WebApp/WebApp.csproj --runtime linux-x64 --self-contained true
+
