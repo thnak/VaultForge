@@ -22,6 +22,7 @@ using BusinessModels.General;
 using BusinessModels.Resources;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Services;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Options;
 using Protector.Certificates.Models;
 using WebApp.Authenticate;
@@ -159,6 +160,7 @@ public class Program
         #endregion
 
         builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new ObjectIdConverter()); });
+        builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddScoped<LazyAssemblyLoader>();
 
         var app = builder.Build();

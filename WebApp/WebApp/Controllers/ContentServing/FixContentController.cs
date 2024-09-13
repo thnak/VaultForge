@@ -17,55 +17,64 @@ public class FixContentController(IFileSystemBusinessLayer fileServe, IFolderSys
     public async Task<IActionResult> FixContent()
     {
         var cancelToken = HttpContext.RequestAborted;
-        await foreach (var folder in folderServe.GetAllAsync(cancelToken))
+        try
         {
-            var nameArray = folder.RelativePath.Split('/').ToList();
-            var currentIndex = nameArray.FindIndex(f => f == folder.FolderName);
-            if (currentIndex == -1)
+            await foreach (var folder in folderServe.GetAllAsync(cancelToken))
             {
-                logger.LogError($"[{folder.Id}] Folder {folder.FolderName} not found");
-                continue;
-            }
-
-            string parentRelativePath = nameArray.Count == 1 ? string.Empty : folder.RelativePath.Replace(folder.FolderName, "");
-
-            if (!string.IsNullOrEmpty(parentRelativePath))
-            {
-                parentRelativePath = parentRelativePath.TrimEnd('/');
-                var rootFolder = folderServe.Get(folder.Username, parentRelativePath);
-                if (rootFolder == null)
+                var nameArray = folder.RelativePath.Split('/').ToList();
+                var currentIndex = nameArray.FindIndex(f => f == folder.FolderName);
+                if (currentIndex == -1)
                 {
                     logger.LogError($"[{folder.Id}] Folder {folder.FolderName} not found");
                     continue;
                 }
 
-                folder.RootFolder = rootFolder.Id.ToString();
-            }
+                string parentRelativePath = nameArray.Count == 1 ? string.Empty : folder.RelativePath.Replace(folder.FolderName, "");
 
-
-            foreach (var folderContent in folder.Contents)
-            {
-                if (folderContent is { Type: FolderContentType.File or FolderContentType.DeletedFile or FolderContentType.HiddenFile })
+                if (!string.IsNullOrEmpty(parentRelativePath))
                 {
-                    await foreach (var file in fileServe.GetAllAsync(cancelToken))
+                    parentRelativePath = parentRelativePath.TrimEnd('/');
+                    var rootFolder = folderServe.Get(folder.Username, parentRelativePath);
+                    if (rootFolder == null)
                     {
-                        await UpdateFile(file, folder, cancelToken);
+                        logger.LogError($"[{folder.Id}] Folder {folder.FolderName} not found");
+                        continue;
                     }
+
+                    folder.RootFolder = rootFolder.Id.ToString();
+                }
+
+
+                await Parallel.ForEachAsync(folder.Contents, new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount - 1, CancellationToken = cancelToken }, async (folderContent, token) =>
+                {
+                    if (folderContent is { Type: FolderContentType.File or FolderContentType.DeletedFile or FolderContentType.HiddenFile })
+                    {
+                        await foreach (var file in fileServe.GetAllAsync(token))
+                        {
+                            await UpdateFile(file, folder, token);
+                        }
+                    }
+                });
+
+
+                var folderUpdateResult = await folderServe.UpdateAsync(folder, cancelToken);
+                if (folderUpdateResult.Item1)
+                {
+                    logger.LogInformation($"[{folder.Id}] Folder {folder.FolderName} updated");
+                }
+                else
+                {
+                    logger.LogError($"[{folder.Id}] Folder {folder.FolderName} not updated");
                 }
             }
 
-            var folderUpdateResult = await folderServe.UpdateAsync(folder, cancelToken);
-            if (folderUpdateResult.Item1)
-            {
-                logger.LogInformation($"[{folder.Id}] Folder {folder.FolderName} updated");
-            }
-            else
-            {
-                logger.LogError($"[{folder.Id}] Folder {folder.FolderName} not updated");
-            }
+            return Ok();
         }
-
-        return Ok();
+        catch (OperationCanceledException)
+        {
+            logger.LogInformation("Canceled");
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
     }
 
     private async Task UpdateFile(FileInfoModel file, FolderInfoModel folder, CancellationToken cancelToken)

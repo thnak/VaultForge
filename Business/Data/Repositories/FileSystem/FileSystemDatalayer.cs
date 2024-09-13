@@ -16,7 +16,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
     private const string SearchIndexString = "FileInfoSearchIndex";
     private readonly IMongoCollection<FileInfoModel> _fileDataDb = context.MongoDatabase.GetCollection<FileInfoModel>("FileInfo");
     private readonly IMongoCollection<FileMetadataModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileMetadataModel>("FileMetaData");
-    private readonly SemaphoreSlim _semaphore = new(1, 1);
+    private readonly SemaphoreSlim _semaphore = new(100, 1000);
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {

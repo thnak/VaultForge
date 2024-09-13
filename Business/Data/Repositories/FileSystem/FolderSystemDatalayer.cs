@@ -16,7 +16,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 {
     private const string SearchIndexString = "FolderInfoSearchIndex";
     private readonly IMongoCollection<FolderInfoModel> _dataDb = context.MongoDatabase.GetCollection<FolderInfoModel>("FolderInfo");
-    private readonly SemaphoreSlim _semaphore = new(1, 1);
+    private readonly SemaphoreSlim _semaphore = new(100, 1000);
 
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
