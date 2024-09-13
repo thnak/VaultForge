@@ -28,6 +28,6 @@ jobs:
     - name: Build
       run: dotnet build
     - name: Publish
-      run: dotnet publish /home/thnak/git-actions/actions-runner/my-home-center-work/CodeWithMe/CodeWithMe/WepApp/WepApp.csproj
+      run: dotnet publish /home/thnak/git-actions/actions-runner/my-home-center-work/CodeWithMe/CodeWithMe/WebApp/WebApp/WebApp.csproj
     - name: Test
       run: dotnet test --no-build --verbosity normal
