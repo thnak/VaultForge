@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using Business.Business.Interfaces.FileSystem;
 using Business.Data.Interfaces.FileSystem;
+using Business.Models;
 using BusinessModels.System.FileSystem;
 using MongoDB.Driver;
 
@@ -13,12 +14,12 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FileInfoModel> FindAsync(FilterDefinition<FileInfoModel> filter, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<FileInfoModel> FindAsync(FilterDefinition<FileInfoModel> filter, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FileInfoModel> FindAsync(string keyWord, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<FileInfoModel> FindAsync(string keyWord, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -39,24 +40,24 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
         return da.Get(key);
     }
 
-    public IAsyncEnumerable<FileInfoModel?> GetAsync(List<string> keys, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<FileInfoModel?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(FileInfoModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationTokenSource = default)
+    public Task<(FileInfoModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FileInfoModel> GetAllAsync(CancellationToken cancellationTokenSource)
+    public IAsyncEnumerable<FileInfoModel> GetAllAsync(CancellationToken cancellationToken)
     {
-        return da.GetAllAsync(cancellationTokenSource);
+        return da.GetAllAsync(cancellationToken);
     }
 
-    public Task<(bool, string)> UpdatePropertiesAsync(string key, Dictionary<Expression<Func<FileInfoModel, object>>, object> updates, CancellationToken cancellationTokenSource = default)
+    public Task<(bool, string)> UpdatePropertiesAsync(string key, FieldUpdate<FileInfoModel> updates, CancellationToken cancellationToken = default)
     {
-        return da.UpdatePropertiesAsync(key, updates, cancellationTokenSource);
+        return da.UpdatePropertiesAsync(key, updates, cancellationToken);
     }
 
     public Task<(bool, string)> CreateAsync(FileInfoModel model, CancellationToken cancellationToken = default)
@@ -64,9 +65,9 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
         return da.CreateAsync(model, cancellationToken);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FileInfoModel> models, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FileInfoModel> models, CancellationToken cancellationToken = default)
     {
-        return da.CreateAsync(models, cancellationTokenSource);
+        return da.CreateAsync(models, cancellationToken);
     }
 
     public Task<(bool, string)> UpdateAsync(FileInfoModel model, CancellationToken cancellationToken = default)

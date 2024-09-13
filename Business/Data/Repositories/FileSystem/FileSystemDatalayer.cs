@@ -2,9 +2,11 @@ using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.FileSystem;
+using Business.Models;
 using Business.Utils;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -55,7 +57,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         }
     }
 
-    public Task<long> GetDocumentSizeAsync(CancellationToken cancellationTokenSource = default)
+    public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -66,12 +68,12 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FileInfoModel> FindAsync(FilterDefinition<FileInfoModel> filter, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<FileInfoModel> FindAsync(FilterDefinition<FileInfoModel> filter, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FileInfoModel> FindAsync(string keyWord, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<FileInfoModel> FindAsync(string keyWord, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -124,21 +126,21 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         return _fileDataDb.Find(filter).Limit(1).FirstOrDefault();
     }
 
-    public IAsyncEnumerable<FileInfoModel?> GetAsync(List<string> keys, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<FileInfoModel?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(FileInfoModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationTokenSource = default)
+    public Task<(FileInfoModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public async IAsyncEnumerable<FileInfoModel> GetAllAsync([EnumeratorCancellation] CancellationToken cancellationTokenSource)
+    public async IAsyncEnumerable<FileInfoModel> GetAllAsync([EnumeratorCancellation] CancellationToken cancellationToken)
     {
         var filter = Builders<FileInfoModel>.Filter.Empty;
-        var cursor = await _fileDataDb.FindAsync(filter, cancellationToken: cancellationTokenSource);
-        while (await cursor.MoveNextAsync(cancellationTokenSource))
+        var cursor = await _fileDataDb.FindAsync(filter, cancellationToken: cancellationToken);
+        while (await cursor.MoveNextAsync(cancellationToken))
         {
             foreach (var model in cursor.Current)
             {
@@ -147,11 +149,11 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         }
     }
 
-    public async Task<(bool, string)> UpdatePropertiesAsync(string key, Dictionary<Expression<Func<FileInfoModel, object>>, object> updates, CancellationToken cancellationTokenSource = default)
+    public async Task<(bool, string)> UpdatePropertiesAsync(string key, FieldUpdate<FileInfoModel> updates, CancellationToken cancellationToken = default)
     {
         try
         {
-            await _semaphore.WaitAsync(cancellationTokenSource);
+            await _semaphore.WaitAsync(cancellationToken);
 
             ObjectId.TryParse(key, out var id);
             var filter = Builders<FileInfoModel>.Filter.Eq(f => f.Id, id);
@@ -164,7 +166,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             {
                 foreach (var update in updates)
                 {
-                    var fieldName = update.Key.GetFieldName();
+                    var fieldName = update.Key;
                     var fieldValue = update.Value;
 
                     // Add the field-specific update to the list
@@ -174,13 +176,13 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
                 // Combine all update definitions into one
                 var combinedUpdate = updateDefinitionBuilder.Combine(updateDefinitions);
 
-                await _fileDataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationTokenSource);
+                await _fileDataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
             }
             else
             {
                 var model = Get(key);
                 if (model == null) return (false, AppLang.File_could_not_be_found);
-                await _fileDataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationTokenSource);
+                await _fileDataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
             }
 
             return (true, AppLang.Update_successfully);
@@ -196,9 +198,9 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         }
     }
 
-    public async Task<(bool, string)> CreateAsync(FileInfoModel model, CancellationToken cancellationTokenSource = default)
+    public async Task<(bool, string)> CreateAsync(FileInfoModel model, CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationTokenSource);
+        await _semaphore.WaitAsync(cancellationToken);
         try
         {
             var file = Get(model.Id.ToString());
@@ -206,7 +208,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             {
                 model.CreatedDate = DateTime.UtcNow;
                 model.ModifiedDate = model.CreatedDate;
-                await _fileDataDb.InsertOneAsync(model, cancellationToken: cancellationTokenSource);
+                await _fileDataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
                 return (true, AppLang.Create_successfully);
             }
             else
@@ -225,14 +227,14 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         }
     }
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FileInfoModel> models, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FileInfoModel> models, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> UpdateAsync(FileInfoModel model, CancellationToken cancellationTokenSource = default)
+    public async Task<(bool, string)> UpdateAsync(FileInfoModel model, CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationTokenSource);
+        await _semaphore.WaitAsync(cancellationToken);
         try
         {
             var file = Get(model.Id.ToString());
@@ -245,7 +247,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
                 model.CreatedDate = DateTime.UtcNow;
                 model.ModifiedDate = model.CreatedDate;
                 var filter = Builders<FileInfoModel>.Filter.Eq(x => x.Id, model.Id);
-                await _fileDataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationTokenSource);
+                await _fileDataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
                 return (true, AppLang.Create_successfully);
             }
         }
@@ -261,11 +263,11 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
     }
 
 
-    public async IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FileInfoModel> models, [EnumeratorCancellation] CancellationToken cancellationTokenSource = default)
+    public async IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FileInfoModel> models, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        foreach (var file in models.TakeWhile(_ => cancellationTokenSource is not { IsCancellationRequested: true }))
+        foreach (var file in models.TakeWhile(_ => cancellationToken is not { IsCancellationRequested: true }))
         {
-            var result = await UpdateAsync(file, cancellationTokenSource);
+            var result = await UpdateAsync(file, cancellationToken);
             yield return (true, result.Item2, file.Id.ToString());
         }
 

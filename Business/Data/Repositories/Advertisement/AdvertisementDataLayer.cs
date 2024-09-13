@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.Advertisement;
+using Business.Models;
 using Business.Utils;
 using BusinessModels.Resources;
 using Microsoft.Extensions.Logging;
@@ -17,7 +18,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
     private readonly IMongoCollection<ArticleModel> _dataDb = context.MongoDatabase.GetCollection<ArticleModel>("Article");
     private readonly SemaphoreSlim _semaphore = new(1);
 
-    public Task<long> GetDocumentSizeAsync(CancellationToken cancellationTokenSource = default)
+    public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -27,12 +28,12 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<ArticleModel> FindAsync(FilterDefinition<ArticleModel> filter, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<ArticleModel> FindAsync(FilterDefinition<ArticleModel> filter, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<ArticleModel> FindAsync(string keyWord, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<ArticleModel> FindAsync(string keyWord, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -82,10 +83,10 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         return _dataDb.Find(x => x.Title == key).FirstOrDefault();
     }
 
-    public async IAsyncEnumerable<ArticleModel?> GetAsync(List<string> keys, [EnumeratorCancellation] CancellationToken cancellationTokenSource = default)
+    public async IAsyncEnumerable<ArticleModel?> GetAsync(List<string> keys, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationTokenSource);
-        foreach (var key in keys.TakeWhile(_ => cancellationTokenSource.IsCancellationRequested == false))
+        await _semaphore.WaitAsync(cancellationToken);
+        foreach (var key in keys.TakeWhile(_ => cancellationToken.IsCancellationRequested == false))
         {
             yield return Get(key);
         }
@@ -93,29 +94,29 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         _semaphore.Release();
     }
 
-    public async Task<(ArticleModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationTokenSource = default)
+    public async Task<(ArticleModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationToken = default)
     {
         var skip = page * size;
-        long totalCount = await _dataDb.CountDocumentsAsync(FilterDefinition<ArticleModel>.Empty, cancellationToken: cancellationTokenSource);
+        long totalCount = await _dataDb.CountDocumentsAsync(FilterDefinition<ArticleModel>.Empty, cancellationToken: cancellationToken);
         var data = await _dataDb.Find(FilterDefinition<ArticleModel>.Empty)
             .Skip(skip)
             .Limit(size)
-            .ToListAsync(cancellationTokenSource);
+            .ToListAsync(cancellationToken);
 
         return (data.ToArray(), totalCount);
     }
 
-    public IAsyncEnumerable<ArticleModel> GetAllAsync(CancellationToken cancellationTokenSource)
+    public IAsyncEnumerable<ArticleModel> GetAllAsync(CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
 
-    public async Task<(bool, string)> UpdatePropertiesAsync(string key, Dictionary<Expression<Func<ArticleModel, object>>, object> updates, CancellationToken cancellationTokenSource = default)
+    public async Task<(bool, string)> UpdatePropertiesAsync(string key, FieldUpdate<ArticleModel> updates, CancellationToken cancellationToken = default)
     {
         try
         {
-            await _semaphore.WaitAsync(cancellationTokenSource);
+            await _semaphore.WaitAsync(cancellationToken);
 
             ObjectId.TryParse(key, out var id);
             var filter = Builders<ArticleModel>.Filter.Eq(f => f.Id, id);
@@ -128,7 +129,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
             {
                 foreach (var update in updates)
                 {
-                    var fieldName = update.Key.GetFieldName();
+                    var fieldName = update.Key;
                     var fieldValue = update.Value;
 
                     // Add the field-specific update to the list
@@ -138,13 +139,13 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
                 // Combine all update definitions into one
                 var combinedUpdate = updateDefinitionBuilder.Combine(updateDefinitions);
 
-                await _dataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationTokenSource);
+                await _dataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
             }
             else
             {
                 var model = Get(key);
                 if (model == null) return (false, AppLang.File_could_not_be_found);
-                await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationTokenSource);
+                await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
             }
 
             return (true, AppLang.Update_successfully);
@@ -160,9 +161,9 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         }
     }
 
-    public async Task<(bool, string)> CreateAsync(ArticleModel model, CancellationToken cancellationTokenSource = default)
+    public async Task<(bool, string)> CreateAsync(ArticleModel model, CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationTokenSource);
+        await _semaphore.WaitAsync(cancellationToken);
         try
         {
             var file = Get(model.Id.ToString());
@@ -170,7 +171,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
             {
                 model.PublishDate = DateTime.UtcNow;
                 model.ModifiedDate = model.PublishDate;
-                await _dataDb.InsertOneAsync(model, cancellationToken: cancellationTokenSource);
+                await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
                 return (true, AppLang.Create_successfully);
             }
             else
@@ -189,18 +190,18 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
     }
 
 
-    public async IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<ArticleModel> models, [EnumeratorCancellation] CancellationToken cancellationTokenSource = default)
+    public async IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<ArticleModel> models, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        foreach (var model in models.TakeWhile(_ => cancellationTokenSource.IsCancellationRequested == false))
+        foreach (var model in models.TakeWhile(_ => cancellationToken.IsCancellationRequested == false))
         {
-            var result = await CreateAsync(model, cancellationTokenSource);
+            var result = await CreateAsync(model, cancellationToken);
             yield return (result.Item1, result.Item2, "");
         }
     }
 
-    public async Task<(bool, string)> UpdateAsync(ArticleModel model, CancellationToken cancellationTokenSource = default)
+    public async Task<(bool, string)> UpdateAsync(ArticleModel model, CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationTokenSource);
+        await _semaphore.WaitAsync(cancellationToken);
         try
         {
             var file = Get(model.Id.ToString());
@@ -213,7 +214,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
 
             model.ModifiedDate = DateTime.UtcNow;
             var filter = Builders<ArticleModel>.Filter.Eq(x => x.Id, model.Id);
-            await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationTokenSource);
+            await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
             return (true, AppLang.Update_successfully);
         }
         catch (MongoException e)
@@ -231,7 +232,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
     }
 
 
-    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<ArticleModel> models, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<ArticleModel> models, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

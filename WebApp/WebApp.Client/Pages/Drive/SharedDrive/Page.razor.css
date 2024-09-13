@@ -49,9 +49,10 @@
 }
 
 .file-item-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 8px;
 }
 
 .file-item-grid > .icon{
@@ -60,8 +61,6 @@
     align-items: center;
     font-size: 50%;
     flex: 1;
-    height: 100px;
-    width: 100px;
     overflow: hidden;
 }
 

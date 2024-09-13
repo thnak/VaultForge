@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Business.Business.Interfaces.Advertisement;
 using Business.Data.Interfaces.Advertisement;
+using Business.Models;
 using BusinessModels.Advertisement;
 using MongoDB.Driver;
 
@@ -13,12 +14,12 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<ArticleModel> FindAsync(FilterDefinition<ArticleModel> filter, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<ArticleModel> FindAsync(FilterDefinition<ArticleModel> filter, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<ArticleModel> FindAsync(string keyWord, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<ArticleModel> FindAsync(string keyWord, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -38,32 +39,32 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
         return dataLayer.Get(key);
     }
 
-    public IAsyncEnumerable<ArticleModel?> GetAsync(List<string> keys, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<ArticleModel?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(ArticleModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationTokenSource = default)
+    public Task<(ArticleModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationToken = default)
     {
-        return dataLayer.GetAllAsync(page, size, cancellationTokenSource);
+        return dataLayer.GetAllAsync(page, size, cancellationToken);
     }
 
-    public IAsyncEnumerable<ArticleModel> GetAllAsync(CancellationToken cancellationTokenSource)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<(bool, string)> UpdatePropertiesAsync(string key, Dictionary<Expression<Func<ArticleModel, object>>, object> updates, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<ArticleModel> GetAllAsync(CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> CreateAsync(ArticleModel model, CancellationToken cancellationTokenSource = default)
+    public Task<(bool, string)> UpdatePropertiesAsync(string key, FieldUpdate<ArticleModel> updates, CancellationToken cancellationToken = default)
     {
-        return dataLayer.CreateAsync(model, cancellationTokenSource);
+        return dataLayer.UpdatePropertiesAsync(key, updates, cancellationToken);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<ArticleModel> models, CancellationToken cancellationTokenSource = default)
+    public Task<(bool, string)> CreateAsync(ArticleModel model, CancellationToken cancellationToken = default)
+    {
+        return dataLayer.CreateAsync(model, cancellationToken);
+    }
+
+    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<ArticleModel> models, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

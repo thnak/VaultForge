@@ -1,4 +1,7 @@
-﻿using Business.Business.Interfaces.FileSystem;
+﻿using System.Collections.Concurrent;
+using System.Linq.Expressions;
+using Business.Business.Interfaces.FileSystem;
+using Business.Models;
 using Business.Services.Interfaces;
 using BusinessModels.General.EnumModel;
 using BusinessModels.System.FileSystem;
@@ -57,7 +60,6 @@ public class FixContentController(IFileSystemBusinessLayer fileServe, IFolderSys
                     }
                 }
 
-
                 await Parallel.ForEachAsync(folder.Contents, parallelOptions, Body);
 
 
@@ -91,9 +93,14 @@ public class FixContentController(IFileSystemBusinessLayer fileServe, IFolderSys
             var thumbFile = fileServe.Get(file.Thumbnail);
             if (thumbFile != null)
             {
-                thumbFile.RootFolder = folder.RootFolder;
-                thumbFile.RelativePath = folder.RelativePath + $"/{thumbFile.FileName}";
-                await fileServe.UpdateAsync(thumbFile, cancelToken);
+                FieldUpdate<FileInfoModel> fieldUpdate = new FieldUpdate<FileInfoModel>()
+                {
+                    { x => x.RelativePath, folder.RelativePath + $"/{thumbFile.FileName}" },
+                    { x => x.RootFolder, folder.RootFolder },
+                    { x => x.ModifiedDate, DateTime.Now }
+                };
+                await fileServe.UpdatePropertiesAsync(thumbFile.Id.ToString(), fieldUpdate, cancelToken);
+
                 if (!string.IsNullOrEmpty(thumbFile.Thumbnail))
                 {
                     await UpdateFile(thumbFile, folder, cancelToken);

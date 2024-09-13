@@ -404,7 +404,7 @@ public static class FileHelpers
 
             return defaultType ?? string.Empty;
         }
-        catch (Exception _)
+        catch (Exception)
         {
             return defaultType ?? string.Empty;
         }

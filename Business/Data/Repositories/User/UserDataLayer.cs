@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.User;
+using Business.Models;
 using Business.Utils;
 using BusinessModels.People;
 using BusinessModels.Resources;
@@ -74,9 +75,9 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         }
     }
 
-    public Task<long> GetDocumentSizeAsync(CancellationToken cancellationTokenSource = default)
+    public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
-        return _dataDb.EstimatedDocumentCountAsync(cancellationToken: cancellationTokenSource);
+        return _dataDb.EstimatedDocumentCountAsync(cancellationToken: cancellationToken);
     }
 
     public async IAsyncEnumerable<UserModel> Search(string queryString, int limit = 10,
@@ -126,12 +127,12 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
     }
 
     public IAsyncEnumerable<UserModel> FindAsync(FilterDefinition<UserModel> filter,
-        CancellationToken cancellationTokenSource = default)
+        CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<UserModel> FindAsync(string keyWord, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<UserModel> FindAsync(string keyWord, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -175,31 +176,31 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
     }
 
     public async IAsyncEnumerable<UserModel?> GetAsync(List<string> keys,
-        [EnumeratorCancellation] CancellationToken cancellationTokenSource = default)
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationTokenSource);
-        foreach (var userName in keys.TakeWhile(_ => !cancellationTokenSource.IsCancellationRequested))
+        await _semaphore.WaitAsync(cancellationToken);
+        foreach (var userName in keys.TakeWhile(_ => !cancellationToken.IsCancellationRequested))
             yield return Get(userName);
 
         _semaphore.Release();
     }
 
     public Task<(UserModel[], long)> GetAllAsync(int page, int size,
-        CancellationToken cancellationTokenSource = default)
+        CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<UserModel> GetAllAsync(CancellationToken cancellationTokenSource)
+    public IAsyncEnumerable<UserModel> GetAllAsync(CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> UpdatePropertiesAsync(string key, Dictionary<Expression<Func<UserModel, object>>, object> updates, CancellationToken cancellationTokenSource = default)
+    public async Task<(bool, string)> UpdatePropertiesAsync(string key, FieldUpdate<UserModel> updates, CancellationToken cancellationToken = default)
     {
         try
         {
-            await _semaphore.WaitAsync(cancellationTokenSource);
+            await _semaphore.WaitAsync(cancellationToken);
 
             ObjectId.TryParse(key, out var id);
             var filter = Builders<UserModel>.Filter.Eq(f => f.ObjectId, id);
@@ -212,7 +213,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
             {
                 foreach (var update in updates)
                 {
-                    var fieldName = update.Key.GetFieldName();
+                    var fieldName = update.Key;
                     var fieldValue = update.Value;
 
                     // Add the field-specific update to the list
@@ -222,13 +223,13 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
                 // Combine all update definitions into one
                 var combinedUpdate = updateDefinitionBuilder.Combine(updateDefinitions);
 
-                await _dataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationTokenSource);
+                await _dataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
             }
             else
             {
                 var model = Get(key);
                 if (model == null) return (false, AppLang.File_could_not_be_found);
-                await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationTokenSource);
+                await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
             }
 
             return (true, AppLang.Update_successfully);
@@ -244,15 +245,15 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         }
     }
 
-    public async Task<(bool, string)> CreateAsync(UserModel model, CancellationToken cancellationTokenSource = default)
+    public async Task<(bool, string)> CreateAsync(UserModel model, CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationTokenSource);
+        await _semaphore.WaitAsync(cancellationToken);
         try
         {
             if (string.IsNullOrWhiteSpace(model.UserName)) return (false, AppLang.User_name_is_not_valid);
             var query = _dataDb.Find(x => x.UserName == model.UserName).FirstOrDefault();
             if (query != null) return (false, AppLang.User_is_already_exists);
-            await _dataDb.InsertOneAsync(model, cancellationToken: cancellationTokenSource);
+            await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
             return (true, AppLang.Success);
         }
         catch (Exception ex)
@@ -267,19 +268,19 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
 
 
     public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<UserModel> models,
-        CancellationToken cancellationTokenSource = default)
+        CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> UpdateAsync(UserModel model, CancellationToken cancellationTokenSource = default)
+    public async Task<(bool, string)> UpdateAsync(UserModel model, CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationTokenSource);
+        await _semaphore.WaitAsync(cancellationToken);
         try
         {
             if (Get(model.UserName) == null) return (false, AppLang.User_is_not_exists);
             var filter = Builders<UserModel>.Filter.Eq(x => x.UserName, model.UserName);
-            var result = await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationTokenSource);
+            var result = await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
             if (result.IsAcknowledged) return (true, AppLang.Success);
 
             return (false, AppLang.User_update_failed);
@@ -296,7 +297,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
 
 
     public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<UserModel> models,
-        CancellationToken cancellationTokenSource = default)
+        CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

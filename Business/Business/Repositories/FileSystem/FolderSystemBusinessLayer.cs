@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.User;
 using Business.Data.Interfaces.FileSystem;
+using Business.Models;
 using BusinessModels.General;
 using BusinessModels.General.EnumModel;
 using BusinessModels.People;
@@ -26,14 +27,14 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return folderSystemService.Search(queryString, limit, cancellationToken);
     }
 
-    public IAsyncEnumerable<FolderInfoModel> FindAsync(FilterDefinition<FolderInfoModel> filter, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<FolderInfoModel> FindAsync(FilterDefinition<FolderInfoModel> filter, CancellationToken cancellationToken = default)
     {
-        return folderSystemService.FindAsync(filter, cancellationTokenSource);
+        return folderSystemService.FindAsync(filter, cancellationToken);
     }
 
-    public IAsyncEnumerable<FolderInfoModel> FindAsync(string keyWord, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<FolderInfoModel> FindAsync(string keyWord, CancellationToken cancellationToken = default)
     {
-        return folderSystemService.FindAsync(keyWord, cancellationTokenSource);
+        return folderSystemService.FindAsync(keyWord, cancellationToken);
     }
 
     public IAsyncEnumerable<FolderInfoModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
@@ -51,24 +52,24 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return folderSystemService.Get(key);
     }
 
-    public IAsyncEnumerable<FolderInfoModel?> GetAsync(List<string> keys, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<FolderInfoModel?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(FolderInfoModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationTokenSource = default)
+    public Task<(FolderInfoModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationToken = default)
     {
-        return folderSystemService.GetAllAsync(page, size, cancellationTokenSource);
+        return folderSystemService.GetAllAsync(page, size, cancellationToken);
     }
 
-    public IAsyncEnumerable<FolderInfoModel> GetAllAsync(CancellationToken cancellationTokenSource)
+    public IAsyncEnumerable<FolderInfoModel> GetAllAsync(CancellationToken cancellationToken)
     {
-        return folderSystemService.GetAllAsync(cancellationTokenSource);
+        return folderSystemService.GetAllAsync(cancellationToken);
     }
 
-    public Task<(bool, string)> UpdatePropertiesAsync(string key, Dictionary<Expression<Func<FolderInfoModel, object>>, object> updates, CancellationToken cancellationTokenSource = default)
+    public Task<(bool, string)> UpdatePropertiesAsync(string key, FieldUpdate<FolderInfoModel>   updates, CancellationToken cancellationToken = default)
     {
-        return folderSystemService.UpdatePropertiesAsync(key, updates, cancellationTokenSource);
+        return folderSystemService.UpdatePropertiesAsync(key, updates, cancellationToken);
     }
 
     public Task<(bool, string)> CreateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
@@ -76,9 +77,9 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return folderSystemService.CreateAsync(model, cancellationToken);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FolderInfoModel> models, CancellationToken cancellationTokenSource = default)
+    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FolderInfoModel> models, CancellationToken cancellationToken = default)
     {
-        return folderSystemService.CreateAsync(models, cancellationTokenSource);
+        return folderSystemService.CreateAsync(models, cancellationToken);
     }
 
     public Task<(bool, string)> UpdateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)

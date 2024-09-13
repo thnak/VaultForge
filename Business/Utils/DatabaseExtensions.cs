@@ -30,6 +30,20 @@ public static class DatabaseExtensions
         throw new InvalidOperationException("Invalid expression");
     }
 
+    public static string GetFieldName<TModel, TProperty>(this Expression<Func<TModel, TProperty>> expression)
+    {
+        if (expression.Body is MemberExpression memberExpression)
+        {
+            return memberExpression.Member.Name;
+        }
+        else if (expression.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression unaryMemberExpression)
+        {
+            return unaryMemberExpression.Member.Name;
+        }
+
+        throw new InvalidOperationException("Invalid expression");
+    }
+    
     public static ProjectionDefinition<T>? ProjectionBuilder<T>(this Expression<Func<T, object>>[] expression)
     {
         ProjectionDefinition<T>? projection = null;
