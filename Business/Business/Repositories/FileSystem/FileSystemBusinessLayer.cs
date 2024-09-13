@@ -55,9 +55,9 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
         return da.GetAllAsync(cancellationToken);
     }
 
-    public Task<(bool, string)> UpdatePropertiesAsync(string key, FieldUpdate<FileInfoModel> updates, CancellationToken cancellationToken = default)
+    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<FileInfoModel> updates, CancellationToken cancellationToken = default)
     {
-        return da.UpdatePropertiesAsync(key, updates, cancellationToken);
+        return da.UpdateAsync(key, updates, cancellationToken);
     }
 
     public Task<(bool, string)> CreateAsync(FileInfoModel model, CancellationToken cancellationToken = default)

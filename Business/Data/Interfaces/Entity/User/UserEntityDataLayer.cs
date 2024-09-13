@@ -72,7 +72,7 @@ public class UserEntityDataLayer(EntityDataContext entityDataContext) : IDataLay
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> UpdatePropertiesAsync(string key, FieldUpdate<UserModel> updates, CancellationToken cancellationToken = default)
+    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<UserModel> updates, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

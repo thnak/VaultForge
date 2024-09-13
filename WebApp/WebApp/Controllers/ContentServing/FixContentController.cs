@@ -99,7 +99,7 @@ public class FixContentController(IFileSystemBusinessLayer fileServe, IFolderSys
                     { x => x.RootFolder, folder.RootFolder },
                     { x => x.ModifiedDate, DateTime.Now }
                 };
-                await fileServe.UpdatePropertiesAsync(thumbFile.Id.ToString(), fieldUpdate, cancelToken);
+                await fileServe.UpdateAsync(thumbFile.Id.ToString(), fieldUpdate, cancelToken);
 
                 if (!string.IsNullOrEmpty(thumbFile.Thumbnail))
                 {

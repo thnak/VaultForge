@@ -17,10 +17,11 @@ public interface IBusinessLayerRepository<T> where T : class
     IAsyncEnumerable<T?> GetAsync(List<string> keys, CancellationToken cancellationToken = default);
     Task<(T[], long)> GetAllAsync(int page, int size, CancellationToken cancellationToken = default);
     IAsyncEnumerable<T> GetAllAsync(CancellationToken cancellationToken);
-    Task<(bool, string)> UpdatePropertiesAsync(string key, FieldUpdate<T> updates , CancellationToken cancellationToken = default);
     Task<(bool, string)> CreateAsync(T model, CancellationToken cancellationToken = default);
     IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<T> models, CancellationToken cancellationToken = default);
     Task<(bool, string)> UpdateAsync(T model, CancellationToken cancellationToken = default);
+    Task<(bool, string)> UpdateAsync(string key, FieldUpdate<T> updates , CancellationToken cancellationToken = default);
+
     IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<T> models, CancellationToken cancellationToken = default);
     (bool, string) Delete(string key);
 }

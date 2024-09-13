@@ -67,9 +67,9 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return folderSystemService.GetAllAsync(cancellationToken);
     }
 
-    public Task<(bool, string)> UpdatePropertiesAsync(string key, FieldUpdate<FolderInfoModel>   updates, CancellationToken cancellationToken = default)
+    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<FolderInfoModel>   updates, CancellationToken cancellationToken = default)
     {
-        return folderSystemService.UpdatePropertiesAsync(key, updates, cancellationToken);
+        return folderSystemService.UpdateAsync(key, updates, cancellationToken);
     }
 
     public Task<(bool, string)> CreateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)

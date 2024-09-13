@@ -112,7 +112,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
     }
 
 
-    public async Task<(bool, string)> UpdatePropertiesAsync(string key, FieldUpdate<ArticleModel> updates, CancellationToken cancellationToken = default)
+    public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<ArticleModel> updates, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -141,12 +141,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
 
                 await _dataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
             }
-            else
-            {
-                var model = Get(key);
-                if (model == null) return (false, AppLang.File_could_not_be_found);
-                await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
-            }
+            
 
             return (true, AppLang.Update_successfully);
         }

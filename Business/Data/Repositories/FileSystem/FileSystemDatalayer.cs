@@ -149,7 +149,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         }
     }
 
-    public async Task<(bool, string)> UpdatePropertiesAsync(string key, FieldUpdate<FileInfoModel> updates, CancellationToken cancellationToken = default)
+    public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<FileInfoModel> updates, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -177,12 +177,6 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
                 var combinedUpdate = updateDefinitionBuilder.Combine(updateDefinitions);
 
                 await _fileDataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
-            }
-            else
-            {
-                var model = Get(key);
-                if (model == null) return (false, AppLang.File_could_not_be_found);
-                await _fileDataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
             }
 
             return (true, AppLang.Update_successfully);

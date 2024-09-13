@@ -54,9 +54,9 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> UpdatePropertiesAsync(string key, FieldUpdate<ArticleModel> updates, CancellationToken cancellationToken = default)
+    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<ArticleModel> updates, CancellationToken cancellationToken = default)
     {
-        return dataLayer.UpdatePropertiesAsync(key, updates, cancellationToken);
+        return dataLayer.UpdateAsync(key, updates, cancellationToken);
     }
 
     public Task<(bool, string)> CreateAsync(ArticleModel model, CancellationToken cancellationToken = default)

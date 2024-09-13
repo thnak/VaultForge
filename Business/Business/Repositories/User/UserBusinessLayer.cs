@@ -61,9 +61,9 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> UpdatePropertiesAsync(string key, FieldUpdate<UserModel> updates, CancellationToken cancellationToken = default)
+    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<UserModel> updates, CancellationToken cancellationToken = default)
     {
-        return userDl.UpdatePropertiesAsync(key, updates, cancellationToken);
+        return userDl.UpdateAsync(key, updates, cancellationToken);
     }
 
     public Task<(bool, string)> CreateAsync(UserModel model, CancellationToken cancellationToken = default)
