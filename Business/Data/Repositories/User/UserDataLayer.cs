@@ -26,8 +26,6 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         try
         {
             var nameKey = Builders<UserModel>.IndexKeys.Ascending(x => x.UserName);
-
-
             var indexModel = new CreateIndexModel<UserModel>(nameKey, new CreateIndexOptions { Unique = true });
 
             var searchIndexKeys = Builders<UserModel>.IndexKeys.Text(x => x.UserName).Text(x => x.FullName);

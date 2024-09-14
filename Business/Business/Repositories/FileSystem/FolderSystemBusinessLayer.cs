@@ -181,7 +181,6 @@ public class FolderSystemBusinessLayer(
             var res = CreateAsync(folder).Result;
             if (res.Item1)
             {
-                user.Folder = folder.Id.ToString();
                 userService.UpdateAsync(user);
                 return Get(folder.Id.ToString());
             }

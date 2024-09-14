@@ -69,9 +69,5 @@ public class UserModel
     [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
     [Key(17)]
     public DateTime LastLogin { get; set; }
-
-
     [Key(18)] public string Avatar { get; set; } = "default_user.jpg";
-
-    [Key(21)] public string Folder { get; set; } = string.Empty;
 }
