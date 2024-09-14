@@ -69,6 +69,21 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
                 };
                 await CreateAsync(wallPaperFolder, cancellationToken);
             }
+            
+            var resourceFolder = Get(anonymousUser, "/root/wallpaper");
+            if (resourceFolder == default)
+            {
+                resourceFolder = new FolderInfoModel()
+                {
+                    Username = anonymousUser,
+                    RootFolder = anonymousFolder.Id.ToString(),
+                    FolderName = "resource",
+                    AbsolutePath = anonymousFolder.AbsolutePath + "/resource",
+                    RelativePath = anonymousFolder.AbsolutePath + "/resource",
+                    Type = FolderContentType.SystemFolder
+                };
+                await CreateAsync(resourceFolder, cancellationToken);
+            }
 
 
             logger.LogInformation(@"[Init] Folder info data layer");

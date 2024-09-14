@@ -5,5 +5,6 @@ public enum FileContentType
     File,
     HiddenFile,
     DeletedFile,
-    ThumbnailFile
+    ThumbnailFile,
+    ThumbnailWebpFile,
 }

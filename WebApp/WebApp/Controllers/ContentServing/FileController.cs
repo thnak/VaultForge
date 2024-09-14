@@ -44,10 +44,21 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
 
         var file = await fileServe.GetRandomFileAsync(rootWallpaperFolder.Id.ToString(), cancelToken);
         if (file == null) return NotFound();
+
+        var webpImageContent = file.ExtendResource.FirstOrDefault(x => x.Type == FileContentType.ThumbnailWebpFile);
+        if (webpImageContent != null)
+        {
+            var webpImage = fileServe.Get(webpImageContent.Id);
+            if (webpImage != null)
+            {
+                file = webpImage;
+            }
+        }
+
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
-            FileName = HttpUtility.UrlEncode(file.FileName.Replace(".bin", file.ContentType.GetCorrectExtensionFormContentType())),
+            FileName = HttpUtility.UrlEncode(file.FileName),
             Inline = true, // false = prompt the user for downloading;  true = browser to try to show the file inline,
             CreationDate = now,
             ModificationDate = now,
@@ -314,10 +325,10 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         var rootFolder = folderServe.GetRoot(folder.RootFolder);
         if (rootFolder == default)
             return BadRequest();
-        
+
         folder.FolderName = newName;
         folder.RelativePath = rootFolder.RelativePath + "/" + newName;
-        
+
         var status = await folderServe.UpdateAsync(folder);
         return status.Item1 ? Ok(status.Item2) : BadRequest(status.Item2);
     }

@@ -7,6 +7,7 @@ using BusinessModels.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
 namespace Business.Services.Services;
@@ -119,30 +120,49 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
 
         // Create a thumbnail
         using var thumbnailStream = new MemoryStream();
+        using var extendedImage = new MemoryStream();
+        
+        await image.SaveAsWebpAsync(extendedImage, cancellationToken);
+        
         image.Mutate(x => x.Resize(width, height)); // Resize with aspect ratio
-
         await image.SaveAsWebpAsync(thumbnailStream, cancellationToken); // Save as JPEG
 
         // Define the thumbnail path
         var thumbnailFileName = $"{fileInfo.Id}_thumb.webp";
+        var extendedFileName = $"{fileInfo.Id}_ext.webp";
         var thumbnailPath = Path.Combine(Path.GetDirectoryName(imagePath)!, "thumbnails", thumbnailFileName);
+        var extendImagePath = Path.Combine(Path.GetDirectoryName(imagePath)!, "thumbnails", extendedFileName);
 
         // Ensure the directory exists
         Directory.CreateDirectory(Path.GetDirectoryName(thumbnailPath)!);
 
         // Save the thumbnail
+        
         thumbnailStream.SeekBeginOrigin(); // Reset stream position
         await using var thumbnailFileStream = new FileStream(thumbnailPath, FileMode.Create, FileAccess.Write, FileShare.None);
         await thumbnailStream.CopyToAsync(thumbnailFileStream, cancellationToken);
         thumbnailFileStream.SeekBeginOrigin();
 
+        var thumbnailSize = await SaveStream(thumbnailStream, thumbnailPath, cancellationToken);
+        var extendedImageSize = await SaveStream(extendedImage, extendImagePath, cancellationToken);
 
         FileInfoModel thumbnailFile = new FileInfoModel()
         {
             FileName = thumbnailFileName,
             AbsolutePath = thumbnailPath,
-            FileSize = thumbnailFileStream.Length,
+            FileSize = thumbnailSize,
             Type = FileContentType.ThumbnailFile,
+            CreatedDate = DateTime.Now,
+            ModifiedDate = DateTime.Now,
+            ContentType = "image/webp"
+        };
+
+        FileInfoModel extendedFile = new FileInfoModel()
+        {
+            FileName = extendedFileName,
+            AbsolutePath = extendImagePath,
+            FileSize = extendedImageSize,
+            Type = FileContentType.ThumbnailWebpFile,
             CreatedDate = DateTime.Now,
             ModifiedDate = DateTime.Now,
             ContentType = "image/webp"
@@ -150,8 +170,15 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
 
         // Update the fileInfo with the thumbnail path
         fileInfo.Thumbnail = thumbnailFile.Id.ToString();
+        fileInfo.ExtendResource.Add(new FileContents()
+        {
+            Id = extendedFile.Id.ToString(),
+            Type = FileContentType.ThumbnailFile
+        });
+        
 
         await fileService.CreateAsync(thumbnailFile, cancellationToken);
+        await fileService.CreateAsync(extendedFile, cancellationToken);
         await fileService.UpdateAsync(fileInfo, cancellationToken); // Save updated file info to DB
 
         // use image
@@ -160,6 +187,15 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
     }
 
 
+    private async Task<long> SaveStream(Stream stream, string thumbnailPath, CancellationToken cancellationToken = default)
+    {
+        stream.SeekBeginOrigin(); // Reset stream position
+        await using var thumbnailFileStream = new FileStream(thumbnailPath, FileMode.Create, FileAccess.Write, FileShare.None);
+        await stream.CopyToAsync(thumbnailFileStream, cancellationToken);
+        thumbnailFileStream.SeekBeginOrigin();
+        return thumbnailFileStream.Length;
+    }
+    
     public void Stop()
     {
         _cancellationTokenSource.Cancel(); // Stop the background process
