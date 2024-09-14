@@ -5,7 +5,7 @@ namespace Business.Data.Interfaces.FileSystem;
 
 public interface IFolderSystemDatalayer : IMongoDataInitializer, IDataLayerRepository<FolderInfoModel>
 {
-    FolderInfoModel? Get(string username, string relative, bool hashed = true);
+    FolderInfoModel? Get(string username, string absolute, bool hashed = true);
     public (FolderInfoModel?, string) GetWithPassword(string id, string password);
     IAsyncEnumerable<FolderInfoModel> GetContentFormParentFolderAsync(string id, int pageNumber, int pageSize, CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch);
     IAsyncEnumerable<FolderInfoModel> GetContentFormParentFolderAsync(Expression<Func<FolderInfoModel, bool>> predicate, int pageNumber, int pageSize, CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch);

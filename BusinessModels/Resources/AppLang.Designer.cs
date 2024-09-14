@@ -141,6 +141,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Không thể xóa thư mục hệ thống.
+        /// </summary>
+        public static string Cannot_delete_system_folder {
+            get {
+                return ResourceManager.GetString("Cannot delete system folder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Đóng.
         /// </summary>
         public static string Close {

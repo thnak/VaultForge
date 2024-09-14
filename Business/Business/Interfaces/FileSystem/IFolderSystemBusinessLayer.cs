@@ -13,7 +13,7 @@ public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInf
     /// <returns>Anonymous when string is empty</returns>
     UserModel? GetUser(string username);
 
-    public FolderInfoModel? Get(string username, string relativePath);
+    public FolderInfoModel? Get(string username, string absoblutePath);
     public List<FolderInfoModel> GetFolderBloodLine(string username, string folderId);
     public FolderInfoModel? GetRoot(string username);
     public IAsyncEnumerable<FolderInfoModel> GetContentFormParentFolderAsync(string id, int pageNumber, int pageSize, CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch);

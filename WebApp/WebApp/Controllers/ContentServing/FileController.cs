@@ -310,7 +310,14 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         if (folder == null) return BadRequest(AppLang.Folder_could_not_be_found);
         if (string.IsNullOrEmpty(newName))
             return BadRequest(AppLang.ThisFieldIsRequired);
+
+        var rootFolder = folderServe.GetRoot(folder.RootFolder);
+        if (rootFolder == default)
+            return BadRequest();
+        
         folder.FolderName = newName;
+        folder.RelativePath = rootFolder.RelativePath + "/" + newName;
+        
         var status = await folderServe.UpdateAsync(folder);
         return status.Item1 ? Ok(status.Item2) : BadRequest(status.Item2);
     }
@@ -389,7 +396,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         var folder = folderServe.Get(code);
         if (folder == default) return NotFound(AppLang.Folder_could_not_be_found);
 
-        if (folder.RelativePath == "/root")
+        if (folder.AbsolutePath == "/root")
             return BadRequest(AppLang.Could_not_remove_root_folder);
 
         if (folder is { Type: FolderContentType.Folder or FolderContentType.HiddenFolder })

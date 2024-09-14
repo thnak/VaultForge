@@ -7,5 +7,6 @@ public enum FolderContentType
     DeletedFolder,
     File,
     HiddenFile,
-    DeletedFile
+    DeletedFile,
+    SystemFolder
 }

@@ -512,4 +512,7 @@ ClientY: {1}</value>
     <data name="Do you really want to reload the page?" xml:space="preserve">
       <value>Do you really want to reload the page?</value>
     </data>
+    <data name="Cannot delete system folder" xml:space="preserve">
+      <value>Cannot delete system folder</value>
+    </data>
 </root>

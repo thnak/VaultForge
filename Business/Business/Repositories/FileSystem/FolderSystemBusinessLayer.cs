@@ -111,8 +111,9 @@ public class FolderSystemBusinessLayer(
         var folder = Get(key);
         if (folder == null) return (false, AppLang.Folder_could_not_be_found);
 
-        if (folder.RelativePath == "/") return (false, AppLang.Could_not_delete_root_folder);
-
+        if (folder.AbsolutePath == "/root") return (false, AppLang.Could_not_delete_root_folder);
+        if(folder.Type == FolderContentType.SystemFolder) return (false, AppLang.Folder_could_not_be_found);
+        
         var res = folderSystemService.Delete(key);
         if (res.Item1)
             foreach (var content in folder.Contents)
@@ -124,10 +125,10 @@ public class FolderSystemBusinessLayer(
         return res;
     }
 
-    public FolderInfoModel? Get(string username, string relativePath)
+    public FolderInfoModel? Get(string username, string absoblutePath)
     {
         var user = GetUser(username);
-        return folderSystemService.Get(user?.UserName ?? string.Empty, relativePath);
+        return folderSystemService.Get(user?.UserName ?? string.Empty, absoblutePath);
     }
 
     public List<FolderInfoModel> GetFolderBloodLine(string username, string folderId)
@@ -172,6 +173,7 @@ public class FolderSystemBusinessLayer(
             folder = new FolderInfoModel
             {
                 RelativePath = "/root",
+                AbsolutePath = "/root",
                 FolderName = "Home",
                 ModifiedDate = DateTime.UtcNow,
                 Username = user.UserName
@@ -290,6 +292,7 @@ public class FolderSystemBusinessLayer(
                 return (false, AppLang.Passwords_do_not_match_);
 
         request.NewFolder.RelativePath = folderRoot.RelativePath + '/' + request.NewFolder.FolderName;
+        request.NewFolder.AbsolutePath = request.NewFolder.RelativePath;
         request.NewFolder.RootFolder = request.RootId;
         request.NewFolder.ModifiedDate = DateTime.Now;
         

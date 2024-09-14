@@ -54,10 +54,13 @@ public class FolderInfoModel
     public DateTime ModifiedDate { get; set; }
 
     /// <summary>
-    ///     Relative path for UI display
+    ///     Relative path for UI display, nó có thể thay đổi
     /// </summary>
     [Key(7)] public string RelativePath { get; set; } = string.Empty;
 
+    /// <summary>
+    /// Chỉ được tạo 1 lần và không được sửa đổi
+    /// </summary>
     [Key(13)] public string AbsolutePath { get; set; } = string.Empty;
 
     [Key(8)] public string VersionId { get; set; } = string.Empty;

@@ -366,7 +366,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         return (false, AppLang.Incorrect_metadata_ID);
     }
 
-    public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
+    public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

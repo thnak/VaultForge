@@ -4,6 +4,7 @@ using Business.Data.Interfaces;
 using Business.Data.Interfaces.FileSystem;
 using Business.Models;
 using Business.Utils;
+using BusinessModels.General.EnumModel;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using Microsoft.Extensions.Logging;
@@ -25,7 +26,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         await _semaphore.WaitAsync(cancellationToken);
         try
         {
-            var keys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RelativePath).Ascending(x => x.Username);
+            var keys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath).Ascending(x => x.Username);
             var indexModel = new CreateIndexModel<FolderInfoModel>(keys, new CreateIndexOptions { Unique = true });
 
             var searchIndexKeys = Builders<FolderInfoModel>.IndexKeys.Text(x => x.FolderName).Text(x => x.RelativePath);
@@ -39,32 +40,34 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
 
             var anonymousUser = "Anonymous".ComputeSha256Hash();
-            var anonymousFolder = Get(anonymousUser, "/");
+            var anonymousFolder = Get(anonymousUser, "/root");
             if (anonymousFolder == default)
             {
                 anonymousFolder = new FolderInfoModel()
                 {
                     Username = anonymousUser,
                     RelativePath = "/root",
+                    AbsolutePath = "/root",
                     ModifiedDate = DateTime.Now,
                     FolderName = "Home",
+                    Type = FolderContentType.SystemFolder
                 };
                 await CreateAsync(anonymousFolder, cancellationToken);
             }
-            else
+
+            var wallPaperFolder = Get(anonymousUser, "/root/wallpaper");
+            if (wallPaperFolder == default)
             {
-                var wallPaperFolder = Get(anonymousUser, "/root/wallpaper");
-                if (wallPaperFolder == default)
+                wallPaperFolder = new FolderInfoModel()
                 {
-                    wallPaperFolder = new FolderInfoModel()
-                    {
-                        Username = anonymousUser,
-                        RootFolder = anonymousFolder.Id.ToString(),
-                        FolderName = "WallPaper",
-                        RelativePath = "/root/wallpaper",
-                    };
-                    await CreateAsync(wallPaperFolder, cancellationToken);
-                }
+                    Username = anonymousUser,
+                    RootFolder = anonymousFolder.Id.ToString(),
+                    FolderName = "WallPaper",
+                    AbsolutePath = anonymousFolder.AbsolutePath + "/wallpaper",
+                    RelativePath = anonymousFolder.AbsolutePath + "/WallPaper",
+                    Type = FolderContentType.SystemFolder
+                };
+                await CreateAsync(wallPaperFolder, cancellationToken);
             }
 
 
@@ -81,11 +84,11 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         }
     }
 
-    public FolderInfoModel? Get(string username, string relative, bool hashed = true)
+    public FolderInfoModel? Get(string username, string absolute, bool hashed = true)
     {
         username = hashed ? username : username.ComputeSha256Hash();
-        var filter = Builders<FolderInfoModel>.Filter.Where(x => x.RelativePath == relative && x.Username == username || x.Username == username && x.RelativePath == relative);
-        if (ObjectId.TryParse(relative, out ObjectId id))
+        var filter = Builders<FolderInfoModel>.Filter.Where(x => x.AbsolutePath == absolute && x.Username == username);
+        if (ObjectId.TryParse(absolute, out ObjectId id))
         {
             filter |= Builders<FolderInfoModel>.Filter.Eq(x => x.Id, id);
         }
