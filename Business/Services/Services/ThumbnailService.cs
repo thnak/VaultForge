@@ -179,7 +179,7 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
         fileInfo.ExtendResource.Add(new FileContents()
         {
             Id = extendedFile.Id.ToString(),
-            Type = FileContentType.ThumbnailFile
+            Type = FileContentType.ThumbnailWebpFile
         });
 
 
