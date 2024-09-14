@@ -161,6 +161,7 @@ public class Program
 
         builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new ObjectIdConverter()); });
         builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<LazyAssemblyLoader>();
 
         var app = builder.Build();

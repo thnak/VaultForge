@@ -191,7 +191,6 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         folderSource.Password = string.Empty;
 
         List<FolderContentType> contentFolderTypesList = [];
-        List<FileContentType> contentFileTypesList = [];
 
         if (!string.IsNullOrEmpty(contentTypes))
         {
@@ -203,7 +202,8 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
             contentFolderTypesList = [FolderContentType.File, FolderContentType.Folder];
         }
 
-        contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).ToList();
+        contentFolderTypesList.Add(FolderContentType.SystemFolder);
+        var contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).Distinct().ToList();
 
         page -= 1;
 
@@ -595,7 +595,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                                 var updateResult = await fileServe.UpdateAsync(file, cancelToken);
                                 if (updateResult.Item1)
                                 {
-                                    thumbnailService.AddThumbnailRequest(file.Id.ToString());
+                                    await thumbnailService.AddThumbnailRequest(file.Id.ToString());
                                 }
                                 else
                                 {

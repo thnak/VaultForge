@@ -35,6 +35,7 @@
 @inject IStringLocalizer<AppLang> LangDict
 @using Microsoft.AspNetCore.Authorization
 
+@inject IHttpContextAccessor HttpContextAccessor
 
 @* Services *@
 @inject IAdvertisementBusinessLayer AdvertisementService

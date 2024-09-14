@@ -1,6 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using System.Text.RegularExpressions
+@using Microsoft.Net.Http.Headers
+@inject ILogger<App> Logger
+<!DOCTYPE html>
 <!--suppress HtmlRequiredTitleElement -->
-<html>
+<html lang="" >
 
 <head>
     <meta charset="utf-8" />
@@ -26,8 +29,8 @@
 <body>
 
 @* Loading Progress *@
-<div class="refresh-icon" id="refreshIcon">
-    <img src="/images/200w.gif" alt="reload">
+<div class="refresh-icon" id="refreshIcon" >
+    <img alt="reload" src="/images/200w.gif" >
 </div>
 
 <div class="progress-wrapper" id="progress-wrapper" >
@@ -62,6 +65,25 @@
 @code
 {
     [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
+    private bool IsBot { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        var userAgent = HttpContextAccessor?.HttpContext?.Request.Headers[HeaderNames.UserAgent];
+        if (userAgent.HasValue)
+        {
+            var agent = userAgent.ToString();
+            if (!string.IsNullOrWhiteSpace(agent))
+            {
+                IsBot = Regex.IsMatch(agent, @"bot|crawler|baiduspider|80legs|ia_archiver|voyager|curl|wget|yahoo! slurp|mediapartners-google", RegexOptions.IgnoreCase);
+            }
+
+            Logger.LogInformation($"[BOT] {IsBot}");
+        }
+
+        base.OnInitialized();
+    }
 
     private IComponentRenderMode? RenderModeForPage()
     {

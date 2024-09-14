@@ -2,6 +2,6 @@
 
 public interface IThumbnailService 
 {
-    void AddThumbnailRequest(string imageId);
+    Task AddThumbnailRequest(string imageId);
     Task StartAsync(CancellationToken cancellationToken);
 }

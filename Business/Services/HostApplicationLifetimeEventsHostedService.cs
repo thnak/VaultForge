@@ -35,11 +35,11 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
         scope.ServiceProvider.GetService<IFileSystemDatalayer>()?.InitializeAsync(cancelToken);
         scope.ServiceProvider.GetService<IFolderSystemDatalayer>()?.InitializeAsync(cancelToken);
         scope.ServiceProvider.GetService<IAdvertisementDataLayer>()?.InitializeAsync(cancelToken);
-        var thumbnailService = scope.ServiceProvider.GetService<IThumbnailService>();
-        if (thumbnailService != null)
-        {
-            _ = Task.Run(() => thumbnailService.StartAsync(cancelToken), cancelToken);
-        }
+        // var thumbnailService = scope.ServiceProvider.GetService<IThumbnailService>();
+        // if (thumbnailService != null)
+        // {
+        //     _ = Task.Run(() => thumbnailService.StartAsync(cancelToken), cancelToken);
+        // }
     }
 
     private void OnStopping()

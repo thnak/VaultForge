@@ -1,4 +1,5 @@
-﻿using Business.Business.Interfaces.FileSystem;
+﻿using System.Collections.Concurrent;
+using Business.Business.Interfaces.FileSystem;
 using Business.Services.Interfaces;
 using Business.Utils.Helper;
 using BusinessModels.General.EnumModel;
@@ -7,57 +8,67 @@ using BusinessModels.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
 namespace Business.Services.Services;
 
-public class ThumbnailService(IServiceProvider serviceProvider, ILogger<ThumbnailService> logger) : IThumbnailService
+public class ThumbnailService(IServiceProvider serviceProvider, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
 {
-    private readonly Queue<string> _thumbnailQueue = new();
-    private readonly SemaphoreSlim _queueSemaphore = new(0);
+    private readonly ConcurrentQueue<string> _thumbnailQueue = new();
+    private readonly SemaphoreSlim _queueSemaphore = new(8);
     private const int MaxDimension = 480; // Maximum width or height
-
+    private bool _isProcessing;
 
     // To resolve database and image services
     private readonly CancellationTokenSource _cancellationTokenSource = new();
 
-    public void AddThumbnailRequest(string imageId)
+    public Task AddThumbnailRequest(string imageId)
     {
-        lock (_thumbnailQueue)
-        {
-            _thumbnailQueue.Enqueue(imageId);
-        }
-
-        _queueSemaphore.Release(); // Signal that a new request is available
+        _thumbnailQueue.Enqueue(imageId);
+        StartProcessing();
+        return Task.CompletedTask;
     }
 
-    public async Task StartAsync(CancellationToken cancellationToken)
+    private void StartProcessing()
+    {
+        if (_isProcessing)
+        {
+            return;
+        }
+
+        _isProcessing = true;
+        Task.Run(() => StartAsync(_cancellationTokenSource.Token));
+    }
+
+    public async Task StartAsync(CancellationToken cancellationToken = default)
     {
         logger.LogInformation("Thumbnail Service started.");
 
         // Continue processing until the app shuts down or cancellation is requested
-        while (!cancellationToken.IsCancellationRequested)
+        while (!cancellationToken.IsCancellationRequested || !_thumbnailQueue.IsEmpty)
         {
-            await _queueSemaphore.WaitAsync(cancellationToken); // Wait for a thumbnail request
+            if (_thumbnailQueue.TryDequeue(out string? imageId))
+            {
+                await _queueSemaphore.WaitAsync(cancellationToken); // Wait for a thumbnail request
 
-            string imageId;
-            lock (_thumbnailQueue)
-            {
-                if (_thumbnailQueue.Count == 0) continue;
-                imageId = _thumbnailQueue.Dequeue();
-            }
-
-            // Process the thumbnail creation
-            try
-            {
-                await ProcessThumbnailAsync(imageId, cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError($"Error creating thumbnail for image {imageId}: {ex.Message}");
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        await ProcessThumbnailAsync(imageId, cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError($"Error creating thumbnail for image {imageId}: {ex.Message}");
+                    }
+                    finally
+                    {
+                        _queueSemaphore.Release();
+                    }
+                }, cancellationToken);
             }
         }
+
 
         logger.LogInformation("Thumbnail Service stopped.");
     }
@@ -121,9 +132,9 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
         // Create a thumbnail
         using var thumbnailStream = new MemoryStream();
         using var extendedImage = new MemoryStream();
-        
+
         await image.SaveAsWebpAsync(extendedImage, cancellationToken);
-        
+
         image.Mutate(x => x.Resize(width, height)); // Resize with aspect ratio
         await image.SaveAsWebpAsync(thumbnailStream, cancellationToken); // Save as JPEG
 
@@ -137,11 +148,6 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
         Directory.CreateDirectory(Path.GetDirectoryName(thumbnailPath)!);
 
         // Save the thumbnail
-        
-        thumbnailStream.SeekBeginOrigin(); // Reset stream position
-        await using var thumbnailFileStream = new FileStream(thumbnailPath, FileMode.Create, FileAccess.Write, FileShare.None);
-        await thumbnailStream.CopyToAsync(thumbnailFileStream, cancellationToken);
-        thumbnailFileStream.SeekBeginOrigin();
 
         var thumbnailSize = await SaveStream(thumbnailStream, thumbnailPath, cancellationToken);
         var extendedImageSize = await SaveStream(extendedImage, extendImagePath, cancellationToken);
@@ -175,7 +181,7 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
             Id = extendedFile.Id.ToString(),
             Type = FileContentType.ThumbnailFile
         });
-        
+
 
         await fileService.CreateAsync(thumbnailFile, cancellationToken);
         await fileService.CreateAsync(extendedFile, cancellationToken);
@@ -183,21 +189,30 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
 
         // use image
 
-        logger.LogInformation($"Thumbnail created for image {fileInfo.Id}.");
+        lock (_thumbnailQueue)
+        {
+            logger.LogInformation($"Thumbnail created for image {fileInfo.Id}. {_thumbnailQueue.Count}");
+        }
     }
 
 
     private async Task<long> SaveStream(Stream stream, string thumbnailPath, CancellationToken cancellationToken = default)
     {
         stream.SeekBeginOrigin(); // Reset stream position
-        await using var thumbnailFileStream = new FileStream(thumbnailPath, FileMode.Create, FileAccess.Write, FileShare.None);
+        await using var thumbnailFileStream = new FileStream(thumbnailPath, FileMode.Create, FileAccess.Write, FileShare.Read);
         await stream.CopyToAsync(thumbnailFileStream, cancellationToken);
         thumbnailFileStream.SeekBeginOrigin();
         return thumbnailFileStream.Length;
     }
-    
+
     public void Stop()
     {
         _cancellationTokenSource.Cancel(); // Stop the background process
+    }
+
+    public void Dispose()
+    {
+        _queueSemaphore.Dispose();
+        _cancellationTokenSource.Dispose();
     }
 }
