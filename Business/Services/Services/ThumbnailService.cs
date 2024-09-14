@@ -124,7 +124,7 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
         await image.SaveAsWebpAsync(thumbnailStream, cancellationToken); // Save as JPEG
 
         // Define the thumbnail path
-        var thumbnailFileName = $"{fileInfo.FileName}_thumb.webp";
+        var thumbnailFileName = $"{fileInfo.Id}_thumb.webp";
         var thumbnailPath = Path.Combine(Path.GetDirectoryName(imagePath)!, "thumbnails", thumbnailFileName);
 
         // Ensure the directory exists

@@ -37,19 +37,35 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             var searchIndexModel = new CreateIndexModel<FolderInfoModel>(searchIndexKeys, searchIndexOptions);
             await _dataDb.Indexes.CreateManyAsync([indexModel, searchIndexModel], cancellationToken: cancellationToken);
 
+
             var anonymousUser = "Anonymous".ComputeSha256Hash();
-            var wallPaperFolder = new FolderInfoModel()
+            var anonymousFolder = Get(anonymousUser, "/");
+            if (anonymousFolder == default)
             {
-                Username = anonymousUser,
-                FolderName = "WallPaper",
-            };
-            var anonymousFolder = new FolderInfoModel()
+                anonymousFolder = new FolderInfoModel()
+                {
+                    Username = anonymousUser,
+                    RelativePath = "/root",
+                    ModifiedDate = DateTime.Now,
+                    FolderName = "Home",
+                };
+                await CreateAsync(anonymousFolder, cancellationToken);
+            }
+            else
             {
-                Username = anonymousUser,
-                RelativePath = "/",
-                ModifiedDate = DateTime.Now,
-                FolderName = "Root",
-            };
+                var wallPaperFolder = Get(anonymousUser, "/root/wallpaper");
+                if (wallPaperFolder == default)
+                {
+                    wallPaperFolder = new FolderInfoModel()
+                    {
+                        Username = anonymousUser,
+                        RootFolder = anonymousFolder.Id.ToString(),
+                        FolderName = "WallPaper",
+                        RelativePath = "/root/wallpaper",
+                    };
+                    await CreateAsync(wallPaperFolder, cancellationToken);
+                }
+            }
 
 
             logger.LogInformation(@"[Init] Folder info data layer");
@@ -68,7 +84,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     public FolderInfoModel? Get(string username, string relative, bool hashed = true)
     {
         username = hashed ? username : username.ComputeSha256Hash();
-        var filter = Builders<FolderInfoModel>.Filter.Where(x => x.RelativePath == relative && x.Username == username || x.Username == username && x.Username == relative);
+        var filter = Builders<FolderInfoModel>.Filter.Where(x => x.RelativePath == relative && x.Username == username || x.Username == username && x.RelativePath == relative);
         if (ObjectId.TryParse(relative, out ObjectId id))
         {
             filter |= Builders<FolderInfoModel>.Filter.Eq(x => x.Id, id);
@@ -79,7 +95,12 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return _dataDb.CountDocumentsAsync(filter: Builders<FolderInfoModel>.Filter.Empty, cancellationToken: cancellationToken);
+    }
+
+    public Task<long> GetDocumentSizeAsync(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        return _dataDb.CountDocumentsAsync(predicate, cancellationToken: cancellationToken);
     }
 
     public async IAsyncEnumerable<FolderInfoModel> Search(string queryString, int limit = 10, [EnumeratorCancellation] CancellationToken cancellationToken = default)
@@ -319,6 +340,50 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         }
 
         return (default, AppLang.Folder_could_not_be_found);
+    }
+
+    public async IAsyncEnumerable<FolderInfoModel> GetContentFormParentFolderAsync(string id, int pageNumber, int pageSize, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
+    {
+        if (ObjectId.TryParse(id, out ObjectId objectId))
+        {
+            var filter = Builders<FolderInfoModel>.Filter.Eq(x => x.Id, objectId);
+            var options = new FindOptions<FolderInfoModel, FolderInfoModel>
+            {
+                Projection = fieldsToFetch.ProjectionBuilder(),
+                Limit = pageSize,
+                Skip = pageSize * pageNumber,
+            };
+            var cursor = await _dataDb.FindAsync(filter, options, cancellationToken: cancellationToken);
+            while (await cursor.MoveNextAsync(cancellationToken))
+            {
+                foreach (var model in cursor.Current)
+                {
+                    yield return model;
+                }
+            }
+        }
+        else
+        {
+            logger.LogError($"[ERROR] ID is incorrect");
+        }
+    }
+
+    public async IAsyncEnumerable<FolderInfoModel> GetContentFormParentFolderAsync(Expression<Func<FolderInfoModel, bool>> predicate, int pageNumber, int pageSize, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
+    {
+        var options = new FindOptions<FolderInfoModel, FolderInfoModel>
+        {
+            Projection = fieldsToFetch.ProjectionBuilder(),
+            Limit = pageSize,
+            Skip = pageSize * pageNumber,
+        };
+        var cursor = await _dataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);
+        while (await cursor.MoveNextAsync(cancellationToken))
+        {
+            foreach (var model in cursor.Current)
+            {
+                yield return model;
+            }
+        }
     }
 
     public (bool, string, string) CreateFolder(FolderInfoModel folderInfoModel)

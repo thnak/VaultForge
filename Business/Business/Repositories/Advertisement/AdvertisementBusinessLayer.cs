@@ -9,19 +9,29 @@ namespace Business.Business.Repositories.Advertisement;
 
 public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAdvertisementBusinessLayer
 {
+    public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
+    {
+        return dataLayer.GetDocumentSizeAsync(cancellationToken);
+    }
+
+    public Task<long> GetDocumentSizeAsync(Expression<Func<ArticleModel, bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        return dataLayer.GetDocumentSizeAsync(predicate, cancellationToken);
+    }
+
     public IAsyncEnumerable<ArticleModel> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return dataLayer.Search(queryString, limit, cancellationToken);
     }
 
     public IAsyncEnumerable<ArticleModel> FindAsync(FilterDefinition<ArticleModel> filter, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return dataLayer.FindAsync(filter, cancellationToken);
     }
 
     public IAsyncEnumerable<ArticleModel> FindAsync(string keyWord, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return dataLayer.FindAsync(keyWord, cancellationToken);
     }
 
     public IAsyncEnumerable<ArticleModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default, params Expression<Func<ArticleModel, object>>[] fieldsToFetch)

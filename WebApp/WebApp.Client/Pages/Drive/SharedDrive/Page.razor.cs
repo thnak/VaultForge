@@ -376,21 +376,21 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             if (folder != null)
             {
                 RootFolder = folder.Folder;
-                TotalPages = folder.TotalPages;
+                TotalPages = folder.TotalFolderPages;
 
-                var fileCodes = RootFolder.Contents.Where(x => x is
-                    {
-                        Type: FolderContentType.File or FolderContentType.DeletedFile or FolderContentType.HiddenFile
-                    })
-                    .Select(x => x.Id).ToList();
-                var folderCodes = RootFolder.Contents.Where(x => x is
-                {
-                    Type: FolderContentType.Folder or FolderContentType.DeletedFolder or FolderContentType.HiddenFolder
-                }).Select(x => x.Id).ToList();
-                var folders = await GetFolders([..folderCodes]);
-                var files = await GetFiles([..fileCodes]);
+                // var fileCodes = RootFolder.Contents.Where(x => x is
+                //     {
+                //         Type: FolderContentType.File or FolderContentType.DeletedFile or FolderContentType.HiddenFile
+                //     })
+                //     .Select(x => x.Id).ToList();
+                // var folderCodes = RootFolder.Contents.Where(x => x is
+                // {
+                //     Type: FolderContentType.Folder or FolderContentType.DeletedFolder or FolderContentType.HiddenFolder
+                // }).Select(x => x.Id).ToList();
+                // var folders = await GetFolders([..folderCodes]);
+                // var files = await GetFiles([..fileCodes]);
                 FileItemList.Clear();
-                foreach (var file in files)
+                foreach (var file in folder.Files)
                     FileItemList.Add(new DropItem
                     {
                         Identifier = "File",
@@ -425,7 +425,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                     });
 
                 FolderItemList.Clear();
-                foreach (var f in folders)
+                foreach (var f in folder.Folders)
                     FolderItemList.Add(new DropItem
                     {
                         Identifier = "Folder",

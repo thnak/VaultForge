@@ -15,6 +15,16 @@ namespace Business.Business.Repositories.User;
 
 public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
 {
+    public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
+    {
+        return userDl.GetDocumentSizeAsync(cancellationToken);
+    }
+
+    public Task<long> GetDocumentSizeAsync(Expression<Func<UserModel, bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        return userDl.GetDocumentSizeAsync(predicate, cancellationToken);
+    }
+
     public IAsyncEnumerable<UserModel> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default)
     {
         return userDl.Search(queryString, limit, cancellationToken);

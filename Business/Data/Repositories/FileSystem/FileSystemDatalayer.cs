@@ -6,7 +6,6 @@ using Business.Models;
 using Business.Utils;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -59,7 +58,26 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            return _fileDataDb.CountDocumentsAsync(FilterDefinition<FileInfoModel>.Empty, cancellationToken: cancellationToken);
+        }
+        catch (OperationCanceledException)
+        {
+            return Task.FromResult(0L);
+        }
+    }
+
+    public Task<long> GetDocumentSizeAsync(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            return _fileDataDb.CountDocumentsAsync(predicate, cancellationToken: cancellationToken);
+        }
+        catch (OperationCanceledException)
+        {
+            return Task.FromResult(0L);
+        }
     }
 
 
@@ -351,5 +369,63 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
     public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<FileInfoModel?> GetRandomFileAsync(string rootFolderId, CancellationToken cancellationToken = default)
+    {
+        // Use aggregation to randomly sample one file
+        var pipeline = new[]
+        {
+            new BsonDocument { { "$match", new BsonDocument(nameof(FileInfoModel.RootFolder), rootFolderId) } },
+            new BsonDocument { { "$sample", new BsonDocument("size", 1) } } // Randomly pick one document
+        };
+
+        var result = await _fileDataDb.AggregateAsync<FileInfoModel>(pipeline, cancellationToken: cancellationToken);
+
+        return await result.FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async IAsyncEnumerable<FileInfoModel> GetContentFormParentFolderAsync(string id, int pageNumber, int pageSize, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
+    {
+        if (ObjectId.TryParse(id, out ObjectId objectId))
+        {
+            var filter = Builders<FileInfoModel>.Filter.Eq(x => x.Id, objectId);
+            var options = new FindOptions<FileInfoModel, FileInfoModel>
+            {
+                Projection = fieldsToFetch.ProjectionBuilder(),
+                Limit = pageSize,
+                Skip = pageSize * pageNumber,
+            };
+            var cursor = await _fileDataDb.FindAsync(filter, options, cancellationToken: cancellationToken);
+            while (await cursor.MoveNextAsync(cancellationToken))
+            {
+                foreach (var model in cursor.Current)
+                {
+                    yield return model;
+                }
+            }
+        }
+        else
+        {
+            logger.LogError($"[ERROR] ID is incorrect");
+        }
+    }
+
+    public async IAsyncEnumerable<FileInfoModel> GetContentFormParentFolderAsync(Expression<Func<FileInfoModel, bool>> predicate, int pageNumber, int pageSize, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
+    {
+        var options = new FindOptions<FileInfoModel, FileInfoModel>
+        {
+            Projection = fieldsToFetch.ProjectionBuilder(),
+            Limit = pageSize,
+            Skip = pageSize * pageNumber,
+        };
+        var cursor = await _fileDataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);
+        while (await cursor.MoveNextAsync(cancellationToken))
+        {
+            foreach (var model in cursor.Current)
+            {
+                yield return model;
+            }
+        }
     }
 }

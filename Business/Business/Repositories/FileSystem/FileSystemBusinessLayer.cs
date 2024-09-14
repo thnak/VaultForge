@@ -9,19 +9,29 @@ namespace Business.Business.Repositories.FileSystem;
 
 public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusinessLayer
 {
+    public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
+    {
+        return da.GetDocumentSizeAsync(cancellationToken);
+    }
+
+    public Task<long> GetDocumentSizeAsync(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        return da.GetDocumentSizeAsync(predicate, cancellationToken);
+    }
+
     public IAsyncEnumerable<FileInfoModel> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return da.Search(queryString, limit, cancellationToken);
     }
 
     public IAsyncEnumerable<FileInfoModel> FindAsync(FilterDefinition<FileInfoModel> filter, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return da.FindAsync(filter, cancellationToken);
     }
 
     public IAsyncEnumerable<FileInfoModel> FindAsync(string keyWord, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return da.FindAsync(keyWord, cancellationToken);
     }
 
     public IAsyncEnumerable<FileInfoModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
@@ -42,12 +52,12 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
 
     public IAsyncEnumerable<FileInfoModel?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return da.GetAsync(keys, cancellationToken);
     }
 
     public Task<(FileInfoModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return da.GetAllAsync(page, size, cancellationToken);
     }
 
     public IAsyncEnumerable<FileInfoModel> GetAllAsync(CancellationToken cancellationToken)
@@ -88,5 +98,20 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
     public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
     {
         return da.GetFileSize(predicate, cancellationTokenSource);
+    }
+
+    public Task<FileInfoModel?> GetRandomFileAsync(string rootFolderId, CancellationToken cancellationToken = default)
+    {
+        return da.GetRandomFileAsync(rootFolderId, cancellationToken);
+    }
+
+    public  IAsyncEnumerable<FileInfoModel> GetContentFormParentFolderAsync(string id, int pageNumber, int pageSize, CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
+    {
+        return da.GetContentFormParentFolderAsync(id, pageNumber, pageSize, cancellationToken, fieldsToFetch);
+    }
+
+    public IAsyncEnumerable<FileInfoModel> GetContentFormParentFolderAsync(Expression<Func<FileInfoModel, bool>> predicate, int pageNumber, int pageSize, CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
+    {
+        return da.GetContentFormParentFolderAsync(predicate, pageNumber, pageSize, cancellationToken, fieldsToFetch);
     }
 }

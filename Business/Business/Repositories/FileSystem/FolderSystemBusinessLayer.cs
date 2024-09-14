@@ -17,10 +17,24 @@ using Protector.Utils;
 
 namespace Business.Business.Repositories.FileSystem;
 
-public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemService, IFileSystemBusinessLayer fileSystemService, 
-    IUserBusinessLayer userService, IOptions<AppSettings> options, ILogger<FolderSystemBusinessLayer> logger) : IFolderSystemBusinessLayer
+public class FolderSystemBusinessLayer(
+    IFolderSystemDatalayer folderSystemService,
+    IFileSystemBusinessLayer fileSystemService,
+    IUserBusinessLayer userService,
+    IOptions<AppSettings> options,
+    ILogger<FolderSystemBusinessLayer> logger) : IFolderSystemBusinessLayer
 {
     private readonly string _workingDir = options.Value.FileFolder;
+
+    public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
+    {
+        return folderSystemService.GetDocumentSizeAsync(cancellationToken);
+    }
+
+    public Task<long> GetDocumentSizeAsync(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        return folderSystemService.GetDocumentSizeAsync(predicate, cancellationToken);
+    }
 
     public IAsyncEnumerable<FolderInfoModel> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default)
     {
@@ -54,7 +68,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
 
     public IAsyncEnumerable<FolderInfoModel?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return folderSystemService.GetAsync(keys, cancellationToken);
     }
 
     public Task<(FolderInfoModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationToken = default)
@@ -67,7 +81,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return folderSystemService.GetAllAsync(cancellationToken);
     }
 
-    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<FolderInfoModel>   updates, CancellationToken cancellationToken = default)
+    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<FolderInfoModel> updates, CancellationToken cancellationToken = default)
     {
         return folderSystemService.UpdateAsync(key, updates, cancellationToken);
     }
@@ -152,7 +166,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         var user = GetUser(username);
         if (user == null) return default;
 
-        var folder = Get(user.Folder);
+        var folder = Get(user.UserName, "/root");
         if (folder == null)
         {
             folder = new FolderInfoModel
@@ -176,6 +190,16 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         return folder;
     }
 
+    public IAsyncEnumerable<FolderInfoModel> GetContentFormParentFolderAsync(string id, int pageNumber, int pageSize, CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
+    {
+        return folderSystemService.GetContentFormParentFolderAsync(id, pageNumber, pageSize, cancellationToken, fieldsToFetch);
+    }
+
+    public IAsyncEnumerable<FolderInfoModel> GetContentFormParentFolderAsync(Expression<Func<FolderInfoModel, bool>> predicate, int pageNumber, int pageSize, CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
+    {
+        return folderSystemService.GetContentFormParentFolderAsync(predicate, pageNumber, pageSize, cancellationToken, fieldsToFetch);
+    }
+
     public IAsyncEnumerable<FolderInfoModel> Search(string queryString, string? username, int limit = 10, CancellationToken cancellationTokenSource = default)
     {
         throw new NotImplementedException();
@@ -188,8 +212,10 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
 
         var filePath = Path.Combine(_workingDir, dateString, folder.FolderName, $"_file_{newIndex}.bin");
         Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
-        
+
         file.AbsolutePath = filePath;
+        file.RootFolder = folder.Id.ToString();
+        file.RelativePath = folder.RelativePath + $"/{file.FileName}";
         var res = await fileSystemService.CreateAsync(file, cancellationTokenSource);
         if (res.Item1)
         {
@@ -199,9 +225,9 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
                 Type = FolderContentType.File
             });
             var folderUpdateResult = await UpdateAsync(folder, cancellationTokenSource);
-            if(!folderUpdateResult.Item1)
+            if (!folderUpdateResult.Item1)
                 return folderUpdateResult;
-            
+
             var folderInfoModel = Get(folder.Id.ToString())!;
             folder.Contents = folderInfoModel.Contents;
         }
@@ -258,11 +284,15 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
         var folderRoot = Get(request.RootId);
         if (folderRoot == null) return (false, AppLang.Root_folder_could_not_be_found);
 
+
         if (!string.IsNullOrEmpty(folderRoot.Password))
             if (folderRoot.Password != request.RootPassWord.ComputeSha256Hash())
                 return (false, AppLang.Passwords_do_not_match_);
 
-        if (string.IsNullOrEmpty(request.NewFolder.RelativePath)) request.NewFolder.RelativePath = folderRoot.RelativePath + '/' + request.NewFolder.FolderName;
+        request.NewFolder.RelativePath = folderRoot.RelativePath + '/' + request.NewFolder.FolderName;
+        request.NewFolder.RootFolder = request.RootId;
+        request.NewFolder.ModifiedDate = DateTime.Now;
+        
 
         if (string.IsNullOrEmpty(request.NewFolder.Username))
             request.NewFolder.Username = folderRoot.Username;
@@ -276,7 +306,7 @@ public class FolderSystemBusinessLayer(IFolderSystemDatalayer folderSystemServic
             folderRoot.Contents.Add(new FolderContent
             {
                 Id = request.NewFolder.Id.ToString(),
-                Type = FolderContentType.Folder
+                Type = FolderContentType.Folder,
             });
             res = await UpdateAsync(folderRoot);
             if (res.Item1)

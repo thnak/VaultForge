@@ -56,8 +56,9 @@ public class FolderInfoModel
     /// <summary>
     ///     Relative path for UI display
     /// </summary>
-    [Key(7)]
-    public string RelativePath { get; set; } = string.Empty;
+    [Key(7)] public string RelativePath { get; set; } = string.Empty;
+
+    [Key(13)] public string AbsolutePath { get; set; } = string.Empty;
 
     [Key(8)] public string VersionId { get; set; } = string.Empty;
 

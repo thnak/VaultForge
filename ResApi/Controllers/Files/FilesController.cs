@@ -172,7 +172,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         FolderRequest folderRequest = new FolderRequest()
         {
             Folder = folder,
-            TotalPages = size
+            TotalFolderPages = size
         };
         return Content(folderRequest.ToJson(), MediaTypeNames.Application.Json);
     }

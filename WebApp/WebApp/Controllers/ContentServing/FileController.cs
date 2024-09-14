@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using System.Net.Mime;
 using System.Web;
 using Business.Attribute;
@@ -26,6 +27,41 @@ namespace WebApp.Controllers.ContentServing;
 [ApiController]
 public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBusinessLayer folderServe, IThumbnailService thumbnailService, ILogger<FilesController> logger) : ControllerBase
 {
+    [HttpGet("get-file-wall-paper")]
+    [IgnoreAntiforgeryToken]
+    [OutputCache(NoStore = true)]
+    [ResponseCache(NoStore = true)]
+    public async Task<IActionResult> GetWallPaper()
+    {
+        var cancelToken = HttpContext.RequestAborted;
+
+        var anonymousUser = "Anonymous".ComputeSha256Hash();
+
+        var rootWallpaperFolder = folderServe.Get(anonymousUser, "/root/wallpaper");
+        if (rootWallpaperFolder == null)
+            return NotFound();
+
+
+        var file = await fileServe.GetRandomFileAsync(rootWallpaperFolder.Id.ToString(), cancelToken);
+        if (file == null) return NotFound();
+        var now = DateTime.UtcNow;
+        var cd = new ContentDisposition
+        {
+            FileName = HttpUtility.UrlEncode(file.FileName.Replace(".bin", file.ContentType.GetCorrectExtensionFormContentType())),
+            Inline = true, // false = prompt the user for downloading;  true = browser to try to show the file inline,
+            CreationDate = now,
+            ModificationDate = now,
+            ReadDate = now
+        };
+
+        Response.Headers.Append("Content-Disposition", cd.ToString());
+        Response.ContentType = file.ContentType;
+        Response.Headers.ContentType = file.ContentType;
+        Response.StatusCode = 200;
+        Response.ContentLength = file.FileSize;
+        return PhysicalFile(file.AbsolutePath, file.ContentType, true);
+    }
+
     [HttpGet("get-file")]
     [IgnoreAntiforgeryToken]
     public IActionResult GetFile(string id)
@@ -129,9 +165,10 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
     [OutputCache(Duration = 5, NoStore = true)]
-    public IActionResult GetSharedFolder([FromForm] string? id, [FromForm] string? password,
+    public async Task<IActionResult> GetSharedFolder([FromForm] string? id, [FromForm] string? password,
         [FromForm] int page, [FromForm] int pageSize, [FromForm] string? contentTypes)
     {
+        var cancelToken = HttpContext.RequestAborted;
         var folderSource = string.IsNullOrEmpty(id) ? folderServe.GetRoot("") : folderServe.Get(id);
         if (folderSource == null) return BadRequest(AppLang.Folder_could_not_be_found);
         if (!string.IsNullOrEmpty(folderSource.Password))
@@ -142,31 +179,70 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
 
         folderSource.Password = string.Empty;
 
-        List<FolderContentType> contentTypesList = [];
+        List<FolderContentType> contentFolderTypesList = [];
+        List<FileContentType> contentFileTypesList = [];
 
         if (!string.IsNullOrEmpty(contentTypes))
         {
             var listString = contentTypes.DeSerialize<FolderContentType[]>();
-            if (listString != null) contentTypesList = listString.ToList();
+            if (listString != null) contentFolderTypesList = listString.ToList();
         }
         else
         {
-            contentTypesList = [FolderContentType.File, FolderContentType.Folder];
+            contentFolderTypesList = [FolderContentType.File, FolderContentType.Folder];
         }
+
+        contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).ToList();
 
         page -= 1;
 
-        folderSource.Contents = folderSource.Contents.Where(x => contentTypesList.Contains(x.Type)).ToList();
-        var size = (int)Math.Ceiling(folderSource.Contents.Count / (float)pageSize);
+        folderSource.Contents = [];
+        var folderList = new List<FolderInfoModel>();
+        var fileList = new List<FileInfoModel>();
 
-        var folders = folderSource.Contents.Where(x => x is { Type: FolderContentType.Folder or FolderContentType.HiddenFolder or FolderContentType.DeletedFolder }).Skip(page * pageSize).Take(pageSize).ToArray();
-        var files = folderSource.Contents.Where(x => x is { Type: FolderContentType.File or FolderContentType.HiddenFile or FolderContentType.DeletedFile }).Skip(page * pageSize).Take(pageSize).ToArray();
 
-        folderSource.Contents = [..folders, ..files];
+        var totalFolderDoc = await folderServe.GetDocumentSizeAsync(model => model.RootFolder == folderSource.Id.ToString(), cancelToken);
+        var totalFileDoc = await fileServe.GetDocumentSizeAsync(model => model.RootFolder == folderSource.Id.ToString(), cancelToken);
+
+
+        var fieldsFolderToFetch = new Expression<Func<FolderInfoModel, object>>[]
+        {
+            model => model.Id,
+            model => model.FolderName,
+            model => model.Type,
+            model => model.RootFolder,
+            model => model.Icon,
+            model => model.RelativePath
+        };
+        var fieldsFileToFetch = new Expression<Func<FileInfoModel, object>>[]
+        {
+            model => model.Id,
+            model => model.FileName,
+            model => model.Thumbnail,
+            model => model.Type,
+            model => model.RootFolder,
+            model => model.ContentType,
+            model => model.RelativePath
+        };
+
+
+        await foreach (var m in folderServe.GetContentFormParentFolderAsync(model => model.RootFolder == folderSource.Id.ToString() && contentFolderTypesList.Contains(model.Type), page, pageSize, cancelToken, fieldsFolderToFetch))
+        {
+            folderList.Add(m);
+        }
+
+        await foreach (var m in fileServe.GetContentFormParentFolderAsync(model => model.RootFolder == folderSource.Id.ToString() && contentFileTypesList.Contains(model.Type), page, pageSize, cancelToken, fieldsFileToFetch))
+        {
+            fileList.Add(m);
+        }
+
         FolderRequest folderRequest = new FolderRequest()
         {
             Folder = folderSource,
-            TotalPages = size
+            Files = fileList.ToArray(),
+            Folders = folderList.ToArray(),
+            TotalFolderPages = (int)totalFolderDoc,
+            TotalFilePages = (int)totalFileDoc,
         };
         return Content(folderRequest.ToJson(), MediaTypeNames.Application.Json);
     }
@@ -186,7 +262,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
             await foreach (var x in folderServe.Where(x => x.FolderName.Contains(searchString) ||
                                                            x.RelativePath.Contains(searchString) &&
                                                            (user == null || x.Username == user.UserName) &&
-                                                           x.Type == FolderContentType.Folder, cancelToken, 
+                                                           x.Type == FolderContentType.Folder, cancelToken,
                                model => model.FolderName, model => model.Type, model => model.Icon, model => model.ModifiedDate, model => model.Id))
             {
                 folderList.Add(x);
@@ -435,8 +511,8 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         var folderKeyString = AppLang.Folder;
         var fileKeyString = AppLang.File;
         var cancelToken = HttpContext.RequestAborted;
-        
-        
+
+
         try
         {
             if (string.IsNullOrEmpty(Request.ContentType) || !MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
@@ -483,7 +559,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                         {
                             FileName = trustedFileNameForDisplay
                         };
-                        
+
                         folder = folderServe.Get(folderCodes);
                         if (folder == null)
                         {
@@ -491,7 +567,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                                 return Ok(AppLang.Successfully_uploaded);
                             return BadRequest(ModelState);
                         }
-                        
+
                         var createFileResult = await folderServe.CreateFileAsync(folder, file, cancelToken);
                         if (createFileResult.Item1)
                         {
@@ -517,7 +593,6 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                                 if (!result.Item1) logger.LogError(result.Item2);
                             }
                         }
-                        
                     }
                 }
 
@@ -527,7 +602,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
             logger.LogInformation(ModelState.ToString());
             if (ModelState.IsValid)
                 return Ok(AppLang.Successfully_uploaded);
-            
+
             return Ok(ModelState);
         }
         catch (OperationCanceledException ex)

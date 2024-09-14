@@ -16,6 +16,8 @@ public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInf
     public FolderInfoModel? Get(string username, string relativePath);
     public List<FolderInfoModel> GetFolderBloodLine(string username, string folderId);
     public FolderInfoModel? GetRoot(string username);
+    public IAsyncEnumerable<FolderInfoModel> GetContentFormParentFolderAsync(string id, int pageNumber, int pageSize, CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch);
+    public IAsyncEnumerable<FolderInfoModel> GetContentFormParentFolderAsync(Expression<Func<FolderInfoModel, bool>> predicate, int pageNumber, int pageSize, CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch);
 
     IAsyncEnumerable<FolderInfoModel> Search(string queryString, string? username, int limit = 10, CancellationToken cancellationTokenSource = default);
 

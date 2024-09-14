@@ -80,6 +80,11 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         return _dataDb.EstimatedDocumentCountAsync(cancellationToken: cancellationToken);
     }
 
+    public Task<long> GetDocumentSizeAsync(Expression<Func<UserModel, bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        return _dataDb.CountDocumentsAsync(predicate, cancellationToken: cancellationToken);
+    }
+
     public async IAsyncEnumerable<UserModel> Search(string queryString, int limit = 10,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
@@ -225,7 +230,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
 
                 await _dataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
             }
-           
+
 
             return (true, AppLang.Update_successfully);
         }

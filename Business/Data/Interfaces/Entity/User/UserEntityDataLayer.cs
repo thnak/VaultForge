@@ -12,6 +12,11 @@ public class UserEntityDataLayer(EntityDataContext entityDataContext) : IDataLay
         throw new NotImplementedException();
     }
 
+    public Task<long> GetDocumentSizeAsync(Expression<Func<UserModel, bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
     public IAsyncEnumerable<UserModel> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();

@@ -6,6 +6,14 @@ namespace Business.Business.Interfaces;
 
 public interface IBusinessLayerRepository<T> where T : class
 {
+    /// <summary>
+    /// Lấy số lượng document
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default);
+
+    Task<long> GetDocumentSizeAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default);
     IAsyncEnumerable<T> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default);
     IAsyncEnumerable<T> FindAsync(FilterDefinition<T> filter, CancellationToken cancellationToken = default);
     IAsyncEnumerable<T> FindAsync(string keyWord, CancellationToken cancellationToken = default);

@@ -20,7 +20,12 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
 
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return _dataDb.CountDocumentsAsync(FilterDefinition<ArticleModel>.Empty, cancellationToken: cancellationToken);
+    }
+
+    public Task<long> GetDocumentSizeAsync(Expression<Func<ArticleModel, bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        return _dataDb.CountDocumentsAsync(predicate, cancellationToken: cancellationToken);
     }
 
     public IAsyncEnumerable<ArticleModel> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default)

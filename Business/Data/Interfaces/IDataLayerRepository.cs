@@ -13,6 +13,8 @@ public interface IDataLayerRepository<T> where T : class
     /// <returns></returns>
     Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default);
 
+    Task<long> GetDocumentSizeAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default);
+
     /// <summary>
     /// Tìm kiếm với từ khóa KHÔNG biết trước
     /// </summary>
@@ -56,7 +58,7 @@ public interface IDataLayerRepository<T> where T : class
     Task<(bool, string)> CreateAsync(T model, CancellationToken cancellationToken = default);
     IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<T> models, CancellationToken cancellationToken = default);
     Task<(bool, string)> UpdateAsync(T model, CancellationToken cancellationToken = default);
-    Task<(bool, string)> UpdateAsync(string key, FieldUpdate<T> updates , CancellationToken cancellationToken = default);
+    Task<(bool, string)> UpdateAsync(string key, FieldUpdate<T> updates, CancellationToken cancellationToken = default);
 
     IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<T> models, CancellationToken cancellationToken = default);
     (bool, string) Delete(string key);

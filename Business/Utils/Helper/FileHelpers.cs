@@ -434,9 +434,9 @@ public static class FileHelpers
         return false;
     }
 
-    public static string GetCorrectExtensionFormContentType(this string stream, string defaultExtension = ".bin")
+    public static string GetCorrectExtensionFormContentType(this string contentType, string defaultExtension = ".bin")
     {
-        return MimeTypeMappings.FirstOrDefault(x => x.Value == stream).Key ?? defaultExtension;
+        return MimeTypeMappings.FirstOrDefault(x => x.Value == contentType).Key ?? defaultExtension;
     }
 
     public static string GetMimeTypeFromExtension(this string fileExtension)
