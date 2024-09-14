@@ -14,7 +14,7 @@ namespace Business.Services.Services;
 
 public class ThumbnailService(IServiceProvider serviceProvider, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
 {
-    private readonly ConcurrentQueue<string> _thumbnailQueue = new();
+    private readonly BlockingCollection<string> _thumbnailQueue = new();
     private readonly SemaphoreSlim _queueSemaphore = new(8);
     private const int MaxDimension = 480; // Maximum width or height
     private bool _isProcessing;
@@ -24,8 +24,9 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
 
     public Task AddThumbnailRequest(string imageId)
     {
-        _thumbnailQueue.Enqueue(imageId);
-        StartProcessing();
+        _thumbnailQueue.Add(imageId);
+        _thumbnailQueue.CompleteAdding();
+        // StartProcessing();
         return Task.CompletedTask;
     }
 
@@ -45,27 +46,33 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
         logger.LogInformation("Thumbnail Service started.");
 
         // Continue processing until the app shuts down or cancellation is requested
-        while (!cancellationToken.IsCancellationRequested || !_thumbnailQueue.IsEmpty)
+        
+        while (_thumbnailQueue.TryTake(out string? imageId, -1, cancellationToken))
         {
-            if (_thumbnailQueue.TryDequeue(out string? imageId))
+            if (string.IsNullOrEmpty(imageId)) continue;
+            try
             {
                 await _queueSemaphore.WaitAsync(cancellationToken); // Wait for a thumbnail request
-
+                var id = imageId;
                 _ = Task.Run(async () =>
                 {
                     try
                     {
-                        await ProcessThumbnailAsync(imageId, cancellationToken);
+                        await ProcessThumbnailAsync(id, cancellationToken);
                     }
                     catch (Exception ex)
                     {
-                        logger.LogError($"Error creating thumbnail for image {imageId}: {ex.Message}");
+                        logger.LogError($"Error creating thumbnail for image {id}: {ex.Message}");
                     }
                     finally
                     {
                         _queueSemaphore.Release();
                     }
                 }, cancellationToken);
+            }
+            catch (OperationCanceledException)
+            {
+                logger.LogInformation("Canceled");
             }
         }
 
