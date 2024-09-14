@@ -1,6 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Linq.Expressions;
-using Business.Business.Interfaces.FileSystem;
+﻿using Business.Business.Interfaces.FileSystem;
 using Business.Models;
 using Business.Services.Interfaces;
 using BusinessModels.General.EnumModel;
@@ -109,7 +107,7 @@ public class FixContentController(IFileSystemBusinessLayer fileServe, IFolderSys
         }
         else
         {
-            thumbnailService.AddThumbnailRequest(file.Id.ToString());
+            await thumbnailService.AddThumbnailRequest(file.Id.ToString());
         }
 
         var fileUpdateResult = await fileServe.UpdateAsync(file, cancelToken);
