@@ -50,7 +50,7 @@ public partial class ManagementPage : ComponentBase, IAsyncDisposable, IDisposab
         Metadata.Add(new Dictionary<string, string>() { { "name", "robots" }, { "content", "max-image-preview:large, index" } });
 
 
-        Hub = Navigation.ToAbsoluteUri("/PageCreatorHub").InitHub(false);
+        Hub = Navigation.ToAbsoluteUri("/PageCreatorHub").InitHub(true);
         Hub.Reconnected += HubOnReconnected;
         Hub.Reconnecting += HubOnReconnecting;
         await Hub.StartAsync();

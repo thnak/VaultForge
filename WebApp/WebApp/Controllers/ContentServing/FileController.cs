@@ -70,7 +70,11 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         Response.Headers.ContentType = file.ContentType;
         Response.StatusCode = 200;
         Response.ContentLength = file.FileSize;
-        return PhysicalFile(file.AbsolutePath, file.ContentType, true);
+        if (global::System.IO.File.Exists(file.AbsolutePath))
+            return PhysicalFile(file.AbsolutePath, file.ContentType, true);
+        
+        logger.LogError($"File {file.AbsolutePath} not found");
+        return NotFound();
     }
 
     [HttpGet("get-file")]
@@ -616,7 +620,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
 
                 section = await reader.ReadNextSectionAsync(cancelToken);
             }
-            
+
             if (ModelState.IsValid)
                 return Ok(AppLang.Successfully_uploaded);
 
