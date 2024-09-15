@@ -37,7 +37,7 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
 
     private static ArticleModel Article { get; set; } = new();
 
-    private bool ShowEditor { get; set; }
+    private bool ShowEditor { get; set; } = true;
     private bool Loading { get; set; } = true;
 
     #endregion
@@ -67,21 +67,10 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
     {
         if (firstRender)
         {
-            await InitEditorResource();
             await InitHub();
         }
 
         await base.OnAfterRenderAsync(firstRender);
-    }
-
-    private async Task InitEditorResource()
-    {
-        await JsRuntime.AddScriptResource("_content/BlazorMonaco/jsInterop.js");
-        await JsRuntime.AddScriptResource("_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js");
-        await JsRuntime.AddScriptResource("/Pages/ContentManagementSystem/Editor/ContentCreatorPage.razor.js");
-        await JsRuntime.AddScriptResource("_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js");
-        ShowEditor = true;
-        await InvokeAsync(StateHasChanged);
     }
 
     private async Task InitHub()

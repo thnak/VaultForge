@@ -62,10 +62,13 @@ function PageHideEvent() {
     DotNet.invokeMethodAsync(assemblyName, 'PageHideEventEventListener')
 }
 
-function ContextMenuEvent(e) {
-    e.preventDefault();
-    DotNet.invokeMethodAsync(assemblyName, 'ContextMenuEventListener')
-    DotNet.invokeMethodAsync(assemblyName, 'ContextMenuEventListenerWithParam', e.clientX, e.clientY)
+async function ContextMenuEvent(e) {
+    var keyPrevent = localStorage.getItem("PreventKey");
+    if(keyPrevent.includes("contextmenu")) {
+        e.preventDefault();
+    }
+    await DotNet.invokeMethodAsync(assemblyName, 'ContextMenuEventListener')
+    await DotNet.invokeMethodAsync(assemblyName, 'ContextMenuEventListenerWithParam', e.clientX, e.clientY)
 }
 
 function KeyDownEvent(event) {

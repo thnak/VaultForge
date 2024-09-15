@@ -126,7 +126,14 @@ public partial class ManagementPage : ComponentBase, IAsyncDisposable, IDisposab
         var dialogResult = await dialog.Result;
         if (dialogResult is { Canceled: false })
         {
-            await DataGrid.ReloadServerData();
+            if (Hub != null)
+            {
+                var result = await Hub.InvokeAsync<SignalRResult>("DeleteAdvertisement", contextItem.Id.ToString());
+                if (result is { Success: true })
+                {
+                    await DataGrid.ReloadServerData();
+                }
+            }
         }
     }
 

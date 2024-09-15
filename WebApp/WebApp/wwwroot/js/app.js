@@ -70,7 +70,7 @@ window.setCultureCookie = (culture, uiCulture, cookieName = 'thnakdevserverCultu
     htmlElement.setAttribute('lang', culture);
 }
 
-window.AddScriptElement = (url) => {
+async function lazyLoadScript(url) {
     return new Promise(function (resolve, reject) {
         // Check if the script is already loaded
         if (document.getElementById(url)) {
@@ -94,12 +94,15 @@ window.AddScriptElement = (url) => {
 
         document.body.appendChild(script);
     });
-    // const script = document.createElement('script');
-    // script.src = url;
-    // script.type = 'text/javascript';
-    // script.id = url;
-    // script.async = false; // Optional: load asynchronously
-    // document.head.appendChild(script); // 
+}
+
+window.AddScriptElement = async (url) => {
+    try {
+        const message = await lazyLoadScript(url);
+        console.log(message);
+    } catch (e) {
+        console.log(e)
+    }
 }
 
 // override reload 
