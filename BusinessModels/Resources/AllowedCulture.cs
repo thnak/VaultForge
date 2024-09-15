@@ -5,8 +5,7 @@ namespace BusinessModels.Resources;
 public static class AllowedCulture
 {
     public static IList<CultureInfo> SupportedCultures =>
-        new[]
-        {
-            new CultureInfo("en-US"), new CultureInfo("vi-VN"), new CultureInfo("Ja-JP"), new CultureInfo("ko-KR"), new CultureInfo("de-DE"), new CultureInfo("es-ES")
-        };
+    [
+        new("vi-VN"), new("en-US"), new("Ja-JP"), new("ko-KR"), new("de-DE"), new("es-ES")
+    ];
 }
