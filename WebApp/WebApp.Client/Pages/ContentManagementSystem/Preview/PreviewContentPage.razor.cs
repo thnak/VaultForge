@@ -1,10 +1,10 @@
 ﻿using System.Globalization;
 using BusinessModels.Advertisement;
-using BusinessModels.Converter;
 using BusinessModels.Resources;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
+using WebApp.Client.Utils;
 
 namespace WebApp.Client.Pages.ContentManagementSystem.Preview;
 
@@ -70,6 +70,8 @@ public partial class PreviewContentPage : ComponentBase, IDisposable, IAsyncDisp
         {
             HubConnection = Navigation.ToAbsoluteUri("/PageCreatorHub").InitHub();
             HubConnection.On<ArticleModel>("ReceiveMessage", ReceiveArticleData);
+            HubConnection.Reconnected += HubConnectionOnReconnected;
+            HubConnection.Reconnecting += HubConnectionOnReconnecting;
             HubConnection.StartAsync();
             if (ContentId != null)
             {
@@ -78,6 +80,18 @@ public partial class PreviewContentPage : ComponentBase, IDisposable, IAsyncDisp
         }
 
         return base.OnAfterRenderAsync(firstRender);
+    }
+
+    private Task HubConnectionOnReconnecting(Exception? arg)
+    {
+        ToastService.ShowWarning(AppLang.Reconnecting, TypeClassList.ToastDefaultSetting);
+        return InvokeAsync(StateHasChanged);
+    }
+
+    private async Task HubConnectionOnReconnected(string? arg)
+    {
+        ToastService.ShowSuccess(AppLang.Connected, TypeClassList.ToastDefaultSetting);
+        await HubConnection!.InvokeAsync("GetMessages", ContentId);
     }
 
     private Task ReceiveArticleData(ArticleModel arg)

@@ -92,21 +92,20 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
         HubConnection.Reconnected += HubConnectionOnReconnected;
         HubConnection.Reconnecting += HubConnectionOnReconnecting;
         await HubConnection.StartAsync();
+        await HubConnection.InvokeAsync("GetMessages", ContentId);
     }
 
     private Task HubConnectionOnReconnecting(Exception? arg)
     {
         Loading = true;
+        ToastService.ShowWarning(AppLang.Reconnecting, TypeClassList.ToastDefaultSetting);
         return InvokeAsync(StateHasChanged);
     }
 
     private async Task HubConnectionOnReconnected(string? arg)
     {
-        if (ContentId != null && HubConnection != null)
-        {
-            if (HubConnection.State == HubConnectionState.Disconnected)
-                await HubConnection.InvokeAsync("GetMessages", ContentId);
-        }
+        ToastService.ShowSuccess(AppLang.Connected, TypeClassList.ToastDefaultSetting);
+        await HubConnection!.InvokeAsync("GetMessages", ContentId);
     }
 
     private async Task ReceiveArticleData(ArticleModel arg)

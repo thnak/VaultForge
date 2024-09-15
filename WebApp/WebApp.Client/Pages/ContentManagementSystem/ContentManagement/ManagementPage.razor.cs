@@ -51,10 +51,23 @@ public partial class ManagementPage : ComponentBase, IAsyncDisposable, IDisposab
 
 
         Hub = Navigation.ToAbsoluteUri("/PageCreatorHub").InitHub(false);
-
+        Hub.Reconnected += HubOnReconnected;
+        Hub.Reconnecting += HubOnReconnecting;
         await Hub.StartAsync();
         await DataGrid.ReloadServerData();
         await base.OnInitializedAsync();
+    }
+
+    private Task HubOnReconnecting(Exception? arg)
+    {
+        ToastService.ShowWarning(AppLang.Reconnecting, TypeClassList.ToastDefaultSetting);
+        return Task.CompletedTask;
+    }
+
+    private Task HubOnReconnected(string? arg)
+    {
+        ToastService.ShowSuccess(AppLang.Connected, TypeClassList.ToastDefaultSetting);
+        return Task.CompletedTask;
     }
 
     #endregion

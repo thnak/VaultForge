@@ -515,4 +515,13 @@ ClientY: {1}</value>
     <data name="Cannot delete system folder" xml:space="preserve">
       <value>Cannot delete system folder</value>
     </data>
+    <data name="Disconnected" xml:space="preserve">
+      <value>Disconnected</value>
+    </data>
+    <data name="Connected" xml:space="preserve">
+      <value>Connected</value>
+    </data>
+    <data name="Reconnecting" xml:space="preserve">
+      <value>Reconnecting</value>
+    </data>
 </root>

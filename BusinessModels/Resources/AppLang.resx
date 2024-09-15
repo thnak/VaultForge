@@ -514,4 +514,13 @@ ClientY: {1}</value>
     <data name="Cannot delete system folder" xml:space="preserve">
       <value>Không thể xóa thư mục hệ thống</value>
     </data>
+    <data name="Disconnected" xml:space="preserve">
+      <value>Đã ngắt kết nối</value>
+    </data>
+    <data name="Connected" xml:space="preserve">
+      <value>Đã kết nối</value>
+    </data>
+    <data name="Reconnecting" xml:space="preserve">
+      <value>Đang kết nối lại</value>
+    </data>
 </root>

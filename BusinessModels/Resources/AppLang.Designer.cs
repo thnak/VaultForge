@@ -168,6 +168,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Đã kết nối.
+        /// </summary>
+        public static string Connected {
+            get {
+                return ResourceManager.GetString("Connected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Content already exists.
         /// </summary>
         public static string Content_already_exists {
@@ -335,6 +344,15 @@ namespace BusinessModels.Resources {
         public static string Description {
             get {
                 return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đã ngắt kết nối.
+        /// </summary>
+        public static string Disconnected {
+            get {
+                return ResourceManager.GetString("Disconnected", resourceCulture);
             }
         }
         
@@ -822,6 +840,15 @@ namespace BusinessModels.Resources {
         public static string ProtectedSessionStorage_GetAsync__ERROR___0_ {
             get {
                 return ResourceManager.GetString("ProtectedSessionStorage_GetAsync__ERROR___0_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đang kết nối lại.
+        /// </summary>
+        public static string Reconnecting {
+            get {
+                return ResourceManager.GetString("Reconnecting", resourceCulture);
             }
         }
         
