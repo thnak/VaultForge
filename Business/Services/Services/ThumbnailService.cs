@@ -15,9 +15,10 @@ namespace Business.Services.Services;
 public class ThumbnailService(IServiceProvider serviceProvider, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
 {
     private readonly BlockingCollection<string> _thumbnailQueue = new();
-    private readonly SemaphoreSlim _queueSemaphore = new(8);
+    private SemaphoreSlim QueueSemaphore { get; } = new(Environment.ProcessorCount - 1);
     private const int MaxDimension = 480; // Maximum width or height
-    private bool _isProcessing;
+    private ILogger<ThumbnailService> Logger { get; } = logger;
+    private IServiceProvider ServiceProvider { get; } = serviceProvider;
 
     // To resolve database and image services
     private readonly CancellationTokenSource _cancellationTokenSource = new();
@@ -25,33 +26,19 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
     public Task AddThumbnailRequest(string imageId)
     {
         _thumbnailQueue.Add(imageId);
-        // StartProcessing();
         return Task.CompletedTask;
-    }
-
-    private void StartProcessing()
-    {
-        if (_isProcessing)
-        {
-            return;
-        }
-
-        _isProcessing = true;
-        Task.Run(() => StartAsync(_cancellationTokenSource.Token));
     }
 
     public async Task StartAsync(CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("Thumbnail Service started.");
-
-        // Continue processing until the app shuts down or cancellation is requested
+        Logger.LogInformation("Thumbnail Service started.");
         
         while (_thumbnailQueue.TryTake(out string? imageId, -1, cancellationToken))
         {
             if (string.IsNullOrEmpty(imageId)) continue;
             try
             {
-                await _queueSemaphore.WaitAsync(cancellationToken); // Wait for a thumbnail request
+                await QueueSemaphore.WaitAsync(cancellationToken); // Wait for a thumbnail request
                 var id = imageId;
                 _ = Task.Run(async () =>
                 {
@@ -61,22 +48,22 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
                     }
                     catch (Exception ex)
                     {
-                        logger.LogError($"Error creating thumbnail for image {id}: {ex.Message}");
+                        Logger.LogError($"Error creating thumbnail for image {id}: {ex.Message}");
                     }
                     finally
                     {
-                        _queueSemaphore.Release();
+                        QueueSemaphore.Release();
                     }
                 }, cancellationToken);
             }
             catch (OperationCanceledException)
             {
-                logger.LogInformation("Canceled");
+                Logger.LogInformation("Canceled");
             }
         }
 
 
-        logger.LogInformation("Thumbnail Service stopped.");
+        Logger.LogInformation("Thumbnail Service stopped.");
     }
 
     private async Task ProcessThumbnailAsync(string imageId, CancellationToken cancellationToken)
@@ -84,14 +71,14 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
         try
         {
             // Use your service provider to resolve necessary services (DB access, image processing)
-            using var scope = serviceProvider.CreateScope();
+            using var scope = ServiceProvider.CreateScope();
             var fileService = scope.ServiceProvider.GetRequiredService<IFileSystemBusinessLayer>(); // Assumed IImageService handles image fetching
 
             // Fetch the image from the database
             var fileInfo = fileService.Get(imageId);
             if (fileInfo == null)
             {
-                logger.LogWarning($"File with ID {imageId} not found.");
+                Logger.LogWarning($"File with ID {imageId} not found.");
                 return;
             }
 
@@ -103,7 +90,7 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
         }
         catch (Exception e)
         {
-            logger.LogError($"Error creating thumbnail for image {imageId}: {e.Message}");
+            Logger.LogError($"Error creating thumbnail for image {imageId}: {e.Message}");
         }
     }
 
@@ -113,7 +100,7 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
         var imagePath = fileInfo.AbsolutePath;
         if (!File.Exists(imagePath))
         {
-            logger.LogWarning($"File at path {imagePath} does not exist.");
+            Logger.LogWarning($"File at path {imagePath} does not exist.");
             return;
         }
 
@@ -197,7 +184,7 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
 
         lock (_thumbnailQueue)
         {
-            logger.LogInformation($"Thumbnail created for image {fileInfo.Id}. {_thumbnailQueue.Count}");
+            Logger.LogInformation($"Thumbnail created for image {fileInfo.Id}");
         }
     }
 
@@ -211,14 +198,9 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
         return thumbnailFileStream.Length;
     }
 
-    public void Stop()
-    {
-        _cancellationTokenSource.Cancel(); // Stop the background process
-    }
-
     public void Dispose()
     {
-        _queueSemaphore.Dispose();
+        QueueSemaphore.Dispose();
         _cancellationTokenSource.Dispose();
     }
 }
