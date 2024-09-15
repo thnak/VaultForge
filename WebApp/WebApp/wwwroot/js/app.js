@@ -129,12 +129,18 @@ window.addEventListener('touchend', () => {
         isPulling = false;
         if (parseInt(refreshIcon.style.top) > 10) {
             refreshIcon.style.top = '-50px';
-            DotNet.invokeMethodAsync('WebApp.Client', 'ScrollToReloadEventListener')
-                .then(data => {
-                    if (data) {
-                        location.reload();
-                    }
-                });
+            try {
+                DotNet.invokeMethodAsync('WebApp.Client', 'ScrollToReloadEventListener')
+                    .then(data => {
+                        if (data) {
+                            location.reload();
+                        }
+                    })
+                    .catch(e => console.log(e));
+            } catch (error) {
+                location.reload();
+            }
+
         } else {
             refreshIcon.style.top = '-50px';
         }

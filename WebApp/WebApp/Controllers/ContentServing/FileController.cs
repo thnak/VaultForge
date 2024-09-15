@@ -616,8 +616,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
 
                 section = await reader.ReadNextSectionAsync(cancelToken);
             }
-
-            logger.LogInformation(ModelState.ToString());
+            
             if (ModelState.IsValid)
                 return Ok(AppLang.Successfully_uploaded);
 

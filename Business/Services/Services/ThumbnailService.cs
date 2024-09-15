@@ -25,7 +25,6 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
     public Task AddThumbnailRequest(string imageId)
     {
         _thumbnailQueue.Add(imageId);
-        _thumbnailQueue.CompleteAdding();
         // StartProcessing();
         return Task.CompletedTask;
     }
