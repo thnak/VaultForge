@@ -23,8 +23,8 @@ jobs:
         dotnet-version: 9.0.100-rc.1.24452.12
     - name: Install .NET Wasm Tools
       run: dotnet workload install wasm-tools
-    - name: Restore dependencies
-      run: dotnet restore
+#    - name: Restore dependencies
+#      run: dotnet restore
 #    - name: Build
 #      run: dotnet build
 #    - name: Test
