@@ -23,12 +23,14 @@ jobs:
         dotnet-version: 9.0.100-rc.1.24452.12
     - name: Install .NET Wasm Tools
       run: dotnet workload install wasm-tools
-    - name: Restore dependencies
-      run: dotnet restore
+#    - name: Restore dependencies
+#      run: dotnet restore
 #    - name: Build
 #      run: dotnet build
 #    - name: Test
 #      run: dotnet test --no-build --verbosity normal
+    - name: Clean
+      run: sudo rm -r /home/thnak/Web/Server/*
     - name: Publish
       run: dotnet publish /home/thnak/git-actions/CodeWithMe-root/_work/CodeWithMe/CodeWithMe/WebApp/WebApp/WebApp.csproj --runtime linux-x64 --self-contained true -o /home/thnak/Web/Server/
     - name: Restart
