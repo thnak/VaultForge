@@ -8,13 +8,14 @@ html, body {
 }
 
 
+/*noinspection ALL*/
 .progress-wrapper {
     position: absolute;
     left: 0;
     top: 0;
     width: 100vw;
     height: 100dvh;
-    background-color: white;
+    background-color: var(--mud-palette-background);
     border: none;
     -webkit-user-select: none;
     transition: all 0.25s;

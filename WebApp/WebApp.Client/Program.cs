@@ -1,5 +1,7 @@
 using System.Globalization;
+using BusinessModels.Converter;
 using BusinessModels.Resources;
+using MessagePack.Resolvers;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Components.WebAssembly.Services;
@@ -19,7 +21,13 @@ internal class Program
         builder.Services.AddFrontEndService();
         builder.Services.AddFrontEndSingletonService();
 
-
+        StaticCompositeResolver.Instance.Register(
+            StandardResolver.Instance,
+            NativeDecimalResolver.Instance,
+            NativeGuidResolver.Instance,
+            NativeDateTimeResolver.Instance,
+            MongoObjectIdResolver.INSTANCE);
+        
         #region Authorize
 
         builder.Services.AddAuthorizationCore();

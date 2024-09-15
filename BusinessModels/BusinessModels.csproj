@@ -14,6 +14,9 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.0-rc.1.24452.1" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" Version="9.0.0-rc.1.24452.1" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="9.0.0-rc.1.24452.1" />
         <PackageReference Include="MongoDB.Bson" Version="2.28.0"/>
         <PackageReference Include="MudBlazor" Version="7.8.0" />
     </ItemGroup>

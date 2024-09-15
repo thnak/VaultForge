@@ -2,6 +2,7 @@
 using BusinessModels.Advertisement;
 using BusinessModels.Converter;
 using BusinessModels.Resources;
+using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -67,11 +68,7 @@ public partial class PreviewContentPage : ComponentBase, IDisposable, IAsyncDisp
     {
         if (firstRender)
         {
-            HubConnection = new HubConnectionBuilder()
-                .WithUrl(Navigation.ToAbsoluteUri("/PageCreatorHub"))
-                .AddJsonProtocol(options => { options.PayloadSerializerOptions.Converters.Add(new ObjectIdConverter()); })
-                .Build();
-
+            HubConnection = Navigation.ToAbsoluteUri("/PageCreatorHub").InitHub();
             HubConnection.On<ArticleModel>("ReceiveMessage", ReceiveArticleData);
             HubConnection.StartAsync();
             if (ContentId != null)

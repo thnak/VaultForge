@@ -2,6 +2,7 @@
 using BusinessModels.Converter;
 using BusinessModels.Resources;
 using BusinessModels.System;
+using BusinessModels.Utils;
 using FluentValidation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -103,10 +104,7 @@ public partial class ContentCreatorDialog : ComponentBase, IDisposable, IAsyncDi
     protected override async Task OnParametersSetAsync()
     {
         _article = Article != null ? Article.Copy() : _article;
-        Hub = new HubConnectionBuilder()
-            .WithUrl(Navigation.ToAbsoluteUri("/PageCreatorHub"))
-            .AddJsonProtocol(options => { options.PayloadSerializerOptions.Converters.Add(new ObjectIdConverter()); })
-            .Build();
+        Hub = Navigation.ToAbsoluteUri("/PageCreatorHub").InitHub();
 
         await Hub.StartAsync();
         _fluentValidator = new OrderModelFluentValidator(Hub);

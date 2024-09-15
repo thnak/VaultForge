@@ -2,8 +2,8 @@
 using BlazorMonaco;
 using BlazorMonaco.Editor;
 using BusinessModels.Advertisement;
-using BusinessModels.Converter;
 using BusinessModels.Resources;
+using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.JSInterop;
@@ -28,9 +28,9 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
 
     private string Title { get; set; } = string.Empty;
     private List<Dictionary<string, string>> MetaData { get; set; } = [];
-    private StandaloneCodeEditor HtmlEditor { get; set; } = default!;
-    private StandaloneCodeEditor CssEditor { get; set; } = default!;
-    private StandaloneCodeEditor JavascriptEditor { get; set; } = default!;
+    private StandaloneCodeEditor? HtmlEditor { get; set; }
+    private StandaloneCodeEditor? CssEditor { get; set; }
+    private StandaloneCodeEditor? JavascriptEditor { get; set; }
 
     private HubConnection? HubConnection { get; set; }
     private CancellationTokenSource TokenSource { get; set; } = new();
@@ -38,6 +38,7 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
     private static ArticleModel Article { get; set; } = new();
 
     private bool ShowEditor { get; set; }
+    private bool Loading { get; set; } = true;
 
     #endregion
 
@@ -66,7 +67,8 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
     {
         if (firstRender)
         {
-            _ = Task.Run(InitEditorResource);
+            await InitEditorResource();
+            await InitHub();
         }
 
         await base.OnAfterRenderAsync(firstRender);
@@ -80,23 +82,30 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
         await JsRuntime.AddScriptResource("_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js");
         ShowEditor = true;
         await InvokeAsync(StateHasChanged);
-        _ = Task.Run(InitHub);
     }
 
     private async Task InitHub()
     {
-        HubConnection = new HubConnectionBuilder()
-            .WithUrl(Navigation.ToAbsoluteUri("/PageCreatorHub"))
-            .AddJsonProtocol(options => { options.PayloadSerializerOptions.Converters.Add(new ObjectIdConverter()); })
-            .Build();
-
+        HubConnection = Navigation.ToAbsoluteUri("/PageCreatorHub").InitHub();
         await JsRuntime.AddScriptResource();
-
         HubConnection.On<ArticleModel>("ReceiveMessage", ReceiveArticleData);
+        HubConnection.Reconnected += HubConnectionOnReconnected;
+        HubConnection.Reconnecting += HubConnectionOnReconnecting;
         await HubConnection.StartAsync();
-        if (ContentId != null)
+    }
+
+    private Task HubConnectionOnReconnecting(Exception? arg)
+    {
+        Loading = true;
+        return InvokeAsync(StateHasChanged);
+    }
+
+    private async Task HubConnectionOnReconnected(string? arg)
+    {
+        if (ContentId != null && HubConnection != null)
         {
-            _ = Task.Run(async () => await HubConnection.InvokeAsync("GetMessages", ContentId));
+            if (HubConnection.State == HubConnectionState.Disconnected)
+                await HubConnection.InvokeAsync("GetMessages", ContentId);
         }
     }
 
@@ -109,10 +118,11 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
         MetaData.Add(new Dictionary<string, string>() { { "name", "description" }, { "content", arg.Summary } });
         MetaData.Add(new Dictionary<string, string>() { { "name", "keywords" }, { "content", string.Join(", ", arg.Keywords) } });
         MetaData.Add(new Dictionary<string, string>() { { "name", "image" }, { "content", arg.Image } });
-
-        await HtmlEditor.SetValue(arg.HtmlSheet);
-        await CssEditor.SetValue(arg.StyleSheet);
-        await JavascriptEditor.SetValue(arg.JavaScriptSheet);
+        Loading = false;
+        if (HtmlEditor != null) await HtmlEditor.SetValue(arg.HtmlSheet);
+        if (CssEditor != null) await CssEditor.SetValue(arg.StyleSheet);
+        if (JavascriptEditor != null) await JavascriptEditor.SetValue(arg.JavaScriptSheet);
+        await InvokeAsync(StateHasChanged);
     }
 
     #endregion
@@ -194,6 +204,14 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
         };
     }
 
+    private async Task HandleSend()
+    {
+        if (HubConnection is { State: HubConnectionState.Connected })
+        {
+            await HubConnection.SendAsync("SendMessage", Article);
+        }
+    }
+
     private Task KeyHtmlUp(KeyboardEvent arg)
     {
         return HandleHtmlCode();
@@ -202,11 +220,11 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
 
     private async Task HandleHtmlCode()
     {
-        var text = await HtmlEditor.GetValue();
-        if (HubConnection != null)
+        if (HtmlEditor != null)
         {
+            var text = await HtmlEditor.GetValue();
             Article.HtmlSheet = text;
-            await HubConnection.SendAsync("SendMessage", Article);
+            await HandleSend();
         }
     }
 
@@ -218,11 +236,11 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
 
     private async Task HandleCssCode()
     {
-        var text = await CssEditor.GetValue();
-        if (HubConnection != null)
+        if (CssEditor != null)
         {
+            var text = await CssEditor.GetValue();
             Article.StyleSheet = text;
-            await HubConnection.SendAsync("SendMessage", Article);
+            await HandleSend();
         }
     }
 
@@ -234,11 +252,11 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
 
     private async Task HandleJavascriptCode()
     {
-        var text = await JavascriptEditor.GetValue();
-        if (HubConnection != null)
+        if (JavascriptEditor != null)
         {
+            var text = await JavascriptEditor.GetValue();
             Article.JavaScriptSheet = text;
-            await HubConnection.SendAsync("SendMessage", Article);
+            await HandleSend();
         }
     }
 
@@ -254,9 +272,9 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
 
     public void Dispose()
     {
-        HtmlEditor.Dispose();
-        CssEditor.Dispose();
-        JavascriptEditor.Dispose();
+        HtmlEditor?.Dispose();
+        CssEditor?.Dispose();
+        JavascriptEditor?.Dispose();
 
         TokenSource.Cancel();
         TokenSource.Dispose();

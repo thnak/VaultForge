@@ -11,6 +11,13 @@
     <MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.Add" OnClick="@AddNewArticle" ></MudIconButton>
 </SectionContent>
 
+@if (Loading)
+{
+    <SectionContent SectionId="@AppBar.TopBarSection2" >
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small" />
+    </SectionContent>
+}
+
 <HeadContent>
     <HeadContentContainer MetaProperty="@MetaData" />
 </HeadContent>
@@ -52,13 +59,13 @@
 </style>
 
 <div class="grid-editor" >
-    
+
     @if (ShowEditor)
     {
         <StandaloneCodeEditor ConstructionOptions="HtmlEditorConstructionOptions" Id="my-html-editor-instance-id" OnKeyUp="@KeyHtmlUp" @ref="HtmlEditor" />
         <StandaloneCodeEditor ConstructionOptions="CssEditorConstructionOptions" Id="my-css-editor-instance-id" OnKeyUp="@KeyCssUp" @ref="CssEditor" />
         <StandaloneCodeEditor ConstructionOptions="JavascriptEditorConstructionOptions" Id="my-javascript-editor-instance-id" OnKeyUp="@KeyJavascriptUp" @ref="JavascriptEditor" />
     }
-  
+
 
 </div>

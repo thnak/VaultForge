@@ -20,6 +20,8 @@ using Business.SocketHubs;
 using BusinessModels.Converter;
 using BusinessModels.General;
 using BusinessModels.Resources;
+using MessagePack;
+using MessagePack.Resolvers;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Services;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -143,13 +145,32 @@ public class Program
         #endregion
 
         #region SignalR
-
+        
+        StaticCompositeResolver.Instance.Register(
+            StandardResolver.Instance,
+            NativeDecimalResolver.Instance,
+            NativeGuidResolver.Instance,
+            NativeDateTimeResolver.Instance,
+            MongoObjectIdResolver.INSTANCE);
+        
         builder.Services.AddSignalR(options =>
         {
             options.EnableDetailedErrors = true;
             options.MaximumReceiveMessageSize = int.MaxValue;
             options.MaximumParallelInvocationsPerClient = 100;
-        }).AddJsonProtocol(options => { options.PayloadSerializerOptions.Converters.Add(new ObjectIdConverter()); });
+        }).AddJsonProtocol(options => { options.PayloadSerializerOptions.Converters.Add(new ObjectIdConverter()); })
+        .AddMessagePackProtocol(options =>
+        {
+            StaticCompositeResolver.Instance.Register(
+                StandardResolver.Instance,
+                NativeDecimalResolver.Instance,
+                NativeGuidResolver.Instance,
+                NativeDateTimeResolver.Instance,
+                MongoObjectIdResolver.INSTANCE);
+            options.SerializerOptions = MessagePackSerializerOptions.Standard
+                .WithResolver(StaticCompositeResolver.Instance)
+                .WithSecurity(MessagePackSecurity.UntrustedData);
+        });
 
         #endregion
 

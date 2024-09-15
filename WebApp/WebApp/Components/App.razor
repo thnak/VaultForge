@@ -30,7 +30,7 @@
 
 @* Loading Progress *@
 <div class="refresh-icon" id="refreshIcon" >
-    <img alt="reload" src="/images/200w.gif" >
+    <img alt="reload" src="@Assets["images/200w.gif"]" >
 </div>
 
 <div class="progress-wrapper" id="progress-wrapper" >
@@ -95,14 +95,7 @@
             return new InteractiveWebAssemblyRenderMode(false);
         }
 
-        if (mode == InteractiveServer)
-        {
-            return new InteractiveServerRenderMode();
-        }
-
-        if (mode == InteractiveAuto) return new InteractiveAutoRenderMode(true);
-
-        return default;
+        return mode;
     }
 
 }

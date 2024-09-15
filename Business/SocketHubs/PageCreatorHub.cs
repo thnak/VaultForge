@@ -51,10 +51,10 @@ public class PageCreatorHub(IMemoryCache memoryCache, IAdvertisementBusinessLaye
         return false;
     }
 
-    public async Task<SignalRResult<ArticleModel>> GetAllArticleModel(int pageSize, int currentPage)
+    public async Task<SignalRResultValue<ArticleModel>> GetAllArticleModel(int pageSize, int currentPage)
     {
         var re = await businessLayer.GetAllAsync(currentPage, pageSize, CancellationTokenSource.Token);
-        return new SignalRResult<ArticleModel>()
+        return new SignalRResultValue<ArticleModel>()
         {
             Data = re.Item1,
             Total = re.Item2,

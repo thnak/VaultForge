@@ -1,8 +1,8 @@
 ﻿using System.Web;
 using BusinessModels.Advertisement;
-using BusinessModels.Converter;
 using BusinessModels.Resources;
 using BusinessModels.System;
+using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;
@@ -50,10 +50,7 @@ public partial class ManagementPage : ComponentBase, IAsyncDisposable, IDisposab
         Metadata.Add(new Dictionary<string, string>() { { "name", "robots" }, { "content", "max-image-preview:large, index" } });
 
 
-        Hub = new HubConnectionBuilder()
-            .WithUrl(Navigation.ToAbsoluteUri("/PageCreatorHub"))
-            .AddJsonProtocol(options => { options.PayloadSerializerOptions.Converters.Add(new ObjectIdConverter()); })
-            .Build();
+        Hub = Navigation.ToAbsoluteUri("/PageCreatorHub").InitHub(false);
 
         await Hub.StartAsync();
         await DataGrid.ReloadServerData();
@@ -69,12 +66,12 @@ public partial class ManagementPage : ComponentBase, IAsyncDisposable, IDisposab
         {
             if (Hub != null)
             {
-                SignalRResult<ArticleModel> result = await Hub.InvokeAsync<SignalRResult<ArticleModel>>("GetAllArticleModel", arg.PageSize, arg.Page, cancellationToken: TokenSource.Token);
+                SignalRResultValue<ArticleModel> resultValue = await Hub.InvokeAsync<SignalRResultValue<ArticleModel>>("GetAllArticleModel", arg.PageSize, arg.Page, cancellationToken: TokenSource.Token);
 
                 return new GridData<ArticleModel>
                 {
-                    Items = result.Data,
-                    TotalItems = (int)result.Total,
+                    Items = resultValue.Data,
+                    TotalItems = (int)resultValue.Total,
                 };
             }
         }
