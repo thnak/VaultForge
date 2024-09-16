@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using BlazorMonaco.Editor;
 using BusinessModels.Advertisement;
 using BusinessModels.Resources;
 using BusinessModels.Utils;
@@ -27,9 +26,7 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
 
     private string Title { get; set; } = string.Empty;
     private List<Dictionary<string, string>> MetaData { get; set; } = [];
-    private StandaloneCodeEditor? HtmlEditor { get; set; }
-    private StandaloneCodeEditor? CssEditor { get; set; }
-    private StandaloneCodeEditor? JavascriptEditor { get; set; }
+ 
 
     private HubConnection? HubConnection { get; set; }
     private CancellationTokenSource TokenSource { get; set; } = new();
@@ -106,10 +103,8 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
         MetaData.Add(new Dictionary<string, string>() { { "name", "description" }, { "content", arg.Summary } });
         MetaData.Add(new Dictionary<string, string>() { { "name", "keywords" }, { "content", string.Join(", ", arg.Keywords) } });
         MetaData.Add(new Dictionary<string, string>() { { "name", "image" }, { "content", arg.Image } });
+        if (MonacoCodeEditor != null) await MonacoCodeEditor.SetValue(arg);
         Loading = false;
-        if (HtmlEditor != null) await HtmlEditor.SetValue(arg.HtmlSheet);
-        if (CssEditor != null) await CssEditor.SetValue(arg.StyleSheet);
-        if (JavascriptEditor != null) await JavascriptEditor.SetValue(arg.JavaScriptSheet);
         await InvokeAsync(StateHasChanged);
     }
 
@@ -139,9 +134,6 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
 
     public void Dispose()
     {
-        HtmlEditor?.Dispose();
-        CssEditor?.Dispose();
-        JavascriptEditor?.Dispose();
         if (MonacoCodeEditor != null) MonacoCodeEditor.Dispose();
         TokenSource.Cancel();
         TokenSource.Dispose();

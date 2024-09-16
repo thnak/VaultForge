@@ -1,4 +1,5 @@
 ﻿using BusinessModels.Advertisement;
+using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using WebApp.Client.Utils;
@@ -28,7 +29,7 @@ public partial class MonacoCodeEditor : ComponentBase, IDisposable
     {
         if (firstRender)
         {
-            await JsRuntime.AddScriptResource("https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.51.0/min/vs/loader.js");
+            await JsRuntime.AddScriptResource("js/loader.js");
             _module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./Components/CodeEditor/MonacoCodeEditor.razor.js");
             await _module.InvokeVoidAsync("MonacoCodeEditor.initEditor", "MonacoCodeEditor", Code.HtmlSheet, Code.StyleSheet, Code.JavaScriptSheet);
 
@@ -39,6 +40,12 @@ public partial class MonacoCodeEditor : ComponentBase, IDisposable
         }
 
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    public async Task SetValue(ArticleModel htmlCode)
+    {
+        string[] dataArray = [htmlCode.HtmlSheet, htmlCode.StyleSheet, htmlCode.JavaScriptSheet];
+        if (_module != null) await _module.InvokeVoidAsync("MonacoCodeEditor.setValue", dataArray.ToJson());
     }
 
     private Task<string> CssResquestHandler()

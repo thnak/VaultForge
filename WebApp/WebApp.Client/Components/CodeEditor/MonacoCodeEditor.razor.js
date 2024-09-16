@@ -31,13 +31,13 @@
                 return;
             }
 
-            var htmlElement = document.createElement('div');
+            const htmlElement = document.createElement('div');
             htmlElement.setAttribute('id', 'html-editor');
 
-            var cssElement = document.createElement('div');
+            const cssElement = document.createElement('div');
             cssElement.setAttribute('id', 'css-editor');
 
-            var javaElement = document.createElement('div');
+            const javaElement = document.createElement('div');
             javaElement.setAttribute('id', 'java-editor');
 
             this.RootElement.appendChild(htmlElement);
@@ -98,40 +98,6 @@
             });
 
             console.log(`Monaco Editor initialized for container: ${this.containerId}`);
-
-            // window.addEventListener("resize", ()=>{
-            //     if(this.htmlEditor){
-            //         this.htmlEditor.layout({width: 0, height: 0});
-            //         this.cssEditor.layout({width: 0, height: 0});
-            //         this.javascriptEditor.layout({width: 0, height: 0});
-            //
-            //         // wait for next frame to ensure last layout finished
-            //         window.requestAnimationFrame(() => {
-            //             // get the parent dimensions and re-layout the editor
-            //             const rect = this.RootElement.getBoundingClientRect();
-            //             this.htmlEditor.layout();
-            //             this.cssEditor.layout();
-            //             this.javascriptEditor.layout();
-            //         });
-            //     }
-            // });
-            //
-            // new ResizeObserver(()=>{
-            //     if(this.htmlEditor){
-            //         this.htmlEditor.layout({width: 0, height: 0});
-            //         this.cssEditor.layout({width: 0, height: 0});
-            //         this.javascriptEditor.layout({width: 0, height: 0});
-            //
-            //         // wait for next frame to ensure last layout finished
-            //         window.requestAnimationFrame(() => {
-            //             // get the parent dimensions and re-layout the editor
-            //             const rect = this.RootElement.getBoundingClientRect();
-            //             this.htmlEditor.layout();
-            //             this.cssEditor.layout();
-            //             this.javascriptEditor.layout();
-            //         });
-            //     }
-            // }).observe(this.RootElement);
 
 
             async function loadAllCSS() {
@@ -209,8 +175,8 @@
                     return {suggestions: suggestions};
                 }
             });
-            
-            
+
+
             // Setup cleanup observer
             this.createCleanupObserver();
         });
@@ -225,15 +191,16 @@
 
     static setValue(newValue) {
         if (this.javascriptEditor) {
-            this.javascriptEditor.setValue(newValue[0]);
-            this.javascriptEditor.setValue(newValue[1]);
-            this.javascriptEditor.setValue(newValue[2]);
+            const dataArray = JSON.parse(newValue);
+            this.htmlEditor.setValue(dataArray[0]);
+            this.cssEditor.setValue(dataArray[1]);
+            this.javascriptEditor.setValue(dataArray[2]);
         }
     }
 
     static updateSize() {
         // make editor as small as possible
-        if(this.htmlEditor){
+        if (this.htmlEditor) {
             this.htmlEditor.layout({width: 0, height: 0});
             this.cssEditor.layout({width: 0, height: 0});
             this.javascriptEditor.layout({width: 0, height: 0});
@@ -251,20 +218,18 @@
 
     static disposeEditor() {
         if (this.javascriptEditor) {
-            console.log('Disposing of editor');
             this.javascriptEditor.dispose();
             this.javascriptEditor = null;
         }
         if (this.htmlEditor) {
-            console.log('Disposing of editor');
             this.htmlEditor.dispose();
             this.htmlEditor = null;
         }
         if (this.cssEditor) {
-            console.log('Disposing of editor');
             this.cssEditor.dispose();
             this.cssEditor = null;
         }
+        console.log('Disposing of editor');
 
 
     }
