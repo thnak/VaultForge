@@ -3,12 +3,14 @@ using BusinessModels.Advertisement;
 using BusinessModels.System;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
+using Timer = System.Timers.Timer;
 
 namespace Business.SocketHubs;
 
 public class PageCreatorHub(IMemoryCache memoryCache, IAdvertisementBusinessLayer businessLayer) : Hub
 {
     private const string CacheKey = "PageCreatorHub";
+    private Timer? TimerInterval { get; set; }
 
     private CancellationTokenSource CancellationTokenSource { get; set; } = new();
 
@@ -19,6 +21,7 @@ public class PageCreatorHub(IMemoryCache memoryCache, IAdvertisementBusinessLaye
         CancellationTokenSource.Cancel();
         CancellationTokenSource.Dispose();
         RemoveListeners();
+        TimerInterval?.Dispose();
         return base.OnDisconnectedAsync(exception);
     }
 
@@ -65,45 +68,33 @@ public class PageCreatorHub(IMemoryCache memoryCache, IAdvertisementBusinessLaye
         };
     }
 
-    public async Task<SignalRResult> CreateAdvertisement(ArticleModel article)
-    {
-        var result = await businessLayer.CreateAsync(article, CancellationTokenSource.Token);
-        if (!result.Item1)
-        {
-            result = await businessLayer.UpdateAsync(article, CancellationTokenSource.Token);
-            return new SignalRResult() { Message = result.Item2, Success = result.Item1 };
-        }
-
-        memoryCache.Set($"{nameof(ArticleModel)}{article.Id}", article, new MemoryCacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(1) });
-
-        return new SignalRResult() { Message = result.Item2, Success = result.Item1 };
-    }
-
 
     public async Task SendMessage(ArticleModel message)
     {
-        _ = Task.Run(() => CreateAdvertisement(message).ConfigureAwait(false));
+        InitTimer(message.Id.ToString());
+        memoryCache.Set($"{nameof(PageCreatorHub)}{nameof(ArticleModel)}{message.Id}", message, new MemoryCacheEntryOptions() { Priority = CacheItemPriority.NeverRemove });
         string articleId = message.Id.ToString();
         var listeners = GetListeners(articleId).Where(x => x != Context.ConnectionId).ToArray();
-        await Clients.Users(listeners).SendAsync("ReceiveMessage", message, CancellationTokenSource.Token);
+        await Clients.Clients(listeners).SendAsync("ReceiveMessage", message, CancellationTokenSource.Token);
     }
 
     public async Task GetMessages(string articleId)
     {
-        var data = memoryCache.GetOrCreate<ArticleModel?>($"{nameof(ArticleModel)}{articleId}", entry =>
+        var data = memoryCache.GetOrCreate<ArticleModel?>($"{nameof(PageCreatorHub)}{nameof(ArticleModel)}{articleId}", entry =>
         {
             entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(1);
             return businessLayer.Get(articleId);
         });
+        GetListeners(articleId);
         await Clients.Caller.SendAsync("ReceiveMessage", data, CancellationTokenSource.Token);
     }
 
     public async Task<SignalRResult> DeleteAdvertisement(string articleId)
     {
         var result = businessLayer.Delete(articleId);
-        memoryCache.Remove($"{nameof(ArticleModel)}{articleId}");
+        memoryCache.Remove($"{nameof(PageCreatorHub)}{nameof(ArticleModel)}{articleId}");
         var listener = GetListeners(articleId);
-        await Clients.Users(listener).SendAsync("ReceiveMessage", new ArticleModel(), CancellationTokenSource.Token);
+        await Clients.Clients(listener).SendAsync("ReceiveMessage", new ArticleModel(), CancellationTokenSource.Token);
         return new SignalRResult() { Message = result.Item2, Success = result.Item1 };
     }
 
@@ -141,6 +132,35 @@ public class PageCreatorHub(IMemoryCache memoryCache, IAdvertisementBusinessLaye
             if (pair.Value.Any(x => x.Contains(Context.ConnectionId)))
             {
                 listener[pair.Key].Remove(Context.ConnectionId);
+            }
+        }
+    }
+
+    private void InitTimer(string articleId)
+    {
+        if (TimerInterval == null)
+        {
+            TimerInterval = new(TimeSpan.FromSeconds(5));
+            TimerInterval.AutoReset = true;
+            TimerInterval.Elapsed += (_, _) => TimerIntervalOnElapsed(articleId);
+            TimerInterval.Start();
+        }
+    }
+
+    private void TimerIntervalOnElapsed(string articleId)
+    {
+        if (memoryCache.TryGetValue($"{nameof(PageCreatorHub)}{nameof(ArticleModel)}{articleId}", out ArticleModel? article))
+        {
+            if (article != null)
+            {
+                _ = Task.Run(async () =>
+                {
+                    var result = await businessLayer.CreateAsync(article, CancellationTokenSource.Token);
+                    if (!result.Item1)
+                    {
+                        await businessLayer.UpdateAsync(article, CancellationTokenSource.Token);
+                    }
+                });
             }
         }
     }
