@@ -45,6 +45,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         var file = await fileServe.GetRandomFileAsync(rootWallpaperFolder.Id.ToString(), cancelToken);
         if (file == null) return NotFound();
 
+
         var webpImageContent = file.ExtendResource.FirstOrDefault(x => x.Type == FileContentType.ThumbnailWebpFile);
         if (webpImageContent != null)
         {
@@ -54,6 +55,9 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                 file = webpImage;
             }
         }
+
+        if (!global::System.IO.File.Exists(file.AbsolutePath))
+            return NotFound();
 
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
@@ -70,9 +74,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         Response.Headers.ContentType = file.ContentType;
         Response.StatusCode = 200;
         Response.ContentLength = file.FileSize;
-        if (global::System.IO.File.Exists(file.AbsolutePath))
-            return PhysicalFile(file.AbsolutePath, file.ContentType, true);
-        
+
         logger.LogError($"File {file.AbsolutePath} not found");
         return NotFound();
     }
