@@ -1,13 +1,12 @@
 ﻿using System.Globalization;
-using BlazorMonaco;
 using BlazorMonaco.Editor;
 using BusinessModels.Advertisement;
 using BusinessModels.Resources;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.JSInterop;
 using MudBlazor;
+using WebApp.Client.Components.CodeEditor;
 using WebApp.Client.Utils;
 
 namespace WebApp.Client.Pages.ContentManagementSystem.Editor;
@@ -37,9 +36,10 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
 
     private static ArticleModel Article { get; set; } = new();
 
-    private bool ShowEditor { get; set; } = true;
     private bool Loading { get; set; } = true;
 
+    private MonacoCodeEditor? MonacoCodeEditor { get; set; } 
+    
     #endregion
 
 
@@ -116,135 +116,13 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
     #endregion
 
 
-    #region Static Js methods
-
-    [JSInvokable]
-    public static Task<string> GetCurrentStyle()
-    {
-        return Task.FromResult(Article.StyleSheet);
-    }
-
-    #endregion
-
-
     #region Init editor
-
-    private StandaloneEditorConstructionOptions HtmlEditorConstructionOptions(StandaloneCodeEditor editor)
-    {
-        return new StandaloneEditorConstructionOptions
-        {
-            AutomaticLayout = true,
-            Theme = "vs-dark",
-            Language = "html",
-            Value = "",
-            AcceptSuggestionOnCommitCharacter = true,
-            InlineCompletionsAccessibilityVerbose = true,
-            DetectIndentation = true,
-            Suggest = new SuggestOptions()
-            {
-                ShowClasses = true, ShowColors = true, ShowConstructors = true, ShowConstants = true,
-                ShowDeprecated = true, ShowIcons = true, ShowWords = true, Preview = true, ShowEnums = true, ShowEvents = true,
-                ShowFields = true, ShowFiles = true, ShowFolders = true, ShowFunctions = true, ShowInterfaces = true, ShowIssues = true,
-                ShowProperties = true
-            },
-        };
-    }
-
-    private StandaloneEditorConstructionOptions CssEditorConstructionOptions(StandaloneCodeEditor editor)
-    {
-        return new StandaloneEditorConstructionOptions
-        {
-            AutomaticLayout = true,
-            Theme = "vs-dark",
-            Language = "css",
-            Value = "",
-            AcceptSuggestionOnCommitCharacter = true,
-            InlineCompletionsAccessibilityVerbose = true,
-            DetectIndentation = true,
-            Suggest = new SuggestOptions()
-            {
-                ShowClasses = true, ShowColors = true, ShowConstructors = true, ShowConstants = true,
-                ShowDeprecated = true, ShowIcons = true, ShowWords = true, Preview = true, ShowEnums = true, ShowEvents = true,
-                ShowFields = true, ShowFiles = true, ShowFolders = true, ShowFunctions = true, ShowInterfaces = true, ShowIssues = true,
-                ShowProperties = true
-            },
-        };
-    }
-
-    private StandaloneEditorConstructionOptions JavascriptEditorConstructionOptions(StandaloneCodeEditor editor)
-    {
-        return new StandaloneEditorConstructionOptions
-        {
-            AutomaticLayout = true,
-            Theme = "vs-dark",
-            Language = "javascript",
-            Value = "",
-            AcceptSuggestionOnCommitCharacter = true,
-            InlineCompletionsAccessibilityVerbose = true,
-            DetectIndentation = true,
-            Suggest = new SuggestOptions()
-            {
-                ShowClasses = true, ShowColors = true, ShowConstructors = true, ShowConstants = true,
-                ShowDeprecated = true, ShowIcons = true, ShowWords = true, Preview = true, ShowEnums = true, ShowEvents = true,
-                ShowFields = true, ShowFiles = true, ShowFolders = true, ShowFunctions = true, ShowInterfaces = true, ShowIssues = true,
-                ShowProperties = true
-            }
-        };
-    }
 
     private async Task HandleSend()
     {
         if (HubConnection is { State: HubConnectionState.Connected })
         {
             await HubConnection.SendAsync("SendMessage", Article);
-        }
-    }
-
-    private Task KeyHtmlUp(KeyboardEvent arg)
-    {
-        return HandleHtmlCode();
-    }
-
-
-    private async Task HandleHtmlCode()
-    {
-        if (HtmlEditor != null)
-        {
-            var text = await HtmlEditor.GetValue();
-            Article.HtmlSheet = text;
-            await HandleSend();
-        }
-    }
-
-    private Task KeyCssUp(KeyboardEvent arg)
-    {
-        return HandleCssCode();
-    }
-
-
-    private async Task HandleCssCode()
-    {
-        if (CssEditor != null)
-        {
-            var text = await CssEditor.GetValue();
-            Article.StyleSheet = text;
-            await HandleSend();
-        }
-    }
-
-    private Task KeyJavascriptUp(KeyboardEvent arg)
-    {
-        return HandleJavascriptCode();
-    }
-
-
-    private async Task HandleJavascriptCode()
-    {
-        if (JavascriptEditor != null)
-        {
-            var text = await JavascriptEditor.GetValue();
-            Article.JavaScriptSheet = text;
-            await HandleSend();
         }
     }
 
@@ -256,6 +134,7 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
     public async ValueTask DisposeAsync()
     {
         if (HubConnection != null) await HubConnection.DisposeAsync();
+        
     }
 
     public void Dispose()
@@ -263,7 +142,7 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
         HtmlEditor?.Dispose();
         CssEditor?.Dispose();
         JavascriptEditor?.Dispose();
-
+        if (MonacoCodeEditor != null) MonacoCodeEditor.Dispose();
         TokenSource.Cancel();
         TokenSource.Dispose();
     }
@@ -294,5 +173,11 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
                 Navigation.NavigateTo(Navigation.GetUriWithQueryParameters(Navigation.Uri, new Dictionary<string, object?>() { { "id", model.Id.ToString() }, { "edit", Editable } }), new NavigationOptions() { ForceLoad = true });
             }
         }
+    }
+
+    private Task ArticalChanged(ArticleModel arg)
+    {
+        Article = arg;
+        return HandleSend();
     }
 }

@@ -1,7 +1,7 @@
 ﻿@attribute [Route(PageRoutes.ContentCreator.Index.Src)]
-@rendermode InteractiveAuto
+@rendermode InteractiveServer
 @attribute [AllowAnonymous]
-@using BlazorMonaco.Editor
+@using WebApp.Client.Components.CodeEditor
 
 
 <!--suppress CssUnresolvedCustomProperty -->
@@ -22,50 +22,8 @@
     <HeadContentContainer MetaProperty="@MetaData" />
 </HeadContent>
 
+<div class="mud-width-full overflow-x-hidden" style="height: calc(100dvh - var(--mud-appbar-height))" >
 
-<style>
-
-    .grid-editor {
-        display: grid;
-        grid-template-areas:
-        'html-editor css-editor'
-        'html-editor javascript-editor';
-        grid-template-columns: 2fr 1fr;
-        grid-template-rows: 1fr 1fr;
-        gap: 10px;
-        background-color: var(--mud-palette-primary);
-        padding: 10px;
-        height: calc(100dvh - var(--mud-appbar-height) + 16px);
-        width: 100%;
-    }
-
-
-    #my-html-editor-instance-id { /* for a specific editor instance */
-        height: 100%;
-        grid-area: html-editor;
-    }
-
-    #my-css-editor-instance-id { /* for a specific editor instance */
-        height: 100%;
-        grid-area: css-editor;
-    }
-
-    #my-javascript-editor-instance-id { /* for a specific editor instance */
-        height: 100%;
-        grid-area: javascript-editor;
-    }
-
-
-</style>
-
-<div class="grid-editor" >
-
-    @if (ShowEditor)
-    {
-        <StandaloneCodeEditor ConstructionOptions="HtmlEditorConstructionOptions" Id="my-html-editor-instance-id" OnKeyUp="@KeyHtmlUp" @ref="HtmlEditor" />
-        <StandaloneCodeEditor ConstructionOptions="CssEditorConstructionOptions" Id="my-css-editor-instance-id" OnKeyUp="@KeyCssUp" @ref="CssEditor" />
-        <StandaloneCodeEditor ConstructionOptions="JavascriptEditorConstructionOptions" Id="my-javascript-editor-instance-id" OnKeyUp="@KeyJavascriptUp" @ref="JavascriptEditor" />
-    }
-
-
+    <MonacoCodeEditor @ref="MonacoCodeEditor" Code="@Article" CodeChanged="@ArticalChanged"/>
+    
 </div>

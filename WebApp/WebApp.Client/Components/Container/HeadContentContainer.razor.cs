@@ -7,6 +7,8 @@ namespace WebApp.Client.Components.Container;
 public partial class HeadContentContainer : ComponentBase, IDisposable
 {
     [Parameter] public List<Dictionary<string, string>> MetaProperty { get; set; } = [];
+    [Parameter] public List<Dictionary<string, string>> LinkProperty { get; set; } = [];
+
 
     private List<Dictionary<string, string>> Properties { get; set; } = [];
     private List<Dictionary<string, string>> PreviousMetaProperties { get; set; } = [];
@@ -94,24 +96,9 @@ public partial class HeadContentContainer : ComponentBase, IDisposable
             },
         ];
 
-
-        ShouldRen = !PreviousMetaProperties.Equal(Properties);
-        if (ShouldRen)
-        {
-            PreviousMetaProperties = Properties;
-            MetaRenderFragment = CreateComponent();
-        }
-
-        return InvokeAsync(StateHasChanged);
-    }
-
-    private RenderFragment CreateComponent() => builder =>
-    {
         int index = 0;
         string[] extendMetaNames = ["title", "description", "image", "site_name", "url", "type", "card", "author"];
         string[] extend = ["ogg", "twitter", "facebook", "linkedin"];
-
-
         foreach (var meta in Properties.ToArray())
         {
             foreach (var name in extendMetaNames)
@@ -129,11 +116,35 @@ public partial class HeadContentContainer : ComponentBase, IDisposable
             index += 1;
         }
 
-        index = 0;
+        ShouldRen = !PreviousMetaProperties.Equal(Properties);
+        if (ShouldRen)
+        {
+            PreviousMetaProperties = Properties;
+            MetaRenderFragment = CreateComponent();
+        }
+
+        return InvokeAsync(StateHasChanged);
+    }
+
+    private RenderFragment CreateComponent() => builder =>
+    {
+        var index = 0;
 
         foreach (var dictionary in Properties)
         {
             builder.OpenElement(index++, "meta");
+            int attributeIndex = 0;
+            foreach (var pair in dictionary)
+            {
+                builder.AddAttribute(attributeIndex++, pair.Key, pair.Value);
+            }
+
+            builder.CloseElement();
+        }
+
+        foreach (var dictionary in LinkProperty)
+        {
+            builder.OpenElement(index++, "link");
             int attributeIndex = 0;
             foreach (var pair in dictionary)
             {
