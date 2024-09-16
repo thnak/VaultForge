@@ -70,6 +70,13 @@ window.setCultureCookie = (culture, uiCulture, cookieName = 'thnakdevserverCultu
     htmlElement.setAttribute('lang', culture);
 }
 
+window.removeNode = (elementId) => {
+    var domNode = document.getElementById(elementId);
+    if (domNode) {
+        domNode.remove();
+    }
+}
+
 async function lazyLoadScript(url) {
     return new Promise(function (resolve, reject) {
         // Check if the script is already loaded
@@ -98,8 +105,7 @@ async function lazyLoadScript(url) {
 
 window.AddScriptElement = async (url) => {
     try {
-        const message = await lazyLoadScript(url);
-        console.log(message);
+        await lazyLoadScript(url);
     } catch (e) {
         console.log(e)
     }

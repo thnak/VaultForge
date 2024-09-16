@@ -167,4 +167,9 @@ public static class JsRuntimeExtension
     {
         return self.InvokeVoidAsync("AddScriptElement", resourceName);
     }
+
+    public static ValueTask RemoveNode(this IJSRuntime self, string nodeId)
+    {
+        return self.InvokeVoidAsync("removeNode", nodeId);
+    }
 }

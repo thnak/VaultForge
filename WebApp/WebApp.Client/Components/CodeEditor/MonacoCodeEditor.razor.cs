@@ -96,6 +96,7 @@ public partial class MonacoCodeEditor : ComponentBase, IDisposable
 
     public void Dispose()
     {
+        JsRuntime.RemoveNode("MonacoCodeEditor").ConfigureAwait(false);
         if (_module != null) _module.DisposeAsync().ConfigureAwait(false);
     }
 }
