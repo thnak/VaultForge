@@ -7,4 +7,5 @@ public enum FileContentType
     DeletedFile,
     ThumbnailFile,
     ThumbnailWebpFile,
+    FounderFile,
 }
