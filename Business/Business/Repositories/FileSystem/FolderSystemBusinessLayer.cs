@@ -112,8 +112,8 @@ public class FolderSystemBusinessLayer(
         if (folder == null) return (false, AppLang.Folder_could_not_be_found);
 
         if (folder.AbsolutePath == "/root") return (false, AppLang.Could_not_delete_root_folder);
-        if(folder.Type == FolderContentType.SystemFolder) return (false, AppLang.Folder_could_not_be_found);
-        
+        if (folder.Type == FolderContentType.SystemFolder) return (false, AppLang.Folder_could_not_be_found);
+
         var res = folderSystemService.Delete(key);
         if (res.Item1)
             foreach (var content in folder.Contents)
@@ -208,7 +208,8 @@ public class FolderSystemBusinessLayer(
 
     public async Task<(bool, string)> CreateFileAsync(FolderInfoModel folder, FileInfoModel file, CancellationToken cancellationTokenSource = default)
     {
-        var newIndex = folder.Contents.Count + 1;
+        var newIndex = await GetDocumentSizeAsync(x => x.Id == folder.Id, cancellationTokenSource);
+        newIndex += 1;
         var dateString = DateTime.UtcNow.ToString("dd-MM-yyy");
 
         var filePath = Path.Combine(_workingDir, dateString, folder.FolderName, $"_file_{newIndex}.bin");
@@ -220,17 +221,9 @@ public class FolderSystemBusinessLayer(
         var res = await fileSystemService.CreateAsync(file, cancellationTokenSource);
         if (res.Item1)
         {
-            folder.Contents.Add(new FolderContent
-            {
-                Id = file.Id.ToString(),
-                Type = FolderContentType.File
-            });
             var folderUpdateResult = await UpdateAsync(folder, cancellationTokenSource);
             if (!folderUpdateResult.Item1)
                 return folderUpdateResult;
-
-            var folderInfoModel = Get(folder.Id.ToString())!;
-            folder.Contents = folderInfoModel.Contents;
         }
 
         return res;
@@ -294,7 +287,7 @@ public class FolderSystemBusinessLayer(
         request.NewFolder.AbsolutePath = request.NewFolder.RelativePath;
         request.NewFolder.RootFolder = request.RootId;
         request.NewFolder.ModifiedDate = DateTime.Now;
-        
+
 
         if (string.IsNullOrEmpty(request.NewFolder.Username))
             request.NewFolder.Username = folderRoot.Username;

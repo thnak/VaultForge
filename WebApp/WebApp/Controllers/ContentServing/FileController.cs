@@ -616,7 +616,6 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                             {
                                 fileServe.Delete(file.Id.ToString());
                                 folder = folderServe.Get(folderCodes)!;
-                                folder.Contents = folder.Contents.Where(x => x.Id != file.Id.ToString()).ToList();
                                 var result = await folderServe.UpdateAsync(folder, cancelToken);
                                 if (!result.Item1) logger.LogError(result.Item2);
                             }
