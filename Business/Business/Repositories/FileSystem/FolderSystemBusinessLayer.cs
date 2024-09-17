@@ -112,8 +112,8 @@ public class FolderSystemBusinessLayer(
         if (folder == null) return (false, AppLang.Folder_could_not_be_found);
 
         if (folder.AbsolutePath == "/root") return (false, AppLang.Could_not_delete_root_folder);
-        if (folder.Type == FolderContentType.SystemFolder) return (false, AppLang.Folder_could_not_be_found);
-
+        if(folder.Type == FolderContentType.SystemFolder) return (false, AppLang.Folder_could_not_be_found);
+        
         var res = folderSystemService.Delete(key);
         if (res.Item1)
             foreach (var content in folder.Contents)
@@ -208,7 +208,7 @@ public class FolderSystemBusinessLayer(
 
     public async Task<(bool, string)> CreateFileAsync(FolderInfoModel folder, FileInfoModel file, CancellationToken cancellationTokenSource = default)
     {
-        var newIndex = await GetDocumentSizeAsync(x => x.Id == folder.Id, cancellationTokenSource);
+        var newIndex = await GetDocumentSizeAsync(x=>x.Id == folder.Id, cancellationTokenSource);
         newIndex += 1;
         var dateString = DateTime.UtcNow.ToString("dd-MM-yyy");
 
@@ -221,6 +221,7 @@ public class FolderSystemBusinessLayer(
         var res = await fileSystemService.CreateAsync(file, cancellationTokenSource);
         if (res.Item1)
         {
+            
             var folderUpdateResult = await UpdateAsync(folder, cancellationTokenSource);
             if (!folderUpdateResult.Item1)
                 return folderUpdateResult;
@@ -247,7 +248,10 @@ public class FolderSystemBusinessLayer(
         {
             FolderName = folderName,
             RelativePath = folder.RelativePath + $"/{folderName}",
-            Username = user.UserName
+            AbsolutePath = folder.RelativePath + $"/{folderName}",
+            Username = user.UserName,
+            RootFolder = targetFolderId,
+            Type = FolderContentType.Folder
         };
 
         if (Get(user.UserName, newFolder.RelativePath) != null)
@@ -256,11 +260,6 @@ public class FolderSystemBusinessLayer(
         var createNewFolderResult = await CreateAsync(newFolder);
         if (createNewFolderResult is { Item1: true })
         {
-            folder.Contents.Add(new FolderContent
-            {
-                Type = FolderContentType.Folder,
-                Id = newFolder.Id.ToString()
-            });
             await UpdateAsync(folder);
         }
 
@@ -287,7 +286,7 @@ public class FolderSystemBusinessLayer(
         request.NewFolder.AbsolutePath = request.NewFolder.RelativePath;
         request.NewFolder.RootFolder = request.RootId;
         request.NewFolder.ModifiedDate = DateTime.Now;
-
+        
 
         if (string.IsNullOrEmpty(request.NewFolder.Username))
             request.NewFolder.Username = folderRoot.Username;
@@ -298,11 +297,6 @@ public class FolderSystemBusinessLayer(
         var res = await CreateAsync(request.NewFolder);
         if (res.Item1)
         {
-            folderRoot.Contents.Add(new FolderContent
-            {
-                Id = request.NewFolder.Id.ToString(),
-                Type = FolderContentType.Folder,
-            });
             res = await UpdateAsync(folderRoot);
             if (res.Item1)
                 return (true, AppLang.Create_successfully);
