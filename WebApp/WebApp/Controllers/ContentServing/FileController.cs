@@ -188,6 +188,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         [FromForm] int page, [FromForm] int pageSize, [FromForm] string? contentTypes)
     {
         var cancelToken = HttpContext.RequestAborted;
+        logger.LogInformation($"[ID] {id}");
         var folderSource = string.IsNullOrEmpty(id) ? folderServe.GetRoot("") : folderServe.Get(id);
         if (folderSource == null) return BadRequest(AppLang.Folder_could_not_be_found);
         if (!string.IsNullOrEmpty(folderSource.Password))
@@ -197,6 +198,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         }
 
         folderSource.Password = string.Empty;
+        folderSource.Username = string.Empty;
 
         List<FolderContentType> contentFolderTypesList = [];
 
