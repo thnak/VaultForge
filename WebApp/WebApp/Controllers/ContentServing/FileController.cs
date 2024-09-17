@@ -596,6 +596,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                         if (createFileResult.Item1)
                         {
                             (file.FileSize, file.ContentType) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState, cancelToken);
+                          
                             if (file.FileSize > 0)
                             {
                                 var updateResult = await fileServe.UpdateAsync(file, cancelToken);
