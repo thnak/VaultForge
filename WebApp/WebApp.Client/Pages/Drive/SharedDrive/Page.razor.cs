@@ -376,7 +376,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             if (folder != null)
             {
                 RootFolder = folder.Folder;
-                TotalPages = folder.TotalFolderPages;
+                TotalPages = Math.Max(folder.TotalFolderPages, folder.TotalFilePages);
 
                 // var fileCodes = RootFolder.Contents.Where(x => x is
                 //     {
