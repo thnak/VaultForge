@@ -57,7 +57,10 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         }
 
         if (!global::System.IO.File.Exists(file.AbsolutePath))
+        {
+            logger.LogError($"File {file.AbsolutePath} not found");
             return NotFound();
+        }
 
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
