@@ -19,15 +19,15 @@ public class LocationModel
 
     [JsonPropertyName("lat")]
     [JsonDescription("Latitude in decimal degree")]
-    public float Lat { get; set; }
+    public double Lat { get; set; }
 
 
     [JsonPropertyName("lon")]
     [JsonDescription("Longitude in decimal degree")]
-    public float Lon { get; set; }
+    public double Lon { get; set; }
 
     [JsonPropertyName("tz_id")]
-    [JsonDescription("Time zone name")]
+    [JsonDescription("Time zone ID")]
     public string TimeZoneId { get; set; } = string.Empty;
 
     [JsonPropertyName("localtime_epoch")]

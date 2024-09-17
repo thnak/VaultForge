@@ -15,25 +15,29 @@ public class CurrentModel
 
     [JsonPropertyName("temp_f")]
     [JsonDescription("Temperature in celsius")]
-    public float TempC { get; set; }
+    public double TempC { get; set; }
 
     [JsonPropertyName("temp_c")]
     [JsonDescription("")]
-    public float TempF { get; set; }
+    public double TempF { get; set; }
 
     [JsonPropertyName("is_day")]
     [JsonDescription("1 = Yes 0 = No. Whether to show day condition icon or night icon")]
     public int IsDay { get; set; }
 
 
+    [JsonPropertyName("condition")]
+    [JsonDescription("Condition")]
+    public WeatherCondition Condition { get; set; } = new();
+
     [JsonPropertyName("wind_mph")]
     [JsonDescription("Wind speed in miles per hour")]
-    public float WindMph { get; set; }
+    public double WindMph { get; set; }
 
 
     [JsonPropertyName("wind_kph")]
     [JsonDescription("Wind speed in kilometer per hour")]
-    public float WindKph { get; set; }
+    public double WindKph { get; set; }
 
 
     [JsonPropertyName("wind_degree")]
@@ -42,24 +46,24 @@ public class CurrentModel
 
     [JsonPropertyName("wind_wind_dir")]
     [JsonDescription("Wind direction as 16 point compass. e.g.: NSW")]
-    public float WindDir { get; set; }
+    public double WindDir { get; set; }
 
 
     [JsonPropertyName("pressure_mb")]
     [JsonDescription("Pressure in millibars")]
-    public float PressureMb { get; set; }
+    public double PressureMb { get; set; }
 
     [JsonPropertyName("pressure_in")]
     [JsonDescription("Pressure in inches")]
-    public float PressureIn { get; set; }
+    public double PressureIn { get; set; }
 
     [JsonPropertyName("precip_mm")]
     [JsonDescription("Precipitation amount in millimeters")]
-    public float PrecipitationMm { get; set; }
+    public double PrecipitationMm { get; set; }
 
     [JsonPropertyName("precip_in")]
     [JsonDescription("Precipitation amount in inches")]
-    public float PrecipitationInches { get; set; }
+    public double PrecipitationInches { get; set; }
 
 
     [JsonPropertyName("humidity")]
@@ -73,55 +77,59 @@ public class CurrentModel
 
     [JsonPropertyName("feelslike_c")]
     [JsonDescription("Feels like temperature in celsius")]
-    public float FeelsLikeC { get; set; }
+    public double FeelsLikeC { get; set; }
 
     [JsonPropertyName("feelslike_f")]
     [JsonDescription("Feels like temperature in fahrenheit")]
-    public float FeelsLikeF { get; set; }
+    public double FeelsLikeF { get; set; }
 
 
     [JsonPropertyName("windchill_c")]
     [JsonDescription("Windchill temperature in celcius")]
-    public float WindchillC { get; set; }
+    public double WindchillC { get; set; }
 
     [JsonPropertyName("windchill_f")]
     [JsonDescription("Windchill temperature in fahrenheit")]
-    public float WindchillF { get; set; }
+    public double WindchillF { get; set; }
 
 
     [JsonPropertyName("heatindex_c")]
     [JsonDescription("Heat index in celcius")]
-    public float HeatIndexC { get; set; }
+    public double HeatIndexC { get; set; }
 
     [JsonPropertyName("heatindex_f")]
     [JsonDescription("Heat index in fahrenheit")]
-    public float HeatIndexF { get; set; }
+    public double HeatIndexF { get; set; }
 
 
     [JsonPropertyName("dewpoint_c")]
     [JsonDescription("Dew point in celcius")]
-    public float DewPointC { get; set; }
+    public double DewPointC { get; set; }
 
     [JsonPropertyName("dewpoint_f")]
     [JsonDescription("Dew point in fahrenheit")]
-    public float DewPointF { get; set; }
+    public double DewPointF { get; set; }
 
 
     [JsonPropertyName("vis_km")]
     [JsonDescription("Visibility in kilometer")]
-    public float VisMiles { get; set; }
+    public double VisibilityKm { get; set; }
+
+    [JsonDescription("Visibility in miler")]
+    [JsonPropertyName("vis_miles")]
+    public double VisibilityMiles { get; set; }
 
 
     [JsonPropertyName("uv")]
     [JsonDescription("UV Index")]
-    public float Uv { get; set; }
+    public double UvIndex { get; set; }
 
     [JsonPropertyName("gust_mph")]
     [JsonDescription("Wind gust in miles per hour")]
-    public float GustMph { get; set; }
+    public double GustMph { get; set; }
 
 
     [JsonPropertyName("gust_kph")]
     [JsonDescription("Wind gust in kilometer per hour")]
-    public float GustKph { get; set; }
+    public double GustKph { get; set; }
 }

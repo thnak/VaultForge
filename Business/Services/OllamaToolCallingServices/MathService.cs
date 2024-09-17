@@ -6,7 +6,10 @@ namespace Business.Services.OllamaToolCallingServices;
 
 public class MathService : IMathService
 {
-    
+    public Task<string> Response2User(string message, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult("");
+    }
 
     public Task<string> CompareNumbers(string numberA, string numberB, CancellationToken cancellationToken = default)
     {
@@ -28,7 +31,6 @@ public class MathService : IMathService
         }
     }
 
-   
 
     public Task<string> AddNumber(string numberA, string numberB, CancellationToken cancellationToken = default)
     {

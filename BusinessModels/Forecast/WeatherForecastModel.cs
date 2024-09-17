@@ -3,7 +3,7 @@ using BusinessModels.Attribute;
 
 namespace BusinessModels.forecast;
 
-public class WeatherModel
+public class WeatherForecastModel
 {
     [JsonPropertyName("location")]
     [JsonDescription("Location details of the weather report")]
@@ -12,4 +12,8 @@ public class WeatherModel
     [JsonPropertyName("current")]
     [JsonDescription("Current weather conditions")]
     public CurrentModel Current { get; set; } = new();
+    
+    [JsonPropertyName("forecast")]
+    [JsonDescription("Forecast weather conditions")]
+    public ForecastWeatherModel ForecastWeather { get; set; } = new();
 }

@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json;
+using BusinessModels.Converter;
 
 namespace BusinessModels.Utils;
 
@@ -24,11 +25,11 @@ public static class StringExtension
         try
         {
             string plainText = DecodeBase64String(base64String);
-            if(typeof(T) == typeof(string))
+            if (typeof(T) == typeof(string))
             {
                 return (T)(object)plainText;
             }
-                        
+
             var json = JsonSerializer.Deserialize<T>(plainText);
             return json;
         }
@@ -83,6 +84,39 @@ public static class StringExtension
     public static string ToJson(this object model)
     {
         return JsonSerializer.Serialize(model);
+    }
+
+    /// <summary>
+    /// With description as key instead of Json name
+    /// </summary>
+    /// <param name="model"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static string ToJson<T>(this object model) where T : class
+    {
+        var options = new JsonSerializerOptions
+        {
+            Converters = { new JsonDescriptionConverter<T>() },
+            WriteIndented = true
+        };
+        return JsonSerializer.Serialize(model, options);
+    }
+
+    public static T? DeSerializeDescriptionJson<T>(this string source) where T : class
+    {
+        try
+        {
+            var options = new JsonSerializerOptions
+            {
+                Converters = { new JsonDescriptionConverter<T>() },
+                WriteIndented = true
+            };
+            return JsonSerializer.Deserialize<T>(source, options);
+        }
+        catch (Exception)
+        {
+            return default;
+        }
     }
 
     public static T? DeSerialize<T>(this string self)

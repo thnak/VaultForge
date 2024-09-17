@@ -23,7 +23,7 @@ public class ChatWithLlama : IDisposable
             model: model,
             systemMessage: systemPrompt,
             autoCallTools: autoCallTools);
-        if(autoCallTools)
+        if (autoCallTools)
             InitCallService();
     }
 
@@ -42,7 +42,7 @@ public class ChatWithLlama : IDisposable
     {
         var service = new MathService();
         var timeService = new TimeService();
-        var weatherService = new WeatherService("http://api.weatherapi.com");
+        var weatherService = new WeatherService("https://api.weatherapi.com");
         var webCrawler = new LamaWebCrawlerService();
 
         _chatClient.AddToolService(timeService.AsTools(), timeService.AsCalls());

@@ -6,11 +6,22 @@ namespace Business.Services.OllamaToolCallingServices;
 
 public class TimeService : ITimeService
 {
-    public Task<string> GetCurrentTimeStamp(bool useUtc, CancellationToken cancellationToken = default)
+    public string UnixTimeStampToDateTime(string unixTimeStamp, CancellationToken cancellationToken = default)
+    {
+        if (int.TryParse(unixTimeStamp, NumberStyles.Integer, CultureInfo.InvariantCulture, out int unixTimeStampInt))
+        {
+            var time = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(unixTimeStampInt);
+            return time.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+        }
+        return "Invalid Time";
+    }
+
+    public Task<string> GetCurrentTimeStamp(string useUtc, CancellationToken cancellationToken = default)
     {
         try
         {
-            return Task.FromResult(useUtc ? DateTime.UtcNow.ToString("dd-MM-yyyy HH:mm:ss") : DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
+            bool.TryParse(useUtc, out bool utc);
+            return Task.FromResult(utc ? DateTime.UtcNow.ToString("dd-MM-yyyy HH:mm:ss") : DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss"));
         }
         catch (Exception e)
         {
@@ -18,11 +29,12 @@ public class TimeService : ITimeService
         }
     }
 
-    public Task<string> GetCurrentHour(bool useUtc, CancellationToken cancellationToken = default)
+    public Task<string> GetCurrentHour(string useUtc, CancellationToken cancellationToken = default)
     {
         try
         {
-            return Task.FromResult(useUtc ? DateTime.UtcNow.ToString("HH:mm") : DateTime.Now.ToString("HH:mm"));
+            bool.TryParse(useUtc, out bool utc);
+            return Task.FromResult(utc ? DateTime.UtcNow.ToString("HH:mm") : DateTime.Now.ToString("HH:mm"));
         }
         catch (Exception e)
         {
