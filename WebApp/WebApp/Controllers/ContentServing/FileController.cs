@@ -78,8 +78,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         Response.StatusCode = 200;
         Response.ContentLength = file.FileSize;
 
-        logger.LogError($"File {file.AbsolutePath} not found");
-        return NotFound();
+        return PhysicalFile(file.AbsolutePath, file.ContentType, true);
     }
 
     [HttpGet("get-file")]
