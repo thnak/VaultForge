@@ -199,10 +199,10 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
             return (true, AppLang.Update_successfully);
         }
-        catch (OperationCanceledException e)
+         catch (OperationCanceledException)
         {
-            logger.LogError(e, null);
-            return (false, e.Message);
+            logger.LogInformation("[Update] Operation cancelled");
+            return (false, string.Empty);
         }
         finally
         {
@@ -215,8 +215,9 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         await _semaphore.WaitAsync(cancellationToken);
         try
         {
-            var file = Get(model.Id.ToString());
-            if (file == null)
+            var filter = Builders<FileInfoModel>.Filter.Eq(x => x.Id, model.Id);
+            var isExist = await _fileDataDb.Find(filter).AnyAsync(cancellationToken: cancellationToken);
+            if (!isExist)
             {
                 model.CreatedDate = DateTime.UtcNow;
                 model.ModifiedDate = model.CreatedDate;
@@ -249,8 +250,8 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         await _semaphore.WaitAsync(cancellationToken);
         try
         {
-            var file = Get(model.Id.ToString());
-            if (file == null)
+            var isExists = await _fileDataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
+            if (!isExists)
             {
                 return (false, AppLang.File_could_not_be_found);
             }

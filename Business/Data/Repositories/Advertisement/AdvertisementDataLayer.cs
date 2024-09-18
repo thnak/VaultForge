@@ -150,10 +150,10 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
 
             return (true, AppLang.Update_successfully);
         }
-        catch (OperationCanceledException e)
+         catch (OperationCanceledException)
         {
-            logger.LogError(e, null);
-            return (false, e.Message);
+            logger.LogInformation("[Update] Operation cancelled");
+            return (false, string.Empty);
         }
         finally
         {

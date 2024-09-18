@@ -69,7 +69,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
                 };
                 await CreateAsync(wallPaperFolder, cancellationToken);
             }
-            
+
             var resourceFolder = Get(anonymousUser, "/root/wallpaper");
             if (resourceFolder == default)
             {
@@ -268,10 +268,10 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
             return (true, AppLang.Update_successfully);
         }
-        catch (OperationCanceledException e)
+        catch (OperationCanceledException)
         {
-            logger.LogError(e, null);
-            return (false, e.Message);
+            logger.LogInformation("[Update] Operation cancelled");
+            return (false, string.Empty);
         }
         finally
         {
@@ -284,15 +284,16 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         await _semaphore.WaitAsync(cancellationToken);
         try
         {
-            var folder = Get(model.Id.ToString());
-            if (folder != null) return (false, AppLang.Folder_already_exists);
+            var isExists = await _dataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
+            if (!isExists) return (false, AppLang.Folder_already_exists);
 
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
             return (true, AppLang.Create_successfully);
         }
-        catch (Exception e)
+        catch (OperationCanceledException)
         {
-            return (false, e.Message);
+            logger.LogInformation("[Update] Operation cancelled");
+            return (false, string.Empty);
         }
         finally
         {
@@ -311,8 +312,8 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         await _semaphore.WaitAsync(cancellationToken);
         try
         {
-            var file = Get(model.Id.ToString());
-            if (file == null)
+            var isExists = await _dataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
+            if (!isExists)
             {
                 return (false, AppLang.Folder_could_not_be_found);
             }

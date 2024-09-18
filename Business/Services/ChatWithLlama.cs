@@ -34,7 +34,7 @@ public class ChatWithLlama : IDisposable
             model: model,
             systemMessage: systemPrompt,
             autoCallTools: true);
-
+        
         InitCallService();
     }
 

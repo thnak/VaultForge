@@ -618,6 +618,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Khóa không hợp lệ.
+        /// </summary>
+        public static string Invalid_key {
+            get {
+                return ResourceManager.GetString("Invalid_key", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ngôn ngữ.
         /// </summary>
         public static string Language {

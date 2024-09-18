@@ -232,10 +232,10 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
 
             return (true, AppLang.Update_successfully);
         }
-        catch (OperationCanceledException e)
+        catch (OperationCanceledException)
         {
-            logger.LogError(e, null);
-            return (false, e.Message);
+            logger.LogInformation("[Update] Operation cancelled");
+            return (false, string.Empty);
         }
         finally
         {
@@ -249,10 +249,15 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         try
         {
             if (string.IsNullOrWhiteSpace(model.UserName)) return (false, AppLang.User_name_is_not_valid);
-            var query = _dataDb.Find(x => x.UserName == model.UserName).FirstOrDefault();
-            if (query != null) return (false, AppLang.User_is_already_exists);
+            var query = await _dataDb.Find(x => x.UserName == model.UserName).AnyAsync(cancellationToken: cancellationToken);
+            if (!query) return (false, AppLang.User_is_already_exists);
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
             return (true, AppLang.Success);
+        }
+        catch (OperationCanceledException)
+        {
+            logger.LogInformation("[Update] Operation cancelled");
+            return (false, string.Empty);
         }
         catch (Exception ex)
         {
@@ -282,6 +287,11 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
             if (result.IsAcknowledged) return (true, AppLang.Success);
 
             return (false, AppLang.User_update_failed);
+        }
+        catch (OperationCanceledException)
+        {
+            logger.LogInformation("[Update] Operation cancelled");
+            return (false, string.Empty);
         }
         catch (Exception e)
         {

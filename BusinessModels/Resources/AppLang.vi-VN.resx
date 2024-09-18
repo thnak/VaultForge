@@ -523,4 +523,7 @@ ClientY: {1}</value>
     <data name="Reconnecting" xml:space="preserve">
       <value>Đang kết nối lại</value>
     </data>
+    <data name="Invalid_key" xml:space="preserve">
+      <value>Khóa không hợp lệ</value>
+    </data>
 </root>

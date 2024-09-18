@@ -1,15 +1,19 @@
 using Business.Business.Interfaces.Advertisement;
+using Business.Business.Interfaces.Chat;
 using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.User;
 using Business.Business.Repositories.Advertisement;
+using Business.Business.Repositories.Chat;
 using Business.Business.Repositories.FileSystem;
 using Business.Business.Repositories.User;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.Advertisement;
+using Business.Data.Interfaces.Chat;
 using Business.Data.Interfaces.FileSystem;
 using Business.Data.Interfaces.User;
 using Business.Data.Repositories;
 using Business.Data.Repositories.Advertisement;
+using Business.Data.Repositories.Chat;
 using Business.Data.Repositories.FileSystem;
 using Business.Data.Repositories.User;
 using Business.Exceptions;
@@ -24,7 +28,6 @@ using MessagePack;
 using MessagePack.Resolvers;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Services;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Options;
 using Protector.Certificates.Models;
 using WebApp.Authenticate;
@@ -103,10 +106,12 @@ public class Program
         builder.Services.AddSingleton<IAdvertisementDataLayer, AdvertisementDataLayer>();
         builder.Services.AddSingleton<IAdvertisementBusinessLayer, AdvertisementBusinessLayer>();
 
+        builder.Services.AddSingleton<IChatWithLlmDataLayer, ChatWithLlmDataLayer>();
+        builder.Services.AddSingleton<IChatWithLlmBusinessLayer, ChatWithLlmBusinessLayer>();
+
         builder.Services.AddSingleton<IThumbnailService, ThumbnailService>();
         
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
-        
 
         #endregion
 
@@ -145,32 +150,32 @@ public class Program
         #endregion
 
         #region SignalR
-        
+
         StaticCompositeResolver.Instance.Register(
             StandardResolver.Instance,
             NativeDecimalResolver.Instance,
             NativeGuidResolver.Instance,
             NativeDateTimeResolver.Instance,
             MongoObjectIdResolver.INSTANCE);
-        
+
         builder.Services.AddSignalR(options =>
-        {
-            options.EnableDetailedErrors = true;
-            options.MaximumReceiveMessageSize = int.MaxValue;
-            options.MaximumParallelInvocationsPerClient = 100;
-        }).AddJsonProtocol(options => { options.PayloadSerializerOptions.Converters.Add(new ObjectIdConverter()); })
-        .AddMessagePackProtocol(options =>
-        {
-            StaticCompositeResolver.Instance.Register(
-                StandardResolver.Instance,
-                NativeDecimalResolver.Instance,
-                NativeGuidResolver.Instance,
-                NativeDateTimeResolver.Instance,
-                MongoObjectIdResolver.INSTANCE);
-            options.SerializerOptions = MessagePackSerializerOptions.Standard
-                .WithResolver(StaticCompositeResolver.Instance)
-                .WithSecurity(MessagePackSecurity.UntrustedData);
-        });
+            {
+                options.EnableDetailedErrors = true;
+                options.MaximumReceiveMessageSize = int.MaxValue;
+                options.MaximumParallelInvocationsPerClient = 100;
+            }).AddJsonProtocol(options => { options.PayloadSerializerOptions.Converters.Add(new ObjectIdConverter()); })
+            .AddMessagePackProtocol(options =>
+            {
+                StaticCompositeResolver.Instance.Register(
+                    StandardResolver.Instance,
+                    NativeDecimalResolver.Instance,
+                    NativeGuidResolver.Instance,
+                    NativeDateTimeResolver.Instance,
+                    MongoObjectIdResolver.INSTANCE);
+                options.SerializerOptions = MessagePackSerializerOptions.Standard
+                    .WithResolver(StaticCompositeResolver.Instance)
+                    .WithSecurity(MessagePackSecurity.UntrustedData);
+            });
 
         #endregion
 
