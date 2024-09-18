@@ -15,6 +15,6 @@ public class ChatWithChatBotMessageModel
     [Key(5)] public string ToolCalls { get; set; } = string.Empty;
 
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
-    [Key(5)]
+    [Key(6)]
     public DateTime Time { get; set; } = DateTime.Now;
 }
