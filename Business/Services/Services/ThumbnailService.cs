@@ -181,13 +181,6 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
         await fileService.CreateAsync(thumbnailFile, cancellationToken);
         await fileService.CreateAsync(extendedFile, cancellationToken);
         await fileService.UpdateAsync(fileInfo, cancellationToken); // Save updated file info to DB
-
-        // use image
-
-        lock (_thumbnailQueue)
-        {
-            Logger.LogInformation($"Thumbnail created for image {fileInfo.Id}");
-        }
     }
 
 

@@ -204,9 +204,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
     public FolderInfoModel? Get(string key)
     {
-        var filter = Builders<FolderInfoModel>.Filter.Eq(x => x.RelativePath, key);
-        if (ObjectId.TryParse(key, out var id)) filter |= Builders<FolderInfoModel>.Filter.Eq(x => x.Id, id);
-
+        FilterDefinition<FolderInfoModel> filter = ObjectId.TryParse(key, out var id) ? Builders<FolderInfoModel>.Filter.Eq(x => x.Id, id) : Builders<FolderInfoModel>.Filter.Eq(x => x.AbsolutePath, key);
         return _dataDb.Find(filter).Limit(1).FirstOrDefault();
     }
 
