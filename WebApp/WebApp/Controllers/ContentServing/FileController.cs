@@ -233,7 +233,8 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
             model => model.Type,
             model => model.RootFolder,
             model => model.Icon,
-            model => model.RelativePath
+            model => model.RelativePath,
+            model => model.ModifiedDate
         };
         var fieldsFileToFetch = new Expression<Func<FileInfoModel, object>>[]
         {
@@ -243,7 +244,9 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
             model => model.Type,
             model => model.RootFolder,
             model => model.ContentType,
-            model => model.RelativePath
+            model => model.RelativePath,
+            model => model.ModifiedDate,
+            model => model.CreatedDate
         };
 
 
