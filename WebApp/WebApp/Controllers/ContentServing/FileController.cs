@@ -223,7 +223,8 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
 
         var totalFolderDoc = await folderServe.GetDocumentSizeAsync(model => model.RootFolder == folderSource.Id.ToString(), cancelToken);
         var totalFileDoc = await fileServe.GetDocumentSizeAsync(model => model.RootFolder == folderSource.Id.ToString(), cancelToken);
-
+        var totalFilePages = totalFileDoc / pageSize;
+        var totalFolderPages = totalFolderDoc / pageSize;
 
         var fieldsFolderToFetch = new Expression<Func<FolderInfoModel, object>>[]
         {
@@ -261,8 +262,8 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
             Folder = folderSource,
             Files = fileList.ToArray(),
             Folders = folderList.ToArray(),
-            TotalFolderPages = (int)totalFolderDoc,
-            TotalFilePages = (int)totalFileDoc,
+            TotalFolderPages = (int)totalFolderPages,
+            TotalFilePages = (int)totalFilePages,
         };
         return Content(folderRequest.ToJson(), MediaTypeNames.Application.Json);
     }
@@ -599,7 +600,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                         if (createFileResult.Item1)
                         {
                             (file.FileSize, file.ContentType) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState, cancelToken);
-                          
+
                             if (file.FileSize > 0)
                             {
                                 var updateResult = await fileServe.UpdateAsync(file, cancelToken);

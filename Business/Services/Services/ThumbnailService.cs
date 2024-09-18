@@ -153,7 +153,8 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
             Type = FileContentType.ThumbnailFile,
             CreatedDate = DateTime.Now,
             ModifiedDate = DateTime.Now,
-            ContentType = "image/webp"
+            ContentType = "image/webp",
+            RootFolder = fileInfo.RootFolder
         };
 
         FileInfoModel extendedFile = new FileInfoModel()
@@ -164,7 +165,8 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
             Type = FileContentType.ThumbnailWebpFile,
             CreatedDate = DateTime.Now,
             ModifiedDate = DateTime.Now,
-            ContentType = "image/webp"
+            ContentType = "image/webp",
+            RootFolder = fileInfo.RootFolder
         };
 
         // Update the fileInfo with the thumbnail path
