@@ -183,7 +183,8 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
     [HttpPost("get-folder")]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
-    [OutputCache(Duration = 5)]
+    [OutputCache(Duration = 10)]
+    [ResponseCache(Duration = 50)]
     public async Task<IActionResult> GetSharedFolder([FromForm] string? id, [FromForm] string? password,
         [FromForm] int page, [FromForm] int pageSize, [FromForm] string? contentTypes)
     {
