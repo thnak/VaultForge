@@ -183,92 +183,101 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
     [HttpPost("get-folder")]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
-    [OutputCache(Duration = 5, NoStore = true)]
+    [OutputCache(Duration = 5)]
     public async Task<IActionResult> GetSharedFolder([FromForm] string? id, [FromForm] string? password,
         [FromForm] int page, [FromForm] int pageSize, [FromForm] string? contentTypes)
     {
         var cancelToken = HttpContext.RequestAborted;
-        var folderSource = string.IsNullOrEmpty(id) ? folderServe.GetRoot("") : folderServe.Get(id);
-        if (folderSource == null) return BadRequest(AppLang.Folder_could_not_be_found);
-        if (!string.IsNullOrEmpty(folderSource.Password))
+        try
         {
-            if (password == null || password.ComputeSha256Hash() != folderSource.Password)
-                return Unauthorized(AppLang.This_resource_is_protected_by_password);
+            var folderSource = string.IsNullOrEmpty(id) ? folderServe.GetRoot("") : folderServe.Get(id);
+            if (folderSource == null) return BadRequest(AppLang.Folder_could_not_be_found);
+            if (!string.IsNullOrEmpty(folderSource.Password))
+            {
+                if (password == null || password.ComputeSha256Hash() != folderSource.Password)
+                    return Unauthorized(AppLang.This_resource_is_protected_by_password);
+            }
+
+            folderSource.Password = string.Empty;
+            folderSource.Username = string.Empty;
+
+            List<FolderContentType> contentFolderTypesList = [];
+
+            if (!string.IsNullOrEmpty(contentTypes))
+            {
+                var listString = contentTypes.DeSerialize<FolderContentType[]>();
+                if (listString != null) contentFolderTypesList = listString.ToList();
+            }
+            else
+            {
+                contentFolderTypesList = [FolderContentType.File, FolderContentType.Folder];
+            }
+
+            contentFolderTypesList.Add(FolderContentType.SystemFolder);
+            var contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).Distinct().ToList();
+
+            page -= 1;
+
+            folderSource.Contents = [];
+            var folderList = new List<FolderInfoModel>();
+            var fileList = new List<FileInfoModel>();
+
+
+            var totalFolderDoc = await folderServe.GetDocumentSizeAsync(model => model.RootFolder == folderSource.Id.ToString(), cancelToken);
+            var totalFileDoc = await fileServe.GetDocumentSizeAsync(model => model.RootFolder == folderSource.Id.ToString(), cancelToken);
+            var totalFilePages = totalFileDoc / pageSize;
+            var totalFolderPages = totalFolderDoc / pageSize;
+
+            var fieldsFolderToFetch = new Expression<Func<FolderInfoModel, object>>[]
+            {
+                model => model.Id,
+                model => model.FolderName,
+                model => model.Type,
+                model => model.RootFolder,
+                model => model.Icon,
+                model => model.RelativePath,
+                model => model.ModifiedDate
+            };
+            var fieldsFileToFetch = new Expression<Func<FileInfoModel, object>>[]
+            {
+                model => model.Id,
+                model => model.FileName,
+                model => model.Thumbnail,
+                model => model.Type,
+                model => model.RootFolder,
+                model => model.ContentType,
+                model => model.RelativePath,
+                model => model.ModifiedDate,
+                model => model.CreatedDate
+            };
+
+
+            await foreach (var m in folderServe.GetContentFormParentFolderAsync(model => model.RootFolder == folderSource.Id.ToString() && contentFolderTypesList.Contains(model.Type), page, pageSize, cancelToken, fieldsFolderToFetch))
+            {
+                folderList.Add(m);
+            }
+
+            await foreach (var m in fileServe.GetContentFormParentFolderAsync(model => model.RootFolder == folderSource.Id.ToString() && contentFileTypesList.Contains(model.Type), page, pageSize, cancelToken, fieldsFileToFetch))
+            {
+                fileList.Add(m);
+            }
+
+            FolderRequest folderRequest = new FolderRequest()
+            {
+                Folder = folderSource,
+                Files = fileList.ToArray(),
+                Folders = folderList.ToArray(),
+                TotalFolderPages = (int)totalFolderPages,
+                TotalFilePages = (int)totalFilePages,
+            };
+            return Content(folderRequest.ToJson(), MediaTypeNames.Application.Json);
+        }
+        catch (OperationCanceledException e)
+        {
+            logger.LogInformation("Request cancelled");
         }
 
-        folderSource.Password = string.Empty;
-        folderSource.Username = string.Empty;
-
-        List<FolderContentType> contentFolderTypesList = [];
-
-        if (!string.IsNullOrEmpty(contentTypes))
-        {
-            var listString = contentTypes.DeSerialize<FolderContentType[]>();
-            if (listString != null) contentFolderTypesList = listString.ToList();
-        }
-        else
-        {
-            contentFolderTypesList = [FolderContentType.File, FolderContentType.Folder];
-        }
-
-        contentFolderTypesList.Add(FolderContentType.SystemFolder);
-        var contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).Distinct().ToList();
-
-        page -= 1;
-
-        folderSource.Contents = [];
-        var folderList = new List<FolderInfoModel>();
-        var fileList = new List<FileInfoModel>();
-
-
-        var totalFolderDoc = await folderServe.GetDocumentSizeAsync(model => model.RootFolder == folderSource.Id.ToString(), cancelToken);
-        var totalFileDoc = await fileServe.GetDocumentSizeAsync(model => model.RootFolder == folderSource.Id.ToString(), cancelToken);
-        var totalFilePages = totalFileDoc / pageSize;
-        var totalFolderPages = totalFolderDoc / pageSize;
-
-        var fieldsFolderToFetch = new Expression<Func<FolderInfoModel, object>>[]
-        {
-            model => model.Id,
-            model => model.FolderName,
-            model => model.Type,
-            model => model.RootFolder,
-            model => model.Icon,
-            model => model.RelativePath,
-            model => model.ModifiedDate
-        };
-        var fieldsFileToFetch = new Expression<Func<FileInfoModel, object>>[]
-        {
-            model => model.Id,
-            model => model.FileName,
-            model => model.Thumbnail,
-            model => model.Type,
-            model => model.RootFolder,
-            model => model.ContentType,
-            model => model.RelativePath,
-            model => model.ModifiedDate,
-            model => model.CreatedDate
-        };
-
-
-        await foreach (var m in folderServe.GetContentFormParentFolderAsync(model => model.RootFolder == folderSource.Id.ToString() && contentFolderTypesList.Contains(model.Type), page, pageSize, cancelToken, fieldsFolderToFetch))
-        {
-            folderList.Add(m);
-        }
-
-        await foreach (var m in fileServe.GetContentFormParentFolderAsync(model => model.RootFolder == folderSource.Id.ToString() && contentFileTypesList.Contains(model.Type), page, pageSize, cancelToken, fieldsFileToFetch))
-        {
-            fileList.Add(m);
-        }
-
-        FolderRequest folderRequest = new FolderRequest()
-        {
-            Folder = folderSource,
-            Files = fileList.ToArray(),
-            Folders = folderList.ToArray(),
-            TotalFolderPages = (int)totalFolderPages,
-            TotalFilePages = (int)totalFilePages,
-        };
-        return Content(folderRequest.ToJson(), MediaTypeNames.Application.Json);
+        return Ok();
     }
 
     [HttpPost("search-folder")]
