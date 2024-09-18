@@ -136,11 +136,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
     public FileInfoModel? Get(string key)
     {
-        var filter = Builders<FileInfoModel>.Filter.Eq(x => x.RelativePath, key);
-        filter |= Builders<FileInfoModel>.Filter.Eq(x => x.AbsolutePath, key);
-
-        if (ObjectId.TryParse(key, out var id)) filter |= Builders<FileInfoModel>.Filter.Eq(x => x.Id, id);
-
+        FilterDefinition<FileInfoModel> filter = ObjectId.TryParse(key, out var id) ? Builders<FileInfoModel>.Filter.Eq(x => x.Id, id) : Builders<FileInfoModel>.Filter.Eq(x => x.AbsolutePath, key);
         return _fileDataDb.Find(filter).Limit(1).FirstOrDefault();
     }
 
@@ -199,7 +195,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
             return (true, AppLang.Update_successfully);
         }
-         catch (OperationCanceledException)
+        catch (OperationCanceledException)
         {
             logger.LogInformation("[Update] Operation cancelled");
             return (false, string.Empty);
