@@ -253,14 +253,16 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
             };
 
 
-            await foreach (var m in folderServe.GetContentFormParentFolderAsync(model => model.RootFolder == folderSource.Id.ToString() && contentFolderTypesList.Contains(model.Type), page, pageSize, cancelToken, fieldsFolderToFetch))
+            await foreach (var m in folderServe.GetContentFormParentFolderAsync(model => model.RootFolder == folderSource.Id.ToString(), page, pageSize, cancelToken, fieldsFolderToFetch))
             {
-                folderList.Add(m);
+                if (contentFolderTypesList.Contains(m.Type))
+                    folderList.Add(m);
             }
 
-            await foreach (var m in fileServe.GetContentFormParentFolderAsync(model => model.RootFolder == folderSource.Id.ToString() && contentFileTypesList.Contains(model.Type), page, pageSize, cancelToken, fieldsFileToFetch))
+            await foreach (var m in fileServe.GetContentFormParentFolderAsync(model => model.RootFolder == folderSource.Id.ToString(), page, pageSize, cancelToken, fieldsFileToFetch))
             {
-                fileList.Add(m);
+                if (contentFileTypesList.Contains(m.Type))
+                    fileList.Add(m);
             }
 
             FolderRequest folderRequest = new FolderRequest()

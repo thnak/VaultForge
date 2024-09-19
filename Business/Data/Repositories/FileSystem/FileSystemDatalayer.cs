@@ -4,20 +4,23 @@ using Business.Data.Interfaces;
 using Business.Data.Interfaces.FileSystem;
 using Business.Models;
 using Business.Utils;
+using Business.Utils.ExpressionExtensions;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Business.Data.Repositories.FileSystem;
 
-public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSystemDatalayer> logger) : IFileSystemDatalayer
+public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSystemDatalayer> logger, IMemoryCache memoryCache) : IFileSystemDatalayer
 {
     private const string SearchIndexString = "FileInfoSearchIndex";
     private readonly IMongoCollection<FileInfoModel> _fileDataDb = context.MongoDatabase.GetCollection<FileInfoModel>("FileInfo");
     private readonly IMongoCollection<FileMetadataModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileMetadataModel>("FileMetaData");
     private readonly SemaphoreSlim _semaphore = new(100, 1000);
+    private const string SearchIndexNameLastSeenId = "FileInfoSearchIndexLastSeenId";
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
@@ -25,8 +28,9 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         try
         {
             var absolutePathKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath);
-
             var absolutePathIndexModel = new CreateIndexModel<FileInfoModel>(absolutePathKey, new CreateIndexOptions { Unique = true });
+            var rootFolderIndexKeysDefinition = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder);
+            var rootFolderAndCreateDateKeysDefinition = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x=>x.CreatedDate);
 
             var searchIndexKeys = Builders<FileInfoModel>.IndexKeys.Text(x => x.FileName).Text(x => x.RelativePath);
             var searchIndexOptions = new CreateIndexOptions
@@ -35,7 +39,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             };
 
             var searchIndexModel = new CreateIndexModel<FileInfoModel>(searchIndexKeys, searchIndexOptions);
-            await _fileDataDb.Indexes.CreateManyAsync([searchIndexModel, absolutePathIndexModel], cancellationToken);
+            await _fileDataDb.Indexes.CreateManyAsync([new CreateIndexModel<FileInfoModel>(rootFolderIndexKeysDefinition), new CreateIndexModel<FileInfoModel>(rootFolderAndCreateDateKeysDefinition), searchIndexModel, absolutePathIndexModel], cancellationToken);
 
             logger.LogInformation(@"[Init] File info data layer");
 
@@ -410,19 +414,44 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
     public async IAsyncEnumerable<FileInfoModel> GetContentFormParentFolderAsync(Expression<Func<FileInfoModel, bool>> predicate, int pageNumber, int pageSize, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
     {
+        ObjectId? lastSeenId = null;
+
+        bool hasIdCheck = predicate.PredicateContainsIdCheck(f => f.Id);
+
+        if (!hasIdCheck && memoryCache.TryGetValue<ObjectId>(SearchIndexNameLastSeenId, out var cachedLastSeenId))
+        {
+            lastSeenId = cachedLastSeenId;
+        }
+
         var options = new FindOptions<FileInfoModel, FileInfoModel>
         {
             Projection = fieldsToFetch.ProjectionBuilder(),
             Limit = pageSize,
-            Skip = pageSize * pageNumber,
+            Skip = lastSeenId == null ? pageSize * pageNumber : 0,
         };
-        var cursor = await _fileDataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);
+
+        var filterBuilder = Builders<FileInfoModel>.Filter;
+        var filter = Builders<FileInfoModel>.Filter.Empty;
+
+        filter = lastSeenId.HasValue ? filterBuilder.And(filter, filterBuilder.Lt(f => f.Id, lastSeenId.Value)) : Builders<FileInfoModel>.Filter.Where(predicate);
+
+        var cursor = await _fileDataDb.FindAsync(filter, options, cancellationToken: cancellationToken);
+
+        ObjectId? currentLastSeenId = null;
+
+
         while (await cursor.MoveNextAsync(cancellationToken))
         {
             foreach (var model in cursor.Current)
             {
                 yield return model;
+                currentLastSeenId = model.Id;
             }
+        }
+
+        if (currentLastSeenId.HasValue && hasIdCheck)
+        {
+            memoryCache.Set(SearchIndexNameLastSeenId, currentLastSeenId.Value, TimeSpan.FromMinutes(30)); // Cache for 30 minutes
         }
     }
 }

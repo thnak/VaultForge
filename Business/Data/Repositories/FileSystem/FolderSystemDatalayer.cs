@@ -4,9 +4,11 @@ using Business.Data.Interfaces;
 using Business.Data.Interfaces.FileSystem;
 using Business.Models;
 using Business.Utils;
+using Business.Utils.ExpressionExtensions;
 using BusinessModels.General.EnumModel;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -14,12 +16,12 @@ using Protector.Utils;
 
 namespace Business.Data.Repositories.FileSystem;
 
-public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<FolderSystemDatalayer> logger) : IFolderSystemDatalayer
+public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<FolderSystemDatalayer> logger, IMemoryCache memoryCache) : IFolderSystemDatalayer
 {
     private const string SearchIndexString = "FolderInfoSearchIndex";
     private readonly IMongoCollection<FolderInfoModel> _dataDb = context.MongoDatabase.GetCollection<FolderInfoModel>("FolderInfo");
     private readonly SemaphoreSlim _semaphore = new(100, 1000);
-
+    private const string SearchIndexNameLastSeenId = "FolderInfoSearchIndexLastSeenId";
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
@@ -387,19 +389,44 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
     public async IAsyncEnumerable<FolderInfoModel> GetContentFormParentFolderAsync(Expression<Func<FolderInfoModel, bool>> predicate, int pageNumber, int pageSize, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
     {
+        ObjectId? lastSeenId = null;
+
+        bool hasIdCheck = predicate.PredicateContainsIdCheck(f => f.Id);
+
+        if (!hasIdCheck && memoryCache.TryGetValue<ObjectId>(SearchIndexNameLastSeenId, out var cachedLastSeenId))
+        {
+            lastSeenId = cachedLastSeenId;
+        }
+
         var options = new FindOptions<FolderInfoModel, FolderInfoModel>
         {
             Projection = fieldsToFetch.ProjectionBuilder(),
             Limit = pageSize,
-            Skip = pageSize * pageNumber,
+            Skip = lastSeenId == null ? pageSize * pageNumber : 0,
         };
-        var cursor = await _dataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);
+
+        var filterBuilder = Builders<FolderInfoModel>.Filter;
+        var filter = Builders<FolderInfoModel>.Filter.Empty;
+
+        filter = lastSeenId.HasValue ? filterBuilder.And(filter, filterBuilder.Lt(f => f.Id, lastSeenId.Value)) : Builders<FolderInfoModel>.Filter.Where(predicate);
+
+        var cursor = await _dataDb.FindAsync(filter, options, cancellationToken: cancellationToken);
+
+        ObjectId? currentLastSeenId = null;
+
+
         while (await cursor.MoveNextAsync(cancellationToken))
         {
             foreach (var model in cursor.Current)
             {
                 yield return model;
+                currentLastSeenId = model.Id;
             }
+        }
+
+        if (currentLastSeenId.HasValue && hasIdCheck)
+        {
+            memoryCache.Set(SearchIndexNameLastSeenId, currentLastSeenId.Value, TimeSpan.FromMinutes(30)); // Cache for 30 minutes
         }
     }
 
