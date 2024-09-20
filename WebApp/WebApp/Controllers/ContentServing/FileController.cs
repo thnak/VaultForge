@@ -224,8 +224,8 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
             var fileList = new List<FileInfoModel>();
 
 
-            var totalFolderDoc = await folderServe.GetDocumentSizeAsync(model => model.RootFolder == folderSource.Id.ToString(), cancelToken);
-            var totalFileDoc = await fileServe.GetDocumentSizeAsync(model => model.RootFolder == folderSource.Id.ToString(), cancelToken);
+            var totalFolderDoc = await folderServe.GetDocumentSizeAsync(model => model.RootFolder == folderSource.Id.ToString() && contentFolderTypesList.Contains(model.Type), cancelToken);
+            var totalFileDoc = await fileServe.GetDocumentSizeAsync(model => model.RootFolder == folderSource.Id.ToString() && contentFileTypesList.Contains(model.Type), cancelToken);
             var totalFilePages = totalFileDoc / pageSize;
             var totalFolderPages = totalFolderDoc / pageSize;
 
@@ -274,7 +274,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
             };
             return Content(folderRequest.ToJson(), MediaTypeNames.Application.Json);
         }
-        catch (OperationCanceledException e)
+        catch (OperationCanceledException)
         {
             logger.LogInformation("Request cancelled");
         }
