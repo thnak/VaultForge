@@ -29,7 +29,10 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         try
         {
             var keys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath).Ascending(x => x.Username);
-            var indexModel = new CreateIndexModel<FolderInfoModel>(keys, new CreateIndexOptions { Unique = true });
+            var absolutePathAndUserIndexModel = new CreateIndexModel<FolderInfoModel>(keys, new CreateIndexOptions { Unique = true });
+
+            var absKeys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath);
+            var absolutePathIndexModel = new CreateIndexModel<FolderInfoModel>(absKeys, new CreateIndexOptions { Unique = false });
 
             var searchIndexKeys = Builders<FolderInfoModel>.IndexKeys.Text(x => x.FolderName).Text(x => x.RelativePath);
             var searchIndexOptions = new CreateIndexOptions
@@ -38,7 +41,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             };
 
             var searchIndexModel = new CreateIndexModel<FolderInfoModel>(searchIndexKeys, searchIndexOptions);
-            await _dataDb.Indexes.CreateManyAsync([indexModel, searchIndexModel], cancellationToken: cancellationToken);
+            await _dataDb.Indexes.CreateManyAsync([absolutePathAndUserIndexModel, absolutePathIndexModel, searchIndexModel], cancellationToken: cancellationToken);
 
 
             var anonymousUser = "Anonymous".ComputeSha256Hash();

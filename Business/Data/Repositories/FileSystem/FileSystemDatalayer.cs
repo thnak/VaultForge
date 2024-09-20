@@ -29,6 +29,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         {
             var absolutePathKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath);
             var absolutePathIndexModel = new CreateIndexModel<FileInfoModel>(absolutePathKey, new CreateIndexOptions { Unique = true });
+            
             var rootFolderIndexKeysDefinition = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder);
             var rootFolderAndCreateDateKeysDefinition = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x=>x.CreatedDate);
 
