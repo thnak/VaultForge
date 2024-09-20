@@ -237,7 +237,8 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                 model => model.RootFolder,
                 model => model.Icon,
                 model => model.RelativePath,
-                model => model.ModifiedTime
+                model => model.ModifiedTime,
+                model => model.CreateDate
             };
             var fieldsFileToFetch = new Expression<Func<FileInfoModel, object>>[]
             {
@@ -253,16 +254,14 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
             };
 
 
-            await foreach (var m in folderServe.GetContentFormParentFolderAsync(model => model.RootFolder == folderSource.Id.ToString(), page, pageSize, cancelToken, fieldsFolderToFetch))
+            await foreach (var m in folderServe.GetContentFormParentFolderAsync(model => model.RootFolder == folderSource.Id.ToString() && contentFolderTypesList.Contains(model.Type), page, pageSize, cancelToken, fieldsFolderToFetch))
             {
-                if (contentFolderTypesList.Contains(m.Type))
-                    folderList.Add(m);
+                folderList.Add(m);
             }
 
-            await foreach (var m in fileServe.GetContentFormParentFolderAsync(model => model.RootFolder == folderSource.Id.ToString(), page, pageSize, cancelToken, fieldsFileToFetch))
+            await foreach (var m in fileServe.GetContentFormParentFolderAsync(model => model.RootFolder == folderSource.Id.ToString() && contentFileTypesList.Contains(model.Type), page, pageSize, cancelToken, fieldsFileToFetch))
             {
-                if (contentFileTypesList.Contains(m.Type))
-                    fileList.Add(m);
+                fileList.Add(m);
             }
 
             FolderRequest folderRequest = new FolderRequest()

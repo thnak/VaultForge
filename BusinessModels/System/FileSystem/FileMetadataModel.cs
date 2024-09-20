@@ -15,4 +15,8 @@ public class FileMetadataModel
     [Key(5)] public string Codec { get; set; } = string.Empty; // Codec used for the media file
     [Key(6)] public string ThumbnailAbsolutePath { get; set; } = string.Empty;
     [Key(7)] public string ThumbnailContentType { get; set; } = string.Empty;
+
+    [Key(8)]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    public DateTime CreateDate { get; set; }
 }

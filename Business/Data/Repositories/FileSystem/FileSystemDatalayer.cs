@@ -37,9 +37,12 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
             var rootAndTypeKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Type);
             var rootAndTypeIndexModel = new CreateIndexModel<FileInfoModel>(rootAndTypeKey, new CreateIndexOptions { Unique = false });
-            
+
             var rootAndContentTypeKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.ContentType);
             var rootAndContentTypeIndexModel = new CreateIndexModel<FileInfoModel>(rootAndContentTypeKey);
+
+            var fileNameAndRootAndTypeKeys = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.FileName).Ascending(x => x.Type);
+            var fileNameAndRootAndTypeModel = new CreateIndexModel<FileInfoModel>(fileNameAndRootAndTypeKeys, new CreateIndexOptions { Unique = false });
 
             var createDateKeysDefinition = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.CreatedDate);
             var createDateIndexModel = new CreateIndexModel<FileInfoModel>(createDateKeysDefinition);
@@ -47,24 +50,28 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             var createDateAndTypeKeysDefinition = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.CreatedDate).Ascending(x => x.Type);
             var createDateAndTypeIndexModel = new CreateIndexModel<FileInfoModel>(createDateAndTypeKeysDefinition);
 
+            var createDateAndContentTypeKeysDefinition = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.CreatedDate).Ascending(x => x.ContentType);
+            var createDateAndContentTypeIndexModel = new CreateIndexModel<FileInfoModel>(createDateAndContentTypeKeysDefinition);
+
             var searchIndexKeys = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.FileName).Ascending(x => x.RelativePath).Ascending(x => x.RootFolder);
             var searchIndexModel = new CreateIndexModel<FileInfoModel>(searchIndexKeys, new CreateIndexOptions { Unique = false });
 
-            var fileNameAndRootAndTypeKeys = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.FileName).Ascending(x => x.RootFolder).Ascending(x => x.Type);
-            var fileNameAndRootAndTypeModel = new CreateIndexModel<FileInfoModel>(fileNameAndRootAndTypeKeys, new CreateIndexOptions { Unique = false });
+            var typeIndexKeys = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.Type);
+            var typeIndexModel = new CreateIndexModel<FileInfoModel>(typeIndexKeys);
 
-            var nameAndRelativeAndRootKeys = Builders<FileInfoModel>.IndexKeys.Text(x => x.FileName).Ascending(x => x.RelativePath).Ascending(x => x.RootFolder).Ascending(x => x.Type);
+            var contentTypeIndexKeys = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.ContentType);
+            var contentTypeIndexModel = new CreateIndexModel<FileInfoModel>(contentTypeIndexKeys);
+
+            var nameAndRelativeAndRootKeys = Builders<FileInfoModel>.IndexKeys.Text(x => x.FileName).Ascending(x => x.RelativePath).Ascending(x => x.RootFolder).Ascending(x => x.ContentType);
             var nameAndRelativeAndRootIndexModel = new CreateIndexModel<FileInfoModel>(nameAndRelativeAndRootKeys, new CreateIndexOptions { Unique = false });
-
-            var idAndTypeIndexKeys = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.Id).Ascending(x => x.Type);
-            var idAndTypeIndexIndexModel = new CreateIndexModel<FileInfoModel>(idAndTypeIndexKeys, new CreateIndexOptions { Unique = true });
 
             List<CreateIndexModel<FileInfoModel>> createIndexModelLis =
             [
                 rootFolderIndexModel, rootFolderAndCreateDateIndexModel, searchIndexModel, absolutePathIndexModel,
-                nameAndRelativeAndRootIndexModel, idAndTypeIndexIndexModel, createDateIndexModel, 
+                nameAndRelativeAndRootIndexModel, createDateIndexModel,
                 createDateAndTypeIndexModel, rootAndTypeIndexModel, fileNameAndRootAndTypeModel,
-                rootAndContentTypeIndexModel
+                rootAndContentTypeIndexModel, createDateAndContentTypeIndexModel,
+                typeIndexModel, contentTypeIndexModel
             ];
 
             await _fileDataDb.Indexes.CreateManyAsync(createIndexModelLis, cancellationToken);
@@ -73,9 +80,15 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
             var metaKey = Builders<FileMetadataModel>.IndexKeys.Ascending(x => x.ThumbnailAbsolutePath);
             var metaIndexModel = new CreateIndexModel<FileMetadataModel>(metaKey, new CreateIndexOptions { Unique = true });
+
+
             await _fileMetaDataDataDb.Indexes.CreateOneAsync(metaIndexModel, cancellationToken: cancellationToken);
 
             return (true, string.Empty);
+        }
+        catch (OperationCanceledException)
+        {
+            return (false, string.Empty);
         }
         catch (MongoException ex)
         {
