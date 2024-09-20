@@ -40,9 +40,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
             var rootAndContentTypeKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.ContentType);
             var rootAndContentTypeIndexModel = new CreateIndexModel<FileInfoModel>(rootAndContentTypeKey);
-
-            var fileNameAndRootAndTypeKeys = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.RelativePath).Ascending(x => x.Type);
-            var fileNameAndRootAndTypeModel = new CreateIndexModel<FileInfoModel>(fileNameAndRootAndTypeKeys, new CreateIndexOptions { Unique = false });
+            
 
             var createDateKeysDefinition = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.CreatedDate);
             var createDateIndexModel = new CreateIndexModel<FileInfoModel>(createDateKeysDefinition);
@@ -72,7 +70,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             [
                 rootFolderIndexModel, rootFolderAndCreateDateIndexModel, searchIndexModel, absolutePathIndexModel,
                 nameAndRelativeAndRootIndexModel, createDateIndexModel,
-                createDateAndTypeIndexModel, rootAndTypeIndexModel, fileNameAndRootAndTypeModel,
+                createDateAndTypeIndexModel, rootAndTypeIndexModel,
                 rootAndContentTypeIndexModel, createDateAndContentTypeIndexModel,
                 typeIndexModel, contentTypeIndexModel,
                 relativePathIndexModel

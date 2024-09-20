@@ -217,11 +217,8 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
             contentFolderTypesList.Add(FolderContentType.SystemFolder);
             var contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).Distinct().ToList();
             
-            var result = await folderServe.GetFolderRequestAsync(model => model.RootFolder == folderSource.RootFolder && contentFolderTypesList.Contains(model.Type), model => model.RootFolder == folderSource.RootFolder && contentFileTypesList.Contains(model.Type), pageSize, page, cancelToken);
-
-            result.Folder = folderSource;
-            
-            return Content(result.ToJson(), MediaTypeNames.Application.Json);
+            var res = await folderServe.GetFolderRequestAsync(model => model.RootFolder == folderSource.Id.ToString() && contentFolderTypesList.Contains(model.Type), model => model.RootFolder == folderSource.Id.ToString() && contentFileTypesList.Contains(model.Type), pageSize, page, cancelToken);
+            return Content(res.ToJson(), MediaTypeNames.Application.Json);
         }
         catch (OperationCanceledException)
         {
