@@ -216,63 +216,12 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
 
             contentFolderTypesList.Add(FolderContentType.SystemFolder);
             var contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).Distinct().ToList();
+            
+            var result = await folderServe.GetFolderRequestAsync(model => model.RootFolder == folderSource.RootFolder && contentFolderTypesList.Contains(model.Type), model => model.RootFolder == folderSource.RootFolder && contentFileTypesList.Contains(model.Type), pageSize, page, cancelToken);
 
-            page -= 1;
-
-            folderSource.Contents = [];
-            var folderList = new List<FolderInfoModel>();
-            var fileList = new List<FileInfoModel>();
-
-
-            var totalFolderDoc = await folderServe.GetDocumentSizeAsync(model => model.RootFolder == folderSource.Id.ToString() && contentFolderTypesList.Contains(model.Type), cancelToken);
-            var totalFileDoc = await fileServe.GetDocumentSizeAsync(model => model.RootFolder == folderSource.Id.ToString() && contentFileTypesList.Contains(model.Type), cancelToken);
-            var totalFilePages = totalFileDoc / pageSize;
-            var totalFolderPages = totalFolderDoc / pageSize;
-
-            var fieldsFolderToFetch = new Expression<Func<FolderInfoModel, object>>[]
-            {
-                model => model.Id,
-                model => model.FolderName,
-                model => model.Type,
-                model => model.RootFolder,
-                model => model.Icon,
-                model => model.RelativePath,
-                model => model.ModifiedTime,
-                model => model.CreateDate
-            };
-            var fieldsFileToFetch = new Expression<Func<FileInfoModel, object>>[]
-            {
-                model => model.Id,
-                model => model.FileName,
-                model => model.Thumbnail,
-                model => model.Type,
-                model => model.RootFolder,
-                model => model.ContentType,
-                model => model.RelativePath,
-                model => model.ModifiedTime,
-                model => model.CreatedDate
-            };
-
-
-            await foreach (var m in folderServe.GetContentFormParentFolderAsync(model => model.RootFolder == folderSource.Id.ToString() && contentFolderTypesList.Contains(model.Type), page, pageSize, cancelToken, fieldsFolderToFetch))
-            {
-                folderList.Add(m);
-            }
-
-            await foreach (var m in fileServe.GetContentFormParentFolderAsync(model => model.RootFolder == folderSource.Id.ToString() && contentFileTypesList.Contains(model.Type), page, pageSize, cancelToken, fieldsFileToFetch))
-            {
-                fileList.Add(m);
-            }
-
-            FolderRequest folderRequest = new FolderRequest()
-            {
-                Folder = folderSource,
-                Files = fileList.ToArray(),
-                Folders = folderList.ToArray(),
-                TotalFolderPages = (int)totalFolderPages,
-                TotalFilePages = (int)totalFilePages,
-            };
-            return Content(folderRequest.ToJson(), MediaTypeNames.Application.Json);
+            result.Folder = folderSource;
+            
+            return Content(result.ToJson(), MediaTypeNames.Application.Json);
         }
         catch (OperationCanceledException)
         {

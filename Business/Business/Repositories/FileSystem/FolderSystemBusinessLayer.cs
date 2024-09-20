@@ -3,12 +3,15 @@ using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.User;
 using Business.Data.Interfaces.FileSystem;
 using Business.Models;
+using Business.Utils.StringExtensions;
 using BusinessModels.General;
 using BusinessModels.General.EnumModel;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Validator.Folder;
+using BusinessModels.WebContent.Drive;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
@@ -22,7 +25,8 @@ public class FolderSystemBusinessLayer(
     IFileSystemBusinessLayer fileSystemService,
     IUserBusinessLayer userService,
     IOptions<AppSettings> options,
-    ILogger<FolderSystemBusinessLayer> logger) : IFolderSystemBusinessLayer
+    ILogger<FolderSystemBusinessLayer> logger,
+    IMemoryCache memoryCache) : IFolderSystemBusinessLayer
 {
     private readonly string _workingDir = options.Value.FileFolder;
 
@@ -353,6 +357,71 @@ public class FolderSystemBusinessLayer(
             }
 
         return (totalFolders, totalFiles);
+    }
+
+    public async Task<FolderRequest> GetFolderRequestAsync(Expression<Func<FolderInfoModel, bool>> folderPredicate, Expression<Func<FileInfoModel, bool>> filePredicate, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
+    {
+        string cacheKey = folderPredicate.GetCacheKey();
+        cacheKey += filePredicate.GetCacheKey();
+
+        var result = await memoryCache.GetOrCreateAsync(cacheKey, async entry =>
+        {
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10);
+            pageSize -= 1;
+            pageSize = Math.Min(0, pageSize);
+
+            var folderList = new List<FolderInfoModel>();
+            var fileList = new List<FileInfoModel>();
+
+            var totalFolderDoc = await GetDocumentSizeAsync(folderPredicate, cancellationToken);
+            var totalFileDoc = await fileSystemService.GetDocumentSizeAsync(filePredicate, cancellationToken);
+            var totalFilePages = totalFileDoc / pageSize;
+            var totalFolderPages = totalFolderDoc / pageSize;
+
+            var fieldsFolderToFetch = new Expression<Func<FolderInfoModel, object>>[]
+            {
+                model => model.Id,
+                model => model.FolderName,
+                model => model.Type,
+                model => model.RootFolder,
+                model => model.Icon,
+                model => model.RelativePath,
+                model => model.ModifiedTime,
+                model => model.CreateDate
+            };
+            var fieldsFileToFetch = new Expression<Func<FileInfoModel, object>>[]
+            {
+                model => model.Id,
+                model => model.FileName,
+                model => model.Thumbnail,
+                model => model.Type,
+                model => model.RootFolder,
+                model => model.ContentType,
+                model => model.RelativePath,
+                model => model.ModifiedTime,
+                model => model.CreatedDate
+            };
+
+
+            await foreach (var m in GetContentFormParentFolderAsync(folderPredicate, pageNumber, pageSize, cancellationToken, fieldsFolderToFetch))
+            {
+                folderList.Add(m);
+            }
+
+            await foreach (var m in fileSystemService.GetContentFormParentFolderAsync(filePredicate, pageNumber, pageSize, cancellationToken, fieldsFileToFetch))
+            {
+                fileList.Add(m);
+            }
+
+            return new FolderRequest()
+            {
+                Files = fileList.ToArray(),
+                Folders = folderList.ToArray(),
+                TotalFolderPages = (int)totalFolderPages,
+                TotalFilePages = (int)totalFilePages,
+            };
+        }) ?? new();
+        return result;
     }
 
     #region Private Mothods
