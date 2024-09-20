@@ -367,8 +367,8 @@ public class FolderSystemBusinessLayer(
         var result = await memoryCache.GetOrCreateAsync(cacheKey, async entry =>
         {
             entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10);
-            pageSize -= 1;
-            pageSize = Math.Min(0, pageSize);
+            
+            pageSize = Math.Max(1, pageSize);
 
             var folderList = new List<FolderInfoModel>();
             var fileList = new List<FileInfoModel>();
@@ -377,6 +377,8 @@ public class FolderSystemBusinessLayer(
             var totalFileDoc = await fileSystemService.GetDocumentSizeAsync(filePredicate, cancellationToken);
             var totalFilePages = totalFileDoc / pageSize;
             var totalFolderPages = totalFolderDoc / pageSize;
+            
+            pageSize -= 1;
 
             var fieldsFolderToFetch = new Expression<Func<FolderInfoModel, object>>[]
             {
