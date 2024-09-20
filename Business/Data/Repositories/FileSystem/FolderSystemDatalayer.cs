@@ -71,7 +71,8 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
                     FolderName = "Home",
                     Type = FolderContentType.SystemFolder
                 };
-                await CreateAsync(anonymousFolder, cancellationToken);
+                var result = await CreateAsync(anonymousFolder, cancellationToken);
+                logger.LogInformation($"[Init][Anonymous] {result.Item2}");
             }
 
             var wallPaperFolder = Get(anonymousUser, "/root/wallpaper");
@@ -86,7 +87,9 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
                     RelativePath = anonymousFolder.AbsolutePath + "/WallPaper",
                     Type = FolderContentType.SystemFolder
                 };
-                await CreateAsync(wallPaperFolder, cancellationToken);
+                var result = await CreateAsync(wallPaperFolder, cancellationToken);
+                logger.LogInformation($"[Init][WallPaper] {result.Item2}");
+
             }
 
             var resourceFolder = Get(anonymousUser, "/root/wallpaper");
@@ -101,7 +104,9 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
                     RelativePath = anonymousFolder.AbsolutePath + "/resource",
                     Type = FolderContentType.SystemFolder
                 };
-                await CreateAsync(resourceFolder, cancellationToken);
+                var result =await CreateAsync(resourceFolder, cancellationToken);
+                logger.LogInformation($"[Init][resource] {result.Item2}");
+
             }
 
 
