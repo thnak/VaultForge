@@ -12,7 +12,7 @@
         <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="9.0.0-rc.1.24452.1" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0-rc.1.24431.7" />
         <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.0.2" />
-        <PackageReference Include="MongoDB.Bson" Version="2.28.0"/>
+        <PackageReference Include="MongoDB.Bson" Version="2.29.0" />
         <PackageReference Include="MongoDB.Driver" Version="2.28.0"/>
     </ItemGroup>
 
