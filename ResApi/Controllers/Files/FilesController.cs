@@ -193,7 +193,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
                                                            x.RelativePath.Contains(searchString) &&
                                                            (user == null || x.Username == user.UserName) &&
                                                            x.Type == FolderContentType.Folder, cancelToken, 
-                               model => model.FolderName, model => model.Type, model => model.Icon, model => model.ModifiedDate, model => model.Id))
+                               model => model.FolderName, model => model.Type, model => model.Icon, model => model.ModifiedTime, model => model.Id))
             {
                 folderList.Add(x);
                 if (folderList.Count == 10)

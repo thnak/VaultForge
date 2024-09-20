@@ -41,7 +41,7 @@ public class FileInfoModel
     /// </summary>
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(8)]
-    public DateTime ModifiedDate { get; set; }
+    public DateTime ModifiedTime { get; set; }
 
     /// <summary>
     ///     Absolute path for file storage

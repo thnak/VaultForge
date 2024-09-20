@@ -237,7 +237,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                 model => model.RootFolder,
                 model => model.Icon,
                 model => model.RelativePath,
-                model => model.ModifiedDate
+                model => model.ModifiedTime
             };
             var fieldsFileToFetch = new Expression<Func<FileInfoModel, object>>[]
             {
@@ -248,7 +248,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                 model => model.RootFolder,
                 model => model.ContentType,
                 model => model.RelativePath,
-                model => model.ModifiedDate,
+                model => model.ModifiedTime,
                 model => model.CreatedDate
             };
 
@@ -299,7 +299,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                                                            x.RelativePath.Contains(searchString) &&
                                                            (user == null || x.Username == user.UserName) &&
                                                            x.Type == FolderContentType.Folder, cancelToken,
-                               model => model.FolderName, model => model.Type, model => model.Icon, model => model.ModifiedDate, model => model.Id))
+                               model => model.FolderName, model => model.Type, model => model.Icon, model => model.ModifiedTime, model => model.Id))
             {
                 folderList.Add(x);
                 if (folderList.Count == 10)

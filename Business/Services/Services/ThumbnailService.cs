@@ -152,7 +152,7 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
             FileSize = thumbnailSize,
             Type = FileContentType.ThumbnailFile,
             CreatedDate = DateTime.Now,
-            ModifiedDate = DateTime.Now,
+            ModifiedTime = DateTime.Now,
             ContentType = "image/webp",
             RootFolder = fileInfo.RootFolder
         };
@@ -164,7 +164,7 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
             FileSize = extendedImageSize,
             Type = FileContentType.ThumbnailWebpFile,
             CreatedDate = DateTime.Now,
-            ModifiedDate = DateTime.Now,
+            ModifiedTime = DateTime.Now,
             ContentType = "image/webp",
             RootFolder = fileInfo.RootFolder
         };

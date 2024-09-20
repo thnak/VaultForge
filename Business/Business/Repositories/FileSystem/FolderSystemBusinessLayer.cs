@@ -175,7 +175,7 @@ public class FolderSystemBusinessLayer(
                 RelativePath = "/root",
                 AbsolutePath = "/root",
                 FolderName = "Home",
-                ModifiedDate = DateTime.UtcNow,
+                ModifiedTime = DateTime.UtcNow,
                 Username = user.UserName
             };
             var res = CreateAsync(folder).Result;
@@ -282,7 +282,7 @@ public class FolderSystemBusinessLayer(
         request.NewFolder.RelativePath = folderRoot.RelativePath + '/' + request.NewFolder.FolderName;
         request.NewFolder.AbsolutePath = request.NewFolder.RelativePath;
         request.NewFolder.RootFolder = request.RootId;
-        request.NewFolder.ModifiedDate = DateTime.Now;
+        request.NewFolder.ModifiedTime = DateTime.Now;
 
 
         if (string.IsNullOrEmpty(request.NewFolder.Username))

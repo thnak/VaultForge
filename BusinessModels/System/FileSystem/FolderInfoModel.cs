@@ -51,30 +51,38 @@ public class FolderInfoModel
     /// </summary>
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(6)]
-    public DateTime ModifiedDate { get; set; }
+    public DateTime CreateDate { get; set; }
+    /// <summary>
+    ///     Last modified date of the file
+    /// </summary>
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    [Key(7)]
+    public DateTime ModifiedTime { get; set; }
 
     /// <summary>
     ///     Relative path for UI display, nó có thể thay đổi
     /// </summary>
-    [Key(7)] public string RelativePath { get; set; } = string.Empty;
+    [Key(8)]
+    public string RelativePath { get; set; } = string.Empty;
 
     /// <summary>
     /// Chỉ được tạo 1 lần và không được sửa đổi
     /// </summary>
-    [Key(13)] public string AbsolutePath { get; set; } = string.Empty;
+    [Key(9)]
+    public string AbsolutePath { get; set; } = string.Empty;
 
-    [Key(8)] public string VersionId { get; set; } = string.Empty;
+    [Key(10)] public string VersionId { get; set; } = string.Empty;
 
-    [Key(9)] public FolderContentType Type { get; set; }
+    [Key(11)] public FolderContentType Type { get; set; }
 
-    [Key(10)] public string Icon { get; set; } = string.Empty;
+    [Key(12)] public string Icon { get; set; } = string.Empty;
 
-    [Key(11)] public string RootFolder { get; set; } = string.Empty;
+    [Key(13)] public string RootFolder { get; set; } = string.Empty;
 
 
     #region Front-End Properties
 
-    [BsonIgnore] [Key(12)] public long FolderSize { get; set; }
+    [BsonIgnore] [Key(14)] public long FolderSize { get; set; }
 
     #endregion
 

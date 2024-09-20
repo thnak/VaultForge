@@ -95,7 +95,7 @@ public class FixContentController(IFileSystemBusinessLayer fileServe, IFolderSys
                 {
                     { x => x.RelativePath, folder.RelativePath + $"/{thumbFile.FileName}" },
                     { x => x.RootFolder, folder.RootFolder },
-                    { x => x.ModifiedDate, DateTime.Now }
+                    { x => x.ModifiedTime, DateTime.Now }
                 };
                 await fileServe.UpdateAsync(thumbFile.Id.ToString(), fieldUpdate, cancelToken);
 
