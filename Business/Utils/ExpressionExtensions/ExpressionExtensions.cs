@@ -31,8 +31,11 @@ public class IdCheckExpressionVisitor<TModel, TKey>(Expression<Func<TModel, TKey
 
 public static class ExpressionComparer
 {
-    public static bool AreEqual(Expression x, Expression y)
+    public static bool AreEqual(Expression? x, Expression? y)
     {
+        if (x is null && y is null) return true;
+        if (x is null || y is null) return false;
+
         if (x.NodeType != y.NodeType || x.Type != y.Type)
             return false;
 
