@@ -1,4 +1,5 @@
-﻿@rendermode InteractiveWebAssembly
+﻿@using WebApp.Client.Components.Menus
+@rendermode InteractiveWebAssembly
 @attribute [Route(PageRoutes.Drive.Shared.Src)]
 @attribute [Route(PageRoutes.Drive.Trash.Src)]
 @attribute [AllowAnonymous]
@@ -11,9 +12,11 @@
     <HeadContentContainer MetaProperty="@PageRoutes.Drive.Shared.MetaData" />
 </HeadContent>
 
-<SectionContent SectionId="@AppBar.BreadCrumb" >
-    <MudBreadcrumbs Class="d-md-flex d-none" Items="@BreadcrumbItems" ></MudBreadcrumbs>
+<SectionContent SectionId="@AppBar.TopBarSectionN" >
+    <RedditMobileMenu Name="@LangDict[PageRoutes.Drive.Shared.Title]"/>
 </SectionContent>
+
+<MudBreadcrumbs Class="d-md-flex d-none" Items="@BreadcrumbItems" ></MudBreadcrumbs>
 
 @if (Loading)
 {
@@ -60,13 +63,12 @@
                 <MudIconButton aria-label="title layout" Color="@GetFolderLayoutColor(LayoutSelectType.Title)" Icon="fa-solid fa-table-cells" OnClick="@(() => FolderLayoutChange(LayoutSelectType.Title))" Size="Size.Small" />
             </MudButtonGroup>
 
-
         </MudListSubheader>
         <div class="content-grid gap-2" >
 
             @foreach (var x in FolderItemList)
             {
-                <MudDropZone Class="gap-2 pa-2 rounded-lg" Identifier="Work" @key="x" OnlyZone="true" T="DropItem" >
+                <MudDropZone Class="gap-2 pa-2 rounded-lg" Identifier="Work" @key="x" OnlyZone="@CanBeDrag" T="DropItem" >
                     <div class="@x.ItemClassList" @ondblclick="x.DbLickEvent.Action" >
                         <MudIcon Color="Color.Inherit" Icon="@x.Icon" />
                         <div class="flex-1 overflow-hidden" >
@@ -104,7 +106,7 @@
             </MudButtonGroup>
 
         </MudListSubheader>
-        <MudDropZone Class="content-grid gap-2 pa-2 rounded-lg" Identifier="File" T="DropItem" />
+        <MudDropZone Class="content-grid gap-2 pa-2 rounded-lg" Identifier="File" OnlyZone="@CanBeDrag" T="DropItem" />
     </ChildContent>
     <ItemRenderer>
         @if (FileLayoutSelects[LayoutSelectType.Grid])
@@ -118,28 +120,30 @@
                         }
                         else
                         {
-                            <img alt="@context.Name" src="@context.Thumbnail" class="thumbnail-image"/>
+                            <img alt="@context.Name" class="thumbnail-image" src="@context.Thumbnail" />
                         }
                     </div>
-                    <MudSpacer/>
+                    <MudSpacer />
                     <div class="info" >
                         <span class="text-limit" >
                             @context.Name
                         </span>
                     </div>
+
                     <div class="menu" >
-                        <MudTooltip Arrow Color="@Color.Secondary" Placement="Placement.Top" Text="@AppLang.Other_operations" >
-                            <MudMenu AriaLabel="@AppLang.Other_operations" Icon="fa-ellipsis-vertical fa-solid" >
-                                <MudMenuItem Disabled="@context.Open.Disabled" Icon="fa-solid fa-eye" OnClick="@context.Open.Action" >@AppLang.Open</MudMenuItem>
-                                <MudMenuItem Disabled="@context.Download.Disabled" Icon="@Icons.Material.Filled.CloudDownload" OnClick="@context.Download.Action" >@AppLang.Download</MudMenuItem>
-                                <MudMenuItem Disabled="@context.Rename.Disabled" Icon="@Icons.Material.Filled.Edit" OnClick="@context.Rename.Action" >@AppLang.ReName</MudMenuItem>
-                                <MudMenuItem Disabled="@context.Share.Disabled" Icon="@Icons.Material.Filled.Share" OnClick="@context.Share.Action" >@AppLang.Share</MudMenuItem>
-                                <MudMenuItem Disabled="@context.GetLink.Disabled" Icon="@Icons.Material.Filled.Link" OnClick="@context.GetLink.Action" >@AppLang.Get_link</MudMenuItem>
-                                <MudMenuItem Disabled="@context.MoveTo.Disabled" Icon="@Icons.Material.Filled.DriveFileMove" OnClick="@context.MoveTo.Action" >@AppLang.Move_to</MudMenuItem>
-                                <MudMenuItem Disabled="@context.GetInformation.Disabled" Icon="@Icons.Material.Filled.Info" OnClick="@context.GetInformation.Action" >@AppLang.Info</MudMenuItem>
-                                <MudMenuItem Disabled="@context.Delete.Disabled" Icon="@Icons.Material.Filled.DeleteForever" IconColor="Color.Error" OnClick="@context.Delete.Action" >@AppLang.Delete</MudMenuItem>
-                            </MudMenu>
-                        </MudTooltip>
+                        @context.Menu
+                        @* <MudTooltip Arrow Color="@Color.Secondary" Placement="Placement.Top" Text="@AppLang.Other_operations" > *@
+                        @*     <MudMenu AriaLabel="@AppLang.Other_operations" Icon="fa-ellipsis-vertical fa-solid" > *@
+                        @*         <MudMenuItem Disabled="@context.Open.Disabled" Icon="fa-solid fa-eye" OnClick="@context.Open.Action" >@AppLang.Open</MudMenuItem> *@
+                        @*         <MudMenuItem Disabled="@context.Download.Disabled" Icon="@Icons.Material.Filled.CloudDownload" OnClick="@context.Download.Action" >@AppLang.Download</MudMenuItem> *@
+                        @*         <MudMenuItem Disabled="@context.Rename.Disabled" Icon="@Icons.Material.Filled.Edit" OnClick="@context.Rename.Action" >@AppLang.ReName</MudMenuItem> *@
+                        @*         <MudMenuItem Disabled="@context.Share.Disabled" Icon="@Icons.Material.Filled.Share" OnClick="@context.Share.Action" >@AppLang.Share</MudMenuItem> *@
+                        @*         <MudMenuItem Disabled="@context.GetLink.Disabled" Icon="@Icons.Material.Filled.Link" OnClick="@context.GetLink.Action" >@AppLang.Get_link</MudMenuItem> *@
+                        @*         <MudMenuItem Disabled="@context.MoveTo.Disabled" Icon="@Icons.Material.Filled.DriveFileMove" OnClick="@context.MoveTo.Action" >@AppLang.Move_to</MudMenuItem> *@
+                        @*         <MudMenuItem Disabled="@context.GetInformation.Disabled" Icon="@Icons.Material.Filled.Info" OnClick="@context.GetInformation.Action" >@AppLang.Info</MudMenuItem> *@
+                        @*         <MudMenuItem Disabled="@context.Delete.Disabled" Icon="@Icons.Material.Filled.DeleteForever" IconColor="Color.Error" OnClick="@context.Delete.Action" >@AppLang.Delete</MudMenuItem> *@
+                        @*     </MudMenu> *@
+                        @* </MudTooltip> *@
                     </div>
                 </div>
             </div>
@@ -158,18 +162,19 @@
                     </span>
                 </div>
                 <div class="icon-container-tag" >
-                    <MudTooltip Arrow Color="@Color.Secondary" Placement="Placement.Top" Text="@AppLang.Other_operations" >
-                        <MudMenu AriaLabel="@AppLang.Other_operations" Icon="fa-ellipsis-vertical fa-solid" >
-                            <MudMenuItem Disabled="@context.Open.Disabled" Icon="fa-solid fa-eye" OnClick="@context.Open.Action" >@AppLang.Open</MudMenuItem>
-                            <MudMenuItem Disabled="@context.Download.Disabled" Icon="@Icons.Material.Filled.CloudDownload" OnClick="@context.Download.Action" >@AppLang.Download</MudMenuItem>
-                            <MudMenuItem Disabled="@context.Rename.Disabled" Icon="@Icons.Material.Filled.Edit" OnClick="@context.Rename.Action" >@AppLang.ReName</MudMenuItem>
-                            <MudMenuItem Disabled="@context.Share.Disabled" Icon="@Icons.Material.Filled.Share" OnClick="@context.Share.Action" >@AppLang.Share</MudMenuItem>
-                            <MudMenuItem Disabled="@context.GetLink.Disabled" Icon="@Icons.Material.Filled.Link" OnClick="@context.GetLink.Action" >@AppLang.Get_link</MudMenuItem>
-                            <MudMenuItem Disabled="@context.MoveTo.Disabled" Icon="@Icons.Material.Filled.DriveFileMove" OnClick="@context.MoveTo.Action" >@AppLang.Move_to</MudMenuItem>
-                            <MudMenuItem Disabled="@context.GetInformation.Disabled" Icon="@Icons.Material.Filled.Info" OnClick="@context.GetInformation.Action" >@AppLang.Info</MudMenuItem>
-                            <MudMenuItem Disabled="@context.Delete.Disabled" Icon="@Icons.Material.Filled.DeleteForever" IconColor="Color.Error" OnClick="@context.Delete.Action" >@AppLang.Delete</MudMenuItem>
-                        </MudMenu>
-                    </MudTooltip>
+                    @context.Menu
+                    @* <MudTooltip Arrow Color="@Color.Secondary" Placement="Placement.Top" Text="@AppLang.Other_operations" > *@
+                    @*     <MudMenu AriaLabel="@AppLang.Other_operations" Icon="fa-ellipsis-vertical fa-solid" > *@
+                    @*         <MudMenuItem Disabled="@context.Open.Disabled" Icon="fa-solid fa-eye" OnClick="@context.Open.Action" >@AppLang.Open</MudMenuItem> *@
+                    @*         <MudMenuItem Disabled="@context.Download.Disabled" Icon="@Icons.Material.Filled.CloudDownload" OnClick="@context.Download.Action" >@AppLang.Download</MudMenuItem> *@
+                    @*         <MudMenuItem Disabled="@context.Rename.Disabled" Icon="@Icons.Material.Filled.Edit" OnClick="@context.Rename.Action" >@AppLang.ReName</MudMenuItem> *@
+                    @*         <MudMenuItem Disabled="@context.Share.Disabled" Icon="@Icons.Material.Filled.Share" OnClick="@context.Share.Action" >@AppLang.Share</MudMenuItem> *@
+                    @*         <MudMenuItem Disabled="@context.GetLink.Disabled" Icon="@Icons.Material.Filled.Link" OnClick="@context.GetLink.Action" >@AppLang.Get_link</MudMenuItem> *@
+                    @*         <MudMenuItem Disabled="@context.MoveTo.Disabled" Icon="@Icons.Material.Filled.DriveFileMove" OnClick="@context.MoveTo.Action" >@AppLang.Move_to</MudMenuItem> *@
+                    @*         <MudMenuItem Disabled="@context.GetInformation.Disabled" Icon="@Icons.Material.Filled.Info" OnClick="@context.GetInformation.Action" >@AppLang.Info</MudMenuItem> *@
+                    @*         <MudMenuItem Disabled="@context.Delete.Disabled" Icon="@Icons.Material.Filled.DeleteForever" IconColor="Color.Error" OnClick="@context.Delete.Action" >@AppLang.Delete</MudMenuItem> *@
+                    @*     </MudMenu> *@
+                    @* </MudTooltip> *@
                 </div>
             </div>
         }

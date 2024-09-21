@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using System.Net.Mime;
 using System.Web;
 using Business.Attribute;
@@ -11,7 +10,6 @@ using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
 using BusinessModels.WebContent;
-using BusinessModels.WebContent.Drive;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
@@ -216,7 +214,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
 
             contentFolderTypesList.Add(FolderContentType.SystemFolder);
             var contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).Distinct().ToList();
-            string rootFolderId = folderSource.Id.ToString(); 
+            string rootFolderId = folderSource.Id.ToString();
             var res = await folderServe.GetFolderRequestAsync(model => model.RootFolder == rootFolderId && contentFolderTypesList.Contains(model.Type), model => model.RootFolder == rootFolderId && contentFileTypesList.Contains(model.Type), pageSize, page, cancelToken);
             return Content(res.ToJson(), MediaTypeNames.Application.Json);
         }
@@ -264,8 +262,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
     [IgnoreAntiforgeryToken]
     public IActionResult GetFolderBloodLine(string id)
     {
-        var userName = User.Identity?.Name ?? string.Empty;
-        var folders = folderServe.GetFolderBloodLine(userName, id);
+        var folders = folderServe.GetFolderBloodLine(id);
         return Content(folders.ToJson(), MimeTypeNames.Application.Json);
     }
 

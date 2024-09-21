@@ -103,7 +103,6 @@ public class DocumentObjectModelEventListener : IDisposable
 
     #endregion
 
-
     #region Online
 
     public Func<Task>? OnlineAsync
@@ -297,7 +296,7 @@ public class DocumentObjectModelEventListener : IDisposable
 
     #region Scroll to reload
 
-    public  Func<Task<bool>>? ScrollToReloadEventAsync
+    public Func<Task<bool>>? ScrollToReloadEventAsync
     {
         get => SelfScrollToReloadEventAsync;
         set => SelfScrollToReloadEventAsync = value;
@@ -315,6 +314,20 @@ public class DocumentObjectModelEventListener : IDisposable
         }
 
         return false;
+    }
+
+    #endregion
+
+
+    #region Touch
+
+    public bool IsTouchEnabled => SelfTouchEnabled;
+
+    private static bool SelfTouchEnabled { get; set; }
+
+    public static async Task TouchEventListenerAsync(bool touch)
+    {
+        SelfTouchEnabled = touch;
     }
 
     #endregion

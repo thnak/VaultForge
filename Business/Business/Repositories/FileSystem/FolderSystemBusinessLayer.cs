@@ -136,10 +136,8 @@ public class FolderSystemBusinessLayer(
         return folderSystemService.Get(user?.UserName ?? string.Empty, absoblutePath);
     }
 
-    public List<FolderInfoModel> GetFolderBloodLine(string username, string folderId)
+    public List<FolderInfoModel> GetFolderBloodLine(string folderId)
     {
-        var user = GetUser(username);
-        if (user == null) return [];
         List<string> allPath = [];
 
         var rootFolder = Get(folderId);
@@ -159,7 +157,7 @@ public class FolderSystemBusinessLayer(
         List<FolderInfoModel> folderInfoModels = [];
         foreach (var path in allPath)
         {
-            var folder = Get(user.UserName, path);
+            var folder = Get(rootFolder.Username, path);
             if (folder != null)
                 folderInfoModels.Add(folder);
         }
@@ -409,7 +407,6 @@ public class FolderSystemBusinessLayer(
                 model => model.CreatedDate
             };
 
-
             await foreach (var m in GetContentFormParentFolderAsync(folderPredicate, pageNumber, pageSize, cancellationToken, fieldsFolderToFetch))
             {
                 folderList.Add(m);
@@ -420,12 +417,19 @@ public class FolderSystemBusinessLayer(
                 fileList.Add(m);
             }
 
+            var rootFolderId = "";
+            if (fileList.Any())
+                rootFolderId = fileList.First().RootFolder;
+            else if(folderList.Any())
+                rootFolderId = folderList.First().RootFolder;
+
             return new FolderRequest()
             {
                 Files = fileList.ToArray(),
                 Folders = folderList.ToArray(),
                 TotalFolderPages = (int)totalFolderPages,
                 TotalFilePages = (int)totalFilePages,
+                BloodLines = GetFolderBloodLine(rootFolderId).ToArray()
             };
         }) ?? new();
         return result;

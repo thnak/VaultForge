@@ -5,10 +5,10 @@ namespace WebApp.Client.Layout;
 
 public partial class AppBar : ComponentBase
 {
-    internal static object BreadCrumb = new();
     internal static object TopBarSection1 = new();
     internal static object TopBarSection2 = new();
     internal static object TopBarSection3 = new();
+    internal static object TopBarSectionN = new();
     [Parameter] public EventCallback HandleDrawerOpen { get; set; }
     private Dictionary<string, object?> MenuBarButtonAttribute => new() { { "aria-label", "nav menu button" } };
 

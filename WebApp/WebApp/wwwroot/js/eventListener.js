@@ -133,4 +133,5 @@ window.InitAppEventListener = () => {
     document.addEventListener("fullscreenchange", FullScreenEvent);
     window.addEventListener('resize', PageChangeSize);
     console.log("Init event listener");
+    DotNet.invokeMethodAsync(assemblyName, 'TouchEventListenerAsync', "ontouchstart" in document.documentElement);
 }

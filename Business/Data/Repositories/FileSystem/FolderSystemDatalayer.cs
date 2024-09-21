@@ -42,9 +42,11 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             var absAndTypeKey = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath).Ascending(x => x.Type);
             var absAndTypeIndexModel = new CreateIndexModel<FolderInfoModel>(absAndTypeKey, new CreateIndexOptions { Unique = false });
 
-
             var rootFolderIdKey = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RootFolder);
             var rootFolderIdIndexModel = new CreateIndexModel<FolderInfoModel>(rootFolderIdKey, new CreateIndexOptions { Unique = false });
+
+            var relativePathAndUserKey = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RelativePath).Ascending(x => x.Username);
+            var relativePathAndUserIndexModel = new CreateIndexModel<FolderInfoModel>(relativePathAndUserKey, new CreateIndexOptions { Unique = true });
 
             var rootFolderIdAndTypeKey = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Type);
             var rootFolderIdIndexAndTypeModel = new CreateIndexModel<FolderInfoModel>(rootFolderIdAndTypeKey, new CreateIndexOptions { Unique = false });
@@ -55,8 +57,25 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             var searchIndexKeys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.FolderName).Ascending(x => x.Type);
             var searchIndexModel = new CreateIndexModel<FolderInfoModel>(searchIndexKeys, new CreateIndexOptions() { Unique = false });
 
+            var typeIndexKeys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.Type);
+            var typeIndexModel = new CreateIndexModel<FolderInfoModel>(typeIndexKeys, new CreateIndexOptions { Unique = false });
 
-            await _dataDb.Indexes.CreateManyAsync([absolutePathAndUserIndexModel, absolutePathIndexModel, rootFolderIdIndexAndTypeModel, searchIndexModel, rootFolderIdIndexModel, rootFolderAndFolderIndexModel, absAndTypeIndexModel, createDateIndexModel, createDateIndexAndTypeModel], cancellationToken: cancellationToken);
+            var userIndexKeys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.Username);
+            var userIndexModel = new CreateIndexModel<FolderInfoModel>(userIndexKeys, new CreateIndexOptions { Unique = false });
+
+            var userAndTypeIndexKeys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.Username).Ascending(x => x.Type);
+            var userAndTypeIndexModel = new CreateIndexModel<FolderInfoModel>(userAndTypeIndexKeys, new CreateIndexOptions { Unique = false });
+
+            List<CreateIndexModel<FolderInfoModel>> indexes =
+            [
+                absolutePathAndUserIndexModel, absolutePathIndexModel, rootFolderIdIndexAndTypeModel,
+                searchIndexModel, rootFolderIdIndexModel, rootFolderAndFolderIndexModel,
+                absAndTypeIndexModel, createDateIndexModel, createDateIndexAndTypeModel,
+                relativePathAndUserIndexModel, typeIndexModel,
+                userAndTypeIndexModel, userIndexModel,
+            ];
+
+            await _dataDb.Indexes.CreateManyAsync(indexes, cancellationToken: cancellationToken);
 
 
             var anonymousUser = "Anonymous".ComputeSha256Hash();
@@ -126,11 +145,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     {
         username = hashed ? username : username.ComputeSha256Hash();
         var filter = Builders<FolderInfoModel>.Filter.Where(x => x.AbsolutePath == absolute && x.Username == username);
-        if (ObjectId.TryParse(absolute, out ObjectId id))
-        {
-            filter |= Builders<FolderInfoModel>.Filter.Eq(x => x.Id, id);
-        }
-
+        filter |= Builders<FolderInfoModel>.Filter.Where(x => x.RelativePath == absolute && x.Username == username);
         return _dataDb.Find(filter).FirstOrDefault();
     }
 

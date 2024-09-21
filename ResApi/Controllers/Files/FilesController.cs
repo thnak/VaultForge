@@ -192,7 +192,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
             await foreach (var x in folderServe.Where(x => x.FolderName.Contains(searchString) ||
                                                            x.RelativePath.Contains(searchString) &&
                                                            (user == null || x.Username == user.UserName) &&
-                                                           x.Type == FolderContentType.Folder, cancelToken, 
+                                                           x.Type == FolderContentType.Folder, cancelToken,
                                model => model.FolderName, model => model.Type, model => model.Icon, model => model.ModifiedTime, model => model.Id))
             {
                 folderList.Add(x);
@@ -213,8 +213,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     [IgnoreAntiforgeryToken]
     public IActionResult GetFolderBloodLine(string id)
     {
-        var userName = User.Identity?.Name ?? string.Empty;
-        var folders = folderServe.GetFolderBloodLine(userName, id);
+        var folders = folderServe.GetFolderBloodLine(id);
         return Content(folders.ToJson(), MimeTypeNames.Application.Json);
     }
 

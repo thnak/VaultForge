@@ -65,4 +65,42 @@
 		</EmbeddedResource>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="Components\CodeEditor\MonacoCodeEditor.razor" />
+	  <_ContentIncludedByDefault Remove="Components\ConfirmDialog\ConfirmDialog.razor" />
+	  <_ContentIncludedByDefault Remove="Components\ConfirmDialog\ConfirmWithFieldDialog.razor" />
+	  <_ContentIncludedByDefault Remove="Components\ConfirmDialog\PasswordRequiredDialog.razor" />
+	  <_ContentIncludedByDefault Remove="Components\Container\HeadContentContainer.razor" />
+	  <_ContentIncludedByDefault Remove="Components\DefaultStatic\AccessDenied.razor" />
+	  <_ContentIncludedByDefault Remove="Components\DefaultStatic\ErrorHanding.razor" />
+	  <_ContentIncludedByDefault Remove="Components\DefaultStatic\Loading.razor" />
+	  <_ContentIncludedByDefault Remove="Components\DefaultStatic\NotFoundComponent.razor" />
+	  <_ContentIncludedByDefault Remove="Components\DefaultStatic\ThemeProvider.razor" />
+	  <_ContentIncludedByDefault Remove="Components\menus\RedditMobileMenu.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\CodeEditor\MonacoCodeEditor.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\ConfirmDialog\ConfirmDialog.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\ConfirmDialog\ConfirmWithFieldDialog.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\ConfirmDialog\PasswordRequiredDialog.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\Container\HeadContentContainer.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\DefaultStatic\AccessDenied.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\DefaultStatic\ErrorHanding.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\DefaultStatic\Loading.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\DefaultStatic\NotFoundComponent.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\DefaultStatic\ThemeProvider.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\menus\RedditMobileMenu.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <AdditionalFiles Include="Components\CodeEditor\MonacoCodeEditor.razor" />
+	  <AdditionalFiles Include="Components\ConfirmDialog\ConfirmDialog.razor" />
+	  <AdditionalFiles Include="Components\ConfirmDialog\ConfirmWithFieldDialog.razor" />
+	  <AdditionalFiles Include="Components\ConfirmDialog\PasswordRequiredDialog.razor" />
+	  <AdditionalFiles Include="Components\Container\HeadContentContainer.razor" />
+	  <AdditionalFiles Include="Components\DefaultStatic\AccessDenied.razor" />
+	  <AdditionalFiles Include="Components\DefaultStatic\ErrorHanding.razor" />
+	  <AdditionalFiles Include="Components\DefaultStatic\Loading.razor" />
+	  <AdditionalFiles Include="Components\DefaultStatic\NotFoundComponent.razor" />
+	  <AdditionalFiles Include="Components\DefaultStatic\ThemeProvider.razor" />
+	</ItemGroup>
+
 </Project>

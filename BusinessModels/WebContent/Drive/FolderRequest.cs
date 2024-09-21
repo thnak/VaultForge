@@ -9,5 +9,5 @@ public class FolderRequest
     public int TotalFilePages { get; set; }
     public FileInfoModel[] Files { get; set; } = [];
     public FolderInfoModel[] Folders { get; set; } = [];
-
+    public FolderInfoModel[] BloodLines { get; set; } = [];
 }

@@ -16,6 +16,7 @@ using Microsoft.JSInterop;
 using MongoDB.Bson;
 using MudBlazor;
 using WebApp.Client.Components.ConfirmDialog;
+using WebApp.Client.Components.Menus;
 using WebApp.Client.Models;
 using WebApp.Client.Pages.Drive.View.Dialog;
 using WebApp.Client.Services.Http;
@@ -80,6 +81,12 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     [SupplyParameterFromQuery(Name = "status")]
     public string? PageStatus { get; set; }
 
+    [SupplyParameterFromQuery(Name = "page")]
+    public int? PageIndex { get; set; } = 1;
+
+    [SupplyParameterFromQuery(Name = "size")]
+    public int? QuerySize { get; set; } = 50;
+
     #endregion
 
 
@@ -92,12 +99,14 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
     #region Pagination fields
 
-    private int CurrentPage { get; set; } = 1;
-    private int PageSize { get; set; } = 50;
     private int TotalPages { get; set; }
 
     #endregion
 
+    private int CurrentPage { get; set; } = 1;
+    private int PageSize { get; set; } = 50;
+
+    private bool CanBeDrag { get; set; }
 
     private bool ShouldRen { get; set; } = true;
     private FolderInfoModel RootFolder { get; set; } = new();
@@ -238,8 +247,6 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     #endregion
 
 
-    
-
     #region Models
 
     public class DropItem
@@ -250,6 +257,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         public string ItemClassList { get; set; } = string.Empty;
         public string Icon { get; set; } = "fa-solid fa-folder";
         public string Thumbnail { get; set; } = string.Empty;
+        public RenderFragment? Menu { get; set; }
         public ButtonAction Open { get; set; } = new();
         public ButtonAction Download { get; set; } = new();
         public ButtonAction Rename { get; set; } = new();
@@ -295,6 +303,12 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         base.OnInitialized();
     }
 
+    protected override void OnParametersSet()
+    {
+        PageSize = QuerySize ?? PageSize;
+        CurrentPage = PageIndex ?? CurrentPage;
+        base.OnParametersSet();
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -351,6 +365,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     private async Task GetRootFolderAsync(string? password = null)
     {
         Loading = true;
+        CanBeDrag = EventListener.IsTouchEnabled;
         await Render();
 
         var formData = new MultipartFormDataContent();
@@ -369,26 +384,15 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             formData.Add(new StringContent(types.ToJson()), "contentTypes");
         }
 
-        var responseMessage = await baseClientService.PostAsync<FolderRequest>($"/api/Files/get-folder", formData);
+        var responseMessage = await baseClientService.PostAsync<FolderRequest>("/api/Files/get-folder", formData);
         if (responseMessage.IsSuccessStatusCode)
         {
             var folder = responseMessage.Data;
             if (folder != null)
             {
                 RootFolder = folder.Folder;
+                InitBreadcrumb(folder);
                 TotalPages = Math.Max(folder.TotalFolderPages, folder.TotalFilePages);
-
-                // var fileCodes = RootFolder.Contents.Where(x => x is
-                //     {
-                //         Type: FolderContentType.File or FolderContentType.DeletedFile or FolderContentType.HiddenFile
-                //     })
-                //     .Select(x => x.Id).ToList();
-                // var folderCodes = RootFolder.Contents.Where(x => x is
-                // {
-                //     Type: FolderContentType.Folder or FolderContentType.DeletedFolder or FolderContentType.HiddenFolder
-                // }).Select(x => x.Id).ToList();
-                // var folders = await GetFolders([..folderCodes]);
-                // var files = await GetFiles([..fileCodes]);
                 FileItemList.Clear();
                 foreach (var file in folder.Files)
                     FileItemList.Add(new DropItem
@@ -421,7 +425,8 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                             Action = () => MoveFile2Folder(file).ConfigureAwait(false)
                         },
                         ItemClassList = InitStyleElement(file.Type),
-                        Thumbnail = string.IsNullOrEmpty(file.Thumbnail) ? "" : $"{baseClientService.GetBaseUrl()}api/Files/get-file?id={file.Thumbnail}"
+                        Thumbnail = string.IsNullOrEmpty(file.Thumbnail) ? "" : $"{baseClientService.GetBaseUrl()}api/Files/get-file?id={file.Thumbnail}",
+                        Menu = InitMenuItem(file)
                     });
 
                 FolderItemList.Clear();
@@ -437,9 +442,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                         },
                         Rename = new ButtonAction
                         {
-                            Action = () =>
-                                RenameFile(f.Id.ToString(), f.FolderName, "/api/files/re-name-folder")
-                                    .ConfigureAwait(false)
+                            Action = () => RenameFile(f.Id.ToString(), f.FolderName, "/api/files/re-name-folder").ConfigureAwait(false)
                         },
                         Delete = new ButtonAction()
                         {
@@ -472,7 +475,6 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         DropContainer?.Refresh();
         await Render();
         ShouldRen = true;
-        _ = Task.Run(InitBreadcrumb);
     }
 
     #region Element style
@@ -492,23 +494,16 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     #endregion
 
 
-    private async Task InitBreadcrumb()
+    private void InitBreadcrumb(FolderRequest folderRequest)
     {
-        var response = await baseClientService.GetAsync<List<FolderInfoModel>>($"/api/files/get-folder-blood-line?id={RootFolder.Id.ToString()}", _cts.Token);
-        if (response is { IsSuccessStatusCode: true, Data: not null })
+        BreadcrumbItems.Clear();
+        foreach (var folderInfoModel in folderRequest.BloodLines)
         {
-            BreadcrumbItems.Clear();
-            foreach (var folderInfoModel in response.Data)
-            {
-                BreadcrumbItems.Add(new BreadcrumbItem(folderInfoModel.FolderName,
-                    Navigation.GetUriWithQueryParameters(Navigation.Uri, new Dictionary<string, object?> { { "FolderId", folderInfoModel.Id.ToString() } }),
-                    false,
-                    folderInfoModel.Icon == "" ? null : folderInfoModel.Icon));
-            }
+            BreadcrumbItems.Add(new BreadcrumbItem(folderInfoModel.FolderName,
+                Navigation.GetUriWithQueryParameters(Navigation.Uri, new Dictionary<string, object?> { { "FolderId", folderInfoModel.Id.ToString() } }),
+                false,
+                folderInfoModel.Icon == "" ? null : folderInfoModel.Icon));
         }
-
-        await Render();
-        ShouldRen = true;
     }
 
     private async Task<List<FileInfoModel>> GetFiles(List<string> codes)
@@ -519,17 +514,6 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
         ToastService.ShowError("Empty files", TypeClassList.ToastDefaultSetting);
 
-        return [];
-    }
-
-    private async Task<List<FolderInfoModel>> GetFolders(string[] codes)
-    {
-        var textPlant = new StringContent(StringExtension.ToJson(codes), Encoding.UTF8, MediaTypeNames.Application.Json);
-        var response =
-            await baseClientService.PostAsync<List<FolderInfoModel>>("/api/Files/get-folder-list", textPlant, _cts.Token);
-        if (response.IsSuccessStatusCode) return response.Data ?? [];
-
-        ToastService.ShowError("Empty folders", TypeClassList.ToastDefaultSetting);
         return [];
     }
 
@@ -627,6 +611,36 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         await InvokeAsync(StateHasChanged);
     }
 
+    private RenderFragment InitMenuItem(FileInfoModel item)
+    {
+        List<RedditMobileMenu.RedditMobileMenuData> param = new List<RedditMobileMenu.RedditMobileMenuData>();
+        param.Add(new RedditMobileMenu.RedditMobileMenuData()
+        {
+            Title = AppLang.Open,
+            Disabled = false,
+            Icon = "fa-ellipsis-vertical fa-solid",
+            OnClick = () => OpenFileDetailDialog(item.Id.ToString()).ConfigureAwait(false)
+        });
+        param.Add(new RedditMobileMenu.RedditMobileMenuData()
+        {
+            Title = AppLang.Download,
+            Icon = "cloud-arrow-download",
+            OnClick = () => Download(item.Id.ToString()).ConfigureAwait(false)
+        });
+        param.Add(new RedditMobileMenu.RedditMobileMenuData()
+        {
+            Title = AppLang.ReName,
+            Icon = "fa-solid fa-user-pen",
+            OnClick = () => RenameFile(item.Id.ToString(), item.FileName, "/api/files/re-name-file").ConfigureAwait(false)
+        });
+
+        return builder =>
+        {
+            builder.OpenComponent<RedditMobileMenu>(0);
+            builder.AddAttribute(0, "Items", param);
+            builder.CloseComponent();
+        };
+    }
 
     private async Task OpenFileDetailDialog(string id)
     {
