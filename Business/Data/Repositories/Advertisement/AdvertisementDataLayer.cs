@@ -130,7 +130,6 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
             // Build the update definition by combining multiple updates
             var updateDefinitionBuilder = Builders<ArticleModel>.Update;
             var updateDefinitions = new List<UpdateDefinition<ArticleModel>>();
-
             if (updates.Any())
             {
                 foreach (var update in updates)

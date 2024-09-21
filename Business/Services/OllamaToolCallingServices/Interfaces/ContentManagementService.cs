@@ -30,16 +30,20 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
 
     public async Task<string> AddNewContent(string title, string language, CancellationToken cancellationToken = default)
     {
+        if (!CheckLanguage(language))
+            return "the current language is not supported. please check the supported languages.";
         var result = await businessLayer.CreateAsync(new ArticleModel()
         {
             Title = title,
             Language = language,
         }, cancellationToken);
-        return result.ToJson();
+        return result.Item2;
     }
 
     public async Task<string> AddSummary(string title, string language, string summary, CancellationToken cancellationToken = default)
     {
+        if (!CheckLanguage(language))
+            return "the current language is not supported. please check the supported languages.";
         var article = businessLayer.Get(title, language);
         if (article == null)
             return AppLang.Article_does_not_exist;
@@ -53,16 +57,20 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
         return result.Item2;
     }
 
-    public Task<string> GetContent(string title, string language, CancellationToken cancellationToken = default)
+    public async Task<string> GetContent(string title, string language, CancellationToken cancellationToken = default)
     {
+        if (!CheckLanguage(language))
+            return "the current language is not supported. please check the supported languages.";
         var article = businessLayer.Get(title, language);
         if (article == null)
-            return Task.FromResult(AppLang.Article_does_not_exist);
-        return Task.FromResult(article.ToJson());
+            return await Task.FromResult(AppLang.Article_does_not_exist);
+        return await Task.FromResult(article.ToJson());
     }
 
     public async Task<string> UpdateHtml(string title, string language, string htmlCode, CancellationToken cancellationToken = default)
     {
+        if (!CheckLanguage(language))
+            return "the current language is not supported. please check the supported languages.";
         var article = businessLayer.Get(title, language);
         if (article == null)
             return AppLang.Article_does_not_exist;
@@ -78,6 +86,8 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
 
     public async Task<string> UpdateCss(string title, string language, string css, CancellationToken cancellationToken = default)
     {
+        if (!CheckLanguage(language))
+            return "the current language is not supported. please check the supported languages.";
         var article = businessLayer.Get(title, language);
         if (article == null)
             return AppLang.Article_does_not_exist;
@@ -93,6 +103,8 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
 
     public async Task<string> UpdateJavascript(string title, string language, string javascript, CancellationToken cancellationToken = default)
     {
+        if (!CheckLanguage(language))
+            return "the current language is not supported. please check the supported languages.";
         var article = businessLayer.Get(title, language);
         if (article == null)
             return AppLang.Article_does_not_exist;
@@ -106,11 +118,18 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
         return result.Item2;
     }
 
-    public Task<string> GetArticleLink(string title, string language, CancellationToken cancellationToken = default)
+    public async Task<string> GetArticleLink(string title, string language, CancellationToken cancellationToken = default)
     {
+        if (!CheckLanguage(language))
+            return "the current language is not supported. please check the supported languages.";
         var article = businessLayer.Get(title, language);
         if (article == null)
-            return Task.FromResult(AppLang.Article_does_not_exist);
-        return Task.FromResult($"/?id={article.Id}");
+            return await Task.FromResult(AppLang.Article_does_not_exist);
+        return await Task.FromResult($"/?id={article.Id}");
+    }
+
+    private bool CheckLanguage(string lang)
+    {
+        return AllowedCulture.SupportedCultures.Any(x => x.Name == lang);
     }
 }
