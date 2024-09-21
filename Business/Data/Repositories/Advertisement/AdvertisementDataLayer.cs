@@ -14,7 +14,6 @@ namespace Business.Data.Repositories.Advertisement;
 
 public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<AdvertisementDataLayer> logger) : IAdvertisementDataLayer
 {
-    private const string SearchIndexString = "ArticleModelAdvertisements";
     private readonly IMongoCollection<ArticleModel> _dataDb = context.MongoDatabase.GetCollection<ArticleModel>("Article");
     private readonly SemaphoreSlim _semaphore = new(1);
 
@@ -119,11 +118,13 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
 
     public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<ArticleModel> updates, CancellationToken cancellationToken = default)
     {
+        await _semaphore.WaitAsync(cancellationToken);
+
         try
         {
-            await _semaphore.WaitAsync(cancellationToken);
+            if (!ObjectId.TryParse(key, out var id))
+                return (false, AppLang.Invalid_key);
 
-            ObjectId.TryParse(key, out var id);
             var filter = Builders<ArticleModel>.Filter.Eq(f => f.Id, id);
 
             // Build the update definition by combining multiple updates
@@ -146,11 +147,11 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
 
                 await _dataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
             }
-            
+
 
             return (true, AppLang.Update_successfully);
         }
-         catch (OperationCanceledException)
+        catch (OperationCanceledException)
         {
             logger.LogInformation("[Update] Operation cancelled");
             return (false, string.Empty);
@@ -166,18 +167,16 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         await _semaphore.WaitAsync(cancellationToken);
         try
         {
-            var file = Get(model.Id.ToString());
-            if (file == null)
-            {
-                model.PublishDate = DateTime.UtcNow;
-                model.ModifiedDate = model.PublishDate;
-                await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
-                return (true, AppLang.Create_successfully);
-            }
-            else
-            {
-                return (false, AppLang.File_is_already_exsists);
-            }
+            var filter = Builders<ArticleModel>.Filter.Where(x => x.Title == model.Title && x.Language == model.Language);
+            var isExists = await _dataDb.Find(filter).Limit(1).AnyAsync(cancellationToken: cancellationToken);
+            if (isExists)
+                return (false, AppLang.Article_already_exists);
+            
+            model.Id = ObjectId.GenerateNewId();
+            model.PublishDate = DateTime.UtcNow.Date;
+            model.ModifiedTime = DateTime.UtcNow;
+            await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
+            return (true, AppLang.Create_successfully);
         }
         catch (Exception e)
         {
@@ -209,10 +208,10 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
             {
                 file = Get(model.Title, model.Language);
                 if (file == null)
-                    return (false, AppLang.File_could_not_be_found);
+                    return (false, AppLang.Article_does_not_exist);
             }
 
-            model.ModifiedDate = DateTime.UtcNow;
+            model.ModifiedTime = DateTime.UtcNow;
             var filter = Builders<ArticleModel>.Filter.Eq(x => x.Id, model.Id);
             await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
             return (true, AppLang.Update_successfully);
@@ -254,7 +253,6 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
             await _dataDb.Indexes.CreateManyAsync([
                 new CreateIndexModel<ArticleModel>(Builders<ArticleModel>.IndexKeys.Ascending(x => x.Title).Ascending(x => x.Language), new CreateIndexOptions { Unique = true }),
                 new CreateIndexModel<ArticleModel>(Builders<ArticleModel>.IndexKeys.Ascending(x => x.PublishDate), new CreateIndexOptions { Unique = false }),
-                new CreateIndexModel<ArticleModel>(Builders<ArticleModel>.IndexKeys.Text(x => x.Title).Text(x => x.Summary), new CreateIndexOptions { Name = SearchIndexString })
             ], cancellationToken);
 
             const string key = "Index";
@@ -268,17 +266,16 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
                         Author = "System",
                         Title = "Index",
                         Language = culture.Name,
-                        ModifiedDate = DateTime.Now,
-                        PublishDate = DateTime.Now
+                        ModifiedTime = DateTime.Now,
                     };
                     var result = await CreateAsync(model, cancellationToken);
                     if (result.Item1)
                     {
-                        logger.LogInformation($"[Initialize] Article: {model.Title} - {model.PublishDate} - {model.Language}]");
+                        logger.LogInformation($"[Initialize] Article: {model.Title} - {model.PublishDate} - {model.Language}");
                     }
                     else
                     {
-                        logger.LogInformation($"[Initialize Failed] Article: {model.Title} - {model.ModifiedDate} - {model.Language}]");
+                        logger.LogInformation($"[Initialize Failed] Article: {model.Title} - {model.ModifiedTime} - {model.Language}");
                         logger.LogError(result.Item2);
                     }
                 }

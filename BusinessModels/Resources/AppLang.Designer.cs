@@ -69,6 +69,24 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bài viết đã tồn tại.
+        /// </summary>
+        public static string Article_already_exists {
+            get {
+                return ResourceManager.GetString("Article already exists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bài viết không tồn tại.
+        /// </summary>
+        public static string Article_does_not_exist {
+            get {
+                return ResourceManager.GetString("Article does not exist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tác giả.
         /// </summary>
         public static string Author {

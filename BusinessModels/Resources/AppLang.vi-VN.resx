@@ -526,4 +526,7 @@ ClientY: {1}</value>
     <data name="Invalid_key" xml:space="preserve">
       <value>Khóa không hợp lệ</value>
     </data>
+    <data name="Article already exists" xml:space="preserve">
+      <value>Bài viết đã tồn tại</value>
+    </data>
 </root>

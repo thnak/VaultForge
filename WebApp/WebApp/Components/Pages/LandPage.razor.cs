@@ -13,7 +13,7 @@ public partial class LandPage : ComponentBase
 
     [CascadingParameter] private HttpContext? HttpContext { get; set; }
 
-    [SupplyParameterFromQuery(Name = "content_id")]
+    [SupplyParameterFromQuery(Name = "id")]
     public string? ContentId { get; set; }
 
     #endregion

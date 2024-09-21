@@ -527,4 +527,10 @@ ClientY: {1}</value>
     <data name="Invalid_key" xml:space="preserve">
       <value>Invalid key</value>
     </data>
+    <data name="Article already exists" xml:space="preserve">
+      <value>Article already exists</value>
+    </data>
+    <data name="Article does not exist" xml:space="preserve">
+      <value>Article does not exist</value>
+    </data>
 </root>

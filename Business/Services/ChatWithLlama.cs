@@ -1,5 +1,7 @@
-﻿using Business.Services.OllamaToolCallingServices;
+﻿using Business.Business.Interfaces.Advertisement;
+using Business.Services.OllamaToolCallingServices;
 using Business.Services.OllamaToolCallingServices.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using Ollama;
 
 namespace Business.Services;
@@ -8,6 +10,7 @@ public class ChatWithLlama : IDisposable
 {
     private readonly OllamaApiClient _ollamaApiClient;
     private readonly Chat _chatClient;
+    private readonly IServiceProvider? _serviceProvider;
 
     /// <summary>
     /// 
@@ -27,6 +30,18 @@ public class ChatWithLlama : IDisposable
             InitCallService();
     }
 
+    public ChatWithLlama(string systemPrompt, Uri uri, IServiceProvider serviceProvider, string model = "llama3.1", bool autoCallTools = false)
+    {
+        _serviceProvider = serviceProvider;
+        _ollamaApiClient = new OllamaApiClient(null, uri);
+        _chatClient = _ollamaApiClient.Chat(
+            model: model,
+            systemMessage: systemPrompt,
+            autoCallTools: autoCallTools);
+        if (autoCallTools)
+            InitCallService();
+    }
+
     public ChatWithLlama(string systemPrompt, string model = "llama3.1")
     {
         _ollamaApiClient = new OllamaApiClient();
@@ -34,7 +49,7 @@ public class ChatWithLlama : IDisposable
             model: model,
             systemMessage: systemPrompt,
             autoCallTools: true);
-        
+
         InitCallService();
     }
 
@@ -49,7 +64,20 @@ public class ChatWithLlama : IDisposable
         _chatClient.AddToolService(service.AsTools(), service.AsCalls());
         _chatClient.AddToolService(weatherService.AsTools(), weatherService.AsCalls());
         _chatClient.AddToolService(webCrawler.AsTools(), webCrawler.AsCalls());
+        if (_serviceProvider != default)
+        {
+            var scope = _serviceProvider.CreateScope();
+            var adv = scope.ServiceProvider.GetService<IAdvertisementBusinessLayer>();
+            if (adv == default)
+            {
+                return;
+            }
+
+            var contentManagementService = new ContentManagementService(adv);
+            _chatClient.AddToolService(contentManagementService.AsTools(), contentManagementService.AsCalls());
+        }
     }
+
 
     public Task<Message> ChatAsync(string prompt, CancellationToken cancellationToken = default)
     {
