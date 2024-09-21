@@ -5,9 +5,10 @@ namespace Business.Utils.StringExtensions;
 
 public static class StringExtension
 {
-    public static string GetCacheKey<T>(this Expression<Func<T, bool>> expression)
+    public static string GetCacheKey<T>(this Expression<Func<T, bool>> expression) where T : class
     {
-        var expressionStringBuilder = new ExpressionStringBuilder();
-        return expressionStringBuilder.GetString(expression);
+        var expressionStringBuilder = new ExpressionStringBuilderVisitor();
+        expressionStringBuilder.Visit(expression);
+        return expressionStringBuilder.GetText();
     }
 }

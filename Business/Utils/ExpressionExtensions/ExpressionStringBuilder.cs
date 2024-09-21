@@ -1,80 +1,61 @@
 ﻿using System.Linq.Expressions;
 using System.Text;
+using BusinessModels.Utils;
 
 namespace Business.Utils.ExpressionExtensions;
 
-public class ExpressionStringBuilder : ExpressionVisitor
+public class ExpressionStringBuilderVisitor : ExpressionVisitor
 {
+    public string GetText() => _stringBuilder.ToString();
     private readonly StringBuilder _stringBuilder = new();
-
-    public string GetString(Expression expression)
-    {
-        Visit(expression);
-        return _stringBuilder.ToString();
-    }
 
     protected override Expression VisitBinary(BinaryExpression node)
     {
-        _stringBuilder.Append("(");
-        Visit(node.Left);
-        _stringBuilder.Append($" {GetOperator(node.NodeType)} "); // Get operator (like ==, &&, etc.)
-        Visit(node.Right);
-        _stringBuilder.Append(")");
-        return node;
+        var propertyName = GetMemberName(node.Left);
+        var propertyValue = GetValue(node.Right);
+
+        _stringBuilder.Append(propertyName);
+        _stringBuilder.Append(node.NodeType.ToString());
+        _stringBuilder.Append(propertyValue?.ToJson());
+
+        return base.VisitBinary(node);
     }
 
-    protected override Expression VisitConstant(ConstantExpression node)
+    protected override Expression VisitMethodCall(MethodCallExpression node)
     {
-        if (node.Value == null)
-        {
-            _stringBuilder.Append("null");
-        }
-        else if (node.Type == typeof(string))
-        {
-            _stringBuilder.Append($"\"{node.Value}\"");
-        }
-        else if (node.Type.IsValueType)
-        {
-            _stringBuilder.Append(node.Value);
-        }
+        var collection = node.Object != null ? GetValue(node.Object) : null;
+        var propertyName = node.Arguments.Select(GetMemberName).ToArray().ToJson();
 
-        return node;
+        _stringBuilder.Append(propertyName);
+        _stringBuilder.Append(node.Method.Name);
+        _stringBuilder.Append(collection?.ToJson());
+
+        return base.VisitMethodCall(node);
     }
 
-    protected override Expression VisitMember(MemberExpression node)
+    private string? GetMemberName(Expression expression)
     {
-        // If the member is a constant or field, extract its value
-        if (node.Expression is ConstantExpression constantExpression)
+        if (expression is MemberExpression memberExpression)
         {
-            var memberValue = GetValueFromConstantExpression(constantExpression, node.Member.Name);
-            _stringBuilder.Append(memberValue);
-        }
-        else
-        {
-            _stringBuilder.Append(node.Member.Name);
+            return memberExpression.Member.Name;
         }
 
-        return node;
+        return null;
     }
 
-    private object GetValueFromConstantExpression(ConstantExpression constantExpression, string memberName)
+    private object? GetValue(Expression expression)
     {
-        var container = constantExpression.Value;
-        var field = container?.GetType().GetField(memberName);
-        return field?.GetValue(container) ?? memberName;
-    }
-
-    private string GetOperator(ExpressionType nodeType)
-    {
-        return nodeType switch
+        if (expression is ConstantExpression constantExpression)
         {
-            ExpressionType.Equal => "==",
-            ExpressionType.AndAlso => "&&",
-            ExpressionType.OrElse => "||",
-            ExpressionType.GreaterThan => ">",
-            ExpressionType.LessThan => "<",
-            ExpressionType.NotEqual => "!=",
-            _ => nodeType.ToString() // Fallback to the default enum string if operator not found
-        };
+            return constantExpression.Value;
+        }
+
+        if (expression is not MemberExpression memberExpression) return null;
+        // Handling captured variables (e.g., contentFolderTypesList)
+        if (memberExpression.Expression is not ConstantExpression constantExpression2) return null;
+        var container = constantExpression2.Value;
+        var field = container?.GetType().GetField(memberExpression.Member.Name);
+        var property = container?.GetType().GetProperty(memberExpression.Member.Name);
+        return field?.GetValue(container) ?? property?.GetValue(container);
     }
 }

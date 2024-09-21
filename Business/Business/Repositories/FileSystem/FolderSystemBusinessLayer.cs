@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Text;
 using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.User;
 using Business.Data.Interfaces.FileSystem;
@@ -361,10 +362,14 @@ public class FolderSystemBusinessLayer(
 
     public async Task<FolderRequest> GetFolderRequestAsync(Expression<Func<FolderInfoModel, bool>> folderPredicate, Expression<Func<FileInfoModel, bool>> filePredicate, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
     {
-        string cacheKey = folderPredicate.GetCacheKey();
-        cacheKey += filePredicate.GetCacheKey();
+        StringBuilder keyBuilder = new StringBuilder();
+        keyBuilder.Append(folderPredicate.GetCacheKey());
+        keyBuilder.Append(filePredicate.GetCacheKey());
+        keyBuilder.Append(pageSize.ToString());
+        keyBuilder.Append(pageNumber.ToString());
+        var key = keyBuilder.ToString();
 
-        var result = await memoryCache.GetOrCreateAsync(cacheKey, async entry =>
+        var result = await memoryCache.GetOrCreateAsync(key, async entry =>
         {
             entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10);
 
