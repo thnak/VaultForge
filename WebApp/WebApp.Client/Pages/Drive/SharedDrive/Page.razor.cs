@@ -557,7 +557,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             }
             else
             {
-                Console.WriteLine(response.Message);
+                ToastService.ShowError(response.Message, TypeClassList.ToastDefaultSetting);
             }
         }
     }

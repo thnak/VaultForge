@@ -216,6 +216,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
             var contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).Distinct().ToList();
             string rootFolderId = folderSource.Id.ToString();
             var res = await folderServe.GetFolderRequestAsync(model => model.RootFolder == rootFolderId && contentFolderTypesList.Contains(model.Type), model => model.RootFolder == rootFolderId && contentFileTypesList.Contains(model.Type), pageSize, page, cancelToken);
+            res.Folder = folderSource;
             return Content(res.ToJson(), MediaTypeNames.Application.Json);
         }
         catch (OperationCanceledException)
@@ -572,10 +573,8 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                             }
                             else
                             {
+                                logger.LogWarning("File empty. deleting");
                                 fileServe.Delete(file.Id.ToString());
-                                folder = folderServe.Get(folderCodes)!;
-                                var result = await folderServe.UpdateAsync(folder, cancelToken);
-                                if (!result.Item1) logger.LogError(result.Item2);
                             }
                         }
                     }
