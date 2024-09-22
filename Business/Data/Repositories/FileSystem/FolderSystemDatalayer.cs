@@ -378,7 +378,18 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
     public (bool, string) Delete(string key)
     {
-        throw new NotImplementedException();
+        if (!ObjectId.TryParse(key, out var id))
+            return (false, AppLang.Invalid_key);
+
+        var filter = Builders<FolderInfoModel>.Filter.Eq(f => f.Id, id);
+        var isExists = _dataDb.Find(filter).Any();
+        if (isExists)
+        {
+            _dataDb.DeleteOne(filter);
+            return (true, AppLang.Delete_successfully);
+        }
+
+        return (false, "Fail");
     }
 
     public (FolderInfoModel?, string) GetWithPassword(string id, string password)
