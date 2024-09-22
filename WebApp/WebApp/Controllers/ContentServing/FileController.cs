@@ -83,6 +83,17 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
     {
         var file = fileServe.Get(id);
         if (file == null) return NotFound();
+        
+        var webpImageContent = file.ExtendResource.FirstOrDefault(x => x.Type == FileContentType.ThumbnailWebpFile);
+        if (webpImageContent != null)
+        {
+            var webpImage = fileServe.Get(webpImageContent.Id);
+            if (webpImage != null)
+            {
+                file = webpImage;
+            }
+        }
+        
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
