@@ -124,6 +124,15 @@ public class FolderSystemBusinessLayer(
         {
             _ = Task.Run(async () =>
             {
+                var folderList = folderSystemService.Where(x => x.RootFolder == key, default, model => model.Id);
+                await foreach (var fol in folderList)
+                {
+                    Delete(fol.Id.ToString());
+                }
+            });
+            
+            _ = Task.Run(async () =>
+            {
                 var cursor = fileSystemService.Where(x => x.RootFolder == key, default, model => model.Id);
                 await foreach (var file in cursor)
                 {
