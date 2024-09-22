@@ -119,6 +119,15 @@ public class FolderSystemBusinessLayer(
         if (folder.AbsolutePath == "/root") return (false, AppLang.Could_not_delete_root_folder);
         if (folder.Type == FolderContentType.SystemFolder) return (false, AppLang.Folder_could_not_be_found);
 
+        if (folder is { Type: FolderContentType.Folder or FolderContentType.HiddenFolder })
+        {
+            UpdateAsync(key, new FieldUpdate<FolderInfoModel>()
+            {
+                { model => model.Type, FolderContentType.DeletedFolder }
+            });
+            return (true, AppLang.Delete_successfully);
+        }
+
         var res = folderSystemService.Delete(key);
         if (res.Item1)
         {
@@ -130,7 +139,7 @@ public class FolderSystemBusinessLayer(
                     Delete(fol.Id.ToString());
                 }
             });
-            
+
             _ = Task.Run(async () =>
             {
                 var cursor = fileSystemService.Where(x => x.RootFolder == key, default, model => model.Id);
