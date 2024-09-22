@@ -325,9 +325,11 @@ public class DocumentObjectModelEventListener : IDisposable
 
     private static bool SelfTouchEnabled { get; set; }
 
-    public static async Task TouchEventListenerAsync(bool touch)
+    [JSInvokable]
+    public static Task TouchEventListenerAsync(bool touch)
     {
         SelfTouchEnabled = touch;
+        return Task.CompletedTask;
     }
 
     #endregion
