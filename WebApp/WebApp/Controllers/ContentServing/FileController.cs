@@ -375,7 +375,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         var folder = folderServe.Get(code);
         if (folder == default) return NotFound(AppLang.Folder_could_not_be_found);
 
-        if (folder.AbsolutePath == "/root")
+        if (folder.AbsolutePath == "/root" || folder.Type == FolderContentType.SystemFolder)
             return BadRequest(AppLang.Could_not_remove_root_folder);
 
         if (folder is { Type: FolderContentType.Folder or FolderContentType.HiddenFolder })

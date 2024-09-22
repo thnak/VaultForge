@@ -121,11 +121,16 @@ public class FolderSystemBusinessLayer(
 
         var res = folderSystemService.Delete(key);
         if (res.Item1)
-            foreach (var content in folder.Contents)
-                if (content is { Type: FolderContentType.File or FolderContentType.HiddenFile or FolderContentType.DeletedFile })
-                    fileSystemService.Delete(content.Id);
-                else
-                    Delete(content.Id);
+        {
+            _ = Task.Run(async () =>
+            {
+                var cursor = fileSystemService.Where(x => x.RootFolder == key, default, model => model.Id);
+                await foreach (var file in cursor)
+                {
+                    fileSystemService.Delete(file.Id.ToString());
+                }
+            });
+        }
 
         return res;
     }
@@ -420,7 +425,7 @@ public class FolderSystemBusinessLayer(
             var rootFolderId = "";
             if (fileList.Any())
                 rootFolderId = fileList.First().RootFolder;
-            else if(folderList.Any())
+            else if (folderList.Any())
                 rootFolderId = folderList.First().RootFolder;
 
             return new FolderRequest()
