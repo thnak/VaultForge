@@ -71,8 +71,6 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         };
 
         Response.Headers.Append("Content-Disposition", cd.ToString());
-        Response.ContentType = file.ContentType;
-        Response.Headers.ContentType = file.ContentType;
         Response.StatusCode = 200;
         Response.ContentLength = file.FileSize;
 
