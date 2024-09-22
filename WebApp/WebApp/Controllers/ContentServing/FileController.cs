@@ -83,7 +83,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
     {
         var file = fileServe.Get(id);
         if (file == null) return NotFound();
-        
+
         var webpImageContent = file.ExtendResource.FirstOrDefault(x => x.Type == FileContentType.ThumbnailWebpFile);
         if (webpImageContent != null)
         {
@@ -93,7 +93,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                 file = webpImage;
             }
         }
-        
+
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
@@ -331,50 +331,23 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
 
     [HttpDelete("safe-delete-file")]
     [IgnoreAntiforgeryToken]
-    public async Task<IActionResult> SafeDeleteFile(string code, string folderCode)
+    public async Task<IActionResult> SafeDeleteFile(string code)
     {
         var cancelToken = HttpContext.RequestAborted;
-        var folder = folderServe.Get(folderCode);
-        if (folder == null) return NotFound(AppLang.Folder_could_not_be_found);
-
-        var actualFileCode = folder.Contents.FirstOrDefault(x => x.Id == code);
-        if (actualFileCode == null) return NotFound(AppLang.The_resource_you_are_looking_for_does_not_exist);
-
-        var file = fileServe.Get(actualFileCode.Id);
+        var file = fileServe.Get(code);
         if (file == null) return NotFound(AppLang.File_not_found_);
-
-        if (actualFileCode is { Type: FolderContentType.Folder or FolderContentType.DeletedFolder or FolderContentType.HiddenFolder })
+        
+        if (file is { Type: FileContentType.File or FileContentType.HiddenFile })
         {
-            return BadRequest(AppLang.Incorrect_operation);
-        }
-
-        var contentIndex = folder.Contents.FindIndex(x => x.Id == actualFileCode.Id);
-        if (actualFileCode is { Type: FolderContentType.File or FolderContentType.HiddenFile })
-        {
-            folder.Contents[contentIndex].Type = FolderContentType.DeletedFile;
+            file.Type = FileContentType.DeletedFile;
+            var result = await fileServe.UpdateAsync(file, cancelToken);
+            return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
         }
         else
         {
-            folder.Contents.RemoveAt(contentIndex);
+            var result = fileServe.Delete(file.Id.ToString());
+            return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
         }
-
-        var updateFolderResult = await folderServe.UpdateAsync(folder, cancelToken);
-        if (updateFolderResult.Item1)
-        {
-            if (file is { Type: FileContentType.File or FileContentType.HiddenFile })
-            {
-                file.Type = FileContentType.DeletedFile;
-                var result = await fileServe.UpdateAsync(file, cancelToken);
-                return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
-            }
-            else
-            {
-                var result = fileServe.Delete(file.Id.ToString());
-                return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
-            }
-        }
-
-        return BadRequest(updateFolderResult.Item2);
     }
 
     [HttpDelete("safe-delete-folder")]

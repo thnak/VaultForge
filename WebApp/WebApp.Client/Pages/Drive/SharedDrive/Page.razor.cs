@@ -711,7 +711,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         var dialogResult = await dialog.Result;
         if (dialogResult is { Canceled: false })
         {
-            var response = await baseClientService.DeleteAsync<string>($"/api/Files/safe-delete-file?code={file.Id.ToString()}&folderCode={RootFolder.Id.ToString()}", _cts.Token);
+            var response = await baseClientService.DeleteAsync<string>($"/api/Files/safe-delete-file?code={file.Id.ToString()}", _cts.Token);
             if (response.IsSuccessStatusCode)
             {
                 await GetRootFolderAsync();
@@ -754,9 +754,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         var dialogResult = await dialog.Result;
         if (dialogResult is { Canceled: false })
         {
-            var response =
-                await baseClientService.DeleteAsync<string>($"/api/Files/safe-delete-folder?code={folder.Id.ToString()}",
-                    _cts.Token);
+            var response = await baseClientService.DeleteAsync<string>($"/api/Files/safe-delete-folder?code={folder.Id.ToString()}", _cts.Token);
             if (response.IsSuccessStatusCode)
             {
                 await GetRootFolderAsync();
