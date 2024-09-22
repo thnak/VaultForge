@@ -145,6 +145,8 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
         var thumbnailSize = await SaveStream(thumbnailStream, thumbnailPath, cancellationToken);
         var extendedImageSize = await SaveStream(extendedImage, extendImagePath, cancellationToken);
 
+       
+        
         FileInfoModel thumbnailFile = new FileInfoModel()
         {
             FileName = thumbnailFileName,
@@ -168,7 +170,7 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
             ContentType = "image/webp",
             RootFolder = fileInfo.RootFolder
         };
-
+        
         // Update the fileInfo with the thumbnail path
         fileInfo.Thumbnail = thumbnailFile.Id.ToString();
         fileInfo.ExtendResource.Add(new FileContents()

@@ -85,7 +85,7 @@
                 IsBot = Regex.IsMatch(agent, @"bot|crawler|baiduspider|80legs|ia_archiver|voyager|curl|wget|yahoo! slurp|mediapartners-google", RegexOptions.IgnoreCase);
             }
 
-            Logger.LogInformation($"[BOT] {IsBot}");
+            Logger.LogInformation($"[BOT] {IsBot} {HttpContextAccessor?.HttpContext?.Connection.RemoteIpAddress?.ToString()}");
         }
 
         base.OnInitialized();

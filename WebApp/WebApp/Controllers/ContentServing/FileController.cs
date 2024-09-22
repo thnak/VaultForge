@@ -582,7 +582,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                             }
                             else
                             {
-                                logger.LogWarning("File empty. deleting");
+                                logger.LogWarning($"File empty. deleting {file.FileName}");
                                 fileServe.Delete(file.Id.ToString());
                             }
                         }
@@ -599,7 +599,6 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         }
         catch (OperationCanceledException ex)
         {
-            logger.LogError(ex, null);
             return Ok(ex.Message);
         }
         catch (Exception e)
