@@ -30,8 +30,8 @@ public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithL
             var mess = images != default ? await chat.ChatAsync(question, images, HttpContext.RequestAborted) : await chat.ChatAsync(question, HttpContext.RequestAborted);
             HttpContext.Response.RegisterForDispose(chat);
             
-            messages.Add(mess);
-            // memoryCache.Set<List<Message>>(nameof(ChatWithLlamaController) + systemPrompt, [..chat.History], new MemoryCacheEntryOptions() { Priority = CacheItemPriority.NeverRemove });
+            //messages.Add(mess);
+            memoryCache.Set<List<Message>>(nameof(ChatWithLlamaController) + systemPrompt, [..chat.History], new MemoryCacheEntryOptions() { Priority = CacheItemPriority.NeverRemove });
 
             if (showHistory is true)
             {
