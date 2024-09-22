@@ -6,7 +6,7 @@ namespace Business.Services.OllamaToolCallingServices.Interfaces;
 [OllamaTools]
 public interface IContentManagementService
 {
-    [Description("call to check supported iso code languages")]
+    [Description("call to check supported iso code languages of article handler")]
     Task<string> GetSupportLanguages([Description("iso language code")] string language, CancellationToken cancellationToken = default);
 
     [Description("call to get all of the article")]

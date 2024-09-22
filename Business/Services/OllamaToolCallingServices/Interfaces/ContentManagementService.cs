@@ -18,7 +18,17 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
 
     public async Task<string> GetAllArticle(string? language, CancellationToken cancellationToken = default)
     {
-        var cursor = businessLayer.Where(x => x.Language == language, cancellationToken, model => model.Id, model => model.Title, model => model.Language, model => model.Summary, model => model.ModifiedTime);
+        IAsyncEnumerable<ArticleModel> cursor;
+
+        if (string.IsNullOrEmpty(language))
+        {
+            cursor = businessLayer.Where(x => true, cancellationToken, model => model.Id, model => model.Title, model => model.Language, model => model.Summary, model => model.ModifiedTime);
+        }
+        else
+        {
+            cursor = businessLayer.Where(x => x.Language == language, cancellationToken, model => model.Id, model => model.Title, model => model.Language, model => model.Summary, model => model.ModifiedTime);
+        }
+
         List<ArticleModel> articles = new List<ArticleModel>();
         await foreach (var item in cursor)
         {
