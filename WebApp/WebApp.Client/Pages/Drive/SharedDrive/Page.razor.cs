@@ -362,7 +362,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
     #region Get Data
 
-    private async Task GetRootFolderAsync(string? password = null)
+    private async Task GetRootFolderAsync(string? password = null, bool forceReload = false)
     {
         Loading = true;
         CanBeDrag = EventListener.IsTouchEnabled;
@@ -383,6 +383,8 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             FolderContentType[] types = [FolderContentType.DeletedFile, FolderContentType.DeletedFolder];
             formData.Add(new StringContent(types.ToJson()), "contentTypes");
         }
+
+        formData.Add(new StringContent(forceReload.ToJson()), "forceReLoad");
 
         var responseMessage = await baseClientService.PostAsync<FolderRequest>("/api/Files/get-folder", formData);
         if (responseMessage.IsSuccessStatusCode)
@@ -553,7 +555,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             if (response.IsSuccessStatusCode)
             {
                 ToastService.ShowSuccess(response.Message, TypeClassList.ToastDefaultSetting);
-                _ = Task.Run(() => GetRootFolderAsync());
+                _ = Task.Run(() => GetRootFolderAsync(forceReload:true));
             }
             else
             {
@@ -591,7 +593,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 if (response.IsSuccessStatusCode)
                 {
                     ToastService.ShowSuccess(response.Message, TypeClassList.ToastDefaultSetting);
-                    _ = Task.Run(() => GetRootFolderAsync());
+                    _ = Task.Run(() => GetRootFolderAsync(forceReload:true));
                 }
                 else
                 {
@@ -714,7 +716,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             var response = await baseClientService.DeleteAsync<string>($"/api/Files/safe-delete-file?code={file.Id.ToString()}", _cts.Token);
             if (response.IsSuccessStatusCode)
             {
-                await GetRootFolderAsync();
+                await GetRootFolderAsync(forceReload: true);
                 ToastService.ShowSuccess(AppLang.Delete_successfully, TypeClassList.ToastDefaultSetting);
             }
             else
@@ -757,7 +759,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             var response = await baseClientService.DeleteAsync<string>($"/api/Files/safe-delete-folder?code={folder.Id.ToString()}", _cts.Token);
             if (response.IsSuccessStatusCode)
             {
-                await GetRootFolderAsync();
+                await GetRootFolderAsync(forceReload: true);
                 ToastService.ShowSuccess(AppLang.Delete_successfully, TypeClassList.ToastDefaultSetting);
             }
             else

@@ -193,7 +193,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
     [OutputCache(Duration = 10)]
     [ResponseCache(Duration = 50)]
     public async Task<IActionResult> GetSharedFolder([FromForm] string? id, [FromForm] string? password,
-        [FromForm] int page, [FromForm] int pageSize, [FromForm] string? contentTypes)
+        [FromForm] int page, [FromForm] int pageSize, [FromForm] string? contentTypes, [FromForm] bool? forceReLoad)
     {
         var cancelToken = HttpContext.RequestAborted;
         try
@@ -223,10 +223,11 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
 
             if (!contentFolderTypesList.Any(x => x is FolderContentType.DeletedFile or FolderContentType.DeletedFolder))
                 contentFolderTypesList.Add(FolderContentType.SystemFolder);
-            
+
             var contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).Distinct().ToList();
             string rootFolderId = folderSource.Id.ToString();
-            var res = await folderServe.GetFolderRequestAsync(model => model.RootFolder == rootFolderId && contentFolderTypesList.Contains(model.Type), model => model.RootFolder == rootFolderId && contentFileTypesList.Contains(model.Type), pageSize, page, cancelToken);
+            var res = await folderServe.GetFolderRequestAsync(model => model.RootFolder == rootFolderId && contentFolderTypesList.Contains(model.Type), model => model.RootFolder == rootFolderId && contentFileTypesList.Contains(model.Type),
+                pageSize, page, forceReLoad is true, cancelToken);
             res.Folder = folderSource;
             return Content(res.ToJson(), MediaTypeNames.Application.Json);
         }

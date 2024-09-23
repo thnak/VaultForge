@@ -46,5 +46,5 @@ public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInf
     /// <returns>Total folders, total files</returns>
     public Task<(long, long)> GetFolderContentsSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default);
 
-    public Task<FolderRequest> GetFolderRequestAsync(Expression<Func<FolderInfoModel, bool>> folderPredicate, Expression<Func<FileInfoModel, bool>> filePredicate, int pageSize, int pageNumber, CancellationToken cancellationToken = default);
+    public Task<FolderRequest> GetFolderRequestAsync(Expression<Func<FolderInfoModel, bool>> folderPredicate, Expression<Func<FileInfoModel, bool>> filePredicate, int pageSize, int pageNumber, bool forceLoad = false, CancellationToken cancellationToken = default);
 }

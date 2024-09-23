@@ -381,7 +381,7 @@ public class FolderSystemBusinessLayer(
         return (totalFolders, totalFiles);
     }
 
-    public async Task<FolderRequest> GetFolderRequestAsync(Expression<Func<FolderInfoModel, bool>> folderPredicate, Expression<Func<FileInfoModel, bool>> filePredicate, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
+    public async Task<FolderRequest> GetFolderRequestAsync(Expression<Func<FolderInfoModel, bool>> folderPredicate, Expression<Func<FileInfoModel, bool>> filePredicate, int pageSize, int pageNumber, bool forceLoad = false, CancellationToken cancellationToken = default)
     {
         StringBuilder keyBuilder = new StringBuilder();
         keyBuilder.Append(folderPredicate.GetCacheKey());
@@ -390,75 +390,110 @@ public class FolderSystemBusinessLayer(
         keyBuilder.Append(pageNumber.ToString());
         var key = keyBuilder.ToString();
 
-        var result = await memoryCache.GetOrCreateAsync(key, async entry =>
+        try
         {
-            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10);
-
-            pageNumber = Math.Max(1, pageNumber);
-            pageNumber -= 1;
-
-            var folderList = new List<FolderInfoModel>();
-            var fileList = new List<FileInfoModel>();
-
-            var totalFolderDoc = await GetDocumentSizeAsync(folderPredicate, cancellationToken);
-            var totalFileDoc = await fileSystemService.GetDocumentSizeAsync(filePredicate, cancellationToken);
-            var totalFilePages = totalFileDoc / pageSize;
-            var totalFolderPages = totalFolderDoc / pageSize;
-
-
-            var fieldsFolderToFetch = new Expression<Func<FolderInfoModel, object>>[]
+            if (forceLoad)
             {
-                model => model.Id,
-                model => model.FolderName,
-                model => model.Type,
-                model => model.RootFolder,
-                model => model.Icon,
-                model => model.RelativePath,
-                model => model.ModifiedTime,
-                model => model.CreateDate
-            };
-            var fieldsFileToFetch = new Expression<Func<FileInfoModel, object>>[]
-            {
-                model => model.Id,
-                model => model.FileName,
-                model => model.Thumbnail,
-                model => model.Type,
-                model => model.RootFolder,
-                model => model.ContentType,
-                model => model.RelativePath,
-                model => model.ModifiedTime,
-                model => model.CreatedDate
-            };
-
-            await foreach (var m in GetContentFormParentFolderAsync(folderPredicate, pageNumber, pageSize, cancellationToken, fieldsFolderToFetch))
-            {
-                folderList.Add(m);
+                var result = await GetFolderRequest(folderPredicate, filePredicate, pageSize, pageNumber, cancellationToken);
+                memoryCache.Set(key, result, new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10) });
+                return result;
             }
-
-            await foreach (var m in fileSystemService.GetContentFormParentFolderAsync(filePredicate, pageNumber, pageSize, cancellationToken, fieldsFileToFetch))
+            else
             {
-                fileList.Add(m);
+                var result = await memoryCache.GetOrCreateAsync(key, async entry =>
+                {
+                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10);
+                    return await GetFolderRequest(folderPredicate, filePredicate, pageSize, pageNumber, cancellationToken);
+                }) ?? new();
+                return result;
             }
-
-            var rootFolderId = "";
-            if (fileList.Any())
-                rootFolderId = fileList.First().RootFolder;
-            else if (folderList.Any())
-                rootFolderId = folderList.First().RootFolder;
-
-            return new FolderRequest()
+        }
+        finally
+        {
+            var minPageIndex = Math.Max(pageNumber - 10, 1);
+            var maxPageIndex = minPageIndex + 20;
+            for (int i = minPageIndex; i < maxPageIndex; i++)
             {
-                Files = fileList.ToArray(),
-                Folders = folderList.ToArray(),
-                TotalFolderPages = (int)totalFolderPages,
-                TotalFilePages = (int)totalFilePages,
-                BloodLines = GetFolderBloodLine(rootFolderId).ToArray()
-            };
-        }) ?? new();
-        return result;
+                keyBuilder.Clear();
+                keyBuilder.Append(folderPredicate.GetCacheKey());
+                keyBuilder.Append(filePredicate.GetCacheKey());
+                keyBuilder.Append(pageSize.ToString());
+                keyBuilder.Append(i.ToString());
+                key = keyBuilder.ToString();
+                await memoryCache.GetOrCreateAsync(key, async entry =>
+                {
+                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10);
+                    return await GetFolderRequest(folderPredicate, filePredicate, pageSize, i, cancellationToken);
+                });
+            }
+        }
     }
 
     #region Private Mothods
+
+    private async Task<FolderRequest> GetFolderRequest(Expression<Func<FolderInfoModel, bool>> folderPredicate, Expression<Func<FileInfoModel, bool>> filePredicate, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
+    {
+        pageNumber = Math.Max(1, pageNumber);
+        pageNumber -= 1;
+
+        var folderList = new List<FolderInfoModel>();
+        var fileList = new List<FileInfoModel>();
+
+        var totalFolderDoc = await GetDocumentSizeAsync(folderPredicate, cancellationToken);
+        var totalFileDoc = await fileSystemService.GetDocumentSizeAsync(filePredicate, cancellationToken);
+        var totalFilePages = totalFileDoc / pageSize;
+        var totalFolderPages = totalFolderDoc / pageSize;
+
+
+        var fieldsFolderToFetch = new Expression<Func<FolderInfoModel, object>>[]
+        {
+            model => model.Id,
+            model => model.FolderName,
+            model => model.Type,
+            model => model.RootFolder,
+            model => model.Icon,
+            model => model.RelativePath,
+            model => model.ModifiedTime,
+            model => model.CreateDate
+        };
+        var fieldsFileToFetch = new Expression<Func<FileInfoModel, object>>[]
+        {
+            model => model.Id,
+            model => model.FileName,
+            model => model.Thumbnail,
+            model => model.Type,
+            model => model.RootFolder,
+            model => model.ContentType,
+            model => model.RelativePath,
+            model => model.ModifiedTime,
+            model => model.CreatedDate
+        };
+
+        await foreach (var m in GetContentFormParentFolderAsync(folderPredicate, pageNumber, pageSize, cancellationToken, fieldsFolderToFetch))
+        {
+            folderList.Add(m);
+        }
+
+        await foreach (var m in fileSystemService.GetContentFormParentFolderAsync(filePredicate, pageNumber, pageSize, cancellationToken, fieldsFileToFetch))
+        {
+            fileList.Add(m);
+        }
+
+        var rootFolderId = "";
+        if (fileList.Any())
+            rootFolderId = fileList.First().RootFolder;
+        else if (folderList.Any())
+            rootFolderId = folderList.First().RootFolder;
+
+        return new FolderRequest()
+        {
+            Files = fileList.ToArray(),
+            Folders = folderList.ToArray(),
+            TotalFolderPages = (int)totalFolderPages,
+            TotalFilePages = (int)totalFilePages,
+            BloodLines = GetFolderBloodLine(rootFolderId).ToArray()
+        };
+    }
 
     /// <summary>
     ///     Get user. if user by the name that is not found return Anonymous user
