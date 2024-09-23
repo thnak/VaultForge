@@ -48,7 +48,6 @@
         public int Progress { get; init; }
     }
 
-    private IWorkerFactory? WorkerFactory { get; set; }
 
     protected override void OnInitialized()
     {
@@ -74,7 +73,6 @@
     {
         if (firstRender)
         {
-            WorkerFactory = new WorkerFactory(JsRuntime);
         }
 
         base.OnAfterRender(firstRender);
@@ -107,7 +105,7 @@
             // ReSharper disable once IteratorNeverReturns
         }
 
-        public double EstimatePiSlice(int sumStart, int sumLength)
+        public async Task<double> EstimatePiSlice(int sumStart, int sumLength)
         {
             Console.WriteLine($@"EstimatePISlice({sumStart},{sumLength})");
             var lastReport = 0;

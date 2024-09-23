@@ -1,4 +1,5 @@
 using System.Globalization;
+using BlazorWorker.Core;
 using BusinessModels.Converter;
 using BusinessModels.Resources;
 using MessagePack.Resolvers;
@@ -20,7 +21,7 @@ internal class Program
         var builder = WebAssemblyHostBuilder.CreateDefault(args);
         builder.Services.AddFrontEndService();
         builder.Services.AddFrontEndSingletonService();
-
+        builder.Services.AddWorkerFactory();
         StaticCompositeResolver.Instance.Register(
             StandardResolver.Instance,
             NativeDecimalResolver.Instance,

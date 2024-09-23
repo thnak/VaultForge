@@ -1,6 +1,8 @@
 ﻿using System.Text.Json;
 using Blazored.Toast;
+using BlazorWorker.Core;
 using BusinessModels.Converter;
+using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Services;
 using WebApp.Client.Services.Http;
@@ -25,8 +27,10 @@ public static class FrontEnd
             config.PopoverOptions.CheckForPopoverProvider = false;
         });
         service.AddBlazoredToast();
+        // service.AddWorkerFactory();
         service.AddScoped<ProtectedLocalStorage>();
         service.AddScoped<ProtectedSessionStorage>();
+
 
         service.AddSingleton(new JsonSerializerOptions
         {
@@ -48,6 +52,8 @@ public static class FrontEnd
     {
         service.AddScoped<StateContainer>();
         service.AddScoped<DocumentObjectModelEventListener>();
+        service.AddScoped<IWorkerFactory, WorkerFactory>();
+
         return service;
     }
 
@@ -62,5 +68,4 @@ public static class FrontEnd
         service.AddSingleton<DocumentObjectModelEventListener>();
         return service;
     }
-    
 }
