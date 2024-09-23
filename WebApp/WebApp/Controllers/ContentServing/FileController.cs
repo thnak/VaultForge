@@ -221,7 +221,9 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                 contentFolderTypesList = [FolderContentType.File, FolderContentType.Folder];
             }
 
-            contentFolderTypesList.Add(FolderContentType.SystemFolder);
+            if (!contentFolderTypesList.Any(x => x is FolderContentType.DeletedFile or FolderContentType.DeletedFolder))
+                contentFolderTypesList.Add(FolderContentType.SystemFolder);
+            
             var contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).Distinct().ToList();
             string rootFolderId = folderSource.Id.ToString();
             var res = await folderServe.GetFolderRequestAsync(model => model.RootFolder == rootFolderId && contentFolderTypesList.Contains(model.Type), model => model.RootFolder == rootFolderId && contentFileTypesList.Contains(model.Type), pageSize, page, cancelToken);
@@ -336,7 +338,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         var cancelToken = HttpContext.RequestAborted;
         var file = fileServe.Get(code);
         if (file == null) return NotFound(AppLang.File_not_found_);
-        
+
         if (file is { Type: FileContentType.File or FileContentType.HiddenFile })
         {
             file.Type = FileContentType.DeletedFile;
