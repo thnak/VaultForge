@@ -420,11 +420,11 @@ public class FolderSystemBusinessLayer(
                 keyBuilder.Append(pageSize.ToString());
                 keyBuilder.Append(i.ToString());
                 key = keyBuilder.ToString();
-                await memoryCache.GetOrCreateAsync(key, async entry =>
+                _ = memoryCache.GetOrCreateAsync(key, async entry =>
                 {
                     entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10);
                     return await GetFolderRequest(folderPredicate, filePredicate, pageSize, i, cancellationToken);
-                });
+                }).ConfigureAwait(false);
             }
         }
     }
