@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 using BusinessModels.Resources;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Http;
@@ -283,12 +285,13 @@ public static class FileHelpers
         return [];
     }
 
-    public static async Task<(long, string)> ProcessStreamedFileAndSave(this MultipartSection section, string path,
+    public static async Task<(long, string, string)> ProcessStreamedFileAndSave(this MultipartSection section, string path,
         ModelStateDictionary modelState, CancellationToken cancellationToken = default)
     {
-        const int bufferSize = 10 * 1024 * 1024; // 80 KB buffer size (you can adjust this size based on performance needs)
+        const int bufferSize = 10 * 1024 * 1024;
         try
         {
+            using SHA256 sha256 = SHA256.Create();
             // Open target stream for writing the file to disk
             await using var targetStream = File.Create(path);
             var buffer = new byte[bufferSize];
@@ -299,26 +302,38 @@ public static class FileHelpers
             while ((bytesRead = await section.Body.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) > 0)
             {
                 await targetStream.WriteAsync(buffer, 0, bytesRead, cancellationToken);
+                sha256.TransformBlock(buffer, 0, bytesRead, null, 0);
                 totalBytesRead += bytesRead; // Keep track of the total bytes read
             }
+
+            sha256.TransformFinalBlock([], 0, 0);
+            StringBuilder checksum = new StringBuilder();
+            if (sha256.Hash != null)
+            {
+                foreach (byte b in sha256.Hash)
+                {
+                    checksum.Append(b.ToString("x2"));
+                }
+            }
+            
 
             // Determine file extension and MIME type (you can implement based on content type)
             var fileExtension = targetStream.GetCorrectExtension(section.ContentType);
             var contentType = fileExtension.GetMimeTypeFromExtension();
 
             // Return the total file size and MIME type
-            return (totalBytesRead, contentType);
+            return (totalBytesRead, contentType, checksum.ToString());
         }
         catch (OperationCanceledException ex)
         {
             modelState.AddModelError(AppLang.File, ex.Message);
-            return (-1, ex.Message);
+            return (-1, ex.Message, string.Empty);
         }
         catch (Exception ex)
         {
             modelState.AddModelError(AppLang.File,
                 @"The upload failed. Please contact the Help Desk " + $@" for support. Error: {ex.Message}");
-            return (-1, string.Empty);
+            return (-1, string.Empty, string.Empty);
         }
     }
 

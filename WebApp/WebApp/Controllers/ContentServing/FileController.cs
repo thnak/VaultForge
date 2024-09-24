@@ -529,7 +529,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                         var createFileResult = await folderServe.CreateFileAsync(folder, file, cancelToken);
                         if (createFileResult.Item1)
                         {
-                            (file.FileSize, file.ContentType) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState, cancelToken);
+                            (file.FileSize, file.ContentType, file.Checksum) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState, cancelToken);
 
                             if (file.FileSize > 0)
                             {
