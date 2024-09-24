@@ -144,8 +144,6 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
 
         var thumbnailSize = await SaveStream(thumbnailStream, thumbnailPath, cancellationToken);
         var extendedImageSize = await SaveStream(extendedImage, extendImagePath, cancellationToken);
-
-       
         
         FileInfoModel thumbnailFile = new FileInfoModel()
         {

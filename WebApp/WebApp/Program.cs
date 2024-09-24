@@ -112,6 +112,7 @@ public class Program
         builder.Services.AddSingleton<IThumbnailService, ThumbnailService>();
         
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
+        builder.Services.AddHostedService<FileCheckSumService>();
 
         #endregion
 
