@@ -266,7 +266,7 @@ public class FolderSystemBusinessLayer(
     {
         var dateString = DateTime.UtcNow.ToString("dd-MM-yyy");
 
-        var filePath = Path.Combine(_workingDir, dateString, $"_file_{file.Id}.bin");
+        var filePath = Path.Combine(_workingDir, dateString, Path.GetRandomFileName());
         Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
 
         file.AbsolutePath = filePath;
