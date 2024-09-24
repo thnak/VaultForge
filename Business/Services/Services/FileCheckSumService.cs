@@ -83,6 +83,7 @@ public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLaye
     public Task StartAsync(CancellationToken cancellationToken)
     {
         var dueTime = DateTime.Today.AddDays(1).AddHours(2) - DateTime.Now;
+        logger.LogInformation($"Starting FileCheckSumService after {dueTime}");
         _timer = new Timer(DoWork, null, dueTime, TimeSpan.FromDays(1));
         return Task.CompletedTask;
     }
