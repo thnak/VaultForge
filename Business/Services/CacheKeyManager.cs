@@ -19,28 +19,24 @@ public class CacheKeyManager
 
     public void Set(string key, object value, MemoryCacheEntryOptions? options)
     {
-        if (_cacheKeys.TryAdd(key, false))
-        {
-            if (options != null)
-                options.RegisterPostEvictionCallback(RemoveCallBack);
-            _cache.Set($"{_cacheKey}{key}", value, options);
-        }
+        _cacheKeys.TryAdd(key, false);
+        if (options != null)
+            options.RegisterPostEvictionCallback(RemoveCallBack);
+        _cache.Set($"{_cacheKey}{key}", value, options);
     }
 
     public void Remove(string key)
     {
         _cache.Remove($"{_cacheKey}{key}");
-        _cacheKeys.Remove(key, out _);
+        _cacheKeys.TryRemove(key, out _);
     }
 
     public Task<T?> GetOrCreateAsync<T>(string key, Func<ICacheEntry, Task<T>> factory, MemoryCacheEntryOptions? options = default)
     {
-        if (_cacheKeys.TryAdd(key, false))
-        {
-            if (options != null)
-                options.RegisterPostEvictionCallback(RemoveCallBack);
-            return _cache.GetOrCreateAsync<T>($"{_cacheKey}{key}", factory, options);
-        }
+        _cacheKeys.TryAdd(key, false);
+        if (options != null)
+            options.RegisterPostEvictionCallback(RemoveCallBack);
+        return _cache.GetOrCreateAsync($"{_cacheKey}{key}", factory, options);
 
         return Task.FromResult<T?>(default);
     }
