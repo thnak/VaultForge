@@ -17,10 +17,14 @@ public class CacheKeyManager
         _cleanupTimer = new Timer(CleanupExpiredKeys, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
     }
 
-    public void Set(string key, object value, MemoryCacheEntryOptions options)
+    public void Set(string key, object value, MemoryCacheEntryOptions? options)
     {
         if (_cacheKeys.TryAdd(key, false))
+        {
+            if (options != null)
+                options.RegisterPostEvictionCallback(RemoveCallBack);
             _cache.Set($"{_cacheKey}{key}", value, options);
+        }
     }
 
     public void Remove(string key)
@@ -33,10 +37,17 @@ public class CacheKeyManager
     {
         if (_cacheKeys.TryAdd(key, false))
         {
+            if (options != null)
+                options.RegisterPostEvictionCallback(RemoveCallBack);
             return _cache.GetOrCreateAsync<T>($"{_cacheKey}{key}", factory, options);
         }
 
         return Task.FromResult<T?>(default);
+    }
+
+    private void RemoveCallBack(object key, object? value, EvictionReason reason, object? state)
+    {
+        _cacheKeys.TryRemove(key.ToString()!, out _);
     }
 
     private void CleanupExpiredKeys(object? state)
