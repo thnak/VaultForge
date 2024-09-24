@@ -54,17 +54,18 @@ public class FileInfoModel
     /// </summary>
     [Key(10)]
     public string RelativePath { get; set; } = string.Empty;
-    
+
     [Key(11)] public string RootFolder { get; set; } = string.Empty;
-
-
+    
     [Key(12)] public string Thumbnail { get; set; } = string.Empty;
 
     [Key(13)] public FileContentType Type { get; set; }
 
+    [Key(14)] public string Checksum { get; set; } = string.Empty;
+
     #region Font-End Properties
 
-    [BsonIgnore] [Key(14)] public FileMetadataModel Metadata { get; set; } = new();
+    [BsonIgnore] [Key(15)] public FileMetadataModel Metadata { get; set; } = new();
 
     #endregion
 
@@ -79,7 +80,7 @@ public class FileInfoModel
     // ReSharper disable once NonReadonlyMemberInGetHashCode
     public override int GetHashCode()
     {
-        return Id.ToString().GetHashCode();
+        return Id.GetHashCode();
     }
 
 
