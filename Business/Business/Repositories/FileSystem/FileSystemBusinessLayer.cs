@@ -1,22 +1,44 @@
 using System.Linq.Expressions;
+using System.Text;
 using Business.Business.Interfaces.FileSystem;
 using Business.Data.Interfaces.FileSystem;
 using Business.Models;
+using Business.Utils.StringExtensions;
 using BusinessModels.System.FileSystem;
+using Microsoft.Extensions.Caching.Memory;
 using MongoDB.Driver;
 
 namespace Business.Business.Repositories.FileSystem;
 
-public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusinessLayer
+public class FileSystemBusinessLayer(IFileSystemDatalayer da, IMemoryCache memoryCache) : IFileSystemBusinessLayer
 {
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
-        return da.GetDocumentSizeAsync(cancellationToken);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.Append(nameof(FileSystemBusinessLayer));
+        stringBuilder.Append(nameof(GetDocumentSizeAsync));
+        var cacheKey = stringBuilder.ToString();
+        var value = memoryCache.GetOrCreateAsync(cacheKey, entry =>
+        {
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30);
+            return da.GetDocumentSizeAsync(cancellationToken);
+        });
+        return value;
     }
 
     public Task<long> GetDocumentSizeAsync(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationToken = default)
     {
-        return da.GetDocumentSizeAsync(predicate, cancellationToken);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.Append(nameof(FileSystemBusinessLayer));
+        stringBuilder.Append(nameof(GetDocumentSizeAsync));
+        stringBuilder.Append(predicate.GetCacheKey());
+        var cacheKey = stringBuilder.ToString();
+        var value = memoryCache.GetOrCreateAsync(cacheKey, entry =>
+        {
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30);
+            return da.GetDocumentSizeAsync(predicate, cancellationToken);
+        });
+        return value;
     }
 
     public IAsyncEnumerable<FileInfoModel> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default)
@@ -105,7 +127,7 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da) : IFileSystemBusin
         return da.GetRandomFileAsync(rootFolderId, cancellationToken);
     }
 
-    public  IAsyncEnumerable<FileInfoModel> GetContentFormParentFolderAsync(string id, int pageNumber, int pageSize, CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
+    public IAsyncEnumerable<FileInfoModel> GetContentFormParentFolderAsync(string id, int pageNumber, int pageSize, CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
     {
         return da.GetContentFormParentFolderAsync(id, pageNumber, pageSize, cancellationToken, fieldsToFetch);
     }

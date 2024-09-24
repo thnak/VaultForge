@@ -33,12 +33,33 @@ public class FolderSystemBusinessLayer(
 
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
-        return folderSystemService.GetDocumentSizeAsync(cancellationToken);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.Append(nameof(FolderSystemBusinessLayer));
+        stringBuilder.Append(nameof(GetDocumentSizeAsync));
+
+        var key = stringBuilder.ToString();
+        var value = memoryCache.GetOrCreateAsync(key, entry =>
+        {
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30);
+            return folderSystemService.GetDocumentSizeAsync(cancellationToken);
+        });
+        return value;
     }
 
     public Task<long> GetDocumentSizeAsync(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationToken = default)
     {
-        return folderSystemService.GetDocumentSizeAsync(predicate, cancellationToken);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.Append(nameof(FolderSystemBusinessLayer));
+        stringBuilder.Append(nameof(GetDocumentSizeAsync));
+        stringBuilder.Append(predicate.GetCacheKey());
+
+        var key = stringBuilder.ToString();
+        var value = memoryCache.GetOrCreateAsync(key, entry =>
+        {
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30);
+            return folderSystemService.GetDocumentSizeAsync(predicate, cancellationToken);
+        });
+        return value;
     }
 
     public IAsyncEnumerable<FolderInfoModel> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default)
