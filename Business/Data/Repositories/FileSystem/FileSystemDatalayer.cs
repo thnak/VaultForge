@@ -300,7 +300,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             }
             else
             {
-                model.ModifiedTime = DateTime.UtcNow.Date;
+                model.ModifiedTime = DateTime.UtcNow;
                 var filter = Builders<FileInfoModel>.Filter.Eq(x => x.Id, model.Id);
                 await _fileDataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
                 return (true, AppLang.Create_successfully);

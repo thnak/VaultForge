@@ -353,7 +353,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             }
             else
             {
-                model.ModifiedTime = DateTime.UtcNow.Date;
+                model.ModifiedTime = DateTime.UtcNow;
                 var filter = Builders<FolderInfoModel>.Filter.Eq(x => x.Id, model.Id);
                 await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
                 return (true, AppLang.Update_successfully);
