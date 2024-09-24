@@ -29,7 +29,7 @@ public class FolderSystemBusinessLayer(
     IOptions<AppSettings> options,
     ILogger<FolderSystemBusinessLayer> logger,
     IMemoryCache memoryCache)
-    : IFolderSystemBusinessLayer
+    : IFolderSystemBusinessLayer, IDisposable
 {
     private IFolderSystemDatalayer FolderSystemService { get; set; } = folderSystemService;
     private IFileSystemBusinessLayer FileSystemService { get; set; } = fileSystemService;
@@ -540,4 +540,9 @@ public class FolderSystemBusinessLayer(
     }
 
     #endregion
+
+    public void Dispose()
+    {
+        _cacheKeyManager.Dispose();
+    }
 }
