@@ -281,6 +281,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
             if (updates.Any())
             {
+                updates.Add(model => model.ModifiedTime, DateTime.UtcNow);
                 foreach (var update in updates)
                 {
                     var fieldName = update.Key;

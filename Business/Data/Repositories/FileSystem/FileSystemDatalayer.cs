@@ -40,7 +40,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
             var rootAndContentTypeKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.ContentType);
             var rootAndContentTypeIndexModel = new CreateIndexModel<FileInfoModel>(rootAndContentTypeKey);
-            
+
 
             var createDateKeysDefinition = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.CreatedDate);
             var createDateIndexModel = new CreateIndexModel<FileInfoModel>(createDateKeysDefinition);
@@ -53,7 +53,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
             var relativePathIndexKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RelativePath);
             var relativePathIndexModel = new CreateIndexModel<FileInfoModel>(relativePathIndexKey, new CreateIndexOptions { Unique = false });
-            
+
             var searchIndexKeys = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RelativePath).Ascending(x => x.RootFolder);
             var searchIndexModel = new CreateIndexModel<FileInfoModel>(searchIndexKeys, new CreateIndexOptions { Unique = false });
 
@@ -213,31 +213,40 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         {
             await _semaphore.WaitAsync(cancellationToken);
 
-            ObjectId.TryParse(key, out var id);
-            var filter = Builders<FileInfoModel>.Filter.Eq(f => f.Id, id);
-
-            // Build the update definition by combining multiple updates
-            var updateDefinitionBuilder = Builders<FileInfoModel>.Update;
-            var updateDefinitions = new List<UpdateDefinition<FileInfoModel>>();
-
-            if (updates.Any())
+            if (ObjectId.TryParse(key, out var id))
             {
-                foreach (var update in updates)
-                {
-                    var fieldName = update.Key;
-                    var fieldValue = update.Value;
+                var filter = Builders<FileInfoModel>.Filter.Eq(f => f.Id, id);
 
-                    // Add the field-specific update to the list
-                    updateDefinitions.Add(updateDefinitionBuilder.Set(fieldName, fieldValue));
+                var isExist = await _fileDataDb.Find(filter).AnyAsync(cancellationToken: cancellationToken);
+                if (!isExist)
+                    return (false, AppLang.File_could_not_be_found);
+
+                // Build the update definition by combining multiple updates
+                var updateDefinitionBuilder = Builders<FileInfoModel>.Update;
+                var updateDefinitions = new List<UpdateDefinition<FileInfoModel>>();
+
+                if (updates.Any())
+                {
+                    updates.Add(x => x.ModifiedTime, DateTime.UtcNow);
+                    foreach (var update in updates)
+                    {
+                        var fieldName = update.Key;
+                        var fieldValue = update.Value;
+
+                        // Add the field-specific update to the list
+                        updateDefinitions.Add(updateDefinitionBuilder.Set(fieldName, fieldValue));
+                    }
+
+                    // Combine all update definitions into one
+                    var combinedUpdate = updateDefinitionBuilder.Combine(updateDefinitions);
+
+                    await _fileDataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
                 }
 
-                // Combine all update definitions into one
-                var combinedUpdate = updateDefinitionBuilder.Combine(updateDefinitions);
-
-                await _fileDataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
+                return (true, AppLang.Update_successfully);
             }
 
-            return (true, AppLang.Update_successfully);
+            return (false, AppLang.Invalid_key);
         }
         catch (OperationCanceledException)
         {
@@ -474,7 +483,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         };
         if (fieldsToFetch.Any())
             options.Projection = fieldsToFetch.ProjectionBuilder();
-        
+
         var filterBuilder = Builders<FileInfoModel>.Filter;
         var filter = Builders<FileInfoModel>.Filter.Empty;
 
