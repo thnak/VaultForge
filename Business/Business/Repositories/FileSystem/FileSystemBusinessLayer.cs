@@ -4,6 +4,8 @@ using Business.Business.Interfaces.FileSystem;
 using Business.Data.Interfaces.FileSystem;
 using Business.Models;
 using Business.Utils.StringExtensions;
+using BusinessModels.General.EnumModel;
+using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using Microsoft.Extensions.Caching.Memory;
 using MongoDB.Driver;
@@ -114,6 +116,19 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da, IMemoryCache memor
 
     public (bool, string) Delete(string key)
     {
+        var file = Get(key);
+        if (file == default) return (false, AppLang.File_could_not_be_found);
+
+        if (file.Type != FileContentType.DeletedFile)
+        {
+            UpdateAsync(key, new FieldUpdate<FileInfoModel>()
+            {
+                { model => model.Type, FileContentType.DeletedFile },
+                { model => model.PreviousType, file.Type }
+            });
+            return (true, AppLang.Delete_successfully);
+        }
+
         return da.Delete(key);
     }
 

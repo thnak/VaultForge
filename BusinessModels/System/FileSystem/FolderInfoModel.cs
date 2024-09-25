@@ -74,15 +74,16 @@ public class FolderInfoModel
     [Key(10)] public string VersionId { get; set; } = string.Empty;
 
     [Key(11)] public FolderContentType Type { get; set; }
+    [Key(12)] public FolderContentType PreviousType { get; set; }
 
-    [Key(12)] public string Icon { get; set; } = string.Empty;
+    [Key(13)] public string Icon { get; set; } = string.Empty;
 
-    [Key(13)] public string RootFolder { get; set; } = string.Empty;
+    [Key(14)] public string RootFolder { get; set; } = string.Empty;
 
 
     #region Front-End Properties
 
-    [BsonIgnore] [Key(14)] public long FolderSize { get; set; }
+    [BsonIgnore] [Key(15)] public long FolderSize { get; set; }
 
     #endregion
 

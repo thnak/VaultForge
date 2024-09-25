@@ -60,12 +60,12 @@ public class FileInfoModel
     [Key(12)] public string Thumbnail { get; set; } = string.Empty;
 
     [Key(13)] public FileContentType Type { get; set; }
-
-    [Key(14)] public string Checksum { get; set; } = string.Empty;
+    [Key(14)] public FileContentType PreviousType { get; set; }
+    [Key(15)] public string Checksum { get; set; } = string.Empty;
 
     #region Font-End Properties
 
-    [BsonIgnore] [Key(15)] public FileMetadataModel Metadata { get; set; } = new();
+    [BsonIgnore] [Key(16)] public FileMetadataModel Metadata { get; set; } = new();
 
     #endregion
 

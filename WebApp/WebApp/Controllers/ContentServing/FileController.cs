@@ -2,6 +2,7 @@ using System.Net.Mime;
 using System.Web;
 using Business.Attribute;
 using Business.Business.Interfaces.FileSystem;
+using Business.Models;
 using Business.Services.Interfaces;
 using Business.Utils.Helper;
 using BusinessModels.General.EnumModel;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
+using MongoDB.Bson;
 using Protector.Utils;
 
 namespace WebApp.Controllers.ContentServing;
@@ -149,7 +151,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
             files.Add(file);
         }
 
-        return Content(files.ToJson(), MediaTypeNames.Application.Json);
+        return Content(StringExtension.ToJson(files), MediaTypeNames.Application.Json);
     }
 
     [HttpPost("get-folder-list")]
@@ -161,7 +163,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         var cancelToken = HttpContext.RequestAborted;
         files.AddRange(listFolders.TakeWhile(_ => cancelToken is not { IsCancellationRequested: true }).Select(folderServe.Get).OfType<FolderInfoModel>());
 
-        return Content(files.ToJson(), MediaTypeNames.Application.Json);
+        return Content(StringExtension.ToJson(files), MediaTypeNames.Application.Json);
     }
 
     [HttpGet("get-file-v2")]
@@ -229,7 +231,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
             var res = await folderServe.GetFolderRequestAsync(model => model.RootFolder == rootFolderId && contentFolderTypesList.Contains(model.Type), model => model.RootFolder == rootFolderId && contentFileTypesList.Contains(model.Type),
                 pageSize, page, forceReLoad is true, cancelToken);
             res.Folder = folderSource;
-            return Content(res.ToJson(), MediaTypeNames.Application.Json);
+            return Content(StringExtension.ToJson(res), MediaTypeNames.Application.Json);
         }
         catch (OperationCanceledException)
         {
@@ -250,7 +252,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         {
             var cancelToken = HttpContext.RequestAborted;
             var content = await folderServe.GetDeletedContentAsync(userName, pageSize, page, cancellationToken: cancelToken);
-            return Content(content.ToJson(), MediaTypeNames.Application.Json);
+            return Content(StringExtension.ToJson(content), MediaTypeNames.Application.Json);
         }
         catch (OperationCanceledException e)
         {
@@ -286,7 +288,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
             //
         }
 
-        return Content(folderList.ToJson(), MimeTypeNames.Application.Json);
+        return Content(StringExtension.ToJson(folderList), MimeTypeNames.Application.Json);
     }
 
     [HttpGet("get-folder-blood-line")]
@@ -295,7 +297,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
     public IActionResult GetFolderBloodLine(string id)
     {
         var folders = folderServe.GetFolderBloodLine(id);
-        return Content(folders.ToJson(), MimeTypeNames.Application.Json);
+        return Content(StringExtension.ToJson(folders), MimeTypeNames.Application.Json);
     }
 
 
@@ -332,6 +334,27 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         return status.Item1 ? Ok(status.Item2) : BadRequest(status.Item2);
     }
 
+    [HttpPost("restore-content")]
+    [IgnoreAntiforgeryToken]
+    [AllowAnonymous]
+    public async Task<IActionResult> RestoreContent([FromForm] string id, [FromForm] bool isFile)
+    {
+        if (isFile)
+        {
+            var file = fileServe.Get(id);
+            if (file == null) return BadRequest(AppLang.File_not_found_);
+            var result = await fileServe.UpdateAsync(id, new FieldUpdate<FileInfoModel>() { { model => model.Type, file.PreviousType } });
+            return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
+        }
+
+        {
+            var folder = folderServe.Get(id);
+            if (folder == null) return BadRequest(AppLang.File_not_found_);
+            var result = await folderServe.UpdateAsync(id, new FieldUpdate<FolderInfoModel>() { { model => model.Type, folder.PreviousType } });
+            return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
+        }
+    }
+
     [HttpDelete("delete-file")]
     public async Task<IActionResult> DeleteFile([FromForm] string fileId, [FromForm] string folderId)
     {
@@ -353,33 +376,17 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
 
     [HttpDelete("safe-delete-file")]
     [IgnoreAntiforgeryToken]
-    public async Task<IActionResult> SafeDeleteFile(string code)
+    public IActionResult SafeDeleteFile(string code)
     {
-        var cancelToken = HttpContext.RequestAborted;
-        var file = fileServe.Get(code);
-        if (file == null) return NotFound(AppLang.File_not_found_);
-
-        if (file is { Type: FileContentType.File or FileContentType.HiddenFile })
-        {
-            file.Type = FileContentType.DeletedFile;
-            var result = await fileServe.UpdateAsync(file, cancelToken);
-            return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
-        }
-        else
-        {
-            var result = fileServe.Delete(file.Id.ToString());
-            return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
-        }
+        var result = fileServe.Delete(code);
+        return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
     }
 
     [HttpDelete("safe-delete-folder")]
     [IgnoreAntiforgeryToken]
-    public async Task<IActionResult> SafeDeleteFolder(string code)
+    public IActionResult SafeDeleteFolder(string code)
     {
-        var folder = folderServe.Get(code);
-        if (folder == default) return NotFound(AppLang.Folder_could_not_be_found);
-
-        var updateResult = folderServe.Delete(folder.Id.ToString());
+        var updateResult = folderServe.Delete(code);
         return updateResult.Item1 ? Ok(updateResult.Item2) : BadRequest(updateResult.Item2);
     }
 
