@@ -76,10 +76,12 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
 
     public async IAsyncEnumerable<ChatWithChatBotMessageModel> Where(Expression<Func<ChatWithChatBotMessageModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<ChatWithChatBotMessageModel, object>>[] fieldsToFetch)
     {
-        var options = new FindOptions<ChatWithChatBotMessageModel, ChatWithChatBotMessageModel>
-        {
-            Projection = fieldsToFetch.ProjectionBuilder()
-        };
+        var options = fieldsToFetch.Any()
+            ? new FindOptions<ChatWithChatBotMessageModel, ChatWithChatBotMessageModel>
+            {
+                Projection = fieldsToFetch.ProjectionBuilder()
+            }
+            : null;
         var cursor = await _dataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);
         while (await cursor.MoveNextAsync(cancellationToken))
         {

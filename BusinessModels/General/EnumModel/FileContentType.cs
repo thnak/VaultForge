@@ -8,4 +8,6 @@ public enum FileContentType
     ThumbnailFile,
     ThumbnailWebpFile,
     FounderFile,
+    CorruptedFile,
+    MissingFile,
 }

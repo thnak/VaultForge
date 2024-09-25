@@ -140,19 +140,14 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<UserModel> FindProjectAsync(string keyWord, int limit = 10,
-        CancellationToken cancellationToken = default, params Expression<Func<UserModel, object>>[] fieldsToFetch)
+    public IAsyncEnumerable<UserModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default, params Expression<Func<UserModel, object>>[] fieldsToFetch)
     {
         throw new NotImplementedException();
     }
 
-    public async IAsyncEnumerable<UserModel> Where(Expression<Func<UserModel, bool>> predicate,
-        [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<UserModel, object>>[] fieldsToFetch)
+    public async IAsyncEnumerable<UserModel> Where(Expression<Func<UserModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<UserModel, object>>[] fieldsToFetch)
     {
-        var options = new FindOptions<UserModel, UserModel>
-        {
-            Projection = fieldsToFetch.ProjectionBuilder()
-        };
+        var options = fieldsToFetch.Any() ? new FindOptions<UserModel, UserModel> { Projection = fieldsToFetch.ProjectionBuilder() } : null;
         var cursor = await _dataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);
         while (await cursor.MoveNextAsync(cancellationToken))
         {

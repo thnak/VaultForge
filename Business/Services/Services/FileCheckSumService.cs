@@ -2,6 +2,7 @@
 using System.Text;
 using Business.Business.Interfaces.FileSystem;
 using Business.Models;
+using BusinessModels.General.EnumModel;
 using BusinessModels.System.FileSystem;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -61,12 +62,20 @@ public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLaye
                         if (item.Checksum != checkSumStr)
                         {
                             logger.LogInformation($"File {item.AbsolutePath} is corrupted");
+                            await fileSystemBusinessLayer.UpdateAsync(item.Id.ToString(), new FieldUpdate<FileInfoModel>()
+                            {
+                                { x => x.Type, FileContentType.CorruptedFile }
+                            }, cancelToken);
                         }
                     }
                 }
                 else
                 {
                     logger.LogInformation($"File {item.AbsolutePath} does not exist");
+                    await fileSystemBusinessLayer.UpdateAsync(item.Id.ToString(), new FieldUpdate<FileInfoModel>()
+                    {
+                        { x => x.Type, FileContentType.MissingFile }
+                    }, cancelToken);
                 }
             }
 

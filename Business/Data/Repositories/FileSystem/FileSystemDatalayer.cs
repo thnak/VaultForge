@@ -167,10 +167,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
     public async IAsyncEnumerable<FileInfoModel> Where(Expression<Func<FileInfoModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
     {
-        var options = new FindOptions<FileInfoModel, FileInfoModel>
-        {
-            Projection = fieldsToFetch.ProjectionBuilder()
-        };
+        var options = fieldsToFetch.Any() ? new FindOptions<FileInfoModel, FileInfoModel> { Projection = fieldsToFetch.ProjectionBuilder() } : null;
         var cursor = await _fileDataDb.FindAsync(predicate, options: options, cancellationToken: cancellationToken);
         while (await cursor.MoveNextAsync(cancellationToken))
         {
@@ -472,11 +469,12 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
         var options = new FindOptions<FileInfoModel, FileInfoModel>
         {
-            Projection = fieldsToFetch.ProjectionBuilder(),
             Limit = pageSize,
             Skip = lastSeenId == null ? pageSize * pageNumber : 0,
         };
-
+        if (fieldsToFetch.Any())
+            options.Projection = fieldsToFetch.ProjectionBuilder();
+        
         var filterBuilder = Builders<FileInfoModel>.Filter;
         var filter = Builders<FileInfoModel>.Filter.Empty;
 

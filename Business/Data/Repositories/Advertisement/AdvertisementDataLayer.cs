@@ -44,14 +44,10 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
 
     public async IAsyncEnumerable<ArticleModel> FindProjectAsync(string keyWord, int limit = 10, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<ArticleModel, object>>[] fieldsToFetch)
     {
-        var projection = new FindOptions<ArticleModel, ArticleModel>()
-        {
-            Projection = fieldsToFetch.ProjectionBuilder(),
-        };
-
+        var findOptions = fieldsToFetch.Any() ? new FindOptions<ArticleModel, ArticleModel>() { Projection = fieldsToFetch.ProjectionBuilder() } : null;
         var filter = Builders<ArticleModel>.Filter.Where(x => x.Author.Contains(keyWord) || x.Title.Contains(keyWord));
 
-        var cursor = await _dataDb.FindAsync(filter, projection, cancellationToken);
+        var cursor = await _dataDb.FindAsync(filter, findOptions, cancellationToken);
         while (await cursor.MoveNextAsync(cancellationToken))
         {
             foreach (var model in cursor.Current)
@@ -63,10 +59,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
 
     public async IAsyncEnumerable<ArticleModel> Where(Expression<Func<ArticleModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<ArticleModel, object>>[] fieldsToFetch)
     {
-        var options = new FindOptions<ArticleModel, ArticleModel>
-        {
-            Projection = fieldsToFetch.ProjectionBuilder(),
-        };
+        var options = fieldsToFetch.Any() ? new FindOptions<ArticleModel, ArticleModel> { Projection = fieldsToFetch.ProjectionBuilder() } : null;
         var cursor = await _dataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);
         while (await cursor.MoveNextAsync(cancellationToken))
         {
@@ -170,7 +163,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
             var isExists = await _dataDb.Find(filter).Limit(1).AnyAsync(cancellationToken: cancellationToken);
             if (isExists)
                 return (false, AppLang.Article_already_exists);
-            
+
             model.PublishDate = DateTime.UtcNow.Date;
             model.ModifiedTime = DateTime.UtcNow;
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);

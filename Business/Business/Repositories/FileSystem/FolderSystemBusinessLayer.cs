@@ -468,8 +468,20 @@ public class FolderSystemBusinessLayer(
 
         var user = GetUser(userName);
         if (user == null) return new FolderRequest();
-        var hashedUsername = user.UserName.ComputeSha256Hash();
-        var folderList = FolderSystemService.Where(x => x.Username == hashedUsername, cancellationToken);
+
+        var fieldsFolderToFetch = new Expression<Func<FolderInfoModel, object>>[]
+        {
+            model => model.Id,
+            model => model.FolderName,
+            model => model.Type,
+            model => model.RootFolder,
+            model => model.Icon,
+            model => model.RelativePath,
+            model => model.ModifiedTime,
+            model => model.CreateDate
+        };
+
+        var folderList = Where(x => x.Username == user.UserName, cancellationToken, fieldsFolderToFetch);
 
         ConcurrentBag<FileInfoModel> files = new ConcurrentBag<FileInfoModel>();
         ConcurrentBag<FolderInfoModel> folders = new ConcurrentBag<FolderInfoModel>();
@@ -493,7 +505,7 @@ public class FolderSystemBusinessLayer(
                 model => model.CreatedDate
             };
 
-            var fileCursor = fileSystemService.Where(x => x.Type == FileContentType.DeletedFile && x.RootFolder == rootFolder, cancellationTokenSource, fieldToFetch);
+            var fileCursor = FileSystemService.Where(x => x.Type == FileContentType.DeletedFile && x.RootFolder == rootFolder, cancellationTokenSource, fieldToFetch);
             await foreach (var file in fileCursor)
             {
                 files.Add(file);

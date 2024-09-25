@@ -48,14 +48,21 @@ public partial class ManagementPage : ComponentBase, IAsyncDisposable, IDisposab
         Metadata.Add(new Dictionary<string, string>() { { "name", "keywords" }, { "content", "CMS, content management system, self host" } });
         Metadata.Add(new Dictionary<string, string>() { { "name", "title" }, { "content", AppLang.Content_management_system } });
         Metadata.Add(new Dictionary<string, string>() { { "name", "robots" }, { "content", "max-image-preview:large, index" } });
-
-
-        Hub = Navigation.ToAbsoluteUri("/PageCreatorHub").InitHub(true);
-        Hub.Reconnected += HubOnReconnected;
-        Hub.Reconnecting += HubOnReconnecting;
-        await Hub.StartAsync();
-        await DataGrid.ReloadServerData();
         await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Hub = Navigation.ToAbsoluteUri("/PageCreatorHub").InitHub(true);
+            Hub.Reconnected += HubOnReconnected;
+            Hub.Reconnecting += HubOnReconnecting;
+            await Hub.StartAsync();
+            await DataGrid.ReloadServerData();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private Task HubOnReconnecting(Exception? arg)

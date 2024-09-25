@@ -222,10 +222,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
     public async IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
     {
-        var options = new FindOptions<FolderInfoModel, FolderInfoModel>
-        {
-            Projection = fieldsToFetch.ProjectionBuilder()
-        };
+        var options = fieldsToFetch.Any() ? new FindOptions<FolderInfoModel, FolderInfoModel> { Projection = fieldsToFetch.ProjectionBuilder() } : null;
         var cursor = await _dataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);
         while (await cursor.MoveNextAsync(cancellationToken))
         {
@@ -413,10 +410,12 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             var filter = Builders<FolderInfoModel>.Filter.Eq(x => x.Id, objectId);
             var options = new FindOptions<FolderInfoModel, FolderInfoModel>
             {
-                Projection = fieldsToFetch.ProjectionBuilder(),
                 Limit = pageSize,
                 Skip = pageSize * pageNumber,
             };
+            if (fieldsToFetch.Any())
+                options.Projection = fieldsToFetch.ProjectionBuilder();
+
             var cursor = await _dataDb.FindAsync(filter, options, cancellationToken: cancellationToken);
             while (await cursor.MoveNextAsync(cancellationToken))
             {
