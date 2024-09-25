@@ -420,7 +420,6 @@ public class FolderSystemBusinessLayer(
         keyBuilder.Append(pageNumber.ToString());
         var key = keyBuilder.ToString();
 
-
         try
         {
             if (forceLoad)

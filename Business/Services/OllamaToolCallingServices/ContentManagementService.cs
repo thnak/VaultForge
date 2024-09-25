@@ -57,7 +57,13 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
             return $"Added new article with ID {model.Id}. Remember it to use this article again.";
         }
 
-        return $"Add failed for article with ID {model.Id}. Reason: {result.Item2}";
+        model = businessLayer.Get(title, language);
+        if (model != null)
+        {
+            return $"The article with ID {model.Id} already exists. Please choose another one or try again. Or you can update the content of this article.";
+        }
+
+        return $"Add failed for article with title {title} and language {language}. Reason: {result.Item2}";
     }
 
     public async Task<string> DeleteArticle(string id, CancellationToken cancellationToken = default)
