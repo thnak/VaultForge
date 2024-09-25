@@ -25,7 +25,7 @@ public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithL
                 return [];
             }) ?? [];
 
-            var chat = new ChatWithLlama(systemPrompt ?? string.Empty, new Uri("http://thnakdevserver.ddns.net:11434/api"), serviceProvider, model, autoCallTools is true);
+            var chat = new ChatWithLlama(systemPrompt ?? string.Empty, new Uri("http://192.168.1.18:11434/api"), serviceProvider, model, autoCallTools is true);
             chat.History = messages.Any() ? [..messages] : chat.History;
             var mess = images != default ? await chat.ChatAsync(question, images, HttpContext.RequestAborted) : await chat.ChatAsync(question, HttpContext.RequestAborted);
             HttpContext.Response.RegisterForDispose(chat);
@@ -47,6 +47,7 @@ public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithL
         }
         catch (Exception ex)
         {
+            memoryCache.Remove(nameof(ChatWithLlamaController) + systemPrompt);
             logger.LogError(ex, ex.Message);
             return StatusCode(500, ex.Message);
         }
