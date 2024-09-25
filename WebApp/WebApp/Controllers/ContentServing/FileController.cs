@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
-using MongoDB.Bson;
 using Protector.Utils;
 
 namespace WebApp.Controllers.ContentServing;
@@ -151,7 +150,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
             files.Add(file);
         }
 
-        return Content(StringExtension.ToJson(files), MediaTypeNames.Application.Json);
+        return Content(files.ToJson(), MediaTypeNames.Application.Json);
     }
 
     [HttpPost("get-folder-list")]
@@ -163,7 +162,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         var cancelToken = HttpContext.RequestAborted;
         files.AddRange(listFolders.TakeWhile(_ => cancelToken is not { IsCancellationRequested: true }).Select(folderServe.Get).OfType<FolderInfoModel>());
 
-        return Content(StringExtension.ToJson(files), MediaTypeNames.Application.Json);
+        return Content(files.ToJson(), MediaTypeNames.Application.Json);
     }
 
     [HttpGet("get-file-v2")]
@@ -231,7 +230,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
             var res = await folderServe.GetFolderRequestAsync(model => model.RootFolder == rootFolderId && contentFolderTypesList.Contains(model.Type), model => model.RootFolder == rootFolderId && contentFileTypesList.Contains(model.Type),
                 pageSize, page, forceReLoad is true, cancelToken);
             res.Folder = folderSource;
-            return Content(StringExtension.ToJson(res), MediaTypeNames.Application.Json);
+            return Content(res.ToJson(), MediaTypeNames.Application.Json);
         }
         catch (OperationCanceledException)
         {
@@ -252,9 +251,9 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         {
             var cancelToken = HttpContext.RequestAborted;
             var content = await folderServe.GetDeletedContentAsync(userName, pageSize, page, cancellationToken: cancelToken);
-            return Content(StringExtension.ToJson(content), MediaTypeNames.Application.Json);
+            return Content(content.ToJson(), MediaTypeNames.Application.Json);
         }
-        catch (OperationCanceledException e)
+        catch (OperationCanceledException)
         {
             return Ok();
         }
@@ -283,12 +282,16 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                     break;
             }
         }
+        catch (OperationCanceledException)
+        {
+            //
+        }
         catch (Exception)
         {
             //
         }
 
-        return Content(StringExtension.ToJson(folderList), MimeTypeNames.Application.Json);
+        return Content(folderList.ToJson(), MimeTypeNames.Application.Json);
     }
 
     [HttpGet("get-folder-blood-line")]
@@ -297,7 +300,7 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
     public IActionResult GetFolderBloodLine(string id)
     {
         var folders = folderServe.GetFolderBloodLine(id);
-        return Content(StringExtension.ToJson(folders), MimeTypeNames.Application.Json);
+        return Content(folders.ToJson(), MimeTypeNames.Application.Json);
     }
 
 

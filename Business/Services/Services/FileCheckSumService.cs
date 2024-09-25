@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Linq.Expressions;
+using System.Security.Cryptography;
 using System.Text;
 using Business.Business.Interfaces.FileSystem;
 using Business.Models;
@@ -25,11 +26,28 @@ public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLaye
         _ = Task.Run(async () =>
         {
             var cancelToken = _cancellationTokenSource.Token;
-            var cursor = fileSystemBusinessLayer.Where(x => true, cancelToken, model => model.Id, model => model.AbsolutePath, model => model.Checksum);
+            var fieldToFetch = new Expression<Func<FileInfoModel, object>>[]
+            {
+                model => model.Id,
+                model => model.AbsolutePath,
+                model => model.Checksum,
+                model => model.ModifiedTime,
+            };
+            var cursor = fileSystemBusinessLayer.Where(x => true, cancelToken, fieldToFetch);
             await foreach (var item in cursor)
             {
                 if (File.Exists(item.AbsolutePath))
                 {
+                    if (item.Type == FileContentType.DeletedFile)
+                    {
+                        var expirationTime = DateTime.UtcNow - item.ModifiedTime;
+                        if (expirationTime.TotalDays > 30)
+                        {
+                            fileSystemBusinessLayer.Delete(item.Id.ToString());
+                            continue;
+                        }
+                    }
+
                     await using FileStream fileStream = new FileStream(item.AbsolutePath, FileMode.Open, FileAccess.Read, FileShare.Read, BufferSize, FileOptions.SequentialScan);
                     int readByte;
                     var buffer = new byte[BufferSize];
