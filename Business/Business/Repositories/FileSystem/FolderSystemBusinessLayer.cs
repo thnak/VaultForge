@@ -473,8 +473,8 @@ public class FolderSystemBusinessLayer(
 
         var totalFolderDoc = await GetDocumentSizeAsync(folderPredicate, cancellationToken);
         var totalFileDoc = await FileSystemService.GetDocumentSizeAsync(filePredicate, cancellationToken);
-        var totalFilePages = totalFileDoc / pageSize;
-        var totalFolderPages = totalFolderDoc / pageSize;
+        var totalFilePages = Math.Ceiling((double)totalFileDoc / pageSize);
+        var totalFolderPages = Math.Ceiling((double)totalFolderDoc / pageSize);
 
 
         var fieldsFolderToFetch = new Expression<Func<FolderInfoModel, object>>[]
