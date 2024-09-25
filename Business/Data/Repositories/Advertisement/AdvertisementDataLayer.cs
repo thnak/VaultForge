@@ -171,7 +171,6 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
             if (isExists)
                 return (false, AppLang.Article_already_exists);
             
-            model.Id = ObjectId.GenerateNewId();
             model.PublishDate = DateTime.UtcNow.Date;
             model.ModifiedTime = DateTime.UtcNow;
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
@@ -211,6 +210,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
             }
 
             model.ModifiedTime = DateTime.UtcNow;
+            model.PublishDate = DateTime.UtcNow.Date;
             var filter = Builders<ArticleModel>.Filter.Eq(x => x.Id, model.Id);
             await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
             return (true, AppLang.Update_successfully);

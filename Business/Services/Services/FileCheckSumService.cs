@@ -24,8 +24,8 @@ public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLaye
         _ = Task.Run(async () =>
         {
             var cancelToken = _cancellationTokenSource.Token;
-            var curror = fileSystemBusinessLayer.GetAllAsync(cancelToken);
-            await foreach (var item in curror)
+            var cursor = fileSystemBusinessLayer.Where(x => true, cancelToken, model => model.Id, model => model.AbsolutePath, model => model.Checksum);
+            await foreach (var item in cursor)
             {
                 if (File.Exists(item.AbsolutePath))
                 {

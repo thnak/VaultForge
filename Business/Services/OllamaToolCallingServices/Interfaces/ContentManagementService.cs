@@ -1,4 +1,5 @@
-﻿using Business.Business.Interfaces.Advertisement;
+﻿using System.Text;
+using Business.Business.Interfaces.Advertisement;
 using Business.Models;
 using BusinessModels.Advertisement;
 using BusinessModels.Resources;
@@ -10,24 +11,22 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
 {
     public Task<string> GetSupportLanguages(string language, CancellationToken cancellationToken = default)
     {
-        var allowed = AllowedCulture.SupportedCultures.Select(x => x.Name).ToList().ToJson();
+        var allowed = string.Join(", ", AllowedCulture.SupportedCultures.Select(x => x.Name));
         var isSupported = AllowedCulture.SupportedCultures.Any(x => x.Name == language);
-        var result = new { Supported = allowed, IsSupported = isSupported };
-        return Task.FromResult(result.ToJson());
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.Append($"Supported languages: {allowed}. ");
+
+        if (isSupported)
+            stringBuilder.AppendLine($"{language} is supported.");
+        else
+            stringBuilder.AppendLine($"{language} is not supported.");
+
+        return Task.FromResult(stringBuilder.ToString());
     }
 
-    public async Task<string> GetAllArticle(string? language, CancellationToken cancellationToken = default)
+    public async Task<string> GetAllArticle(string language = "en-US", CancellationToken cancellationToken = default)
     {
-        IAsyncEnumerable<ArticleModel> cursor;
-
-        if (string.IsNullOrEmpty(language))
-        {
-            cursor = businessLayer.Where(x => true, cancellationToken, model => model.Id, model => model.Title, model => model.Language, model => model.Summary, model => model.ModifiedTime);
-        }
-        else
-        {
-            cursor = businessLayer.Where(x => x.Language == language, cancellationToken, model => model.Id, model => model.Title, model => model.Language, model => model.Summary, model => model.ModifiedTime);
-        }
+        IAsyncEnumerable<ArticleModel> cursor = businessLayer.Where(x => x.Language == language, cancellationToken, model => model.Id, model => model.Title, model => model.Language, model => model.Summary, model => model.ModifiedTime);
 
         List<ArticleModel> articles = new List<ArticleModel>();
         await foreach (var item in cursor)
@@ -38,25 +37,42 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
         return articles.ToJson();
     }
 
-    public async Task<string> AddNewContent(string title, string language, CancellationToken cancellationToken = default)
+    public async Task<string> AddNewContent(string title, string language = "en-US", CancellationToken cancellationToken = default)
     {
         if (!CheckLanguage(language))
-            return "the current language is not supported. please check the supported languages.";
-        var result = await businessLayer.CreateAsync(new ArticleModel()
+        {
+            var allowed = string.Join(", ", AllowedCulture.SupportedCultures.Select(x => x.Name));
+            return $"the current language is not supported. Supported language is {allowed}. Tell user choose one and try again.";
+        }
+
+        var model = new ArticleModel()
         {
             Title = title,
             Language = language,
-        }, cancellationToken);
-        return result.Item2;
+        };
+        var result = await businessLayer.CreateAsync(model, cancellationToken);
+        if (result.Item1)
+        {
+            return $"Added new article with ID {model.Id}. Remember it to use this article again.";
+        }
+
+        return $"Add failed for article with ID {model.Id}. Reason: {result.Item2}";
     }
 
-    public async Task<string> AddSummary(string title, string language, string summary, CancellationToken cancellationToken = default)
+    public async Task<string> DeleteArticle(string id, CancellationToken cancellationToken = default)
     {
-        if (!CheckLanguage(language))
-            return "the current language is not supported. please check the supported languages.";
-        var article = businessLayer.Get(title, language);
+        var article = businessLayer.Get(id);
         if (article == null)
-            return AppLang.Article_does_not_exist;
+            return "The Article could not be found. Ask user to provide correct article ID and try again. Ask user provide correct article ID and try again.";
+        var result = businessLayer.Delete(id);
+        return result.Item1 ? $"deleted successfully for article {article.Id}." : $"delete failed for article {article.Id}. Ask user to provide correct article ID and try again.";
+    }
+
+    public async Task<string> AddSummary(string id, string summary, CancellationToken cancellationToken = default)
+    {
+        var article = businessLayer.Get(id);
+        if (article == null)
+            return "The Article could not be found. Ask user to provide correct article ID and try again.";
 
         FieldUpdate<ArticleModel> fieldUpdate = new FieldUpdate<ArticleModel>()
         {
@@ -64,26 +80,22 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
         };
 
         var result = await businessLayer.UpdateAsync(article.Id.ToString(), fieldUpdate, cancellationToken);
-        return result.Item2;
+        return result.Item1 ? $"Update successfully for article {article.Id}." : $"Update failed for article {article.Id}. Reason: {result.Item2}";
     }
 
-    public async Task<string> GetContent(string title, string language, CancellationToken cancellationToken = default)
+    public async Task<string> GetContent(string id, CancellationToken cancellationToken = default)
     {
-        if (!CheckLanguage(language))
-            return "the current language is not supported. please check the supported languages.";
-        var article = businessLayer.Get(title, language);
+        var article = businessLayer.Get(id);
         if (article == null)
-            return await Task.FromResult(AppLang.Article_does_not_exist);
-        return await Task.FromResult(article.ToJson());
+            return await Task.FromResult("The article could not be found. Ask user to provide correct article ID and try again.");
+        return await Task.FromResult($"""Use "{article.ToJson<ArticleModel>()}" to response to user""");
     }
 
-    public async Task<string> UpdateHtml(string title, string language, string htmlCode, CancellationToken cancellationToken = default)
+    public async Task<string> UpdateHtml(string id, string htmlCode, CancellationToken cancellationToken = default)
     {
-        if (!CheckLanguage(language))
-            return "the current language is not supported. please check the supported languages.";
-        var article = businessLayer.Get(title, language);
+        var article = businessLayer.Get(id);
         if (article == null)
-            return AppLang.Article_does_not_exist;
+            return "Article could not be found. Ask user to provide correct article ID and try again. Ask user to provide correct article ID and try again.";
 
         FieldUpdate<ArticleModel> fieldUpdate = new FieldUpdate<ArticleModel>()
         {
@@ -91,16 +103,14 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
         };
 
         var result = await businessLayer.UpdateAsync(article.Id.ToString(), fieldUpdate, cancellationToken);
-        return result.Item2;
+        return result.Item1 ? $"Update successfully for article {article.Id}." : $"Update failed for article {article.Id}. Reason: {result.Item2}";
     }
 
-    public async Task<string> UpdateCss(string title, string language, string css, CancellationToken cancellationToken = default)
+    public async Task<string> UpdateCss(string id, string css, CancellationToken cancellationToken = default)
     {
-        if (!CheckLanguage(language))
-            return "the current language is not supported. please check the supported languages.";
-        var article = businessLayer.Get(title, language);
+        var article = businessLayer.Get(id);
         if (article == null)
-            return AppLang.Article_does_not_exist;
+            return "Article could not be found. Ask user to provide correct article ID and try again.";
 
         FieldUpdate<ArticleModel> fieldUpdate = new FieldUpdate<ArticleModel>()
         {
@@ -108,16 +118,14 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
         };
 
         var result = await businessLayer.UpdateAsync(article.Id.ToString(), fieldUpdate, cancellationToken);
-        return result.Item2;
+        return result.Item1 ? $"Update successfully for article {article.Id}." : $"Update failed for article {article.Id}. Reason: {result.Item2}";
     }
 
-    public async Task<string> UpdateJavascript(string title, string language, string javascript, CancellationToken cancellationToken = default)
+    public async Task<string> UpdateJavascript(string id, string javascript, CancellationToken cancellationToken = default)
     {
-        if (!CheckLanguage(language))
-            return "the current language is not supported. please check the supported languages.";
-        var article = businessLayer.Get(title, language);
+        var article = businessLayer.Get(id);
         if (article == null)
-            return AppLang.Article_does_not_exist;
+            return "Article could not be found. Ask user to provide correct article ID and try again.";
 
         FieldUpdate<ArticleModel> fieldUpdate = new FieldUpdate<ArticleModel>()
         {
@@ -125,7 +133,7 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
         };
 
         var result = await businessLayer.UpdateAsync(article.Id.ToString(), fieldUpdate, cancellationToken);
-        return result.Item2;
+        return result.Item1 ? $"Update successfully for article {article.Id}." : $"Update failed for article {article.Id}. Reason: {result.Item2}";
     }
 
     public async Task<string> GetArticleLink(string title, string language, CancellationToken cancellationToken = default)
