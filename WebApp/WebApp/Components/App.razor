@@ -32,23 +32,27 @@
 <body>
 
 @* Loading Progress *@
+
 <div class="refresh-icon" id="refreshIcon" >
     <img alt="reload" src="@Assets["images/200w.gif"]" >
 </div>
 
-<div class="progress-wrapper" id="progress-wrapper" >
-    <div class="progress-box-wrap" >
-        <div class="box one" ></div>
-        <div class="box two" ></div>
-        <div class="box three" ></div>
-        <div class="box four" ></div>
-        <div class="box five" ></div>
-        <div class="box six" ></div>
+@if (IsWasm)
+{
+    <div class="progress-wrapper" id="progress-wrapper" >
+        <div class="progress-box-wrap" >
+            <div class="box one" ></div>
+            <div class="box two" ></div>
+            <div class="box three" ></div>
+            <div class="box four" ></div>
+            <div class="box five" ></div>
+            <div class="box six" ></div>
+        </div>
+        <div class="progress-bar" >
+            <div class="progress" ></div>
+        </div>
     </div>
-    <div class="progress-bar" >
-        <div class="progress" ></div>
-    </div>
-</div>
+}
 
 @* Loading Progress *@
 
@@ -72,7 +76,7 @@
 {
     [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
     private bool IsBot { get; set; }
-
+    private bool IsWasm { get; set; }
 
     protected override void OnInitialized()
     {
@@ -83,21 +87,24 @@
             if (!string.IsNullOrWhiteSpace(agent))
             {
                 IsBot = Regex.IsMatch(agent, @"bot|crawler|baiduspider|80legs|ia_archiver|voyager|curl|wget|yahoo! slurp|mediapartners-google", RegexOptions.IgnoreCase);
+                if (IsBot)
+                    Logger.LogInformation($"[BOT][True]");
             }
-
-            Logger.LogInformation($"[BOT] {IsBot} {HttpContextAccessor?.HttpContext?.Connection.RemoteIpAddress?.ToString()}");
         }
 
+        Logger.LogInformation($"[IP|{HttpContextAccessor?.HttpContext?.Connection.RemoteIpAddress?.ToString()}]");
         base.OnInitialized();
     }
 
     private IComponentRenderMode? RenderModeForPage()
     {
+        IsWasm = false;
         var mode = HttpContext.GetEndpoint()?.Metadata.GetMetadata<RenderModeAttribute>()?.Mode;
         if (mode == null) return null;
 
         if (mode == InteractiveWebAssembly)
         {
+            IsWasm = true;
             return new InteractiveWebAssemblyRenderMode(false);
         }
 
