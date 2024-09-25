@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json;
+using System.Web;
 using BusinessModels.Converter;
 
 namespace BusinessModels.Utils;
@@ -77,7 +78,7 @@ public static class StringExtension
         var stringBuilder = new StringBuilder();
         stringBuilder.Append(source);
         if (!source.EndsWith('/')) stringBuilder.Append('/');
-        stringBuilder.Append(Encode2Base64String(message));
+        stringBuilder.Append(HttpUtility.UrlEncode(Encode2Base64String(message)));
         return stringBuilder.ToString();
     }
 

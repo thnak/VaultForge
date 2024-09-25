@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Web;
 using BusinessModels.System;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
@@ -25,7 +26,7 @@ public partial class ErrorPage : ComponentBase
 
     protected override void OnParametersSet()
     {
-        RecordModel = ErrorMessage.DecodeBase64String<ErrorRecordModel>() ?? RecordModel;
+        RecordModel = HttpUtility.UrlDecode(ErrorMessage).DecodeBase64String<ErrorRecordModel>() ?? RecordModel;
         base.OnParametersSet();
     }
 

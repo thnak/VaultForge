@@ -14,9 +14,13 @@ public class StateContainer
         {
             PaletteLight = new PaletteLight
             {
-                Primary = "#00a3e8",
+                Primary = "#3A6D8C",
+                Secondary = "#6A9AB0",
+                Tertiary = "#EAD8B1",
                 PrimaryContrastText = "#F8F8F8",
-                AppbarBackground = "#ffffff",
+                AppbarBackground = "#001F3F",
+                Background = "#001F3F",
+                Surface = "#001F3F",
                 DrawerIcon = "#68b7d9",
                 AppbarText = "#000000",
                 Warning = Colors.Amber.Default

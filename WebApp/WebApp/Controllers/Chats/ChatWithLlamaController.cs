@@ -15,10 +15,13 @@ public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithL
     [HttpPost("chat")]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
-    public async Task<IActionResult> ChatLama([FromForm] string? systemPrompt, [FromForm] string question, [FromForm] string model, [FromForm] List<string>? images, [FromForm] bool? autoCallTools, [FromForm] bool? showHistory)
+    public async Task<IActionResult> ChatLama([FromForm] string? systemPrompt, [FromForm] string question, [FromForm] string model, [FromForm] List<string>? images, [FromForm] bool? autoCallTools, [FromForm] bool? showHistory, [FromForm] bool? startNew)
     {
         try
         {
+            if(startNew is true)
+                memoryCache.Remove(nameof(ChatWithLlamaController) + systemPrompt);
+            
             List<Message> messages = memoryCache.GetOrCreate<List<Message>>(nameof(ChatWithLlamaController) + systemPrompt, entry =>
             {
                 entry.Priority = CacheItemPriority.NeverRemove;

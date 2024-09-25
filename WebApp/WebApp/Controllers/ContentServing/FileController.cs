@@ -239,6 +239,25 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         return Ok();
     }
 
+    [HttpPost("get-deleted-content")]
+    [AllowAnonymous]
+    [IgnoreAntiforgeryToken]
+    [OutputCache(Duration = 10)]
+    [ResponseCache(Duration = 50)]
+    public async Task<IActionResult> GetDeletedContent([FromForm] string? userName, [FromForm] int pageSize, [FromForm] int page)
+    {
+        try
+        {
+            var cancelToken = HttpContext.RequestAborted;
+            var content = await folderServe.GetDeletedContentAsync(userName, pageSize, page, cancellationToken: cancelToken);
+            return Content(content.ToJson(), MediaTypeNames.Application.Json);
+        }
+        catch (OperationCanceledException e)
+        {
+            return Ok();
+        }
+    }
+
     [HttpPost("search-folder")]
     [IgnoreAntiforgeryToken]
     [OutputCache(Duration = 10, NoStore = true)]

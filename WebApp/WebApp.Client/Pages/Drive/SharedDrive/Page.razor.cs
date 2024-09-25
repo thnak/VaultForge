@@ -377,7 +377,8 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         if (password != null)
             formData.Add(new StringContent(password), "password");
 
-        if (PageStatus == "deleted")
+        bool isDeletedPage = PageStatus == "deleted";
+        if (isDeletedPage)
         {
             ShowHidden = true;
             FolderContentType[] types = [FolderContentType.DeletedFile, FolderContentType.DeletedFolder];
@@ -386,7 +387,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
         formData.Add(new StringContent(forceReload.ToJson()), "forceReLoad");
 
-        var responseMessage = await baseClientService.PostAsync<FolderRequest>("/api/Files/get-folder", formData);
+        var responseMessage = await baseClientService.PostAsync<FolderRequest>(isDeletedPage ? "/api/files/get-deleted-content" : "/api/Files/get-folder", formData);
         if (responseMessage.IsSuccessStatusCode)
         {
             var folder = responseMessage.Data;
@@ -555,7 +556,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             if (response.IsSuccessStatusCode)
             {
                 ToastService.ShowSuccess(response.Message, TypeClassList.ToastDefaultSetting);
-                _ = Task.Run(() => GetRootFolderAsync(forceReload:true));
+                _ = Task.Run(() => GetRootFolderAsync(forceReload: true));
             }
             else
             {
@@ -593,7 +594,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 if (response.IsSuccessStatusCode)
                 {
                     ToastService.ShowSuccess(response.Message, TypeClassList.ToastDefaultSetting);
-                    _ = Task.Run(() => GetRootFolderAsync(forceReload:true));
+                    _ = Task.Run(() => GetRootFolderAsync(forceReload: true));
                 }
                 else
                 {

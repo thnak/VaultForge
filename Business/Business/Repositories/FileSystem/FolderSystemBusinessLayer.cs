@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Linq.Expressions;
 using System.Text;
 using Business.Business.Interfaces.FileSystem;
@@ -460,6 +461,59 @@ public class FolderSystemBusinessLayer(
         }
     }
 
+    public async Task<FolderRequest> GetDeletedContentAsync(string? userName, int pageSize, int page, CancellationToken cancellationToken = default)
+    {
+        page = Math.Max(1, page);
+        page -= 1;
+
+        var user = GetUser(userName);
+        if (user == null) return new FolderRequest();
+        var hashedUsername = user.UserName.ComputeSha256Hash();
+        var folderList = FolderSystemService.Where(x => x.Username == hashedUsername, cancellationToken);
+
+        ConcurrentBag<FileInfoModel> files = new ConcurrentBag<FileInfoModel>();
+        ConcurrentBag<FolderInfoModel> folders = new ConcurrentBag<FolderInfoModel>();
+
+        await Parallel.ForEachAsync(folderList, cancellationToken, async (folder, cancellationTokenSource) =>
+        {
+            if (folder.Type == FolderContentType.DeletedFolder)
+                folders.Add(folder);
+
+            var rootFolder = folder.Id.ToString();
+            var fieldToFetch = new Expression<Func<FileInfoModel, object>>[]
+            {
+                model => model.Id,
+                model => model.FileName,
+                model => model.Thumbnail,
+                model => model.Type,
+                model => model.RootFolder,
+                model => model.ContentType,
+                model => model.RelativePath,
+                model => model.ModifiedTime,
+                model => model.CreatedDate
+            };
+
+            var fileCursor = fileSystemService.Where(x => x.Type == FileContentType.DeletedFile && x.RootFolder == rootFolder, cancellationTokenSource, fieldToFetch);
+            await foreach (var file in fileCursor)
+            {
+                files.Add(file);
+            }
+        });
+
+        var totalFolder = folders.Count;
+        var totalFiles = files.Count;
+        var totalFolderPages = (int)Math.Ceiling(totalFolder / (double)pageSize);
+        var totalFilePages = (int)Math.Ceiling(totalFiles / (double)pageSize);
+
+        return new FolderRequest()
+        {
+            Files = files.Skip(page * pageSize).Take(pageSize).ToArray(),
+            Folders = folders.Skip(page * pageSize).Take(pageSize).ToArray(),
+            TotalFilePages = totalFilePages,
+            TotalFolderPages = totalFolderPages,
+        };
+    }
+
     #region Private Mothods
 
     private async Task<FolderRequest> GetFolderRequest(Expression<Func<FolderInfoModel, bool>> folderPredicate, Expression<Func<FileInfoModel, bool>> filePredicate, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
@@ -531,7 +585,7 @@ public class FolderSystemBusinessLayer(
     /// </summary>
     /// <param name="username"></param>
     /// <returns></returns>
-    public UserModel? GetUser(string username)
+    public UserModel? GetUser(string? username)
     {
         if (string.IsNullOrEmpty(username)) username = "Anonymous";
         var user = UserService.Get(username);
