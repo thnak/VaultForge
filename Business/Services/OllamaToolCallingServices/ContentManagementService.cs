@@ -1,11 +1,12 @@
 ﻿using System.Text;
 using Business.Business.Interfaces.Advertisement;
 using Business.Models;
+using Business.Services.OllamaToolCallingServices.Interfaces;
 using BusinessModels.Advertisement;
 using BusinessModels.Resources;
 using BusinessModels.Utils;
 
-namespace Business.Services.OllamaToolCallingServices.Interfaces;
+namespace Business.Services.OllamaToolCallingServices;
 
 public class ContentManagementService(IAdvertisementBusinessLayer businessLayer) : IContentManagementService
 {
