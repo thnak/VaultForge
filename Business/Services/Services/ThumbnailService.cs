@@ -204,7 +204,7 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
             }
         }
 
-        if (attempts >= maxRetries) logger.LogError($"[File|{fileId}] Too many retries");
+        if (attempts >= maxRetries) Logger.LogError($"[File|{fileId}] Too many retries");
     }
 
 
