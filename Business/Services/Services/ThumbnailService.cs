@@ -199,6 +199,7 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
             catch (IOException)
             {
                 _thumbnailQueue.Add(fileId, cancellationToken);
+                await Task.Delay(10000, cancellationToken);
                 attempts++;
             }
         }
