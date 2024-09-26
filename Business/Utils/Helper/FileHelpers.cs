@@ -293,7 +293,7 @@ public static class FileHelpers
         {
             using SHA256 sha256 = SHA256.Create();
             // Open target stream for writing the file to disk
-            await using var targetStream = File.Create(path);
+            await using var targetStream = new FileStream(path, FileMode.CreateNew, FileAccess.Write, FileShare.None, bufferSize, FileOptions.None);
             var buffer = new byte[bufferSize];
             long totalBytesRead = 0;
 

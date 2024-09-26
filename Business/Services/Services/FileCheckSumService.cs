@@ -82,7 +82,8 @@ public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLaye
                             logger.LogInformation($"File {item.AbsolutePath} is corrupted");
                             await fileSystemBusinessLayer.UpdateAsync(item.Id.ToString(), new FieldUpdate<FileInfoModel>()
                             {
-                                { x => x.Type, FileContentType.CorruptedFile }
+                                { x => x.Type, FileContentType.CorruptedFile },
+                                { x=> x.PreviousType, item.Type }
                             }, cancelToken);
                         }
                     }
@@ -92,7 +93,8 @@ public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLaye
                     logger.LogInformation($"File {item.AbsolutePath} does not exist");
                     await fileSystemBusinessLayer.UpdateAsync(item.Id.ToString(), new FieldUpdate<FileInfoModel>()
                     {
-                        { x => x.Type, FileContentType.MissingFile }
+                        { x => x.Type, FileContentType.MissingFile },
+                        { x=> x.PreviousType, item.Type }
                     }, cancelToken);
                 }
             }
