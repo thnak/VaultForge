@@ -11,21 +11,23 @@
     {
         if (arg.Path.StartsWith(PageRoutes.Drive.Name[1..]))
         {
-            NavBar = @<DriveNavMenu/>;
+            NavBar = @<DriveNavMenu />;
         }
 
         if (arg.Path.StartsWith(PageRoutes.ContentCreator.Index.Src))
         {
-            NavBar = @<ContentManagementNavMenu/>;
+            NavBar = @<ContentManagementNavMenu />;
         }
+
         return Task.CompletedTask;
     }
+
 }
 
-<MudDialogProvider MaxWidth="MaxWidth.False" Position="DialogPosition.Center"/>
-<MudSnackbarProvider Class="toast-move-right-2-left"/>
-<ThemeProvider/>
-<MudPopoverProvider/>
+<MudDialogProvider MaxWidth="MaxWidth.False" Position="DialogPosition.Center" />
+<MudSnackbarProvider Class="toast-move-right-2-left" />
+<ThemeProvider />
+<MudPopoverProvider />
 <BlazoredToasts ErrorIcon="fa-solid fa-bug"
                 IconType="IconType.FontAwesome"
                 InfoIcon="fa-solid fa-info"
@@ -35,47 +37,48 @@
                 ShowCloseButton="true"
                 ShowProgressBar="true"
                 SuccessIcon="fa-regular fa-circle-check" Timeout="10"
-                WarningIcon="fa-solid fa-triangle-exclamation"/>
+                WarningIcon="fa-solid fa-triangle-exclamation" />
 
 
 <MudBreakpointProvider>
-    <Router AppAssembly="@typeof(Program).Assembly" OnNavigateAsync="Navigating">
-        <Found Context="routeData">
+    <Router AppAssembly="@typeof(Program).Assembly" OnNavigateAsync="Navigating" >
+        <Found Context="routeData" >
             <ErrorBoundary>
                 <ChildContent>
 
-                    <AuthorizeRouteView DefaultLayout="@typeof(MainLayout)" RouteData="@routeData">
+                    <AuthorizeRouteView DefaultLayout="@typeof(MainLayout)" RouteData="@routeData" >
                         <NotAuthorized>
-                            <AccessDenied/>
+                            <AccessDenied />
                         </NotAuthorized>
                         <Authorizing>
-                            <Loading/>
+                            <Loading />
                         </Authorizing>
                     </AuthorizeRouteView>
 
                 </ChildContent>
-                <ErrorContent Context="ex">
-                    <ErrorHanding ErrorMessage="@EncodeException(ex)"/>
+                <ErrorContent Context="ex" >
+                    <ErrorHanding ErrorMessage="@EncodeException(ex)" />
                 </ErrorContent>
             </ErrorBoundary>
         </Found>
         <NotFound>
-            <NotFoundComponent/>
+            <NotFoundComponent />
         </NotFound>
         <Navigating>
-            <Loading/>
+            <Loading />
         </Navigating>
     </Router>
 </MudBreakpointProvider>
 
-<SectionContent SectionId="@MainLayout.NavMenu">
+<SectionContent SectionId="@MainLayout.NavMenu" >
     @NavBar
 </SectionContent>
 
 <script>
     function closeLoading() {
         const progressWrapper = document.getElementById("progress-wrapper");
-        progressWrapper.classList.add('closed');
+        if (progressWrapper)
+            progressWrapper.classList.add('closed');
     }
     closeLoading();
 </script>
