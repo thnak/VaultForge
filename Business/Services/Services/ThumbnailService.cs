@@ -8,6 +8,7 @@ using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 
@@ -198,9 +199,12 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
             }
             catch (IOException)
             {
-                _thumbnailQueue.Add(fileId, cancellationToken);
                 await Task.Delay(10000, cancellationToken);
                 attempts++;
+            }
+            catch (MongoException)
+            {
+                Logger.LogWarning($"File with ID {fileId} already exists.");
             }
         }
 
