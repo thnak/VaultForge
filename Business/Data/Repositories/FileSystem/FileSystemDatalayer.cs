@@ -261,9 +261,10 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
     public async Task<(bool, string)> CreateAsync(FileInfoModel model, CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationToken);
         try
         {
+            await _semaphore.WaitAsync(cancellationToken);
+
             var filter = Builders<FileInfoModel>.Filter.Eq(x => x.Id, model.Id);
             var isExist = await _fileDataDb.Find(filter).AnyAsync(cancellationToken: cancellationToken);
             if (!isExist)
@@ -296,9 +297,10 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
     public async Task<(bool, string)> UpdateAsync(FileInfoModel model, CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationToken);
         try
         {
+            await _semaphore.WaitAsync(cancellationToken);
+
             var isExists = await _fileDataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
             if (!isExists)
             {
@@ -342,9 +344,10 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
     public (bool, string) Delete(string key)
     {
-        _semaphore.WaitAsync();
         try
         {
+            _semaphore.WaitAsync();
+
             if (string.IsNullOrWhiteSpace(key)) return (false, AppLang.File_could_not_be_found);
 
             var query = Get(key);

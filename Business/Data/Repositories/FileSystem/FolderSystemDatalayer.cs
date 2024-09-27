@@ -272,32 +272,37 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         {
             await _semaphore.WaitAsync(cancellationToken);
 
-            ObjectId.TryParse(key, out var id);
-            var filter = Builders<FolderInfoModel>.Filter.Eq(f => f.Id, id);
-
-            // Build the update definition by combining multiple updates
-            var updateDefinitionBuilder = Builders<FolderInfoModel>.Update;
-            var updateDefinitions = new List<UpdateDefinition<FolderInfoModel>>();
-
-            if (updates.Any())
+            if (ObjectId.TryParse(key, out var id))
             {
-                updates.Add(model => model.ModifiedTime, DateTime.UtcNow);
-                foreach (var update in updates)
-                {
-                    var fieldName = update.Key;
-                    var fieldValue = update.Value;
+                var filter = Builders<FolderInfoModel>.Filter.Eq(f => f.Id, id);
 
-                    // Add the field-specific update to the list
-                    updateDefinitions.Add(updateDefinitionBuilder.Set(fieldName, fieldValue));
+                // Build the update definition by combining multiple updates
+                var updateDefinitionBuilder = Builders<FolderInfoModel>.Update;
+                var updateDefinitions = new List<UpdateDefinition<FolderInfoModel>>();
+
+                if (updates.Any())
+                {
+                    updates.Add(model => model.ModifiedTime, DateTime.UtcNow);
+                    foreach (var update in updates)
+                    {
+                        var fieldName = update.Key;
+                        var fieldValue = update.Value;
+
+                        // Add the field-specific update to the list
+                        updateDefinitions.Add(updateDefinitionBuilder.Set(fieldName, fieldValue));
+                    }
+
+                    // Combine all update definitions into one
+                    var combinedUpdate = updateDefinitionBuilder.Combine(updateDefinitions);
+
+                    await _dataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
                 }
 
-                // Combine all update definitions into one
-                var combinedUpdate = updateDefinitionBuilder.Combine(updateDefinitions);
-
-                await _dataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
+                return (true, AppLang.Update_successfully);
             }
 
-            return (true, AppLang.Update_successfully);
+
+            return (false, AppLang.Invalid_key);
         }
         catch (OperationCanceledException)
         {
@@ -312,9 +317,9 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
     public async Task<(bool, string)> CreateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationToken);
         try
         {
+            await _semaphore.WaitAsync(cancellationToken);
             var isExists = await _dataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
             if (isExists) return (false, AppLang.Folder_already_exists);
             model.ModifiedTime = DateTime.UtcNow;
@@ -341,9 +346,10 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
     public async Task<(bool, string)> UpdateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationToken);
         try
         {
+            await _semaphore.WaitAsync(cancellationToken);
+
             var isExists = await _dataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
             if (!isExists)
             {

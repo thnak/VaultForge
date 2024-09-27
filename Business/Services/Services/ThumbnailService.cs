@@ -196,6 +196,7 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
                     { x => x.Thumbnail, fileInfo.Thumbnail },
                     { x => x.ExtendResource, fileInfo.ExtendResource }
                 }, cancellationToken);
+                break;
             }
             catch (IOException)
             {
