@@ -18,15 +18,20 @@ public static class FileHelpers
     // method, supply the characters in the _allowedChars field.
     private static readonly byte[] AllowedChars = [];
 
+    private static readonly Dictionary<string, byte[][]> FileSignatureExtend = new()
+    {
+        { ".webp", [[0x52, 0x49, 0x46, 0x46], [0x00, 0x00, 0x00, 0x00], [0x57, 0x45, 0x42, 0x50]] }
+    };
+
     // For more file signatures, see the File Signatures Database (https://www.filesignatures.net/)
     // and the official specifications for the file types you wish to add.
     private static readonly Dictionary<string, List<byte[]>> FileSignature = new()
     {
         { ".gif", ["GIF8"u8.ToArray()] },
         { ".png", [[0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]] },
-        { ".jpeg", [[0xFF, 0xD8, 0xFF, 0xE0], [0xFF, 0xD8, 0xFF, 0xE2], [0xFF, 0xD8, 0xFF, 0xE3]] },
+        { ".jpeg", [[0xFF, 0xD8, 0xFF, 0xE2], [0xFF, 0xD8, 0xFF, 0xE3], [0xFF, 0xD8, 0xFF, 0xDB]] },
         { ".jpg", [[0xFF, 0xD8, 0xFF, 0xE0], [0xFF, 0xD8, 0xFF, 0xE1], [0xFF, 0xD8, 0xFF, 0xE8]] },
-        { ".webp", [[0x57, 0x45, 0x42, 0x50]] },
+        { ".webp", [[0x52, 0x49, 0x46, 0x46]] },
         {
             ".zip",
             [
@@ -315,7 +320,7 @@ public static class FileHelpers
                     checksum.Append(b.ToString("x2"));
                 }
             }
-            
+
 
             // Determine file extension and MIME type (you can implement based on content type)
             var fileExtension = targetStream.GetCorrectExtension(section.ContentType);
@@ -373,24 +378,7 @@ public static class FileHelpers
             return true;
         }
 
-        // Uncomment the following code block if you must permit
-        // files whose signature isn't provided in the _fileSignature
-        // dictionary. We recommend that you add file signatures
-        // for files (when possible) for all file types you intend
-        // to allow on the system and perform the file signature
-        // check.
-        /*
-            if (!_fileSignature.ContainsKey(ext))
-            {
-                return true;
-            }
-            */
 
-        // File signature check
-        // --------------------
-        // With the file signatures provided in the _fileSignature
-        // dictionary, the following code tests the input content's
-        // file signature.
         var signatures = FileSignature[ext];
         var headerBytes = reader.ReadBytes(signatures.Max(m => m.Length));
 
@@ -405,7 +393,10 @@ public static class FileHelpers
             using var reader = new BinaryReader(stream);
             stream.SeekBeginOrigin();
 
-            var headerBytes = reader.ReadBytes(FileSignature.Values.SelectMany(x => x).Max(m => m.Length) * 2);
+            var readLines = FileSignature.Values.SelectMany(x => x).Max(m => m.Length) * 2;
+            readLines = Math.Max(readLines, FileSignatureExtend.Values.SelectMany(x => x).Max(m => m.Length) * 2);
+
+            var headerBytes = reader.ReadBytes(readLines);
 
             foreach (var ext in FileSignature.Keys)
             {
@@ -424,6 +415,10 @@ public static class FileHelpers
             return defaultType ?? string.Empty;
         }
     }
+
+    // private static string GetExtendSignature(byte[] headerBytes)
+    // {
+    // }
 
     public static bool IsSubArray(byte[] largerArray, byte[] subArray)
     {
