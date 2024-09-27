@@ -461,7 +461,7 @@ public static class FileHelpers
 
     public static bool IsImageFile(this string contentType)
     {
-        string[] imageContentTypes = ["image/jpeg", "image/pjpeg", "image/gif", "image/x-png", "image/png", "image/bmp", "image/tiff"];
+        string[] imageContentTypes = ["image/jpeg", "image/pjpeg", "image/gif", "image/x-png", "image/png", "image/bmp", "image/tiff", "image/webp", "image/tiff", "image/x-icon", "image/svg+xml", "image/bmp"];
         return imageContentTypes.Contains(contentType);
     }
 }
