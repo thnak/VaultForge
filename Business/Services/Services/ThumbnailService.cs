@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using Business.Business.Interfaces.FileSystem;
+using Business.Data;
 using Business.Models;
 using Business.Services.Interfaces;
 using Business.Utils.Helper;
@@ -105,7 +106,9 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
         int attempts = 0;
         int maxRetries = 3;
 
-        if (!File.Exists(imagePath))
+        var raidService = ServiceProvider.CreateScope().ServiceProvider.GetService<RedundantArrayOfIndependentDisks>()!;
+
+        if (!raidService.Exists(imagePath))
         {
             Logger.LogWarning($"File at path {imagePath} does not exist.");
             return;
@@ -115,7 +118,8 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
         {
             try
             {
-                await using var imageStream = new FileStream(imagePath, FileMode.Open, FileAccess.Read, FileShare.Read, BufferSize, FileOptions.SequentialScan);
+                MemoryStream imageStream = new MemoryStream();
+                await raidService.ReadGetDataAsync(imageStream, imagePath, cancellationToken);
                 using var image = await Image.LoadAsync(imageStream, cancellationToken);
 
                 // Define thumbnail size with aspect ratio
@@ -153,8 +157,8 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
 
                 // Save the thumbnail
 
-                var thumbnailSize = await SaveStream(thumbnailStream, thumbnailPath, cancellationToken);
-                var extendedImageSize = await SaveStream(extendedImage, extendImagePath, cancellationToken);
+                var thumbnailSize = await SaveStream(raidService, thumbnailStream, thumbnailPath, cancellationToken);
+                var extendedImageSize = await SaveStream(raidService, extendedImage, extendImagePath, cancellationToken);
 
                 FileInfoModel thumbnailFile = new FileInfoModel()
                 {
@@ -212,6 +216,12 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
         if (attempts >= maxRetries) Logger.LogError($"[File|{fileId}] Too many retries");
     }
 
+    private async Task<long> SaveStream(RedundantArrayOfIndependentDisks service, Stream stream, string thumbnailPath, CancellationToken cancellationToken = default)
+    {
+        stream.SeekBeginOrigin(); // Reset stream position
+        var result = await service.WriteDataAsync(stream, thumbnailPath, cancellationToken);
+        return result.TotalByteWritten;
+    }
 
     private async Task<long> SaveStream(Stream stream, string thumbnailPath, CancellationToken cancellationToken = default)
     {

@@ -36,7 +36,8 @@ public static class DatabaseExtensions
         {
             return memberExpression.Member.Name;
         }
-        else if (expression.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression unaryMemberExpression)
+
+        if (expression.Body is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression unaryMemberExpression)
         {
             return unaryMemberExpression.Member.Name;
         }

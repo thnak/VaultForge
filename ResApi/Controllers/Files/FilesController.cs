@@ -1,40 +1,113 @@
 using System.Net.Mime;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using Business.Attribute;
 using Business.Business.Interfaces.FileSystem;
+using Business.Data;
+using Business.Models;
+using Business.Services.Interfaces;
 using Business.Utils.Helper;
-using BusinessModels.General;
 using BusinessModels.General.EnumModel;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
 using BusinessModels.WebContent;
-using BusinessModels.WebContent.Drive;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Protector.Utils;
 
 namespace ResApi.Controllers.Files;
 
+[AllowAnonymous]
+[IgnoreAntiforgeryToken]
 [Route("api/[controller]")]
 [ApiController]
-public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessLayer fileServe, IFolderSystemBusinessLayer folderServe) : ControllerBase
+public class FilesController(
+    IFileSystemBusinessLayer fileServe,
+    IFolderSystemBusinessLayer folderServe,
+    IThumbnailService thumbnailService,
+    ILogger<FilesController> logger,
+    RedundantArrayOfIndependentDisks raidService) : ControllerBase
 {
-    [HttpGet("get-file")]
+    [HttpGet("get-file-wall-paper")]
     [IgnoreAntiforgeryToken]
-    public IActionResult GetFile(string id)
+    [OutputCache(NoStore = true)]
+    [ResponseCache(NoStore = true)]
+    public async Task<IActionResult> GetWallPaper()
     {
-        var file = fileServe.Get(id);
+        var cancelToken = HttpContext.RequestAborted;
+
+        var anonymousUser = "Anonymous".ComputeSha256Hash();
+
+        var rootWallpaperFolder = folderServe.Get(anonymousUser, "/root/wallpaper");
+        if (rootWallpaperFolder == null)
+            return NotFound();
+
+
+        var file = await fileServe.GetRandomFileAsync(rootWallpaperFolder.Id.ToString(), cancelToken);
         if (file == null) return NotFound();
+
+
+        var webpImageContent = file.ExtendResource.FirstOrDefault(x => x.Type == FileContentType.ThumbnailWebpFile);
+        if (webpImageContent != null)
+        {
+            var webpImage = fileServe.Get(webpImageContent.Id);
+            if (webpImage != null)
+            {
+                file = webpImage;
+            }
+        }
+
+        if (!global::System.IO.File.Exists(file.AbsolutePath))
+        {
+            logger.LogError($"File {file.AbsolutePath} not found");
+            return NotFound();
+        }
+
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
-            FileName = HttpUtility.UrlEncode(file.FileName.Replace(".bin", file.ContentType.GetCorrectExtensionFormContentType())),
+            FileName = HttpUtility.UrlEncode(file.FileName),
+            Inline = true, // false = prompt the user for downloading;  true = browser to try to show the file inline,
+            CreationDate = now,
+            ModificationDate = now,
+            ReadDate = now
+        };
+
+        Response.Headers.Append("Content-Disposition", cd.ToString());
+        Response.StatusCode = 200;
+        Response.ContentLength = file.FileSize;
+
+        return PhysicalFile(file.AbsolutePath, file.ContentType, true);
+    }
+
+    [HttpGet("get-file")]
+    [IgnoreAntiforgeryToken]
+    public async Task<IActionResult> GetFile(string id)
+    {
+        var cancelToken = HttpContext.RequestAborted;
+        var file = fileServe.Get(id);
+        if (file == null) return NotFound();
+
+        var webpImageContent = file.ExtendResource.FirstOrDefault(x => x.Type == FileContentType.ThumbnailWebpFile);
+        if (webpImageContent != null)
+        {
+            var webpImage = fileServe.Get(webpImageContent.Id);
+            if (webpImage != null)
+            {
+                file = webpImage;
+            }
+        }
+
+        var now = DateTime.UtcNow;
+        var cd = new ContentDisposition
+        {
+            FileName = HttpUtility.UrlEncode(file.FileName),
             Inline = true, // false = prompt the user for downloading;  true = browser to try to show the file inline,
             CreationDate = now,
             ModificationDate = now,
@@ -45,19 +118,30 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         Response.Headers.ContentType = file.ContentType;
         Response.StatusCode = 200;
         Response.ContentLength = file.FileSize;
-        return PhysicalFile(file.AbsolutePath, file.ContentType, true);
+
+        MemoryStream ms = new MemoryStream();
+        await raidService.ReadGetDataAsync(ms, file.AbsolutePath, cancelToken);
+        Response.RegisterForDispose(ms);
+        return new FileStreamResult(ms, file.ContentType)
+        {
+            FileDownloadName = file.FileName,
+            LastModified = file.ModifiedTime,
+            EnableRangeProcessing = false
+        };
+        // return PhysicalFile(file.AbsolutePath, file.ContentType, true);
     }
 
     [HttpGet("download-file")]
     [IgnoreAntiforgeryToken]
-    public IActionResult DownloadFile(string id)
+    public async Task<IActionResult> DownloadFile(string id)
     {
+        var cancelToken = HttpContext.RequestAborted;
         var file = fileServe.Get(id);
         if (file == null) return NotFound(AppLang.File_not_found_);
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
-            FileName = HttpUtility.UrlEncode(file.FileName.Replace(".bin", file.ContentType.GetCorrectExtensionFormContentType())),
+            FileName = HttpUtility.UrlEncode(file.FileName),
             Inline = false, // false = prompt the user for downloading;  true = browser to try to show the file inline,
             CreationDate = now,
             ModificationDate = now,
@@ -68,7 +152,42 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         Response.Headers.ContentType = file.ContentType;
         Response.StatusCode = 200;
         Response.ContentLength = file.FileSize;
-        return PhysicalFile(file.AbsolutePath, file.ContentType, true);
+        MemoryStream ms = new MemoryStream();
+        await raidService.ReadGetDataAsync(ms, file.AbsolutePath, cancelToken);
+        Response.RegisterForDispose(ms);
+
+        using SHA256 sha256 = SHA256.Create();
+
+        int bytesRead1;
+        byte[] buffer = new byte[1024];
+        while ((bytesRead1 = await ms.ReadAsync(buffer, 0, 1024, cancelToken)) > 0)
+        {
+            sha256.TransformBlock(buffer, 0, bytesRead1, null, 0);
+        }
+
+        ms.Seek(0, SeekOrigin.Begin);
+
+        sha256.TransformFinalBlock([], 0, 0);
+        StringBuilder checksum = new StringBuilder();
+        if (sha256.Hash != null)
+        {
+            foreach (byte b in sha256.Hash)
+            {
+                checksum.Append(b.ToString("x2"));
+            }
+        }
+
+        if (file.Checksum == checksum.ToString())
+        {
+            return new FileStreamResult(ms, file.ContentType)
+            {
+                FileDownloadName = file.FileName,
+                LastModified = file.ModifiedTime,
+                EnableRangeProcessing = false
+            };
+        }
+
+        return BadRequest();
     }
 
     [HttpPost("get-file-list")]
@@ -83,8 +202,6 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
             var file = fileServe.Get(id);
             if (file == null) continue;
             file.AbsolutePath = string.Empty;
-            if (file is { Type: FileContentType.DeletedFile or FileContentType.HiddenFile or FileContentType.ThumbnailFile })
-                continue;
             files.Add(file);
         }
 
@@ -98,12 +215,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     {
         List<FolderInfoModel> files = [];
         var cancelToken = HttpContext.RequestAborted;
-        foreach (var id in listFolders.TakeWhile(_ => cancelToken is not { IsCancellationRequested: true }))
-        {
-            var file = folderServe.Get(id);
-            if (file == null) continue;
-            files.Add(file);
-        }
+        files.AddRange(listFolders.TakeWhile(_ => cancelToken is not { IsCancellationRequested: true }).Select(folderServe.Get).OfType<FolderInfoModel>());
 
         return Content(files.ToJson(), MediaTypeNames.Application.Json);
     }
@@ -134,47 +246,72 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     [HttpPost("get-folder")]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
-    [OutputCache(Duration = 5, NoStore = true)]
-    public IActionResult GetSharedFolder([FromForm] string? id, [FromForm] string? password,
-        [FromForm] int page, [FromForm] int pageSize, [FromForm] string? contentTypes)
+    [OutputCache(Duration = 10)]
+    [ResponseCache(Duration = 50)]
+    public async Task<IActionResult> GetSharedFolder([FromForm] string? id, [FromForm] string? password,
+        [FromForm] int page, [FromForm] int pageSize, [FromForm] string? contentTypes, [FromForm] bool? forceReLoad)
     {
-        var folder = string.IsNullOrEmpty(id) ? folderServe.GetRoot("") : folderServe.Get(id);
-        if (folder == null) return BadRequest(AppLang.Folder_could_not_be_found);
-        if (!string.IsNullOrEmpty(folder.Password))
+        var cancelToken = HttpContext.RequestAborted;
+        try
         {
-            if (password == null || password.ComputeSha256Hash() != folder.Password)
-                return Unauthorized(AppLang.This_resource_is_protected_by_password);
-        }
+            var folderSource = string.IsNullOrEmpty(id) ? folderServe.GetRoot("") : folderServe.Get(id);
+            if (folderSource == null) return BadRequest(AppLang.Folder_could_not_be_found);
+            if (!string.IsNullOrEmpty(folderSource.Password))
+            {
+                if (password == null || password.ComputeSha256Hash() != folderSource.Password)
+                    return Unauthorized(AppLang.This_resource_is_protected_by_password);
+            }
 
-        folder.Password = string.Empty;
+            folderSource.Password = string.Empty;
+            folderSource.Username = string.Empty;
 
-        List<FolderContentType> contentTypesList;
+            List<FolderContentType> contentFolderTypesList = [];
 
-        if (!string.IsNullOrEmpty(contentTypes))
-        {
-            var listString = contentTypes.DeSerialize<List<string>>();
-            if (listString != null) contentTypesList = listString.Select(Enum.Parse<FolderContentType>).ToList();
+            if (!string.IsNullOrEmpty(contentTypes))
+            {
+                var listString = contentTypes.DeSerialize<FolderContentType[]>();
+                if (listString != null) contentFolderTypesList = listString.ToList();
+            }
             else
             {
-                contentTypesList = contentTypes.DeSerialize<List<FolderContentType>>() ?? [];
+                contentFolderTypesList = [FolderContentType.File, FolderContentType.Folder];
             }
+
+            if (!contentFolderTypesList.Any(x => x is FolderContentType.DeletedFile or FolderContentType.DeletedFolder))
+                contentFolderTypesList.Add(FolderContentType.SystemFolder);
+
+            var contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).Distinct().ToList();
+            string rootFolderId = folderSource.Id.ToString();
+            var res = await folderServe.GetFolderRequestAsync(model => model.RootFolder == rootFolderId && contentFolderTypesList.Contains(model.Type), model => model.RootFolder == rootFolderId && contentFileTypesList.Contains(model.Type),
+                pageSize, page, forceReLoad is true, cancelToken);
+            res.Folder = folderSource;
+            return Content(res.ToJson(), MediaTypeNames.Application.Json);
         }
-        else
+        catch (OperationCanceledException)
         {
-            contentTypesList = Enum.GetValues<FolderContentType>().ToList();
+            logger.LogInformation("Request cancelled");
         }
 
-        page -= 1;
+        return Ok();
+    }
 
-        folder.Contents = folder.Contents.Where(x => contentTypesList.Contains(x.Type)).ToList();
-        var size = (int)Math.Ceiling(folder.Contents.Count / (float)pageSize);
-        folder.Contents = folder.Contents.Skip(page * pageSize).Take(pageSize).ToList();
-        FolderRequest folderRequest = new FolderRequest()
+    [HttpPost("get-deleted-content")]
+    [AllowAnonymous]
+    [IgnoreAntiforgeryToken]
+    [OutputCache(Duration = 10)]
+    [ResponseCache(Duration = 50)]
+    public async Task<IActionResult> GetDeletedContent([FromForm] string? userName, [FromForm] int pageSize, [FromForm] int page)
+    {
+        try
         {
-            Folder = folder,
-            TotalFolderPages = size
-        };
-        return Content(folderRequest.ToJson(), MediaTypeNames.Application.Json);
+            var cancelToken = HttpContext.RequestAborted;
+            var content = await folderServe.GetDeletedContentAsync(userName, pageSize, page, cancellationToken: cancelToken);
+            return Content(content.ToJson(), MediaTypeNames.Application.Json);
+        }
+        catch (OperationCanceledException)
+        {
+            return Ok();
+        }
     }
 
     [HttpPost("search-folder")]
@@ -199,6 +336,10 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
                 if (folderList.Count == 10)
                     break;
             }
+        }
+        catch (OperationCanceledException)
+        {
+            //
         }
         catch (Exception)
         {
@@ -239,9 +380,37 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         if (folder == null) return BadRequest(AppLang.Folder_could_not_be_found);
         if (string.IsNullOrEmpty(newName))
             return BadRequest(AppLang.ThisFieldIsRequired);
+
+        var rootFolder = folderServe.GetRoot(folder.RootFolder);
+        if (rootFolder == default)
+            return BadRequest();
+
         folder.FolderName = newName;
+        folder.RelativePath = rootFolder.RelativePath + "/" + newName;
+
         var status = await folderServe.UpdateAsync(folder);
         return status.Item1 ? Ok(status.Item2) : BadRequest(status.Item2);
+    }
+
+    [HttpPost("restore-content")]
+    [IgnoreAntiforgeryToken]
+    [AllowAnonymous]
+    public async Task<IActionResult> RestoreContent([FromForm] string id, [FromForm] bool isFile)
+    {
+        if (isFile)
+        {
+            var file = fileServe.Get(id);
+            if (file == null) return BadRequest(AppLang.File_not_found_);
+            var result = await fileServe.UpdateAsync(id, new FieldUpdate<FileInfoModel>() { { model => model.Type, file.PreviousType } });
+            return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
+        }
+
+        {
+            var folder = folderServe.Get(id);
+            if (folder == null) return BadRequest(AppLang.File_not_found_);
+            var result = await folderServe.UpdateAsync(id, new FieldUpdate<FolderInfoModel>() { { model => model.Type, folder.PreviousType } });
+            return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
+        }
     }
 
     [HttpDelete("delete-file")]
@@ -265,45 +434,18 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
 
     [HttpDelete("safe-delete-file")]
     [IgnoreAntiforgeryToken]
-    public async Task<IActionResult> SafeDeleteFile(string code)
+    public IActionResult SafeDeleteFile(string code)
     {
-        var file = fileServe.Get(code);
-        if (file == default) return NotFound(AppLang.File_not_found_);
-        if (file is { Type: FileContentType.File or FileContentType.HiddenFile })
-        {
-            file.Type = FileContentType.DeletedFile;
-            var result = await fileServe.UpdateAsync(file);
-            return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
-        }
-        else
-        {
-            var result = fileServe.Delete(file.Id.ToString());
-            return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
-        }
+        var result = fileServe.Delete(code);
+        return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
     }
 
     [HttpDelete("safe-delete-folder")]
     [IgnoreAntiforgeryToken]
-    public async Task<IActionResult> SafeDeleteFolder(string code)
+    public IActionResult SafeDeleteFolder(string code)
     {
-        var folder = folderServe.Get(code);
-        if (folder == default) return NotFound(AppLang.Folder_could_not_be_found);
-
-        if (folder.RelativePath == "/root")
-            return BadRequest(AppLang.Could_not_remove_root_folder);
-
-        if (folder is { Type: FolderContentType.Folder or FolderContentType.HiddenFolder })
-        {
-            folder.Type = FolderContentType.DeletedFolder;
-            var updateResult = await folderServe.UpdateAsync(folder);
-            return updateResult.Item1 ? Ok(updateResult.Item2) : BadRequest(updateResult.Item2);
-        }
-
-        else
-        {
-            var updateResult = folderServe.Delete(folder.Id.ToString());
-            return updateResult.Item1 ? Ok(updateResult.Item2) : BadRequest(updateResult.Item2);
-        }
+        var updateResult = folderServe.Delete(code);
+        return updateResult.Item1 ? Ok(updateResult.Item2) : BadRequest(updateResult.Item2);
     }
 
 
@@ -320,6 +462,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     [IgnoreAntiforgeryToken]
     public async Task<IActionResult> MoveFile2([FromForm] List<string> fileCodes, [FromForm] string currentFolderCode, [FromForm] string targetFolderCode, [FromForm] string? password)
     {
+        var cancelToken = HttpContext.RequestAborted;
         var currentFolder = folderServe.Get(currentFolderCode);
         if (currentFolder == null) return NotFound(AppLang.Current_folder_could_not_have_found);
 
@@ -368,9 +511,9 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
 
         currentFolder.Contents = contentsDict.Values.ToList();
 
-        await folderServe.UpdateAsync(targetFolder);
-        await folderServe.UpdateAsync(currentFolder);
-        await foreach (var x in fileServe.UpdateAsync(files!))
+        await folderServe.UpdateAsync(targetFolder, cancelToken);
+        await folderServe.UpdateAsync(currentFolder, cancelToken);
+        await foreach (var x in fileServe.UpdateAsync(files!, cancelToken))
             if (!x.Item1)
                 ModelState.AddModelError(AppLang.File, x.Item2);
 
@@ -409,6 +552,9 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
     {
         var folderKeyString = AppLang.Folder;
         var fileKeyString = AppLang.File;
+        var cancelToken = HttpContext.RequestAborted;
+
+
         try
         {
             if (string.IsNullOrEmpty(Request.ContentType) || !MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
@@ -419,7 +565,6 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
 
             HttpContext.Request.Headers.TryGetValue("Folder", out var folderValues);
 
-            var user = HttpContext.User.Identity?.Name ?? string.Empty;
             var folderCodes = folderValues.ToString();
 
             if (string.IsNullOrEmpty(folderCodes))
@@ -428,8 +573,8 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
                 return BadRequest(ModelState);
             }
 
-            folderServe.GetRoot(user);
-            var folder = folderServe.Get(user, folderCodes);
+            // folderServe.GetRoot(user);
+            var folder = folderServe.Get(folderCodes);
             if (folder == null)
             {
                 ModelState.AddModelError(folderKeyString, AppLang.Folder_could_not_be_found);
@@ -438,7 +583,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
 
             var boundary = MediaTypeHeaderValue.Parse(Request.ContentType).GetBoundary(int.MaxValue);
             var reader = new MultipartReader(boundary, HttpContext.Request.Body);
-            var section = await reader.ReadNextSectionAsync();
+            var section = await reader.ReadNextSectionAsync(cancelToken);
             while (section != null && HttpContext.RequestAborted is { IsCancellationRequested: false })
             {
                 var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition);
@@ -456,28 +601,46 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
                         {
                             FileName = trustedFileNameForDisplay
                         };
-                        folder = folderServe.Get(user, folderCodes);
+
+                        folder = folderServe.Get(folderCodes);
                         if (folder == null)
                         {
-                            ModelState.AddModelError(folderKeyString, AppLang.Folder_could_not_be_found);
+                            if (ModelState.IsValid)
+                                return Ok(AppLang.Successfully_uploaded);
                             return BadRequest(ModelState);
                         }
 
-                        folderServe.CreateFileAsync(folder, file);
-                        (file.FileSize, file.ContentType) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState, HttpContext.RequestAborted);
-                        if (file.FileSize > 0)
-                            await fileServe.UpdateAsync(file);
-                        else
+                        var createFileResult = await folderServe.CreateFileAsync(folder, file, cancelToken);
+                        if (createFileResult.Item1)
                         {
-                            fileServe.Delete(file.Id.ToString());
-                            folder = folderServe.Get(user, folderCodes)!;
-                            folder.Contents = folder.Contents.Where(x => x.Id != file.Id.ToString()).ToList();
-                            await folderServe.UpdateAsync(folder);
+                            var saveResult = await raidService.WriteDataAsync(section.Body, file.AbsolutePath, cancelToken);
+                            (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, section.ContentType ?? string.Empty, saveResult.CheckSum);
+                            if (string.IsNullOrEmpty(file.ContentType))
+                            {
+                                file.ContentType = section.ContentType ?? string.Empty;
+                            }
+                            if (file.FileSize > 0)
+                            {
+                                var updateResult = await fileServe.UpdateAsync(file, cancelToken);
+                                if (updateResult.Item1)
+                                {
+                                    await thumbnailService.AddThumbnailRequest(file.Id.ToString());
+                                }
+                                else
+                                {
+                                    logger.LogError(updateResult.Item2);
+                                }
+                            }
+                            else
+                            {
+                                logger.LogWarning($"File empty. deleting {file.FileName}");
+                                fileServe.Delete(file.Id.ToString());
+                            }
                         }
                     }
                 }
 
-                section = await reader.ReadNextSectionAsync();
+                section = await reader.ReadNextSectionAsync(cancelToken);
             }
 
             if (ModelState.IsValid)
@@ -492,6 +655,7 @@ public class FilesController(IOptions<AppSettings> options, IFileSystemBusinessL
         catch (Exception e)
         {
             ModelState.AddModelError(AppLang.Exception, e.Message);
+            logger.LogError(e, null);
             return StatusCode(500, ModelState);
         }
     }

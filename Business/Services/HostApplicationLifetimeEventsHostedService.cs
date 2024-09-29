@@ -1,3 +1,4 @@
+using Business.Data;
 using Business.Data.Interfaces.Advertisement;
 using Business.Data.Interfaces.Chat;
 using Business.Data.Interfaces.FileSystem;
@@ -37,6 +38,7 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
         scope.ServiceProvider.GetService<IFolderSystemDatalayer>()?.InitializeAsync(cancelToken);
         scope.ServiceProvider.GetService<IAdvertisementDataLayer>()?.InitializeAsync(cancelToken);
         scope.ServiceProvider.GetService<IChatWithLlmDataLayer>()?.InitializeAsync(cancelToken);
+        scope.ServiceProvider.GetService<RedundantArrayOfIndependentDisks>()?.InitializeAsync(cancelToken);
         var thumbnailService = scope.ServiceProvider.GetService<IThumbnailService>();
         if (thumbnailService != null)
         {

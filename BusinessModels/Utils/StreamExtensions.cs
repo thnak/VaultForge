@@ -3,7 +3,7 @@
 public static class StreamExtensions
 {
     /// <summary>
-    /// if it can be seeking. seek it first!
+    /// seek when posible
     /// </summary>
     /// <param name="self"></param>
     public static void SeekBeginOrigin(this Stream self)

@@ -6,6 +6,7 @@ using Business.Business.Repositories.Advertisement;
 using Business.Business.Repositories.Chat;
 using Business.Business.Repositories.FileSystem;
 using Business.Business.Repositories.User;
+using Business.Data;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.Advertisement;
 using Business.Data.Interfaces.Chat;
@@ -94,6 +95,8 @@ public class Program
 
         builder.Services.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
 
+        builder.Services.AddSingleton<RedundantArrayOfIndependentDisks>();
+        
         builder.Services.AddSingleton<IUserDataLayer, UserDataLayer>();
         builder.Services.AddSingleton<IUserBusinessLayer, UserBusinessLayer>();
 

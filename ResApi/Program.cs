@@ -4,20 +4,31 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.RateLimiting;
 using Business.Authenticate.AuthorizationRequirement;
 using Business.Authenticate.TokenProvider;
+using Business.Business.Interfaces.Advertisement;
+using Business.Business.Interfaces.Chat;
 using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.User;
+using Business.Business.Repositories.Advertisement;
+using Business.Business.Repositories.Chat;
 using Business.Business.Repositories.FileSystem;
 using Business.Business.Repositories.User;
+using Business.Data;
 using Business.Data.Interfaces;
+using Business.Data.Interfaces.Advertisement;
+using Business.Data.Interfaces.Chat;
 using Business.Data.Interfaces.FileSystem;
 using Business.Data.Interfaces.User;
 using Business.Data.Repositories;
+using Business.Data.Repositories.Advertisement;
+using Business.Data.Repositories.Chat;
 using Business.Data.Repositories.FileSystem;
 using Business.Data.Repositories.User;
 using Business.Exceptions;
 using Business.KeyManagement;
 using Business.Models;
 using Business.Services;
+using Business.Services.Interfaces;
+using Business.Services.Services;
 using BusinessModels.Converter;
 using BusinessModels.General;
 using BusinessModels.Resources;
@@ -67,16 +78,28 @@ public abstract class Program
         builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
         builder.Services.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
+
+        builder.Services.AddSingleton<RedundantArrayOfIndependentDisks>();
+        
         builder.Services.AddSingleton<IUserDataLayer, UserDataLayer>();
         builder.Services.AddSingleton<IUserBusinessLayer, UserBusinessLayer>();
+
         builder.Services.AddSingleton<IFolderSystemDatalayer, FolderSystemDatalayer>();
         builder.Services.AddSingleton<IFolderSystemBusinessLayer, FolderSystemBusinessLayer>();
+
         builder.Services.AddSingleton<IFileSystemDatalayer, FileSystemDatalayer>();
         builder.Services.AddSingleton<IFileSystemBusinessLayer, FileSystemBusinessLayer>();
 
-        builder.Services.AddSingleton<IMongoDbXmlKeyProtectorRepository, MongoDbXmlKeyProtectorRepository>();
+        builder.Services.AddSingleton<IAdvertisementDataLayer, AdvertisementDataLayer>();
+        builder.Services.AddSingleton<IAdvertisementBusinessLayer, AdvertisementBusinessLayer>();
 
+        builder.Services.AddSingleton<IChatWithLlmDataLayer, ChatWithLlmDataLayer>();
+        builder.Services.AddSingleton<IChatWithLlmBusinessLayer, ChatWithLlmBusinessLayer>();
+
+        builder.Services.AddSingleton<IThumbnailService, ThumbnailService>();
+        
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
+        builder.Services.AddHostedService<FileCheckSumService>();
 
         #region Cultures
 

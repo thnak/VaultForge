@@ -418,6 +418,30 @@ public static class FileHelpers
         }
     }
 
+    public static string GetCorrectExtension(this byte[] headerBytes, string? defaultType = null)
+    {
+        try
+        {
+            foreach (var ext in FileSignature.Keys)
+            {
+                var signatures = FileSignature[ext];
+                var result = signatures.Any(signature => IsSubArray(headerBytes, signature));
+                if (result)
+                {
+                    return ext;
+                }
+            }
+
+            var ex = MimeTypeMappings.FirstOrDefault(x => x.Value == defaultType || x.Key == defaultType);
+            return ex.Key ?? string.Empty;
+        }
+        catch (Exception)
+        {
+            var ex = MimeTypeMappings.FirstOrDefault(x => x.Value == defaultType || x.Key == defaultType);
+            return ex.Key ?? string.Empty;
+        }
+    }
+
     // private static string GetExtendSignature(byte[] headerBytes)
     // {
     // }

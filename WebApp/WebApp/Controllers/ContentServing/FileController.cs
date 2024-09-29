@@ -1,7 +1,10 @@
 using System.Net.Mime;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using Business.Attribute;
 using Business.Business.Interfaces.FileSystem;
+using Business.Data;
 using Business.Models;
 using Business.Services.Interfaces;
 using Business.Utils.Helper;
@@ -24,7 +27,12 @@ namespace WebApp.Controllers.ContentServing;
 [IgnoreAntiforgeryToken]
 [Route("api/[controller]")]
 [ApiController]
-public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBusinessLayer folderServe, IThumbnailService thumbnailService, ILogger<FilesController> logger) : ControllerBase
+public class FilesController(
+    IFileSystemBusinessLayer fileServe,
+    IFolderSystemBusinessLayer folderServe,
+    IThumbnailService thumbnailService,
+    ILogger<FilesController> logger,
+    RedundantArrayOfIndependentDisks raidService) : ControllerBase
 {
     [HttpGet("get-file-wall-paper")]
     [IgnoreAntiforgeryToken]
@@ -80,8 +88,9 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
 
     [HttpGet("get-file")]
     [IgnoreAntiforgeryToken]
-    public IActionResult GetFile(string id)
+    public async Task<IActionResult> GetFile(string id)
     {
+        var cancelToken = HttpContext.RequestAborted;
         var file = fileServe.Get(id);
         if (file == null) return NotFound();
 
@@ -109,13 +118,24 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         Response.Headers.ContentType = file.ContentType;
         Response.StatusCode = 200;
         Response.ContentLength = file.FileSize;
-        return PhysicalFile(file.AbsolutePath, file.ContentType, true);
+
+        MemoryStream ms = new MemoryStream();
+        await raidService.ReadGetDataAsync(ms, file.AbsolutePath, cancelToken);
+        Response.RegisterForDispose(ms);
+        return new FileStreamResult(ms, file.ContentType)
+        {
+            FileDownloadName = file.FileName,
+            LastModified = file.ModifiedTime,
+            EnableRangeProcessing = false
+        };
+        // return PhysicalFile(file.AbsolutePath, file.ContentType, true);
     }
 
     [HttpGet("download-file")]
     [IgnoreAntiforgeryToken]
-    public IActionResult DownloadFile(string id)
+    public async Task<IActionResult> DownloadFile(string id)
     {
+        var cancelToken = HttpContext.RequestAborted;
         var file = fileServe.Get(id);
         if (file == null) return NotFound(AppLang.File_not_found_);
         var now = DateTime.UtcNow;
@@ -132,7 +152,42 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
         Response.Headers.ContentType = file.ContentType;
         Response.StatusCode = 200;
         Response.ContentLength = file.FileSize;
-        return PhysicalFile(file.AbsolutePath, file.ContentType, true);
+        MemoryStream ms = new MemoryStream();
+        await raidService.ReadGetDataAsync(ms, file.AbsolutePath, cancelToken);
+        Response.RegisterForDispose(ms);
+
+        using SHA256 sha256 = SHA256.Create();
+
+        int bytesRead1;
+        byte[] buffer = new byte[1024];
+        while ((bytesRead1 = await ms.ReadAsync(buffer, 0, 1024, cancelToken)) > 0)
+        {
+            sha256.TransformBlock(buffer, 0, bytesRead1, null, 0);
+        }
+
+        ms.Seek(0, SeekOrigin.Begin);
+
+        sha256.TransformFinalBlock([], 0, 0);
+        StringBuilder checksum = new StringBuilder();
+        if (sha256.Hash != null)
+        {
+            foreach (byte b in sha256.Hash)
+            {
+                checksum.Append(b.ToString("x2"));
+            }
+        }
+
+        if (file.Checksum == checksum.ToString())
+        {
+            return new FileStreamResult(ms, file.ContentType)
+            {
+                FileDownloadName = file.FileName,
+                LastModified = file.ModifiedTime,
+                EnableRangeProcessing = false
+            };
+        }
+
+        return BadRequest();
     }
 
     [HttpPost("get-file-list")]
@@ -558,7 +613,14 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                         var createFileResult = await folderServe.CreateFileAsync(folder, file, cancelToken);
                         if (createFileResult.Item1)
                         {
-                            (file.FileSize, file.ContentType, file.Checksum) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState, cancelToken);
+                            // (file.FileSize, file.ContentType, file.Checksum) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState, cancelToken);
+
+                            var saveResult = await raidService.WriteDataAsync(section.Body, file.AbsolutePath, cancelToken);
+                            (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, section.ContentType ?? string.Empty, saveResult.CheckSum);
+                            if (string.IsNullOrEmpty(file.ContentType))
+                            {
+                                file.ContentType = section.ContentType ?? string.Empty;
+                            }
 
                             if (file.FileSize > 0)
                             {
@@ -575,6 +637,8 @@ public class FilesController(IFileSystemBusinessLayer fileServe, IFolderSystemBu
                             else
                             {
                                 logger.LogWarning($"File empty. deleting {file.FileName}");
+                                // double call to delete trash
+                                fileServe.Delete(file.Id.ToString());
                                 fileServe.Delete(file.Id.ToString());
                             }
                         }

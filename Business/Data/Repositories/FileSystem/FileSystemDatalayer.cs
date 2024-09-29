@@ -14,7 +14,7 @@ using MongoDB.Driver;
 
 namespace Business.Data.Repositories.FileSystem;
 
-public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSystemDatalayer> logger, IMemoryCache memoryCache) : IFileSystemDatalayer
+public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSystemDatalayer> logger, IMemoryCache memoryCache, RedundantArrayOfIndependentDisks raidService) : IFileSystemDatalayer
 {
     private readonly IMongoCollection<FileInfoModel> _fileDataDb = context.MongoDatabase.GetCollection<FileInfoModel>("FileInfo");
     private readonly IMongoCollection<FileMetadataModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileMetadataModel>("FileMetaData");
@@ -23,9 +23,10 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationToken);
         try
         {
+            await _semaphore.WaitAsync(cancellationToken);
+
             var absolutePathKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath);
             var absolutePathIndexModel = new CreateIndexModel<FileInfoModel>(absolutePathKey, new CreateIndexOptions { Unique = true });
 
@@ -357,6 +358,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             if (ObjectId.TryParse(key, out var id)) filter |= Builders<FileInfoModel>.Filter.Eq(x => x.Id, id);
 
             _fileDataDb.DeleteMany(filter);
+            raidService.Delete(query.AbsolutePath);
 
             try
             {
