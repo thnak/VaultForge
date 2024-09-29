@@ -29,6 +29,7 @@ using MessagePack;
 using MessagePack.Resolvers;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Services;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Options;
 using Protector.Certificates.Models;
@@ -62,6 +63,12 @@ public class Program
         builder.Services.Configure<KestrelServerOptions>(options =>
         {
             options.Limits.MaxRequestBodySize = int.MaxValue; // if don't set default value is: 30 MB
+        });
+        builder.Services.Configure<FormOptions>(x =>
+        {
+            x.ValueLengthLimit = int.MaxValue;
+            x.MultipartBodyLengthLimit = int.MaxValue; // if don't set default value is: 128 MB
+            x.MultipartHeadersLengthLimit = int.MaxValue;
         });
 
         builder.Services.AddFrontEndService();
@@ -101,7 +108,7 @@ public class Program
         builder.Services.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
 
         builder.Services.AddSingleton<RedundantArrayOfIndependentDisks>();
-        
+
         builder.Services.AddSingleton<IUserDataLayer, UserDataLayer>();
         builder.Services.AddSingleton<IUserBusinessLayer, UserBusinessLayer>();
 
@@ -118,7 +125,7 @@ public class Program
         builder.Services.AddSingleton<IChatWithLlmBusinessLayer, ChatWithLlmBusinessLayer>();
 
         builder.Services.AddSingleton<IThumbnailService, ThumbnailService>();
-        
+
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
         builder.Services.AddHostedService<FileCheckSumService>();
 
