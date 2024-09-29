@@ -2,284 +2,219 @@
 using System.Security.Cryptography;
 using System.Text;
 
-async Task ReadAsync(List<string> source, Stream outputStream, int stripeSize)
+async Task<long> WriteDataAsync(Stream inputStream, int stripeSize, string file1Path, string file2Path, string file3Path)
 {
-    int numDisks = source.Count;
-    byte[] buffer = new byte[stripeSize];
+    long totalByteRead = 0;
 
-    // Initialize streams for each disk
-    var diskStreams = source.Select(x => new FileStream(
-        x,
-        FileMode.Open,
-        FileAccess.Read,
-        FileShare.None,
-        stripeSize,
-        true)).ToList();
+    await using FileStream file1 = new FileStream(file1Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize, useAsync: true);
+    await using FileStream file2 = new FileStream(file2Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize, useAsync: true);
+    await using FileStream file3 = new FileStream(file3Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize, useAsync: true);
 
-    int stripeIndex = numDisks - 1;
-    int currentIndex = 0;
-    long totalBytes = 0;
-    int totalBytesRead = 0;
-    int numberOfEnd = 0;
-    while (true)
+    byte[] buffer1 = new byte[stripeSize];
+    byte[] buffer2 = new byte[stripeSize];
+    int bytesRead1;
+    int stripeIndex = 0;
+
+    while ((bytesRead1 = await inputStream.ReadAsync(buffer1, 0, stripeSize)) > 0)
     {
-        totalBytesRead = await diskStreams[currentIndex].ReadAsync(buffer, 0, stripeSize);
-        totalBytes += totalBytesRead;
-        if (currentIndex != stripeIndex)
-            await outputStream.WriteAsync(buffer, 0, totalBytesRead);
-        currentIndex++;
-        if (currentIndex == numDisks)
-            currentIndex = 0;
-        stripeIndex--;
-        if (stripeIndex < 0)
-            stripeIndex = numDisks - 1;
-        if (totalBytesRead == 0)
-            numberOfEnd++;
-        if (numberOfEnd == numDisks) break;
-    }
+        var bytesRead2 = await inputStream.ReadAsync(buffer2, 0, stripeSize);
+        totalByteRead += bytesRead1 + bytesRead2;
 
-    foreach (var stream in diskStreams)
-    {
-        await stream.FlushAsync();
-        stream.Dispose();
-    }
+        var parityBuffer = XorParity(buffer1, buffer2);
 
-    Console.WriteLine($@"{totalBytes:N0} bytes written restore");
-}
-
-async Task WriteDataAsync(Stream inputStream, int stripeSize, string file1Path, string file2Path, string file3Path)
-{
-    // Open file streams for writing
-    await using (FileStream file1 = new FileStream(file1Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize, useAsync: true))
-    await using (FileStream file2 = new FileStream(file2Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize, useAsync: true))
-    await using (FileStream file3 = new FileStream(file3Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize, useAsync: true))
-    {
-        byte[] buffer1 = new byte[stripeSize];
-        byte[] buffer2 = new byte[stripeSize];
-        int bytesRead1, bytesRead2;
-        int stripeIndex = 0;
-
-        while ((bytesRead1 = await inputStream.ReadAsync(buffer1, 0, stripeSize)) > 0)
+        // Determine which file gets the parity for this stripe
+        switch (stripeIndex % 3)
         {
-            bytesRead2 = await inputStream.ReadAsync(buffer2, 0, stripeSize);
-            var parityBuffer = XorParity(buffer1, buffer2);
-
-            // Determine which file gets the parity for this stripe
-            switch (stripeIndex % 3)
-            {
-                case 0:
-                    // Parity goes to file 3
-                    await file1.WriteAsync(buffer1, 0, bytesRead1);
-                    await file2.WriteAsync(buffer2, 0, bytesRead2);
-                    await file3.WriteAsync(parityBuffer, 0, Math.Max(bytesRead1, bytesRead2));
-                    break;
-                case 1:
-                    // Parity goes to file 2
-                    await file1.WriteAsync(buffer1, 0, bytesRead1);
-                    await file2.WriteAsync(parityBuffer, 0, Math.Max(bytesRead1, bytesRead2));
-                    await file3.WriteAsync(buffer2, 0, bytesRead2);
-                    break;
-                case 2:
-                    // Parity goes to file 1
-                    await file1.WriteAsync(parityBuffer, 0, Math.Max(bytesRead1, bytesRead2));
-                    await file2.WriteAsync(buffer1, 0, bytesRead1);
-                    await file3.WriteAsync(buffer2, 0, bytesRead2);
-                    break;
-            }
-
-            stripeIndex++;
+            case 0:
+                // Parity goes to file 3
+                await file1.WriteAsync(buffer1, 0, bytesRead1);
+                await file2.WriteAsync(buffer2, 0, bytesRead2);
+                await file3.WriteAsync(parityBuffer, 0, stripeSize);
+                break;
+            case 1:
+                // Parity goes to file 2\
+                await file1.WriteAsync(buffer1, 0, bytesRead1);
+                await file2.WriteAsync(parityBuffer, 0, stripeSize);
+                await file3.WriteAsync(buffer2, 0, bytesRead2);
+                break;
+            case 2:
+                // Parity goes to file 1
+                await file1.WriteAsync(parityBuffer, 0, stripeSize);
+                await file2.WriteAsync(buffer1, 0, bytesRead1);
+                await file3.WriteAsync(buffer2, 0, bytesRead2);
+                break;
         }
+
+        stripeIndex++;
     }
+
+
+    return totalByteRead;
 }
-
-async Task ReadDataAsync(Stream outputStream, int stripeSize, string file1Path, string file2Path, string file3Path)
-{
-    // Open file streams for reading
-    using (FileStream file1 = new FileStream(file1Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: stripeSize, useAsync: true))
-    using (FileStream file2 = new FileStream(file2Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: stripeSize, useAsync: true))
-    using (FileStream file3 = new FileStream(file3Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: stripeSize, useAsync: true))
-    {
-        byte[] buffer1 = new byte[stripeSize];
-        byte[] buffer2 = new byte[stripeSize];
-        byte[] parityBuffer = new byte[stripeSize];
-        int bytesRead1, bytesRead2;
-
-        int stripeIndex = 0;
-
-        while (true)
-        {
-            switch (stripeIndex % 3)
-            {
-                case 0:
-                    // Parity in file 3, data in file 1 and file 2
-                    bytesRead1 = await file1.ReadAsync(buffer1, 0, stripeSize);
-                    bytesRead2 = await file2.ReadAsync(buffer2, 0, stripeSize);
-                    if (bytesRead1 == 0 && bytesRead2 == 0) return; // End of stream
-                    await outputStream.WriteAsync(buffer1, 0, bytesRead1);
-                    await outputStream.WriteAsync(buffer2, 0, bytesRead2);
-                    // Read parity, but we don't need to use it here
-                    _ = await file3.ReadAsync(parityBuffer, 0, stripeSize);
-                    break;
-
-                case 1:
-                    // Parity in file 2, data in file 1 and file 3
-                    bytesRead1 = await file1.ReadAsync(buffer1, 0, stripeSize);
-                    bytesRead2 = await file3.ReadAsync(buffer2, 0, stripeSize);
-                    if (bytesRead1 == 0 && bytesRead2 == 0) return; // End of stream
-                    await outputStream.WriteAsync(buffer1, 0, bytesRead1);
-                    await outputStream.WriteAsync(buffer2, 0, bytesRead2);
-                    // Read parity, but we don't need to use it here
-                    _ = await file2.ReadAsync(parityBuffer, 0, stripeSize);
-                    break;
-
-                case 2:
-                    // Parity in file 1, data in file 2 and file 3
-                    bytesRead1 = await file2.ReadAsync(buffer1, 0, stripeSize);
-                    bytesRead2 = await file3.ReadAsync(buffer2, 0, stripeSize);
-                    if (bytesRead1 == 0 && bytesRead2 == 0) return; // End of stream
-                    await outputStream.WriteAsync(buffer1, 0, bytesRead1);
-                    await outputStream.WriteAsync(buffer2, 0, bytesRead2);
-                    // Read parity, but we don't need to use it here
-                    _ = await file1.ReadAsync(parityBuffer, 0, stripeSize);
-                    break;
-            }
-
-            stripeIndex++;
-        }
-    }
-}
-
-async Task ReadDataWithRecoveryAsync(Stream outputStream, int stripeSize, string file1Path, string file2Path, string file3Path)
+async Task ReadDataWithRecoveryAsync(Stream outputStream, int stripeSize, long originalFileSize, string file1Path, string file2Path, string file3Path)
 {
     // Check if any of the files are corrupted or missing
     bool isFile1Corrupted = !File.Exists(file1Path);
     bool isFile2Corrupted = !File.Exists(file2Path);
     bool isFile3Corrupted = !File.Exists(file3Path);
-
-    if (isFile1Corrupted && isFile2Corrupted && isFile3Corrupted)
+    long totalBytesWritten = 0;
+    if (isFile1Corrupted && isFile2Corrupted || isFile3Corrupted && isFile1Corrupted || isFile2Corrupted && isFile3Corrupted)
     {
-        throw new Exception("All files are corrupted or missing. Data recovery is impossible.");
+        throw new Exception("More than 2 disk are failure. Data recovery is impossible.");
     }
 
     // Open streams for files that exist
-    await using (FileStream? file1 = isFile1Corrupted ? null : new FileStream(file1Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: stripeSize, useAsync: true))
-    await using (FileStream? file2 = isFile2Corrupted ? null : new FileStream(file2Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: stripeSize, useAsync: true))
-    await using (FileStream? file3 = isFile3Corrupted ? null : new FileStream(file3Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: stripeSize, useAsync: true))
+    await using FileStream? file1 = isFile1Corrupted ? null : new FileStream(file1Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: stripeSize, useAsync: true);
+    await using FileStream? file2 = isFile2Corrupted ? null : new FileStream(file2Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: stripeSize, useAsync: true);
+    await using FileStream? file3 = isFile3Corrupted ? null : new FileStream(file3Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: stripeSize, useAsync: true);
+
+    byte[] buffer1 = new byte[stripeSize];
+    byte[] buffer2 = new byte[stripeSize];
+    byte[] parityBuffer = new byte[stripeSize];
+
+    int stripeIndex = 0;
+    int bytesRead1 = 0;
+    int bytesRead2 = 0;
+    int writeSize1 = 0;
+    int writeSize2 = 0;
+
+    while (totalBytesWritten < originalFileSize)
     {
-        byte[] buffer1 = new byte[stripeSize];
-        byte[] buffer2 = new byte[stripeSize];
-        byte[] parityBuffer = new byte[stripeSize];
-        int bytesRead1, bytesRead2;
-
-        int stripeIndex = 0;
-
-        while (true)
+        // Determine the current stripe pattern and read from available files
+        switch (stripeIndex % 3)
         {
-            // Determine the current stripe pattern and read from available files
-            switch (stripeIndex % 3)
-            {
-                case 0:
-                    // Parity in file 3, data in file 1 and file 2
-                    if (isFile1Corrupted)
-                    {
-                        // Recover data1 using parity and data2
-                        bytesRead1 = await file2!.ReadAsync(buffer2, 0, stripeSize);
-                        bytesRead2 = await file3!.ReadAsync(parityBuffer, 0, stripeSize);
+            case 0:
+                // Parity in file 3, data in file 1 and file 2
+                if (isFile1Corrupted)
+                {
+                    // Recover data1 using parity and data2
+                    bytesRead2 = await file2!.ReadAsync(buffer2, 0, stripeSize);
+                    bytesRead1 = await file3!.ReadAsync(parityBuffer, 0, stripeSize);
 
-                        buffer1 = XorParity(parityBuffer, buffer2);
-                    }
-                    else if (isFile2Corrupted)
-                    {
-                        // Recover data2 using parity and data1
-                        bytesRead1 = await file1!.ReadAsync(buffer1, 0, stripeSize);
-                        bytesRead2 = await file3!.ReadAsync(parityBuffer, 0, stripeSize);
-                        buffer2 = XorParity(parityBuffer, buffer1);
-                    }
-                    else if (isFile3Corrupted)
-                    {
-                        // Read data, calculate parity to verify correctness
-                        bytesRead1 = await file1!.ReadAsync(buffer1, 0, stripeSize);
-                        bytesRead2 = await file2!.ReadAsync(buffer2, 0, stripeSize);
-                    }
-                    else
-                    {
-                        bytesRead1 = await file1!.ReadAsync(buffer1, 0, stripeSize);
-                        bytesRead2 = await file2!.ReadAsync(buffer2, 0, stripeSize);
-                        _ = await file3!.ReadAsync(parityBuffer, 0, stripeSize);
-                    }
+                    buffer1 = XorParity(parityBuffer, buffer2);
+                }
+                else if (isFile2Corrupted)
+                {
+                    // Recover data2 using parity and data1
+                    bytesRead1 = await file1!.ReadAsync(buffer1, 0, stripeSize);
+                    bytesRead2 = await file3!.ReadAsync(parityBuffer, 0, stripeSize);
+                    buffer2 = XorParity(parityBuffer, buffer1);
+                }
+                else if (isFile3Corrupted)
+                {
+                    // Read data, calculate parity to verify correctness
+                    bytesRead1 = await file1!.ReadAsync(buffer1, 0, stripeSize);
+                    bytesRead2 = await file2!.ReadAsync(buffer2, 0, stripeSize);
+                }
+                else
+                {
+                    bytesRead1 = await file1!.ReadAsync(buffer1, 0, stripeSize);
+                    bytesRead2 = await file2!.ReadAsync(buffer2, 0, stripeSize);
+                    _ = await file3!.ReadAsync(parityBuffer, 0, stripeSize);
+                }
 
-                    if (bytesRead1 == 0 && bytesRead2 == 0) return; // End of stream
-                    await outputStream.WriteAsync(buffer1, 0, bytesRead1);
-                    await outputStream.WriteAsync(buffer2, 0, bytesRead2);
-                    break;
+                if (bytesRead1 == 0 && bytesRead2 == 0)
+                {
+                    await outputStream.FlushAsync();
+                    return; // End of stream
+                }
 
-                case 1:
-                    // Parity in file 2, data in file 1 and file 3
-                    if (isFile1Corrupted)
-                    {
-                        bytesRead2 = await file3!.ReadAsync(buffer2, 0, stripeSize);
-                        bytesRead1 = await file2!.ReadAsync(parityBuffer, 0, stripeSize);
-                        buffer1 = XorParity(parityBuffer, buffer2);
-                    }
-                    else if (isFile3Corrupted)
-                    {
-                        bytesRead1 = await file1!.ReadAsync(buffer1, 0, stripeSize);
-                        bytesRead2 = await file2!.ReadAsync(parityBuffer, 0, stripeSize);
+                writeSize1 = (int)Math.Min(originalFileSize - totalBytesWritten, bytesRead1);
+                await outputStream.WriteAsync(buffer1, 0, writeSize1);
+                totalBytesWritten += writeSize1;
 
-                        buffer2 = XorParity(parityBuffer, buffer1);
-                    }
-                    else if (isFile2Corrupted)
-                    {
-                        bytesRead1 = await file1!.ReadAsync(buffer1, 0, stripeSize);
-                        bytesRead2 = await file3!.ReadAsync(buffer2, 0, stripeSize);
-                    }
-                    else
-                    {
-                        bytesRead1 = await file1!.ReadAsync(buffer1, 0, stripeSize);
-                        bytesRead2 = await file3!.ReadAsync(buffer2, 0, stripeSize);
-                        _ = await file2!.ReadAsync(parityBuffer, 0, stripeSize);
-                    }
+                writeSize2 = (int)Math.Min(originalFileSize - totalBytesWritten, bytesRead2);
+                await outputStream.WriteAsync(buffer2, 0, writeSize2);
+                totalBytesWritten += writeSize2;
+                break;
 
-                    if (bytesRead1 == 0 && bytesRead2 == 0) return; // End of stream
-                    await outputStream.WriteAsync(buffer1, 0, bytesRead1);
-                    await outputStream.WriteAsync(buffer2, 0, bytesRead2);
-                    break;
+            case 1:
+                // Parity in file 2, data in file 1 and file 3
+                if (isFile1Corrupted)
+                {
+                    bytesRead2 = await file3!.ReadAsync(buffer2, 0, stripeSize);
+                    bytesRead1 = await file2!.ReadAsync(parityBuffer, 0, stripeSize);
+                    buffer1 = XorParity(parityBuffer, buffer2);
+                }
+                else if (isFile3Corrupted)
+                {
+                    bytesRead1 = await file1!.ReadAsync(buffer1, 0, stripeSize);
+                    bytesRead2 = await file2!.ReadAsync(parityBuffer, 0, stripeSize);
 
-                case 2:
-                    // Parity in file 1, data in file 2 and file 3
-                    if (isFile2Corrupted)
-                    {
-                        bytesRead2 = await file3!.ReadAsync(buffer2, 0, stripeSize);
-                        bytesRead1 = await file1!.ReadAsync(parityBuffer, 0, stripeSize);
-                        buffer1 = XorParity(parityBuffer, buffer2);
-                    }
-                    else if (isFile3Corrupted)
-                    {
-                        bytesRead1 = await file2!.ReadAsync(buffer1, 0, stripeSize);
-                        bytesRead2 = await file1!.ReadAsync(parityBuffer, 0, stripeSize);
-                        buffer2 = XorParity(parityBuffer, buffer1);
-                    }
-                    else if (isFile1Corrupted)
-                    {
-                        bytesRead1 = await file2!.ReadAsync(buffer1, 0, stripeSize);
-                        bytesRead2 = await file3!.ReadAsync(buffer2, 0, stripeSize);
-                    }
-                    else
-                    {
-                        bytesRead1 = await file2!.ReadAsync(buffer1, 0, stripeSize);
-                        bytesRead2 = await file3!.ReadAsync(buffer2, 0, stripeSize);
-                        _ = await file1!.ReadAsync(parityBuffer, 0, stripeSize);
-                    }
+                    buffer2 = XorParity(parityBuffer, buffer1);
+                }
+                else if (isFile2Corrupted)
+                {
+                    bytesRead1 = await file1!.ReadAsync(buffer1, 0, stripeSize);
+                    bytesRead2 = await file3!.ReadAsync(buffer2, 0, stripeSize);
+                }
+                else
+                {
+                    bytesRead1 = await file1!.ReadAsync(buffer1, 0, stripeSize);
+                    bytesRead2 = await file3!.ReadAsync(buffer2, 0, stripeSize);
+                    _ = await file2!.ReadAsync(parityBuffer, 0, stripeSize);
+                }
 
-                    if (bytesRead1 == 0 && bytesRead2 == 0) return; // End of stream
-                    await outputStream.WriteAsync(buffer1, 0, bytesRead1);
-                    await outputStream.WriteAsync(buffer2, 0, bytesRead2);
-                    break;
-            }
+                if (bytesRead1 == 0 && bytesRead2 == 0)
+                {
+                    await outputStream.FlushAsync();
+                    return; // End of stream
+                }
 
-            stripeIndex++;
-            await outputStream.FlushAsync();
+
+                writeSize1 = (int)Math.Min(originalFileSize - totalBytesWritten, bytesRead1);
+                await outputStream.WriteAsync(buffer1, 0, writeSize1);
+                totalBytesWritten += writeSize1;
+
+                writeSize2 = (int)Math.Min(originalFileSize - totalBytesWritten, bytesRead2);
+                await outputStream.WriteAsync(buffer2, 0, writeSize2);
+                totalBytesWritten += writeSize2;
+                break;
+
+            case 2:
+                // Parity in file 1, data in file 2 and file 3
+                if (isFile2Corrupted)
+                {
+                    bytesRead2 = await file3!.ReadAsync(buffer2, 0, stripeSize);
+                    bytesRead1 = await file1!.ReadAsync(parityBuffer, 0, stripeSize);
+                    buffer1 = XorParity(parityBuffer, buffer2);
+                }
+                else if (isFile3Corrupted)
+                {
+                    bytesRead1 = await file2!.ReadAsync(buffer1, 0, stripeSize);
+                    bytesRead2 = await file1!.ReadAsync(parityBuffer, 0, stripeSize);
+                    buffer2 = XorParity(parityBuffer, buffer1);
+                }
+                else if (isFile1Corrupted)
+                {
+                    bytesRead1 = await file2!.ReadAsync(buffer1, 0, stripeSize);
+                    bytesRead2 = await file3!.ReadAsync(buffer2, 0, stripeSize);
+                }
+                else
+                {
+                    bytesRead1 = await file2!.ReadAsync(buffer1, 0, stripeSize);
+                    bytesRead2 = await file3!.ReadAsync(buffer2, 0, stripeSize);
+                    _ = await file1!.ReadAsync(parityBuffer, 0, stripeSize);
+                }
+
+                if (bytesRead1 == 0 && bytesRead2 == 0)
+                {
+                    await outputStream.FlushAsync();
+                    return; // End of stream
+                }
+
+                writeSize1 = (int)Math.Min(originalFileSize - totalBytesWritten, bytesRead1);
+                await outputStream.WriteAsync(buffer1, 0, writeSize1);
+                totalBytesWritten += writeSize1;
+
+                writeSize2 = (int)Math.Min(originalFileSize - totalBytesWritten, bytesRead2);
+                await outputStream.WriteAsync(buffer2, 0, writeSize2);
+                totalBytesWritten += writeSize2;
+                break;
         }
+
+        await outputStream.FlushAsync();
+        stripeIndex++;
     }
 }
 
@@ -293,18 +228,27 @@ List<string> disks = new List<string>
 
 disks = disks.Select(x => Path.Combine(x, Path.GetRandomFileName())).ToList();
 
-var fileStream = File.Open("C:/Users/thanh/Downloads/downtime report.xlsx", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+var fileStream = File.Open("C:/Users/thanh/Downloads/469.tif", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
 
 using SHA256 sha256 = SHA256.Create();
 int readByte = 0;
 int totalBytesRead1 = 0;
 byte[] buffer1 = new byte[1024];
 byte[] buffer2 = new byte[1024];
+
+
+var outPutStream = new FileStream("C:/Users/thanh/Downloads/output.tif", FileMode.Create, FileAccess.ReadWrite, FileShare.None, 1024);
+
+int tripSize = 1024;
+var totalByteRead = await WriteDataAsync(fileStream, tripSize, disks[0], disks[1], disks[2]);
+Console.WriteLine($"Total bytes read: {totalByteRead:N0}");
+await ReadDataWithRecoveryAsync(outPutStream, tripSize, totalByteRead, disks[0], disks[1], "disks[2]");
+fileStream.Seek(0, SeekOrigin.Begin);
 while ((readByte = await fileStream.ReadAsync(buffer1, 0, 1024)) > 0)
 {
     sha256.TransformBlock(buffer1, 0, readByte, null, 0);
     totalBytesRead1 += readByte;
-    // if(totalBytesRead == 1024 * 15) break;
+    // if (totalBytesRead1 >= totalByteRead - 1024) break;
 }
 
 sha256.TransformFinalBlock([], 0, 0);
@@ -320,14 +264,6 @@ if (sha256.Hash != null)
 
 var checkSumStr = checksum.ToString();
 sha256.Clear();
-fileStream.Seek(0, SeekOrigin.Begin);
-
-var outPutStream = new FileStream("C:/Users/thanh/Downloads/output.xlsx", FileMode.Create, FileAccess.ReadWrite, FileShare.None, 1024);
-
-int tripSize = 1024;
-await WriteDataAsync(fileStream, tripSize, disks[0], disks[1], disks[2]);
-await ReadDataWithRecoveryAsync(outPutStream, tripSize, disks[0], disks[1], disks[2]);
-
 outPutStream.Seek(0, SeekOrigin.Begin);
 var sha2566 = SHA256.Create();
 int totalBytesRead2 = 0;
@@ -335,7 +271,8 @@ while ((readByte = await outPutStream.ReadAsync(buffer2, 0, 1024)) > 0)
 {
     sha2566.TransformBlock(buffer2, 0, readByte, null, 0);
     totalBytesRead2 += readByte;
-    // if(totalBytesRead == 1024 * 15) break;
+    // if (totalBytesRead2 >= totalByteRead - 1024)
+    //     break;
 }
 
 sha2566.TransformFinalBlock([], 0, 0);
@@ -361,6 +298,15 @@ else
 
 sha2566.Clear();
 fileStream.Seek(0, SeekOrigin.Begin);
+
+for (int i = 0; i < buffer1.Length; i++)
+{
+    if (buffer1[i] != buffer2[i])
+    {
+        Console.WriteLine($"Buffer Error {i}");
+        break;
+    }
+}
 
 byte[] XorParity(byte[] data0, byte[] data1)
 {
