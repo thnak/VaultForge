@@ -613,9 +613,10 @@ public class FilesController(
                         var createFileResult = await folderServe.CreateFileAsync(folder, file, cancelToken);
                         if (createFileResult.Item1)
                         {
-                            // (file.FileSize, file.ContentType, file.Checksum) = await section.ProcessStreamedFileAndSave(file.AbsolutePath, ModelState, cancelToken);
-
-                            var saveResult = await raidService.WriteDataAsync(section.Body, file.AbsolutePath, cancelToken);
+                            var memoryStream = new FileStream(Path.GetTempFileName(), FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 10 * 1024 * 1024, FileOptions.DeleteOnClose);
+                            await section.Body.CopyToAsync(memoryStream, cancelToken);
+                            var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancelToken);
+                            await memoryStream.DisposeAsync();
                             (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, section.ContentType ?? string.Empty, saveResult.CheckSum);
                             if (string.IsNullOrEmpty(file.ContentType))
                             {

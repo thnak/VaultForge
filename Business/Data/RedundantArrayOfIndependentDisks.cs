@@ -23,6 +23,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
     private readonly IMongoCollection<FileRaidDataBlockModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileRaidDataBlockModel>("FileRaidDataBlock");
     private readonly SemaphoreSlim _semaphore = new(100, 1000);
     private readonly int _stripSize = options.Value.StripeSize;
+    private readonly int _readWriteBufferSize = options.Value.ReadWriteBufferSize;
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
@@ -91,16 +92,19 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                 Directory.CreateDirectory(Path.GetDirectoryName(disk.AbsolutePath)!);
             }
 
-            var byteWrite = await WriteDataAsync(stream, raidModel.StripSize, disks[0].AbsolutePath, disks[1].AbsolutePath, disks[2].AbsolutePath, cancellationToken);
-            raidModel.Size = byteWrite.TotalByteWritten;
-            raidModel.CheckSum = byteWrite.CheckSum;
-            disks[0].Size = byteWrite.TotalByteWritten1;
-            disks[1].Size = byteWrite.TotalByteWritten2;
-            disks[2].Size = byteWrite.TotalByteWritten3;
+            WriteDataResult result = new();
+            
+            result = await WriteDataAsync(stream, raidModel.StripSize, disks[0].AbsolutePath, disks[1].AbsolutePath, disks[2].AbsolutePath, cancellationToken);
+            // result.TotalByteWritten = byteWrite;
+            raidModel.Size = result.TotalByteWritten;
+            raidModel.CheckSum = result.CheckSum;
+            disks[0].Size = result.TotalByteWritten1;
+            disks[1].Size = result.TotalByteWritten2;
+            disks[2].Size = result.TotalByteWritten3;
 
             await _fileDataDb.InsertOneAsync(raidModel, null, cancellationToken);
             await _fileMetaDataDataDb.InsertManyAsync(disks, null, cancellationToken);
-            return byteWrite;
+            return result;
         }
         catch (OperationCanceledException e)
         {
@@ -207,9 +211,9 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         }
 
         // Open streams for files that exist
-        await using FileStream? file1 = isFile1Corrupted ? null : new FileStream(file1Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: stripeSize);
-        await using FileStream? file2 = isFile2Corrupted ? null : new FileStream(file2Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: stripeSize);
-        await using FileStream? file3 = isFile3Corrupted ? null : new FileStream(file3Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: stripeSize);
+        await using FileStream? file1 = isFile1Corrupted ? null : new FileStream(file1Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: _readWriteBufferSize);
+        await using FileStream? file2 = isFile2Corrupted ? null : new FileStream(file2Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: _readWriteBufferSize);
+        await using FileStream? file3 = isFile3Corrupted ? null : new FileStream(file3Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: _readWriteBufferSize);
 
         byte[] buffer1 = new byte[stripeSize];
         byte[] buffer2 = new byte[stripeSize];
@@ -356,73 +360,73 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         return _fileDataDb.Find(filter).Limit(1).FirstOrDefault();
     }
 
-    // async Task<long> WriteDataAsync(Stream inputStream, int stripeSize, string file1Path, string file2Path, string file3Path, CancellationToken = default)
-    // {
-    //     long totalByteRead = 0;
-    //     inputStream.SeekBeginOrigin();
-    //     await using FileStream file1 = new FileStream(file1Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize * 10);
-    //     await using FileStream file2 = new FileStream(file2Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize * 10);
-    //     await using FileStream file3 = new FileStream(file3Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize * 10);
-    //
-    //     byte[] buffer1 = new byte[stripeSize];
-    //     byte[] buffer2 = new byte[stripeSize];
-    //     int bytesRead1;
-    //     int stripeIndex = 0;
-    //
-    //     while ((bytesRead1 = await inputStream.ReadAsync(buffer1, 0, stripeSize, cancellationToken)) > 0)
-    //     {
-    //         var bytesRead2 = await inputStream.ReadAsync(buffer2, 0, stripeSize, cancellationToken);
-    //         totalByteRead += bytesRead1 + bytesRead2;
-    //
-    //         var parityBuffer = XorParity(buffer1, buffer2);
-    //
-    //         // Create tasks for writing data and parity in parallel
-    //         Task[] writeTasks = [];
-    //
-    //         switch (stripeIndex % 3)
-    //         {
-    //             case 0:
-    //                 // Parity goes to file 3
-    //                 writeTasks =
-    //                 [
-    //                     file1.WriteAsync(buffer1, 0, bytesRead1, cancellationToken),
-    //                     file2.WriteAsync(buffer2, 0, bytesRead2, cancellationToken),
-    //                     file3.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken)
-    //                 ];
-    //                 break;
-    //
-    //             case 1:
-    //                 // Parity goes to file 2
-    //                 writeTasks =
-    //                 [
-    //                     file1.WriteAsync(buffer1, 0, bytesRead1, cancellationToken),
-    //                     file2.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken),
-    //                     file3.WriteAsync(buffer2, 0, bytesRead2, cancellationToken)
-    //                 ];
-    //                 break;
-    //
-    //             case 2:
-    //                 // Parity goes to file 1
-    //                 writeTasks =
-    //                 [
-    //                     file1.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken),
-    //                     file2.WriteAsync(buffer1, 0, bytesRead1, cancellationToken),
-    //                     file3.WriteAsync(buffer2, 0, bytesRead2, cancellationToken)
-    //                 ];
-    //                 break;
-    //         }
-    //
-    //         // Wait for all tasks (writes) to complete in parallel
-    //         await Task.WhenAll(writeTasks);
-    //
-    //         stripeIndex++;
-    //     }
-    //
-    //     await file1.FlushAsync(cancellationToken);
-    //     await file2.FlushAsync(cancellationToken);
-    //     await file3.FlushAsync(cancellationToken);
-    //     return totalByteRead;
-    // }
+    async Task<long> WriteDataAsyncV2(Stream inputStream, int stripeSize, string file1Path, string file2Path, string file3Path, CancellationToken cancellationToken = default)
+    {
+        long totalByteRead = 0;
+        inputStream.SeekBeginOrigin();
+        await using FileStream file1 = new FileStream(file1Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize );
+        await using FileStream file2 = new FileStream(file2Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize );
+        await using FileStream file3 = new FileStream(file3Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize );
+
+        byte[] buffer1 = new byte[stripeSize];
+        byte[] buffer2 = new byte[stripeSize];
+        int bytesRead1;
+        int stripeIndex = 0;
+
+        while ((bytesRead1 = await inputStream.ReadAsync(buffer1, 0, stripeSize, cancellationToken)) > 0)
+        {
+            var bytesRead2 = await inputStream.ReadAsync(buffer2, 0, stripeSize, cancellationToken);
+            totalByteRead += bytesRead1 + bytesRead2;
+
+            var parityBuffer = XorParity(buffer1, buffer2);
+
+            // Create tasks for writing data and parity in parallel
+            Task[] writeTasks = [];
+
+            switch (stripeIndex % 3)
+            {
+                case 0:
+                    // Parity goes to file 3
+                    writeTasks =
+                    [
+                        file1.WriteAsync(buffer1, 0, bytesRead1, cancellationToken),
+                        file2.WriteAsync(buffer2, 0, bytesRead2, cancellationToken),
+                        file3.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken)
+                    ];
+                    break;
+
+                case 1:
+                    // Parity goes to file 2
+                    writeTasks =
+                    [
+                        file1.WriteAsync(buffer1, 0, bytesRead1, cancellationToken),
+                        file2.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken),
+                        file3.WriteAsync(buffer2, 0, bytesRead2, cancellationToken)
+                    ];
+                    break;
+
+                case 2:
+                    // Parity goes to file 1
+                    writeTasks =
+                    [
+                        file1.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken),
+                        file2.WriteAsync(buffer1, 0, bytesRead1, cancellationToken),
+                        file3.WriteAsync(buffer2, 0, bytesRead2, cancellationToken)
+                    ];
+                    break;
+            }
+
+            // Wait for all tasks (writes) to complete in parallel
+            await Task.WhenAll(writeTasks);
+
+            stripeIndex++;
+        }
+
+        await file1.FlushAsync(cancellationToken);
+        await file2.FlushAsync(cancellationToken);
+        await file3.FlushAsync(cancellationToken);
+        return totalByteRead;
+    }
 
 
     async Task<WriteDataResult> WriteDataAsync(Stream inputStream, int stripeSize, string file1Path, string file2Path, string file3Path, CancellationToken cancellationToken = default)
@@ -436,7 +440,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         FileStream? file1 = null;
         try
         {
-            file1 = new FileStream(file1Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize);
+            file1 = new FileStream(file1Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: _readWriteBufferSize);
         }
         catch (Exception)
         {
@@ -446,7 +450,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         FileStream? file2 = null;
         try
         {
-            file2 = new FileStream(file2Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize);
+            file2 = new FileStream(file2Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: _readWriteBufferSize);
         }
         catch (Exception)
         {
@@ -456,7 +460,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         FileStream? file3 = null;
         try
         {
-            file3 = new FileStream(file3Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize);
+            file3 = new FileStream(file3Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: _readWriteBufferSize);
         }
         catch (Exception)
         {
@@ -468,12 +472,12 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         int bytesRead1;
         int stripeIndex = 0;
         string? contentType = null;
-        
+
         using SHA256 sha256 = SHA256.Create();
 
         while ((bytesRead1 = await inputStream.ReadAsync(buffer1, 0, stripeSize, cancellationToken)) > 0)
         {
-            if(contentType == null)
+            if (contentType == null)
                 contentType = buffer1.GetCorrectExtension("");
             var bytesRead2 = await inputStream.ReadAsync(buffer2, 0, stripeSize, cancellationToken);
 
@@ -525,7 +529,6 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
 
             // Wait for all tasks (writes) to complete in parallel
             await Task.WhenAll(writeTasks);
-
             stripeIndex++;
         }
 
@@ -610,7 +613,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         public long TotalByteWritten2 { get; set; }
         public long TotalByteWritten3 { get; set; }
         public string CheckSum { get; set; } = string.Empty;
-        
+
         public string ContentType { get; set; } = string.Empty;
     }
 }

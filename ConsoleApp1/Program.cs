@@ -230,14 +230,14 @@ async Task ReadDataWithRecoveryAsync(Stream outputStream, int stripeSize, long o
 
 List<string> disks = new List<string>
 {
-    "C:/Users/thanh/Git/CodeWithMe/ResApi/bin/Debug/net9.0/disk1\\24-09-29\\66f95d8da244b00d7c603ec5lzbj4ehh.vcb",
-    "C:/Users/thanh/Git/CodeWithMe/ResApi/bin/Debug/net9.0/disk2\\24-09-29\\66f95d8da244b00d7c603ec5gdydmxz1.ez1",
-    "C:/Users/thanh/Git/CodeWithMe/ResApi/bin/Debug/net9.0/disk3\\24-09-29\\66f95d8da244b00d7c603ec5gb2trfqu.xns"
+    "C:/Users/thanh/Git/CodeWithMe/ResApi/bin/Debug/net9.0/disk1\\24-09-29\\66f97154833fa776dfc6ca980zmpar2u.ifr",
+    "C:/Users/thanh/Git/CodeWithMe/ResApi/bin/Debug/net9.0/disk2\\24-09-29\\66f97154833fa776dfc6ca9810dxkvpb.t4u",
+    "C:/Users/thanh/Git/CodeWithMe/ResApi/bin/Debug/net9.0/disk33\\24-09-29\\66f97154833fa776dfc6ca98ifzhsaby.taq"
 };
 
 // disks = disks.Select(x => Path.Combine(x, Path.GetRandomFileName())).ToList();
 
-var fileStream = File.Open("C:/Users/thanh/Downloads/469.tif", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+var fileStream = File.Open("C:/Users/thanh/Downloads/Update _Nosew Monitoring system_V2  (1).pptx", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
 
 using SHA256 sha256 = SHA256.Create();
 int readByte = 0;
@@ -246,12 +246,11 @@ byte[] buffer1 = new byte[1024];
 byte[] buffer2 = new byte[1024];
 
 
-// var outPutStream = new FileStream("C:/Users/thanh/Downloads/output.txt", FileMode.Create, FileAccess.ReadWrite, FileShare.None, 1024);
-var outPutStream = new MemoryStream();
+var outPutStream = new FileStream("C:/Users/thanh/Downloads/output.pptx", FileMode.Create, FileAccess.ReadWrite, FileShare.None, 1024);
 int tripSize = 1024;
-// var totalByteRead = await WriteDataAsync(fileStream, tripSize, disks[0], disks[1], disks[2]);
-// Console.WriteLine($"Total bytes read: {totalByteRead:N0}");
-await ReadDataWithRecoveryAsync(outPutStream, tripSize, 24772046, disks[0], disks[1], disks[2]);
+var totalByteRead = await WriteDataAsync(fileStream, tripSize, disks[0], disks[1], disks[2]);
+Console.WriteLine($"Total bytes read: {totalByteRead:N0}");
+await ReadDataWithRecoveryAsync(outPutStream, tripSize, totalByteRead, disks[0], disks[1], disks[2]);
 fileStream.Seek(0, SeekOrigin.Begin);
 while ((readByte = await fileStream.ReadAsync(buffer1, 0, 1024)) > 0)
 {

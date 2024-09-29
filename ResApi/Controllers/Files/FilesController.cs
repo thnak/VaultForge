@@ -167,25 +167,27 @@ public class FilesController(
 
         ms.Seek(0, SeekOrigin.Begin);
 
-        sha256.TransformFinalBlock([], 0, 0);
-        StringBuilder checksum = new StringBuilder();
-        if (sha256.Hash != null)
+        return new FileStreamResult(ms, file.ContentType)
         {
-            foreach (byte b in sha256.Hash)
-            {
-                checksum.Append(b.ToString("x2"));
-            }
-        }
+            FileDownloadName = file.FileName,
+            LastModified = file.ModifiedTime,
+            EnableRangeProcessing = false
+        };
 
-        if (file.Checksum == checksum.ToString())
-        {
-            return new FileStreamResult(ms, file.ContentType)
-            {
-                FileDownloadName = file.FileName,
-                LastModified = file.ModifiedTime,
-                EnableRangeProcessing = false
-            };
-        }
+        // sha256.TransformFinalBlock([], 0, 0);
+        // StringBuilder checksum = new StringBuilder();
+        // if (sha256.Hash != null)
+        // {
+        //     foreach (byte b in sha256.Hash)
+        //     {
+        //         checksum.Append(b.ToString("x2"));
+        //     }
+        // }
+        //
+        // if (file.Checksum == checksum.ToString())
+        // {
+        //     
+        // }
 
         return BadRequest();
     }
@@ -241,6 +243,47 @@ public class FilesController(
         Response.StatusCode = 200;
         Response.ContentLength = file.FileSize;
         return PhysicalFile(file.AbsolutePath, file.ContentType, true);
+    }
+
+    [HttpPost("test-raid")]
+    [IgnoreAntiforgeryToken]
+    [DisableFormValueModelBinding]
+    public async Task<IActionResult> TestRaid()
+    {
+        var cancelToken = HttpContext.RequestAborted;
+        var name = Path.GetRandomFileName();
+
+        var boundary = MediaTypeHeaderValue.Parse(Request.ContentType).GetBoundary(int.MaxValue);
+        var reader = new MultipartReader(boundary, HttpContext.Request.Body);
+        var section = await reader.ReadNextSectionAsync(cancelToken);
+        while (section != null && HttpContext.RequestAborted is { IsCancellationRequested: false })
+        {
+            var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition);
+            if (hasContentDispositionHeader && contentDisposition != null)
+            {
+                if (!contentDisposition.HasFileContentDisposition())
+                {
+                    continue;
+                }
+
+                // var fileStream = System.IO.File.Open("C:/Users/thanh/Downloads/Update _Nosew Monitoring system_V2  (1).pptx", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+                
+                var fileStream = new MemoryStream();;
+                await section.Body.CopyToAsync(fileStream, cancelToken);
+
+                await raidService.WriteDataAsync(fileStream, name, cancelToken);
+                var outPutStream = new FileStream("C:/Users/thanh/Downloads/output.pptx", FileMode.Create, FileAccess.ReadWrite, FileShare.None, 1024);
+                await raidService.ReadGetDataAsync(outPutStream, name, cancelToken);
+
+                Response.RegisterForDispose(fileStream);
+                Response.RegisterForDispose(outPutStream);
+            }
+
+            section = await reader.ReadNextSectionAsync(cancelToken);
+        }
+
+
+        return Ok();
     }
 
     [HttpPost("get-folder")]
@@ -613,12 +656,16 @@ public class FilesController(
                         var createFileResult = await folderServe.CreateFileAsync(folder, file, cancelToken);
                         if (createFileResult.Item1)
                         {
-                            var saveResult = await raidService.WriteDataAsync(section.Body, file.AbsolutePath, cancelToken);
+                            var memoryStream = new FileStream(Path.GetTempFileName(), FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 10 * 1024 * 1024, FileOptions.DeleteOnClose);
+                            await section.Body.CopyToAsync(memoryStream, cancelToken);
+                            var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancelToken);
+                            await memoryStream.DisposeAsync();
                             (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, section.ContentType ?? string.Empty, saveResult.CheckSum);
                             if (string.IsNullOrEmpty(file.ContentType))
                             {
                                 file.ContentType = section.ContentType ?? string.Empty;
                             }
+
                             if (file.FileSize > 0)
                             {
                                 var updateResult = await fileServe.UpdateAsync(file, cancelToken);
