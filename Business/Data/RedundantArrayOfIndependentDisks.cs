@@ -93,7 +93,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             }
 
             WriteDataResult result = new();
-            
+
             result = await WriteDataAsync(stream, raidModel.StripSize, disks[0].AbsolutePath, disks[1].AbsolutePath, disks[2].AbsolutePath, cancellationToken);
             // result.TotalByteWritten = byteWrite;
             raidModel.Size = result.TotalByteWritten;
@@ -138,13 +138,18 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
 
     public void Delete(string path)
     {
-        if (!Exists(path)) throw new Exception($"File {path} does not exists");
-        _fileDataDb.DeleteOne(x => x.RelativePath == path);
+        var raidModel = Get(path);
+        if (raidModel == null)
+            return;
+
+
+        _fileDataDb.DeleteOne(x => x.Id == raidModel.Id);
+        _fileMetaDataDataDb.DeleteManyAsync(x => x.RelativePath == raidModel.Id.ToString());
+
         _ = Task.Run(async () =>
         {
-            await foreach (var model in GetDataBlocks(path, cancellationToken: default))
+            await foreach (var model in GetDataBlocks(raidModel.Id.ToString(), cancellationToken: default))
             {
-                await _fileMetaDataDataDb.DeleteManyAsync(x => x.RelativePath == model.RelativePath);
                 try
                 {
                     File.Delete(model.AbsolutePath);
@@ -364,9 +369,9 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
     {
         long totalByteRead = 0;
         inputStream.SeekBeginOrigin();
-        await using FileStream file1 = new FileStream(file1Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize );
-        await using FileStream file2 = new FileStream(file2Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize );
-        await using FileStream file3 = new FileStream(file3Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize );
+        await using FileStream file1 = new FileStream(file1Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize);
+        await using FileStream file2 = new FileStream(file2Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize);
+        await using FileStream file3 = new FileStream(file3Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: stripeSize);
 
         byte[] buffer1 = new byte[stripeSize];
         byte[] buffer2 = new byte[stripeSize];
