@@ -29,6 +29,7 @@ using MessagePack;
 using MessagePack.Resolvers;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Services;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Options;
 using Protector.Certificates.Models;
 using WebApp.Authenticate;
@@ -57,6 +58,10 @@ public class Program
             options.AddServerHeader = false;
             options.Limits.MaxRequestBodySize = int.MaxValue;
             options.Limits.MinRequestBodyDataRate = null;
+        });
+        builder.Services.Configure<KestrelServerOptions>(options =>
+        {
+            options.Limits.MaxRequestBodySize = int.MaxValue; // if don't set default value is: 30 MB
         });
 
         builder.Services.AddFrontEndService();
