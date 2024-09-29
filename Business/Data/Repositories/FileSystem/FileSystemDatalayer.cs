@@ -364,9 +364,9 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             {
                 File.Delete(query.AbsolutePath);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                logger.LogError(e, null);
+                logger.LogError($"[deprecated] delete failed {key}");
             }
 
             if (!string.IsNullOrEmpty(query.Thumbnail))
