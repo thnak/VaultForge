@@ -57,7 +57,7 @@ public class Program
         builder.WebHost.ConfigureKestrel(options =>
         {
             options.AddServerHeader = false;
-            options.Limits.MaxRequestBodySize = int.MaxValue;
+            options.Limits.MaxRequestBodySize = long.MaxValue;
             options.Limits.MinRequestBodyDataRate = null;
         });
         builder.Services.Configure<KestrelServerOptions>(options =>
@@ -67,7 +67,7 @@ public class Program
         builder.Services.Configure<FormOptions>(x =>
         {
             x.ValueLengthLimit = int.MaxValue;
-            x.MultipartBodyLengthLimit = int.MaxValue; // if don't set default value is: 128 MB
+            x.MultipartBodyLengthLimit = long.MaxValue; // if don't set default value is: 128 MB
             x.MultipartHeadersLengthLimit = int.MaxValue;
         });
 
