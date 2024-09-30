@@ -60,10 +60,7 @@ public class Program
             options.Limits.MaxRequestBodySize = long.MaxValue;
             options.Limits.MinRequestBodyDataRate = null;
         });
-        builder.Services.Configure<KestrelServerOptions>(options =>
-        {
-            options.Limits.MaxRequestBodySize = int.MaxValue; // if don't set default value is: 30 MB
-        });
+        
         builder.Services.Configure<FormOptions>(x =>
         {
             x.ValueLengthLimit = int.MaxValue;
