@@ -173,23 +173,20 @@ public class FilesController(
             LastModified = file.ModifiedTime,
             EnableRangeProcessing = false
         };
+    }
 
-        // sha256.TransformFinalBlock([], 0, 0);
-        // StringBuilder checksum = new StringBuilder();
-        // if (sha256.Hash != null)
-        // {
-        //     foreach (byte b in sha256.Hash)
-        //     {
-        //         checksum.Append(b.ToString("x2"));
-        //     }
-        // }
-        //
-        // if (file.Checksum == checksum.ToString())
-        // {
-        //     
-        // }
-
-        return BadRequest();
+    [HttpGet("read-file-seek")]
+    public IActionResult ReadAndSeek(string path)
+    {
+        var cancelToken = HttpContext.RequestAborted;
+        Raid5Stream stream = new Raid5Stream(raidService, path, cancelToken);
+        string contentType = "application/octet-stream";
+        string fileName = "downloaded-file.txt";
+        return new FileStreamResult(stream, contentType)
+        {
+            FileDownloadName = fileName,
+            EnableRangeProcessing = true
+        };
     }
 
     [HttpPost("get-file-list")]
@@ -267,8 +264,9 @@ public class FilesController(
                 }
 
                 // var fileStream = System.IO.File.Open("C:/Users/thanh/Downloads/Update _Nosew Monitoring system_V2  (1).pptx", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
-                
-                var fileStream = new MemoryStream();;
+
+                var fileStream = new MemoryStream();
+                ;
                 await section.Body.CopyToAsync(fileStream, cancelToken);
 
                 await raidService.WriteDataAsync(fileStream, name, cancelToken);

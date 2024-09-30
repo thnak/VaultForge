@@ -190,6 +190,20 @@ public class FilesController(
         return BadRequest();
     }
 
+    [HttpGet("read-file-seek")]
+    public IActionResult ReadAndSeek(string path)
+    {
+        Raid5Stream stream = new Raid5Stream(raidService, path);
+        string contentType = "application/octet-stream";
+        string fileName = "downloaded-file.txt";
+        return new FileStreamResult(stream, contentType)
+        {
+            FileDownloadName = fileName,
+            EnableRangeProcessing = true
+        };
+    }
+
+
     [HttpPost("get-file-list")]
     [IgnoreAntiforgeryToken]
     public IActionResult GetFiles([FromBody] List<string> listFiles)

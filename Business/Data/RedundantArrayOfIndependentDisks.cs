@@ -135,6 +135,29 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         await ReadDataWithRecoveryAsync(outputStream, raidData.StripSize, raidData.Size, dataBlocks[0].AbsolutePath, dataBlocks[1].AbsolutePath, dataBlocks[2].AbsolutePath);
     }
 
+    public async Task ReadAndSeek(Stream outputStream, string path, long seekPosition, CancellationToken cancellationToken = default)
+    {
+        var raidData = Get(path);
+        if (raidData == null)
+        {
+            throw new Exception($"File {path} already exists");
+        }
+
+        var dataBlocksFilter = Builders<FileRaidDataBlockModel>.Filter.Eq(x => x.RelativePath, raidData.Id.ToString());
+
+        var fileData = await _fileMetaDataDataDb.FindAsync(dataBlocksFilter, cancellationToken: cancellationToken);
+        List<FileRaidDataBlockModel> dataBlocks = fileData.ToList();
+        await foreach (var model in GetDataBlocks(raidData.Id.ToString(), cancellationToken, m => m.AbsolutePath, m => m.Status, model => model.Index))
+        {
+            if (model.Status != FileRaidStatus.Normal)
+                model.AbsolutePath = string.Empty;
+            dataBlocks.Add(model);
+        }
+
+        dataBlocks = dataBlocks.OrderBy(x => x.Index).DistinctBy(x => x.AbsolutePath).ToList();
+        await ReadDataWithRecoveryAndSeekAsync(outputStream, seekPosition, raidData.StripSize, raidData.Size, dataBlocks[0].AbsolutePath, dataBlocks[1].AbsolutePath, dataBlocks[2].AbsolutePath, cancellationToken);
+    }
+
     public void Delete(string path)
     {
         var raidModel = Get(path);
@@ -362,6 +385,102 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         await outputStream.FlushAsync();
         outputStream.SeekBeginOrigin();
     }
+
+    async Task<long> ReadDataWithRecoveryAndSeekAsync(Stream outputStream, long seekPosition, int stripeSize, long originalFileSize, string file1Path, string file2Path, string file3Path, CancellationToken cancellationToken = default)
+    {
+        // Check if any of the files are corrupted or missing
+        bool isFile1Corrupted = !File.Exists(file1Path);
+        bool isFile2Corrupted = !File.Exists(file2Path);
+        bool isFile3Corrupted = !File.Exists(file3Path);
+
+        if (isFile1Corrupted && isFile2Corrupted || isFile3Corrupted && isFile1Corrupted || isFile2Corrupted && isFile3Corrupted)
+        {
+            throw new Exception("More than 2 disks are failed. Data recovery is impossible.");
+        }
+
+        // Open streams for files that exist
+        await using FileStream? file1 = isFile1Corrupted ? null : new FileStream(file1Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: stripeSize, useAsync: true);
+        await using FileStream? file2 = isFile2Corrupted ? null : new FileStream(file2Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: stripeSize, useAsync: true);
+        await using FileStream? file3 = isFile3Corrupted ? null : new FileStream(file3Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: stripeSize, useAsync: true);
+
+        byte[] buffer1 = new byte[stripeSize];
+        byte[] buffer2 = new byte[stripeSize];
+        byte[] parityBuffer = new byte[stripeSize];
+
+        long totalBytesWritten = 0;
+        int stripeIndex = 0;
+
+        // Seek to the correct stripe
+        long stripeToSeek = seekPosition / stripeSize; // Calculate the stripe index to seek to
+        long bytesToSkip = seekPosition % stripeSize; // Calculate remaining bytes to skip
+
+        // Move to the required stripe
+        while (stripeIndex < stripeToSeek)
+        {
+            // Skip the stripes that we're not reading
+            switch (stripeIndex % 3)
+            {
+                case 0:
+                    await ReadStripeAsync(file1, file2, file3, buffer1, buffer2, parityBuffer, stripeSize, cancellationToken);
+                    break;
+                case 1:
+                    await ReadStripeAsync(file1, file3, file2, buffer1, buffer2, parityBuffer, stripeSize, cancellationToken);
+                    break;
+                case 2:
+                    await ReadStripeAsync(file2, file3, file1, buffer2, buffer1, parityBuffer, stripeSize, cancellationToken);
+                    break;
+            }
+
+            stripeIndex++;
+        }
+
+        // Now we are at the required stripe
+        switch (stripeIndex % 3)
+        {
+            case 0:
+                await ReadStripeAsync(file1, file2, file3, buffer1, buffer2, parityBuffer, stripeSize, cancellationToken);
+                break;
+            case 1:
+                await ReadStripeAsync(file1, file3, file2, buffer1, buffer2, parityBuffer, stripeSize, cancellationToken);
+                break;
+            case 2:
+                await ReadStripeAsync(file2, file3, file1, buffer2, buffer1, parityBuffer, stripeSize, cancellationToken);
+                break;
+        }
+
+        // Write the remaining bytes
+
+        await outputStream.WriteAsync(buffer1, 0, (int)Math.Min(bytesToSkip, stripeSize), cancellationToken);
+        totalBytesWritten += bytesToSkip;
+        await outputStream.FlushAsync(cancellationToken);
+        return totalBytesWritten;
+    }
+
+    // Helper method to read a single stripe
+    private async Task<long> ReadStripeAsync(FileStream? file1, FileStream? file2, FileStream? file3, byte[] buffer1, byte[] buffer2, byte[] parityBuffer, int stripeSize, CancellationToken cancellationToken = default)
+    {
+        // Read data from the files based on availability and handle recovery
+        // Similar logic to what you've implemented previously
+
+        // For example:
+        if (file1 != null)
+        {
+            return await file1.ReadAsync(buffer1, 0, stripeSize, cancellationToken);
+        }
+
+        if (file2 != null)
+        {
+            return await file2.ReadAsync(buffer2, 0, stripeSize, cancellationToken);
+        }
+
+        if (file3 != null)
+        {
+            return await file3.ReadAsync(parityBuffer, 0, stripeSize, cancellationToken);
+        }
+
+        return 0;
+    }
+
 
     async Task<WriteDataResult> WriteDataAsync(Stream inputStream, int stripeSize, string file1Path, string file2Path, string file3Path, CancellationToken cancellationToken = default)
     {
