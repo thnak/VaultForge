@@ -663,6 +663,10 @@ public class FilesController(
                             {
                                 file.ContentType = section.ContentType ?? string.Empty;
                             }
+                            else if (file.ContentType == "application/octet-stream")
+                            {
+                                file.ContentType = Path.GetExtension(trustedFileNameForDisplay).GetMimeTypeFromExtension();
+                            }
                             var fileId = file.Id.ToString();
 
                             if (file.FileSize > 0)
