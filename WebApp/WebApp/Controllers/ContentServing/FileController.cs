@@ -631,7 +631,7 @@ public class FilesController(
                             await section.Body.CopyToAsync(memoryStream, cancelToken);
                             var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancelToken);
                             await memoryStream.DisposeAsync();
-                            (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, section.ContentType ?? string.Empty, saveResult.CheckSum);
+                            (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, saveResult.ContentType, saveResult.CheckSum);
                             if (string.IsNullOrEmpty(file.ContentType))
                             {
                                 file.ContentType = section.ContentType ?? string.Empty;

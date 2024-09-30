@@ -532,9 +532,13 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
 
             while ((bytesRead1 = await inputStream.ReadAsync(buffer1, 0, stripeSize, cancellationToken)) > 0)
             {
-                if (contentType == null)
-                    contentType = buffer1.GetCorrectExtension("");
                 var bytesRead2 = await inputStream.ReadAsync(buffer2, 0, stripeSize, cancellationToken);
+
+                if (contentType == null)
+                {
+                    byte[] temp = [..buffer1, ..buffer1];
+                    contentType = temp.GetCorrectExtension("");
+                }
 
                 sha256.TransformBlock(buffer1, 0, bytesRead1, null, 0);
                 sha256.TransformBlock(buffer2, 0, bytesRead2, null, 0);
@@ -615,6 +619,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                 }
             }
 
+            contentType = contentType?.GetMimeTypeFromExtension() ?? string.Empty;
             return new WriteDataResult()
             {
                 CheckSum = checksum.ToString(),
@@ -622,7 +627,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                 TotalByteWritten1 = totalByteWritten1,
                 TotalByteWritten2 = totalByteWritten2,
                 TotalByteWritten3 = totalByteWritten3,
-                ContentType = contentType?.GetMimeTypeFromExtension() ?? string.Empty
+                ContentType = contentType,
             };
         }
         catch (OperationCanceledException)

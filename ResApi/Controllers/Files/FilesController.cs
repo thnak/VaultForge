@@ -658,18 +658,25 @@ public class FilesController(
                             await section.Body.CopyToAsync(memoryStream, cancelToken);
                             var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancelToken);
                             await memoryStream.DisposeAsync();
-                            (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, section.ContentType ?? string.Empty, saveResult.CheckSum);
+                            (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, saveResult.ContentType, saveResult.CheckSum);
                             if (string.IsNullOrEmpty(file.ContentType))
                             {
                                 file.ContentType = section.ContentType ?? string.Empty;
                             }
+                            var fileId = file.Id.ToString();
 
                             if (file.FileSize > 0)
                             {
-                                var updateResult = await fileServe.UpdateAsync(file, cancelToken);
+                                var field2Update = new FieldUpdate<FileInfoModel>()
+                                {
+                                    { x => x.FileSize, file.FileSize },
+                                    { x => x.ContentType, file.ContentType },
+                                    { x => x.Checksum, file.Checksum },
+                                };
+                                var updateResult = await fileServe.UpdateAsync(fileId, field2Update, cancelToken);
                                 if (updateResult.Item1)
                                 {
-                                    await thumbnailService.AddThumbnailRequest(file.Id.ToString());
+                                    await thumbnailService.AddThumbnailRequest(fileId);
                                 }
                                 else
                                 {
@@ -679,7 +686,7 @@ public class FilesController(
                             else
                             {
                                 logger.LogWarning($"File empty. deleting {file.FileName}");
-                                fileServe.Delete(file.Id.ToString());
+                                fileServe.Delete(fileId);
                             }
                         }
                     }
