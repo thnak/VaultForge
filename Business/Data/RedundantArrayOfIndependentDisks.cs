@@ -106,10 +106,9 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             await _fileMetaDataDataDb.InsertManyAsync(disks, null, cancellationToken);
             return result;
         }
-        catch (OperationCanceledException e)
+        catch (OperationCanceledException)
         {
-            Console.WriteLine(e);
-            throw;
+            return new();
         }
     }
 
@@ -366,144 +365,154 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
 
     async Task<WriteDataResult> WriteDataAsync(Stream inputStream, int stripeSize, string file1Path, string file2Path, string file3Path, CancellationToken cancellationToken = default)
     {
-        inputStream.SeekBeginOrigin();
-        long totalByteWrite = 0;
-        long totalByteWritten1 = 0;
-        long totalByteWritten2 = 0;
-        long totalByteWritten3 = 0;
-
-        FileStream? file1 = null;
         try
         {
-            file1 = new FileStream(file1Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: _readWriteBufferSize, useAsync: true);
-        }
-        catch (Exception)
-        {
-            //
-        }
+            inputStream.SeekBeginOrigin();
+            long totalByteWrite = 0;
+            long totalByteWritten1 = 0;
+            long totalByteWritten2 = 0;
+            long totalByteWritten3 = 0;
 
-        FileStream? file2 = null;
-        try
-        {
-            file2 = new FileStream(file2Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: _readWriteBufferSize, useAsync: true);
-        }
-        catch (Exception)
-        {
-            //
-        }
-
-        FileStream? file3 = null;
-        try
-        {
-            file3 = new FileStream(file3Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: _readWriteBufferSize, useAsync: true);
-        }
-        catch (Exception)
-        {
-            //
-        }
-
-        byte[] buffer1 = new byte[stripeSize];
-        byte[] buffer2 = new byte[stripeSize];
-        int bytesRead1;
-        int stripeIndex = 0;
-        string? contentType = null;
-
-        using SHA256 sha256 = SHA256.Create();
-
-        while ((bytesRead1 = await inputStream.ReadAsync(buffer1, 0, stripeSize, cancellationToken)) > 0)
-        {
-            if (contentType == null)
-                contentType = buffer1.GetCorrectExtension("");
-            var bytesRead2 = await inputStream.ReadAsync(buffer2, 0, stripeSize, cancellationToken);
-
-            sha256.TransformBlock(buffer1, 0, bytesRead1, null, 0);
-            sha256.TransformBlock(buffer2, 0, bytesRead2, null, 0);
-
-            totalByteWrite += bytesRead1 + bytesRead2;
-            totalByteWritten1 += bytesRead1;
-            totalByteWritten2 += bytesRead2;
-            totalByteWritten3 += stripeSize;
-
-            var parityBuffer = XorParity(buffer1, buffer2);
-
-            // Create tasks for writing data and parity in parallel
-            Task[] writeTasks = [];
-
-            switch (stripeIndex % 3)
+            FileStream? file1 = null;
+            try
             {
-                case 0:
-                    // Parity goes to file 3
-                    writeTasks =
-                    [
-                        file1?.WriteAsync(buffer1, 0, bytesRead1, cancellationToken) ?? Task.CompletedTask,
-                        file2?.WriteAsync(buffer2, 0, bytesRead2, cancellationToken) ?? Task.CompletedTask,
-                        file3?.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken) ?? Task.CompletedTask
-                    ];
-                    break;
-
-                case 1:
-                    // Parity goes to file 2
-                    writeTasks =
-                    [
-                        file1?.WriteAsync(buffer1, 0, bytesRead1, cancellationToken) ?? Task.CompletedTask,
-                        file2?.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
-                        file3?.WriteAsync(buffer2, 0, bytesRead2, cancellationToken) ?? Task.CompletedTask,
-                    ];
-                    break;
-
-                case 2:
-                    // Parity goes to file 1
-                    writeTasks =
-                    [
-                        file1?.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
-                        file2?.WriteAsync(buffer1, 0, bytesRead1, cancellationToken) ?? Task.CompletedTask,
-                        file3?.WriteAsync(buffer2, 0, bytesRead2, cancellationToken) ?? Task.CompletedTask,
-                    ];
-                    break;
+                file1 = new FileStream(file1Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: _readWriteBufferSize, useAsync: true);
+            }
+            catch (Exception)
+            {
+                //
             }
 
-            // Wait for all tasks (writes) to complete in parallel
-            await Task.WhenAll(writeTasks);
-            stripeIndex++;
-        }
-
-        if (file1 != null)
-        {
-            await file1.FlushAsync(cancellationToken);
-            await file1.DisposeAsync().ConfigureAwait(false);
-        }
-
-        if (file2 != null)
-        {
-            await file2.FlushAsync(cancellationToken);
-            await file2.DisposeAsync().ConfigureAwait(false);
-        }
-
-        if (file3 != null)
-        {
-            await file3.FlushAsync(cancellationToken);
-            await file3.DisposeAsync().ConfigureAwait(false);
-        }
-
-        sha256.TransformFinalBlock([], 0, 0);
-        StringBuilder checksum = new StringBuilder();
-        if (sha256.Hash != null)
-        {
-            foreach (byte b in sha256.Hash)
+            FileStream? file2 = null;
+            try
             {
-                checksum.Append(b.ToString("x2"));
+                file2 = new FileStream(file2Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: _readWriteBufferSize, useAsync: true);
             }
-        }
+            catch (Exception)
+            {
+                //
+            }
 
-        return new WriteDataResult()
+            FileStream? file3 = null;
+            try
+            {
+                file3 = new FileStream(file3Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: _readWriteBufferSize, useAsync: true);
+            }
+            catch (Exception)
+            {
+                //
+            }
+
+            byte[] buffer1 = new byte[stripeSize];
+            byte[] buffer2 = new byte[stripeSize];
+            int bytesRead1;
+            int stripeIndex = 0;
+            string? contentType = null;
+
+            using SHA256 sha256 = SHA256.Create();
+
+            while ((bytesRead1 = await inputStream.ReadAsync(buffer1, 0, stripeSize, cancellationToken)) > 0)
+            {
+                if (contentType == null)
+                    contentType = buffer1.GetCorrectExtension("");
+                var bytesRead2 = await inputStream.ReadAsync(buffer2, 0, stripeSize, cancellationToken);
+
+                sha256.TransformBlock(buffer1, 0, bytesRead1, null, 0);
+                sha256.TransformBlock(buffer2, 0, bytesRead2, null, 0);
+
+                totalByteWrite += bytesRead1 + bytesRead2;
+                totalByteWritten1 += bytesRead1;
+                totalByteWritten2 += bytesRead2;
+                totalByteWritten3 += stripeSize;
+
+                var parityBuffer = XorParity(buffer1, buffer2);
+
+                // Create tasks for writing data and parity in parallel
+                Task[] writeTasks = [];
+
+                switch (stripeIndex % 3)
+                {
+                    case 0:
+                        // Parity goes to file 3
+                        writeTasks =
+                        [
+                            file1?.WriteAsync(buffer1, 0, bytesRead1, cancellationToken) ?? Task.CompletedTask,
+                            file2?.WriteAsync(buffer2, 0, bytesRead2, cancellationToken) ?? Task.CompletedTask,
+                            file3?.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken) ?? Task.CompletedTask
+                        ];
+                        break;
+
+                    case 1:
+                        // Parity goes to file 2
+                        writeTasks =
+                        [
+                            file1?.WriteAsync(buffer1, 0, bytesRead1, cancellationToken) ?? Task.CompletedTask,
+                            file2?.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                            file3?.WriteAsync(buffer2, 0, bytesRead2, cancellationToken) ?? Task.CompletedTask,
+                        ];
+                        break;
+
+                    case 2:
+                        // Parity goes to file 1
+                        writeTasks =
+                        [
+                            file1?.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                            file2?.WriteAsync(buffer1, 0, bytesRead1, cancellationToken) ?? Task.CompletedTask,
+                            file3?.WriteAsync(buffer2, 0, bytesRead2, cancellationToken) ?? Task.CompletedTask,
+                        ];
+                        break;
+                }
+
+                // Wait for all tasks (writes) to complete in parallel
+                await Task.WhenAll(writeTasks);
+                stripeIndex++;
+            }
+
+            if (file1 != null)
+            {
+                await file1.FlushAsync(cancellationToken);
+                await file1.DisposeAsync().ConfigureAwait(false);
+            }
+
+            if (file2 != null)
+            {
+                await file2.FlushAsync(cancellationToken);
+                await file2.DisposeAsync().ConfigureAwait(false);
+            }
+
+            if (file3 != null)
+            {
+                await file3.FlushAsync(cancellationToken);
+                await file3.DisposeAsync().ConfigureAwait(false);
+            }
+
+            sha256.TransformFinalBlock([], 0, 0);
+            StringBuilder checksum = new StringBuilder();
+            if (sha256.Hash != null)
+            {
+                foreach (byte b in sha256.Hash)
+                {
+                    checksum.Append(b.ToString("x2"));
+                }
+            }
+
+            return new WriteDataResult()
+            {
+                CheckSum = checksum.ToString(),
+                TotalByteWritten = totalByteWrite,
+                TotalByteWritten1 = totalByteWritten1,
+                TotalByteWritten2 = totalByteWritten2,
+                TotalByteWritten3 = totalByteWritten3,
+                ContentType = contentType?.GetMimeTypeFromExtension() ?? string.Empty
+            };
+        }
+        catch (OperationCanceledException)
         {
-            CheckSum = checksum.ToString(),
-            TotalByteWritten = totalByteWrite,
-            TotalByteWritten1 = totalByteWritten1,
-            TotalByteWritten2 = totalByteWritten2,
-            TotalByteWritten3 = totalByteWritten3,
-            ContentType = contentType?.GetMimeTypeFromExtension() ?? string.Empty
-        };
+            File.Delete(file1Path);
+            File.Delete(file2Path);
+            File.Delete(file3Path);
+            return new();
+        }
     }
 
     private byte[] XorParity(byte[] data0, byte[] data1)

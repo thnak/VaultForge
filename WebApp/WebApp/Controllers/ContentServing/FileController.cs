@@ -623,12 +623,20 @@ public class FilesController(
                                 file.ContentType = section.ContentType ?? string.Empty;
                             }
 
+                            var fileId = file.Id.ToString();
+
                             if (file.FileSize > 0)
                             {
-                                var updateResult = await fileServe.UpdateAsync(file, cancelToken);
+                                var field2Update = new FieldUpdate<FileInfoModel>()
+                                {
+                                    { x => x.FileSize, file.FileSize },
+                                    { x => x.ContentType, file.ContentType },
+                                    { x => x.Checksum, file.Checksum },
+                                };
+                                var updateResult = await fileServe.UpdateAsync(fileId, field2Update, cancelToken);
                                 if (updateResult.Item1)
                                 {
-                                    await thumbnailService.AddThumbnailRequest(file.Id.ToString());
+                                    await thumbnailService.AddThumbnailRequest(fileId);
                                 }
                                 else
                                 {
@@ -639,8 +647,8 @@ public class FilesController(
                             {
                                 logger.LogWarning($"File empty. deleting {file.FileName}");
                                 // double call to delete trash
-                                fileServe.Delete(file.Id.ToString());
-                                fileServe.Delete(file.Id.ToString());
+                                fileServe.Delete(fileId);
+                                fileServe.Delete(fileId);
                             }
                         }
                     }
