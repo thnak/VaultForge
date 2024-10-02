@@ -175,18 +175,147 @@ public class FilesController(
         };
     }
 
+    [HttpGet("stream")]
+    public async Task<IActionResult> StreamVideo()
+    {
+        var filePath = "C:\\Users\\thanh\\Downloads\\test.mp4";
+        var fileInfo = new FileInfo(filePath);
+
+        // Check if Range request header exists
+        if (Request.Headers.ContainsKey("Range"))
+        {
+            // Parse the Range header
+            var rangeHeader = Request.Headers["Range"].ToString();
+            var range = rangeHeader.Replace("bytes=", "").Split('-');
+
+            long from = long.Parse(range[0]);
+            long to = range.Length > 1 && long.TryParse(range[1], out var endRange) ? endRange : fileInfo.Length - 1;
+
+            if (from >= fileInfo.Length)
+            {
+                return BadRequest("Requested range is not satisfiable.");
+            }
+
+            var length = to - from + 1;
+
+            // Open the file stream and seek to the requested position
+            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                stream.Seek(from, SeekOrigin.Begin);
+
+                var responseStream = new MemoryStream();
+                await stream.CopyToAsync(responseStream, (int)length);
+
+                var buffer = responseStream.ToArray();
+                // Set headers for partial content response
+                Response.Headers.Add("Content-Range", $"bytes {from}-{to}/{fileInfo.Length}");
+                Response.Headers.Add("Accept-Ranges", "bytes");
+                Response.ContentLength = length;
+                Response.StatusCode = StatusCodes.Status206PartialContent;
+
+                return File(buffer, "video/mp4");
+            }
+        }
+
+        // If no range is requested, serve the whole file
+        var fullStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        return File(fullStream, "video/mp4", enableRangeProcessing: true);
+    }
+
+
     [HttpGet("read-file-seek")]
-    public IActionResult ReadAndSeek(string path)
+    public async Task<IActionResult> ReadAndSeek()
     {
         var cancelToken = HttpContext.RequestAborted;
-        Raid5Stream stream = new Raid5Stream(raidService, path, cancelToken);
-        string contentType = "application/octet-stream";
-        string fileName = "downloaded-file.txt";
-        return new FileStreamResult(stream, contentType)
+        string path = "C:/Users/thanh/Git/CodeWithMe/ResApi/bin/Debug/net9.0/01-10-2024\\us5xanpx.0sb";
+        var file = fileServe.Get(path);
+        if (file == null) return NotFound();
+        var pathArray = await raidService.GetDataBlockPaths(path);
+        if (pathArray == default) return NotFound();
+
+        Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files[0], pathArray.Files[1], pathArray.Files[2], pathArray.FileSize, pathArray.StripeSize);
+        var filePath = "C:\\Users\\thanh\\Downloads\\test.mp4";
+        var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        Response.RegisterForDispose(raid5Stream);
+        Response.RegisterForDispose(stream);
+
+        byte[] raidBuffer;
+        if (Request.Headers.ContainsKey("Range"))
         {
-            FileDownloadName = fileName,
-            EnableRangeProcessing = true
-        };
+            // Parse the Range header
+            var rangeHeader = Request.Headers["Range"].ToString();
+            var range = rangeHeader.Replace("bytes=", "").Split('-');
+
+            long from = long.Parse(range[0]);
+            long to = range.Length > 1 && long.TryParse(range[1], out var endRange) ? endRange : file.FileSize - 1;
+
+            if (from >= file.FileSize)
+            {
+                return BadRequest("Requested range is not satisfiable.");
+            }
+
+            var length = to - from + 1;
+
+            // Open the file stream and seek to the requested position
+
+            raid5Stream.Seek(from, SeekOrigin.Begin);
+
+            raidBuffer = new byte[length];
+            var totalRead = await raid5Stream.ReadAsync(raidBuffer, 0, (int)length, cancelToken);
+
+            stream.Seek(from, SeekOrigin.Begin);
+
+            var responseStream = new MemoryStream();
+            await stream.CopyToAsync(responseStream, (int)length, cancelToken);
+            var buffer = responseStream.ToArray();
+
+            SHA256 fileStreamSha256 = SHA256.Create();
+            fileStreamSha256.TransformBlock(buffer, 0, (int)length, null, 0);
+            fileStreamSha256.TransformFinalBlock([], 0, 0);
+            StringBuilder checksum = new StringBuilder();
+            if (fileStreamSha256.Hash != null)
+            {
+                foreach (byte b in fileStreamSha256.Hash)
+                {
+                    checksum.Append(b.ToString("x2"));
+                }
+            }
+
+            SHA256 raidStreamSha256 = SHA256.Create();
+            raidStreamSha256.TransformBlock(raidBuffer, 0, (int)length, null, 0);
+            raidStreamSha256.TransformFinalBlock([], 0, 0);
+            StringBuilder raidChecksum = new StringBuilder();
+            if (raidStreamSha256.Hash != null)
+            {
+                foreach (byte b in raidStreamSha256.Hash)
+                {
+                    raidChecksum.Append(b.ToString("x2"));
+                }
+            }
+
+            var fileStreamCheck = checksum.ToString();
+            var raidStreamCheck = raidChecksum.ToString();
+            if (fileStreamCheck == raidStreamCheck)
+            {
+                logger.LogInformation("[Checksum] File stream check success.");
+            }
+            else
+            {
+                logger.LogInformation("[Checksum] File stream check failed.");
+            }
+
+            // Set headers for partial content response
+            Response.Headers.Add("Content-Range", $"bytes {from}-{to}/{file.FileSize}");
+            Response.Headers.Add("Accept-Ranges", "bytes");
+            Response.ContentLength = length;
+            Response.StatusCode = StatusCodes.Status206PartialContent;
+
+            return File(buffer, "video/mp4");
+        }
+
+        raidBuffer = new byte[file.FileSize];
+        _ = await raid5Stream.ReadAsync(raidBuffer, 0, (int)file.FileSize, cancelToken);
+        return File(raidBuffer, "video/mp4");
     }
 
     [HttpPost("get-file-list")]
@@ -623,7 +752,7 @@ public class FilesController(
             }
 
             var boundary = MediaTypeHeaderValue.Parse(Request.ContentType).GetBoundary(int.MaxValue);
-            var reader = new MultipartReader(boundary, HttpContext.Request.Body);
+            var reader = new MultipartReader(boundary, HttpContext.Request.Body, 10 * 1024 * 1024);
             var section = await reader.ReadNextSectionAsync(cancelToken);
             while (section != null && HttpContext.RequestAborted is { IsCancellationRequested: false })
             {
@@ -654,7 +783,8 @@ public class FilesController(
                         var createFileResult = await folderServe.CreateFileAsync(folder, file, cancelToken);
                         if (createFileResult.Item1)
                         {
-                            var memoryStream = new FileStream(Path.GetTempFileName(), FileMode.Create, FileAccess.ReadWrite, FileShare.None, bufferSize: 10 * 1024 * 1024, FileOptions.DeleteOnClose);
+                            MemoryStream memoryStream = new MemoryStream();
+                            // var memoryStream = new FileStream(Path.GetTempFileName(), FileMode.Create, FileAccess.ReadWrite, FileShare.None, bufferSize: 10 * 1024 * 1024, FileOptions.DeleteOnClose);
                             await section.Body.CopyToAsync(memoryStream, cancelToken);
                             var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancelToken);
                             await memoryStream.DisposeAsync();
@@ -667,6 +797,7 @@ public class FilesController(
                             {
                                 file.ContentType = Path.GetExtension(trustedFileNameForDisplay).GetMimeTypeFromExtension();
                             }
+
                             var fileId = file.Id.ToString();
 
                             if (file.FileSize > 0)

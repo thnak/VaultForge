@@ -3,10 +3,11 @@ using BusinessModels.System;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Business.Exceptions;
 
-public class ErrorHandling : IExceptionHandler
+public class ErrorHandling(ILogger<ErrorHandling> logger) : IExceptionHandler
 {
     public ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
@@ -17,8 +18,7 @@ public class ErrorHandling : IExceptionHandler
             Src = exception.Source ?? string.Empty,
             Href = httpContext.Request.Path
         };
-
-        httpContext.Response.Redirect($"{PageRoutes.Error.ErrorPage.AppendAndEncodeBase64StringAsUri(recordModel.Encode2Base64String())}");
+        logger.LogError(exception, exception.Message);
         return ValueTask.FromResult(true);
     }
 }
