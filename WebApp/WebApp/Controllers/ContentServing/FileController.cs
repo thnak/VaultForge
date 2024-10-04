@@ -627,11 +627,23 @@ public class FilesController(
                         var createFileResult = await folderServe.CreateFileAsync(folder, file, cancelToken);
                         if (createFileResult.Item1)
                         {
-                            var memoryStream = new FileStream(Path.GetTempFileName(), FileMode.Create, FileAccess.ReadWrite, FileShare.None, bufferSize: 100 * 1024 * 1024, FileOptions.DeleteOnClose);
-                            await section.Body.CopyToAsync(memoryStream, cancelToken);
-                            var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancelToken);
-                            await memoryStream.DisposeAsync();
-                            (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, saveResult.ContentType, saveResult.CheckSum);
+                            if (section.ContentType?.IsImageFile() == true)
+                            {
+                                var memoryStream = new MemoryStream();
+                                await section.Body.CopyToAsync(memoryStream, cancelToken);
+                                var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancelToken);
+                                await memoryStream.DisposeAsync();
+                                (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, saveResult.ContentType, saveResult.CheckSum);
+                            }
+                            else
+                            {
+                                var memoryStream = new FileStream(Path.GetTempFileName(), FileMode.Create, FileAccess.ReadWrite, FileShare.None, bufferSize: 100 * 1024 * 1024, FileOptions.DeleteOnClose);
+                                await section.Body.CopyToAsync(memoryStream, cancelToken);
+                                var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancelToken);
+                                await memoryStream.DisposeAsync();
+                                (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, saveResult.ContentType, saveResult.CheckSum);
+                            }
+                            
                             if (string.IsNullOrEmpty(file.ContentType))
                             {
                                 file.ContentType = section.ContentType ?? string.Empty;

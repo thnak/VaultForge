@@ -224,22 +224,23 @@ public class FilesController(
 
 
     [HttpGet("read-file-seek")]
-    public async Task<IActionResult> ReadAndSeek()
+    public async Task<IActionResult> ReadAndSeek(int start, int count)
     {
         var cancelToken = HttpContext.RequestAborted;
-        string path = "C:/Users/thanh/Git/CodeWithMe/ResApi/bin/Debug/net9.0/01-10-2024\\us5xanpx.0sb";
+        string path = "C:/Users/thanh/Git/CodeWithMe/ResApi/bin/Debug/net9.0/02-10-2024\\zboahrzr.g5w";
         var file = fileServe.Get(path);
         if (file == null) return NotFound();
-        var pathArray = await raidService.GetDataBlockPaths(path);
+        var pathArray = await raidService.GetDataBlockPaths(path, cancelToken);
         if (pathArray == default) return NotFound();
 
         Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files[0], pathArray.Files[1], pathArray.Files[2], pathArray.FileSize, pathArray.StripeSize);
-        var filePath = "C:\\Users\\thanh\\Downloads\\test.mp4";
+        var filePath = "C:\\Users\\thanh\\Downloads\\Input1.txt";
         var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
         Response.RegisterForDispose(raid5Stream);
         Response.RegisterForDispose(stream);
 
         byte[] raidBuffer;
+        byte[] normalBuffer;
         if (Request.Headers.ContainsKey("Range"))
         {
             // Parse the Range header
@@ -310,11 +311,31 @@ public class FilesController(
             Response.ContentLength = length;
             Response.StatusCode = StatusCodes.Status206PartialContent;
 
-            return File(buffer, "video/mp4");
+            return File(raidBuffer, "video/mp4");
         }
 
-        raidBuffer = new byte[file.FileSize];
-        _ = await raid5Stream.ReadAsync(raidBuffer, 0, (int)file.FileSize, cancelToken);
+        var outStreamNormal = new FileStream("C:\\Users\\thanh\\Downloads\\test-1.txt", FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write);
+        var outStreamRaid = new FileStream("C:\\Users\\thanh\\Downloads\\test-2.txt", FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write);
+        
+        
+        
+        int seekPosition = start;
+        int readLength = count;
+        raid5Stream.Seek(seekPosition, SeekOrigin.Begin);
+        stream.Seek(seekPosition, SeekOrigin.Begin);
+        raidBuffer = new byte[file.FileSize - seekPosition];
+        normalBuffer = new byte[file.FileSize - seekPosition];
+
+        var raidStreamReadCount = await raid5Stream.ReadAsync(raidBuffer, 0, readLength, cancelToken);
+        var normalStreamReadCount = await stream.ReadAsync(normalBuffer, 0, readLength, cancelToken);
+
+        await outStreamNormal.WriteAsync(normalBuffer, 0, normalStreamReadCount, cancelToken);
+        await outStreamRaid.WriteAsync(raidBuffer, 0, raidStreamReadCount, cancelToken);
+
+        Response.RegisterForDispose(outStreamNormal);
+        Response.RegisterForDispose(outStreamRaid);
+
+
         return File(raidBuffer, "video/mp4");
     }
 

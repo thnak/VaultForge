@@ -91,9 +91,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                 Directory.CreateDirectory(Path.GetDirectoryName(disk.AbsolutePath)!);
             }
 
-            WriteDataResult result = new();
-
-            result = await WriteDataAsync(stream, raidModel.StripSize, disks[0].AbsolutePath, disks[1].AbsolutePath, disks[2].AbsolutePath, cancellationToken);
+            var result = await WriteDataAsync(stream, raidModel.StripSize, disks[0].AbsolutePath, disks[1].AbsolutePath, disks[2].AbsolutePath, cancellationToken);
             // result.TotalByteWritten = byteWrite;
             raidModel.Size = result.TotalByteWritten;
             raidModel.CheckSum = result.CheckSum;
