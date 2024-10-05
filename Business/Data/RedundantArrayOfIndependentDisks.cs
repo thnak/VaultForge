@@ -78,10 +78,9 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             };
 
             int index = 0;
-            logger.LogInformation($"{options.Value.FileFolders.ToJson()} source");
-            options.Value.FileFolders.Shuffle();
-            logger.LogInformation($"{options.Value.FileFolders.ToJson()} shuffled");
-            List<FileRaidDataBlockModel> disks = options.Value.FileFolders.Select(x => new FileRaidDataBlockModel()
+            string[] arrayDisk = [..options.Value.FileFolders];
+            arrayDisk.Shuffle();
+            List<FileRaidDataBlockModel> disks = arrayDisk.Select(x => new FileRaidDataBlockModel()
             {
                 AbsolutePath = Path.Combine(x, $"{DateTime.UtcNow:yy-MM-dd}", raidModel.Id + Path.GetRandomFileName()),
                 CreationTime = DateTime.UtcNow,
