@@ -562,18 +562,21 @@ public class FilesController(
     {
         var cancelToken = HttpContext.RequestAborted;
         var totalFiles = await fileServe.GetDocumentSizeAsync(cancelToken);
-        var files = fileServe.Where(x => true, cancelToken, model => model.Id, model => model.PreviousType);
+        var files = fileServe.Where(x => true, cancelToken, model => model.Id, model => model.PreviousType, model => model.Type);
 
         long index = 0;
         await foreach (var x in files)
         {
-            await fileServe.UpdateAsync(x.Id.ToString(), new FieldUpdate<FileInfoModel>()
+            if(x.Type == FileContentType.MissingFile)
             {
-                { z => z.Type, x.PreviousType }
-            }, cancelToken);
-            index += 1;
-            if (index == totalFiles)
-                break;
+                await fileServe.UpdateAsync(x.Id.ToString(), new FieldUpdate<FileInfoModel>()
+                {
+                    { z => z.Type, x.PreviousType }
+                }, cancelToken);
+                index += 1;
+                if (index == totalFiles)
+                    break;
+            }
         }
 
         return Ok();
