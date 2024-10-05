@@ -572,16 +572,13 @@ public class FilesController(
         long index = 0;
         await foreach (var x in files)
         {
-            if (x.Type == FileContentType.MissingFile)
+            await fileServe.UpdateAsync(x.Id.ToString(), new FieldUpdate<FileInfoModel>()
             {
-                await fileServe.UpdateAsync(x.Id.ToString(), new FieldUpdate<FileInfoModel>()
-                {
-                    { z => z.Type, x.PreviousType }
-                }, cancelToken);
-                index += 1;
-                if (index == totalFiles)
-                    break;
-            }
+                { z => z.Type, x.PreviousType }
+            }, cancelToken);
+            index += 1;
+            if (index == totalFiles)
+                break;
         }
 
         return Ok();
@@ -597,6 +594,8 @@ public class FilesController(
         var folderKeyString = AppLang.Folder;
         var fileKeyString = AppLang.File;
         var cancelToken = HttpContext.RequestAborted;
+
+        List<string> requestThumbnailList = [];
 
 
         try
@@ -697,7 +696,7 @@ public class FilesController(
                                 var updateResult = await fileServe.UpdateAsync(fileId, field2Update, cancelToken);
                                 if (updateResult.Item1)
                                 {
-                                    await thumbnailService.AddThumbnailRequest(fileId);
+                                    requestThumbnailList.Add(fileId);
                                 }
                                 else
                                 {
@@ -708,14 +707,14 @@ public class FilesController(
                             {
                                 logger.LogWarning($"File empty. deleting {file.FileName}");
                                 // double call to delete trash
-                                await fileServe.DeleteAsync(fileId, default);
-                                await fileServe.DeleteAsync(fileId, default);
+                                await fileServe.DeleteAsync(fileId);
+                                await fileServe.DeleteAsync(fileId);
                             }
                         }
                         else
                         {
-                            await fileServe.DeleteAsync(fileId, default);
-                            await fileServe.DeleteAsync(fileId, default);
+                            await fileServe.DeleteAsync(fileId);
+                            await fileServe.DeleteAsync(fileId);
                         }
                     }
                 }
@@ -737,6 +736,13 @@ public class FilesController(
             ModelState.AddModelError(AppLang.Exception, e.Message);
             logger.LogError(e, null);
             return StatusCode(500, ModelState);
+        }
+        finally
+        {
+            foreach (var fileId in requestThumbnailList)
+            {
+                await thumbnailService.AddThumbnailRequest(fileId);
+            }
         }
     }
 }
