@@ -114,22 +114,22 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da, IMemoryCache memor
         return da.CreateAsync(models, cancellationToken);
     }
 
-    public (bool, string) Delete(string key)
+    public async Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         var file = Get(key);
         if (file == default) return (false, AppLang.File_could_not_be_found);
 
         if (file.Type != FileContentType.DeletedFile)
         {
-            UpdateAsync(key, new FieldUpdate<FileInfoModel>()
+            await UpdateAsync(key, new FieldUpdate<FileInfoModel>()
             {
                 { model => model.Type, FileContentType.DeletedFile },
                 { model => model.PreviousType, file.Type }
-            });
+            }, cancelToken);
             return (true, AppLang.Delete_successfully);
         }
 
-        return da.Delete(key);
+        return await da.DeleteAsync(key, cancelToken);
     }
 
     public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)

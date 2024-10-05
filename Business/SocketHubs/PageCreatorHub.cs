@@ -91,7 +91,7 @@ public class PageCreatorHub(IMemoryCache memoryCache, IAdvertisementBusinessLaye
 
     public async Task<SignalRResult> DeleteAdvertisement(string articleId)
     {
-        var result = businessLayer.Delete(articleId);
+        var result = await businessLayer.DeleteAsync(articleId);
         memoryCache.Remove($"{nameof(PageCreatorHub)}{nameof(ArticleModel)}{articleId}");
         var listener = GetListeners(articleId);
         await Clients.Clients(listener).SendAsync("ReceiveMessage", new ArticleModel(), CancellationTokenSource.Token);

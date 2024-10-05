@@ -71,7 +71,7 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
         var article = businessLayer.Get(id);
         if (article == null)
             return "The Article could not be found. Ask user to provide correct article ID and try again. Ask user provide correct article ID and try again.";
-        var result = businessLayer.Delete(id);
+        var result = await businessLayer.DeleteAsync(id, cancellationToken);
         return result.Item1 ? $"deleted successfully for article {article.Id}." : $"delete failed for article {article.Id}. Ask user to provide correct article ID and try again.";
     }
 

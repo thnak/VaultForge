@@ -343,11 +343,11 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         yield return (true, AppLang.Success, string.Empty);
     }
 
-    public (bool, string) Delete(string key)
+    public async Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         try
         {
-            _semaphore.WaitAsync();
+            await _semaphore.WaitAsync(cancelToken);
 
             if (string.IsNullOrWhiteSpace(key)) return (false, AppLang.File_could_not_be_found);
 
@@ -357,7 +357,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             var filter = Builders<FileInfoModel>.Filter.Eq(x => x.AbsolutePath, key);
             if (ObjectId.TryParse(key, out var id)) filter |= Builders<FileInfoModel>.Filter.Eq(x => x.Id, id);
 
-            _fileDataDb.DeleteMany(filter);
+            await _fileDataDb.DeleteManyAsync(filter, cancelToken);
             raidService.Delete(query.AbsolutePath);
 
             try
@@ -371,12 +371,12 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
             if (!string.IsNullOrEmpty(query.Thumbnail))
             {
-                Delete(query.Thumbnail);
+                await DeleteAsync(query.Thumbnail);
             }
 
             DeleteMetadata(query.MetadataId);
 
-            foreach (var extend in query.ExtendResource) Delete(extend.Id);
+            foreach (var extend in query.ExtendResource) await DeleteAsync(extend.Id);
 
             return (true, AppLang.Delete_successfully);
         }

@@ -142,7 +142,7 @@ public class FolderSystemBusinessLayer(
         return FolderSystemService.UpdateAsync(models, cancellationToken);
     }
 
-    public (bool, string) Delete(string key)
+    public async Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         var folder = Get(key);
         if (folder == null) return (false, AppLang.Folder_could_not_be_found);
@@ -152,15 +152,15 @@ public class FolderSystemBusinessLayer(
 
         if (folder.Type != FolderContentType.DeletedFolder)
         {
-            UpdateAsync(key, new FieldUpdate<FolderInfoModel>()
+            await UpdateAsync(key, new FieldUpdate<FolderInfoModel>()
             {
                 { model => model.Type, FolderContentType.DeletedFolder },
                 { model => model.PreviousType, folder.Type }
-            });
+            }, cancelToken);
             return (true, AppLang.Delete_successfully);
         }
 
-        var res = FolderSystemService.Delete(key);
+        var res = await FolderSystemService.DeleteAsync(key, cancelToken);
         if (res.Item1)
         {
             _ = Task.Run(async () =>
@@ -169,8 +169,8 @@ public class FolderSystemBusinessLayer(
                 await foreach (var fol in folderList)
                 {
                     var folderId = fol.Id.ToString();
-                    Delete(folderId);
-                    Delete(folderId);
+                    await DeleteAsync(folderId);
+                    await DeleteAsync(folderId);
                 }
             });
 
@@ -180,8 +180,8 @@ public class FolderSystemBusinessLayer(
                 await foreach (var file in cursor)
                 {
                     var fileId = file.Id.ToString();
-                    FileSystemService.Delete(fileId);
-                    FileSystemService.Delete(fileId);
+                    await FileSystemService.DeleteAsync(fileId);
+                    await FileSystemService.DeleteAsync(fileId);
                 }
             });
         }

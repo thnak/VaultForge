@@ -380,16 +380,16 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         throw new NotImplementedException();
     }
 
-    public (bool, string) Delete(string key)
+    public async Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         if (!ObjectId.TryParse(key, out var id))
             return (false, AppLang.Invalid_key);
 
         var filter = Builders<FolderInfoModel>.Filter.Eq(f => f.Id, id);
-        var isExists = _dataDb.Find(filter).Any();
+        var isExists = await _dataDb.Find(filter).AnyAsync(cancellationToken: cancelToken);
         if (isExists)
         {
-            _dataDb.DeleteOne(filter);
+            await _dataDb.DeleteOneAsync(filter, cancelToken);
             return (true, AppLang.Delete_successfully);
         }
 

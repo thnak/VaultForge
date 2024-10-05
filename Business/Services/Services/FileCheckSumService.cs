@@ -45,7 +45,7 @@ public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLaye
                         var expirationTime = DateTime.UtcNow - item.ModifiedTime;
                         if (expirationTime.TotalDays > 30)
                         {
-                            fileSystemBusinessLayer.Delete(item.Id.ToString());
+                            await fileSystemBusinessLayer.DeleteAsync(item.Id.ToString(), cancelToken);
                             continue;
                         }
                     }

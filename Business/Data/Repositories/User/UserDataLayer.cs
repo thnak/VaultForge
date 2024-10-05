@@ -305,7 +305,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         throw new NotImplementedException();
     }
 
-    public (bool, string) Delete(string key)
+    public async Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         try
         {
@@ -314,7 +314,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
             var query = Get(key);
             if (query == null) return (false, AppLang.User_is_not_exists);
             query.Leave = DateTime.UtcNow;
-            _ = UpdateAsync(query).Result;
+            await UpdateAsync(query, cancelToken);
             return (true, AppLang.Success);
         }
         catch (Exception ex)

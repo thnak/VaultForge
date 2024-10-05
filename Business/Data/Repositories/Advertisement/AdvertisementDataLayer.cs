@@ -229,7 +229,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         throw new NotImplementedException();
     }
 
-    public (bool, string) Delete(string key)
+    public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         throw new NotImplementedException();
     }

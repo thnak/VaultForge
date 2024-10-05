@@ -441,7 +441,7 @@ public class FilesController(
         var folder = folderServe.Get(folderId);
         if (folder == null) return BadRequest(AppLang.Folder_could_not_be_found);
 
-        var fileDeleteStatus = fileServe.Delete(fileId);
+        var fileDeleteStatus = await fileServe.DeleteAsync(fileId);
         if (fileDeleteStatus.Item1)
         {
             folder.Contents = folder.Contents.Where(x => x.Id != fileId).ToList();
@@ -453,17 +453,17 @@ public class FilesController(
 
     [HttpDelete("safe-delete-file")]
     [IgnoreAntiforgeryToken]
-    public IActionResult SafeDeleteFile(string code)
+    public async Task<IActionResult> SafeDeleteFile(string code)
     {
-        var result = fileServe.Delete(code);
+        var result = await fileServe.DeleteAsync(code);
         return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
     }
 
     [HttpDelete("safe-delete-folder")]
     [IgnoreAntiforgeryToken]
-    public IActionResult SafeDeleteFolder(string code)
+    public async Task<IActionResult> SafeDeleteFolder(string code)
     {
-        var updateResult = folderServe.Delete(code);
+        var updateResult = await folderServe.DeleteAsync(code);
         return updateResult.Item1 ? Ok(updateResult.Item2) : BadRequest(updateResult.Item2);
     }
 
@@ -653,6 +653,7 @@ public class FilesController(
                                 return Ok(AppLang.Successfully_uploaded);
                             return BadRequest(ModelState);
                         }
+
                         var fileId = file.Id.ToString();
 
                         var createFileResult = await folderServe.CreateFileAsync(folder, file, cancelToken);
@@ -707,14 +708,14 @@ public class FilesController(
                             {
                                 logger.LogWarning($"File empty. deleting {file.FileName}");
                                 // double call to delete trash
-                                fileServe.Delete(fileId);
-                                fileServe.Delete(fileId);
+                                await fileServe.DeleteAsync(fileId, default);
+                                await fileServe.DeleteAsync(fileId, default);
                             }
                         }
                         else
                         {
-                            fileServe.Delete(fileId);
-                            fileServe.Delete(fileId);
+                            await fileServe.DeleteAsync(fileId, default);
+                            await fileServe.DeleteAsync(fileId, default);
                         }
                     }
                 }

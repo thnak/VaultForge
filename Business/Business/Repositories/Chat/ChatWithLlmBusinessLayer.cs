@@ -89,8 +89,8 @@ public class ChatWithLlmBusinessLayer(IChatWithLlmDataLayer dataLayer) : IChatWi
         return dataLayer.UpdateAsync(models, cancellationToken);
     }
 
-    public (bool, string) Delete(string key)
+    public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
-        return dataLayer.Delete(key);
+        return dataLayer.DeleteAsync(key, cancelToken);
     }
 }

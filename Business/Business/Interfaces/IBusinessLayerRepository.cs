@@ -31,5 +31,5 @@ public interface IBusinessLayerRepository<T> where T : class
     Task<(bool, string)> UpdateAsync(string key, FieldUpdate<T> updates , CancellationToken cancellationToken = default);
 
     IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<T> models, CancellationToken cancellationToken = default);
-    (bool, string) Delete(string key);
+    Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default);
 }

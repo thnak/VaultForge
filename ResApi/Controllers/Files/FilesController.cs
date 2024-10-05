@@ -227,10 +227,10 @@ public class FilesController(
     public async Task<IActionResult> ReadAndSeek(int start, int count)
     {
         var cancelToken = HttpContext.RequestAborted;
-        string path = "C:/Users/thanh/Git/CodeWithMe/ResApi/bin/Debug/net9.0/02-10-2024\\zboahrzr.g5w";
+        string path = "670130c02b58c796110f260a";
         var file = fileServe.Get(path);
         if (file == null) return NotFound();
-        var pathArray = await raidService.GetDataBlockPaths(path, cancelToken);
+        var pathArray = await raidService.GetDataBlockPaths(file.AbsolutePath, cancelToken);
         if (pathArray == default) return NotFound();
 
         Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files[0], pathArray.Files[1], pathArray.Files[2], pathArray.FileSize, pathArray.StripeSize);
@@ -314,11 +314,18 @@ public class FilesController(
             return File(raidBuffer, "video/mp4");
         }
 
-        var outStreamNormal = new FileStream("C:\\Users\\thanh\\Downloads\\test-1.txt", FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write);
-        var outStreamRaid = new FileStream("C:\\Users\\thanh\\Downloads\\test-2.txt", FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write);
-        
-        
-        
+        var normalFilePath = "C:\\Users\\thanh\\Downloads\\test-1.txt";
+        var raidFilePath = "C:\\Users\\thanh\\Downloads\\test-2.txt";
+        if (System.IO.File.Exists(normalFilePath))
+            System.IO.File.Delete(normalFilePath);
+
+        if (System.IO.File.Exists(raidFilePath))
+            System.IO.File.Delete(raidFilePath);
+
+        var outStreamNormal = new FileStream(normalFilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write);
+        var outStreamRaid = new FileStream(raidFilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write);
+
+
         int seekPosition = start;
         int readLength = count;
         raid5Stream.Seek(seekPosition, SeekOrigin.Begin);
@@ -332,11 +339,13 @@ public class FilesController(
         await outStreamNormal.WriteAsync(normalBuffer, 0, normalStreamReadCount, cancelToken);
         await outStreamRaid.WriteAsync(raidBuffer, 0, raidStreamReadCount, cancelToken);
 
-        Response.RegisterForDispose(outStreamNormal);
-        Response.RegisterForDispose(outStreamRaid);
+        await outStreamNormal.FlushAsync(cancelToken);
+        await outStreamRaid.FlushAsync(cancelToken);
 
+        await outStreamNormal.DisposeAsync();
+        await outStreamRaid.DisposeAsync();
 
-        return File(raidBuffer, "video/mp4");
+        return Ok();
     }
 
     [HttpPost("get-file-list")]
@@ -613,7 +622,7 @@ public class FilesController(
         var folder = folderServe.Get(folderId);
         if (folder == null) return BadRequest(AppLang.Folder_could_not_be_found);
 
-        var fileDeleteStatus = fileServe.Delete(fileId);
+        var fileDeleteStatus = await fileServe.DeleteAsync(fileId);
         if (fileDeleteStatus.Item1)
         {
             folder.Contents = folder.Contents.Where(x => x.Id != fileId).ToList();
@@ -625,17 +634,17 @@ public class FilesController(
 
     [HttpDelete("safe-delete-file")]
     [IgnoreAntiforgeryToken]
-    public IActionResult SafeDeleteFile(string code)
+    public async Task<IActionResult> SafeDeleteFile(string code)
     {
-        var result = fileServe.Delete(code);
+        var result = await fileServe.DeleteAsync(code);
         return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
     }
 
     [HttpDelete("safe-delete-folder")]
     [IgnoreAntiforgeryToken]
-    public IActionResult SafeDeleteFolder(string code)
+    public async Task<IActionResult> SafeDeleteFolder(string code)
     {
-        var updateResult = folderServe.Delete(code);
+        var updateResult = await folderServe.DeleteAsync(code);
         return updateResult.Item1 ? Ok(updateResult.Item2) : BadRequest(updateResult.Item2);
     }
 
@@ -820,6 +829,7 @@ public class FilesController(
                                 await memoryStream.DisposeAsync();
                                 (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, saveResult.ContentType, saveResult.CheckSum);
                             }
+
                             if (string.IsNullOrEmpty(file.ContentType))
                             {
                                 file.ContentType = section.ContentType ?? string.Empty;
@@ -852,7 +862,7 @@ public class FilesController(
                             else
                             {
                                 logger.LogWarning($"File empty. deleting {file.FileName}");
-                                fileServe.Delete(fileId);
+                                await fileServe.DeleteAsync(fileId);
                             }
                         }
                     }

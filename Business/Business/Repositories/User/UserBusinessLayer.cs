@@ -96,9 +96,9 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         return userDl.UpdateAsync(models, cancellationToken);
     }
 
-    public (bool, string) Delete(string key)
+    public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
-        return userDl.Delete(key);
+        return userDl.DeleteAsync(key, cancelToken);
     }
 
     public UserModel GetAnonymous()
