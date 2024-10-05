@@ -557,6 +557,28 @@ public class FilesController(
         return Ok(AppLang.Folder_moved_successfully);
     }
 
+    [HttpGet("fix-content-status")]
+    public async Task<IActionResult> FixFile()
+    {
+        var cancelToken = HttpContext.RequestAborted;
+        var totalFiles = await fileServe.GetDocumentSizeAsync(cancelToken);
+        var files = fileServe.Where(x => true, cancelToken, model => model.Id, model => model.PreviousType);
+
+        long index = 0;
+        await foreach (var x in files)
+        {
+            await fileServe.UpdateAsync(x.Id.ToString(), new FieldUpdate<FileInfoModel>()
+            {
+                { z => z.Type, x.PreviousType }
+            }, cancelToken);
+            index += 1;
+            if (index == totalFiles)
+                break;
+        }
+
+        return Ok();
+    }
+
 
     [HttpPost("upload-physical")]
     [DisableFormValueModelBinding]
@@ -643,7 +665,7 @@ public class FilesController(
                                 await memoryStream.DisposeAsync();
                                 (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, saveResult.ContentType, saveResult.CheckSum);
                             }
-                            
+
                             if (string.IsNullOrEmpty(file.ContentType))
                             {
                                 file.ContentType = section.ContentType ?? string.Empty;

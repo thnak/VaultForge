@@ -2,7 +2,9 @@
 using System.Security.Cryptography;
 using System.Text;
 using Business.Business.Interfaces.FileSystem;
+using Business.Data;
 using Business.Models;
+using Business.Utils.Helper;
 using BusinessModels.General.EnumModel;
 using BusinessModels.System.FileSystem;
 using Microsoft.Extensions.Hosting;
@@ -10,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Business.Services.Services;
 
-public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLayer, ILogger<FileCheckSumService> logger) : IHostedService
+public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLayer, ILogger<FileCheckSumService> logger, RedundantArrayOfIndependentDisks disks) : IHostedService
 {
     private Timer? _timer;
     private bool _isRunning;
@@ -36,7 +38,7 @@ public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLaye
             var cursor = fileSystemBusinessLayer.Where(x => true, cancelToken, fieldToFetch);
             await foreach (var item in cursor)
             {
-                if (File.Exists(item.AbsolutePath))
+                if (disks.Exists(item.AbsolutePath))
                 {
                     if (item.Type == FileContentType.DeletedFile)
                     {
@@ -48,7 +50,16 @@ public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLaye
                         }
                     }
 
-                    await using FileStream fileStream = new FileStream(item.AbsolutePath, FileMode.Open, FileAccess.Read, FileShare.Read, BufferSize, FileOptions.SequentialScan);
+                    Stream fileStream;
+                    if (item.ContentType.IsImageFile())
+                        fileStream = new MemoryStream();
+                    else
+                    {
+                        fileStream = new FileStream(Path.GetRandomFileName(), FileMode.Create, FileAccess.ReadWrite, FileShare.None, bufferSize: 100 * 1024 * 1024, FileOptions.DeleteOnClose);
+                    }
+
+                    await disks.ReadGetDataAsync(fileStream, item.AbsolutePath, cancelToken);
+                    
                     int readByte;
                     var buffer = new byte[BufferSize];
                     using SHA256 sha256 = SHA256.Create();
@@ -57,6 +68,8 @@ public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLaye
                         sha256.TransformBlock(buffer, 0, readByte, null, 0);
                     }
 
+                    await fileStream.DisposeAsync();
+                    
                     sha256.TransformFinalBlock([], 0, 0);
                     StringBuilder checksum = new StringBuilder();
                     if (sha256.Hash != null)
