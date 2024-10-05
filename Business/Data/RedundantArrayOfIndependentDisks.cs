@@ -5,6 +5,7 @@ using System.Text;
 using Business.Data.Interfaces;
 using Business.Utils;
 using Business.Utils.Helper;
+using Business.Utils.StringExtensions;
 using BusinessModels.General;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
@@ -77,6 +78,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             };
 
             int index = 0;
+            options.Value.FileFolders.Shuffle();
             List<FileRaidDataBlockModel> disks = options.Value.FileFolders.Select(x => new FileRaidDataBlockModel()
             {
                 AbsolutePath = Path.Combine(x, $"{DateTime.UtcNow:yy-MM-dd}", raidModel.Id + Path.GetRandomFileName()),
