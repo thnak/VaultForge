@@ -103,6 +103,11 @@ public class FilesController(
                 file = webpImage;
             }
         }
+        else
+        {
+            if (file.ContentType.IsImageFile())
+                await thumbnailService.AddThumbnailRequest(file.Id.ToString());
+        }
 
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
@@ -567,7 +572,7 @@ public class FilesController(
         long index = 0;
         await foreach (var x in files)
         {
-            if(x.Type == FileContentType.MissingFile)
+            if (x.Type == FileContentType.MissingFile)
             {
                 await fileServe.UpdateAsync(x.Id.ToString(), new FieldUpdate<FileInfoModel>()
                 {
@@ -648,6 +653,7 @@ public class FilesController(
                                 return Ok(AppLang.Successfully_uploaded);
                             return BadRequest(ModelState);
                         }
+                        var fileId = file.Id.ToString();
 
                         var createFileResult = await folderServe.CreateFileAsync(folder, file, cancelToken);
                         if (createFileResult.Item1)
@@ -678,7 +684,6 @@ public class FilesController(
                                 file.ContentType = Path.GetExtension(trustedFileNameForDisplay).GetMimeTypeFromExtension();
                             }
 
-                            var fileId = file.Id.ToString();
 
                             if (file.FileSize > 0)
                             {
@@ -705,6 +710,11 @@ public class FilesController(
                                 fileServe.Delete(fileId);
                                 fileServe.Delete(fileId);
                             }
+                        }
+                        else
+                        {
+                            fileServe.Delete(fileId);
+                            fileServe.Delete(fileId);
                         }
                     }
                 }
