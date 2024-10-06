@@ -2,7 +2,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace BusinessModels.Logs;
+namespace BusinessModels.Logging;
 
 [MessagePackObject]
 public class UserLogModel

@@ -18,6 +18,7 @@ using Business.Data.Repositories.Chat;
 using Business.Data.Repositories.FileSystem;
 using Business.Data.Repositories.User;
 using Business.Exceptions;
+using Business.LogProvider;
 using Business.Services;
 using Business.Services.Interfaces;
 using Business.Services.Services;
@@ -60,7 +61,7 @@ public class Program
             options.Limits.MaxRequestBodySize = long.MaxValue;
             options.Limits.MinRequestBodyDataRate = null;
         });
-        
+
         builder.Services.Configure<FormOptions>(x =>
         {
             x.ValueLengthLimit = int.MaxValue;
@@ -142,7 +143,12 @@ public class Program
 
         #region Logging
 
-        builder.Services.AddLogging();
+        builder.Services.AddLogging(options =>
+        {
+            // options.ClearProviders();
+            options.AddProvider(new MongoDbLoggerProvider(builder.Services.BuildServiceProvider()));
+            options.SetMinimumLevel(LogLevel.Debug);
+        });
         builder.Services.AddHttpLogging();
         builder.Logging.SetMinimumLevel(LogLevel.Information);
 
