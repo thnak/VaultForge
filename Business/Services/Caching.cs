@@ -25,15 +25,15 @@ public static class Caching
 
         service.AddDistributedMemoryCache(options => { options.ExpirationScanFrequency = TimeSpan.FromSeconds(30); });
 
-        service.AddHybridCache(options =>
-        {
-            options.DefaultEntryOptions = new HybridCacheEntryOptions
-            {
-                Expiration = TimeSpan.FromSeconds(30),
-                LocalCacheExpiration = TimeSpan.FromSeconds(30),
-                Flags = HybridCacheEntryFlags.None
-            };
-        });
+        // service.AddHybridCache(options =>
+        // {
+        //     options.DefaultEntryOptions = new HybridCacheEntryOptions
+        //     {
+        //         Expiration = TimeSpan.FromSeconds(30),
+        //         LocalCacheExpiration = TimeSpan.FromSeconds(30),
+        //         Flags = HybridCacheEntryFlags.None
+        //     };
+        // });
 
         service.AddOutputCache(options =>
         {
