@@ -62,7 +62,7 @@ public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLaye
                     
                     int readByte;
                     var buffer = new byte[BufferSize];
-                    using SHA256 sha256 = SHA256.Create();
+                    using MD5 sha256 = MD5.Create();
                     while ((readByte = await fileStream.ReadAsync(buffer, 0, BufferSize, cancelToken)) > 0)
                     {
                         sha256.TransformBlock(buffer, 0, readByte, null, 0);

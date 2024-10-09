@@ -208,7 +208,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                 }
                 catch (Exception e)
                 {
-                    logger.LogError(e, $"[{model.AbsolutePath}]Failed to delete file");
+                    logger.LogError(e, $"[{model.AbsolutePath}] Failed to delete file");
                 }
             }
         });
@@ -561,7 +561,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             int stripeIndex = 0;
             string? contentType = null;
 
-            using SHA256 sha256 = SHA256.Create();
+            using MD5 sha256 = MD5.Create();
 
             while ((bytesRead1 = await inputStream.ReadAsync(buffer1, 0, stripeSize, cancellationToken)) > 0)
             {

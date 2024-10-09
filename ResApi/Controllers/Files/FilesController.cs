@@ -224,6 +224,8 @@ public class FilesController(
 
 
     [HttpGet("read-file-seek")]
+    [OutputCache(NoStore = true, Duration = 0)]
+    [ResponseCache(NoStore = true, Duration = 0)]
     public async Task<IActionResult> ReadAndSeek(int start, int count)
     {
         var cancelToken = HttpContext.RequestAborted;
