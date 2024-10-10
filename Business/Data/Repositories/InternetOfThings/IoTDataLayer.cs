@@ -13,11 +13,19 @@ public class IoTDataLayer : IIoTDataLayer
 {
     public IoTDataLayer(IMongoDataLayerContext context, ILogger<IoTDataLayer> logger)
     {
-        var options = new CreateCollectionOptions
+        try
         {
-            TimeSeriesOptions = new TimeSeriesOptions("timestamp", "deviceId", TimeSeriesGranularity.Seconds, new Optional<int?>(), new Optional<int?>())
-        };
-        context.MongoDatabase.CreateCollection("IotDB", options);
+            var options = new CreateCollectionOptions
+            {
+                TimeSeriesOptions = new TimeSeriesOptions("timestamp", "deviceId", TimeSeriesGranularity.Seconds, new Optional<int?>(), new Optional<int?>())
+            };
+            context.MongoDatabase.CreateCollection("IotDB", options);
+        }
+        catch (Exception)
+        {
+            //
+        }
+
         _dataDb = context.MongoDatabase.GetCollection<IoTRecord>("IotDB");
         this.logger = logger;
     }
