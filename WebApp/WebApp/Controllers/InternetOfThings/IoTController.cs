@@ -9,7 +9,7 @@ namespace WebApp.Controllers.InternetOfThings;
 [IgnoreAntiforgeryToken]
 [Route("api/[controller]")]
 [ApiController]
-public class IoTController(IIoTBusinessLayer ioTBusinessLayer, Logger<IoTController> logger) : ControllerBase
+public class IoTController(IIoTBusinessLayer ioTBusinessLayer, ILogger<IoTController> logger) : ControllerBase
 {
     [HttpPost("add-record")]
     public async Task<IActionResult> AddRecord([FromForm] string deviceId, [FromForm] double value)
