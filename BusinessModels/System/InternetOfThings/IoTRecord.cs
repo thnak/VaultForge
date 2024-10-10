@@ -17,7 +17,7 @@ public class IoTRecord
     [BsonElement("sensorData")] public double SensorData { get; set; }
 
     // Optional metadata
-    [BsonElement("metadata")] public DeviceMetadata Metadata { get; set; }
+    [BsonElement("metadata")] public DeviceMetadata? Metadata { get; set; }
 
     public IoTRecord(string deviceId, double sensorData, DeviceMetadata? metadata = null)
     {
@@ -25,7 +25,7 @@ public class IoTRecord
         Timestamp = DateTime.UtcNow; // Set to current time by default
         DeviceId = deviceId;
         SensorData = sensorData;
-        Metadata = metadata ?? new DeviceMetadata();
+        Metadata = metadata;
     }
 }
 
