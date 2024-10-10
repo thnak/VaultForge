@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Business.Business.Interfaces.InternetOfThings;
+using Business.Data.Interfaces.InternetOfThings;
 using Business.Models;
 using BusinessModels.System.InternetOfThings;
 using Microsoft.Extensions.Logging;
@@ -7,7 +8,7 @@ using MongoDB.Driver;
 
 namespace Business.Business.Repositories.InternetOfThings;
 
-public class IoTBusinessLayer(IIoTBusinessLayer data, ILogger<IIoTBusinessLayer> logger) : IIoTBusinessLayer
+public class IoTBusinessLayer(IIoTDataLayer data, ILogger<IIoTBusinessLayer> logger) : IIoTBusinessLayer
 {
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
