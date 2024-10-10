@@ -1,0 +1,9 @@
+﻿<Solution>
+  <Project Path="BusinessModels\BusinessModels.csproj" />
+  <Project Path="Business\Business.csproj" />
+  <Project Path="ConsoleApp1\ConsoleApp1.csproj" Type="Classic C#" />
+  <Project Path="Protector\Protector.csproj" />
+  <Project Path="ResApi\ResApi.csproj" />
+  <Project Path="WebApp\WebApp.Client\WebApp.Client.csproj" Type="Classic C#" />
+  <Project Path="WebApp\WebApp\WebApp.csproj" Type="Classic C#" />
+</Solution>
