@@ -76,7 +76,7 @@ public class ChatWithLlmBusinessLayer(IChatWithLlmDataLayer dataLayer) : IChatWi
 
     public Task<(bool, string)> UpdateAsync(ChatWithChatBotMessageModel model, CancellationToken cancellationToken = default)
     {
-        return dataLayer.UpdateAsync(model, cancellationToken);
+        return dataLayer.ReplaceAsync(model, cancellationToken);
     }
 
     public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<ChatWithChatBotMessageModel> updates, CancellationToken cancellationToken = default)
@@ -86,7 +86,7 @@ public class ChatWithLlmBusinessLayer(IChatWithLlmDataLayer dataLayer) : IChatWi
 
     public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<ChatWithChatBotMessageModel> models, CancellationToken cancellationToken = default)
     {
-        return dataLayer.UpdateAsync(models, cancellationToken);
+        return dataLayer.ReplaceAsync(models, cancellationToken);
     }
 
     public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)

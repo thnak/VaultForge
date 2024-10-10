@@ -271,7 +271,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> UpdateAsync(UserModel model, CancellationToken cancellationToken = default)
+    public async Task<(bool, string)> ReplaceAsync(UserModel model, CancellationToken cancellationToken = default)
     {
         await _semaphore.WaitAsync(cancellationToken);
         try
@@ -299,7 +299,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
     }
 
 
-    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<UserModel> models,
+    public IAsyncEnumerable<(bool, string, string)> ReplaceAsync(IEnumerable<UserModel> models,
         CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
@@ -314,7 +314,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
             var query = Get(key);
             if (query == null) return (false, AppLang.User_is_not_exists);
             query.Leave = DateTime.UtcNow;
-            await UpdateAsync(query, cancelToken);
+            await ReplaceAsync(query, cancelToken);
             return (true, AppLang.Success);
         }
         catch (Exception ex)

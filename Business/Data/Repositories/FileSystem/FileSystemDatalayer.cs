@@ -296,7 +296,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> UpdateAsync(FileInfoModel model, CancellationToken cancellationToken = default)
+    public async Task<(bool, string)> ReplaceAsync(FileInfoModel model, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -332,11 +332,11 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
     }
 
 
-    public async IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FileInfoModel> models, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    public async IAsyncEnumerable<(bool, string, string)> ReplaceAsync(IEnumerable<FileInfoModel> models, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         foreach (var file in models.TakeWhile(_ => cancellationToken is not { IsCancellationRequested: true }))
         {
-            var result = await UpdateAsync(file, cancellationToken);
+            var result = await ReplaceAsync(file, cancellationToken);
             yield return (true, result.Item2, file.Id.ToString());
         }
 

@@ -88,12 +88,12 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
 
     public Task<(bool, string)> UpdateAsync(UserModel model, CancellationToken cancellationToken = default)
     {
-        return userDl.UpdateAsync(model, cancellationToken);
+        return userDl.ReplaceAsync(model, cancellationToken);
     }
 
     public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<UserModel> models, CancellationToken cancellationToken = default)
     {
-        return userDl.UpdateAsync(models, cancellationToken);
+        return userDl.ReplaceAsync(models, cancellationToken);
     }
 
     public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)

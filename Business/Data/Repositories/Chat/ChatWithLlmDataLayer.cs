@@ -161,7 +161,7 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> UpdateAsync(ChatWithChatBotMessageModel model, CancellationToken cancellationToken = default)
+    public async Task<(bool, string)> ReplaceAsync(ChatWithChatBotMessageModel model, CancellationToken cancellationToken = default)
     {
         await _semaphore.WaitAsync(cancellationToken);
         try
@@ -244,7 +244,7 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
         }
     }
 
-    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<ChatWithChatBotMessageModel> models, CancellationToken cancellationToken = default)
+    public IAsyncEnumerable<(bool, string, string)> ReplaceAsync(IEnumerable<ChatWithChatBotMessageModel> models, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

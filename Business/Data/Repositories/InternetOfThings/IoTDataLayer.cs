@@ -120,7 +120,7 @@ public class IoTDataLayer : IIoTDataLayer
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> UpdateAsync(IoTRecord model, CancellationToken cancellationToken = default)
+    public Task<(bool, string)> ReplaceAsync(IoTRecord model, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -130,7 +130,7 @@ public class IoTDataLayer : IIoTDataLayer
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<IoTRecord> models, CancellationToken cancellationToken = default)
+    public IAsyncEnumerable<(bool, string, string)> ReplaceAsync(IEnumerable<IoTRecord> models, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

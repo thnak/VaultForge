@@ -344,7 +344,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> UpdateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
+    public async Task<(bool, string)> ReplaceAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -374,7 +374,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     }
 
 
-    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FolderInfoModel> models,
+    public IAsyncEnumerable<(bool, string, string)> ReplaceAsync(IEnumerable<FolderInfoModel> models,
         CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();

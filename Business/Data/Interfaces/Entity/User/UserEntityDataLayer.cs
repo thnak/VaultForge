@@ -93,13 +93,13 @@ public class UserEntityDataLayer(EntityDataContext entityDataContext) : IDataLay
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> UpdateAsync(UserModel model, CancellationToken cancellationToken = default)
+    public Task<(bool, string)> ReplaceAsync(UserModel model, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
 
-    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<UserModel> models, CancellationToken cancellationToken = default)
+    public IAsyncEnumerable<(bool, string, string)> ReplaceAsync(IEnumerable<UserModel> models, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

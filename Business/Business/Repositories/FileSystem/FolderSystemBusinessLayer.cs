@@ -134,12 +134,12 @@ public class FolderSystemBusinessLayer(
 
     public Task<(bool, string)> UpdateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
     {
-        return FolderSystemService.UpdateAsync(model, cancellationToken);
+        return FolderSystemService.ReplaceAsync(model, cancellationToken);
     }
 
     public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FolderInfoModel> models, CancellationToken cancellationToken = default)
     {
-        return FolderSystemService.UpdateAsync(models, cancellationToken);
+        return FolderSystemService.ReplaceAsync(models, cancellationToken);
     }
 
     public async Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)

@@ -106,7 +106,7 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da, IMemoryCache memor
 
     public Task<(bool, string)> UpdateAsync(FileInfoModel model, CancellationToken cancellationToken = default)
     {
-        return da.UpdateAsync(model, cancellationToken);
+        return da.ReplaceAsync(model, cancellationToken);
     }
 
     public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FileInfoModel> models, CancellationToken cancellationToken = default)

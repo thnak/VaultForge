@@ -81,7 +81,7 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
 
     public Task<(bool, string)> UpdateAsync(ArticleModel model, CancellationToken cancellationToken = default)
     {
-        return dataLayer.UpdateAsync(model, cancellationToken);
+        return dataLayer.ReplaceAsync(model, cancellationToken);
     }
 
     public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<ArticleModel> models, CancellationToken cancellationToken = default)

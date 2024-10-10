@@ -190,7 +190,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         }
     }
 
-    public async Task<(bool, string)> UpdateAsync(ArticleModel model, CancellationToken cancellationToken = default)
+    public async Task<(bool, string)> ReplaceAsync(ArticleModel model, CancellationToken cancellationToken = default)
     {
         await _semaphore.WaitAsync(cancellationToken);
         try
@@ -224,7 +224,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
     }
 
 
-    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<ArticleModel> models, CancellationToken cancellationToken = default)
+    public IAsyncEnumerable<(bool, string, string)> ReplaceAsync(IEnumerable<ArticleModel> models, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
