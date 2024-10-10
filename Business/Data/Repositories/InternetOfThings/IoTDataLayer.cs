@@ -34,7 +34,7 @@ public class IoTDataLayer : IIoTDataLayer
     private readonly IMongoCollection<IoTRecord> _dataDb;
     private readonly ILogger<IoTDataLayer> logger;
 
-    private readonly SemaphoreSlim _semaphore = new(1000, 1000);
+    private readonly SemaphoreSlim _semaphore = new(150000, 10000);
 
     public Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
