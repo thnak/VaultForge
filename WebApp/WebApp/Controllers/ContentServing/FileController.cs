@@ -665,50 +665,90 @@ public class FilesController(
                                 var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancelToken);
                                 await memoryStream.DisposeAsync();
                                 (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, saveResult.ContentType, saveResult.CheckSum);
+                                if (string.IsNullOrEmpty(file.ContentType))
+                                {
+                                    file.ContentType = section.ContentType ?? string.Empty;
+                                }
+                                else if (file.ContentType == "application/octet-stream")
+                                {
+                                    file.ContentType = Path.GetExtension(trustedFileNameForDisplay).GetMimeTypeFromExtension();
+                                }
+
+
+                                if (file.FileSize > 0)
+                                {
+                                    var field2Update = new FieldUpdate<FileInfoModel>()
+                                    {
+                                        { x => x.FileSize, file.FileSize },
+                                        { x => x.ContentType, file.ContentType },
+                                        { x => x.Checksum, file.Checksum },
+                                    };
+                                    var updateResult = await fileServe.UpdateAsync(fileId, field2Update, cancelToken);
+                                    if (updateResult.Item1)
+                                    {
+                                        requestThumbnailList.Add(fileId);
+                                    }
+                                    else
+                                    {
+                                        logger.LogError(updateResult.Item2);
+                                    }
+                                }
+                                else
+                                {
+                                    logger.LogWarning($"File empty. deleting {file.FileName}");
+                                    // double call to delete trash
+                                    await fileServe.DeleteAsync(fileId);
+                                    await fileServe.DeleteAsync(fileId);
+                                }
                             }
                             else
                             {
                                 var memoryStream = new FileStream(Path.GetTempFileName(), FileMode.Create, FileAccess.ReadWrite, FileShare.None, bufferSize: 100 * 1024 * 1024, FileOptions.DeleteOnClose);
                                 await section.Body.CopyToAsync(memoryStream, cancelToken);
-                                var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancelToken);
-                                await memoryStream.DisposeAsync();
-                                (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, saveResult.ContentType, saveResult.CheckSum);
-                            }
 
-                            if (string.IsNullOrEmpty(file.ContentType))
-                            {
-                                file.ContentType = section.ContentType ?? string.Empty;
-                            }
-                            else if (file.ContentType == "application/octet-stream")
-                            {
-                                file.ContentType = Path.GetExtension(trustedFileNameForDisplay).GetMimeTypeFromExtension();
-                            }
+                                file.FileSize = memoryStream.Length;
+                                var section1 = section;
+                                _ = Task.Run(async () =>
+                                {
+                                    var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancelToken);
+                                    await memoryStream.DisposeAsync();
+                                    (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, saveResult.ContentType, saveResult.CheckSum);
+                                    if (string.IsNullOrEmpty(file.ContentType))
+                                    {
+                                        file.ContentType = section1.ContentType ?? string.Empty;
+                                    }
+                                    else if (file.ContentType == "application/octet-stream")
+                                    {
+                                        file.ContentType = Path.GetExtension(trustedFileNameForDisplay).GetMimeTypeFromExtension();
+                                    }
 
 
-                            if (file.FileSize > 0)
-                            {
-                                var field2Update = new FieldUpdate<FileInfoModel>()
-                                {
-                                    { x => x.FileSize, file.FileSize },
-                                    { x => x.ContentType, file.ContentType },
-                                    { x => x.Checksum, file.Checksum },
-                                };
-                                var updateResult = await fileServe.UpdateAsync(fileId, field2Update, cancelToken);
-                                if (updateResult.Item1)
-                                {
-                                    requestThumbnailList.Add(fileId);
-                                }
-                                else
-                                {
-                                    logger.LogError(updateResult.Item2);
-                                }
-                            }
-                            else
-                            {
-                                logger.LogWarning($"File empty. deleting {file.FileName}");
-                                // double call to delete trash
-                                await fileServe.DeleteAsync(fileId);
-                                await fileServe.DeleteAsync(fileId);
+                                    if (file.FileSize > 0)
+                                    {
+                                        var field2Update = new FieldUpdate<FileInfoModel>()
+                                        {
+                                            { x => x.FileSize, file.FileSize },
+                                            { x => x.ContentType, file.ContentType },
+                                            { x => x.Checksum, file.Checksum },
+                                        };
+                                        var updateResult = await fileServe.UpdateAsync(fileId, field2Update, cancelToken);
+                                        if (updateResult.Item1)
+                                        {
+                                            requestThumbnailList.Add(fileId);
+                                        }
+                                        else
+                                        {
+                                            logger.LogError(updateResult.Item2);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        logger.LogWarning($"File empty. deleting {file.FileName}");
+                                        // double call to delete trash
+                                        await fileServe.DeleteAsync(fileId);
+                                        await fileServe.DeleteAsync(fileId);
+                                    }
+                                });
                             }
                         }
                         else
