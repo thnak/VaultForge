@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Amazon.Runtime.Internal.Settings;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.InternetOfThings;
 using Business.Models;
@@ -26,8 +27,7 @@ public class IoTDataLayer : IIoTDataLayer
             //
         }
 
-        _dataDb = context.MongoDatabase.GetCollection<IoTRecord>("IotDB");
-        this.logger = logger;
+        _dataDb = context.MongoDatabase.GetCollection<IoTRecord>("IotDB", new MongoCollectionSettings() { WriteConcern = new WriteConcern(1, new Optional<TimeSpan?>(TimeSpan.FromSeconds(10)), journal: new Optional<bool?>(false)) });
     }
 
     private const string SearchIndexString = "UserSearchIndex";
