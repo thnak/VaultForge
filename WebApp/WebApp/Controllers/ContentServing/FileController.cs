@@ -707,7 +707,7 @@ public class FilesController(
                                 await section.Body.CopyToAsync(memoryStream, cancelToken);
 
                                 file.FileSize = memoryStream.Length;
-                                var section1 = section;
+                                var sectionContentType = section.ContentType;
                                 _ = Task.Run(async () =>
                                 {
                                     var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancelToken);
@@ -715,7 +715,7 @@ public class FilesController(
                                     (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, saveResult.ContentType, saveResult.CheckSum);
                                     if (string.IsNullOrEmpty(file.ContentType))
                                     {
-                                        file.ContentType = section1.ContentType ?? string.Empty;
+                                        file.ContentType = sectionContentType ?? string.Empty;
                                     }
                                     else if (file.ContentType == "application/octet-stream")
                                     {
