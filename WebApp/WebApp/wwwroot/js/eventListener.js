@@ -1,5 +1,4 @@
 const assemblyName = 'WebApp.Client';
-let preventKey = [];
 
 window.deleteTemplateCache = () => {
     caches.keys().then(function (names) {
@@ -54,42 +53,42 @@ window.RequestFullScreen = () => {
 }
 
 
-function PageShowEvent() {
-    DotNet.invokeMethodAsync(assemblyName, 'PageShowEventEventListener')
+async function PageShowEvent() {
+    await DotNet.invokeMethodAsync(assemblyName, 'PageShowEventEventListener')
 }
 
-function PageHideEvent() {
-    DotNet.invokeMethodAsync(assemblyName, 'PageHideEventEventListener')
+async function PageHideEvent() {
+    await DotNet.invokeMethodAsync(assemblyName, 'PageHideEventEventListener')
 }
 
 async function ContextMenuEvent(e) {
     var keyPrevent = localStorage.getItem("PreventKey");
-    if(keyPrevent.includes("contextmenu")) {
+    if (keyPrevent.includes("contextmenu")) {
         e.preventDefault();
     }
     await DotNet.invokeMethodAsync(assemblyName, 'ContextMenuEventListener')
     await DotNet.invokeMethodAsync(assemblyName, 'ContextMenuEventListenerWithParam', e.clientX, e.clientY)
 }
 
-function KeyDownEvent(event) {
+async function KeyDownEvent(event) {
     var keyPrevent = localStorage.getItem("PreventKey");
-    if(keyPrevent !== null && keyPrevent.includes(event.code))
+    if (keyPrevent !== null && keyPrevent.includes(event.code))
         event.preventDefault();
-    
+
     if (event.keyCode === 122) {
-        FullScreenEvent();
+        await FullScreenEvent();
     }
 
-    DotNet.invokeMethodAsync(assemblyName, 'KeyPressChangeEventListener', event.code);
+    await DotNet.invokeMethodAsync(assemblyName, 'KeyPressChangeEventListener', event.code);
 }
 
-function OfflineEvent() {
-    DotNet.invokeMethodAsync(assemblyName, 'OfflineEventListener')
+async function OfflineEvent() {
+    await DotNet.invokeMethodAsync(assemblyName, 'OfflineEventListener')
 
 }
 
-function OnlineEvent() {
-    DotNet.invokeMethodAsync(assemblyName, 'OnlineEventListener')
+async function OnlineEvent() {
+    await DotNet.invokeMethodAsync(assemblyName, 'OnlineEventListener')
 }
 
 let visibilityChange;
@@ -101,20 +100,20 @@ if (typeof document.hidden !== "undefined") {
     visibilityChange = "webkitvisibilitychange";
 }
 
-function VisibilitychangeEvent() {
-    DotNet.invokeMethodAsync(assemblyName, 'VisibilityChangeEventListener', document.hidden === false)
+async function VisibilitychangeEvent() {
+    await DotNet.invokeMethodAsync(assemblyName, 'VisibilityChangeEventListener', document.hidden === false)
 }
 
-function AppInstalledEvent() {
-    DotNet.invokeMethodAsync(assemblyName, 'InstalledEventListener')
+async function AppInstalledEvent() {
+    await DotNet.invokeMethodAsync(assemblyName, 'InstalledEventListener')
 }
 
-function FullScreenEvent() {
-    DotNet.invokeMethodAsync(assemblyName, 'FullScreenChangeEventListener', document.fullscreenElement != null || window.innerHeight === screen.height)
+async function FullScreenEvent() {
+    await DotNet.invokeMethodAsync(assemblyName, 'FullScreenChangeEventListener', document.fullscreenElement != null || window.innerHeight === screen.height)
 }
 
-function PageChangeSize() {
-    FullScreenEvent();
+async function PageChangeSize() {
+    await FullScreenEvent();
 }
 
 //

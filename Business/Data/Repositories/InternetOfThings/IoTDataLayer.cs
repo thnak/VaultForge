@@ -7,6 +7,7 @@ using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
+using WriteConcern = MongoDB.Driver.WriteConcern;
 
 namespace Business.Data.Repositories.InternetOfThings;
 
@@ -27,7 +28,8 @@ public class IoTDataLayer : IIoTDataLayer
             //
         }
 
-        _dataDb = context.MongoDatabase.GetCollection<IoTRecord>("IotDB", new MongoCollectionSettings() { WriteConcern = new WriteConcern(1, new Optional<TimeSpan?>(TimeSpan.FromSeconds(10)), journal: new Optional<bool?>(false), fsync: false) });
+        var writeConcern = new WriteConcern(1, new Optional<TimeSpan?>(TimeSpan.FromSeconds(10)), journal: new Optional<bool?>(false), fsync: false);
+        _dataDb = context.MongoDatabase.GetCollection<IoTRecord>("IotDB", new MongoCollectionSettings() { WriteConcern = writeConcern });
     }
 
     private const string SearchIndexString = "UserSearchIndex";
