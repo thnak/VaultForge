@@ -16,6 +16,10 @@ public class IoTRecord
     // Sensor data (could be temperature, humidity, etc.)
     [BsonElement("sensorData")] public double SensorData { get; set; }
 
+    public DateTime Date { get; set; }
+    
+    public int Hour { get; set; }
+
     // Optional metadata
     [BsonElement("metadata")] public DeviceMetadata? Metadata { get; set; }
 
