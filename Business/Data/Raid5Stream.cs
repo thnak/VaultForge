@@ -40,6 +40,29 @@ public class Raid5Stream : Stream
         _position = 0;
     }
 
+    private long FindStripeIndex(long size)
+    {
+        if (size > _stripeSize)
+        {
+            var index = Math.Round((double)size / _stripeSize) - 1;
+            return Math.Max((long)index, 0);
+        }
+
+        return 0;
+    }
+
+    private long StripeIndexBufferSize(long size)
+    {
+        if (size > _stripeSize)
+            size %= _stripeSize;
+        return _stripeSize - size;
+    }
+
+    private int StripeIndexStart(long size)
+    {
+        return _stripeSize - (int)StripeIndexBufferSize(size);
+    }
+
     public override bool CanSeek => true;
     public override bool CanRead => true;
     public override bool CanWrite => false;
@@ -81,19 +104,24 @@ public class Raid5Stream : Stream
             throw new ArgumentOutOfRangeException(nameof(offset), "Seek position is out of range.");
 
         // Calculate which stripe the new position falls into and the offset within that stripe
-        StripeIndex = newPosition / 2 / _stripeSize;
-        StartPadStripIndex = newPosition / _stripeSize;
+        var stripeRow = newPosition / 2 / _stripeSize;
+
+        StripeIndex = Math.Max(stripeRow * 2 - 1, 0);
 
         // Seek each file stream to the start of the stripe
-        var seekPosition = StripeIndex / _stripeSize;
+        var seekPosition = stripeRow * _stripeSize;
+
+
         file1?.Seek(seekPosition, SeekOrigin.Begin);
         file2?.Seek(seekPosition, SeekOrigin.Begin);
         file3?.Seek(seekPosition, SeekOrigin.Begin);
 
         // Adjust the read pointers to account for the position within the stripe
         _position = newPosition;
-        StartPadding = ((int)newPosition % _stripeSize) - 0;
-        StartPaddingSize = _stripeSize - StartPadding;
+        StartPadStripIndex = (int)FindStripeIndex(newPosition);
+       
+        StartPaddingSize = (int)StripeIndexBufferSize(newPosition);
+        StartPadding = StripeIndexStart(newPosition);
 
         return _position;
     }
@@ -235,34 +263,33 @@ public class Raid5Stream : Stream
                 break; // End of stream
             }
 
-            if (totalBytesWritten >= count) break;
+            // if (totalBytesWritten >= count) break;
 
             var writeSize1 = (int)Math.Min(_originalSize - _position, bytesRead1);
 
             if (StripeIndex == StartPadStripIndex)
             {
-                writeSize1 = StartPaddingSize;
                 if (StripeIndex == EndPadStripIndex)
                 {
                     writeSize1 = Math.Min(EndPaddingSize, writeSize1);
                     Array.Copy(buffer1, StartPadding, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize1), writeSize1);
                     totalBytesWritten += writeSize1;
                     _position += writeSize1;
-                    StripeIndex++;
                     break;
                 }
 
+                writeSize1 = StartPaddingSize;
                 Array.Copy(buffer1, StartPadding, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize1), writeSize1);
-            }
-            else if (StripeIndex == EndPadStripIndex)
-            {
-                writeSize1 = EndPaddingSize;
-                Array.Copy(buffer1, 0, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize1), writeSize1);
                 totalBytesWritten += writeSize1;
-                _position += writeSize1;
-                StripeIndex++;
-                break;
             }
+            // else if (StripeIndex == EndPadStripIndex)
+            // {
+            //     writeSize1 = EndPaddingSize;
+            //     Array.Copy(buffer1, 0, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize1), writeSize1);
+            //     totalBytesWritten += writeSize1;
+            //     _position += writeSize1;
+            //     break;
+            // }
             else if (StripeIndex >= StartPadStripIndex)
             {
                 Array.Copy(buffer1, 0, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize1), writeSize1);
@@ -276,7 +303,6 @@ public class Raid5Stream : Stream
 
             if (StripeIndex == StartPadStripIndex)
             {
-                writeSize2 = Math.Min(writeSize2, StartPaddingSize);
                 if (StripeIndex == EndPadStripIndex)
                 {
                     writeSize2 = EndPaddingSize - (totalBytesWritten % _stripeSize);
@@ -288,24 +314,26 @@ public class Raid5Stream : Stream
                     break;
                 }
 
+                writeSize2 = StartPaddingSize;
                 Array.Copy(buffer2, StartPadding, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize2), writeSize2);
+                totalBytesWritten += writeSize2;
             }
-            else if (StripeIndex == EndPadStripIndex)
+            // else if (StripeIndex == EndPadStripIndex)
+            // {
+            //     writeSize2 = EndPaddingSize;
+            //
+            //     Array.Copy(buffer2, 0, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize2), writeSize2);
+            //     totalBytesWritten += writeSize2;
+            //     _position += writeSize2;
+            //     StripeIndex++;
+            //     break;
+            // }
+            else if (StripeIndex >= StartPadStripIndex)
             {
-                writeSize2 = EndPaddingSize;
-
                 Array.Copy(buffer2, 0, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize2), writeSize2);
                 totalBytesWritten += writeSize2;
-                _position += writeSize2;
-                StripeIndex++;
-                break;
-            }
-            else
-            {
-                Array.Copy(buffer2, 0, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize2), writeSize2);
             }
 
-            totalBytesWritten += writeSize2;
             _position += writeSize2;
             StripeIndex++;
         }

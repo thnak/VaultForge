@@ -7,20 +7,34 @@ public class IoTRecord
 {
     [BsonId] public ObjectId Id { get; set; }
 
-    // The timestamp for when the data was recorded
+    /// <summary>
+    /// The timestamp for when the data was recorded
+    /// </summary>
     [BsonElement("timestamp")] public DateTime Timestamp { get; set; }
 
-    // Sensor or device identifier
+    /// <summary>
+    /// Sensor or device identifier
+    /// </summary>
     [BsonElement("deviceId")] public string DeviceId { get; set; }
 
-    // Sensor data (could be temperature, humidity, etc.)
+    /// <summary>
+    /// Sensor data (could be temperature, humidity, etc.)
+    /// </summary>
     [BsonElement("sensorData")] public double SensorData { get; set; }
 
-    public DateTime Date { get; set; }
+    /// <summary>
+    /// What kind of sensor this is (e.g., temperature, humidity)
+    /// </summary>
+    [BsonElement("sensorType")]
+    public SensorType SensorType { get; set; }
     
+    public DateTime Date { get; set; }
+
     public int Hour { get; set; }
 
-    // Optional metadata
+    /// <summary>
+    /// Optional metadata
+    /// </summary>
     [BsonElement("metadata")] public DeviceMetadata? Metadata { get; set; }
 
     public IoTRecord(string deviceId, double sensorData, DeviceMetadata? metadata = null)
@@ -30,6 +44,8 @@ public class IoTRecord
         DeviceId = deviceId;
         SensorData = sensorData;
         Metadata = metadata;
+        Date = Timestamp.Date;
+        Hour = Timestamp.Hour;
     }
 }
 
@@ -52,12 +68,11 @@ public class DeviceMetadata
     /// </summary>
     [BsonElement("location")]
     public string Location { get; set; } = string.Empty;
+    
+    public string Manufacturer { get; set; } = string.Empty;
 
-    /// <summary>
-    /// What kind of sensor this is (e.g., temperature, humidity)
-    /// </summary>
-    [BsonElement("sensorType")]
-    public string SensorType { get; set; } = string.Empty;
+    
+    public DateTimeOffset LastCalibration { get; set; }
 
     /// <summary>
     /// Optional, current firmware version
@@ -70,4 +85,19 @@ public class DeviceMetadata
     /// </summary>
     [BsonElement("lastServiceDate")]
     public DateTime LastServiceDate { get; set; }
+}
+
+public enum SensorType
+{
+    Temperature,
+    Humidity,
+    Pressure,
+    Light,
+    Proximity,
+    Accelerometer,
+    Gyroscope,
+    Magnetometer,
+    HeartRate,
+    GPS,
+    PingStatus
 }

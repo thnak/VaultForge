@@ -228,94 +228,6 @@ public class FilesController(
     [ResponseCache(NoStore = true, Duration = 0)]
     public async Task<IActionResult> ReadAndSeek(int start, int count)
     {
-        var cancelToken = HttpContext.RequestAborted;
-        string path = "6701cb023a63eba6e57cfcd8";
-        var file = fileServe.Get(path);
-        if (file == null) return NotFound();
-        var pathArray = await raidService.GetDataBlockPaths(file.AbsolutePath, cancelToken);
-        if (pathArray == default) return NotFound();
-
-        Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files[0], pathArray.Files[1], pathArray.Files[2], pathArray.FileSize, pathArray.StripeSize);
-        var filePath = "C:\\Users\\thanh\\Downloads\\Input1.txt";
-        var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-        Response.RegisterForDispose(raid5Stream);
-        Response.RegisterForDispose(stream);
-
-        byte[] raidBuffer;
-        byte[] normalBuffer;
-        // if (Request.Headers.ContainsKey("Range"))
-        // {
-        //     // Parse the Range header
-        //     var rangeHeader = Request.Headers["Range"].ToString();
-        //     var range = rangeHeader.Replace("bytes=", "").Split('-');
-        //
-        //     long from = long.Parse(range[0]);
-        //     long to = range.Length > 1 && long.TryParse(range[1], out var endRange) ? endRange : file.FileSize - 1;
-        //
-        //     if (from >= file.FileSize)
-        //     {
-        //         return BadRequest("Requested range is not satisfiable.");
-        //     }
-        //
-        //     var length = to - from + 1;
-        //
-        //     // Open the file stream and seek to the requested position
-        //
-        //     raid5Stream.Seek(from, SeekOrigin.Begin);
-        //
-        //     raidBuffer = new byte[length];
-        //     var totalRead = await raid5Stream.ReadAsync(raidBuffer, 0, (int)length, cancelToken);
-        //
-        //     stream.Seek(from, SeekOrigin.Begin);
-        //
-        //     var responseStream = new MemoryStream();
-        //     await stream.CopyToAsync(responseStream, (int)length, cancelToken);
-        //     var buffer = responseStream.ToArray();
-        //
-        //     SHA256 fileStreamSha256 = SHA256.Create();
-        //     fileStreamSha256.TransformBlock(buffer, 0, (int)length, null, 0);
-        //     fileStreamSha256.TransformFinalBlock([], 0, 0);
-        //     StringBuilder checksum = new StringBuilder();
-        //     if (fileStreamSha256.Hash != null)
-        //     {
-        //         foreach (byte b in fileStreamSha256.Hash)
-        //         {
-        //             checksum.Append(b.ToString("x2"));
-        //         }
-        //     }
-        //
-        //     SHA256 raidStreamSha256 = SHA256.Create();
-        //     raidStreamSha256.TransformBlock(raidBuffer, 0, (int)length, null, 0);
-        //     raidStreamSha256.TransformFinalBlock([], 0, 0);
-        //     StringBuilder raidChecksum = new StringBuilder();
-        //     if (raidStreamSha256.Hash != null)
-        //     {
-        //         foreach (byte b in raidStreamSha256.Hash)
-        //         {
-        //             raidChecksum.Append(b.ToString("x2"));
-        //         }
-        //     }
-        //
-        //     var fileStreamCheck = checksum.ToString();
-        //     var raidStreamCheck = raidChecksum.ToString();
-        //     if (fileStreamCheck == raidStreamCheck)
-        //     {
-        //         logger.LogInformation("[Checksum] File stream check success.");
-        //     }
-        //     else
-        //     {
-        //         logger.LogInformation("[Checksum] File stream check failed.");
-        //     }
-        //
-        //     // Set headers for partial content response
-        //     Response.Headers.Add("Content-Range", $"bytes {from}-{to}/{file.FileSize}");
-        //     Response.Headers.Add("Accept-Ranges", "bytes");
-        //     Response.ContentLength = length;
-        //     Response.StatusCode = StatusCodes.Status206PartialContent;
-        //
-        //     return File(raidBuffer, "video/mp4");
-        // }
-
         var normalFilePath = "C:\\Users\\thanh\\Downloads\\test-1.txt";
         var raidFilePath = "C:\\Users\\thanh\\Downloads\\test-2.txt";
         if (System.IO.File.Exists(normalFilePath))
@@ -326,28 +238,121 @@ public class FilesController(
 
         var outStreamNormal = new FileStream(normalFilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write);
         var outStreamRaid = new FileStream(raidFilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write);
+        try
+        {
+            var cancelToken = HttpContext.RequestAborted;
+            string path = "6701cb023a63eba6e57cfcd8";
+            var file = fileServe.Get(path);
+            if (file == null) return NotFound();
+            var pathArray = await raidService.GetDataBlockPaths(file.AbsolutePath, cancelToken);
+            if (pathArray == default) return NotFound();
+
+            Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files[0], pathArray.Files[1], pathArray.Files[2], pathArray.FileSize, pathArray.StripeSize);
+            var filePath = "C:\\Users\\thanh\\Downloads\\Input1.txt";
+            var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            Response.RegisterForDispose(raid5Stream);
+            Response.RegisterForDispose(stream);
+
+            byte[] raidBuffer;
+            byte[] normalBuffer;
+            // if (Request.Headers.ContainsKey("Range"))
+            // {
+            //     // Parse the Range header
+            //     var rangeHeader = Request.Headers["Range"].ToString();
+            //     var range = rangeHeader.Replace("bytes=", "").Split('-');
+            //
+            //     long from = long.Parse(range[0]);
+            //     long to = range.Length > 1 && long.TryParse(range[1], out var endRange) ? endRange : file.FileSize - 1;
+            //
+            //     if (from >= file.FileSize)
+            //     {
+            //         return BadRequest("Requested range is not satisfiable.");
+            //     }
+            //
+            //     var length = to - from + 1;
+            //
+            //     // Open the file stream and seek to the requested position
+            //
+            //     raid5Stream.Seek(from, SeekOrigin.Begin);
+            //
+            //     raidBuffer = new byte[length];
+            //     var totalRead = await raid5Stream.ReadAsync(raidBuffer, 0, (int)length, cancelToken);
+            //
+            //     stream.Seek(from, SeekOrigin.Begin);
+            //
+            //     var responseStream = new MemoryStream();
+            //     await stream.CopyToAsync(responseStream, (int)length, cancelToken);
+            //     var buffer = responseStream.ToArray();
+            //
+            //     SHA256 fileStreamSha256 = SHA256.Create();
+            //     fileStreamSha256.TransformBlock(buffer, 0, (int)length, null, 0);
+            //     fileStreamSha256.TransformFinalBlock([], 0, 0);
+            //     StringBuilder checksum = new StringBuilder();
+            //     if (fileStreamSha256.Hash != null)
+            //     {
+            //         foreach (byte b in fileStreamSha256.Hash)
+            //         {
+            //             checksum.Append(b.ToString("x2"));
+            //         }
+            //     }
+            //
+            //     SHA256 raidStreamSha256 = SHA256.Create();
+            //     raidStreamSha256.TransformBlock(raidBuffer, 0, (int)length, null, 0);
+            //     raidStreamSha256.TransformFinalBlock([], 0, 0);
+            //     StringBuilder raidChecksum = new StringBuilder();
+            //     if (raidStreamSha256.Hash != null)
+            //     {
+            //         foreach (byte b in raidStreamSha256.Hash)
+            //         {
+            //             raidChecksum.Append(b.ToString("x2"));
+            //         }
+            //     }
+            //
+            //     var fileStreamCheck = checksum.ToString();
+            //     var raidStreamCheck = raidChecksum.ToString();
+            //     if (fileStreamCheck == raidStreamCheck)
+            //     {
+            //         logger.LogInformation("[Checksum] File stream check success.");
+            //     }
+            //     else
+            //     {
+            //         logger.LogInformation("[Checksum] File stream check failed.");
+            //     }
+            //
+            //     // Set headers for partial content response
+            //     Response.Headers.Add("Content-Range", $"bytes {from}-{to}/{file.FileSize}");
+            //     Response.Headers.Add("Accept-Ranges", "bytes");
+            //     Response.ContentLength = length;
+            //     Response.StatusCode = StatusCodes.Status206PartialContent;
+            //
+            //     return File(raidBuffer, "video/mp4");
+            // }
 
 
-        int seekPosition = start;
-        int readLength = count;
-        raid5Stream.Seek(seekPosition, SeekOrigin.Begin);
-        stream.Seek(seekPosition, SeekOrigin.Begin);
-        raidBuffer = new byte[file.FileSize - seekPosition];
-        normalBuffer = new byte[file.FileSize - seekPosition];
+            int seekPosition = start;
+            int readLength = count;
+            raid5Stream.Seek(seekPosition, SeekOrigin.Begin);
+            stream.Seek(seekPosition, SeekOrigin.Begin);
+            raidBuffer = new byte[file.FileSize - seekPosition];
+            normalBuffer = new byte[file.FileSize - seekPosition];
 
-        var raidStreamReadCount = await raid5Stream.ReadAsync(raidBuffer, 0, readLength, cancelToken);
-        var normalStreamReadCount = await stream.ReadAsync(normalBuffer, 0, readLength, cancelToken);
+            var raidStreamReadCount = await raid5Stream.ReadAsync(raidBuffer, 0, readLength, cancelToken);
+            var normalStreamReadCount = await stream.ReadAsync(normalBuffer, 0, readLength, cancelToken);
 
-        await outStreamNormal.WriteAsync(normalBuffer, 0, normalStreamReadCount, cancelToken);
-        await outStreamRaid.WriteAsync(raidBuffer, 0, raidStreamReadCount, cancelToken);
+            await outStreamNormal.WriteAsync(normalBuffer, 0, normalStreamReadCount, cancelToken);
+            await outStreamRaid.WriteAsync(raidBuffer, 0, raidStreamReadCount, cancelToken);
 
-        await outStreamNormal.FlushAsync(cancelToken);
-        await outStreamRaid.FlushAsync(cancelToken);
+            await outStreamNormal.FlushAsync(cancelToken);
+            await outStreamRaid.FlushAsync(cancelToken);
 
-        await outStreamNormal.DisposeAsync();
-        await outStreamRaid.DisposeAsync();
 
-        return Ok();
+            return Ok();
+        }
+        finally
+        {
+            await outStreamNormal.DisposeAsync();
+            await outStreamRaid.DisposeAsync();
+        }
     }
 
     [HttpPost("get-file-list")]

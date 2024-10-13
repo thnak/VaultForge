@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using Amazon.Runtime.Internal.Settings;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.InternetOfThings;
 using Business.Models;
@@ -46,7 +45,7 @@ public class IoTDataLayer : IIoTDataLayer
 
         var date2HourIndexKeys = Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Hour);
         var date2HourIndexModel = new CreateIndexModel<IoTRecord>(date2HourIndexKeys);
-        
+
         await _dataDb.Indexes.CreateManyAsync([dateIndexModel, date2HourIndexModel], cancellationToken);
 
         return await Task.FromResult((true, string.Empty));
@@ -111,8 +110,6 @@ public class IoTDataLayer : IIoTDataLayer
     {
         try
         {
-            model.Date = DateTime.UtcNow.Date;
-            model.Hour = DateTime.UtcNow.Hour;
             await _semaphore.WaitAsync(cancellationToken);
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
             return (true, AppLang.Create_successfully);

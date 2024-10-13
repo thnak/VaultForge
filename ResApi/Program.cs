@@ -45,7 +45,6 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Protector;
@@ -408,16 +407,6 @@ public abstract class Program
             });
 
         builder.Services.AddDistributedMemoryCache(options => { options.ExpirationScanFrequency = TimeSpan.FromSeconds(30); });
-
-        builder.Services.AddHybridCache(options =>
-        {
-            options.DefaultEntryOptions = new HybridCacheEntryOptions
-            {
-                Expiration = TimeSpan.FromSeconds(30),
-                LocalCacheExpiration = TimeSpan.FromSeconds(30),
-                Flags = HybridCacheEntryFlags.None
-            };
-        });
 
         builder.Services.AddOutputCache(options =>
         {
