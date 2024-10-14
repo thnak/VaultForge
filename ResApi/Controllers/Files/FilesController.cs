@@ -230,6 +230,8 @@ public class FilesController(
     {
         var normalFilePath = "C:\\Users\\thanh\\Downloads\\test-1.txt";
         var raidFilePath = "C:\\Users\\thanh\\Downloads\\test-2.txt";
+        var raidDefaultFilePath = "C:\\Users\\thanh\\Downloads\\test-3.txt";
+        
         if (System.IO.File.Exists(normalFilePath))
             System.IO.File.Delete(normalFilePath);
 
@@ -238,6 +240,7 @@ public class FilesController(
 
         var outStreamNormal = new FileStream(normalFilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write);
         var outStreamRaid = new FileStream(raidFilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write);
+        var outputDefaultStream = new FileStream(raidDefaultFilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Write);
         try
         {
             var cancelToken = HttpContext.RequestAborted;
@@ -247,6 +250,8 @@ public class FilesController(
             var pathArray = await raidService.GetDataBlockPaths(file.AbsolutePath, cancelToken);
             if (pathArray == default) return NotFound();
 
+            await raidService.ReadGetDataAsync(outputDefaultStream, file.AbsolutePath, cancelToken);
+            
             Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files[0], pathArray.Files[1], pathArray.Files[2], pathArray.FileSize, pathArray.StripeSize);
             var filePath = "C:\\Users\\thanh\\Downloads\\Input1.txt";
             var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -352,6 +357,7 @@ public class FilesController(
         {
             await outStreamNormal.DisposeAsync();
             await outStreamRaid.DisposeAsync();
+            await outputDefaultStream.DisposeAsync();
         }
     }
 
