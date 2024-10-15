@@ -1295,7 +1295,7 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bạn đã bị cấm đăng nhập, vui lòng thử lại lúc X0.
+        ///   Looks up a localized string similar to Bạn đã bị cấm đăng nhập, vui lòng thử lại lúc {0}.
         /// </summary>
         public static string You_have_been_banned_from_logging_in__please_try_again_at_X0 {
             get {

@@ -2,7 +2,7 @@
 @rendermode InteractiveWebAssembly
 @attribute [Route(PageRoutes.Drive.Shared.Src)]
 @attribute [Route(PageRoutes.Drive.Trash.Src)]
-@attribute [AllowAnonymous]
+@attribute [Authorize]
 
 <PageTitle>
     @LangDict[PageRoutes.Drive.Shared.Title]

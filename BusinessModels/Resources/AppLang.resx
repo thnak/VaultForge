@@ -295,8 +295,8 @@
     <value>Trường này là bắt buộc</value>
   </data>
     <data name="You have been banned from logging in, please try again at X0" xml:space="preserve">
-    <value>Bạn đã bị cấm đăng nhập, vui lòng thử lại lúc X0</value>
-  </data>
+      <value>Bạn đã bị cấm đăng nhập, vui lòng thử lại lúc {0}</value>
+    </data>
     <data name="This resource requires X0 years old" xml:space="preserve">
     <value>Tài nguyên này yêu cầu {0} tuổi</value>
   </data>

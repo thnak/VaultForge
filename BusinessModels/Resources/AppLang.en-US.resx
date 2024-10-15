@@ -296,8 +296,8 @@
     <value>This field is required</value>
   </data>
     <data name="You have been banned from logging in, please try again at X0" xml:space="preserve">
-    <value>You have been banned from logging in, please try again at X0</value>
-  </data>
+      <value>You have been banned from logging in, please try again at {0}</value>
+    </data>
     <data name="This resource requires X0 years old" xml:space="preserve">
     <value>This resource requires {0} years old</value>
   </data>

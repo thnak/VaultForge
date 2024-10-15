@@ -28,7 +28,11 @@
 
 @using Blazored.Toast
 @using Blazored.Toast.Services
-
+@using BlazorWorker.BackgroundServiceFactory
+@using BlazorWorker.WorkerBackgroundService
+@using BlazorWorker.Core
+@using Blazored.Toast.Configuration
+@using WebApp.Client.Authenticate
 
 
 @inject StateContainer CustomStateContainer
@@ -42,8 +46,6 @@
 @inject ISnackbar SnackbarService
 @inject IToastService ToastService
 @inject IDialogService DialogService
-@using BlazorWorker.BackgroundServiceFactory
-@using BlazorWorker.WorkerBackgroundService
-@using BlazorWorker.Core
-@using Blazored.Toast.Configuration
+
 @inject IWorkerFactory WorkerFactory
+@inject AuthenticationStateProvider PersistentAuthenticationStateService

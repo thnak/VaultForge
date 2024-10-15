@@ -51,25 +51,18 @@ public class PersistingServerAuthenticationStateProvider : ServerAuthenticationS
         var principal = authenticationState.User;
         if (principal.Identity?.IsAuthenticated == true)
         {
-            var originUsername = principal.FindFirst(_options.ClaimsIdentity.UserNameClaimType)?.Value;
+            var originUsername = principal.FindFirst(_options.ClaimsIdentity.UserNameClaimType)?.Value ?? string.Empty;
             var email = principal.FindFirst(_options.ClaimsIdentity.EmailClaimType)?.Value;
 
-            if (originUsername != null)
+            var user = _userBl.Value.Get(originUsername) ?? new UserModel();
+            _state.PersistAsJson(nameof(UserInfoModel), new UserInfoModel
             {
-                var user = _userBl.Value.Get(originUsername);
-                if (user != null)
-                {
-                    var avatarUri = user.Avatar;
-                    _state.PersistAsJson(nameof(UserInfoModel), new UserInfoModel
-                    {
-                        UserName = originUsername,
-                        Email = email ?? string.Empty,
-                        Roles = user.Roles,
-                        Avatar = avatarUri,
-                        JwtAccessToken = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.UserData)?.Value ?? string.Empty
-                    });
-                }
-            }
+                UserName = originUsername,
+                Email = email ?? string.Empty,
+                Roles = user.Roles,
+                Avatar = user.Avatar,
+                JwtAccessToken = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.UserData)?.Value ?? string.Empty
+            });
         }
     }
 }

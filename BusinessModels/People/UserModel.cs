@@ -19,15 +19,15 @@ public class UserModel
 
     [Key(2)] public string FullName { get; set; } = string.Empty;
 
-    [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(4)]
     public DateTime BirthDay { get; set; } = DateTime.UtcNow;
 
-    [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(5)]
     public DateTime JoinDate { get; set; } = DateTime.UtcNow;
 
-    [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(6)]
     public DateTime Leave { get; set; }
 
@@ -55,18 +55,18 @@ public class UserModel
     public int CurrentFailCount { get; set; }
 
     [Key(13)]
-    [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime BanTime { get; set; }
 
     [Key(14)] public bool AuthenticatorKey { get; set; }
 
     [Key(15)] public string SecurityStamp { get; set; } = string.Empty;
 
-    [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(16)]
     public DateTime LastConnect { get; set; }
 
-    [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(17)]
     public DateTime LastLogin { get; set; }
     [Key(18)] public string Avatar { get; set; } = "default_user.jpg";

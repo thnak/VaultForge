@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Mime;
 using System.Runtime.InteropServices.JavaScript;
 using System.Runtime.Versioning;
+using System.Security.Claims;
 using System.Text;
 using BusinessModels.General.EnumModel;
 using BusinessModels.Resources;
@@ -388,7 +389,10 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
         formData.Add(new StringContent(forceReload.ToJson()), "forceReLoad");
 
-        var responseMessage = await baseClientService.PostAsync<FolderRequest>(isDeletedPage ? "/api/files/get-deleted-content" : "/api/Files/get-folder", formData);
+        var authentication = await PersistentAuthenticationStateService.GetAuthenticationStateAsync();
+        var useName = authentication.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
+        var responseMessage = await baseClientService.PostAsync<FolderRequest>(isDeletedPage ? "/api/files/get-deleted-content" : $"/api/Files/Anonymous/get-folder", formData);
         if (responseMessage.IsSuccessStatusCode)
         {
             var folder = responseMessage.Data;
