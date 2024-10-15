@@ -517,8 +517,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         {
             BreadcrumbItems.Add(new BreadcrumbItem(folderInfoModel.FolderName,
                 Navigation.GetUriWithQueryParameters(Navigation.Uri, new Dictionary<string, object?> { { "FolderId", folderInfoModel.Id.ToString() } }),
-                false,
-                folderInfoModel.Icon == "" ? null : folderInfoModel.Icon));
+                false, folderInfoModel.Icon == "" ? null : folderInfoModel.Icon));
         }
     }
 
@@ -694,8 +693,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
 
     private void OpenFolder(string id)
     {
-        Navigation.NavigateTo(Navigation.GetUriWithQueryParameters(PageRoutes.Drive.Shared.Src,
-            new Dictionary<string, object?> { { "FolderId", id } }));
+        Navigation.NavigateTo(Navigation.GetUriWithQueryParameters(Navigation.Uri, new Dictionary<string, object?> { { "FolderId", id } }));
     }
 
     private async Task DeleteFile(FileInfoModel file)
