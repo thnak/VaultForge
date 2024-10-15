@@ -38,7 +38,7 @@ public partial class Home : ComponentBase, IDisposable
 
     private async Task GetWeather(MouseEventArgs obj)
     {
-        var response = await ApiService.HttpClient.GetAsync("/WeatherForecast/GetWeatherForecast");
+        var response = await ApiService.HttpClient!.GetAsync("/WeatherForecast/GetWeatherForecast");
         if (response.IsSuccessStatusCode)
         {
             var data = await response.Content.ReadAsStringAsync();

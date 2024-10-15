@@ -65,7 +65,6 @@
         }
 
 
-
         base.OnInitialized();
     }
 
@@ -105,11 +104,11 @@
             // ReSharper disable once IteratorNeverReturns
         }
 
-        public async Task<double> EstimatePiSlice(int sumStart, int sumLength)
+        public Task<double> EstimatePiSlice(int sumStart, int sumLength)
         {
             Console.WriteLine($@"EstimatePISlice({sumStart},{sumLength})");
             var lastReport = 0;
-            return AlternatingSequence(sumStart)
+            return Task.FromResult(AlternatingSequence(sumStart)
                 .Take(sumLength)
                 .Select((x, i) =>
                 {
@@ -123,7 +122,7 @@
 
                     return x;
                 })
-                .Sum(x => 1.0 / x);
+                .Sum(x => 1.0 / x));
         }
     }
 
@@ -240,11 +239,4 @@
     {
         return DateTime.Now.ToString("HH:mm:ss:fff");
     }
-
-    private async Task TryToRedirect()
-    {
-        var response = await ApiService.GetAsync<string>("/WeatherForecast/try-http-redirect");
-        ToastService.ShowSuccess(response.Message);
-    }
-
 }

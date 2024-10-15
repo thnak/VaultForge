@@ -1,5 +1,4 @@
-﻿
-<MudDialog>
+﻿<MudDialog>
     <DialogContent>
         <style>
             .mud-input-slot.mud-input-root.mud-input-root-outlined.mud-input-root-adorned-end.mud-input-root-margin-dense.mud-select-input,
@@ -37,7 +36,7 @@
             <MudField Class="d-flex flex-row flex-wrap gap-2" Label="@AppLang.Tags" Variant="Variant.Outlined" >
                 @foreach (var x in _article.Keywords.ToArray())
                 {
-                    <MudChip Color="@RandomColor()" @key="x" T="string" OnClose="@RemoveKeyWords">@x</MudChip>
+                    <MudChip Color="@RandomColor()" @key="x" OnClose="@RemoveKeyWords" T="string" >@x</MudChip>
                 }
             </MudField>
 
@@ -45,8 +44,8 @@
         </MudForm>
     </DialogContent>
     <DialogActions>
-        <MudButton Color="Color.Error" OnClick="@Cancel" Variant="Variant.Outlined" >@AppLang.Cancel</MudButton>
-        <MudButton Color="Color.Success" Disabled="@Processing" OnClick="DialogSubmit" Variant="Variant.Filled" >
+        <MudButton Class="rounded-pill" Color="Color.Error" OnClick="@Cancel" Variant="Variant.Outlined" >@AppLang.Cancel</MudButton>
+        <MudButton Class="rounded-pill" Color="Color.Success" Disabled="@Processing" OnClick="DialogSubmit" Variant="Variant.Filled" >
             @if (Processing)
             {
                 <MudProgressCircular Class="ms-n1" Indeterminate="true" Size="Size.Small" />
