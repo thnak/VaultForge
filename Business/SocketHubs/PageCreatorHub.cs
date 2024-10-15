@@ -1,4 +1,5 @@
 ﻿using Business.Business.Interfaces.Advertisement;
+using Business.Models;
 using BusinessModels.Advertisement;
 using BusinessModels.System;
 using Microsoft.AspNetCore.SignalR;
@@ -21,6 +22,7 @@ public class PageCreatorHub(IMemoryCache memoryCache, IAdvertisementBusinessLaye
         CancellationTokenSource.Cancel();
         CancellationTokenSource.Dispose();
         RemoveListeners();
+        
         TimerInterval?.Dispose();
         return base.OnDisconnectedAsync(exception);
     }
@@ -158,7 +160,15 @@ public class PageCreatorHub(IMemoryCache memoryCache, IAdvertisementBusinessLaye
                     var result = await businessLayer.CreateAsync(article, CancellationTokenSource.Token);
                     if (!result.IsSuccess)
                     {
-                        await businessLayer.UpdateAsync(article, CancellationTokenSource.Token);
+                        FieldUpdate<ArticleModel> fieldUpdate = new FieldUpdate<ArticleModel>()
+                        {
+                            { x => x.HtmlSheet, article.HtmlSheet },
+                            { x => x.StyleSheet, article.StyleSheet },
+                            { x => x.JavaScriptSheet, article.JavaScriptSheet },
+                            { x => x.Language, article.Language },
+                            { x => x.Title, article.Title }
+                        };
+                        await businessLayer.UpdateAsync(articleId, fieldUpdate, CancellationTokenSource.Token);
                     }
                 });
             }
