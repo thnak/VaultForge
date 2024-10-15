@@ -9,7 +9,7 @@ using MongoDB.Driver;
 
 namespace Business.Business.Repositories.InternetOfThings;
 
-public class IoTBusinessLayer(IIoTDataLayer data, ILogger<IIoTBusinessLayer> logger) : IIoTBusinessLayer
+public class IoTBusinessLayer(IIoTDataLayer data) : IIoTBusinessLayer
 {
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {

@@ -6,7 +6,7 @@ namespace WebApp.Client.Layout;
 
 public partial class ThemeModeSelector : ComponentBase, IDisposable
 {
-    [Parameter] public MudThemeProvider? MudThemeProvider { get; set; } = default!;
+    [Parameter] public MudThemeProvider? MudThemeProvider { get; set; }
     private bool? IsDarkMode { get; set; }
     private MudTheme? Theme { get; set; }
 

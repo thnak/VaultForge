@@ -40,14 +40,14 @@
                                          T="FolderInfoModel" Value="@SearchString" ValueChanged="FolderSearchChanged" Variant="Variant.Outlined">
                             <ItemTemplate Context="templateContext">
                                 <div class="d-flex flex-column gap-0">
-                                    <MudText>@templateContext?.FolderName</MudText>
-                                    <MudText Typo="Typo.subtitle2">@templateContext?.RelativePath</MudText>
+                                    <MudText>@templateContext.FolderName</MudText>
+                                    <MudText Typo="Typo.subtitle2">@templateContext.RelativePath</MudText>
                                 </div>
                             </ItemTemplate>
                             <ItemSelectedTemplate Context="templateContext">
                                 <div class="d-flex flex-column gap-0">
-                                    <MudText>@templateContext?.FolderName</MudText>
-                                    <MudText Typo="Typo.subtitle2">@templateContext?.RelativePath</MudText>
+                                    <MudText>@templateContext.FolderName</MudText>
+                                    <MudText Typo="Typo.subtitle2">@templateContext.RelativePath</MudText>
                                 </div>
                             </ItemSelectedTemplate>
                         </MudAutocomplete>

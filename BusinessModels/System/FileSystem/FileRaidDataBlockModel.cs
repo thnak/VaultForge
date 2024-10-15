@@ -24,7 +24,7 @@ public class FileRaidDataBlockModel
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime ModificationTime { get; set; } = DateTime.Now;
 
-    public long Size { get; set; } = 0;
+    public long Size { get; set; }
     
     public FileRaidStatus Status { get; set; }
     

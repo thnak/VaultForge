@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Text.Json;
 using BusinessModels.Resources;
+using BusinessModels.Utils;
 using Microsoft.JSInterop;
 
 namespace WebApp.Client.Utils;
@@ -123,9 +123,7 @@ public static class JsRuntimeExtension
     #endregion
 
     #region Culture
-
-    private const string CultureKeyName = "Culture";
-
+    
     public static async Task SetCulture(this IJSRuntime jsRuntime, string name)
     {
         await jsRuntime.InvokeVoidAsync("setCultureCookie", name, name, CookieNames.Culture, 365);
@@ -165,7 +163,8 @@ public static class JsRuntimeExtension
 
     public static ValueTask AddScriptResource(this IJSRuntime self, params string[] resourceName)
     {
-        return self.InvokeVoidAsync("AddScriptElement", resourceName);
+        var resourceJson = resourceName.ToJson();
+        return self.InvokeVoidAsync("AddScriptElement", resourceJson);
     }
 
     public static ValueTask RemoveNode(this IJSRuntime self, string nodeId)

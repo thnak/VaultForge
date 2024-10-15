@@ -9,7 +9,7 @@ public partial class ErrorHanding : ComponentBase
 {
     [Parameter] public string ErrorMessage { get; set; } = string.Empty;
     [Parameter] public string ReturnUrl { get; set; } = "/";
-    [Parameter] public Exception? Exception { get; set; } = null;
+    [Parameter] public Exception? Exception { get; set; }
 
     private string? RequestId { get; set; }
     private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);

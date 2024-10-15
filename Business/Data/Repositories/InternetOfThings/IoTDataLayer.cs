@@ -30,12 +30,11 @@ public class IoTDataLayer : IIoTDataLayer
 
         var writeConcern = new WriteConcern(1, new Optional<TimeSpan?>(TimeSpan.FromSeconds(10)), journal: new Optional<bool?>(false), fsync: false);
         _dataDb = context.MongoDatabase.GetCollection<IoTRecord>("IotDB", new MongoCollectionSettings() { WriteConcern = writeConcern });
-        this.logger = logger;
+        this._logger = logger;
     }
 
-    private const string SearchIndexString = "UserSearchIndex";
     private readonly IMongoCollection<IoTRecord> _dataDb;
-    private readonly ILogger<IoTDataLayer> logger;
+    private readonly ILogger<IoTDataLayer> _logger;
 
     private readonly SemaphoreSlim _semaphore = new(15000, 15000);
 
@@ -120,7 +119,7 @@ public class IoTDataLayer : IIoTDataLayer
         }
         catch (Exception e)
         {
-            logger.LogError(e, null);
+            _logger.LogError(e, null);
             return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
         finally

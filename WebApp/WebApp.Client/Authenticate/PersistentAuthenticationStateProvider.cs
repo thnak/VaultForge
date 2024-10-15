@@ -16,8 +16,6 @@ public class PersistentAuthenticationStateProvider : AuthenticationStateProvider
     {
         if (!state.TryTakeFromJson<UserInfoModel>(nameof(UserInfoModel), out var userInfo) || userInfo is null) return;
 
-        AvatarUri = userInfo.Avatar;
-        UserName = userInfo.UserName;
         List<Claim> claims =
         [
             new Claim(ClaimTypes.NameIdentifier, userInfo.UserName),
@@ -29,8 +27,6 @@ public class PersistentAuthenticationStateProvider : AuthenticationStateProvider
         _authenticationStateTask = Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(claims, CookieNames.AuthenticationType))));
     }
 
-    public string UserName { get; set; } = string.Empty;
-    public string AvatarUri { get; set; } = "default_user.jpg";
 
     public void Dispose()
     {

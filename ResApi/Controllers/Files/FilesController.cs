@@ -1,6 +1,5 @@
 using System.Net.Mime;
 using System.Security.Cryptography;
-using System.Text;
 using System.Web;
 using Business.Attribute;
 using Business.Business.Interfaces.FileSystem;
@@ -438,7 +437,6 @@ public class FilesController(
                 // var fileStream = System.IO.File.Open("C:/Users/thanh/Downloads/Update _Nosew Monitoring system_V2  (1).pptx", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
 
                 var fileStream = new MemoryStream();
-                ;
                 await section.Body.CopyToAsync(fileStream, cancelToken);
 
                 await raidService.WriteDataAsync(fileStream, name, cancelToken);

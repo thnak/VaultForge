@@ -392,7 +392,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         var authentication = await PersistentAuthenticationStateService.GetAuthenticationStateAsync();
         var useName = authentication.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
-        var responseMessage = await baseClientService.PostAsync<FolderRequest>(isDeletedPage ? "/api/files/get-deleted-content" : $"/api/Files/Anonymous/get-folder", formData);
+        var responseMessage = await baseClientService.PostAsync<FolderRequest>(isDeletedPage ? "/api/files/get-deleted-content" : $"/api/Files/{useName}/get-folder", formData);
         if (responseMessage.IsSuccessStatusCode)
         {
             var folder = responseMessage.Data;

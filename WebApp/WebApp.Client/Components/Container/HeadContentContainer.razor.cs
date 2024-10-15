@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using BusinessModels.Resources;
+﻿using BusinessModels.Resources;
 using BusinessModels.Validator.Compare;
 using Microsoft.AspNetCore.Components;
 

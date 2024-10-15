@@ -9,11 +9,15 @@ public class MongoDbLogger(IMongoDataLayerContext context, string loggerName) : 
 {
     private readonly IMongoCollection<LogEntryModel> _logCollection = context.MongoDatabase.GetCollection<LogEntryModel>("logs");
 
-    public IDisposable BeginScope<TState>(TState state) => null;
+    public IDisposable? BeginScope<TState>(TState state) where TState : notnull => default!;
 
     public bool IsEnabled(LogLevel logLevel) => true;
 
-    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception, string> formatter)
+    public void Log<TState>(LogLevel logLevel,
+        EventId eventId,
+        TState state,
+        Exception? exception,
+        Func<TState, Exception?, string> formatter)
     {
         // Create a log entry using the LogEntry model
         var logEntry = new LogEntryModel(

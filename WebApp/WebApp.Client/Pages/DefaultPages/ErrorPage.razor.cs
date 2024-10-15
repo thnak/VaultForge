@@ -14,7 +14,6 @@ public partial class ErrorPage : ComponentBase
     [Parameter] public Exception? Exception { get; set; }
 
     private string? RequestId { get; set; }
-    private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
     private string HandingMessage { get; set; } = string.Empty;
     private ErrorRecordModel RecordModel { get; set; } = new();
     private bool SuccessHanding { get; set; }

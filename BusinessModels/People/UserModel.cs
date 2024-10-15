@@ -40,7 +40,7 @@ public class UserModel
     [Key(10)] public List<string> Roles { get; set; } = new();
 
 
-    [Key(11)] public List<string> Tokens { get; set; } = new();
+    [Key(11)] public List<string> Tokens { get; set; } = [];
 
     /// <summary>
     ///     Tổng số lần sai mật khẩu

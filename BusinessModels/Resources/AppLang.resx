@@ -532,4 +532,7 @@ ClientY: {1}</value>
     <data name="Article does not exist" xml:space="preserve">
       <value>Bài viết không tồn tại</value>
     </data>
+    <data name="Raid5Stream_Position_Position_is_out_of_range_" xml:space="preserve">
+      <value>Position is out of range.</value>
+    </data>
 </root>

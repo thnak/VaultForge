@@ -871,6 +871,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Position is out of range..
+        /// </summary>
+        public static string Raid5Stream_Position_Position_is_out_of_range_ {
+            get {
+                return ResourceManager.GetString("Raid5Stream_Position_Position_is_out_of_range_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Đang kết nối lại.
         /// </summary>
         public static string Reconnecting {

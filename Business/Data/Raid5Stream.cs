@@ -1,4 +1,5 @@
 ﻿using Business.Utils;
+using BusinessModels.Resources;
 
 namespace Business.Data;
 
@@ -74,7 +75,7 @@ public class Raid5Stream : Stream
         set
         {
             if (value < 0 || value > _originalSize)
-                throw new ArgumentOutOfRangeException(nameof(value), "Position is out of range.");
+                throw new ArgumentOutOfRangeException(nameof(value), AppLang.Raid5Stream_Position_Position_is_out_of_range_);
             _position = value;
         }
     }

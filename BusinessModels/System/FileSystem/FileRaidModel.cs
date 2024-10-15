@@ -24,12 +24,12 @@ public class FileRaidModel
     /// <summary>
     /// Kích thước phân tách data block
     /// </summary>
-    public int StripSize { get; set; } = 0;
+    public int StripSize { get; set; }
 
     public RaidType RaidType { get; set; }
 
     public string CheckSum { get; set; } = string.Empty;
-    public long Size { get; set; } = 0;
+    public long Size { get; set; }
 }
 
 public enum RaidType

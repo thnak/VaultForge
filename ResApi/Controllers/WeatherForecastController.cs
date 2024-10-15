@@ -32,6 +32,7 @@ public class WeatherForecastController(ILogger<WeatherForecastController> logger
     {
         return memoryCache.GetOrCreate("api/WeatherForecast/GetWeatherForecast", entry =>
         {
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(1);
             return Enumerable.Range(1, 50).Select(index => new WeatherForecast
                 {
                     Date = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(index)),

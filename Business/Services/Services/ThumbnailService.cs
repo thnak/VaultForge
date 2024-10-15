@@ -20,7 +20,6 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
     private readonly BlockingCollection<string> _thumbnailQueue = new();
     private SemaphoreSlim QueueSemaphore { get; } = new(Environment.ProcessorCount - 1);
     private const int MaxDimension = 480; // Maximum width or height
-    private const int BufferSize = 10 * 1024 * 1024;
     private ILogger<ThumbnailService> Logger { get; } = logger;
     private IServiceProvider ServiceProvider { get; } = serviceProvider;
 
