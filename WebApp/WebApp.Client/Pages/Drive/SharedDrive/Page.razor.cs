@@ -176,7 +176,8 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     private Task SendForm()
     {
         Uploading = true;
-        UpLoadFilesJs(baseClientService.GetBaseUrl() + "api/Files/upload-physical", RootFolder.Id.ToString());
+        var folderId = RootFolder.Id.ToString();
+        UpLoadFilesJs(baseClientService.GetBaseUrl() + $"api/Files/upload-physical/{folderId}", folderId);
         return Task.CompletedTask;
     }
 

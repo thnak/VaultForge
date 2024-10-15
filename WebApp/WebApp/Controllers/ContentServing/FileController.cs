@@ -262,18 +262,18 @@ public class FilesController(
         return PhysicalFile(file.AbsolutePath, file.ContentType, true);
     }
 
-    [HttpPost("get-folder")]
+    [HttpPost("{username}/get-folder")]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
     [OutputCache(Duration = 10)]
     [ResponseCache(Duration = 50)]
-    public async Task<IActionResult> GetSharedFolder([FromForm] string? id, [FromForm] string? password,
+    public async Task<IActionResult> GetSharedFolder(string username, [FromForm] string? id, [FromForm] string? password,
         [FromForm] int page, [FromForm] int pageSize, [FromForm] string? contentTypes, [FromForm] bool? forceReLoad)
     {
         var cancelToken = HttpContext.RequestAborted;
         try
         {
-            var folderSource = string.IsNullOrEmpty(id) ? folderServe.GetRoot("") : folderServe.Get(id);
+            var folderSource = string.IsNullOrEmpty(id) ? folderServe.GetRoot(username) : folderServe.Get(id);
             if (folderSource == null) return BadRequest(AppLang.Folder_could_not_be_found);
             if (!string.IsNullOrEmpty(folderSource.Password))
             {
@@ -585,11 +585,11 @@ public class FilesController(
     }
 
 
-    [HttpPost("upload-physical")]
+    [HttpPost("upload-physical/{folderValues}")]
     [DisableFormValueModelBinding]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
-    public async Task<IActionResult> UploadPhysical()
+    public async Task<IActionResult> UploadPhysical(string folderValues)
     {
         var folderKeyString = AppLang.Folder;
         var fileKeyString = AppLang.File;
@@ -606,9 +606,7 @@ public class FilesController(
                 return BadRequest(ModelState);
             }
 
-            HttpContext.Request.Headers.TryGetValue("Folder", out var folderValues);
-
-            var folderCodes = folderValues.ToString();
+            var folderCodes = folderValues;
 
             if (string.IsNullOrEmpty(folderCodes))
             {

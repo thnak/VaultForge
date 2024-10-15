@@ -13,6 +13,7 @@
 		<NeutralLanguage>en</NeutralLanguage>
 		<PublicSign>false</PublicSign>
 		<DelaySign>true</DelaySign>
+		<UserSecretsId>6c72c4d0-4967-45db-befd-b35bca4ee0c1</UserSecretsId>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
@@ -23,8 +24,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
-		<RunAOTCompilation>false</RunAOTCompilation>
-		<WasmStripILAfterAOT>false</WasmStripILAfterAOT>
+		<RunAOTCompilation>true</RunAOTCompilation>
+		<WasmStripILAfterAOT>true</WasmStripILAfterAOT>
 		<WasmEnableExceptionHandling>true</WasmEnableExceptionHandling>
 		<BlazorEnableCompression>true</BlazorEnableCompression>
 	</PropertyGroup>
