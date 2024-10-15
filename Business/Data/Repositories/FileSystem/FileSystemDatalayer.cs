@@ -5,6 +5,7 @@ using Business.Data.Interfaces.FileSystem;
 using Business.Models;
 using Business.Utils;
 using Business.Utils.ExpressionExtensions;
+using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using Microsoft.Extensions.Caching.Memory;
@@ -260,7 +261,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         }
     }
 
-    public async Task<(bool, string)> CreateAsync(FileInfoModel model, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> CreateAsync(FileInfoModel model, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -273,17 +274,17 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
                 model.CreatedDate = DateTime.UtcNow.Date;
                 model.ModifiedTime = DateTime.UtcNow;
                 await _fileDataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
-                return (true, AppLang.Create_successfully);
+                return Result<bool>.Success(true);
             }
             else
             {
-                return (false, AppLang.File_is_already_exsists);
+                return Result<bool>.Failure(AppLang.File_is_already_exsists, ErrorType.NotFound);
             }
         }
         catch (Exception e)
         {
             logger.LogError(e, null);
-            return (false, e.Message);
+            return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
         finally
         {

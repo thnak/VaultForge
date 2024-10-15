@@ -29,6 +29,7 @@ using Business.Services.Services;
 using Business.SocketHubs;
 using BusinessModels.Converter;
 using BusinessModels.General;
+using BusinessModels.General.SettingModels;
 using BusinessModels.Resources;
 using MessagePack;
 using MessagePack.Resolvers;

@@ -3,6 +3,7 @@ using Business.Business.Interfaces.Advertisement;
 using Business.Data.Interfaces.Advertisement;
 using Business.Models;
 using BusinessModels.Advertisement;
+using BusinessModels.General.Results;
 using MongoDB.Driver;
 
 namespace Business.Business.Repositories.Advertisement;
@@ -69,7 +70,7 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
         return dataLayer.UpdateAsync(key, updates, cancellationToken);
     }
 
-    public Task<(bool, string)> CreateAsync(ArticleModel model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> CreateAsync(ArticleModel model, CancellationToken cancellationToken = default)
     {
         return dataLayer.CreateAsync(model, cancellationToken);
     }

@@ -4,6 +4,7 @@ using System.Security.Claims;
 using Business.Business.Interfaces.User;
 using Business.Data.Interfaces.User;
 using Business.Models;
+using BusinessModels.General.Results;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using BusinessModels.Secure;
@@ -76,7 +77,7 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         return userDl.UpdateAsync(key, updates, cancellationToken);
     }
 
-    public Task<(bool, string)> CreateAsync(UserModel model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> CreateAsync(UserModel model, CancellationToken cancellationToken = default)
     {
         return userDl.CreateAsync(model, cancellationToken);
     }

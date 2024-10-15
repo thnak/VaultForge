@@ -2,6 +2,7 @@
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.InternetOfThings;
 using Business.Models;
+using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
 using Microsoft.Extensions.Logging;
@@ -45,8 +46,11 @@ public class IoTDataLayer : IIoTDataLayer
 
         var date2HourIndexKeys = Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Hour);
         var date2HourIndexModel = new CreateIndexModel<IoTRecord>(date2HourIndexKeys);
+        
+        var date2HourTypeIndexKeys = Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Hour).Ascending(x=>x.SensorType);
+        var date2HourTypeIndexModel = new CreateIndexModel<IoTRecord>(date2HourTypeIndexKeys);
 
-        await _dataDb.Indexes.CreateManyAsync([dateIndexModel, date2HourIndexModel], cancellationToken);
+        await _dataDb.Indexes.CreateManyAsync([dateIndexModel, date2HourIndexModel, date2HourTypeIndexModel], cancellationToken);
 
         return await Task.FromResult((true, string.Empty));
     }
@@ -106,18 +110,18 @@ public class IoTDataLayer : IIoTDataLayer
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> CreateAsync(IoTRecord model, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> CreateAsync(IoTRecord model, CancellationToken cancellationToken = default)
     {
         try
         {
             await _semaphore.WaitAsync(cancellationToken);
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
-            return (true, AppLang.Create_successfully);
+            return Result<bool>.Success(AppLang.Create_successfully);
         }
         catch (Exception e)
         {
             logger.LogError(e, null);
-            return (false, e.Message);
+            return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
         finally
         {

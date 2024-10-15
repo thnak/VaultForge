@@ -4,6 +4,7 @@ using Business.Data.Interfaces;
 using Business.Data.Interfaces.User;
 using Business.Models;
 using Business.Utils;
+using BusinessModels.General.Results;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using Microsoft.Extensions.Logging;
@@ -238,25 +239,25 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         }
     }
 
-    public async Task<(bool, string)> CreateAsync(UserModel model, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> CreateAsync(UserModel model, CancellationToken cancellationToken = default)
     {
         await _semaphore.WaitAsync(cancellationToken);
         try
         {
-            if (string.IsNullOrWhiteSpace(model.UserName)) return (false, AppLang.User_name_is_not_valid);
+            if (string.IsNullOrWhiteSpace(model.UserName)) return Result<bool>.Failure(AppLang.User_name_is_not_valid, ErrorType.Validation);
             var query = await _dataDb.Find(x => x.UserName == model.UserName).AnyAsync(cancellationToken: cancellationToken);
-            if (!query) return (false, AppLang.User_is_already_exists);
+            if (!query) return Result<bool>.Failure(AppLang.User_is_already_exists, ErrorType.NotFound);
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
-            return (true, AppLang.Success);
+            return Result<bool>.Success(AppLang.Create_successfully);
         }
         catch (OperationCanceledException)
         {
             logger.LogInformation("[Update] Operation cancelled");
-            return (false, string.Empty);
+            return Result<bool>.Failure("Cancel", ErrorType.Cancelled);
         }
         catch (Exception ex)
         {
-            return (false, ex.Message);
+            return Result<bool>.Failure(ex.Message, ErrorType.Unknown);
         }
         finally
         {

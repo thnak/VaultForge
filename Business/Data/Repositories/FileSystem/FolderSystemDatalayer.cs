@@ -6,6 +6,7 @@ using Business.Models;
 using Business.Utils;
 using Business.Utils.ExpressionExtensions;
 using BusinessModels.General.EnumModel;
+using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using Microsoft.Extensions.Caching.Memory;
@@ -91,7 +92,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
                     Type = FolderContentType.SystemFolder
                 };
                 var result = await CreateAsync(anonymousFolder, cancellationToken);
-                logger.LogInformation($"[Init][Anonymous] {result.Item2}");
+                logger.LogInformation($"[Init][Anonymous] {result}");
             }
 
             var wallPaperFolder = Get(anonymousUser, "/root/wallpaper");
@@ -107,7 +108,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
                     Type = FolderContentType.SystemFolder
                 };
                 var result = await CreateAsync(wallPaperFolder, cancellationToken);
-                logger.LogInformation($"[Init][WallPaper] {result.Item2}");
+                logger.LogInformation($"[Init][WallPaper] {result.Message}");
             }
 
             var resourceFolder = Get(anonymousUser, "/root/wallpaper");
@@ -123,7 +124,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
                     Type = FolderContentType.SystemFolder
                 };
                 var result = await CreateAsync(resourceFolder, cancellationToken);
-                logger.LogInformation($"[Init][resource] {result.Item2}");
+                logger.LogInformation($"[Init][resource] {result.Message}");
             }
 
 
@@ -315,22 +316,22 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         }
     }
 
-    public async Task<(bool, string)> CreateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> CreateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
     {
         try
         {
             await _semaphore.WaitAsync(cancellationToken);
             var isExists = await _dataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
-            if (isExists) return (false, AppLang.Folder_already_exists);
+            if (isExists) return Result<bool>.Failure(AppLang.Folder_already_exists, ErrorType.Duplicate);
             model.ModifiedTime = DateTime.UtcNow;
             model.CreateDate = DateTime.UtcNow.Date;
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
-            return (true, AppLang.Create_successfully);
+            return Result<bool>.Success(true);
         }
         catch (OperationCanceledException)
         {
             logger.LogInformation("[Update] Operation cancelled");
-            return (false, string.Empty);
+            return Result<bool>.Failure("canceled", ErrorType.Cancelled);
         }
         finally
         {

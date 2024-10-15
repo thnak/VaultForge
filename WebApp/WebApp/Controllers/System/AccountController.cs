@@ -96,8 +96,8 @@ public class AccountController(
                 FullName = request.FullName
             });
 
-            if (createResult.Item1) return Redirect("/api/Account/login");
-            return Redirect(PageRoutes.Account.SignInError.Src.AppendAndEncodeBase64StringAsUri(createResult.Item2));
+            if (createResult.IsSuccess) return Redirect("/api/Account/login");
+            return Redirect(PageRoutes.Account.SignInError.Src.AppendAndEncodeBase64StringAsUri(createResult.Message));
         }
 
         foreach (var result in validationResults)

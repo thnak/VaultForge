@@ -4,6 +4,7 @@ using Business.Data.Interfaces;
 using Business.Data.Interfaces.Chat;
 using Business.Models;
 using Business.Utils;
+using BusinessModels.General.Results;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using Microsoft.Extensions.Logging;
@@ -131,24 +132,24 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> CreateAsync(ChatWithChatBotMessageModel model, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> CreateAsync(ChatWithChatBotMessageModel model, CancellationToken cancellationToken = default)
     {
         await _semaphore.WaitAsync(cancellationToken);
         try
         {
             var query = await _dataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
-            if (!query) return (false, AppLang.User_is_already_exists);
+            if (!query) return Result<bool>.Failure(AppLang.User_is_already_exists, ErrorType.Duplicate);
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
-            return (true, AppLang.Success);
+            return Result<bool>.Success(true);
         }
         catch (OperationCanceledException)
         {
             logger.LogInformation("[Update] Operation cancelled");
-            return (false, string.Empty);
+            return Result<bool>.Failure(AppLang.Cancel, ErrorType.Cancelled);
         }
         catch (Exception ex)
         {
-            return (false, ex.Message);
+            return Result<bool>.Failure(ex.Message, ErrorType.Unknown);
         }
         finally
         {

@@ -2,6 +2,7 @@
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Data.Interfaces.InternetOfThings;
 using Business.Models;
+using BusinessModels.General.Results;
 using BusinessModels.System.InternetOfThings;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
@@ -65,7 +66,7 @@ public class IoTBusinessLayer(IIoTDataLayer data, ILogger<IIoTBusinessLayer> log
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> CreateAsync(IoTRecord model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> CreateAsync(IoTRecord model, CancellationToken cancellationToken = default)
     {
         return data.CreateAsync(model, cancellationToken);
     }

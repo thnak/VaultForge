@@ -156,7 +156,7 @@ public class PageCreatorHub(IMemoryCache memoryCache, IAdvertisementBusinessLaye
                 _ = Task.Run(async () =>
                 {
                     var result = await businessLayer.CreateAsync(article, CancellationTokenSource.Token);
-                    if (!result.Item1)
+                    if (!result.IsSuccess)
                     {
                         await businessLayer.UpdateAsync(article, CancellationTokenSource.Token);
                     }

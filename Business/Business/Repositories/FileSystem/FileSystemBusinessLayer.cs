@@ -5,6 +5,7 @@ using Business.Data.Interfaces.FileSystem;
 using Business.Models;
 using Business.Utils.StringExtensions;
 using BusinessModels.General.EnumModel;
+using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using Microsoft.Extensions.Caching.Memory;
@@ -94,7 +95,7 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da, IMemoryCache memor
         return da.UpdateAsync(key, updates, cancellationToken);
     }
 
-    public Task<(bool, string)> CreateAsync(FileInfoModel model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> CreateAsync(FileInfoModel model, CancellationToken cancellationToken = default)
     {
         return da.CreateAsync(model, cancellationToken);
     }

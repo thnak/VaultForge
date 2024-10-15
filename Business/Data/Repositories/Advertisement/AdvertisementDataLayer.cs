@@ -4,6 +4,7 @@ using Business.Data.Interfaces;
 using Business.Data.Interfaces.Advertisement;
 using Business.Models;
 using Business.Utils;
+using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
@@ -155,7 +156,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         }
     }
 
-    public async Task<(bool, string)> CreateAsync(ArticleModel model, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> CreateAsync(ArticleModel model, CancellationToken cancellationToken = default)
     {
         await _semaphore.WaitAsync(cancellationToken);
         try
@@ -163,16 +164,16 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
             var filter = Builders<ArticleModel>.Filter.Where(x => x.Title == model.Title && x.Language == model.Language);
             var isExists = await _dataDb.Find(filter).Limit(1).AnyAsync(cancellationToken: cancellationToken);
             if (isExists)
-                return (false, AppLang.Article_already_exists);
+                return Result<bool>.Failure(AppLang.Article_already_exists, ErrorType.Duplicate);
 
             model.PublishDate = DateTime.UtcNow.Date;
             model.ModifiedTime = DateTime.UtcNow;
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
-            return (true, AppLang.Create_successfully);
+            return Result<bool>.Success(true);
         }
         catch (Exception e)
         {
-            return (false, e.Message);
+            return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
         finally
         {
@@ -186,7 +187,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         foreach (var model in models.TakeWhile(_ => cancellationToken.IsCancellationRequested == false))
         {
             var result = await CreateAsync(model, cancellationToken);
-            yield return (result.Item1, result.Item2, "");
+            yield return (result.Value, result.Message, "");
         }
     }
 
@@ -262,14 +263,14 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
                         ModifiedTime = DateTime.Now,
                     };
                     var result = await CreateAsync(model, cancellationToken);
-                    if (result.Item1)
+                    if (result.IsSuccess)
                     {
                         logger.LogInformation($"[Initialize] Article: {model.Title} - {model.PublishDate} - {model.Language}");
                     }
                     else
                     {
                         logger.LogInformation($"[Initialize Failed] Article: {model.Title} - {model.ModifiedTime} - {model.Language}");
-                        logger.LogError(result.Item2);
+                        logger.LogError(result.Message);
                     }
                 }
             }

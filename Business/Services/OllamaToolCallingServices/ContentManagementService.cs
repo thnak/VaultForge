@@ -52,7 +52,7 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
             Language = language,
         };
         var result = await businessLayer.CreateAsync(model, cancellationToken);
-        if (result.Item1)
+        if (result.IsSuccess)
         {
             return $"Added new article with ID {model.Id}. Remember it to use this article again.";
         }
@@ -63,7 +63,7 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
             return $"The article with ID {model.Id} already exists. Please choose another one or try again. Or you can update the content of this article.";
         }
 
-        return $"Add failed for article with title {title} and language {language}. Reason: {result.Item2}";
+        return $"Add failed for article with title {title} and language {language}. Reason: {result.Message}";
     }
 
     public async Task<string> DeleteArticle(string id, CancellationToken cancellationToken = default)

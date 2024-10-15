@@ -1,4 +1,4 @@
-namespace BusinessModels.General;
+namespace BusinessModels.General.SettingModels;
 
 public class AppSettings
 {

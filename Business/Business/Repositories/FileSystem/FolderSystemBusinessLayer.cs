@@ -7,8 +7,9 @@ using Business.Data.Interfaces.FileSystem;
 using Business.Models;
 using Business.Services;
 using Business.Utils.StringExtensions;
-using BusinessModels.General;
 using BusinessModels.General.EnumModel;
+using BusinessModels.General.Results;
+using BusinessModels.General.SettingModels;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
@@ -122,7 +123,7 @@ public class FolderSystemBusinessLayer(
         return FolderSystemService.UpdateAsync(key, updates, cancellationToken);
     }
 
-    public Task<(bool, string)> CreateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> CreateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
     {
         return FolderSystemService.CreateAsync(model, cancellationToken);
     }
@@ -241,7 +242,7 @@ public class FolderSystemBusinessLayer(
                 Username = user.UserName
             };
             var res = CreateAsync(folder).Result;
-            if (res.Item1)
+            if (res.IsSuccess)
             {
                 UserService.UpdateAsync(user);
                 return Get(folder.Id.ToString());
@@ -279,14 +280,14 @@ public class FolderSystemBusinessLayer(
         file.RootFolder = folder.Id.ToString();
         file.RelativePath = folder.RelativePath + $"/{file.FileName}";
         var res = await FileSystemService.CreateAsync(file, cancellationTokenSource);
-        if (res.Item1)
+        if (res.IsSuccess)
         {
             var folderUpdateResult = await UpdateAsync(folder, cancellationTokenSource);
             if (!folderUpdateResult.Item1)
                 return folderUpdateResult;
         }
 
-        return res;
+        return (res.IsSuccess, res.Message);
     }
 
     public async Task<(bool, string)> CreateFileAsync(string userName, FileInfoModel file, CancellationToken cancellationToken = default)
@@ -317,12 +318,12 @@ public class FolderSystemBusinessLayer(
             return (false, AppLang.Folder_already_exists);
 
         var createNewFolderResult = await CreateAsync(newFolder);
-        if (createNewFolderResult is { Item1: true })
+        if (createNewFolderResult.IsSuccess)
         {
             await UpdateAsync(folder);
         }
 
-        return createNewFolderResult;
+        return (createNewFolderResult.IsSuccess, createNewFolderResult.Message);
     }
 
     public async Task<(bool, string)> CreateFolder(RequestNewFolderModel request)
@@ -354,10 +355,10 @@ public class FolderSystemBusinessLayer(
             return (false, AppLang.Folder_already_exists);
 
         var res = await CreateAsync(request.NewFolder);
-        if (res.Item1)
+        if (res.IsSuccess)
         {
-            res = await UpdateAsync(folderRoot);
-            if (res.Item1)
+            var result = await UpdateAsync(folderRoot);
+            if (result.Item1)
                 return (true, AppLang.Create_successfully);
         }
 

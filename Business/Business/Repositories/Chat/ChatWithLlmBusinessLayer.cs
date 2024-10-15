@@ -2,6 +2,7 @@
 using Business.Business.Interfaces.Chat;
 using Business.Data.Interfaces.Chat;
 using Business.Models;
+using BusinessModels.General.Results;
 using BusinessModels.People;
 using MongoDB.Driver;
 
@@ -64,7 +65,7 @@ public class ChatWithLlmBusinessLayer(IChatWithLlmDataLayer dataLayer) : IChatWi
         return dataLayer.GetAllAsync(cancellationToken);
     }
 
-    public Task<(bool, string)> CreateAsync(ChatWithChatBotMessageModel model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> CreateAsync(ChatWithChatBotMessageModel model, CancellationToken cancellationToken = default)
     {
         return dataLayer.CreateAsync(model, cancellationToken);
     }
