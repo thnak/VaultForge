@@ -2,6 +2,11 @@ using BusinessModels.Resources;
 using BusinessModels.System;
 using Microsoft.AspNetCore.Localization;
 
+#if DEBUG
+#else
+using BusinessModels.Utils;
+#endif
+
 namespace WebApp.MiddleWares;
 
 public class Middleware(RequestDelegate next, ILogger<Middleware> logger)

@@ -390,7 +390,15 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         formData.Add(new StringContent(forceReload.ToJson()), "forceReLoad");
 
         var authentication = await PersistentAuthenticationStateService.GetAuthenticationStateAsync();
-        var useName = authentication.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        string useName;
+        if (Navigation.Uri.EndsWith(PageRoutes.Drive.Index.Src))
+        {
+            useName = authentication.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        }
+        else
+        {
+            useName = "Anonymous";
+        }
 
         var responseMessage = await baseClientService.PostAsync<FolderRequest>(isDeletedPage ? "/api/files/get-deleted-content" : $"/api/Files/{useName}/get-folder", formData);
         if (responseMessage.IsSuccessStatusCode)

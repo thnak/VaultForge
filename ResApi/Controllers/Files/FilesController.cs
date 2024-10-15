@@ -207,8 +207,8 @@ public class FilesController(
 
                 var buffer = responseStream.ToArray();
                 // Set headers for partial content response
-                Response.Headers.Add("Content-Range", $"bytes {from}-{to}/{fileInfo.Length}");
-                Response.Headers.Add("Accept-Ranges", "bytes");
+                Response.Headers.Append("Content-Range", $"bytes {from}-{to}/{fileInfo.Length}");
+                Response.Headers.Append("Accept-Ranges", "bytes");
                 Response.ContentLength = length;
                 Response.StatusCode = StatusCodes.Status206PartialContent;
 

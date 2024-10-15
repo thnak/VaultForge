@@ -148,18 +148,6 @@ public class Program
 
         #endregion
 
-        #region Logging
-
-        builder.Services.AddLogging(options =>
-        {
-            // options.ClearProviders();
-            options.AddProvider(new MongoDbLoggerProvider(builder.Services.BuildServiceProvider()));
-            options.SetMinimumLevel(LogLevel.Debug);
-        });
-        builder.Services.AddHttpLogging();
-        builder.Logging.SetMinimumLevel(LogLevel.Information);
-
-        #endregion
 
         #region Authenticate & Protection
 
@@ -192,12 +180,6 @@ public class Program
             }).AddJsonProtocol(options => { options.PayloadSerializerOptions.Converters.Add(new ObjectIdConverter()); })
             .AddMessagePackProtocol(options =>
             {
-                StaticCompositeResolver.Instance.Register(
-                    StandardResolver.Instance,
-                    NativeDecimalResolver.Instance,
-                    NativeGuidResolver.Instance,
-                    NativeDateTimeResolver.Instance,
-                    MongoObjectIdResolver.INSTANCE);
                 options.SerializerOptions = MessagePackSerializerOptions.Standard
                     .WithResolver(StaticCompositeResolver.Instance)
                     .WithSecurity(MessagePackSecurity.UntrustedData);
@@ -215,6 +197,23 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<LazyAssemblyLoader>();
+
+        #region Logging
+
+        builder.Services.AddLogging(options =>
+        {
+            // options.ClearProviders();
+#pragma warning disable ASP0000
+            var serviceProvider = builder.Services.BuildServiceProvider();
+#pragma warning restore ASP0000
+
+            options.AddProvider(new MongoDbLoggerProvider(serviceProvider.GetRequiredService<IMongoDataLayerContext>()));
+            options.SetMinimumLevel(LogLevel.Debug);
+        });
+        builder.Services.AddHttpLogging();
+        builder.Logging.SetMinimumLevel(LogLevel.Information);
+
+        #endregion
 
         var app = builder.Build();
 
