@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using BusinessModels.Resources;
 using BusinessModels.Validator.Compare;
 using Microsoft.AspNetCore.Components;
 
@@ -165,11 +166,16 @@ public partial class HeadContentContainer : ComponentBase, IDisposable
         builder.AddAttribute(3, "hreflang", "x-default");
         builder.CloseElement();
 
-        builder.OpenElement(index, "link");
-        builder.AddAttribute(1, "rel", "alternate");
-        builder.AddAttribute(2, "href", Navigation.Uri);
-        builder.AddAttribute(3, "hreflang", CultureInfo.CurrentUICulture.Name);
-        builder.CloseElement();
+        foreach (var culture in AllowedCulture.SupportedCultures)
+        {
+            builder.OpenElement(index++, "link");
+            builder.AddAttribute(1, "rel", "alternate");
+            builder.AddAttribute(2, "href", Navigation.Uri + $"&lang={culture.Name}");
+            builder.AddAttribute(3, "hreflang", culture.Name);
+            builder.CloseElement();
+        }
+        
+       
     };
 
     public void Dispose()

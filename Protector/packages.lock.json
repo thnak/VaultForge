@@ -394,8 +394,8 @@
       },
       "MudBlazor": {
         "type": "Transitive",
-        "resolved": "7.9.0",
-        "contentHash": "/u8yM3GhgDH7x/0ni7jvI1FTPYttBEN9aAoeIT/Qoyn5jXGmP0lKMIdaAFJzw6/oBeH0E9jCQIfaMwx7v5LZRQ==",
+        "resolved": "7.12.1",
+        "contentHash": "ga1LYOIIORpVCe0k8mw5ZhY0sgTGYfVY9y/z9cup5cdhrVGYLH9iAViovTvjEdHvjIOqmcyVO6OSAdKZUdgWHA==",
         "dependencies": {
           "Microsoft.AspNetCore.Components": "8.0.8",
           "Microsoft.AspNetCore.Components.Web": "8.0.8",
@@ -484,7 +484,7 @@
           "Microsoft.AspNetCore.SignalR.Client.Core": "[9.0.0-rc.2.24474.3, )",
           "Microsoft.AspNetCore.SignalR.Protocols.MessagePack": "[9.0.0-rc.2.24474.3, )",
           "MongoDB.Bson": "[2.29.0, )",
-          "MudBlazor": "[7.9.0, )"
+          "MudBlazor": "[7.12.1, )"
         }
       }
     }
