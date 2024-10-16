@@ -113,15 +113,11 @@
         @if (FileLayoutSelects[LayoutSelectType.Grid])
         {
             <div @key="context" @ondblclick="context.DbLickEvent.Action" >
-                <div class="file-item-grid mud-elevation-1 mud-paper pa-6" >
+                <div class="file-item-grid mud-elevation-1 mud-paper pa-6" style="@context.Thumbnail">
                     <div class="icon" >
                         @if (context.Thumbnail == "")
                         {
                             <i class="@context.Icon" ></i>
-                        }
-                        else
-                        {
-                            <img alt="@context.Name" class="thumbnail-image" src="@context.Thumbnail" />
                         }
                     </div>
                     <MudSpacer />

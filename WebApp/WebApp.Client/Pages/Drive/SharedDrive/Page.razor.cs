@@ -13,6 +13,7 @@ using BusinessModels.WebContent;
 using BusinessModels.WebContent.Drive;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Primitives;
 using Microsoft.JSInterop;
 using MongoDB.Bson;
 using MudBlazor;
@@ -441,7 +442,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                             Action = () => MoveFile2Folder(file).ConfigureAwait(false)
                         },
                         ItemClassList = InitStyleElement(file.Type),
-                        Thumbnail = string.IsNullOrEmpty(file.Thumbnail) ? "" : $"{baseClientService.GetBaseUrl()}api/Files/get-file?id={file.Thumbnail}",
+                        Thumbnail = InitElementBackgroundStyle(file.Thumbnail),
                         Menu = InitMenuItem(file)
                     });
 
@@ -507,6 +508,17 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         return ElementStyle.ItemOpacityClass(type, ShowHidden);
     }
 
+    private string InitElementBackgroundStyle(string background)
+    {
+        StringBuilder styleBuilder = new StringBuilder();
+        styleBuilder.Append($"background-image:url({baseClientService.GetBaseUrl()}api/Files/get-file?id={background});");
+        styleBuilder.Append("background-clip:unset;");
+        styleBuilder.Append("background-position:center;");
+        styleBuilder.Append("background-size:cover;");
+        styleBuilder.Append("background-repeat:no-repeat;");
+        return styleBuilder.ToString();
+    }
+    
     #endregion
 
 
