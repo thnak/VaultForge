@@ -63,11 +63,10 @@ public class FilesController(
             }
         }
 
-        if (!global::System.IO.File.Exists(file.AbsolutePath))
-        {
-            logger.LogError($"File {file.AbsolutePath} not found");
-            return NotFound();
-        }
+        var memoryStream = new MemoryStream();
+        await raidService.ReadGetDataAsync(memoryStream, file.AbsolutePath, cancelToken);
+        memoryStream.SeekBeginOrigin();
+
 
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
@@ -80,10 +79,11 @@ public class FilesController(
         };
 
         Response.Headers.Append("Content-Disposition", cd.ToString());
+        Response.RegisterForDispose(memoryStream);
         Response.StatusCode = 200;
         Response.ContentLength = file.FileSize;
 
-        return PhysicalFile(file.AbsolutePath, file.ContentType, true);
+        return File(memoryStream, file.ContentType);
     }
 
     [HttpGet("get-file")]
