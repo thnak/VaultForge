@@ -618,7 +618,7 @@ public class FilesController(
     }
 
 
-    [HttpPost("upload-physical/{folderValues}")]
+    [HttpPost("upload-physical/{folderCodes}")]
     [DisableFormValueModelBinding]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
