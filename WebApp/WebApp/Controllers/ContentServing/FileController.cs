@@ -234,6 +234,7 @@ public class FilesController(
             Response.Headers.Append("Accept-Ranges", "bytes");
             Response.ContentLength = length;
             Response.StatusCode = StatusCodes.Status206PartialContent;
+            Response.RegisterForDispose(raid5Stream);
 
             return File(buffer, "video/mp4");
         }
