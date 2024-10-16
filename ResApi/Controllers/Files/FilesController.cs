@@ -221,8 +221,53 @@ public class FilesController(
         return File(fullStream, "video/mp4", enableRangeProcessing: true);
     }
 
+    [HttpGet("stream-raid")]
+    public async Task<IActionResult> StreamRaidVideo(string path)
+    {
+        var cancelToken = HttpContext.RequestAborted;
+        var file = fileServe.Get(path);
+        if (file == null) return NotFound(AppLang.File_not_found_);
 
-    [HttpGet("read-file-seek")]
+        var pathArray = await raidService.GetDataBlockPaths(file.AbsolutePath, cancelToken);
+        if (pathArray == default) return NotFound();
+
+        // Check if Range request header exists
+        if (Request.Headers.ContainsKey("Range"))
+        {
+            // Parse the Range header
+            var rangeHeader = Request.Headers["Range"].ToString();
+            var range = rangeHeader.Replace("bytes=", "").Split('-');
+
+            long from = long.Parse(range[0]);
+            long to = range.Length > 1 && long.TryParse(range[1], out var endRange) ? endRange : file.FileSize - 1;
+
+            if (from >= file.FileSize)
+            {
+                return BadRequest("Requested range is not satisfiable.");
+            }
+
+            var length = (int)(to - from + 1);
+
+            byte[] buffer = new byte[length];
+
+            Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files[0], pathArray.Files[1], pathArray.Files[2], pathArray.FileSize, pathArray.StripeSize);
+            raid5Stream.Seek(from, SeekOrigin.Begin);
+
+            _ = await raid5Stream.ReadAsync(buffer, 0, length, cancelToken);
+
+            // Set headers for partial content response
+            Response.Headers.Append("Content-Range", $"bytes {from}-{to}/{file.FileSize}");
+            Response.Headers.Append("Accept-Ranges", "bytes");
+            Response.ContentLength = length;
+            Response.StatusCode = StatusCodes.Status206PartialContent;
+
+            return File(buffer, "video/mp4");
+        }
+
+        return NotFound("Unsupported");
+    }
+
+    [HttpGet("read-file-seek-test")]
     [OutputCache(NoStore = true, Duration = 0)]
     [ResponseCache(NoStore = true, Duration = 0)]
     public async Task<IActionResult> ReadAndSeek(int start, int count)
@@ -259,78 +304,6 @@ public class FilesController(
 
             byte[] raidBuffer;
             byte[] normalBuffer;
-            // if (Request.Headers.ContainsKey("Range"))
-            // {
-            //     // Parse the Range header
-            //     var rangeHeader = Request.Headers["Range"].ToString();
-            //     var range = rangeHeader.Replace("bytes=", "").Split('-');
-            //
-            //     long from = long.Parse(range[0]);
-            //     long to = range.Length > 1 && long.TryParse(range[1], out var endRange) ? endRange : file.FileSize - 1;
-            //
-            //     if (from >= file.FileSize)
-            //     {
-            //         return BadRequest("Requested range is not satisfiable.");
-            //     }
-            //
-            //     var length = to - from + 1;
-            //
-            //     // Open the file stream and seek to the requested position
-            //
-            //     raid5Stream.Seek(from, SeekOrigin.Begin);
-            //
-            //     raidBuffer = new byte[length];
-            //     var totalRead = await raid5Stream.ReadAsync(raidBuffer, 0, (int)length, cancelToken);
-            //
-            //     stream.Seek(from, SeekOrigin.Begin);
-            //
-            //     var responseStream = new MemoryStream();
-            //     await stream.CopyToAsync(responseStream, (int)length, cancelToken);
-            //     var buffer = responseStream.ToArray();
-            //
-            //     SHA256 fileStreamSha256 = SHA256.Create();
-            //     fileStreamSha256.TransformBlock(buffer, 0, (int)length, null, 0);
-            //     fileStreamSha256.TransformFinalBlock([], 0, 0);
-            //     StringBuilder checksum = new StringBuilder();
-            //     if (fileStreamSha256.Hash != null)
-            //     {
-            //         foreach (byte b in fileStreamSha256.Hash)
-            //         {
-            //             checksum.Append(b.ToString("x2"));
-            //         }
-            //     }
-            //
-            //     SHA256 raidStreamSha256 = SHA256.Create();
-            //     raidStreamSha256.TransformBlock(raidBuffer, 0, (int)length, null, 0);
-            //     raidStreamSha256.TransformFinalBlock([], 0, 0);
-            //     StringBuilder raidChecksum = new StringBuilder();
-            //     if (raidStreamSha256.Hash != null)
-            //     {
-            //         foreach (byte b in raidStreamSha256.Hash)
-            //         {
-            //             raidChecksum.Append(b.ToString("x2"));
-            //         }
-            //     }
-            //
-            //     var fileStreamCheck = checksum.ToString();
-            //     var raidStreamCheck = raidChecksum.ToString();
-            //     if (fileStreamCheck == raidStreamCheck)
-            //     {
-            //         logger.LogInformation("[Checksum] File stream check success.");
-            //     }
-            //     else
-            //     {
-            //         logger.LogInformation("[Checksum] File stream check failed.");
-            //     }
-            //
-            //     // Set headers for partial content response
-            //     Response.Headers.Add("Content-Range", $"bytes {from}-{to}/{file.FileSize}");
-            //     Response.Headers.Add("Accept-Ranges", "bytes");
-            //     Response.ContentLength = length;
-            //     Response.StatusCode = StatusCodes.Status206PartialContent;
-            //
-            //     return File(raidBuffer, "video/mp4");
-            // }
 
 
             int seekPosition = start;
@@ -755,16 +728,15 @@ public class FilesController(
     }
 
 
-    [HttpPost("upload-physical")]
+    [HttpPost("{folderCodes}/upload-physical")]
     [DisableFormValueModelBinding]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
-    public async Task<IActionResult> UploadPhysical()
+    public async Task<IActionResult> UploadPhysical(string folderCodes)
     {
         var folderKeyString = AppLang.Folder;
         var fileKeyString = AppLang.File;
         var cancelToken = HttpContext.RequestAborted;
-
 
         try
         {
@@ -774,9 +746,6 @@ public class FilesController(
                 return BadRequest(ModelState);
             }
 
-            HttpContext.Request.Headers.TryGetValue("Folder", out var folderValues);
-
-            var folderCodes = folderValues.ToString();
 
             if (string.IsNullOrEmpty(folderCodes))
             {

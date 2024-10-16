@@ -194,19 +194,52 @@ public class FilesController(
 
         return BadRequest();
     }
-    //
-    // [HttpGet("read-file-seek")]
-    // public IActionResult ReadAndSeek(string path)
-    // {
-    //     Raid5Stream stream = new Raid5Stream(raidService, path);
-    //     string contentType = "application/octet-stream";
-    //     string fileName = "downloaded-file.txt";
-    //     return new FileStreamResult(stream, contentType)
-    //     {
-    //         FileDownloadName = fileName,
-    //         EnableRangeProcessing = true
-    //     };
-    // }
+
+    [HttpGet("stream-raid")]
+    public async Task<IActionResult> StreamRaidVideo(string path)
+    {
+        var cancelToken = HttpContext.RequestAborted;
+        var file = fileServe.Get(path);
+        if (file == null) return NotFound(AppLang.File_not_found_);
+
+        var pathArray = await raidService.GetDataBlockPaths(file.AbsolutePath, cancelToken);
+        if (pathArray == default) return NotFound();
+
+        // Check if Range request header exists
+        if (Request.Headers.ContainsKey("Range"))
+        {
+            // Parse the Range header
+            var rangeHeader = Request.Headers["Range"].ToString();
+            var range = rangeHeader.Replace("bytes=", "").Split('-');
+
+            long from = long.Parse(range[0]);
+            long to = range.Length > 1 && long.TryParse(range[1], out var endRange) ? endRange : file.FileSize - 1;
+
+            if (from >= file.FileSize)
+            {
+                return BadRequest("Requested range is not satisfiable.");
+            }
+
+            var length = (int)(to - from + 1);
+
+            byte[] buffer = new byte[length];
+
+            Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files[0], pathArray.Files[1], pathArray.Files[2], pathArray.FileSize, pathArray.StripeSize);
+            raid5Stream.Seek(from, SeekOrigin.Begin);
+
+            _ = await raid5Stream.ReadAsync(buffer, 0, length, cancelToken);
+
+            // Set headers for partial content response
+            Response.Headers.Append("Content-Range", $"bytes {from}-{to}/{file.FileSize}");
+            Response.Headers.Append("Accept-Ranges", "bytes");
+            Response.ContentLength = length;
+            Response.StatusCode = StatusCodes.Status206PartialContent;
+
+            return File(buffer, "video/mp4");
+        }
+
+        return NotFound("Unsupported");
+    }
 
 
     [HttpPost("get-file-list")]

@@ -9,6 +9,7 @@ public class Raid5Stream : Stream
     private readonly int _stripeSize;
     private long _position;
     private long StripeIndex { get; set; }
+    private long StripeRowIndex { get; set; }
     private long StartPadStripIndex { get; set; }
     private long EndPadStripIndex { get; set; }
     private int StartPadding { get; set; }
@@ -105,7 +106,7 @@ public class Raid5Stream : Stream
             throw new ArgumentOutOfRangeException(nameof(offset), "Seek position is out of range.");
 
         // Calculate which stripe the new position falls into and the offset within that stripe
-        var stripeRow = newPosition / 2 / _stripeSize;
+        StripeRowIndex = newPosition / 2 / _stripeSize;
 
         StripeIndex = newPosition / _stripeSize;
         if (StripeIndex > 1)
@@ -126,7 +127,7 @@ public class Raid5Stream : Stream
         // StripeIndex = (int)FindStripeIndex(newPosition);
 
         // Seek each file stream to the start of the stripe
-        var seekPosition = stripeRow * _stripeSize;
+        var seekPosition = StripeRowIndex * _stripeSize;
 
 
         file1?.Seek(seekPosition, SeekOrigin.Begin);
@@ -172,7 +173,7 @@ public class Raid5Stream : Stream
             Task<int> readTask3;
 
             // Determine the current stripe pattern and read from available files
-            switch (StripeIndex % 3)
+            switch (StripeRowIndex % 3)
             {
                 case 0:
                     // Parity in file 3, data in file 1 and file 2
@@ -319,6 +320,7 @@ public class Raid5Stream : Stream
 
             _position += writeSize2;
             StripeIndex++;
+            StripeRowIndex++;
         }
 
         return totalBytesWritten;
