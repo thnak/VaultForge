@@ -35,7 +35,7 @@ public class FixContentController(IFileSystemBusinessLayer fileServe, IFolderSys
                 if (!string.IsNullOrEmpty(parentRelativePath))
                 {
                     parentRelativePath = parentRelativePath.TrimEnd('/');
-                    var rootFolder = folderServe.Get(folder.Username, parentRelativePath);
+                    var rootFolder = folderServe.Get(folder.OwnerUsername, parentRelativePath);
                     if (rootFolder == null)
                     {
                         logger.LogError($"[{folder.Id}] Folder {folder.FolderName} not found");

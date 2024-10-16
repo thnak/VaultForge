@@ -282,7 +282,7 @@ public class FilesController(
             }
 
             folderSource.Password = string.Empty;
-            folderSource.Username = string.Empty;
+            folderSource.OwnerUsername = string.Empty;
 
             List<FolderContentType> contentFolderTypesList = [];
 
@@ -347,7 +347,7 @@ public class FilesController(
         {
             await foreach (var x in folderServe.Where(x => x.FolderName.Contains(searchString) ||
                                                            x.RelativePath.Contains(searchString) &&
-                                                           (user == null || x.Username == user.UserName) &&
+                                                           (user == null || x.OwnerUsername == user.UserName) &&
                                                            x.Type == FolderContentType.Folder, cancelToken,
                                model => model.FolderName, model => model.Type, model => model.Icon, model => model.ModifiedTime, model => model.Id))
             {

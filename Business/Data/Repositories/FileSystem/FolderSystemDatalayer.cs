@@ -28,7 +28,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         await _semaphore.WaitAsync(cancellationToken);
         try
         {
-            var keys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath).Ascending(x => x.Username);
+            var keys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath).Ascending(x => x.OwnerUsername);
             var absolutePathAndUserIndexModel = new CreateIndexModel<FolderInfoModel>(keys, new CreateIndexOptions { Unique = true });
 
             var absKeys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath);
@@ -46,7 +46,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             var rootFolderIdKey = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RootFolder);
             var rootFolderIdIndexModel = new CreateIndexModel<FolderInfoModel>(rootFolderIdKey, new CreateIndexOptions { Unique = false });
 
-            var relativePathAndUserKey = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RelativePath).Ascending(x => x.Username);
+            var relativePathAndUserKey = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RelativePath).Ascending(x => x.OwnerUsername);
             var relativePathAndUserIndexModel = new CreateIndexModel<FolderInfoModel>(relativePathAndUserKey, new CreateIndexOptions { Unique = true });
 
             var rootFolderIdAndTypeKey = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Type);
@@ -61,10 +61,10 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             var typeIndexKeys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.Type);
             var typeIndexModel = new CreateIndexModel<FolderInfoModel>(typeIndexKeys, new CreateIndexOptions { Unique = false });
 
-            var userIndexKeys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.Username);
+            var userIndexKeys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.OwnerUsername);
             var userIndexModel = new CreateIndexModel<FolderInfoModel>(userIndexKeys, new CreateIndexOptions { Unique = false });
 
-            var userAndTypeIndexKeys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.Username).Ascending(x => x.Type);
+            var userAndTypeIndexKeys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.OwnerUsername).Ascending(x => x.Type);
             var userAndTypeIndexModel = new CreateIndexModel<FolderInfoModel>(userAndTypeIndexKeys, new CreateIndexOptions { Unique = false });
 
             List<CreateIndexModel<FolderInfoModel>> indexes =
@@ -85,7 +85,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             {
                 anonymousFolder = new FolderInfoModel()
                 {
-                    Username = anonymousUser,
+                    OwnerUsername = anonymousUser,
                     RelativePath = "/root",
                     AbsolutePath = "/root",
                     FolderName = "Home",
@@ -100,7 +100,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             {
                 wallPaperFolder = new FolderInfoModel()
                 {
-                    Username = anonymousUser,
+                    OwnerUsername = anonymousUser,
                     RootFolder = anonymousFolder.Id.ToString(),
                     FolderName = "WallPaper",
                     AbsolutePath = anonymousFolder.AbsolutePath + "/wallpaper",
@@ -116,7 +116,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             {
                 resourceFolder = new FolderInfoModel()
                 {
-                    Username = anonymousUser,
+                    OwnerUsername = anonymousUser,
                     RootFolder = anonymousFolder.Id.ToString(),
                     FolderName = "resource",
                     AbsolutePath = anonymousFolder.AbsolutePath + "/resource",
@@ -145,8 +145,8 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     public FolderInfoModel? Get(string username, string absolute, bool hashed = true)
     {
         username = hashed ? username : username.ComputeSha256Hash();
-        var filter = Builders<FolderInfoModel>.Filter.Where(x => x.AbsolutePath == absolute && x.Username == username);
-        filter |= Builders<FolderInfoModel>.Filter.Where(x => x.RelativePath == absolute && x.Username == username);
+        var filter = Builders<FolderInfoModel>.Filter.Where(x => x.AbsolutePath == absolute && x.OwnerUsername == username);
+        filter |= Builders<FolderInfoModel>.Filter.Where(x => x.RelativePath == absolute && x.OwnerUsername == username);
         return _dataDb.Find(filter).FirstOrDefault();
     }
 

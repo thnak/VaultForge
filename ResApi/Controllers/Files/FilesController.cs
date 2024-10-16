@@ -230,7 +230,7 @@ public class FilesController(
         var normalFilePath = "C:\\Users\\thanh\\Downloads\\test-1.txt";
         var raidFilePath = "C:\\Users\\thanh\\Downloads\\test-2.txt";
         var raidDefaultFilePath = "C:\\Users\\thanh\\Downloads\\test-3.txt";
-        
+
         if (System.IO.File.Exists(normalFilePath))
             System.IO.File.Delete(normalFilePath);
 
@@ -250,7 +250,7 @@ public class FilesController(
             if (pathArray == default) return NotFound();
 
             await raidService.ReadGetDataAsync(outputDefaultStream, file.AbsolutePath, cancelToken);
-            
+
             Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files[0], pathArray.Files[1], pathArray.Files[2], pathArray.FileSize, pathArray.StripeSize);
             var filePath = "C:\\Users\\thanh\\Downloads\\Input1.txt";
             var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -474,7 +474,7 @@ public class FilesController(
             }
 
             folderSource.Password = string.Empty;
-            folderSource.Username = string.Empty;
+            folderSource.OwnerUsername = string.Empty;
 
             List<FolderContentType> contentFolderTypesList = [];
 
@@ -493,7 +493,7 @@ public class FilesController(
 
             var contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).Distinct().ToList();
             string rootFolderId = folderSource.Id.ToString();
-            var res = await folderServe.GetFolderRequestAsync(model => model.RootFolder == rootFolderId && contentFolderTypesList.Contains(model.Type), model => model.RootFolder == rootFolderId && contentFileTypesList.Contains(model.Type),
+            var res = await folderServe.GetFolderRequestAsync(rootFolderId, model => model.RootFolder == rootFolderId && contentFolderTypesList.Contains(model.Type), model => model.RootFolder == rootFolderId && contentFileTypesList.Contains(model.Type),
                 pageSize, page, forceReLoad is true, cancelToken);
             res.Folder = folderSource;
             return Content(res.ToJson(), MediaTypeNames.Application.Json);
@@ -539,7 +539,7 @@ public class FilesController(
         {
             await foreach (var x in folderServe.Where(x => x.FolderName.Contains(searchString) ||
                                                            x.RelativePath.Contains(searchString) &&
-                                                           (user == null || x.Username == user.UserName) &&
+                                                           (user == null || x.OwnerUsername == user.UserName) &&
                                                            x.Type == FolderContentType.Folder, cancelToken,
                                model => model.FolderName, model => model.Type, model => model.Icon, model => model.ModifiedTime, model => model.Id))
             {

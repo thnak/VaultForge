@@ -13,7 +13,7 @@ public class FolderInfoModelFluentValidator : ExtendFluentValidator<FolderInfoMo
         UserName = userName;
         FolderSystemBusinessLayer = folderSystemBusinessLayer;
         RuleFor(x => x.RelativePath).MustAsync(Predicate).WithMessage(AppLang.Folder_already_exists);
-        RuleFor(x => x.Username).NotEmpty().WithMessage(AppLang.User_information_is_required);
+        RuleFor(x => x.OwnerUsername).NotEmpty().WithMessage(AppLang.User_information_is_required);
     }
 
     private string UserName { get; }

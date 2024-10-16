@@ -217,7 +217,7 @@ public class FolderSystemBusinessLayer(
         List<FolderInfoModel> folderInfoModels = [];
         foreach (var path in allPath)
         {
-            var folder = Get(rootFolder.Username, path);
+            var folder = Get(rootFolder.OwnerUsername, path);
             if (folder != null)
                 folderInfoModels.Add(folder);
         }
@@ -239,7 +239,7 @@ public class FolderSystemBusinessLayer(
                 AbsolutePath = "/root",
                 FolderName = "Home",
                 ModifiedTime = DateTime.UtcNow,
-                Username = user.UserName
+                OwnerUsername = user.UserName
             };
             var res = CreateAsync(folder).Result;
             if (res.IsSuccess)
@@ -309,7 +309,7 @@ public class FolderSystemBusinessLayer(
             FolderName = folderName,
             RelativePath = folder.RelativePath + $"/{folderName}",
             AbsolutePath = folder.RelativePath + $"/{folderName}",
-            Username = user.UserName,
+            OwnerUsername = user.UserName,
             RootFolder = targetFolderId,
             Type = FolderContentType.Folder
         };
@@ -346,12 +346,13 @@ public class FolderSystemBusinessLayer(
         request.NewFolder.AbsolutePath = request.NewFolder.RelativePath;
         request.NewFolder.RootFolder = request.RootId;
         request.NewFolder.ModifiedTime = DateTime.Now;
+        request.NewFolder.OwnerUsername = folderRoot.OwnerUsername;
 
 
-        if (string.IsNullOrEmpty(request.NewFolder.Username))
-            request.NewFolder.Username = folderRoot.Username;
+        if (string.IsNullOrEmpty(request.NewFolder.ModifiedUserName))
+            request.NewFolder.ModifiedUserName = folderRoot.OwnerUsername;
 
-        if (Get(folderRoot.Username, request.NewFolder.RelativePath) != null)
+        if (Get(folderRoot.OwnerUsername, request.NewFolder.RelativePath) != null)
             return (false, AppLang.Folder_already_exists);
 
         var res = await CreateAsync(request.NewFolder);
@@ -487,7 +488,7 @@ public class FolderSystemBusinessLayer(
             model => model.CreateDate
         };
 
-        var folderList = Where(x => x.Username == user.UserName, cancellationToken, fieldsFolderToFetch);
+        var folderList = Where(x => x.OwnerUsername == user.UserName, cancellationToken, fieldsFolderToFetch);
 
         ConcurrentBag<FileInfoModel> files = new ConcurrentBag<FileInfoModel>();
         ConcurrentBag<FolderInfoModel> folders = new ConcurrentBag<FolderInfoModel>();
