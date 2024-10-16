@@ -418,7 +418,7 @@ public class FolderSystemBusinessLayer(
         return (totalFolders, totalFiles);
     }
 
-    public async Task<FolderRequest> GetFolderRequestAsync(Expression<Func<FolderInfoModel, bool>> folderPredicate, Expression<Func<FileInfoModel, bool>> filePredicate, int pageSize, int pageNumber, bool forceLoad = false, CancellationToken cancellationToken = default)
+    public async Task<FolderRequest> GetFolderRequestAsync(string folderId, Expression<Func<FolderInfoModel, bool>> folderPredicate, Expression<Func<FileInfoModel, bool>> filePredicate, int pageSize, int pageNumber, bool forceLoad = false, CancellationToken cancellationToken = default)
     {
         StringBuilder keyBuilder = new StringBuilder();
         keyBuilder.Append(folderPredicate.GetCacheKey());
@@ -431,7 +431,7 @@ public class FolderSystemBusinessLayer(
         {
             if (forceLoad)
             {
-                var result = await GetFolderRequest(folderPredicate, filePredicate, pageSize, pageNumber, cancellationToken);
+                var result = await GetFolderRequest(folderId, folderPredicate, filePredicate, pageSize, pageNumber, cancellationToken);
                 _cacheKeyManager.Set(key, result, new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10) });
                 return result;
             }
@@ -440,7 +440,7 @@ public class FolderSystemBusinessLayer(
                 var result = await _cacheKeyManager.GetOrCreateAsync(key, async entry =>
                 {
                     entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10);
-                    return await GetFolderRequest(folderPredicate, filePredicate, pageSize, pageNumber, cancellationToken);
+                    return await GetFolderRequest(folderId, folderPredicate, filePredicate, pageSize, pageNumber, cancellationToken);
                 }) ?? new();
                 return result;
             }
@@ -461,7 +461,7 @@ public class FolderSystemBusinessLayer(
                 _ = _cacheKeyManager.GetOrCreateAsync(key, async entry =>
                 {
                     entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10);
-                    return await GetFolderRequest(folderPredicate, filePredicate, pageSize, i1, cancellationToken);
+                    return await GetFolderRequest(folderId, folderPredicate, filePredicate, pageSize, i1, cancellationToken);
                 }).ConfigureAwait(false);
             }
         }
@@ -534,7 +534,7 @@ public class FolderSystemBusinessLayer(
 
     #region Private Mothods
 
-    private async Task<FolderRequest> GetFolderRequest(Expression<Func<FolderInfoModel, bool>> folderPredicate, Expression<Func<FileInfoModel, bool>> filePredicate, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
+    private async Task<FolderRequest> GetFolderRequest(string folderId, Expression<Func<FolderInfoModel, bool>> folderPredicate, Expression<Func<FileInfoModel, bool>> filePredicate, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
     {
         pageNumber = Math.Max(1, pageNumber);
         pageNumber -= 1;
@@ -546,7 +546,6 @@ public class FolderSystemBusinessLayer(
         var totalFileDoc = await FileSystemService.GetDocumentSizeAsync(filePredicate, cancellationToken);
         var totalFilePages = Math.Ceiling((double)totalFileDoc / pageSize);
         var totalFolderPages = Math.Ceiling((double)totalFolderDoc / pageSize);
-
 
         var fieldsFolderToFetch = new Expression<Func<FolderInfoModel, object>>[]
         {
@@ -582,19 +581,13 @@ public class FolderSystemBusinessLayer(
             fileList.Add(m);
         }
 
-        var rootFolderId = "";
-        if (fileList.Any())
-            rootFolderId = fileList.First().RootFolder;
-        else if (folderList.Any())
-            rootFolderId = folderList.First().RootFolder;
-
         return new FolderRequest()
         {
             Files = fileList.ToArray(),
             Folders = folderList.ToArray(),
             TotalFolderPages = (int)totalFolderPages,
             TotalFilePages = (int)totalFilePages,
-            BloodLines = GetFolderBloodLine(rootFolderId).ToArray()
+            BloodLines = GetFolderBloodLine(folderId).ToArray()
         };
     }
 
