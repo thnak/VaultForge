@@ -179,4 +179,16 @@ public static class StringExtension
         keyword = default;
         return true;
     }
+    
+    public static bool IsImageFile(this string contentType)
+    {
+        string[] imageContentTypes = ["image/jpeg", "image/pjpeg", "image/gif", "image/x-png", "image/png", "image/bmp", "image/tiff", "image/webp", "image/tiff", "image/x-icon", "image/svg+xml", "image/bmp"];
+        return imageContentTypes.Contains(contentType);
+    }
+
+    public static bool IsVideoFile(this string contenType)
+    {
+        string[] videoContentTypes = ["video/mp4"];
+        return videoContentTypes.Contains(contenType);
+    }
 }

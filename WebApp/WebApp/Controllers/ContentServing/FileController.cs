@@ -622,14 +622,13 @@ public class FilesController(
     [DisableFormValueModelBinding]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
-    public async Task<IActionResult> UploadPhysical(string folderValues)
+    public async Task<IActionResult> UploadPhysical(string folderCodes)
     {
         var folderKeyString = AppLang.Folder;
         var fileKeyString = AppLang.File;
         var cancelToken = HttpContext.RequestAborted;
 
         List<string> requestThumbnailList = [];
-
 
         try
         {
@@ -638,9 +637,7 @@ public class FilesController(
                 ModelState.AddModelError(fileKeyString, "The request couldn't be processed (Error 1).");
                 return BadRequest(ModelState);
             }
-
-            var folderCodes = folderValues;
-
+            
             if (string.IsNullOrEmpty(folderCodes))
             {
                 ModelState.AddModelError("Header", "Folder path is required in the request header");
