@@ -123,7 +123,7 @@ public static class JsRuntimeExtension
     #endregion
 
     #region Culture
-    
+
     public static async Task SetCulture(this IJSRuntime jsRuntime, string name)
     {
         await jsRuntime.InvokeVoidAsync("setCultureCookie", name, name, CookieNames.Culture, 365);
@@ -161,10 +161,12 @@ public static class JsRuntimeExtension
         return self.GetLocalStorage<List<string>>("PreventKey", []);
     }
 
-    public static ValueTask AddScriptResource(this IJSRuntime self, params string[] resourceName)
+    public static async Task AddScriptResource(this IJSRuntime self, params string[] resourceName)
     {
-        var resourceJson = resourceName.ToJson();
-        return self.InvokeVoidAsync("AddScriptElement", resourceJson);
+        foreach (var res in resourceName)
+        {
+            await self.InvokeVoidAsync("AddScriptElement", res);
+        }
     }
 
     public static ValueTask RemoveNode(this IJSRuntime self, string nodeId)
