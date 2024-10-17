@@ -27,6 +27,7 @@ using Business.Exceptions;
 using Business.KeyManagement;
 using Business.Models;
 using Business.Services;
+using Business.Services.FileSystem;
 using Business.Services.Interfaces;
 using Business.Services.Services;
 using BusinessModels.Converter;
@@ -96,6 +97,8 @@ public abstract class Program
         builder.Services.AddSingleton<IChatWithLlmBusinessLayer, ChatWithLlmBusinessLayer>();
 
         builder.Services.AddSingleton<IThumbnailService, ThumbnailService>();
+
+        builder.Services.AddHostedService<FileSystemWatcherService>();
         
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
         builder.Services.AddHostedService<FileCheckSumService>();

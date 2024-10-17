@@ -411,6 +411,38 @@ public class FilesController(
         return Content(folders.ToJson(), MimeTypeNames.Application.Json);
     }
 
+    [HttpPost("{folderCode}/upload-via-link")]
+    [IgnoreAntiforgeryToken]
+    [AllowAnonymous]
+    public async Task<IActionResult> ImportMovieResource(string folderCode, [FromForm] string url)
+    {
+        var folder = folderServe.Get(folderCode);
+        if (folder == null) return BadRequest(AppLang.Folder_could_not_be_found);
+
+        var cancelToken = HttpContext.RequestAborted;
+        var httpClient = new HttpClient();
+        var response = await httpClient.GetAsync(url, cancelToken);
+
+        string fileName = response.Content.Headers.GetFileNameFromHeaders() ?? url.GetFileNameFromUrl();
+
+
+        var memoryStream = new FileStream(Path.GetTempFileName(), FileMode.Create, FileAccess.ReadWrite, FileShare.None, bufferSize: 100 * 1024 * 1024, FileOptions.DeleteOnClose);
+        await response.Content.CopyToAsync(memoryStream, cancelToken);
+
+        var file = new FileInfoModel()
+        {
+            RootFolder = folder.Id.ToString(),
+            FileName = fileName,
+            ContentType = response.Content.Headers.ContentType?.MediaType ?? string.Empty,
+        };
+        await folderServe.CreateFileAsync(folder.OwnerUsername, file, cancelToken);
+        await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancelToken);
+
+        await fileServe.CreateAsync(file, cancelToken);
+
+        return Ok();
+    }
+
 
     [HttpPost("re-name-file")]
     [IgnoreAntiforgeryToken]
@@ -638,7 +670,7 @@ public class FilesController(
                 ModelState.AddModelError(fileKeyString, "The request couldn't be processed (Error 1).");
                 return BadRequest(ModelState);
             }
-            
+
             if (string.IsNullOrEmpty(folderCodes))
             {
                 ModelState.AddModelError("Header", "Folder path is required in the request header");
@@ -749,6 +781,10 @@ public class FilesController(
                                     else if (file.ContentType == "application/octet-stream")
                                     {
                                         file.ContentType = Path.GetExtension(trustedFileNameForDisplay).GetMimeTypeFromExtension();
+                                    }
+                                    else if (file.ContentType != sectionContentType)
+                                    {
+                                        file.ContentType = sectionContentType ?? string.Empty;
                                     }
 
 

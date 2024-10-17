@@ -10,4 +10,5 @@ public enum FileContentType
     FounderFile,
     CorruptedFile,
     MissingFile,
+    M3U8File,
 }

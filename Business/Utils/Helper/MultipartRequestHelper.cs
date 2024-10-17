@@ -1,4 +1,7 @@
+using System.Net.Http.Headers;
 using Microsoft.Net.Http.Headers;
+using ContentDispositionHeaderValue = Microsoft.Net.Http.Headers.ContentDispositionHeaderValue;
+using MediaTypeHeaderValue = Microsoft.Net.Http.Headers.MediaTypeHeaderValue;
 
 namespace Business.Utils.Helper;
 
@@ -44,5 +47,23 @@ public static class MultipartRequestHelper
                && contentDisposition.DispositionType.Equals("form-data")
                && (!string.IsNullOrEmpty(contentDisposition.FileName.Value)
                    || !string.IsNullOrEmpty(contentDisposition.FileNameStar.Value));
+    }
+    
+    public static string? GetFileNameFromHeaders(this HttpContentHeaders headers)
+    {
+        // Check if the Content-Disposition header is present
+        if (headers.ContentDisposition != null && !string.IsNullOrEmpty(headers.ContentDisposition.FileName))
+        {
+            // Remove any quotes from the file name
+            return headers.ContentDisposition.FileName.Trim('"');
+        }
+
+        return null;
+    }
+    
+    public static string GetFileNameFromUrl(this string url)
+    {
+        // Get the last part of the URL after the last '/'
+        return Path.GetFileName(new Uri(url).AbsolutePath);
     }
 }
