@@ -441,6 +441,10 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                         {
                             Action = () => MoveFile2Folder(file).ConfigureAwait(false)
                         },
+                        DbLickEvent = new ButtonAction()
+                        {
+                            Action = () => OpenFileDetailDialog(file.Id.ToString()).ConfigureAwait(false)
+                        },
                         ItemClassList = InitStyleElement(file.Type),
                         Thumbnail = InitElementBackgroundStyle(file.Thumbnail),
                         Menu = InitMenuItem(file)
@@ -850,5 +854,10 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         FileLayoutSelects[list] = true;
         DropContainer?.Refresh();
         return InvokeAsync(StateHasChanged);
+    }
+
+    private bool ItemsDisable2Drag(DropItem arg)
+    {
+        return CanBeDrag;
     }
 }

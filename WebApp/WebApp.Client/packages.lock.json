@@ -368,8 +368,8 @@
       },
       "MongoDB.Bson": {
         "type": "Transitive",
-        "resolved": "2.29.0",
-        "contentHash": "wz8UtxdjnknHRJuMatTRr2QMlh7k9457BRfaDQxl+OiKV01vMzm1K0/jTvQJqORV5eba6HrCAzMJzj7nnt5cag==",
+        "resolved": "3.0.0",
+        "contentHash": "qnPRJ58HXDh7C4oxTf6YB7BJhlCGJIa6TMXhzImw6zk44lrAomQXTB6AtoQ5lNJbkyrgQcT7+smsKFMnXmLXhw==",
         "dependencies": {
           "System.Memory": "4.5.5",
           "System.Runtime.CompilerServices.Unsafe": "5.0.0"
@@ -377,8 +377,8 @@
       },
       "MudBlazor": {
         "type": "Transitive",
-        "resolved": "7.12.1",
-        "contentHash": "ga1LYOIIORpVCe0k8mw5ZhY0sgTGYfVY9y/z9cup5cdhrVGYLH9iAViovTvjEdHvjIOqmcyVO6OSAdKZUdgWHA==",
+        "resolved": "7.13.0",
+        "contentHash": "FapnlYCCN84ah+5vwMjcLAvdwFUXhsNxroi7y1sRI0vqYtUR6IZu0CaTbI9zcFAjDHQ4acHVNN71rcRbOfX+Rg==",
         "dependencies": {
           "Microsoft.AspNetCore.Components": "8.0.8",
           "Microsoft.AspNetCore.Components.Web": "8.0.8",
@@ -433,8 +433,8 @@
           "Microsoft.AspNetCore.SignalR.Client": "[9.0.0-rc.2.24474.3, )",
           "Microsoft.AspNetCore.SignalR.Client.Core": "[9.0.0-rc.2.24474.3, )",
           "Microsoft.AspNetCore.SignalR.Protocols.MessagePack": "[9.0.0-rc.2.24474.3, )",
-          "MongoDB.Bson": "[2.29.0, )",
-          "MudBlazor": "[7.12.1, )"
+          "MongoDB.Bson": "[3.0.0, )",
+          "MudBlazor": "[7.13.0, )"
         }
       }
     },
