@@ -23,6 +23,8 @@ public static class FrontEnd
             config.SnackbarConfiguration.ShowTransitionDuration = 500;
             config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
             config.PopoverOptions.CheckForPopoverProvider = false;
+            config.ResizeObserverOptions.EnableLogging = true;
+            config.ResizeObserverOptions.ReportRate = 500;
         });
         service.AddBlazoredToast();
         // service.AddWorkerFactory();

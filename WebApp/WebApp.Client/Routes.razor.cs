@@ -4,16 +4,20 @@ using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
+using MudBlazor.Services;
 using WebApp.Client.Components.ConfirmDialog;
 using WebApp.Client.Models;
 
 namespace WebApp.Client;
 
-public partial class Routes : ComponentBase, IDisposable
+public partial class Routes(ILogger<Routes> logger) : ComponentBase, IDisposable
 {
+    private Guid ResizeId { get; set; }
+
     public void Dispose()
     {
         CustomStateContainer.OnChangedAsync -= OnChangedAsync;
+        BrowserViewportService.UnsubscribeAsync(ResizeId).ConfigureAwait(false);
         EventListener.Dispose();
     }
 
@@ -23,6 +27,9 @@ public partial class Routes : ComponentBase, IDisposable
         {
             await JsRuntime.InvokeVoidAsync("CloseProgressBar").ConfigureAwait(false);
             await JsRuntime.InvokeVoidAsync("InitAppEventListener").ConfigureAwait(false);
+
+            ResizeId = Guid.NewGuid();
+            await BrowserViewportService.SubscribeAsync(ResizeId, ResizeAction, new ResizeOptions());
 
             CustomStateContainer.OnChangedAsync += OnChangedAsync;
             EventListener.ContextMenuClickedAsync += ContextMenuClicked;
@@ -35,6 +42,11 @@ public partial class Routes : ComponentBase, IDisposable
         }
 
         await base.OnAfterRenderAsync(firstRender).ConfigureAwait(false);
+    }
+
+    private void ResizeAction(BrowserViewportEventArgs obj)
+    {
+        logger.LogInformation($"Height: {obj.BrowserWindowSize.Height}\nWidth: {obj.BrowserWindowSize.Width}");
     }
 
     private async Task<bool> ScrollToReloadEventAsync()
