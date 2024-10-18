@@ -29,6 +29,14 @@ public class StateContainer
             {
                 Primary = "#00a3e8",
                 DrawerIcon = "#68b7d9"
+            },
+            LayoutProperties = new LayoutProperties()
+            {
+                DefaultBorderRadius = "25px"
+            },
+            Shadows = new Shadow()
+            {
+                
             }
         };
         SharedPalette = _isDarkMode ? _mudTheme.PaletteDark : _mudTheme.PaletteLight;
