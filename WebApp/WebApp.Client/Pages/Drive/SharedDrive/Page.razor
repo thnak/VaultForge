@@ -59,7 +59,7 @@ else
 </style>
 
 <SectionContent SectionId="@AppBar.TopBarSection2" >
-    <MudMenu AnchorOrigin="Origin.BottomLeft" Dense EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Label="@AppLang.New" StartIcon="fa-plus fa-solid" TransformOrigin="Origin.TopLeft" >
+    <MudMenu AnchorOrigin="Origin.BottomLeft" Dense EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Secondary" Label="@AppLang.New" Class="rounded-lg" StartIcon="fa-plus fa-solid" TransformOrigin="Origin.TopLeft" >
         <MudMenuItem Icon="@Icons.Material.Filled.AttachFile" OnClick="@OpenAddPopUp" >@AppLang.File</MudMenuItem>
         <MudMenuItem Icon="@Icons.Material.Filled.Folder" OnClick="@OpenAddNewFolder" >@AppLang.Folder</MudMenuItem>
     </MudMenu>
@@ -145,7 +145,7 @@ else
                     <div class="menu" >
                         @* @context.Menu *@
                         <MudTooltip Arrow Color="@Color.Secondary" Placement="Placement.Top" Text="@AppLang.Other_operations" >
-                            <MudMenu AriaLabel="@AppLang.Other_operations" Icon="fa-ellipsis-vertical fa-solid" >
+                            <MudMenu AriaLabel="@AppLang.Other_operations" Icon="fa-ellipsis-vertical fa-solid" Class="rounded-lg">
                                 <MudMenuItem Disabled="@context.Open.Disabled" Icon="fa-solid fa-eye" OnClick="@context.Open.Action" >@AppLang.Open</MudMenuItem>
                                 <MudMenuItem Disabled="@context.Download.Disabled" Icon="@Icons.Material.Filled.CloudDownload" OnClick="@context.Download.Action" >@AppLang.Download</MudMenuItem>
                                 <MudMenuItem Disabled="@context.Rename.Disabled" Icon="@Icons.Material.Filled.Edit" OnClick="@context.Rename.Action" >@AppLang.ReName</MudMenuItem>

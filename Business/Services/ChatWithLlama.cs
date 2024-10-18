@@ -60,10 +60,15 @@ public class ChatWithLlama : IDisposable
         var weatherService = new WeatherService("https://api.weatherapi.com");
         var webCrawler = new LamaWebCrawlerService();
 
+        var commandService = new FileSystemHandlerService();
+        
+        
         _chatClient.AddToolService(timeService.AsTools(), timeService.AsCalls());
         _chatClient.AddToolService(service.AsTools(), service.AsCalls());
         _chatClient.AddToolService(weatherService.AsTools(), weatherService.AsCalls());
         _chatClient.AddToolService(webCrawler.AsTools(), webCrawler.AsCalls());
+        _chatClient.AddToolService(commandService.AsTools(), commandService.AsCalls());
+        
         if (_serviceProvider != default)
         {
             var scope = _serviceProvider.CreateScope();

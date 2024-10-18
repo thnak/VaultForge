@@ -122,7 +122,7 @@ public class FFmpegService
         ExecuteCommand(command);
     }
 
-    private static string ExecuteCommand(string command)
+    public static string ExecuteCommand(string command)
     {
         ProcessStartInfo processInfo;
 

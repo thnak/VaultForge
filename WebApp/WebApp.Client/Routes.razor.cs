@@ -99,18 +99,22 @@ public partial class Routes(ILogger<Routes> logger) : ComponentBase, IDisposable
 
     private void PageHide()
     {
+        logger.LogInformation("Page hide");
     }
 
     private void PageShow()
     {
+        logger.LogInformation("Page show");
     }
 
     private void Offline()
     {
+        logger.LogInformation("Page offline");
     }
 
     private void Online()
     {
+        logger.LogInformation("Page online");
     }
 
     private string EncodeException(Exception e)

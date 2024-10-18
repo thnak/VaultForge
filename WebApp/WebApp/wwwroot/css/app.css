@@ -3,10 +3,20 @@
  Progress loading
  */
 
+*{
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
 html, body {
     /* disable pull-to-reload */
     overscroll-behavior-y: contain;
 }
+
 
 .monaco-editor { position: absolute !important; }
 
