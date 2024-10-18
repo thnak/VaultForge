@@ -804,9 +804,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         {
             { x => x.Folder, RootFolder },
         };
-        var dialog =
-            await DialogService.ShowAsync<FolderSelectorDialog>($"{AppLang.Move__0_.AutoReplace(file.FileName)}", param,
-                option);
+        var dialog = await DialogService.ShowAsync<FolderSelectorDialog>($"{AppLang.Move__0_.AutoReplace(file.FileName)}", param, option);
         var dialogResult = await dialog.Result;
         if (dialogResult is { Canceled: false, Data: true })
         {

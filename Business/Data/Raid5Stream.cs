@@ -342,4 +342,12 @@ public class Raid5Stream : Stream
 
         base.Dispose(disposing);
     }
+
+    public override async ValueTask DisposeAsync()
+    {
+        if (file1 != null) await file1.DisposeAsync();
+        if (file2 != null) await file2.DisposeAsync();
+        if (file3 != null) await file3.DisposeAsync();
+        await base.DisposeAsync();
+    }
 }
