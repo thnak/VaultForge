@@ -37,7 +37,7 @@ public class FileSystemWatcherService(
                 return;
             }
 
-            var terminalResult = TerminalExtension.ExecuteCommand($" ./convert_to_hls.sh \"{e.FullPath}\"");
+            var terminalResult = await TerminalExtension.ExecuteCommandAsync($" ./convert_to_hls.sh \"{e.FullPath}\"", token);
             logger.LogInformation($"Terminal result: {terminalResult}");
             var outputDir = Path.GetFileNameWithoutExtension(e.FullPath);
             outputDir = Path.Combine(Directory.GetCurrentDirectory(), outputDir);
@@ -198,7 +198,7 @@ public class FileSystemWatcherService(
             await Task.Delay(checkInterval); // Wait before rechecking the size
         }
     }
-    
+
     public Task StartAsync(CancellationToken cancellationToken)
     {
         var watchResources = appSettings.Value.FolderWatchList;

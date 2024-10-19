@@ -6,7 +6,7 @@ namespace Business.Services.Ffmpeg;
 
 public class TerminalExtension
 {
-    public static string ExecuteCommand(string command)
+    public static async Task<string> ExecuteCommandAsync(string command, CancellationToken cancellationToken = default)
     {
         ProcessStartInfo processInfo;
 
@@ -33,8 +33,16 @@ public class TerminalExtension
         using var process = Process.Start(processInfo);
         if (process != null)
         {
-            using var reader = process.StandardOutput;
-            string output = reader.ReadToEnd().Trim();
+            using var outputReader = process.StandardOutput;
+            using var errorReader = process.StandardError;
+
+            var error = await errorReader.ReadToEndAsync(cancellationToken);
+            if (!string.IsNullOrEmpty(error))
+            {
+                Console.WriteLine($@"[ERROR] {error}");
+            }
+
+            string output = (await outputReader.ReadToEndAsync(cancellationToken)).Trim();
             Console.WriteLine(output);
             return output;
         }
