@@ -26,8 +26,27 @@ public class FileSystemWatcherService(
     {
         taskQueueService.QueueBackgroundWorkItemAsync(async token =>
         {
-            TerminalExtension.ExecuteCommand($" ./convert_to_hls.sh {e.FullPath}");
-            var outputDir = Path.GetFileName(e.FullPath);
+            var extension = Path.GetExtension(e.FullPath);
+            string[] allowedExtensions = [".mp4", ".mkv"];
+            if (!allowedExtensions.Contains(extension))
+            {
+#if DEBUG
+                logger.LogWarning($"File {e.FullPath} is in an invalid format");
+#endif
+                return;
+            }
+
+            var terminalResult = TerminalExtension.ExecuteCommand($" ./convert_to_hls.sh {e.FullPath}");
+            logger.LogInformation($"Terminal result: {terminalResult}");
+            var outputDir = Path.GetFileNameWithoutExtension(e.FullPath);
+            outputDir = Path.Combine(Directory.GetCurrentDirectory(), outputDir);
+            
+            if (!Directory.Exists(outputDir))
+            {
+                logger.LogInformation($"Output directory doesn't exist: {outputDir}");
+                return;
+            }
+
             var m3U8Files = Directory.GetFiles(outputDir, "playlist.m3u8", SearchOption.AllDirectories).ToArray();
 
             var rootVideoFolder = folderSystemBusinessLayer.Get("Anonymous", "/root/Videos");
@@ -61,6 +80,7 @@ public class FileSystemWatcherService(
             {
                 await ReadM3U8Files(storageFolder, file, token);
             }
+            Directory.Delete(outputDir, true);
         });
     }
 
