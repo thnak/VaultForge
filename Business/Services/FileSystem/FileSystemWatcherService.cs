@@ -36,11 +36,11 @@ public class FileSystemWatcherService(
                 return;
             }
 
-            var terminalResult = TerminalExtension.ExecuteCommand($" ./convert_to_hls.sh {e.FullPath}");
+            var terminalResult = TerminalExtension.ExecuteCommand($" ./convert_to_hls.sh \"{e.FullPath}\"");
             logger.LogInformation($"Terminal result: {terminalResult}");
             var outputDir = Path.GetFileNameWithoutExtension(e.FullPath);
             outputDir = Path.Combine(Directory.GetCurrentDirectory(), outputDir);
-            
+
             if (!Directory.Exists(outputDir))
             {
                 logger.LogInformation($"Output directory doesn't exist: {outputDir}");
@@ -80,6 +80,7 @@ public class FileSystemWatcherService(
             {
                 await ReadM3U8Files(storageFolder, file, token);
             }
+
             Directory.Delete(outputDir, true);
         });
     }
@@ -101,7 +102,7 @@ public class FileSystemWatcherService(
                     Type = FileContentType.M3U8File
                 };
                 await folderSystemBusinessLayer.CreateFileAsync(folderStorage, fileInfo, cancellationToken);
-                await ReadM3U8Files(folderStorage, lineText);
+                await ReadM3U8Files(folderStorage, lineText, cancellationToken);
                 m3U8FileId = fileInfo.Id.ToString();
                 playListContents[i] = m3U8FileId + ".m3u8";
             }
