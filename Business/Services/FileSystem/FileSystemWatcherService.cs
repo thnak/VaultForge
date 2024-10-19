@@ -169,6 +169,7 @@ public class FileSystemWatcherService(
             watcher.Filter = "";
             watcher.Created += WatcherOnCreated;
             watcher.EnableRaisingEvents = true;
+            watcher.IncludeSubdirectories = true;
             _watchers.Add(watcher);
             logger.LogInformation($"Watcher started. Now listen to file system changes on {watchResource}.");
         }

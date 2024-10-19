@@ -27,6 +27,8 @@ using Business.Services;
 using Business.Services.FileSystem;
 using Business.Services.Interfaces;
 using Business.Services.Services;
+using Business.Services.TaskQueueServices;
+using Business.Services.TaskQueueServices.Base;
 using Business.SocketHubs;
 using BusinessModels.Converter;
 using BusinessModels.General.SettingModels;
@@ -132,9 +134,14 @@ public class Program
         builder.Services.AddSingleton<IIoTBusinessLayer, IoTBusinessLayer>();
 
         builder.Services.AddHostedService<FileSystemWatcherService>();
+        builder.Services.AddSingleton<IBackgroundTaskQueue, DefaultBackgroundTaskQueue>();
+
 
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
         builder.Services.AddHostedService<FileCheckSumService>();
+        
+        builder.Services.AddHostedService<QueuedHostedService>();
+
 
         #endregion
 
