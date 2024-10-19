@@ -28,10 +28,12 @@ if [[ ! "${target}" ]]; then
   target="${source##*/}" # leave only last component of path
   target="${target%.*}"  # strip extension
 fi
-mkdir -p ${target}
+
+mkdir_cmd="mkdir -p \"$target\""
+eval $mkdir_cmd
 
 # ----CUSTOM----
-sourceResolution="$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 ${source})"
+sourceResolution="$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=s=x:p=0 "${source}")"
 # echo ${sourceResolution}
 arrIN=(${sourceResolution//x/ })
 sourceWidth="${arrIN[0]}"
@@ -40,11 +42,11 @@ sourceHeight="${arrIN[1]}"
 echo ${sourceWidth}
 echo ${sourceHeight}
 
-sourceAudioBitRate="$(ffprobe -v error -select_streams a:0 -show_entries stream=bit_rate -of csv=s=x:p=0 ${source})"
+sourceAudioBitRate="$(ffprobe -v error -select_streams a:0 -show_entries stream=bit_rate -of csv=s=x:p=0 "${source}")"
 sourceAudioBitRateFormatted=$((sourceAudioBitRate / 1000))
 # ----END CUSTOM----
 
-key_frames_interval="$(echo `ffprobe ${source} 2>&1 | grep -oE '[[:digit:]]+(.[[:digit:]]+)? fps' | grep -oE '[[:digit:]]+(.[[:digit:]]+)?'`*2 | bc || echo '')"
+key_frames_interval="$(echo `ffprobe "${source}" 2>&1 | grep -oE '[[:digit:]]+(.[[:digit:]]+)? fps' | grep -oE '[[:digit:]]+(.[[:digit:]]+)?'`*2 | bc || echo '')"
 key_frames_interval=${key_frames_interval:-50}
 key_frames_interval=$(echo `printf "%.1f\n" $(bc -l <<<"$key_frames_interval/10")`*10 | bc) # round
 key_frames_interval=${key_frames_interval%.*} # truncate to integer
@@ -105,8 +107,10 @@ for rendition in "${renditions[@]}"; do
   
   cmd+=" ${static_params} -vf scale=w=${widthParam}:h=${heightParam}"
   cmd+=" -b:v ${bitrate} -maxrate ${maxrate%.*}k -bufsize ${bufsize%.*}k -b:a ${audiorate}"
-  cmd+=" -hls_segment_filename ${target}/${name}_%03d.ts ${target}/${name}.m3u8"
+  cmd+=" -hls_segment_filename \"${target}/${name}_%03d.ts\" \"${target}/${name}.m3u8\""
   
+  echo $cmd
+
   # add rendition entry in the master playlist
   master_playlist+="#EXT-X-STREAM-INF:BANDWIDTH=${bandwidth},RESOLUTION=${resolution}\n${name}.m3u8\n"
 
@@ -116,10 +120,13 @@ done
 
 if [ $resolutionValid -eq 1 ]; then
   # start conversion
-  echo -e "Executing command:\nffmpeg -hwaccel cuda ${misc_params} -i ${source} ${cmd}\n"
-  ffmpeg ${misc_params} -i ${source} ${cmd}
+  echo -e "Executing command:\nffmpeg -hwaccel cuda ${misc_params} -i \"$source\" $cmd\n"
+  
+  full_cmd="ffmpeg -hwaccel cuda ${misc_params} -i \"$source\" $cmd"
+  eval $full_cmd
+
   # create master playlist file
-  echo -e "${master_playlist}" > ${target}/playlist.m3u8
+  echo -e "${master_playlist}" > "${target}"/playlist.m3u8
   echo "Done - encoded HLS is at ${target}/"
 else
   echo "Video source is too small"

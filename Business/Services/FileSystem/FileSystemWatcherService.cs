@@ -37,10 +37,13 @@ public class FileSystemWatcherService(
                 return;
             }
 
-            var terminalResult = await TerminalExtension.ExecuteCommandAsync($" ./convert_to_hls.sh \"{e.FullPath}\"", token);
+            var workDir = "/home/thnak";
+
+            var terminalResult = await TerminalExtension.ExecuteCommandAsync($"./convert_to_hls.sh \"{e.FullPath}\"", workDir, token);
+
             logger.LogInformation($"Terminal result: {terminalResult}");
-            var outputDir = Path.GetFileNameWithoutExtension(e.FullPath);
-            outputDir = Path.Combine(Directory.GetCurrentDirectory(), outputDir);
+
+            var outputDir = Path.Combine(workDir, Path.GetFileNameWithoutExtension(e.FullPath));
 
             if (!Directory.Exists(outputDir))
             {
@@ -65,17 +68,11 @@ public class FileSystemWatcherService(
                 RootFolder = rootVideoFolder.Id.ToString()
             };
 
-            var createFolderStorageResult = await folderSystemBusinessLayer.CreateFolder(new RequestNewFolderModel()
+            await folderSystemBusinessLayer.CreateFolder(new RequestNewFolderModel()
             {
                 NewFolder = storageFolder,
                 RootId = rootVideoFolder.Id.ToString(),
             });
-
-            if (!createFolderStorageResult.Item1)
-            {
-                logger.LogError($"Failed to create folder: {createFolderStorageResult.Item2}");
-                return;
-            }
 
             foreach (var file in m3U8Files)
             {
