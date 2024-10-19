@@ -47,11 +47,9 @@ public static class HardwareDetectionService
                 CreateNoWindow = true
             };
 
-            using (var process = Process.Start(processInfo))
-            {
-                var output = process.StandardOutput.ReadToEnd();
-                return !string.IsNullOrEmpty(output) && output.Contains("NVIDIA");
-            }
+            using var process = Process.Start(processInfo);
+            var output = process?.StandardOutput.ReadToEnd();
+            return !string.IsNullOrEmpty(output) && output.Contains("NVIDIA");
         }
         catch (Exception)
         {
@@ -88,11 +86,14 @@ public static class HardwareDetectionService
                 CreateNoWindow = true
             };
 
-            using (var process = Process.Start(processInfo))
+            using var process = Process.Start(processInfo);
+            if (process != null)
             {
                 var output = process.StandardOutput.ReadToEnd();
                 return !string.IsNullOrEmpty(output) && output.Contains("VA-API");
             }
+
+            return false;
         }
         catch (Exception)
         {
@@ -113,11 +114,9 @@ public static class HardwareDetectionService
                 CreateNoWindow = true
             };
 
-            using (var process = Process.Start(processInfo))
-            {
-                var output = process.StandardOutput.ReadToEnd();
-                return output.Contains("Intel");
-            }
+            using var process = Process.Start(processInfo);
+            var output = process?.StandardOutput.ReadToEnd();
+            return output?.Contains("Intel") ?? false;
         }
         catch (Exception)
         {
