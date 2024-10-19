@@ -11,4 +11,5 @@ public enum FileContentType
     CorruptedFile,
     MissingFile,
     M3U8File,
+    M3U8FileSegment
 }

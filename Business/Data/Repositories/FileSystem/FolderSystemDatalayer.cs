@@ -111,6 +111,23 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
                 logger.LogInformation($"[Init][WallPaper] {result.Message}");
             }
 
+            var videoFolder = Get(anonymousUser, "/root/Videos");
+            if (videoFolder == default)
+            {
+                videoFolder = new FolderInfoModel()
+                {
+                    OwnerUsername = anonymousUser,
+                    RootFolder = anonymousFolder.Id.ToString(),
+                    FolderName = "Videos",
+                    AbsolutePath = anonymousFolder.AbsolutePath + "/Videos",
+                    RelativePath = anonymousFolder.AbsolutePath + "/Videos",
+                    Type = FolderContentType.SystemFolder
+                };
+                var result = await CreateAsync(videoFolder, cancellationToken);
+                logger.LogInformation($"[Init][Videos] {result.Message}");
+            }
+
+
             var resourceFolder = Get(anonymousUser, "/root/wallpaper");
             if (resourceFolder == default)
             {

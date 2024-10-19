@@ -1,4 +1,5 @@
 ﻿using Business.Services;
+using Business.Services.Ffmpeg;
 using BusinessModels.Utils;
 using BusinessModels.WebContent;
 using Microsoft.AspNetCore.Authorization;
@@ -44,13 +45,16 @@ public class ChatWithLlamaController(IMemoryCache memoryCache) : ControllerBase
     [IgnoreAntiforgeryToken]
     public async Task<IActionResult> HandleFileSystem([FromForm] string filePath)
     {
-        string systemPrompt = $"you are auto bot and apart of media server service. your work is generate command and then use ExecuteCommand to run your command prompt to convert video {filePath} to multiple HLS files to help server serve it to user via FFMPEG. if video is 4K you have" +
+        string systemPrompt = $"you are auto bot and apart of media server service. your work is generate command and then use ExecuteCommand to run your command prompt to convert video {filePath} to HLS files to help server serve it to user via FFMPEG. if video is 4K you have" +
                               $"to convert it to 4k, 2k, 1080 and 480p version that help user can choose the best one to play with their limit on network. videos must be have h264 format for browsing compatibility. dont try to chat with user because you are in work alone and stuck with command prompt.";
+
+        var result = TerminalExtension.ExecuteCommand($"ffprobe -v quiet -print_format json -show_format -show_streams \"{filePath}\"");
+
 
         var chat = new ChatWithLlama(systemPrompt, new Uri("http://192.168.1.18:11434/api"), "llama3.1", true);
         while (true)
         {
-            var message = await chat.ChatAsync("this is a loop. you have to finish your work by your self");
+            var message = await chat.ChatAsync($"{result}. you have to finish your work by your self");
             if (message.Content == "BREAK") break;
         }
 

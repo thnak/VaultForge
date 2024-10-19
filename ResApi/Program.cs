@@ -30,6 +30,8 @@ using Business.Services;
 using Business.Services.FileSystem;
 using Business.Services.Interfaces;
 using Business.Services.Services;
+using Business.Services.TaskQueueServices;
+using Business.Services.TaskQueueServices.Base;
 using BusinessModels.Converter;
 using BusinessModels.General.SettingModels;
 using BusinessModels.Resources;
@@ -80,7 +82,7 @@ public abstract class Program
         builder.Services.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
 
         builder.Services.AddSingleton<RedundantArrayOfIndependentDisks>();
-        
+
         builder.Services.AddSingleton<IUserDataLayer, UserDataLayer>();
         builder.Services.AddSingleton<IUserBusinessLayer, UserBusinessLayer>();
 
@@ -99,9 +101,12 @@ public abstract class Program
         builder.Services.AddSingleton<IThumbnailService, ThumbnailService>();
 
         builder.Services.AddHostedService<FileSystemWatcherService>();
-        
+
+        builder.Services.AddSingleton<IBackgroundTaskQueue, DefaultBackgroundTaskQueue>();
+
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
         builder.Services.AddHostedService<FileCheckSumService>();
+        builder.Services.AddHostedService<QueuedHostedService>();
 
         #region Cultures
 
