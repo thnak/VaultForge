@@ -145,10 +145,11 @@ public class FilesController(
                 if (line.Contains(".m3u8") || line.Contains(".ts") || line.Contains(".vtt"))
                 {
                     lines[i] = $"{HttpContext.Request.Scheme}://" + HttpContext.Request.Host.Value + HttpContext.Request.Path + "?id=" + line;
+                    lines[i] = lines[i].Trim();
                 }
             }
 
-            var stringContent = string.Join("", lines);
+            var stringContent = string.Join("\n", lines);
             return Content(stringContent, file.ContentType);
         }
 

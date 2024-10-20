@@ -148,7 +148,7 @@ public class FilesController(
                 }
             }
 
-            var stringContent = string.Join("", lines);
+            var stringContent = string.Join("\n", lines);
             return Content(stringContent, file.ContentType);
         }
 
