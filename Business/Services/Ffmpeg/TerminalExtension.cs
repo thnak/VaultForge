@@ -40,11 +40,11 @@ public class TerminalExtension
             var error = await errorReader.ReadToEndAsync(cancellationToken);
             if (!string.IsNullOrEmpty(error))
             {
-                Console.WriteLine($@"[ERROR] {error}");
+                Console.WriteLine($@"[CMD][ERROR] {error}");
             }
 
             string output = (await outputReader.ReadToEndAsync(cancellationToken)).Trim();
-            Console.WriteLine(output);
+            Console.WriteLine($@"[CMD][Success] {output}");
             return output;
         }
 

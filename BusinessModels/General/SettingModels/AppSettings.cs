@@ -8,4 +8,5 @@ public class AppSettings
     public int ReadWriteBufferSize { get; set; } = 10 * 1024 * 1024;
     public string[] FolderWatchList { get; set; } = [];
     public int BackgroundStackQueueSize { get; set; } = 5 * 1024 * 1024;
+    public string TransCodeConverterScriptDir { get; set; } = "/home/thnak";
 }
