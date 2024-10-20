@@ -445,7 +445,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                         {
                             Action = () => OpenFileDetailDialog(file.Id.ToString()).ConfigureAwait(false)
                         },
-                        ItemClassList = InitStyleElement(file.Type),
+                        ItemClassList = InitStyleElement(file.Status),
                         Thumbnail = InitElementBackgroundStyle(file.Thumbnail),
                         Menu = InitMenuItem(file)
                     });
@@ -507,7 +507,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         return ElementStyle.ItemOpacityClass(type, ShowHidden);
     }
 
-    string InitStyleElement(FileContentType type)
+    string InitStyleElement(FileStatus type)
     {
         return ElementStyle.ItemOpacityClass(type, ShowHidden);
     }
@@ -720,7 +720,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             {
                 builder.OpenElement(0, "span");
                 builder.SetKey(file);
-                builder.AddContent(1, file.Type == FileContentType.DeletedFile ? AppLang.Delete_forever : AppLang.Move_to_recycle_bin);
+                builder.AddContent(1, file.Status == FileStatus.DeletedFile ? AppLang.Delete_forever : AppLang.Move_to_recycle_bin);
                 builder.CloseElement();
             },
             Title = AppLang.Warning,

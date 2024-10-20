@@ -52,7 +52,7 @@ public class FilesController(
         if (file == null) return NotFound();
 
 
-        var webpImageContent = file.ExtendResource.FirstOrDefault(x => x.Type == FileContentType.ThumbnailWebpFile);
+        var webpImageContent = file.ExtendResource.FirstOrDefault(x => x.Classify == FileClassify.ThumbnailWebpFile);
         if (webpImageContent != null)
         {
             var webpImage = fileServe.Get(webpImageContent.Id);
@@ -93,7 +93,7 @@ public class FilesController(
         var file = fileServe.Get(id);
         if (file == null) return NotFound();
 
-        var webpImageContent = file.ExtendResource.FirstOrDefault(x => x.Type == FileContentType.ThumbnailWebpFile);
+        var webpImageContent = file.ExtendResource.FirstOrDefault(x => x.Classify == FileClassify.ThumbnailWebpFile);
         if (webpImageContent != null)
         {
             var webpImage = fileServe.Get(webpImageContent.Id);
@@ -466,7 +466,7 @@ public class FilesController(
 
             var contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).Distinct().ToList();
             string rootFolderId = folderSource.Id.ToString();
-            var res = await folderServe.GetFolderRequestAsync(rootFolderId, model => model.RootFolder == rootFolderId && contentFolderTypesList.Contains(model.Type), model => model.RootFolder == rootFolderId && contentFileTypesList.Contains(model.Type),
+            var res = await folderServe.GetFolderRequestAsync(rootFolderId, model => model.RootFolder == rootFolderId && contentFolderTypesList.Contains(model.Type), model => model.RootFolder == rootFolderId && contentFileTypesList.Contains(model.Status),
                 pageSize, page, forceReLoad is true, cancelToken);
             res.Folder = folderSource;
             return Content(res.ToJson(), MediaTypeNames.Application.Json);
@@ -585,7 +585,7 @@ public class FilesController(
         {
             var file = fileServe.Get(id);
             if (file == null) return BadRequest(AppLang.File_not_found_);
-            var result = await fileServe.UpdateAsync(id, new FieldUpdate<FileInfoModel>() { { model => model.Type, file.PreviousType } });
+            var result = await fileServe.UpdateAsync(id, new FieldUpdate<FileInfoModel>() { { model => model.Status, file.PreviousStatus } });
             return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
         }
 

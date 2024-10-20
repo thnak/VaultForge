@@ -4,24 +4,24 @@ namespace BusinessModels.Utils;
 
 public static class EnumExtensions
 {
-    public static FileContentType MapFileContentType(this FolderContentType value)
+    public static FileStatus MapFileContentType(this FolderContentType value)
     {
         switch (value)
         {
             case FolderContentType.Folder:
-                return FileContentType.File;
+                return FileStatus.File;
             case FolderContentType.File:
-                return FileContentType.File;
+                return FileStatus.File;
             case FolderContentType.HiddenFile:
-                return FileContentType.HiddenFile;
+                return FileStatus.HiddenFile;
             case FolderContentType.HiddenFolder:
-                return FileContentType.HiddenFile;
+                return FileStatus.HiddenFile;
             case FolderContentType.DeletedFile:
-                return FileContentType.DeletedFile;
+                return FileStatus.DeletedFile;
             case FolderContentType.DeletedFolder:
-                return FileContentType.DeletedFile;
+                return FileStatus.DeletedFile;
         }
 
-        return FileContentType.HiddenFile;
+        return FileStatus.HiddenFile;
     }
 }

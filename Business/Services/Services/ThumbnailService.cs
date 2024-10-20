@@ -164,7 +164,7 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
                     FileName = thumbnailFileName,
                     AbsolutePath = thumbnailPath,
                     FileSize = thumbnailSize,
-                    Type = FileContentType.ThumbnailFile,
+                    Classify = FileClassify.ThumbnailFile,
                     CreatedDate = DateTime.Now,
                     ModifiedTime = DateTime.Now,
                     ContentType = "image/webp",
@@ -176,7 +176,7 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
                     FileName = extendedFileName,
                     AbsolutePath = extendImagePath,
                     FileSize = extendedImageSize,
-                    Type = FileContentType.ThumbnailWebpFile,
+                    Classify = FileClassify.ThumbnailWebpFile,
                     CreatedDate = DateTime.Now,
                     ModifiedTime = DateTime.Now,
                     ContentType = "image/webp",
@@ -188,7 +188,7 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
                 fileInfo.ExtendResource.Add(new FileContents()
                 {
                     Id = extendedFile.Id.ToString(),
-                    Type = FileContentType.ThumbnailWebpFile
+                    Classify = FileClassify.ThumbnailWebpFile
                 });
 
 

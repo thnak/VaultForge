@@ -120,12 +120,12 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da, IMemoryCache memor
         var file = Get(key);
         if (file == default) return (false, AppLang.File_could_not_be_found);
 
-        if (file.Type != FileContentType.DeletedFile)
+        if (file.Status != FileStatus.DeletedFile)
         {
             await UpdateAsync(key, new FieldUpdate<FileInfoModel>()
             {
-                { model => model.Type, FileContentType.DeletedFile },
-                { model => model.PreviousType, file.Type }
+                { model => model.Status, FileStatus.DeletedFile },
+                { model => model.PreviousStatus, file.Status }
             }, cancelToken);
             return (true, AppLang.Delete_successfully);
         }

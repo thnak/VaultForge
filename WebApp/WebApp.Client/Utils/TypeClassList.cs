@@ -5,11 +5,11 @@ namespace WebApp.Client.Utils;
 
 public static class TypeClassList
 {
-    public static string ItemOpacityClass(this string self, FileContentType fileContentType, bool showHidden = false)
+    public static string ItemOpacityClass(this string self, FileStatus fileStatus, bool showHidden = false)
     {
-        switch (fileContentType)
+        switch (fileStatus)
         {
-            case FileContentType.HiddenFile:
+            case FileStatus.HiddenFile:
             {
                 var opacity = showHidden ? "opacity-5" : "d-none";
                 return self + $" {opacity}";

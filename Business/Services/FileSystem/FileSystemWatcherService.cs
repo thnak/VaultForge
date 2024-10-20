@@ -100,6 +100,7 @@ public class FileSystemWatcherService(
                 {
                     FileName = lineText,
                     ContentType = "application/x-mpegURL",
+                    Classify = FileClassify.M3U8File
                 };
                 await folderSystemBusinessLayer.CreateFileAsync(folderStorage, fileInfo, cancellationToken);
                 await ReadM3U8Files(folderStorage, Path.Combine(dir, lineText), cancellationToken);
@@ -114,6 +115,7 @@ public class FileSystemWatcherService(
                 {
                     FileName = lineText,
                     ContentType = lineText.EndsWith(".ts") ? "video/MP2T" : "text/vtt",
+                    Classify = FileClassify.M3U8FileSegment,
                 };
                 await folderSystemBusinessLayer.CreateFileAsync(folderStorage, fileInfo, cancellationToken);
                 playListContents[i] = fileInfo.Id.ToString();

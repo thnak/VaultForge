@@ -504,7 +504,7 @@ public class FolderSystemBusinessLayer(
                 model => model.Id,
                 model => model.FileName,
                 model => model.Thumbnail,
-                model => model.Type,
+                model => model.Status,
                 model => model.RootFolder,
                 model => model.ContentType,
                 model => model.RelativePath,
@@ -512,7 +512,7 @@ public class FolderSystemBusinessLayer(
                 model => model.CreatedDate
             };
 
-            var fileCursor = FileSystemService.Where(x => x.Type == FileContentType.DeletedFile && x.RootFolder == rootFolder, cancellationTokenSource, fieldToFetch);
+            var fileCursor = FileSystemService.Where(x => x.Status == FileStatus.DeletedFile && x.RootFolder == rootFolder, cancellationTokenSource, fieldToFetch);
             await foreach (var file in fileCursor)
             {
                 files.Add(file);
@@ -564,7 +564,7 @@ public class FolderSystemBusinessLayer(
             model => model.Id,
             model => model.FileName,
             model => model.Thumbnail,
-            model => model.Type,
+            model => model.Status,
             model => model.RootFolder,
             model => model.ContentType,
             model => model.RelativePath,

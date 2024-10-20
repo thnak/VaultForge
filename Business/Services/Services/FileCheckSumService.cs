@@ -41,7 +41,7 @@ public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLaye
             {
                 if (disks.Exists(item.AbsolutePath))
                 {
-                    if (item.Type == FileContentType.DeletedFile)
+                    if (item.Status == FileStatus.DeletedFile)
                     {
                         var expirationTime = DateTime.UtcNow - item.ModifiedTime;
                         if (expirationTime.TotalDays > 30)
@@ -96,8 +96,8 @@ public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLaye
                             logger.LogInformation($"File {item.AbsolutePath} is corrupted");
                             await fileSystemBusinessLayer.UpdateAsync(item.Id.ToString(), new FieldUpdate<FileInfoModel>()
                             {
-                                { x => x.Type, FileContentType.CorruptedFile },
-                                { x=> x.PreviousType, item.Type }
+                                { x => x.Status, FileStatus.CorruptedFile },
+                                { x=> x.PreviousStatus, item.Status }
                             }, cancelToken);
                         }
                     }
@@ -107,8 +107,8 @@ public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLaye
                     logger.LogInformation($"File {item.AbsolutePath} does not exist");
                     await fileSystemBusinessLayer.UpdateAsync(item.Id.ToString(), new FieldUpdate<FileInfoModel>()
                     {
-                        { x => x.Type, FileContentType.MissingFile },
-                        { x=> x.PreviousType, item.Type }
+                        { x => x.Status, FileStatus.MissingFile },
+                        { x=> x.PreviousStatus, item.Status }
                     }, cancelToken);
                 }
             }
