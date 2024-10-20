@@ -99,7 +99,8 @@ public class FilesController(
     public async Task<IActionResult> GetFile(string id)
     {
         var cancelToken = HttpContext.RequestAborted;
-        var file = fileServe.Get(id.Split(".").Last());
+        id = id.Split(".").First();
+        var file = fileServe.Get(id);
         if (file == null) return NotFound();
 
         var webpImageContent = file.ExtendResource.FirstOrDefault(x => x is { Classify: FileClassify.M3U8File or FileClassify.M3U8FileSegment or FileClassify.ThumbnailWebpFile });
@@ -131,9 +132,11 @@ public class FilesController(
         MemoryStream ms = new MemoryStream();
         await raidService.ReadGetDataAsync(ms, file.AbsolutePath, cancelToken);
 
-        if (file is { Classify: FileClassify.M3U8File or FileClassify.M3U8FileSegment })
+        if (file is { Classify: FileClassify.M3U8File })
         {
-            using var streamReader = new StreamReader(ms);
+            var streamReader = new StreamReader(ms);
+            Response.RegisterForDispose(streamReader);
+            
             string[] lines = (await streamReader.ReadToEndAsync(cancelToken)).Split("\n");
             ms.Seek(0, SeekOrigin.Begin);
             for (var i = 0; i < lines.Length; i++)
@@ -141,7 +144,7 @@ public class FilesController(
                 var line = lines[i];
                 if (line.Contains(".m3u8") || line.Contains(".ts") || line.Contains(".vtt"))
                 {
-                    lines[i] = HttpContext.Request.Host.Host + $":{HttpContext.Request.Host.Port}" + HttpContext.Request.Path + "?id=" + line;
+                    lines[i] = $"{HttpContext.Request.Scheme}://" + HttpContext.Request.Host.Value + HttpContext.Request.Path + "?id=" + line;
                 }
             }
 
@@ -154,7 +157,7 @@ public class FilesController(
         {
             FileDownloadName = file.FileName,
             LastModified = file.ModifiedTime,
-            EnableRangeProcessing = false
+            EnableRangeProcessing = true
         };
     }
 
