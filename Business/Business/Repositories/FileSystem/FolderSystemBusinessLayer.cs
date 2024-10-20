@@ -277,11 +277,10 @@ public class FolderSystemBusinessLayer(
         var dateString = DateTime.UtcNow.ToString("dd-MM-yyy");
 
         var filePath = Path.Combine(_workingDir, dateString, Path.GetRandomFileName());
-        Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
 
         file.AbsolutePath = filePath;
         file.RootFolder = folder.Id.ToString();
-        file.RelativePath = folder.RelativePath + $"/{file.FileName}";
+        file.RelativePath = Path.Combine(folder.RelativePath, $"/{file.FileName}");
         var res = await FileSystemService.CreateAsync(file, cancellationTokenSource);
         if (res.IsSuccess)
         {

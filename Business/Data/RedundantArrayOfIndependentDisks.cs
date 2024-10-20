@@ -82,7 +82,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             arrayDisk.Shuffle();
             List<FileRaidDataBlockModel> disks = arrayDisk.Select(x => new FileRaidDataBlockModel()
             {
-                AbsolutePath = Path.Combine(x, $"{DateTime.UtcNow:yy-MM-dd}", raidModel.Id + Path.GetRandomFileName()),
+                AbsolutePath = Path.Combine(x, $"_{DateTime.UtcNow:yyMMdd}", raidModel.Id + Path.GetRandomFileName()),
                 CreationTime = DateTime.UtcNow,
                 ModificationTime = DateTime.UtcNow,
                 RelativePath = raidModel.Id.ToString(),
