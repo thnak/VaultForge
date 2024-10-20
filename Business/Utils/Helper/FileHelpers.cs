@@ -475,6 +475,46 @@ public static class FileHelpers
         return MimeTypeMappings.FirstOrDefault(x => x.Value == contentType).Key ?? defaultExtension;
     }
 
+    public static async Task<bool> CheckFileSizeStable(this string filePath)
+    {
+        const int checkInterval = 1000; // 1 second interval
+        const int stableCheckDuration = 3000; // 3 seconds duration to consider stable
+        long previousSize = -1;
+
+        while (true)
+        {
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    var fileInfo = new FileInfo(filePath);
+                    long currentSize = fileInfo.Length;
+
+                    if (currentSize == previousSize)
+                    {
+                        // If the file size hasn't changed for 3 consecutive seconds, consider it stable
+                        await Task.Delay(stableCheckDuration);
+                        return true;
+                    }
+
+                    previousSize = currentSize;
+                }
+                else
+                {
+                    // If file is deleted in the middle of the process
+                    return false;
+                }
+            }
+            catch (IOException)
+            {
+                // The file might still be locked by another process (like if it's still being written to)
+            }
+
+            await Task.Delay(checkInterval); // Wait before rechecking the size
+        }
+    }
+
+
     public static string GetMimeTypeFromExtension(this string fileExtension)
     {
         var values = MimeTypeMappings.TryGetValue(fileExtension, out var type);

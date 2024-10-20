@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using BusinessModels.General.Results;
 using BusinessModels.People;
 using BusinessModels.System.FileSystem;
 using BusinessModels.WebContent.Drive;
@@ -48,4 +49,6 @@ public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInf
 
     public Task<FolderRequest> GetFolderRequestAsync(string folderId,Expression<Func<FolderInfoModel, bool>> folderPredicate, Expression<Func<FileInfoModel, bool>> filePredicate, int pageSize, int pageNumber, bool forceLoad = false, CancellationToken cancellationToken = default);
     public Task<FolderRequest> GetDeletedContentAsync(string? userName, int pageSize, int page, CancellationToken cancellationToken = default);
+    public Task<Result<FolderInfoModel?>> InsertMediaContent(string path, CancellationToken cancellationToken = default);
+
 }

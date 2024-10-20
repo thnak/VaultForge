@@ -3,9 +3,11 @@ using System.Linq.Expressions;
 using System.Text;
 using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.User;
+using Business.Data;
 using Business.Data.Interfaces.FileSystem;
 using Business.Models;
 using Business.Services;
+using Business.Utils.Helper;
 using Business.Utils.StringExtensions;
 using BusinessModels.General.EnumModel;
 using BusinessModels.General.Results;
@@ -30,7 +32,8 @@ public class FolderSystemBusinessLayer(
     IUserBusinessLayer userService,
     IOptions<AppSettings> options,
     ILogger<FolderSystemBusinessLayer> logger,
-    IMemoryCache memoryCache)
+    IMemoryCache memoryCache,
+    RedundantArrayOfIndependentDisks raidService)
     : IFolderSystemBusinessLayer, IDisposable
 {
     private IFolderSystemDatalayer FolderSystemService { get; set; } = folderSystemService;
@@ -533,7 +536,160 @@ public class FolderSystemBusinessLayer(
         };
     }
 
+    public async Task<Result<FolderInfoModel?>> InsertMediaContent(string path, CancellationToken cancellationToken = default)
+    {
+        await path.CheckFileSizeStable();
+        var extension = Path.GetExtension(path);
+        string[] allowedExtensions = [".mp4", ".mkv"];
+        if (!allowedExtensions.Contains(extension))
+        {
+#if DEBUG
+            logger.LogWarning($"File {path} is in an invalid format");
+#endif
+            return Result<FolderInfoModel>.Failure("File is in an invalid format", ErrorType.Validation);
+        }
+
+        var workDir = path.Replace(Path.GetFileName(path), "");
+
+        var outputDir = Path.Combine(workDir, Path.GetFileNameWithoutExtension(path));
+
+        if (!Directory.Exists(outputDir))
+        {
+            logger.LogInformation($"Output directory doesn't exist: {outputDir}");
+            return Result<FolderInfoModel>.Failure("File is in an invalid format", ErrorType.Validation);
+        }
+
+        var m3U8Files = Directory.GetFiles(outputDir, "playlist.m3u8", SearchOption.AllDirectories).ToArray();
+
+        var rootVideoFolder = Get("Anonymous", "/root/Videos");
+
+        if (rootVideoFolder == null)
+        {
+            logger.LogError($"Root video folder was not found. Skipping {path}.");
+            return Result<FolderInfoModel>.Failure("File is in an invalid format", ErrorType.Validation);
+        }
+
+        var storageFolder = new FolderInfoModel()
+        {
+            FolderName = Path.GetFileName(path),
+            Type = FolderContentType.SystemFolder,
+            RootFolder = rootVideoFolder.Id.ToString()
+        };
+
+        var requestNewFolder = new RequestNewFolderModel()
+        {
+            NewFolder = storageFolder,
+            RootId = rootVideoFolder.Id.ToString(),
+        };
+
+        await CreateFolder(requestNewFolder);
+
+        foreach (var file in m3U8Files)
+        {
+            var resId = await ReadM3U8Files(storageFolder, file, cancellationToken);
+
+            var fileInfor = new FileInfoModel()
+            {
+                FileName = path,
+                ContentType = "video/mp4",
+                ExtendResource =
+                [
+                    new FileContents()
+                    {
+                        Id = resId,
+                        Classify = FileClassify.M3U8File,
+                    }
+                ],
+                RootFolder = requestNewFolder.RootId,
+                ModifiedTime = DateTime.UtcNow,
+                CreatedDate = DateTime.Today
+            };
+            await CreateFileAsync(storageFolder, fileInfor, cancellationToken);
+            logger.LogInformation($"Add {fileInfor.Id}");
+        }
+
+        return Result<FolderInfoModel?>.Success(storageFolder);
+    }
+
+
     #region Private Mothods
+
+    private async Task<string> ReadM3U8Files(FolderInfoModel folderStorage, string path, CancellationToken cancellationToken = default)
+    {
+        var playListContents = await File.ReadAllLinesAsync(path, cancellationToken);
+        var fileName = Path.GetFileName(path);
+        var dir = path.Replace(fileName, "");
+
+        for (int i = 0; i < playListContents.Length; i++)
+        {
+            var lineText = playListContents[i];
+            if (lineText.EndsWith(".m3u8"))
+            {
+                playListContents[i] = await ReadM3U8Files(folderStorage, Path.Combine(dir, lineText), cancellationToken);
+            }
+
+            if (lineText.EndsWith(".ts") || lineText.EndsWith(".vtt"))
+            {
+                var fileInfo = new FileInfoModel()
+                {
+                    FileName = lineText,
+                    ContentType = lineText.EndsWith(".ts") ? "video/MP2T" : "text/vtt",
+                    Classify = FileClassify.M3U8FileSegment,
+                };
+                await CreateFileAsync(folderStorage, fileInfo, cancellationToken);
+                playListContents[i] = fileInfo.Id.ToString();
+                await using var stream = new FileStream(Path.Combine(dir, lineText), FileMode.Open, FileAccess.Read,
+                    FileShare.Read, 4096, FileOptions.SequentialScan);
+                var writeResult = await raidService.WriteDataAsync(stream, fileInfo.AbsolutePath, cancellationToken);
+
+                await fileSystemService.UpdateAsync(playListContents[i], new FieldUpdate<FileInfoModel>()
+                {
+                    { x => x.FileSize, writeResult.TotalByteWritten },
+                    { x => x.Checksum, writeResult.CheckSum }
+                }, cancellationToken);
+                playListContents[i] += lineText.EndsWith(".ts") ? ".ts" : ".vtt";
+            }
+        }
+
+        var m3U8FileInfo = new FileInfoModel()
+        {
+            FileName = path,
+            ContentType = "application/x-mpegURL",
+            Classify = FileClassify.M3U8File
+        };
+        m3U8FileInfo.AbsolutePath = m3U8FileInfo.Id.ToString();
+        await CreateFileAsync(folderStorage, m3U8FileInfo, cancellationToken);
+
+
+        await using MemoryStream ms = new MemoryStream();
+        await using StreamWriter sw = new StreamWriter(ms);
+        foreach (var line in playListContents)
+        {
+            await sw.WriteLineAsync(line);
+        }
+
+        await sw.FlushAsync(cancellationToken);
+
+        ms.Seek(0, SeekOrigin.Begin);
+
+        var m3U8 = fileSystemService.Get(m3U8FileInfo.Id.ToString());
+        if (m3U8 == null)
+        {
+            logger.LogInformation($"M3U8: {m3U8FileInfo.Id.ToString()} ERROR");
+            return string.Empty;
+        }
+
+        var m3U8WriteResult = await raidService.WriteDataAsync(ms, m3U8.AbsolutePath, cancellationToken);
+
+        await fileSystemService.UpdateAsync(m3U8FileInfo.Id.ToString(), new FieldUpdate<FileInfoModel>()
+        {
+            { x => x.FileSize, m3U8WriteResult.TotalByteWritten },
+            { x => x.Checksum, m3U8WriteResult.CheckSum }
+        }, cancellationToken);
+
+        return m3U8FileInfo.Id + ".m3u8";
+    }
+
 
     private async Task<FolderRequest> GetFolderRequest(string folderId, Expression<Func<FolderInfoModel, bool>> folderPredicate, Expression<Func<FileInfoModel, bool>> filePredicate, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
     {

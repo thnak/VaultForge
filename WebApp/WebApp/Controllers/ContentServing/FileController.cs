@@ -86,27 +86,32 @@ public class FilesController(
         return File(memoryStream, file.ContentType);
     }
 
+    [HttpPost("insert-media")]
+    [AllowAnonymous]
+    [IgnoreAntiforgeryToken]
+    public async Task<IActionResult> InsertContent([FromForm] string path)
+    {
+        await folderServe.InsertMediaContent(path);
+        return Ok();
+    }
+    
     [HttpGet("get-file")]
     [IgnoreAntiforgeryToken]
     public async Task<IActionResult> GetFile(string id)
     {
         var cancelToken = HttpContext.RequestAborted;
-        var file = fileServe.Get(id);
+        var file = fileServe.Get(id.Split(".").Last());
         if (file == null) return NotFound();
 
-        var webpImageContent = file.ExtendResource.FirstOrDefault(x => x.Classify == FileClassify.ThumbnailWebpFile);
+        var webpImageContent = file.ExtendResource.FirstOrDefault(x => x is { Classify: FileClassify.M3U8File or FileClassify.M3U8FileSegment or FileClassify.ThumbnailWebpFile });
         if (webpImageContent != null)
         {
-            var webpImage = fileServe.Get(webpImageContent.Id);
+            var resId = webpImageContent.Id.Split(".").First();
+            var webpImage = fileServe.Get(resId);
             if (webpImage != null)
             {
                 file = webpImage;
             }
-        }
-        else
-        {
-            if (file.ContentType.IsImageFile())
-                await thumbnailService.AddThumbnailRequest(file.Id.ToString());
         }
 
         var now = DateTime.UtcNow;
@@ -126,6 +131,25 @@ public class FilesController(
 
         MemoryStream ms = new MemoryStream();
         await raidService.ReadGetDataAsync(ms, file.AbsolutePath, cancelToken);
+
+        if (file is { Classify: FileClassify.M3U8File or FileClassify.M3U8FileSegment })
+        {
+            using var streamReader = new StreamReader(ms);
+            string[] lines = (await streamReader.ReadToEndAsync(cancelToken)).Split("\n");
+            ms.Seek(0, SeekOrigin.Begin);
+            for (var i = 0; i < lines.Length; i++)
+            {
+                var line = lines[i];
+                if (line.Contains(".m3u8") || line.Contains(".ts") || line.Contains(".vtt"))
+                {
+                    lines[i] = HttpContext.Request.Host.Host + $":{HttpContext.Request.Host.Port}" + HttpContext.Request.Path + "?id=" + line;
+                }
+            }
+
+            var stringContent = string.Join("", lines);
+            return Content(stringContent, file.ContentType);
+        }
+
         Response.RegisterForDispose(ms);
         return new FileStreamResult(ms, file.ContentType)
         {
@@ -133,7 +157,6 @@ public class FilesController(
             LastModified = file.ModifiedTime,
             EnableRangeProcessing = false
         };
-        // return PhysicalFile(file.AbsolutePath, file.ContentType, true);
     }
 
     [HttpGet("download-file")]

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Business.Services.Ffmpeg;
+using Business.Utils.Helper;
 
 namespace Business.Services.FileSystem;
 
@@ -26,7 +27,7 @@ public class FileSystemWatcherService(
     {
         taskQueueService.QueueBackgroundWorkItemAsync(async token =>
         {
-            await CheckFileSizeStable(e.FullPath);
+            await e.FullPath.CheckFileSizeStable();
             var extension = Path.GetExtension(e.FullPath);
             string[] allowedExtensions = [".mp4", ".mkv"];
             if (!allowedExtensions.Contains(extension))
@@ -39,8 +40,7 @@ public class FileSystemWatcherService(
 
             var workDir = "/home/thnak";
 
-            var terminalResult =
-                await TerminalExtension.ExecuteCommandAsync($"./convert_to_hls.sh \"{e.FullPath}\"", workDir, token);
+            var terminalResult = await TerminalExtension.ExecuteCommandAsync($"./convert_to_hls.sh \"{e.FullPath}\"", workDir, token);
 
             logger.LogInformation($"Terminal result: {terminalResult}");
 
@@ -160,44 +160,6 @@ public class FileSystemWatcherService(
         }
     }
 
-    private static async Task<bool> CheckFileSizeStable(string filePath)
-    {
-        const int checkInterval = 1000; // 1 second interval
-        const int stableCheckDuration = 3000; // 3 seconds duration to consider stable
-        long previousSize = -1;
-
-        while (true)
-        {
-            try
-            {
-                if (File.Exists(filePath))
-                {
-                    var fileInfo = new FileInfo(filePath);
-                    long currentSize = fileInfo.Length;
-
-                    if (currentSize == previousSize)
-                    {
-                        // If the file size hasn't changed for 3 consecutive seconds, consider it stable
-                        await Task.Delay(stableCheckDuration);
-                        return true;
-                    }
-
-                    previousSize = currentSize;
-                }
-                else
-                {
-                    // If file is deleted in the middle of the process
-                    return false;
-                }
-            }
-            catch (IOException)
-            {
-                // The file might still be locked by another process (like if it's still being written to)
-            }
-
-            await Task.Delay(checkInterval); // Wait before rechecking the size
-        }
-    }
 
     public Task StartAsync(CancellationToken cancellationToken)
     {

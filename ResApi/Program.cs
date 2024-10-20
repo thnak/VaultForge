@@ -54,6 +54,7 @@ using Protector;
 using Protector.Certificates.Models;
 using Protector.KeyProvider;
 using Protector.Tracer;
+using ResApi.Middleware;
 
 namespace ResApi;
 
@@ -330,7 +331,7 @@ public abstract class Program
                 corsPolicyBuilder =>
                 {
                     corsPolicyBuilder
-                        .WithOrigins("https://localhost:7158", "https://thnakdevserver.ddns.net", "http://thnakdevserver.ddns.net")
+                        .WithOrigins("https://localhost:7158", "https://thnakdevserver.ddns.net", "http://thnakdevserver.ddns.net", "http://127.0.0.1:5500", "http://localhost:5500")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
@@ -524,9 +525,9 @@ public abstract class Program
 
         app.UseAuthorization();
         app.MapControllers();
-
+        
         app.UseExceptionHandler(_ => { });
-
+        app.UseMiddleware<GlobalMiddleware>();
 
         app.Run();
     }
