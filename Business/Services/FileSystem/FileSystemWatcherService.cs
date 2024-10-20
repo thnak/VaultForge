@@ -39,7 +39,8 @@ public class FileSystemWatcherService(
 
             var workDir = "/home/thnak";
 
-            var terminalResult = await TerminalExtension.ExecuteCommandAsync($"./convert_to_hls.sh \"{e.FullPath}\"", workDir, token);
+            var terminalResult =
+                await TerminalExtension.ExecuteCommandAsync($"./convert_to_hls.sh \"{e.FullPath}\"", workDir, token);
 
             logger.LogInformation($"Terminal result: {terminalResult}");
 
@@ -87,6 +88,8 @@ public class FileSystemWatcherService(
     {
         var playListContents = await File.ReadAllLinesAsync(path, cancellationToken);
         string m3U8FileId = string.Empty;
+        var fileName = Path.GetFileName(path);
+        var dir = path.Replace(fileName, "");
 
         for (int i = 0; i < playListContents.Length; i++)
         {
@@ -97,12 +100,12 @@ public class FileSystemWatcherService(
                 {
                     FileName = lineText,
                     ContentType = "application/x-mpegURL",
-                    Type = FileContentType.M3U8File
                 };
                 await folderSystemBusinessLayer.CreateFileAsync(folderStorage, fileInfo, cancellationToken);
-                await ReadM3U8Files(folderStorage, lineText, cancellationToken);
-                m3U8FileId = fileInfo.Id.ToString();
-                playListContents[i] = m3U8FileId + ".m3u8";
+                await ReadM3U8Files(folderStorage, Path.Combine(dir, lineText), cancellationToken);
+                if (string.IsNullOrEmpty(m3U8FileId))
+                    m3U8FileId = fileInfo.Id.ToString();
+                playListContents[i] = fileInfo.Id + ".m3u8";
             }
 
             if (lineText.EndsWith(".ts") || lineText.EndsWith(".vtt"))
@@ -111,17 +114,16 @@ public class FileSystemWatcherService(
                 {
                     FileName = lineText,
                     ContentType = lineText.EndsWith(".ts") ? "video/MP2T" : "text/vtt",
-                    Type = FileContentType.M3U8FileSegment
                 };
                 await folderSystemBusinessLayer.CreateFileAsync(folderStorage, fileInfo, cancellationToken);
                 playListContents[i] = fileInfo.Id.ToString();
-                await using var stream = new FileStream(lineText, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.SequentialScan);
+                await using var stream = new FileStream(Path.Combine(dir, lineText), FileMode.Open, FileAccess.Read,
+                    FileShare.Read, 4096, FileOptions.SequentialScan);
                 var writeResult = await raidService.WriteDataAsync(stream, fileInfo.AbsolutePath, cancellationToken);
 
                 await fileSystemBusinessLayer.UpdateAsync(playListContents[i], new FieldUpdate<FileInfoModel>()
                 {
-                    { x => x.Checksum, writeResult.CheckSum },
-                    { x => x.ContentType, writeResult.ContentType },
+                    { x => x.FileSize, writeResult.TotalByteWritten },
                     { x => x.Checksum, writeResult.CheckSum }
                 }, cancellationToken);
                 playListContents[i] += lineText.EndsWith(".ts") ? ".ts" : ".vtt";
@@ -150,8 +152,7 @@ public class FileSystemWatcherService(
 
             await fileSystemBusinessLayer.UpdateAsync(m3U8FileId, new FieldUpdate<FileInfoModel>()
             {
-                { x => x.Checksum, writeResult.CheckSum },
-                { x => x.ContentType, writeResult.ContentType },
+                { x => x.FileSize, writeResult.TotalByteWritten },
                 { x => x.Checksum, writeResult.CheckSum }
             }, cancellationToken);
         }
