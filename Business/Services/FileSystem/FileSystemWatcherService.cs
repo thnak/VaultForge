@@ -35,13 +35,23 @@ public class FileSystemWatcherService(
             await folderSystemBusinessLayer.InsertMediaContent(insertFilePath, token);
 
             var outputFilePath = insertFilePath.Replace(Path.GetExtension(insertFilePath), "");
-            if (Directory.Exists(outputFilePath)) Directory.Delete(outputFilePath, true);
+            logger.LogInformation($"Collecting garbage...{outputFilePath}");
+            if (Directory.Exists(outputFilePath))
+            {
+                Directory.Delete(outputFilePath, true);
+                logger.LogInformation($"Deleted {outputFilePath}");
+            }
+            else
+            {
+                logger.LogError($"Could not find {outputFilePath}");
+            }
         });
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
         var watchResources = appSettings.Value.FolderWatchList;
+        var watchStorageResources = appSettings.Value.FileFolders;
         string[] watchExtensionFilters = ["*.mp4", "*.mkv"];
 
         foreach (var watchResource in watchResources)
@@ -59,7 +69,41 @@ public class FileSystemWatcherService(
             }
         }
 
+        foreach (var storageResource in watchStorageResources)
+        {
+            FileSystemWatcher watcher = new FileSystemWatcher();
+            watcher.Path = storageResource;
+            watcher.Deleted += WatcherOnDeleted;
+            watcher.Error += WatcherOnError;
+            watcher.Changed += WatchStorageResourcesChanged;
+            watcher.Renamed += WatchStorageResourcesRenamed;
+            watcher.EnableRaisingEvents = true;
+            watcher.IncludeSubdirectories = true;
+            _watchers.Add(watcher);
+            logger.LogInformation($"Watcher started. Now listen to file system changes on {storageResource}.");
+        }
+
         return Task.CompletedTask;
+    }
+
+    private void WatchStorageResourcesRenamed(object sender, RenamedEventArgs e)
+    {
+        logger.LogWarning($"{e.OldFullPath} was renamed to {e.FullPath}");
+    }
+
+    private void WatchStorageResourcesChanged(object sender, FileSystemEventArgs e)
+    {
+        logger.LogWarning($"{e.FullPath} watch storage resources changed.");
+    }
+
+    private void WatcherOnError(object sender, ErrorEventArgs e)
+    {
+        logger.LogError($"{e}");
+    }
+
+    private void WatcherOnDeleted(object sender, FileSystemEventArgs e)
+    {
+        logger.LogWarning($"{e.FullPath} deleted");
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
