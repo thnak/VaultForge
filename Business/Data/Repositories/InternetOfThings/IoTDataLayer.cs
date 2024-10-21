@@ -19,7 +19,7 @@ public class IoTDataLayer : IIoTDataLayer
         {
             var options = new CreateCollectionOptions
             {
-                TimeSeriesOptions = new TimeSeriesOptions("timestamp", "deviceId", TimeSeriesGranularity.Seconds, new Optional<int?>(), new Optional<int?>())
+                TimeSeriesOptions = new TimeSeriesOptions("timestamp", "deviceId", TimeSeriesGranularity.Seconds)
             };
             context.MongoDatabase.CreateCollection("IotDB", options);
         }
@@ -30,7 +30,7 @@ public class IoTDataLayer : IIoTDataLayer
 
         var writeConcern = new WriteConcern(1, new Optional<TimeSpan?>(TimeSpan.FromSeconds(10)), journal: new Optional<bool?>(false), fsync: false);
         _dataDb = context.MongoDatabase.GetCollection<IoTRecord>("IotDB", new MongoCollectionSettings() { WriteConcern = writeConcern });
-        this._logger = logger;
+        _logger = logger;
     }
 
     private readonly IMongoCollection<IoTRecord> _dataDb;

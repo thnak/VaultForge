@@ -5,9 +5,21 @@ using MongoDB.Driver;
 
 namespace Business.LogProvider;
 
-public class MongoDbLogger(IMongoDataLayerContext context, string loggerName) : ILogger
+public class MongoDbLogger : ILogger
 {
-    private readonly IMongoCollection<LogEntryModel> _logCollection = context.MongoDatabase.GetCollection<LogEntryModel>("logs");
+    public MongoDbLogger(IMongoDataLayerContext context, string loggerName)
+    {
+        var options = new CreateCollectionOptions
+        {
+            TimeSeriesOptions = new TimeSeriesOptions("Timestamp", "LogLevel", TimeSeriesGranularity.Seconds)
+        };
+        context.MongoDatabase.CreateCollection("SystemLog", options);
+        _logCollection = context.MongoDatabase.GetCollection<LogEntryModel>("SystemLog");
+        _logCollectionName = loggerName;
+    }
+
+    private readonly IMongoCollection<LogEntryModel> _logCollection;
+    private readonly string _logCollectionName;
 
     public IDisposable? BeginScope<TState>(TState state) where TState : notnull => default!;
 
@@ -22,7 +34,7 @@ public class MongoDbLogger(IMongoDataLayerContext context, string loggerName) : 
         // Create a log entry using the LogEntry model
         var logEntry = new LogEntryModel(
             logLevel,
-            loggerName,
+            _logCollectionName,
             exception != null ? formatter(state, exception) : state?.ToString() ?? string.Empty,
             exception?.ToString()
         );

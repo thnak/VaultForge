@@ -5,6 +5,7 @@ namespace BusinessModels.Logging;
 public class LogEntryModel
 {
     public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+    
     public string LogLevel { get; set; } = string.Empty;
     public string Logger { get; set; } = string.Empty;
     public string Message { get; set; }
