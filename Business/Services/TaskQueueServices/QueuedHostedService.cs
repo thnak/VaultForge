@@ -8,13 +8,7 @@ public sealed class QueuedHostedService(IBackgroundTaskQueue taskQueue, ILogger<
 {
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        logger.LogInformation("""
-                              {Name} is running.
-                              Tap W to add a work item to the 
-                              background queue.
-                              """,
-            nameof(QueuedHostedService));
-
+        logger.LogInformation("""{Name} is running.""", nameof(QueuedHostedService));
         return ProcessTaskQueueAsync(stoppingToken);
     }
 
@@ -24,8 +18,7 @@ public sealed class QueuedHostedService(IBackgroundTaskQueue taskQueue, ILogger<
         {
             try
             {
-                Func<CancellationToken, ValueTask>? workItem = await taskQueue.DequeueAsync(stoppingToken);
-
+                Func<CancellationToken, ValueTask> workItem = await taskQueue.DequeueAsync(stoppingToken);
                 await workItem(stoppingToken);
             }
             catch (OperationCanceledException)

@@ -91,8 +91,10 @@ public class FilesController(
     [IgnoreAntiforgeryToken]
     public async Task<IActionResult> InsertContent([FromForm] string path)
     {
-        await folderServe.InsertMediaContent(path);
-        return Ok();
+        var result = await folderServe.InsertMediaContent(path);
+        if(result.IsSuccess)
+            return Ok(result.Message);
+        return BadRequest(result.Message);
     }
 
     [HttpGet("get-file")]

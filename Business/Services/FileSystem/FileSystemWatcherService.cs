@@ -93,7 +93,8 @@ public class FileSystemWatcherService(
 
     private void WatchStorageResourcesChanged(object sender, FileSystemEventArgs e)
     {
-        logger.LogWarning($"{e.FullPath} watch storage resources changed.");
+        if (e.ChangeType != WatcherChangeTypes.Created && e.ChangeType != WatcherChangeTypes.Deleted)
+            logger.LogWarning($"{e.FullPath} watch storage resources changed [{e.ChangeType}].");
     }
 
     private void WatcherOnError(object sender, ErrorEventArgs e)

@@ -17,9 +17,9 @@ public class Result<T>
         ErrorType = errorType;
     }
 
-    public static Result<T> Success(T value) => new Result<T>(value, true, AppLang.Success, ErrorType.None);
-    public static Result<bool> Success(string message) => new Result<bool>(true, true, message, ErrorType.None);
-    public static Result<T?> Failure(string message, ErrorType errorType) => new Result<T?>(default(T), false, message, errorType);
+    public static Result<T> Success(T value) => new(value, true, AppLang.Success, ErrorType.None);
+    public static Result<bool> Success(string message) => new(true, true, message, ErrorType.None);
+    public static Result<T?> Failure(string message, ErrorType errorType) => new(default, false, message, errorType);
 }
 
 public enum ErrorType
