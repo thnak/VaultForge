@@ -637,8 +637,7 @@ public class FolderSystemBusinessLayer(
                 };
                 await CreateFileAsync(folderStorage, fileInfo, cancellationToken);
                 playListContents[i] = fileInfo.Id.ToString();
-                await using var stream = new FileStream(Path.Combine(dir, lineText), FileMode.Open, FileAccess.Read,
-                    FileShare.Read, 4096, FileOptions.SequentialScan);
+                await using var stream = new FileStream(Path.Combine(dir, lineText), FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.SequentialScan);
                 var writeResult = await raidService.WriteDataAsync(stream, fileInfo.AbsolutePath, cancellationToken);
 
                 await fileSystemService.UpdateAsync(playListContents[i], new FieldUpdate<FileInfoModel>()

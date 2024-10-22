@@ -14,7 +14,9 @@ $renditions = @(
     "640x360 800k 128k",
     "842x480 1400k 192k",
     "1280x720 2800k 192k",
-    "1920x1080 5000k 256k"
+    "1920x1080 5000k 256k",
+    "2560x1440 12000k 384k",
+    "3840x2160 35000k 384k"
 )
 
 $segment_target_duration = 10
@@ -51,7 +53,7 @@ $key_frames_interval = [math]::Round(((& ffprobe $source 2>&1 | Select-String -P
 $key_frames_interval = [math]::Round($key_frames_interval / 10) * 10
 
 # Static parameters for FFmpeg
-$static_params = "-c:a aac -ac 2 -ar 48000 -c:v h264_amf -pix_fmt yuv420p -profile:v main -crf 19 -sc_threshold 0"
+$static_params = "-c:a aac -ac 2 -ar 48000 -c:s webvtt -c:v h264_amf -pix_fmt yuv420p -profile:v main -crf 19 -sc_threshold 0"
 $static_params += " -g $key_frames_interval -keyint_min $key_frames_interval -hls_time $segment_target_duration -hls_playlist_type vod"
 
 # Miscellaneous parameters
@@ -86,7 +88,7 @@ foreach ($rendition in $renditions) {
 
     if ($sourceHeight -le $prevHeight) {
         Write-Host "Video source has height smaller than output height ($height)"
-        break
+        continue
     }
 
     $bitrateValue = [int]($bitrate -replace 'k$', '')  # Remove the 'k' and convert to integer

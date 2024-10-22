@@ -13,7 +13,9 @@ renditions=(
   "640x360    800k     128k"
   "842x480    1400k    192k"
   "1280x720   2800k    192k"
-  "1920x1080  5000k    256k"
+  "1920x1080    5000k    256k"
+  "2560x1440    12000k    384k"
+  "3840x2160    35000k    384k"
 )
 
 segment_target_duration=10       # try to create a new segment every 10 seconds
@@ -52,7 +54,7 @@ key_frames_interval=$(echo `printf "%.1f\n" $(bc -l <<<"$key_frames_interval/10"
 key_frames_interval=${key_frames_interval%.*} # truncate to integer
 
 # static parameters that are similar for all renditions
-static_params="-c:a aac -ac 2 -ar 48000 -c:v h264_nvenc -pix_fmt yuv420p -profile:v main -crf 19 -sc_threshold 0"
+static_params="-c:a aac -ac 2 -ar 48000 -c:s webvtt -c:v h264_nvenc -pix_fmt yuv420p -profile:v main -crf 19 -sc_threshold 0"
 static_params+=" -g ${key_frames_interval} -keyint_min ${key_frames_interval} -hls_time ${segment_target_duration}"
 static_params+=" -hls_playlist_type vod"
 
@@ -91,7 +93,7 @@ for rendition in "${renditions[@]}"; do
   
   if [ $sourceHeight -le $prevHeight ]; then
       echo "video source has height smaller than output height (${height})"
-      break
+      continue
   fi
 
   widthParam=0
@@ -109,8 +111,6 @@ for rendition in "${renditions[@]}"; do
   cmd+=" -b:v ${bitrate} -maxrate ${maxrate%.*}k -bufsize ${bufsize%.*}k -b:a ${audiorate}"
   cmd+=" -hls_segment_filename \"${target}/${name}_%03d.ts\" \"${target}/${name}.m3u8\""
   
-  echo $cmd
-
   # add rendition entry in the master playlist
   master_playlist+="#EXT-X-STREAM-INF:BANDWIDTH=${bandwidth},RESOLUTION=${resolution}\n${name}.m3u8\n"
 
