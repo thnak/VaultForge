@@ -152,7 +152,6 @@ public class FolderSystemBusinessLayer(
         if (folder == null) return (false, AppLang.Folder_could_not_be_found);
 
         if (folder.AbsolutePath == "/root") return (false, AppLang.Could_not_delete_root_folder);
-        if (folder.Type == FolderContentType.SystemFolder) return (false, AppLang.Folder_could_not_be_found);
 
         if (folder.Type != FolderContentType.DeletedFolder)
         {

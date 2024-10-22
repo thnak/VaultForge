@@ -133,6 +133,8 @@ public class FilesController(
         Response.ContentLength = file.FileSize;
 
         MemoryStream ms = new MemoryStream();
+        Response.RegisterForDispose(ms);
+
         await raidService.ReadGetDataAsync(ms, file.AbsolutePath, cancelToken);
 
         if (file is { Classify: FileClassify.M3U8File })
@@ -155,7 +157,6 @@ public class FilesController(
             return Content(stringContent, file.ContentType);
         }
 
-        Response.RegisterForDispose(ms);
         return new FileStreamResult(ms, file.ContentType)
         {
             FileDownloadName = file.FileName,
