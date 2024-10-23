@@ -6,10 +6,8 @@ using Microsoft.Extensions.Options;
 
 namespace Business.Services.TaskQueueServices;
 
-public sealed class SequenceQueuedHostedService(ILogger<SequenceQueuedHostedService> logger, IOptions<AppSettings> options) : BackgroundService
+public sealed class SequenceQueuedHostedService(IBackgroundTaskQueue taskQueue, ILogger<SequenceQueuedHostedService> logger, IOptions<AppSettings> options) : BackgroundService
 {
-    private IBackgroundTaskQueue TaskQueue { get; set; } = new DefaultBackgroundTaskQueue(options);
-
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         logger.LogInformation("""{Name} is running.""", nameof(SequenceQueuedHostedService));
@@ -22,7 +20,7 @@ public sealed class SequenceQueuedHostedService(ILogger<SequenceQueuedHostedServ
         {
             try
             {
-                Func<CancellationToken, ValueTask> workItem = await TaskQueue.DequeueAsync(stoppingToken);
+                Func<CancellationToken, ValueTask> workItem = await taskQueue.DequeueAsync(stoppingToken);
                 await workItem(stoppingToken);
             }
             catch (OperationCanceledException)

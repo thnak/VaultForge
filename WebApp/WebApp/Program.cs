@@ -129,6 +129,7 @@ public class Program
 
         builder.Services.AddHostedService<FileSystemWatcherService>();
 
+        builder.Services.AddSingleton<IBackgroundTaskQueue, DefaultBackgroundTaskQueue>();
 
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
         builder.Services.AddHostedService<FileCheckSumService>();

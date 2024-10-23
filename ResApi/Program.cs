@@ -105,6 +105,8 @@ public abstract class Program
         
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
         builder.Services.AddHostedService<FileCheckSumService>();
+
+        builder.Services.AddSingleton<IBackgroundTaskQueue, DefaultBackgroundTaskQueue>();
         
         builder.Services.AddHostedService<SequenceQueuedHostedService>();
         builder.Services.AddHostedService<ParallelQueuedHostedService>();
