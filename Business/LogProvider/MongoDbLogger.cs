@@ -16,10 +16,10 @@ public class MongoDbLogger : ILogger
         context.MongoDatabase.CreateCollection("SystemLog", options);
         _logCollection = context.MongoDatabase.GetCollection<LogEntryModel>("SystemLog");
 
-        var dateLogLevelIndexKeys = Builders<LogEntryModel>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Date).Ascending(x => x.LogLevel);
+        var dateLogLevelIndexKeys = Builders<LogEntryModel>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.LogLevel);
         var dateLogLevelIndexModel = new CreateIndexModel<LogEntryModel>(dateLogLevelIndexKeys);
 
-        var dateIndexKeys = Builders<LogEntryModel>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Date).Ascending(x => x.LogLevel);
+        var dateIndexKeys = Builders<LogEntryModel>.IndexKeys.Ascending(x => x.Date);
         var dateIndexModel = new CreateIndexModel<LogEntryModel>(dateIndexKeys);
 
         _logCollection.Indexes.CreateMany([dateLogLevelIndexModel, dateIndexModel]);
