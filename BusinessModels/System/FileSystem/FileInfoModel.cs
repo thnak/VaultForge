@@ -79,6 +79,7 @@ public class FileInfoModel
     [Key(17)]
     public DateTime CreateTime
     {
+        get => _createTime;
         set
         {
             _createTime = value;
