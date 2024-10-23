@@ -92,7 +92,7 @@ public class FilesController(
     public async Task<IActionResult> InsertContent([FromForm] string path)
     {
         var result = await folderServe.InsertMediaContent(path);
-        if(result.IsSuccess)
+        if (result.IsSuccess)
             return Ok(result.Message);
         return BadRequest(result.Message);
     }
@@ -686,27 +686,20 @@ public class FilesController(
     [IgnoreAntiforgeryToken]
     public async Task<IActionResult> UploadPhysical(string folderCodes)
     {
-        var folderKeyString = AppLang.Folder;
-        var fileKeyString = AppLang.File;
-        var cancelToken = HttpContext.RequestAborted;
-
-        List<string> requestThumbnailList = [];
+        string folderKeyString = AppLang.Folder;
+        string fileKeyString = AppLang.File;
+        var cancellationToken = HttpContext.RequestAborted;
+        List<string> requestThumbnailList = new();
 
         try
         {
-            if (string.IsNullOrEmpty(Request.ContentType) || !MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
+            // Validate request
+            if (!IsValidRequest(out IActionResult? errorResult))
             {
-                ModelState.AddModelError(fileKeyString, "The request couldn't be processed (Error 1).");
-                return BadRequest(ModelState);
+                return errorResult ?? BadRequest();
             }
 
-            if (string.IsNullOrEmpty(folderCodes))
-            {
-                ModelState.AddModelError("Header", "Folder path is required in the request header");
-                return BadRequest(ModelState);
-            }
-
-            // folderServe.GetRoot(user);
+            // Validate folder
             var folder = folderServe.Get(folderCodes);
             if (folder == null)
             {
@@ -716,159 +709,41 @@ public class FilesController(
 
             var boundary = MediaTypeHeaderValue.Parse(Request.ContentType).GetBoundary(int.MaxValue);
             var reader = new MultipartReader(boundary, HttpContext.Request.Body);
-            var section = await reader.ReadNextSectionAsync(cancelToken);
-            while (section != null && HttpContext.RequestAborted is { IsCancellationRequested: false })
+            var section = await reader.ReadNextSectionAsync(cancellationToken);
+
+            while (section != null && !cancellationToken.IsCancellationRequested)
             {
-                var hasContentDispositionHeader = ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition);
-                if (hasContentDispositionHeader && contentDisposition != null)
+                if (ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition))
                 {
-                    if (!contentDisposition.HasFileContentDisposition())
+                    if (contentDisposition.HasFileContentDisposition())
                     {
-                        ModelState.AddModelError(fileKeyString, "The request couldn't be processed (Error 2).");
+                        var trustedFileNameForDisplay = contentDisposition.FileName.Value ?? Path.GetRandomFileName();
+                        var fileId = await ProcessFileSection(folderCodes, section, contentDisposition, trustedFileNameForDisplay, cancellationToken);
+
+                        if (!string.IsNullOrEmpty(fileId))
+                        {
+                            requestThumbnailList.Add(fileId);
+                        }
                     }
                     else
                     {
-                        var trustedFileNameForDisplay = contentDisposition.FileName.Value ?? Path.GetRandomFileName();
-
-                        var file = new FileInfoModel
-                        {
-                            FileName = trustedFileNameForDisplay
-                        };
-
-                        folder = folderServe.Get(folderCodes);
-                        if (folder == null)
-                        {
-                            if (ModelState.IsValid)
-                                return Ok(AppLang.Successfully_uploaded);
-                            return BadRequest(ModelState);
-                        }
-
-                        var fileId = file.Id.ToString();
-
-                        var createFileResult = await folderServe.CreateFileAsync(folder, file, cancelToken);
-                        if (createFileResult.Item1)
-                        {
-                            if (section.ContentType?.IsImageFile() == true)
-                            {
-                                var memoryStream = new MemoryStream();
-                                await section.Body.CopyToAsync(memoryStream, cancelToken);
-                                var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancelToken);
-                                await memoryStream.DisposeAsync();
-                                (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, saveResult.ContentType, saveResult.CheckSum);
-                                if (string.IsNullOrEmpty(file.ContentType))
-                                {
-                                    file.ContentType = section.ContentType ?? string.Empty;
-                                }
-                                else if (file.ContentType == "application/octet-stream")
-                                {
-                                    file.ContentType = Path.GetExtension(trustedFileNameForDisplay).GetMimeTypeFromExtension();
-                                }
-
-
-                                if (file.FileSize > 0)
-                                {
-                                    var field2Update = new FieldUpdate<FileInfoModel>()
-                                    {
-                                        { x => x.FileSize, file.FileSize },
-                                        { x => x.ContentType, file.ContentType },
-                                        { x => x.Checksum, file.Checksum },
-                                    };
-                                    var updateResult = await fileServe.UpdateAsync(fileId, field2Update, cancelToken);
-                                    if (updateResult.Item1)
-                                    {
-                                        requestThumbnailList.Add(fileId);
-                                    }
-                                    else
-                                    {
-                                        logger.LogError(updateResult.Item2);
-                                    }
-                                }
-                                else
-                                {
-                                    logger.LogWarning($"File empty. deleting {file.FileName}");
-                                    // double call to delete trash
-                                    await fileServe.DeleteAsync(fileId);
-                                    await fileServe.DeleteAsync(fileId);
-                                }
-                            }
-                            else
-                            {
-                                var memoryStream = new FileStream(Path.GetTempFileName(), FileMode.Create, FileAccess.ReadWrite, FileShare.None, bufferSize: 100 * 1024 * 1024, FileOptions.DeleteOnClose);
-                                await section.Body.CopyToAsync(memoryStream, cancelToken);
-
-                                file.FileSize = memoryStream.Length;
-                                var sectionContentType = section.ContentType;
-                                _ = Task.Run(async () =>
-                                {
-                                    var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancelToken);
-                                    await memoryStream.DisposeAsync();
-                                    (file.FileSize, file.ContentType, file.Checksum) = (saveResult.TotalByteWritten, saveResult.ContentType, saveResult.CheckSum);
-                                    if (string.IsNullOrEmpty(file.ContentType))
-                                    {
-                                        file.ContentType = sectionContentType ?? string.Empty;
-                                    }
-                                    else if (file.ContentType == "application/octet-stream")
-                                    {
-                                        file.ContentType = Path.GetExtension(trustedFileNameForDisplay).GetMimeTypeFromExtension();
-                                    }
-                                    else if (file.ContentType != sectionContentType)
-                                    {
-                                        file.ContentType = sectionContentType ?? string.Empty;
-                                    }
-
-
-                                    if (file.FileSize > 0)
-                                    {
-                                        var field2Update = new FieldUpdate<FileInfoModel>()
-                                        {
-                                            { x => x.FileSize, file.FileSize },
-                                            { x => x.ContentType, file.ContentType },
-                                            { x => x.Checksum, file.Checksum },
-                                        };
-                                        var updateResult = await fileServe.UpdateAsync(fileId, field2Update, cancelToken);
-                                        if (updateResult.Item1)
-                                        {
-                                            requestThumbnailList.Add(fileId);
-                                        }
-                                        else
-                                        {
-                                            logger.LogError(updateResult.Item2);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        logger.LogWarning($"File empty. deleting {file.FileName}");
-                                        // double call to delete trash
-                                        await fileServe.DeleteAsync(fileId);
-                                        await fileServe.DeleteAsync(fileId);
-                                    }
-                                });
-                            }
-                        }
-                        else
-                        {
-                            await fileServe.DeleteAsync(fileId);
-                            await fileServe.DeleteAsync(fileId);
-                        }
+                        ModelState.AddModelError(fileKeyString, "The request couldn't be processed (Error 2).");
                     }
                 }
 
-                section = await reader.ReadNextSectionAsync(cancelToken);
+                section = await reader.ReadNextSectionAsync(cancellationToken);
             }
 
-            if (ModelState.IsValid)
-                return Ok(AppLang.Successfully_uploaded);
-
-            return Ok(ModelState);
+            return ModelState.IsValid ? Ok(AppLang.Successfully_uploaded) : BadRequest(ModelState);
         }
         catch (OperationCanceledException ex)
         {
             return Ok(ex.Message);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            ModelState.AddModelError(AppLang.Exception, e.Message);
-            logger.LogError(e, null);
+            ModelState.AddModelError(AppLang.Exception, ex.Message);
+            logger.LogError(ex, null);
             return StatusCode(500, ModelState);
         }
         finally
@@ -878,5 +753,128 @@ public class FilesController(
                 await thumbnailService.AddThumbnailRequest(fileId);
             }
         }
+    }
+
+    private bool IsValidRequest(out IActionResult? errorResult)
+    {
+        string fileKeyString = AppLang.File;
+
+        if (string.IsNullOrEmpty(Request.ContentType) || !MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
+        {
+            ModelState.AddModelError(fileKeyString, "The request couldn't be processed (Error 1).");
+            errorResult = BadRequest(ModelState);
+            return false;
+        }
+
+        errorResult = null;
+        return true;
+    }
+
+    private async Task<string> ProcessFileSection(string folderCodes, MultipartSection section, ContentDispositionHeaderValue contentDisposition, string trustedFileNameForDisplay, CancellationToken cancellationToken)
+    {
+        string fileKeyString = AppLang.File;
+        var folder = folderServe.Get(folderCodes);
+
+        if (folder == null)
+        {
+            return string.Empty;
+        }
+
+        var file = new FileInfoModel { FileName = trustedFileNameForDisplay };
+        var createFileResult = await folderServe.CreateFileAsync(folder, file, cancellationToken);
+
+        if (!createFileResult.Item1)
+        {
+            await DeleteFileAsync(file.Id.ToString());
+            return string.Empty;
+        }
+
+        var fileId = file.Id.ToString();
+
+        if (section.ContentType?.IsImageFile() == true)
+        {
+            await ProcessImageFileSection(section, file, cancellationToken, trustedFileNameForDisplay);
+        }
+        else
+        {
+            await ProcessNonImageFileSection(section, file, cancellationToken, trustedFileNameForDisplay);
+        }
+
+        var updateResult = await fileServe.UpdateAsync(fileId, GetFileFieldUpdates(file), cancellationToken);
+
+        if (!updateResult.Item1)
+        {
+            logger.LogError(updateResult.Item2);
+            return string.Empty;
+        }
+
+        return fileId;
+    }
+
+    private async Task ProcessImageFileSection(MultipartSection section, FileInfoModel file, CancellationToken cancellationToken, string trustedFileNameForDisplay)
+    {
+        var memoryStream = new MemoryStream();
+
+        await section.Body.CopyToAsync(memoryStream, cancellationToken);
+        var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancellationToken);
+
+        await memoryStream.DisposeAsync();
+        UpdateFileProperties(file, saveResult, section.ContentType ?? saveResult.ContentType, trustedFileNameForDisplay);
+    }
+
+    private async Task ProcessNonImageFileSection(MultipartSection section, FileInfoModel file, CancellationToken cancellationToken, string trustedFileNameForDisplay)
+    {
+        var memoryStream = new FileStream(Path.GetTempFileName(), FileMode.Create, FileAccess.ReadWrite, FileShare.None, bufferSize: 100 * 1024 * 1024, FileOptions.DeleteOnClose);
+
+        await section.Body.CopyToAsync(memoryStream, cancellationToken);
+
+        var contentType = section.ContentType;
+
+        await Task.Run(async () => await SaveNonImageFileAsync(memoryStream, file, cancellationToken, contentType, trustedFileNameForDisplay));
+    }
+
+    private async Task SaveNonImageFileAsync(FileStream memoryStream, FileInfoModel file, CancellationToken cancellationToken, string? sectionContentType, string trustedFileNameForDisplay)
+    {
+        var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancellationToken);
+        await memoryStream.DisposeAsync();
+
+        UpdateFileProperties(file, saveResult, sectionContentType ?? saveResult.ContentType, trustedFileNameForDisplay);
+
+        if (file.FileSize <= 0)
+        {
+            await DeleteFileAsync(file.Id.ToString());
+        }
+    }
+
+    private void UpdateFileProperties(FileInfoModel file, RedundantArrayOfIndependentDisks.WriteDataResult saveResult, string contentType, string trustedFileNameForDisplay)
+    {
+        file.FileSize = saveResult.TotalByteWritten;
+        file.ContentType = saveResult.ContentType;
+        file.Checksum = saveResult.CheckSum;
+
+        if (string.IsNullOrEmpty(file.ContentType))
+        {
+            file.ContentType = contentType;
+        }
+        else if (file.ContentType == "application/octet-stream")
+        {
+            file.ContentType = Path.GetExtension(trustedFileNameForDisplay).GetMimeTypeFromExtension();
+        }
+    }
+
+    private static FieldUpdate<FileInfoModel> GetFileFieldUpdates(FileInfoModel file)
+    {
+        return new FieldUpdate<FileInfoModel>
+        {
+            { x => x.FileSize, file.FileSize },
+            { x => x.ContentType, file.ContentType },
+            { x => x.Checksum, file.Checksum }
+        };
+    }
+
+    private async Task DeleteFileAsync(string fileId)
+    {
+        await fileServe.DeleteAsync(fileId);
+        await fileServe.DeleteAsync(fileId);
     }
 }
