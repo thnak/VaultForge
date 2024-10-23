@@ -128,14 +128,13 @@ public class Program
         builder.Services.AddSingleton<IIoTBusinessLayer, IoTBusinessLayer>();
 
         builder.Services.AddHostedService<FileSystemWatcherService>();
-        builder.Services.AddSingleton<IBackgroundTaskQueue, DefaultBackgroundTaskQueue>();
 
 
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
         builder.Services.AddHostedService<FileCheckSumService>();
         
-        builder.Services.AddHostedService<QueuedHostedService>();
-
+        builder.Services.AddHostedService<SequenceQueuedHostedService>();
+        builder.Services.AddHostedService<ParallelQueuedHostedService>();
 
         #endregion
 

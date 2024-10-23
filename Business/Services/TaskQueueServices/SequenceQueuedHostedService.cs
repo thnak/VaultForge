@@ -1,14 +1,18 @@
 ﻿using Business.Services.TaskQueueServices.Base;
+using BusinessModels.General.SettingModels;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Business.Services.TaskQueueServices;
 
-public sealed class QueuedHostedService(IBackgroundTaskQueue taskQueue, ILogger<QueuedHostedService> logger) : BackgroundService
+public sealed class SequenceQueuedHostedService(ILogger<SequenceQueuedHostedService> logger, IOptions<AppSettings> options) : BackgroundService
 {
+    private IBackgroundTaskQueue TaskQueue { get; set; } = new DefaultBackgroundTaskQueue(options);
+
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        logger.LogInformation("""{Name} is running.""", nameof(QueuedHostedService));
+        logger.LogInformation("""{Name} is running.""", nameof(SequenceQueuedHostedService));
         return ProcessTaskQueueAsync(stoppingToken);
     }
 
@@ -18,7 +22,7 @@ public sealed class QueuedHostedService(IBackgroundTaskQueue taskQueue, ILogger<
         {
             try
             {
-                Func<CancellationToken, ValueTask> workItem = await taskQueue.DequeueAsync(stoppingToken);
+                Func<CancellationToken, ValueTask> workItem = await TaskQueue.DequeueAsync(stoppingToken);
                 await workItem(stoppingToken);
             }
             catch (OperationCanceledException)
@@ -34,7 +38,7 @@ public sealed class QueuedHostedService(IBackgroundTaskQueue taskQueue, ILogger<
 
     public override async Task StopAsync(CancellationToken stoppingToken)
     {
-        logger.LogInformation($"{nameof(QueuedHostedService)} is stopping.");
+        logger.LogInformation($"{nameof(SequenceQueuedHostedService)} is stopping.");
 
         await base.StopAsync(stoppingToken);
     }

@@ -102,12 +102,12 @@ public abstract class Program
         builder.Services.AddSingleton<IThumbnailService, ThumbnailService>();
 
         builder.Services.AddHostedService<FileSystemWatcherService>();
-
-        builder.Services.AddSingleton<IBackgroundTaskQueue, DefaultBackgroundTaskQueue>();
-
+        
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
         builder.Services.AddHostedService<FileCheckSumService>();
-        builder.Services.AddHostedService<QueuedHostedService>();
+        
+        builder.Services.AddHostedService<SequenceQueuedHostedService>();
+        builder.Services.AddHostedService<ParallelQueuedHostedService>();
 
         #region Cultures
 

@@ -820,7 +820,7 @@ public class FilesController(
         var memoryStream = new MemoryStream();
 
         await section.Body.CopyToAsync(memoryStream, cancellationToken);
-        var saveResult = await raidService.WriteDataAsync(section.Body, file.AbsolutePath, cancellationToken);
+        var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancellationToken);
 
         await memoryStream.DisposeAsync();
         UpdateFileProperties(file, saveResult, section.ContentType ?? saveResult.ContentType, trustedFileNameForDisplay);
