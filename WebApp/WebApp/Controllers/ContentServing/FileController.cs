@@ -363,8 +363,15 @@ public class FilesController(
                 contentFolderTypesList.Add(FolderContentType.SystemFolder);
 
             var contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).Distinct().ToList();
+
+            FileClassify[] fileClassify = [FileClassify.Normal];
+
             string rootFolderId = folderSource.Id.ToString();
-            var res = await folderServe.GetFolderRequestAsync(rootFolderId, model => model.RootFolder == rootFolderId && contentFolderTypesList.Contains(model.Type), model => model.RootFolder == rootFolderId && contentFileTypesList.Contains(model.Status), pageSize, page, forceReLoad is true, cancelToken);
+            var res = await folderServe.GetFolderRequestAsync(rootFolderId,
+                folderInfoModel => folderInfoModel.RootFolder == rootFolderId && contentFolderTypesList.Contains(folderInfoModel.Type),
+                fileInfoModel => fileInfoModel.RootFolder == rootFolderId && contentFileTypesList.Contains(fileInfoModel.Status) && fileClassify.Contains(fileInfoModel.Classify),
+                pageSize, page, forceReLoad is true, cancelToken);
+            
             res.Folder = folderSource;
             return Content(res.ToJson(), MediaTypeNames.Application.Json);
         }

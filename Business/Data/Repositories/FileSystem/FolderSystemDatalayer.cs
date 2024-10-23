@@ -341,7 +341,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             var isExists = await _dataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
             if (isExists) return Result<bool>.Failure(AppLang.Folder_already_exists, ErrorType.Duplicate);
             model.ModifiedTime = DateTime.UtcNow;
-            model.CreateDate = DateTime.UtcNow.Date;
+            model.CreateDate = DateTime.UtcNow;
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
             return Result<bool>.Success(true);
         }

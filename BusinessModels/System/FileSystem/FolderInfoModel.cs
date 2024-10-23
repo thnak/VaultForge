@@ -53,7 +53,7 @@ public class FolderInfoModel
     /// <summary>
     ///     Last modified date of the file
     /// </summary>
-    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc, DateOnly = true)]
     [Key(7)]
     public DateTime CreateDate { get; set; }
 

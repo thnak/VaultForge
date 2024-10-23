@@ -32,7 +32,7 @@ public class FileInfoModel
     /// <summary>
     ///     Creation date of the file
     /// </summary>
-    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc, DateOnly = true)]
     [Key(7)]
     public DateTime CreatedDate { get; set; }
 

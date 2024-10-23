@@ -279,7 +279,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             var isExist = await _fileDataDb.Find(filter).AnyAsync(cancellationToken: cancellationToken);
             if (!isExist)
             {
-                model.CreatedDate = DateTime.UtcNow.Date;
+                model.CreatedDate = DateTime.UtcNow;
                 model.ModifiedTime = DateTime.UtcNow;
                 await _fileDataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
                 return Result<bool>.Success(true);
