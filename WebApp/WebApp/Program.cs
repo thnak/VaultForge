@@ -66,13 +66,7 @@ public class Program
             options.AddServerHeader = false;
             options.Limits.MaxRequestBodySize = long.MaxValue;
             options.Limits.MinRequestBodyDataRate = null;
-        });
-
-        builder.Services.Configure<FormOptions>(x =>
-        {
-            x.ValueLengthLimit = int.MaxValue;
-            x.MultipartBodyLengthLimit = long.MaxValue; // if don't set default value is: 128 MB
-            x.MultipartHeadersLengthLimit = int.MaxValue;
+            options.Limits.MaxRequestBufferSize = 1024 * 1024 * 1024;
         });
 
         builder.Services.AddFrontEndService();

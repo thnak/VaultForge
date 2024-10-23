@@ -331,7 +331,7 @@ public class FilesController(
     [OutputCache(Duration = 10)]
     [ResponseCache(Duration = 50)]
     public async Task<IActionResult> GetSharedFolder(string username, [FromForm] string? id, [FromForm] string? password,
-        [FromForm] int page, [FromForm] int pageSize, [FromForm] string? contentTypes, [FromForm] bool? forceReLoad)
+        [FromForm] int page, [FromForm] int pageSize, [FromForm] string? contentTypes, [FromForm] bool? forceReLoad, [FromForm] bool? allowSystemResoure)
     {
         var cancelToken = HttpContext.RequestAborted;
         try
@@ -364,8 +364,7 @@ public class FilesController(
 
             var contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).Distinct().ToList();
             string rootFolderId = folderSource.Id.ToString();
-            var res = await folderServe.GetFolderRequestAsync(rootFolderId, model => model.RootFolder == rootFolderId && contentFolderTypesList.Contains(model.Type), model => model.RootFolder == rootFolderId && contentFileTypesList.Contains(model.Status),
-                pageSize, page, forceReLoad is true, cancelToken);
+            var res = await folderServe.GetFolderRequestAsync(rootFolderId, model => model.RootFolder == rootFolderId && contentFolderTypesList.Contains(model.Type), model => model.RootFolder == rootFolderId && contentFileTypesList.Contains(model.Status), pageSize, page, forceReLoad is true, cancelToken);
             res.Folder = folderSource;
             return Content(res.ToJson(), MediaTypeNames.Application.Json);
         }
@@ -454,8 +453,8 @@ public class FilesController(
 
         string fileName = response.Content.Headers.GetFileNameFromHeaders() ?? url.GetFileNameFromUrl();
 
-
         var memoryStream = new FileStream(Path.GetTempFileName(), FileMode.Create, FileAccess.ReadWrite, FileShare.None, bufferSize: 100 * 1024 * 1024, FileOptions.DeleteOnClose);
+        Response.RegisterForDisposeAsync(memoryStream);
         await response.Content.CopyToAsync(memoryStream, cancelToken);
 
         var file = new FileInfoModel()
@@ -708,7 +707,7 @@ public class FilesController(
             }
 
             var boundary = MediaTypeHeaderValue.Parse(Request.ContentType).GetBoundary(int.MaxValue);
-            var reader = new MultipartReader(boundary, HttpContext.Request.Body);
+            var reader = new MultipartReader(boundary, HttpContext.Request.Body, 10 * 1024 * 1024);
             var section = await reader.ReadNextSectionAsync(cancellationToken);
 
             while (section != null && !cancellationToken.IsCancellationRequested)
@@ -772,9 +771,7 @@ public class FilesController(
 
     private async Task<string> ProcessFileSection(string folderCodes, MultipartSection section, ContentDispositionHeaderValue contentDisposition, string trustedFileNameForDisplay, CancellationToken cancellationToken)
     {
-        string fileKeyString = AppLang.File;
         var folder = folderServe.Get(folderCodes);
-
         if (folder == null)
         {
             return string.Empty;
@@ -816,7 +813,7 @@ public class FilesController(
         var memoryStream = new MemoryStream();
 
         await section.Body.CopyToAsync(memoryStream, cancellationToken);
-        var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancellationToken);
+        var saveResult = await raidService.WriteDataAsync(section.Body, file.AbsolutePath, cancellationToken);
 
         await memoryStream.DisposeAsync();
         UpdateFileProperties(file, saveResult, section.ContentType ?? saveResult.ContentType, trustedFileNameForDisplay);

@@ -514,6 +514,20 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         return 0;
     }
 
+    private FileStream? OpenFileWrite(string path, int bufferSize) 
+    {
+        FileStream? file1 = null;
+        try
+        {
+            file1 = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: bufferSize, useAsync: true);
+        }
+        catch (Exception)
+        {
+            //
+        }
+
+        return file1;
+    }
 
     async Task<WriteDataResult> WriteDataAsync(Stream inputStream, int stripeSize, string file1Path, string file2Path, string file3Path, CancellationToken cancellationToken = default)
     {
@@ -525,35 +539,10 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             long totalByteWritten2 = 0;
             long totalByteWritten3 = 0;
 
-            FileStream? file1 = null;
-            try
-            {
-                file1 = new FileStream(file1Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: _readWriteBufferSize, useAsync: true);
-            }
-            catch (Exception)
-            {
-                //
-            }
-
-            FileStream? file2 = null;
-            try
-            {
-                file2 = new FileStream(file2Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: _readWriteBufferSize, useAsync: true);
-            }
-            catch (Exception)
-            {
-                //
-            }
-
-            FileStream? file3 = null;
-            try
-            {
-                file3 = new FileStream(file3Path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: _readWriteBufferSize, useAsync: true);
-            }
-            catch (Exception)
-            {
-                //
-            }
+            FileStream? file1 = OpenFileWrite(file1Path, _readWriteBufferSize);
+            FileStream? file2 = OpenFileWrite(file2Path, _readWriteBufferSize);
+            FileStream? file3 = OpenFileWrite(file3Path, _readWriteBufferSize);
+            
 
             byte[] buffer1 = new byte[stripeSize];
             byte[] buffer2 = new byte[stripeSize];
