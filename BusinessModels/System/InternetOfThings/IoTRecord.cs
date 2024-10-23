@@ -51,7 +51,7 @@ public class IoTRecord
         DeviceId = deviceId;
         SensorData = sensorData;
         Metadata = metadata;
-        Date = Timestamp;
+        Date = Timestamp.Date;
         Hour = Timestamp.Hour;
     }
 }

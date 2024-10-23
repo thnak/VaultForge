@@ -19,13 +19,15 @@ public class FileInfoModel
     ///     Dùng cho resource có nhiều biến thể như độ phân giải, chất lượng
     /// </summary>
     [Key(1)]
-    public List<FileContents> ExtendResource { get; set; } = [];
+    public List<FileContents> ExtendResource { get; set; } = new();
 
     [Key(2)] public string FileName { get; set; } = string.Empty; // Name of the file
+
     [Key(3)] public string ContentType { get; set; } = string.Empty; // Extension of the file
+
     [Key(4)] public long FileSize { get; set; } // Size of the file in bytes
 
-    [Key(5)] public List<string> Tags { get; set; } = [];
+    [Key(5)] public List<string> Tags { get; set; } = new();
 
     [Key(6)] public string MetadataId { get; set; } = string.Empty;
 
@@ -60,22 +62,46 @@ public class FileInfoModel
     [Key(12)] public string Thumbnail { get; set; } = string.Empty;
 
     [Key(13)] public FileStatus Status { get; set; }
+
     [Key(14)] public FileStatus PreviousStatus { get; set; }
+
     [Key(15)] public FileClassify Classify { get; set; }
+
     [Key(16)] public string Checksum { get; set; } = string.Empty;
 
-    #region Font-End Properties
+    [BsonIgnore]
+    private DateTime _createTime;
 
-    [BsonIgnore] [Key(17)] public FileMetadataModel Metadata { get; set; } = new();
+    /// <summary>
+    ///     Create time of the file entry
+    /// </summary>
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    [Key(17)]
+    public DateTime CreateTime
+    {
+        set
+        {
+            _createTime = value;
+            CreatedDate = _createTime.Date;
+        }
+    }
+
+    #region Front-End Properties
+
+    [BsonIgnore] [Key(18)] public FileMetadataModel Metadata { get; set; } = new FileMetadataModel();
 
     #endregion
 
-    #region Front-End Method
+    #region Front-End Methods
 
     public override bool Equals(object? o)
     {
-        var other = o as FileInfoModel;
-        return other?.Id == Id;
+        if (o is FileInfoModel other)
+        {
+            return other.Id == Id;
+        }
+
+        return false;
     }
 
     // ReSharper disable once NonReadonlyMemberInGetHashCode
@@ -83,7 +109,6 @@ public class FileInfoModel
     {
         return Id.GetHashCode();
     }
-
 
     public override string ToString()
     {
