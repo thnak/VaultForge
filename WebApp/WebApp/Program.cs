@@ -29,6 +29,7 @@ using Business.Services.Interfaces;
 using Business.Services.Services;
 using Business.Services.TaskQueueServices;
 using Business.Services.TaskQueueServices.Base;
+using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.SocketHubs;
 using BusinessModels.Converter;
 using BusinessModels.General.SettingModels;
@@ -37,7 +38,6 @@ using MessagePack;
 using MessagePack.Resolvers;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Services;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Options;
 using Protector.Certificates.Models;
 using WebApp.Authenticate;
@@ -129,11 +129,12 @@ public class Program
 
         builder.Services.AddHostedService<FileSystemWatcherService>();
 
-        builder.Services.AddSingleton<IBackgroundTaskQueue, DefaultBackgroundTaskQueue>();
+        builder.Services.AddSingleton<IParallelBackgroundTaskQueue, ParallelBackgroundTaskQueue>();
+        builder.Services.AddSingleton<ISequenceBackgroundTaskQueue, SequenceBackgroundTaskQueue>();
 
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
         builder.Services.AddHostedService<FileCheckSumService>();
-        
+
         builder.Services.AddHostedService<SequenceQueuedHostedService>();
         builder.Services.AddHostedService<ParallelQueuedHostedService>();
 
@@ -219,7 +220,6 @@ public class Program
         #endregion
 
         var app = builder.Build();
-
         app.UseStatusCodePagesWithRedirects($"{PageRoutes.Error.Name}/{{0}}");
 
 
@@ -252,6 +252,7 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
 
+        
         app.MapStaticAssets();
         app.MapControllers();
         app.UseMiddleware<Middleware>();

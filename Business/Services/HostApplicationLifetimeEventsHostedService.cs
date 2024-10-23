@@ -39,11 +39,6 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
         scope.ServiceProvider.GetService<IAdvertisementDataLayer>()?.InitializeAsync(cancelToken);
         scope.ServiceProvider.GetService<IChatWithLlmDataLayer>()?.InitializeAsync(cancelToken);
         scope.ServiceProvider.GetService<RedundantArrayOfIndependentDisks>()?.InitializeAsync(cancelToken);
-        var thumbnailService = scope.ServiceProvider.GetService<IThumbnailService>();
-        if (thumbnailService != null)
-        {
-            _ = Task.Run(() => thumbnailService.StartAsync(cancelToken), cancelToken);
-        }
     }
 
     private void OnStopping()

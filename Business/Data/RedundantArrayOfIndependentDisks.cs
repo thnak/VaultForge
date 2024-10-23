@@ -194,9 +194,9 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         if (raidModel == null)
             return;
 
+        var id = raidModel.Id.ToString();
         _ = Task.Run(async () =>
         {
-            var id = raidModel.Id.ToString();
             await foreach (var model in GetDataBlocks(id, cancellationToken: default))
             {
                 try
@@ -514,7 +514,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         return 0;
     }
 
-    private FileStream? OpenFileWrite(string path, int bufferSize) 
+    private FileStream? OpenFileWrite(string path, int bufferSize)
     {
         FileStream? file1 = null;
         try
@@ -542,7 +542,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             FileStream? file1 = OpenFileWrite(file1Path, _readWriteBufferSize);
             FileStream? file2 = OpenFileWrite(file2Path, _readWriteBufferSize);
             FileStream? file3 = OpenFileWrite(file3Path, _readWriteBufferSize);
-            
+
 
             byte[] buffer1 = new byte[stripeSize];
             byte[] buffer2 = new byte[stripeSize];

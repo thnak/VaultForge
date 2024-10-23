@@ -12,12 +12,12 @@ public class LimitedConcurrencyLevelTaskScheduler : TaskScheduler
     private readonly int _maxDegreeOfParallelism;
 
     // Indicates whether the scheduler is currently processing work items.
-    private int _delegatesQueuedOrRunning = 0;
+    private int _delegatesQueuedOrRunning;
 
     // Creates a new instance with the specified degree of parallelism.
     public LimitedConcurrencyLevelTaskScheduler(int maxDegreeOfParallelism)
     {
-        if (maxDegreeOfParallelism < 1) throw new ArgumentOutOfRangeException("maxDegreeOfParallelism");
+        if (maxDegreeOfParallelism < 1) throw new ArgumentOutOfRangeException(nameof(maxDegreeOfParallelism));
         _maxDegreeOfParallelism = maxDegreeOfParallelism;
     }
 
@@ -50,7 +50,7 @@ public class LimitedConcurrencyLevelTaskScheduler : TaskScheduler
                 // Process all available items in the queue.
                 while (true)
                 {
-                    Task item;
+                    Task? item;
                     lock (_tasks)
                     {
                         // When there are no more items to be processed,
@@ -62,12 +62,12 @@ public class LimitedConcurrencyLevelTaskScheduler : TaskScheduler
                         }
 
                         // Get the next item from the queue
-                        item = _tasks.First.Value;
+                        item = _tasks.First?.Value;
                         _tasks.RemoveFirst();
                     }
 
                     // Execute the task we pulled out of the queue
-                    TryExecuteTask(item);
+                    if (item != null) TryExecuteTask(item);
                 }
             }
             // We're done processing items on the current thread

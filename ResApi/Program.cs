@@ -32,6 +32,7 @@ using Business.Services.Interfaces;
 using Business.Services.Services;
 using Business.Services.TaskQueueServices;
 using Business.Services.TaskQueueServices.Base;
+using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.Converter;
 using BusinessModels.General.SettingModels;
 using BusinessModels.Resources;
@@ -106,7 +107,8 @@ public abstract class Program
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
         builder.Services.AddHostedService<FileCheckSumService>();
 
-        builder.Services.AddSingleton<IBackgroundTaskQueue, DefaultBackgroundTaskQueue>();
+        builder.Services.AddSingleton<IParallelBackgroundTaskQueue, ParallelBackgroundTaskQueue>();
+        builder.Services.AddSingleton<ISequenceBackgroundTaskQueue, SequenceBackgroundTaskQueue>();
         
         builder.Services.AddHostedService<SequenceQueuedHostedService>();
         builder.Services.AddHostedService<ParallelQueuedHostedService>();

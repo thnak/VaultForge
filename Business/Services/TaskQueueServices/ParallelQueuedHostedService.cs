@@ -1,4 +1,5 @@
 ﻿using Business.Services.TaskQueueServices.Base;
+using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.General.SettingModels;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -6,20 +7,9 @@ using Microsoft.Extensions.Options;
 
 namespace Business.Services.TaskQueueServices;
 
-public class ParallelQueuedHostedService : BackgroundService
+public class ParallelQueuedHostedService(IParallelBackgroundTaskQueue parallelBackgroundTaskQueue, IOptions<AppSettings> options, ILogger<ParallelQueuedHostedService> logger) : BackgroundService
 {
-    private DefaultBackgroundTaskQueue TaskQueue { get; set; }
-    private LimitedConcurrencyLevelTaskScheduler lcts;
-    private readonly ILogger<ParallelQueuedHostedService> logger;
-    private readonly TaskFactory factory;
-
-    public ParallelQueuedHostedService(IOptions<AppSettings> options, ILogger<ParallelQueuedHostedService> logger)
-    {
-        TaskQueue = new DefaultBackgroundTaskQueue(options);
-        lcts = new LimitedConcurrencyLevelTaskScheduler(Environment.ProcessorCount - 2);
-        this.logger = logger;
-        factory = new TaskFactory(lcts);
-    }
+    private readonly TaskFactory _factory = new(new LimitedConcurrencyLevelTaskScheduler(options.Value.BackgroundQueue.MaxParallelThreads));
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -29,14 +19,14 @@ public class ParallelQueuedHostedService : BackgroundService
             {
                 List<Task> tasks = new List<Task>();
 
-                while (TaskQueue.Count > 0)
+                while (parallelBackgroundTaskQueue.TryDequeue(out Func<CancellationToken, ValueTask>? workItem))
                 {
-                    Func<CancellationToken, ValueTask> workItem = await TaskQueue.DequeueAsync(stoppingToken);
-                    var task = factory.StartNew(() => workItem(stoppingToken), stoppingToken);
+                    var task = _factory.StartNew(async () => await workItem(stoppingToken), stoppingToken);
                     tasks.Add(task);
                 }
 
-                Task.WaitAll(tasks.ToArray(), stoppingToken);
+                await Task.WhenAll(tasks);
+                await Task.Delay(500, stoppingToken);
             }
             catch (OperationCanceledException)
             {

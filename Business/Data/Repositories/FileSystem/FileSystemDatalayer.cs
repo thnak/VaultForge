@@ -369,15 +369,6 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             await _fileDataDb.DeleteManyAsync(filter, cancelToken);
             raidService.Delete(query.AbsolutePath);
 
-            try
-            {
-                File.Delete(query.AbsolutePath);
-            }
-            catch (Exception)
-            {
-                logger.LogError($"[deprecated] delete failed {key}");
-            }
-
             if (!string.IsNullOrEmpty(query.Thumbnail))
             {
                 await DeleteAsync(query.Thumbnail);

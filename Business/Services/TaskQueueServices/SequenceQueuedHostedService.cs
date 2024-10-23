@@ -1,12 +1,11 @@
 ﻿using Business.Services.TaskQueueServices.Base;
-using BusinessModels.General.SettingModels;
+using Business.Services.TaskQueueServices.Base.Interfaces;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Business.Services.TaskQueueServices;
 
-public sealed class SequenceQueuedHostedService(IBackgroundTaskQueue taskQueue, ILogger<SequenceQueuedHostedService> logger, IOptions<AppSettings> options) : BackgroundService
+public sealed class SequenceQueuedHostedService(ISequenceBackgroundTaskQueue taskQueue, ILogger<SequenceQueuedHostedService> logger) : BackgroundService
 {
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {

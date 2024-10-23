@@ -1,14 +1,10 @@
 ﻿using Business.Business.Interfaces.FileSystem;
-using Business.Data;
-using Business.Models;
-using Business.Services.TaskQueueServices.Base;
-using BusinessModels.General.EnumModel;
 using BusinessModels.General.SettingModels;
-using BusinessModels.System.FileSystem;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Business.Services.Ffmpeg;
+using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.Utils.Helper;
 
 namespace Business.Services.FileSystem;
@@ -16,7 +12,7 @@ namespace Business.Services.FileSystem;
 public class FileSystemWatcherService(
     IOptions<AppSettings> appSettings,
     ILogger<FileSystemWatcherService> logger,
-    IBackgroundTaskQueue taskQueueService,
+    ISequenceBackgroundTaskQueue taskQueueService,
     IFolderSystemBusinessLayer folderSystemBusinessLayer) : IHostedService
 {
     private readonly List<FileSystemWatcher> _watchers = [];

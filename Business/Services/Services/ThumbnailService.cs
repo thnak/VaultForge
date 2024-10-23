@@ -1,9 +1,8 @@
-﻿using System.Collections.Concurrent;
-using Business.Business.Interfaces.FileSystem;
+﻿using Business.Business.Interfaces.FileSystem;
 using Business.Data;
 using Business.Models;
 using Business.Services.Interfaces;
-using Business.Utils.Helper;
+using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.General.EnumModel;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
@@ -15,73 +14,32 @@ using SixLabors.ImageSharp.Processing;
 
 namespace Business.Services.Services;
 
-public class ThumbnailService(IServiceProvider serviceProvider, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
+public class ThumbnailService(IParallelBackgroundTaskQueue queue ,IServiceProvider serviceProvider, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
 {
-    private readonly BlockingCollection<string> _thumbnailQueue = new();
-    private SemaphoreSlim QueueSemaphore { get; } = new(Environment.ProcessorCount - 1);
     private const int MaxDimension = 480; // Maximum width or height
-    private ILogger<ThumbnailService> Logger { get; } = logger;
-    private IServiceProvider ServiceProvider { get; } = serviceProvider;
 
     // To resolve database and image services
     private readonly CancellationTokenSource _cancellationTokenSource = new();
 
     public Task AddThumbnailRequest(string imageId)
     {
-        _thumbnailQueue.Add(imageId);
+        queue.QueueBackgroundWorkItemAsync(token => ProcessThumbnailAsync(imageId, token));
         return Task.CompletedTask;
     }
 
-    public async Task StartAsync(CancellationToken cancellationToken = default)
-    {
-        Logger.LogInformation("Thumbnail Service started.");
-
-        while (_thumbnailQueue.TryTake(out string? imageId, -1, cancellationToken))
-        {
-            if (string.IsNullOrEmpty(imageId)) continue;
-            try
-            {
-                await QueueSemaphore.WaitAsync(cancellationToken); // Wait for a thumbnail request
-                var id = imageId;
-                _ = Task.Run(async () =>
-                {
-                    try
-                    {
-                        await ProcessThumbnailAsync(id, cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.LogError($"Error creating thumbnail for image {id}: {ex.Message}");
-                    }
-                    finally
-                    {
-                        QueueSemaphore.Release();
-                    }
-                }, cancellationToken);
-            }
-            catch (OperationCanceledException)
-            {
-                Logger.LogInformation("Canceled");
-            }
-        }
-
-
-        Logger.LogInformation("Thumbnail Service stopped.");
-    }
-
-    private async Task ProcessThumbnailAsync(string imageId, CancellationToken cancellationToken)
+    private async ValueTask ProcessThumbnailAsync(string imageId, CancellationToken cancellationToken)
     {
         try
         {
             // Use your service provider to resolve necessary services (DB access, image processing)
-            using var scope = ServiceProvider.CreateScope();
+            using var scope = serviceProvider.CreateScope();
             var fileService = scope.ServiceProvider.GetRequiredService<IFileSystemBusinessLayer>(); // Assumed IImageService handles image fetching
 
             // Fetch the image from the database
             var fileInfo = fileService.Get(imageId);
             if (fileInfo == null)
             {
-                Logger.LogWarning($"File with ID {imageId} not found.");
+                logger.LogWarning($"File with ID {imageId} not found.");
                 return;
             }
 
@@ -93,7 +51,7 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
         }
         catch (Exception e)
         {
-            Logger.LogError($"Error creating thumbnail for image {imageId}: {e.Message}");
+            logger.LogError($"Error creating thumbnail for image {imageId}: {e.Message}");
         }
     }
 
@@ -105,11 +63,11 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
         int attempts = 0;
         int maxRetries = 3;
 
-        var raidService = ServiceProvider.CreateScope().ServiceProvider.GetService<RedundantArrayOfIndependentDisks>()!;
+        var raidService = serviceProvider.CreateScope().ServiceProvider.GetService<RedundantArrayOfIndependentDisks>()!;
 
         if (!raidService.Exists(imagePath))
         {
-            Logger.LogWarning($"File at path {imagePath} does not exist.");
+            logger.LogWarning($"File at path {imagePath} does not exist.");
             return;
         }
 
@@ -208,11 +166,11 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
             }
             catch (MongoException)
             {
-                Logger.LogWarning($"File with ID {fileId} already exists.");
+                logger.LogWarning($"File with ID {fileId} already exists.");
             }
         }
 
-        if (attempts >= maxRetries) Logger.LogError($"[File|{fileId}] Too many retries");
+        if (attempts >= maxRetries) logger.LogError($"[File|{fileId}] Too many retries");
     }
 
     private async Task<long> SaveStream(RedundantArrayOfIndependentDisks service, Stream stream, string thumbnailPath, CancellationToken cancellationToken = default)
@@ -222,18 +180,8 @@ public class ThumbnailService(IServiceProvider serviceProvider, ILogger<Thumbnai
         return result.TotalByteWritten;
     }
 
-    private async Task<long> SaveStream(Stream stream, string thumbnailPath, CancellationToken cancellationToken = default)
-    {
-        stream.SeekBeginOrigin(); // Reset stream position
-        await using var thumbnailFileStream = new FileStream(thumbnailPath, FileMode.Create, FileAccess.Write, FileShare.Read);
-        await stream.CopyToAsync(thumbnailFileStream, cancellationToken);
-        thumbnailFileStream.SeekBeginOrigin();
-        return thumbnailFileStream.Length;
-    }
-
     public void Dispose()
     {
-        QueueSemaphore.Dispose();
         _cancellationTokenSource.Dispose();
     }
 }
