@@ -194,13 +194,10 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         if (raidModel == null)
             return;
 
-
-        _fileDataDb.DeleteOne(x => x.Id == raidModel.Id);
-        _fileMetaDataDataDb.DeleteManyAsync(x => x.RelativePath == raidModel.Id.ToString());
-
         _ = Task.Run(async () =>
         {
-            await foreach (var model in GetDataBlocks(raidModel.Id.ToString(), cancellationToken: default))
+            var id = raidModel.Id.ToString();
+            await foreach (var model in GetDataBlocks(id, cancellationToken: default))
             {
                 try
                 {
@@ -211,6 +208,9 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                     logger.LogError(e, $"[{model.AbsolutePath}] Failed to delete file");
                 }
             }
+
+            await _fileDataDb.DeleteOneAsync(x => x.Id == raidModel.Id);
+            await _fileMetaDataDataDb.DeleteManyAsync(x => x.RelativePath == id);
         });
     }
 
