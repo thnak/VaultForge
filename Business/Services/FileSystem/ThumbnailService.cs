@@ -75,7 +75,7 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IServiceProvid
         {
             try
             {
-                using MemoryStream imageStream = new MemoryStream();
+                using MemoryStream imageStream = new MemoryStream((int)fileInfo.FileSize);
                 await raidService.ReadGetDataAsync(imageStream, imagePath, cancellationToken);
                 using var image = await Image.LoadAsync(imageStream, cancellationToken);
 
