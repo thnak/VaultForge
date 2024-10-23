@@ -407,7 +407,13 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         var isExists = await _dataDb.Find(filter).AnyAsync(cancellationToken: cancelToken);
         if (isExists)
         {
+            var folder = Get(key)!;
             await _dataDb.DeleteOneAsync(filter, cancelToken);
+            if (folder.Type == FolderContentType.SystemFolder || folder.PreviousType == FolderContentType.SystemFolder)
+            {
+                folder.Id = ObjectId.GenerateNewId();
+                await CreateAsync(folder, cancelToken);
+            }
             return (true, AppLang.Delete_successfully);
         }
 
