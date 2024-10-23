@@ -4,14 +4,13 @@ using System.Text;
 using Business.Business.Interfaces.FileSystem;
 using Business.Data;
 using Business.Models;
-using Business.Utils.Helper;
 using BusinessModels.General.EnumModel;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Business.Services.Services;
+namespace Business.Services.FileSystem;
 
 public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLayer, ILogger<FileCheckSumService> logger, RedundantArrayOfIndependentDisks disks) : IHostedService
 {

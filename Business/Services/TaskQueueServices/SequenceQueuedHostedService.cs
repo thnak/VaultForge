@@ -1,5 +1,4 @@
-﻿using Business.Services.TaskQueueServices.Base;
-using Business.Services.TaskQueueServices.Base.Interfaces;
+﻿using Business.Services.TaskQueueServices.Base.Interfaces;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 

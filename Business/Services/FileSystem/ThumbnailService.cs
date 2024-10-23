@@ -12,9 +12,9 @@ using MongoDB.Driver;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 
-namespace Business.Services.Services;
+namespace Business.Services.FileSystem;
 
-public class ThumbnailService(IParallelBackgroundTaskQueue queue ,IServiceProvider serviceProvider, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
+public class ThumbnailService(IParallelBackgroundTaskQueue queue, IServiceProvider serviceProvider, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
 {
     private const int MaxDimension = 480; // Maximum width or height
 
@@ -75,9 +75,10 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue ,IServiceProvid
         {
             try
             {
-                MemoryStream imageStream = new MemoryStream();
+                using MemoryStream imageStream = new MemoryStream();
                 await raidService.ReadGetDataAsync(imageStream, imagePath, cancellationToken);
                 using var image = await Image.LoadAsync(imageStream, cancellationToken);
+
 
                 // Define thumbnail size with aspect ratio
                 var width = image.Width;
