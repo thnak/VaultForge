@@ -10,24 +10,30 @@ public class IoTRecord
     /// <summary>
     /// The timestamp for when the data was recorded
     /// </summary>
-    [BsonElement("timestamp")] public DateTime Timestamp { get; set; }
+    [BsonElement("timestamp")]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    public DateTime Timestamp { get; set; }
 
     /// <summary>
     /// Sensor or device identifier
     /// </summary>
-    [BsonElement("deviceId")] public string DeviceId { get; set; }
+    [BsonElement("deviceId")]
+    public string DeviceId { get; set; }
 
     /// <summary>
     /// Sensor data (could be temperature, humidity, etc.)
     /// </summary>
-    [BsonElement("sensorData")] public double SensorData { get; set; }
+    [BsonElement("sensorData")]
+    public double SensorData { get; set; }
 
     /// <summary>
     /// What kind of sensor this is (e.g., temperature, humidity)
     /// </summary>
     [BsonElement("sensorType")]
     public SensorType SensorType { get; set; }
-    
+
+
+    [BsonDateTimeOptions(DateOnly = true, Kind = DateTimeKind.Utc)]
     public DateTime Date { get; set; }
 
     public int Hour { get; set; }
@@ -35,7 +41,8 @@ public class IoTRecord
     /// <summary>
     /// Optional metadata
     /// </summary>
-    [BsonElement("metadata")] public DeviceMetadata? Metadata { get; set; }
+    [BsonElement("metadata")]
+    public DeviceMetadata? Metadata { get; set; }
 
     public IoTRecord(string deviceId, double sensorData, DeviceMetadata? metadata = null)
     {
@@ -44,7 +51,7 @@ public class IoTRecord
         DeviceId = deviceId;
         SensorData = sensorData;
         Metadata = metadata;
-        Date = Timestamp.Date;
+        Date = Timestamp;
         Hour = Timestamp.Hour;
     }
 }
@@ -68,10 +75,10 @@ public class DeviceMetadata
     /// </summary>
     [BsonElement("location")]
     public string Location { get; set; } = string.Empty;
-    
+
     public string Manufacturer { get; set; } = string.Empty;
 
-    
+
     public DateTimeOffset LastCalibration { get; set; }
 
     /// <summary>
@@ -84,6 +91,7 @@ public class DeviceMetadata
     /// Optional, when the device was last serviced or maintained
     /// </summary>
     [BsonElement("lastServiceDate")]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime LastServiceDate { get; set; }
 }
 
