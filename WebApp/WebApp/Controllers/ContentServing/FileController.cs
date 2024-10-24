@@ -721,7 +721,7 @@ public class FilesController(
                 return BadRequest("Folder deleted");
 
             var boundary = MediaTypeHeaderValue.Parse(Request.ContentType).GetBoundary(int.MaxValue);
-            var reader = new MultipartReader(boundary, HttpContext.Request.Body, 10 * 1024 * 1024);
+            var reader = new MultipartReader(boundary, HttpContext.Request.Body, options.Value.FileFolders.Length * 1024);
             var section = await reader.ReadNextSectionAsync(cancellationToken);
 
             while (section != null && !cancellationToken.IsCancellationRequested)
