@@ -7,6 +7,7 @@ using Business.Data;
 using Business.Data.Interfaces.FileSystem;
 using Business.Models;
 using Business.Services;
+using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.Utils.Helper;
 using Business.Utils.StringExtensions;
 using BusinessModels.General.EnumModel;
@@ -33,14 +34,10 @@ public class FolderSystemBusinessLayer(
     IOptions<AppSettings> options,
     ILogger<FolderSystemBusinessLayer> logger,
     IMemoryCache memoryCache,
-    RedundantArrayOfIndependentDisks raidService)
+    RedundantArrayOfIndependentDisks raidService,
+    IParallelBackgroundTaskQueue parallelBackgroundTaskQueue)
     : IFolderSystemBusinessLayer, IDisposable
 {
-    private IFolderSystemDatalayer FolderSystemService { get; set; } = folderSystemService;
-    private IFileSystemBusinessLayer FileSystemService { get; set; } = fileSystemService;
-    private IUserBusinessLayer UserService { get; set; } = userService;
-
-    private ILogger<FolderSystemBusinessLayer> Logger { get; set; } = logger;
     private readonly string _workingDir = options.Value.FileFolder;
     private readonly CacheKeyManager _cacheKeyManager = new(memoryCache, nameof(FolderSystemBusinessLayer));
 
@@ -55,7 +52,7 @@ public class FolderSystemBusinessLayer(
         var value = _cacheKeyManager.GetOrCreateAsync(key, entry =>
         {
             entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30);
-            return FolderSystemService.GetDocumentSizeAsync(cancellationToken);
+            return folderSystemService.GetDocumentSizeAsync(cancellationToken);
         });
         return value;
     }
@@ -71,79 +68,79 @@ public class FolderSystemBusinessLayer(
         var value = _cacheKeyManager.GetOrCreateAsync(key, entry =>
         {
             entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30);
-            return FolderSystemService.GetDocumentSizeAsync(predicate, cancellationToken);
+            return folderSystemService.GetDocumentSizeAsync(predicate, cancellationToken);
         });
         return value;
     }
 
     public IAsyncEnumerable<FolderInfoModel> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default)
     {
-        return FolderSystemService.Search(queryString, limit, cancellationToken);
+        return folderSystemService.Search(queryString, limit, cancellationToken);
     }
 
     public IAsyncEnumerable<FolderInfoModel> FindAsync(FilterDefinition<FolderInfoModel> filter, CancellationToken cancellationToken = default)
     {
-        return FolderSystemService.FindAsync(filter, cancellationToken);
+        return folderSystemService.FindAsync(filter, cancellationToken);
     }
 
     public IAsyncEnumerable<FolderInfoModel> FindAsync(string keyWord, CancellationToken cancellationToken = default)
     {
-        return FolderSystemService.FindAsync(keyWord, cancellationToken);
+        return folderSystemService.FindAsync(keyWord, cancellationToken);
     }
 
     public IAsyncEnumerable<FolderInfoModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
     {
-        return FolderSystemService.FindProjectAsync(keyWord, limit, cancellationToken, fieldsToFetch);
+        return folderSystemService.FindProjectAsync(keyWord, limit, cancellationToken, fieldsToFetch);
     }
 
     public IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
     {
-        return FolderSystemService.Where(predicate, cancellationToken, fieldsToFetch);
+        return folderSystemService.Where(predicate, cancellationToken, fieldsToFetch);
     }
 
     public FolderInfoModel? Get(string key)
     {
-        return FolderSystemService.Get(key);
+        return folderSystemService.Get(key);
     }
 
     public IAsyncEnumerable<FolderInfoModel?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)
     {
-        return FolderSystemService.GetAsync(keys, cancellationToken);
+        return folderSystemService.GetAsync(keys, cancellationToken);
     }
 
     public Task<(FolderInfoModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationToken = default)
     {
-        return FolderSystemService.GetAllAsync(page, size, cancellationToken);
+        return folderSystemService.GetAllAsync(page, size, cancellationToken);
     }
 
     public IAsyncEnumerable<FolderInfoModel> GetAllAsync(CancellationToken cancellationToken)
     {
-        return FolderSystemService.GetAllAsync(cancellationToken);
+        return folderSystemService.GetAllAsync(cancellationToken);
     }
 
     public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<FolderInfoModel> updates, CancellationToken cancellationToken = default)
     {
-        return FolderSystemService.UpdateAsync(key, updates, cancellationToken);
+        return folderSystemService.UpdateAsync(key, updates, cancellationToken);
     }
 
     public Task<Result<bool>> CreateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
     {
-        return FolderSystemService.CreateAsync(model, cancellationToken);
+        return folderSystemService.CreateAsync(model, cancellationToken);
     }
 
     public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FolderInfoModel> models, CancellationToken cancellationToken = default)
     {
-        return FolderSystemService.CreateAsync(models, cancellationToken);
+        return folderSystemService.CreateAsync(models, cancellationToken);
     }
 
     public Task<(bool, string)> UpdateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
     {
-        return FolderSystemService.ReplaceAsync(model, cancellationToken);
+        return folderSystemService.ReplaceAsync(model, cancellationToken);
     }
 
     public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FolderInfoModel> models, CancellationToken cancellationToken = default)
     {
-        return FolderSystemService.ReplaceAsync(models, cancellationToken);
+        return folderSystemService.ReplaceAsync(models, cancellationToken);
     }
 
     public async Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
@@ -163,30 +160,30 @@ public class FolderSystemBusinessLayer(
             return (true, AppLang.Delete_successfully);
         }
 
-        var res = await FolderSystemService.DeleteAsync(key, cancelToken);
+        var res = await folderSystemService.DeleteAsync(key, cancelToken);
         if (res.Item1)
         {
-            _ = Task.Run(async () =>
+            await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async _ =>
             {
-                var folderList = FolderSystemService.Where(x => x.RootFolder == key, default, model => model.Id);
+                var folderList = folderSystemService.Where(x => x.RootFolder == key, default, model => model.Id);
                 await foreach (var fol in folderList)
                 {
                     var folderId = fol.Id.ToString();
                     await DeleteAsync(folderId);
                     await DeleteAsync(folderId);
                 }
-            });
+            }, default);
 
-            _ = Task.Run(async () =>
+            await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async _ =>
             {
-                var cursor = FileSystemService.Where(x => x.RootFolder == key, default, model => model.Id);
+                var cursor = fileSystemService.Where(x => x.RootFolder == key, default, model => model.Id);
                 await foreach (var file in cursor)
                 {
                     var fileId = file.Id.ToString();
-                    await FileSystemService.DeleteAsync(fileId);
-                    await FileSystemService.DeleteAsync(fileId);
+                    await fileSystemService.DeleteAsync(fileId, default);
+                    await fileSystemService.DeleteAsync(fileId, default);
                 }
-            });
+            }, default);
         }
 
         return res;
@@ -195,7 +192,7 @@ public class FolderSystemBusinessLayer(
     public FolderInfoModel? Get(string username, string absoblutePath)
     {
         var user = GetUser(username);
-        return FolderSystemService.Get(user?.UserName ?? string.Empty, absoblutePath);
+        return folderSystemService.Get(user?.UserName ?? string.Empty, absoblutePath);
     }
 
     public List<FolderInfoModel> GetFolderBloodLine(string folderId)
@@ -246,7 +243,7 @@ public class FolderSystemBusinessLayer(
             var res = CreateAsync(folder).Result;
             if (res.IsSuccess)
             {
-                UserService.UpdateAsync(user);
+                userService.UpdateAsync(user);
                 return Get(folder.Id.ToString());
             }
 
@@ -258,12 +255,12 @@ public class FolderSystemBusinessLayer(
 
     public IAsyncEnumerable<FolderInfoModel> GetContentFormParentFolderAsync(string id, int pageNumber, int pageSize, CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
     {
-        return FolderSystemService.GetContentFormParentFolderAsync(id, pageNumber, pageSize, cancellationToken, fieldsToFetch);
+        return folderSystemService.GetContentFormParentFolderAsync(id, pageNumber, pageSize, cancellationToken, fieldsToFetch);
     }
 
     public IAsyncEnumerable<FolderInfoModel> GetContentFormParentFolderAsync(Expression<Func<FolderInfoModel, bool>> predicate, int pageNumber, int pageSize, CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
     {
-        return FolderSystemService.GetContentFormParentFolderAsync(predicate, pageNumber, pageSize, cancellationToken, fieldsToFetch);
+        return folderSystemService.GetContentFormParentFolderAsync(predicate, pageNumber, pageSize, cancellationToken, fieldsToFetch);
     }
 
     public IAsyncEnumerable<FolderInfoModel> Search(string queryString, string? username, int limit = 10, CancellationToken cancellationTokenSource = default)
@@ -280,7 +277,7 @@ public class FolderSystemBusinessLayer(
         file.AbsolutePath = filePath;
         file.RootFolder = folder.Id.ToString();
         file.RelativePath = Path.Combine(folder.RelativePath, $"/{file.FileName}");
-        var res = await FileSystemService.CreateAsync(file, cancellationTokenSource);
+        var res = await fileSystemService.CreateAsync(file, cancellationTokenSource);
         if (res.IsSuccess)
         {
             var folderUpdateResult = await UpdateAsync(folder, cancellationTokenSource);
@@ -293,7 +290,7 @@ public class FolderSystemBusinessLayer(
 
     public async Task<(bool, string)> CreateFileAsync(string userName, FileInfoModel file, CancellationToken cancellationToken = default)
     {
-        var user = UserService.Get(userName) ?? UserService.GetAnonymous();
+        var user = userService.Get(userName) ?? userService.GetAnonymous();
         var folder = GetRoot(user.UserName)!;
         return await CreateFileAsync(folder, file, cancellationToken);
     }
@@ -369,21 +366,21 @@ public class FolderSystemBusinessLayer(
 
     public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
     {
-        return FileSystemService.GetFileSize(predicate, cancellationTokenSource);
+        return fileSystemService.GetFileSize(predicate, cancellationTokenSource);
     }
 
     public async Task<long> GetFolderByteSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
     {
-        var folders = FolderSystemService.Where(predicate, cancellationTokenSource);
+        var folders = folderSystemService.Where(predicate, cancellationTokenSource);
         long total = 0;
         await foreach (var folder in folders)
         foreach (var content in folder.Contents)
             if (content is { Type: FolderContentType.File or FolderContentType.HiddenFile })
             {
-                var file = FileSystemService.Get(content.Id);
+                var file = fileSystemService.Get(content.Id);
                 if (file == null)
                 {
-                    Logger.LogInformation($@"[Error] file by id {content} can not be found");
+                    logger.LogInformation($@"[Error] file by id {content} can not be found");
                     continue;
                 }
 
@@ -400,7 +397,7 @@ public class FolderSystemBusinessLayer(
 
     public async Task<(long, long)> GetFolderContentsSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
     {
-        var folders = FolderSystemService.Where(predicate, cancellationTokenSource);
+        var folders = folderSystemService.Where(predicate, cancellationTokenSource);
         long totalFolders = 0;
         long totalFiles = 0;
         await foreach (var folder in folders)
@@ -513,7 +510,7 @@ public class FolderSystemBusinessLayer(
                 model => model.CreatedDate
             };
 
-            var fileCursor = FileSystemService.Where(x => x.Status == FileStatus.DeletedFile && x.RootFolder == rootFolder, cancellationTokenSource, fieldToFetch);
+            var fileCursor = fileSystemService.Where(x => x.Status == FileStatus.DeletedFile && x.RootFolder == rootFolder, cancellationTokenSource, fieldToFetch);
             await foreach (var file in fileCursor)
             {
                 files.Add(file);
@@ -697,7 +694,7 @@ public class FolderSystemBusinessLayer(
         var fileList = new List<FileInfoModel>();
 
         var totalFolderDoc = await GetDocumentSizeAsync(folderPredicate, cancellationToken);
-        var totalFileDoc = await FileSystemService.GetDocumentSizeAsync(filePredicate, cancellationToken);
+        var totalFileDoc = await fileSystemService.GetDocumentSizeAsync(filePredicate, cancellationToken);
         var totalFilePages = Math.Ceiling((double)totalFileDoc / pageSize);
         var totalFolderPages = Math.Ceiling((double)totalFolderDoc / pageSize);
 
@@ -730,7 +727,7 @@ public class FolderSystemBusinessLayer(
             folderList.Add(m);
         }
 
-        await foreach (var m in FileSystemService.GetContentFormParentFolderAsync(filePredicate, pageNumber, pageSize, cancellationToken, fieldsFileToFetch))
+        await foreach (var m in fileSystemService.GetContentFormParentFolderAsync(filePredicate, pageNumber, pageSize, cancellationToken, fieldsFileToFetch))
         {
             fileList.Add(m);
         }
@@ -753,7 +750,7 @@ public class FolderSystemBusinessLayer(
     public UserModel? GetUser(string? username)
     {
         if (string.IsNullOrEmpty(username)) username = "Anonymous";
-        var user = UserService.Get(username);
+        var user = userService.Get(username);
         return user;
     }
 
