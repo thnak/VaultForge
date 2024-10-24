@@ -717,6 +717,9 @@ public class FilesController(
                 return BadRequest(ModelState);
             }
 
+            if (folder.Type == FolderContentType.DeletedFolder)
+                return BadRequest("Folder deleted");
+
             var boundary = MediaTypeHeaderValue.Parse(Request.ContentType).GetBoundary(int.MaxValue);
             var reader = new MultipartReader(boundary, HttpContext.Request.Body, 10 * 1024 * 1024);
             var section = await reader.ReadNextSectionAsync(cancellationToken);
