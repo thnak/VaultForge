@@ -7,6 +7,8 @@ using Business.Business.Interfaces.FileSystem;
 using Business.Data;
 using Business.Models;
 using Business.Services.Interfaces;
+using Business.Services.TaskQueueServices.Base;
+using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.Utils.Helper;
 using BusinessModels.General.EnumModel;
 using BusinessModels.People;
@@ -32,7 +34,8 @@ public class FilesController(
     IFolderSystemBusinessLayer folderServe,
     IThumbnailService thumbnailService,
     ILogger<FilesController> logger,
-    RedundantArrayOfIndependentDisks raidService) : ControllerBase
+    RedundantArrayOfIndependentDisks raidService,
+    IParallelBackgroundTaskQueue parallelBackgroundTaskQueue) : ControllerBase
 {
     [HttpGet("get-file-wall-paper")]
     [IgnoreAntiforgeryToken]
@@ -822,17 +825,17 @@ public class FilesController(
 
     private async Task ProcessNonImageFileSection(MultipartSection section, FileInfoModel file, CancellationToken cancellationToken, string trustedFileNameForDisplay)
     {
-        var memoryStream = new FileStream(Path.GetTempFileName(), FileMode.Create, FileAccess.ReadWrite, FileShare.None, bufferSize: 100 * 1024 * 1024, FileOptions.DeleteOnClose);
-
+        var tempFile = Path.GetTempFileName();
+        var memoryStream = new FileStream(tempFile, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 100 * 1024 * 1024, FileOptions.None);
         await section.Body.CopyToAsync(memoryStream, cancellationToken);
-
+        await memoryStream.DisposeAsync();
         var contentType = section.ContentType;
-
-        await Task.Run(async () => await SaveNonImageFileAsync(memoryStream, file, cancellationToken, contentType, trustedFileNameForDisplay));
+        await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async (token) => await SaveNonImageFileAsync(tempFile, file, token, contentType, trustedFileNameForDisplay), default);
     }
 
-    private async Task SaveNonImageFileAsync(FileStream memoryStream, FileInfoModel file, CancellationToken cancellationToken, string? sectionContentType, string trustedFileNameForDisplay)
+    private async Task SaveNonImageFileAsync(string path, FileInfoModel file, CancellationToken cancellationToken, string? sectionContentType, string trustedFileNameForDisplay)
     {
+        FileStream memoryStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.None, bufferSize: 100 * 1024 * 1024, FileOptions.DeleteOnClose);
         var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancellationToken);
         await memoryStream.DisposeAsync();
 
