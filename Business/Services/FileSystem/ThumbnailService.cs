@@ -28,9 +28,6 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IOptions<AppSe
     {
         try
         {
-            // Use your service provider to resolve necessary services (DB access, image processing)
-            using var scope = serviceProvider.CreateScope();
-
             // Fetch the image from the database
             var fileInfo = fileService.Get(imageId);
             if (fileInfo == null)

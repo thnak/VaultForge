@@ -7,7 +7,6 @@ using Business.Business.Interfaces.FileSystem;
 using Business.Data;
 using Business.Models;
 using Business.Services.Interfaces;
-using Business.Services.TaskQueueServices.Base;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.Utils.Helper;
 using BusinessModels.General.EnumModel;
@@ -823,7 +822,7 @@ public class FilesController(
         var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancellationToken);
 
         await memoryStream.DisposeAsync();
-        UpdateFileProperties(file, saveResult, section.ContentType ?? saveResult.ContentType, trustedFileNameForDisplay);
+        UpdateFileProperties(file, saveResult, string.IsNullOrEmpty(section.ContentType) ? saveResult.ContentType : section.ContentType, trustedFileNameForDisplay);
     }
 
     private async Task ProcessNonImageFileSection(MultipartSection section, FileInfoModel file, CancellationToken cancellationToken, string trustedFileNameForDisplay)
@@ -842,7 +841,7 @@ public class FilesController(
         var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancellationToken);
         await memoryStream.DisposeAsync();
 
-        UpdateFileProperties(file, saveResult, sectionContentType ?? saveResult.ContentType, trustedFileNameForDisplay);
+        UpdateFileProperties(file, saveResult, string.IsNullOrEmpty(sectionContentType) ? saveResult.ContentType : sectionContentType, trustedFileNameForDisplay);
 
         if (file.FileSize <= 0)
         {
@@ -883,6 +882,4 @@ public class FilesController(
     }
 
     #endregion
-
-    
 }
