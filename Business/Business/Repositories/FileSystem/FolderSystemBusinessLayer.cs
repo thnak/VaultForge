@@ -457,11 +457,11 @@ public class FolderSystemBusinessLayer(
                 keyBuilder.Append(i.ToString());
                 key = keyBuilder.ToString();
                 var i1 = i;
-                _ = _cacheKeyManager.GetOrCreateAsync(key, async entry =>
+                await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async (token) => await _cacheKeyManager.GetOrCreateAsync(key, async entry =>
                 {
                     entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10);
-                    return await GetFolderRequest(folderId, folderPredicate, filePredicate, pageSize, i1, cancellationToken);
-                }).ConfigureAwait(false);
+                    return await GetFolderRequest(folderId, folderPredicate, filePredicate, pageSize, i1, token);
+                }), default);
             }
         }
     }

@@ -8,7 +8,6 @@ public class LogEntryModel(LogLevel logLevel, string loggerName, string message,
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
-    [BsonDateTimeOptions(Kind = DateTimeKind.Utc, DateOnly = true)]
     public DateOnly Date { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
 
     public string LogLevel { get; set; } = logLevel.ToString();
