@@ -826,6 +826,14 @@ public class FilesController(
 
         await memoryStream.DisposeAsync();
         UpdateFileProperties(file, saveResult, string.IsNullOrEmpty(section.ContentType) ? saveResult.ContentType : section.ContentType, trustedFileNameForDisplay);
+        if (file.FileSize <= 0)
+        {
+            await DeleteFileAsync(file.Id.ToString());
+        }
+        else
+        {
+            logger.LogInformation("File empty");
+        }
     }
 
     private async Task ProcessNonImageFileSection(MultipartSection section, FileInfoModel file, CancellationToken cancellationToken, string trustedFileNameForDisplay)
@@ -849,6 +857,10 @@ public class FilesController(
         if (file.FileSize <= 0)
         {
             await DeleteFileAsync(file.Id.ToString());
+        }
+        else
+        {
+            logger.LogInformation("File empty");
         }
     }
 
