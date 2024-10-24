@@ -23,8 +23,8 @@ public class MongoDataLayerContext : IMongoDataLayerContext
             Scheme = ConnectionStringScheme.MongoDB,
             Server = new MongoServerAddress(settings.Value.ConnectionString, settings.Value.Port),
             Credential = new MongoCredential("SCRAM-SHA-1", identity, evidence),
-            MaxConnectionPoolSize = 130,
-            
+            MaxConnectionPoolSize = 200,
+            WaitQueueTimeout = TimeSpan.FromMinutes(1)
         };
 
 // #if DEBUG

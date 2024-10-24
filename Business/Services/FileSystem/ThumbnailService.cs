@@ -16,7 +16,7 @@ using SixLabors.ImageSharp.Processing;
 
 namespace Business.Services.FileSystem;
 
-public class ThumbnailService(IParallelBackgroundTaskQueue queue, IOptions<AppSettings> options, IServiceProvider serviceProvider, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
+public class ThumbnailService(IParallelBackgroundTaskQueue queue, IOptions<AppSettings> options, IFileSystemBusinessLayer fileService, RedundantArrayOfIndependentDisks raidService, IServiceProvider serviceProvider, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
 {
     public Task AddThumbnailRequest(string imageId)
     {
@@ -30,7 +30,6 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IOptions<AppSe
         {
             // Use your service provider to resolve necessary services (DB access, image processing)
             using var scope = serviceProvider.CreateScope();
-            var fileService = scope.ServiceProvider.GetRequiredService<IFileSystemBusinessLayer>(); // Assumed IImageService handles image fetching
 
             // Fetch the image from the database
             var fileInfo = fileService.Get(imageId);
@@ -43,7 +42,7 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IOptions<AppSe
             // check if file is an image 
             if (fileInfo.ContentType.IsImageFile())
             {
-                await CreateImageThumbnail(fileInfo, fileService, cancellationToken);
+                await CreateImageThumbnail(fileInfo, cancellationToken);
             }
         }
         catch (Exception e)
@@ -52,7 +51,7 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IOptions<AppSe
         }
     }
 
-    private async Task CreateImageThumbnail(FileInfoModel fileInfo, IFileSystemBusinessLayer fileService, CancellationToken cancellationToken)
+    private async Task CreateImageThumbnail(FileInfoModel fileInfo, CancellationToken cancellationToken)
     {
         // Load the image from the absolute path
         var imagePath = fileInfo.AbsolutePath;
@@ -60,7 +59,6 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IOptions<AppSe
         int attempts = 0;
         int maxRetries = 3;
 
-        var raidService = serviceProvider.CreateScope().ServiceProvider.GetService<RedundantArrayOfIndependentDisks>()!;
 
         if (!raidService.Exists(imagePath))
         {
@@ -80,7 +78,7 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IOptions<AppSe
 
                 MemoryStream imageStream = new MemoryStream((int)fileInfo.FileSize);
                 await raidService.ReadGetDataAsync(imageStream, imagePath, cancellationToken);
-                using var image = await Image.LoadAsync(imageStream, cancellationToken);
+                var image = await Image.LoadAsync(imageStream, cancellationToken);
                 await imageStream.DisposeAsync();
 
                 // Define thumbnail size with aspect ratio
@@ -107,7 +105,8 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IOptions<AppSe
                 image.Mutate(x => x.Resize(width, height)); // Resize with aspect ratio
 
                 var thumbnailStream = new MemoryStream();
-                await image.SaveAsWebpAsync(thumbnailStream, cancellationToken); // Save as JPEG
+                await image.SaveAsWebpAsync(thumbnailStream, cancellationToken);
+                image.Dispose();
                 var thumbnailSize = await SaveStream(raidService, thumbnailStream, thumbnailPath, cancellationToken);
                 await thumbnailStream.DisposeAsync();
 
@@ -152,6 +151,11 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IOptions<AppSe
                     { x => x.ExtendResource, fileInfo.ExtendResource }
                 }, cancellationToken);
                 break;
+            }
+            catch (OutOfMemoryException)
+            {
+                await Task.Delay(10000, cancellationToken);
+                attempts++;
             }
             catch (IOException)
             {

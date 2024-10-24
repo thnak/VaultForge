@@ -25,7 +25,7 @@ public class ParallelQueuedHostedService(IParallelBackgroundTaskQueue parallelBa
                     tasks.Add(task);
                 }
 
-                await Task.WhenAll(tasks);
+                await Task.WhenAll(tasks); 
                 await Task.Delay(500, stoppingToken);
             }
             catch (OperationCanceledException)

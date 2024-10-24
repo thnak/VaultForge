@@ -69,10 +69,10 @@ public class FileSystemWatcherService(
         {
             FileSystemWatcher watcher = new FileSystemWatcher();
             watcher.Path = storageResource;
-            watcher.Deleted += WatcherOnDeleted;
+            // watcher.Deleted += WatcherOnDeleted;
             watcher.Error += WatcherOnError;
-            watcher.Changed += WatchStorageResourcesChanged;
-            watcher.Renamed += WatchStorageResourcesRenamed;
+            // watcher.Changed += WatchStorageResourcesChanged;
+            // watcher.Renamed += WatchStorageResourcesRenamed;
             watcher.EnableRaisingEvents = true;
             watcher.IncludeSubdirectories = true;
             _watchers.Add(watcher);
@@ -82,26 +82,27 @@ public class FileSystemWatcherService(
         return Task.CompletedTask;
     }
 
-    private void WatchStorageResourcesRenamed(object sender, RenamedEventArgs e)
-    {
-        logger.LogWarning($"{e.OldFullPath} was renamed to {e.FullPath}");
-    }
-
-    private void WatchStorageResourcesChanged(object sender, FileSystemEventArgs e)
-    {
-        if (e.ChangeType != WatcherChangeTypes.Created && e.ChangeType != WatcherChangeTypes.Deleted)
-            logger.LogWarning($"{e.FullPath} watch storage resources changed [{e.ChangeType}].");
-    }
-
+    // private void WatchStorageResourcesRenamed(object sender, RenamedEventArgs e)
+    // {
+    //     logger.LogWarning($"{e.OldFullPath} was renamed to {e.FullPath}");
+    // }
+    //
+    // private void WatchStorageResourcesChanged(object sender, FileSystemEventArgs e)
+    // {
+    //     if (e.ChangeType != WatcherChangeTypes.Created && e.ChangeType != WatcherChangeTypes.Deleted)
+    //         logger.LogWarning($"{e.FullPath} watch storage resources changed [{e.ChangeType}].");
+    // }
+    //
+    // private void WatcherOnDeleted(object sender, FileSystemEventArgs e)
+    // {
+    //     logger.LogWarning($"{e.FullPath} deleted");
+    // }
+    //
     private void WatcherOnError(object sender, ErrorEventArgs e)
     {
         logger.LogError($"{e}");
     }
 
-    private void WatcherOnDeleted(object sender, FileSystemEventArgs e)
-    {
-        logger.LogWarning($"{e.FullPath} deleted");
-    }
 
     public Task StopAsync(CancellationToken cancellationToken)
     {

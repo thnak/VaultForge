@@ -16,7 +16,7 @@ public class BackgroundQueue
 {
     public int SequenceQueueSize { get; set; } = 5 * 1024 * 1024;
     public int ParallelQueueSize { get; set; } = 5 * 1024 * 1024;
-    public int MaxParallelThreads { get; set; } = Environment.ProcessorCount / 2;
+    public int MaxParallelThreads { get; set; } = Math.Max(Environment.ProcessorCount - 4, 1);
 }
 
 public class ThumbnailSetting
