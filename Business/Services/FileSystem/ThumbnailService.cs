@@ -75,10 +75,16 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IServiceProvid
         {
             try
             {
-                using MemoryStream imageStream = new MemoryStream((int)fileInfo.FileSize);
+                // Define the thumbnail path
+                var thumbnailFileName = $"{fileId}_thumb.webp";
+                var extendedFileName = $"{fileId}_ext.webp";
+                var thumbnailPath = Path.Combine(Path.GetDirectoryName(imagePath)!, "thumbnails", thumbnailFileName);
+                var extendImagePath = Path.Combine(Path.GetDirectoryName(imagePath)!, "thumbnails", extendedFileName);
+                
+                MemoryStream imageStream = new MemoryStream((int)fileInfo.FileSize);
                 await raidService.ReadGetDataAsync(imageStream, imagePath, cancellationToken);
                 using var image = await Image.LoadAsync(imageStream, cancellationToken);
-
+                await imageStream.DisposeAsync();
 
                 // Define thumbnail size with aspect ratio
                 var width = image.Width;
@@ -96,27 +102,17 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IServiceProvid
                 }
 
                 // Create a thumbnail
-                using var thumbnailStream = new MemoryStream();
-                using var extendedImage = new MemoryStream();
-
+                var extendedImage = new MemoryStream();
                 await image.SaveAsWebpAsync(extendedImage, cancellationToken);
-
-                image.Mutate(x => x.Resize(width, height)); // Resize with aspect ratio
-                await image.SaveAsWebpAsync(thumbnailStream, cancellationToken); // Save as JPEG
-
-                // Define the thumbnail path
-                var thumbnailFileName = $"{fileId}_thumb.webp";
-                var extendedFileName = $"{fileId}_ext.webp";
-                var thumbnailPath = Path.Combine(Path.GetDirectoryName(imagePath)!, "thumbnails", thumbnailFileName);
-                var extendImagePath = Path.Combine(Path.GetDirectoryName(imagePath)!, "thumbnails", extendedFileName);
-
-                // Ensure the directory exists
-                Directory.CreateDirectory(Path.GetDirectoryName(thumbnailPath)!);
-
-                // Save the thumbnail
-
-                var thumbnailSize = await SaveStream(raidService, thumbnailStream, thumbnailPath, cancellationToken);
                 var extendedImageSize = await SaveStream(raidService, extendedImage, extendImagePath, cancellationToken);
+                await extendedImage.DisposeAsync();
+                
+                image.Mutate(x => x.Resize(width, height)); // Resize with aspect ratio
+                
+                var thumbnailStream = new MemoryStream();
+                await image.SaveAsWebpAsync(thumbnailStream, cancellationToken); // Save as JPEG
+                var thumbnailSize = await SaveStream(raidService, thumbnailStream, thumbnailPath, cancellationToken);
+                await thumbnailStream.DisposeAsync();
 
                 FileInfoModel thumbnailFile = new FileInfoModel()
                 {
