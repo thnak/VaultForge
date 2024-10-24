@@ -826,7 +826,7 @@ public class FilesController(
     private async Task ProcessNonImageFileSection(MultipartSection section, FileInfoModel file, CancellationToken cancellationToken, string trustedFileNameForDisplay)
     {
         var tempFile = Path.GetTempFileName();
-        var memoryStream = new FileStream(tempFile, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 100 * 1024 * 1024, FileOptions.None);
+        var memoryStream = new FileStream(tempFile, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 4 * 1024, FileOptions.None);
         await section.Body.CopyToAsync(memoryStream, cancellationToken);
         await memoryStream.DisposeAsync();
         var contentType = section.ContentType;
@@ -835,7 +835,7 @@ public class FilesController(
 
     private async Task SaveNonImageFileAsync(string path, FileInfoModel file, CancellationToken cancellationToken, string? sectionContentType, string trustedFileNameForDisplay)
     {
-        FileStream memoryStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.None, bufferSize: 100 * 1024 * 1024, FileOptions.DeleteOnClose);
+        FileStream memoryStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.None, bufferSize: 4 * 1024, FileOptions.DeleteOnClose);
         var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancellationToken);
         await memoryStream.DisposeAsync();
 
