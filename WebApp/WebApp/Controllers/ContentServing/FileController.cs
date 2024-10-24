@@ -371,7 +371,7 @@ public class FilesController(
                 folderInfoModel => folderInfoModel.RootFolder == rootFolderId && contentFolderTypesList.Contains(folderInfoModel.Type),
                 fileInfoModel => fileInfoModel.RootFolder == rootFolderId && contentFileTypesList.Contains(fileInfoModel.Status) && fileClassify.Contains(fileInfoModel.Classify),
                 pageSize, page, forceReLoad is true, cancelToken);
-            
+
             res.Folder = folderSource;
             return Content(res.ToJson(), MediaTypeNames.Application.Json);
         }
@@ -695,7 +695,6 @@ public class FilesController(
         string folderKeyString = AppLang.Folder;
         string fileKeyString = AppLang.File;
         var cancellationToken = HttpContext.RequestAborted;
-        List<string> requestThumbnailList = new();
 
         try
         {
@@ -724,11 +723,11 @@ public class FilesController(
                     if (contentDisposition.HasFileContentDisposition())
                     {
                         var trustedFileNameForDisplay = contentDisposition.FileName.Value ?? Path.GetRandomFileName();
-                        var fileId = await ProcessFileSection(folderCodes, section, contentDisposition, trustedFileNameForDisplay, cancellationToken);
+                        var fileId = await ProcessFileSection(folderCodes, section, trustedFileNameForDisplay, cancellationToken);
 
                         if (!string.IsNullOrEmpty(fileId))
                         {
-                            requestThumbnailList.Add(fileId);
+                            await thumbnailService.AddThumbnailRequest(fileId);
                         }
                     }
                     else
@@ -752,14 +751,9 @@ public class FilesController(
             logger.LogError(ex, null);
             return StatusCode(500, ModelState);
         }
-        finally
-        {
-            foreach (var fileId in requestThumbnailList)
-            {
-                await thumbnailService.AddThumbnailRequest(fileId);
-            }
-        }
     }
+
+    #region upload-physical/{folderCodes}
 
     private bool IsValidRequest(out IActionResult? errorResult)
     {
@@ -776,7 +770,7 @@ public class FilesController(
         return true;
     }
 
-    private async Task<string> ProcessFileSection(string folderCodes, MultipartSection section, ContentDispositionHeaderValue contentDisposition, string trustedFileNameForDisplay, CancellationToken cancellationToken)
+    private async Task<string> ProcessFileSection(string folderCodes, MultipartSection section, string trustedFileNameForDisplay, CancellationToken cancellationToken)
     {
         var folder = folderServe.Get(folderCodes);
         if (folder == null)
@@ -881,4 +875,8 @@ public class FilesController(
         await fileServe.DeleteAsync(fileId);
         await fileServe.DeleteAsync(fileId);
     }
+
+    #endregion
+
+    
 }

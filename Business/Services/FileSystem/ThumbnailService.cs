@@ -4,23 +4,20 @@ using Business.Models;
 using Business.Services.Interfaces;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.General.EnumModel;
+using BusinessModels.General.SettingModels;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 
 namespace Business.Services.FileSystem;
 
-public class ThumbnailService(IParallelBackgroundTaskQueue queue, IServiceProvider serviceProvider, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
+public class ThumbnailService(IParallelBackgroundTaskQueue queue, IOptions<AppSettings> options, IServiceProvider serviceProvider, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
 {
-    private const int MaxDimension = 480; // Maximum width or height
-
-    // To resolve database and image services
-    private readonly CancellationTokenSource _cancellationTokenSource = new();
-
     public Task AddThumbnailRequest(string imageId)
     {
         queue.QueueBackgroundWorkItemAsync(token => ProcessThumbnailAsync(imageId, token));
@@ -80,7 +77,7 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IServiceProvid
                 var extendedFileName = $"{fileId}_ext.webp";
                 var thumbnailPath = Path.Combine(Path.GetDirectoryName(imagePath)!, "thumbnails", thumbnailFileName);
                 var extendImagePath = Path.Combine(Path.GetDirectoryName(imagePath)!, "thumbnails", extendedFileName);
-                
+
                 MemoryStream imageStream = new MemoryStream((int)fileInfo.FileSize);
                 await raidService.ReadGetDataAsync(imageStream, imagePath, cancellationToken);
                 using var image = await Image.LoadAsync(imageStream, cancellationToken);
@@ -92,13 +89,13 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IServiceProvid
 
                 if (width > height)
                 {
-                    height = (int)(height * (MaxDimension / (double)width));
-                    width = MaxDimension;
+                    height = (int)(height * (options.Value.ThumbnailSetting.ImageThumbnailSize / (double)width));
+                    width = options.Value.ThumbnailSetting.ImageThumbnailSize;
                 }
                 else
                 {
-                    width = (int)(width * (MaxDimension / (double)height));
-                    height = MaxDimension;
+                    width = (int)(width * (options.Value.ThumbnailSetting.ImageThumbnailSize / (double)height));
+                    height = options.Value.ThumbnailSetting.ImageThumbnailSize;
                 }
 
                 // Create a thumbnail
@@ -106,9 +103,9 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IServiceProvid
                 await image.SaveAsWebpAsync(extendedImage, cancellationToken);
                 var extendedImageSize = await SaveStream(raidService, extendedImage, extendImagePath, cancellationToken);
                 await extendedImage.DisposeAsync();
-                
+
                 image.Mutate(x => x.Resize(width, height)); // Resize with aspect ratio
-                
+
                 var thumbnailStream = new MemoryStream();
                 await image.SaveAsWebpAsync(thumbnailStream, cancellationToken); // Save as JPEG
                 var thumbnailSize = await SaveStream(raidService, thumbnailStream, thumbnailPath, cancellationToken);
@@ -179,6 +176,6 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IServiceProvid
 
     public void Dispose()
     {
-        _cancellationTokenSource.Dispose();
+        //
     }
 }
