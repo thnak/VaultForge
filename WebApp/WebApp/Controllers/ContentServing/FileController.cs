@@ -11,6 +11,7 @@ using Business.Services.TaskQueueServices.Base;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.Utils.Helper;
 using BusinessModels.General.EnumModel;
+using BusinessModels.General.SettingModels;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
@@ -20,6 +21,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Protector.Utils;
 
@@ -35,7 +37,8 @@ public class FilesController(
     IThumbnailService thumbnailService,
     ILogger<FilesController> logger,
     RedundantArrayOfIndependentDisks raidService,
-    IParallelBackgroundTaskQueue parallelBackgroundTaskQueue) : ControllerBase
+    IParallelBackgroundTaskQueue parallelBackgroundTaskQueue,
+    IOptions<AppSettings> options) : ControllerBase
 {
     [HttpGet("get-file-wall-paper")]
     [IgnoreAntiforgeryToken]
@@ -826,7 +829,7 @@ public class FilesController(
     private async Task ProcessNonImageFileSection(MultipartSection section, FileInfoModel file, CancellationToken cancellationToken, string trustedFileNameForDisplay)
     {
         var tempFile = Path.GetTempFileName();
-        var memoryStream = new FileStream(tempFile, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 4 * 1024, FileOptions.None);
+        var memoryStream = new FileStream(tempFile, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: options.Value.FileFolders.Length * 1024, FileOptions.None);
         await section.Body.CopyToAsync(memoryStream, cancellationToken);
         await memoryStream.DisposeAsync();
         var contentType = section.ContentType;
@@ -835,7 +838,7 @@ public class FilesController(
 
     private async Task SaveNonImageFileAsync(string path, FileInfoModel file, CancellationToken cancellationToken, string? sectionContentType, string trustedFileNameForDisplay)
     {
-        FileStream memoryStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.None, bufferSize: 4 * 1024, FileOptions.DeleteOnClose);
+        FileStream memoryStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.None, bufferSize: options.Value.FileFolders.Length * 1024, FileOptions.DeleteOnClose);
         var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancellationToken);
         await memoryStream.DisposeAsync();
 
