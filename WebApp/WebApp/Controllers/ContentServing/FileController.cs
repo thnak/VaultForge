@@ -806,14 +806,6 @@ public class FilesController(
             await ProcessNonImageFileSection(section, file, cancellationToken, trustedFileNameForDisplay);
         }
 
-        var updateResult = await fileServe.UpdateAsync(fileId, GetFileFieldUpdates(file), cancellationToken);
-
-        if (!updateResult.Item1)
-        {
-            logger.LogError(updateResult.Item2);
-            return string.Empty;
-        }
-
         return fileId;
     }
 
@@ -826,7 +818,7 @@ public class FilesController(
             await section.Body.CopyToAsync(memoryStream, cancellationToken);
             var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancellationToken);
 
-            UpdateFileProperties(file, saveResult, string.IsNullOrEmpty(section.ContentType) ? saveResult.ContentType : section.ContentType, trustedFileNameForDisplay);
+            await UpdateFileProperties(file, saveResult, string.IsNullOrEmpty(section.ContentType) ? saveResult.ContentType : section.ContentType, trustedFileNameForDisplay);
             if (file.FileSize <= 0)
             {
                 await DeleteFileAsync(file.Id.ToString());
@@ -839,7 +831,7 @@ public class FilesController(
             var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancellationToken);
 
             await memoryStream.DisposeAsync();
-            UpdateFileProperties(file, saveResult, string.IsNullOrEmpty(section.ContentType) ? saveResult.ContentType : section.ContentType, trustedFileNameForDisplay);
+            await UpdateFileProperties(file, saveResult, string.IsNullOrEmpty(section.ContentType) ? saveResult.ContentType : section.ContentType, trustedFileNameForDisplay);
             if (file.FileSize <= 0)
             {
                 await DeleteFileAsync(file.Id.ToString());
@@ -879,7 +871,7 @@ public class FilesController(
         var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancellationToken);
         await memoryStream.DisposeAsync();
 
-        UpdateFileProperties(file, saveResult, string.IsNullOrEmpty(sectionContentType) ? saveResult.ContentType : sectionContentType, trustedFileNameForDisplay);
+        await UpdateFileProperties(file, saveResult, string.IsNullOrEmpty(sectionContentType) ? saveResult.ContentType : sectionContentType, trustedFileNameForDisplay);
 
         if (file.FileSize <= 0)
         {
@@ -888,7 +880,7 @@ public class FilesController(
         }
     }
 
-    private void UpdateFileProperties(FileInfoModel file, RedundantArrayOfIndependentDisks.WriteDataResult saveResult, string contentType, string trustedFileNameForDisplay)
+    private async Task UpdateFileProperties(FileInfoModel file, RedundantArrayOfIndependentDisks.WriteDataResult saveResult, string contentType, string trustedFileNameForDisplay)
     {
         file.FileSize = saveResult.TotalByteWritten;
         file.ContentType = saveResult.ContentType;
@@ -901,6 +893,13 @@ public class FilesController(
         else if (file.ContentType == "application/octet-stream")
         {
             file.ContentType = Path.GetExtension(trustedFileNameForDisplay).GetMimeTypeFromExtension();
+        }
+
+        var updateResult = await fileServe.UpdateAsync(file.Id.ToString(), GetFileFieldUpdates(file));
+
+        if (!updateResult.Item1)
+        {
+            logger.LogError(updateResult.Item2);
         }
     }
 
