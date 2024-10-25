@@ -24,20 +24,39 @@ public static class Authenticate
         service.AddSingleton<IJsonWebTokenCertificateProvider, JsonWebTokenCertificateProvider>();
         service.AddSingleton<RsaKeyProvider>();
         service.AddCascadingAuthenticationState();
+
+        ConfigureAuthorizationPolicies(service);
+        ConfigureCookiePolicy(service);
+        ConfigureApplicationCookie(service);
+        ConfigureAuthentication(service);
+        ConfigureSession(service);
+        ConfigureCors(service);
+
+        return service;
+    }
+
+    private static void ConfigureAuthorizationPolicies(IServiceCollection service)
+    {
         service.AddAuthorization(options =>
         {
-            options.AddPolicy(PolicyNamesAndRoles.Over18, policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(18)));
-            options.AddPolicy(PolicyNamesAndRoles.Over14, policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(14)));
-            options.AddPolicy(PolicyNamesAndRoles.Over7, policyBuilder => policyBuilder.Requirements.Add(new OverYearOldRequirement(7)));
+            options.AddPolicy(PolicyNamesAndRoles.Over18, builder => builder.Requirements.Add(new OverYearOldRequirement(18)));
+            options.AddPolicy(PolicyNamesAndRoles.Over14, builder => builder.Requirements.Add(new OverYearOldRequirement(14)));
+            options.AddPolicy(PolicyNamesAndRoles.Over7, builder => builder.Requirements.Add(new OverYearOldRequirement(7)));
         });
+    }
 
+    private static void ConfigureCookiePolicy(IServiceCollection service)
+    {
         service.Configure<CookiePolicyOptions>(options =>
         {
             options.MinimumSameSitePolicy = SameSiteMode.None;
             options.HttpOnly = HttpOnlyPolicy.Always;
             options.Secure = CookieSecurePolicy.Always; // Ensure cookies are always sent over HTTPS
         });
+    }
 
+    private static void ConfigureApplicationCookie(IServiceCollection service)
+    {
         service.ConfigureApplicationCookie(options =>
         {
             options.Cookie.Name = CookieNames.AuthorizeCookie;
@@ -46,7 +65,10 @@ public static class Authenticate
             options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             options.Cookie.SameSite = SameSiteMode.Lax;
         });
+    }
 
+    private static void ConfigureAuthentication(IServiceCollection service)
+    {
         service.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
@@ -70,58 +92,53 @@ public static class Authenticate
                 {
                     OnValidatePrincipal = ValidateAsync
                 };
-
-                #region Cookie Event Handler
-
-                async Task ValidateAsync(CookieValidatePrincipalContext context)
-                {
-                    var userPrincipal = context.Principal;
-                    if (userPrincipal == null)
-                    {
-                        await Reject();
-                        return;
-                    }
-
-                    var authenticationType = userPrincipal.Identity?.AuthenticationType ?? string.Empty;
-                    if (authenticationType == CookieNames.AuthenticationType)
-                    {
-                        // Example: Check if the user's security stamp is still valid
-                        var userManager = context.HttpContext.RequestServices.GetRequiredService<IUserBusinessLayer>();
-                        var jswProvider = context.HttpContext.RequestServices.GetRequiredService<IJsonWebTokenCertificateProvider>();
-
-                        var jwt = userPrincipal.FindFirst(ClaimTypes.UserData)?.Value;
-                        if (!string.IsNullOrEmpty(jwt))
-                        {
-                            var claimsPrincipal = jswProvider.GetClaimsFromToken(jwt);
-                            if (claimsPrincipal == null)
-                            {
-                                await Reject();
-                                return;
-                            }
-                        }
-
-
-                        var userId = userPrincipal.FindFirst(ClaimTypes.Name)?.Value;
-                        var user = userId == null ? null : userManager.Get(userId);
-                        if (user == null) await Reject();
-                    }
-                    else
-                    {
-                        await Reject();
-                    }
-
-                    return;
-
-                    async Task Reject()
-                    {
-                        context.RejectPrincipal();
-                        await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                    }
-                }
-
-                #endregion
             });
+    }
 
+    private static async Task ValidateAsync(CookieValidatePrincipalContext context)
+    {
+        var userPrincipal = context.Principal;
+        if (userPrincipal == null)
+        {
+            await RejectAsync(context);
+            return;
+        }
+
+        var authenticationType = userPrincipal.Identity?.AuthenticationType ?? string.Empty;
+        if (authenticationType == CookieNames.AuthenticationType)
+        {
+            var userManager = context.HttpContext.RequestServices.GetRequiredService<IUserBusinessLayer>();
+            var jswProvider = context.HttpContext.RequestServices.GetRequiredService<IJsonWebTokenCertificateProvider>();
+
+            var jwt = userPrincipal.FindFirst(ClaimTypes.UserData)?.Value;
+            if (!string.IsNullOrEmpty(jwt))
+            {
+                var claimsPrincipal = jswProvider.GetClaimsFromToken(jwt);
+                if (claimsPrincipal == null)
+                {
+                    await RejectAsync(context);
+                    return;
+                }
+            }
+
+            var userId = userPrincipal.FindFirst(ClaimTypes.Name)?.Value;
+            var user = userId == null ? null : userManager.Get(userId);
+            if (user == null) await RejectAsync(context);
+        }
+        else
+        {
+            await RejectAsync(context);
+        }
+    }
+
+    private static async Task RejectAsync(CookieValidatePrincipalContext context)
+    {
+        context.RejectPrincipal();
+        await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    }
+
+    private static void ConfigureSession(IServiceCollection service)
+    {
         service.AddSession(options =>
         {
             options.IdleTimeout = TimeSpan.FromHours(ProtectorTime.SessionIdleTimeout);
@@ -137,16 +154,18 @@ public static class Authenticate
                 Domain = CookieNames.Domain
             };
         });
+    }
 
+    private static void ConfigureCors(IServiceCollection service)
+    {
+        const string allowAllOriginsPolicy = "AllowAllOrigins";
         service.AddCors(options =>
         {
-            options.AddPolicy("AllowAllOrigins",
-                policyBuilder => policyBuilder
-                    .WithOrigins("localhost:5217", "https://thnakdevserver.ddns.net:5001", "http://34.199.8.144:80", "https://34.199.8.144:80")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials());
+            options.AddPolicy(allowAllOriginsPolicy, policyBuilder => policyBuilder
+                .WithOrigins("localhost:5217", "https://thnakdevserver.ddns.net:5001", "http://34.199.8.144:80", "https://34.199.8.144:80")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials());
         });
-        return service;
     }
 }

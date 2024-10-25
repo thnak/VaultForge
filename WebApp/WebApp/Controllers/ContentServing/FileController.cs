@@ -731,12 +731,7 @@ public class FilesController(
                     if (contentDisposition.HasFileContentDisposition())
                     {
                         var trustedFileNameForDisplay = contentDisposition.FileName.Value ?? Path.GetRandomFileName();
-                        var fileId = await ProcessFileSection(folderCodes, section, trustedFileNameForDisplay, cancellationToken);
-
-                        if (!string.IsNullOrEmpty(fileId))
-                        {
-                            await thumbnailService.AddThumbnailRequest(fileId);
-                        }
+                        await ProcessFileSection(folderCodes, section, trustedFileNameForDisplay, cancellationToken);
                     }
                     else
                     {
@@ -888,6 +883,7 @@ public class FilesController(
         }
 
         var updateResult = await fileServe.UpdateAsync(file.Id.ToString(), GetFileFieldUpdates(file));
+        await thumbnailService.AddThumbnailRequest(file.Id.ToString());
 
         if (!updateResult.Item1)
         {

@@ -1,14 +1,20 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using WebApp.Client.Assets;
 using WebApp.Client.Utils;
 
 namespace WebApp.Client.Layout;
 
 public partial class ThemeModeSelector : ComponentBase, IDisposable
 {
-    [Parameter] public MudThemeProvider? MudThemeProvider { get; set; }
     private bool? IsDarkMode { get; set; }
-    private MudTheme? Theme { get; set; }
+    private string? Theme { get; set; }
+
+    private Dictionary<string, MudTheme> MudThemes { get; set; } = new()
+    {
+        { nameof(StaticThemes.Default), StaticThemes.Default },
+        { nameof(StaticThemes.Zephyrtheme), StaticThemes.Zephyrtheme }
+    };
 
     public void Dispose()
     {
@@ -20,8 +26,7 @@ public partial class ThemeModeSelector : ComponentBase, IDisposable
         if (firstRender)
         {
             CustomStateContainer.OnChanged += StateHasChanged;
-            Theme = CustomStateContainer.MudTheme;
-            if (MudThemeProvider != null) await MudThemeProvider.WatchSystemPreference(WatchSystemPreference);
+            Theme = MudThemes.First().Key;
             var isDarkMode = await JsRuntime.GetLocalStorage(nameof(CustomStateContainer.IsDarkMode));
             if (isDarkMode != null)
             {
@@ -38,11 +43,10 @@ public partial class ThemeModeSelector : ComponentBase, IDisposable
     private Task WatchSystemPreference(bool mode)
     {
         if (IsDarkMode == null)
-            if (MudThemeProvider != null)
-            {
-                CustomStateContainer.IsDarkMode = mode;
-                InvokeAsync(StateHasChanged);
-            }
+        {
+            CustomStateContainer.IsDarkMode = mode;
+            InvokeAsync(StateHasChanged);
+        }
 
         return Task.CompletedTask;
     }
@@ -63,14 +67,19 @@ public partial class ThemeModeSelector : ComponentBase, IDisposable
                 break;
             case false:
                 IsDarkMode = null;
-                if (MudThemeProvider != null) CustomStateContainer.IsDarkMode = await MudThemeProvider.GetSystemPreference();
                 await JsRuntime.RemoveLocalStorage(nameof(CustomStateContainer.IsDarkMode));
                 break;
         }
 
 
-        if (MudThemeProvider != null) CustomStateContainer.IsDarkMode = MudThemeProvider.IsDarkMode;
 
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task ThemeValueChanged(string arg)
+    {
+        Theme = arg;
+        CustomStateContainer.MudTheme = MudThemes[arg];
         await InvokeAsync(StateHasChanged);
     }
 }

@@ -7,7 +7,6 @@ using BusinessModels.General.EnumModel;
 using BusinessModels.General.SettingModels;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -16,7 +15,7 @@ using SixLabors.ImageSharp.Processing;
 
 namespace Business.Services.FileSystem;
 
-public class ThumbnailService(IParallelBackgroundTaskQueue queue, IOptions<AppSettings> options, IFileSystemBusinessLayer fileService, RedundantArrayOfIndependentDisks raidService, IServiceProvider serviceProvider, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
+public class ThumbnailService(IParallelBackgroundTaskQueue queue, IOptions<AppSettings> options, IFileSystemBusinessLayer fileService, RedundantArrayOfIndependentDisks raidService, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
 {
     public Task AddThumbnailRequest(string imageId)
     {

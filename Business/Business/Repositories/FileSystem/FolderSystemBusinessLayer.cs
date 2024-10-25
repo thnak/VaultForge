@@ -165,23 +165,41 @@ public class FolderSystemBusinessLayer(
         {
             await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async _ =>
             {
+                List<FolderInfoModel> folders = new List<FolderInfoModel>();
                 var folderList = folderSystemService.Where(x => x.RootFolder == key, default, model => model.Id);
                 await foreach (var fol in folderList)
                 {
-                    var folderId = fol.Id.ToString();
-                    await DeleteAsync(folderId);
-                    await DeleteAsync(folderId);
+                    folders.Add(fol);
+                }
+
+                foreach (var folderStack in folders)
+                {
+                    await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async (serverToken) =>
+                    {
+                        var folderId = folderStack.Id.ToString();
+                        await DeleteAsync(folderId, serverToken);
+                        await DeleteAsync(folderId, serverToken);
+                    });
                 }
             }, default);
 
             await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async _ =>
             {
+                List<FileInfoModel> files = new List<FileInfoModel>();
                 var cursor = fileSystemService.Where(x => x.RootFolder == key, default, model => model.Id);
                 await foreach (var file in cursor)
                 {
-                    var fileId = file.Id.ToString();
-                    await fileSystemService.DeleteAsync(fileId, default);
-                    await fileSystemService.DeleteAsync(fileId, default);
+                    files.Add(file);
+                }
+
+                foreach (var file in files)
+                {
+                    await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken =>
+                    {
+                        var fileId = file.Id.ToString();
+                        await fileSystemService.DeleteAsync(fileId, serverToken);
+                        await fileSystemService.DeleteAsync(fileId, serverToken);
+                    });
                 }
             }, default);
         }
