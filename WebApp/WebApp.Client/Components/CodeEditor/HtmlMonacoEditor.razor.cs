@@ -25,7 +25,7 @@ public partial class HtmlMonacoEditor : ComponentBase, IDisposable
     #region Js Methods
 
     [JSInvokable]
-    public static void HtmlChangeListener(string code)
+    public static void HtmlMonanoChangeListener(string code)
     {
         HtmlCodeOnnChanged?.Invoke(code);
     }

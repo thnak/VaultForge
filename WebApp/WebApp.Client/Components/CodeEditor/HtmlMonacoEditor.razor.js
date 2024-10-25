@@ -36,7 +36,7 @@
             this.htmlEditor.onKeyDown(async (e) => {
                 const htmlContent = this.htmlEditor.getValue();
                 try {
-                    await DotNet.invokeMethodAsync(this.AssemblyName, 'HtmlChangeListener', htmlContent);
+                    await DotNet.invokeMethodAsync(this.AssemblyName, 'HtmlMonanoChangeListener', htmlContent);
                 } catch (e) {
                     console.log(e);
                 }
