@@ -23,7 +23,8 @@ public partial class ThemeModeSelector : ComponentBase, IDisposable
         { nameof(StaticThemes.Lumentheme), StaticThemes.Lumentheme },
         { nameof(StaticThemes.Luxtheme), StaticThemes.Luxtheme },
         { nameof(StaticThemes.Materiatheme), StaticThemes.Materiatheme },
-        { nameof(StaticThemes.Mintytheme), StaticThemes.Mintytheme }
+        { nameof(StaticThemes.Mintytheme), StaticThemes.Mintytheme },
+        { nameof(StaticThemes.NewTheme), StaticThemes.NewTheme }
     };
 
     public void Dispose()

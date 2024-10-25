@@ -55,7 +55,9 @@ public static class JsRuntimeExtension
     {
         var textPlan = await jsRuntime.InvokeAsync<string?>("localStorage.getItem", key);
         if (string.IsNullOrEmpty(textPlan)) return default;
-
+        if(typeof(T) == typeof(string))
+            return (T)(object)textPlan;
+        
         return JsonSerializer.Deserialize<T?>(textPlan);
     }
 
