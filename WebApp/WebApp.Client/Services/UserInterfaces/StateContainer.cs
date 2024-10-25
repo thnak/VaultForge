@@ -1,4 +1,5 @@
 using MudBlazor;
+using WebApp.Client.Assets;
 
 namespace WebApp.Client.Services.UserInterfaces;
 
@@ -10,35 +11,7 @@ public class StateContainer
 
     public StateContainer()
     {
-        _mudTheme = new MudTheme
-        {
-            PaletteLight = new PaletteLight
-            {
-                Primary = "#3A6D8C",
-                Secondary = "#6A9AB0",
-                Tertiary = "#EAD8B1",
-                PrimaryContrastText = "#F8F8F8",
-                AppbarBackground = "#001F3F",
-                Background = "#001F3F",
-                Surface = "#001F3F",
-                DrawerIcon = "#68b7d9",
-                AppbarText = "#000000",
-                Warning = Colors.Amber.Default
-            },
-            PaletteDark = new PaletteDark
-            {
-                Primary = "#00a3e8",
-                DrawerIcon = "#68b7d9"
-            },
-            LayoutProperties = new LayoutProperties()
-            {
-                DefaultBorderRadius = "25px"
-            },
-            Shadows = new Shadow()
-            {
-                
-            }
-        };
+        _mudTheme = StaticThemes.DefaultTheme;
         SharedPalette = _isDarkMode ? _mudTheme.PaletteDark : _mudTheme.PaletteLight;
     }
 

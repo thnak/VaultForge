@@ -89,6 +89,7 @@
 	  <_ContentIncludedByDefault Remove="Pages\Components\DefaultStatic\NotFoundComponent.razor" />
 	  <_ContentIncludedByDefault Remove="Pages\Components\DefaultStatic\ThemeProvider.razor" />
 	  <_ContentIncludedByDefault Remove="Pages\Components\menus\RedditMobileMenu.razor" />
+	  <_ContentIncludedByDefault Remove="Components\User\UserAvatarEditorDialog.razor" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -47,6 +47,7 @@ public partial class Routes(ILogger<Routes> logger) : ComponentBase, IDisposable
     private void ResizeAction(BrowserViewportEventArgs obj)
     {
         logger.LogInformation($"Height: {obj.BrowserWindowSize.Height}\nWidth: {obj.BrowserWindowSize.Width}");
+        InvokeAsync(StateHasChanged);
     }
 
     private async Task<bool> ScrollToReloadEventAsync()

@@ -1,5 +1,6 @@
 ﻿using Business.Business.Interfaces.Advertisement;
 using Business.Models;
+using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.Advertisement;
 using BusinessModels.System;
 using Microsoft.AspNetCore.SignalR;
@@ -8,7 +9,7 @@ using Timer = System.Timers.Timer;
 
 namespace Business.SocketHubs;
 
-public class PageCreatorHub(IMemoryCache memoryCache, IAdvertisementBusinessLayer businessLayer) : Hub
+public class PageCreatorHub(IMemoryCache memoryCache, IAdvertisementBusinessLayer businessLayer, IParallelBackgroundTaskQueue queue) : Hub
 {
     private const string CacheKey = "PageCreatorHub";
     private Timer? TimerInterval { get; set; }
@@ -22,7 +23,7 @@ public class PageCreatorHub(IMemoryCache memoryCache, IAdvertisementBusinessLaye
         CancellationTokenSource.Cancel();
         CancellationTokenSource.Dispose();
         RemoveListeners();
-        
+
         TimerInterval?.Dispose();
         return base.OnDisconnectedAsync(exception);
     }
@@ -151,27 +152,29 @@ public class PageCreatorHub(IMemoryCache memoryCache, IAdvertisementBusinessLaye
 
     private void TimerIntervalOnElapsed(string articleId)
     {
-        if (memoryCache.TryGetValue($"{nameof(PageCreatorHub)}{nameof(ArticleModel)}{articleId}", out ArticleModel? article))
+        queue.QueueBackgroundWorkItemAsync(async token =>
         {
-            if (article != null)
+            if (memoryCache.TryGetValue($"{nameof(PageCreatorHub)}{nameof(ArticleModel)}{articleId}", out ArticleModel? article))
             {
-                _ = Task.Run(async () =>
+                if (article != null)
                 {
-                    var result = await businessLayer.CreateAsync(article, CancellationTokenSource.Token);
-                    if (!result.IsSuccess)
                     {
-                        FieldUpdate<ArticleModel> fieldUpdate = new FieldUpdate<ArticleModel>()
+                        var result = await businessLayer.CreateAsync(article, token);
+                        if (!result.IsSuccess)
                         {
-                            { x => x.HtmlSheet, article.HtmlSheet },
-                            { x => x.StyleSheet, article.StyleSheet },
-                            { x => x.JavaScriptSheet, article.JavaScriptSheet },
-                            { x => x.Language, article.Language },
-                            { x => x.Title, article.Title }
-                        };
-                        await businessLayer.UpdateAsync(articleId, fieldUpdate, CancellationTokenSource.Token);
+                            FieldUpdate<ArticleModel> fieldUpdate = new FieldUpdate<ArticleModel>()
+                            {
+                                { x => x.HtmlSheet, article.HtmlSheet },
+                                { x => x.StyleSheet, article.StyleSheet },
+                                { x => x.JavaScriptSheet, article.JavaScriptSheet },
+                                { x => x.Language, article.Language },
+                                { x => x.Title, article.Title }
+                            };
+                            await businessLayer.UpdateAsync(articleId, fieldUpdate, token);
+                        }
                     }
-                });
+                }
             }
-        }
+        });
     }
 }
