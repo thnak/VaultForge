@@ -40,8 +40,10 @@ public partial class ThemeModeSelector : ComponentBase, IDisposable
             Theme = await JsRuntime.GetLocalStorage<string>("Theme");
             if(string.IsNullOrEmpty(Theme))
                 Theme = MudThemes.First().Key;
-
-            CustomStateContainer.MudTheme = MudThemes[Theme];
+            if (MudThemes.TryGetValue(Theme, out var mudTheme))
+            {
+                CustomStateContainer.MudTheme = mudTheme;
+            }
             var isDarkMode = await JsRuntime.GetLocalStorage(nameof(CustomStateContainer.IsDarkMode));
             if (isDarkMode != null)
             {
