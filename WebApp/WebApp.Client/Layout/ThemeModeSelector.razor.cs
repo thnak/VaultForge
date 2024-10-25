@@ -12,7 +12,8 @@ public partial class ThemeModeSelector : ComponentBase, IDisposable
 
     private Dictionary<string, MudTheme> MudThemes { get; set; } = new()
     {
-        { nameof(StaticThemes.Default), StaticThemes.Default },
+        { nameof(StaticThemes.DefaultTheme), StaticThemes.DefaultTheme },
+        { nameof(StaticThemes.DefaultMudTheme), StaticThemes.DefaultMudTheme },
         { nameof(StaticThemes.Zephyrtheme), StaticThemes.Zephyrtheme },
         { nameof(StaticThemes.Ceruleantheme), StaticThemes.Ceruleantheme },
         { nameof(StaticThemes.Cosmotheme), StaticThemes.Cosmotheme },
@@ -23,8 +24,7 @@ public partial class ThemeModeSelector : ComponentBase, IDisposable
         { nameof(StaticThemes.Lumentheme), StaticThemes.Lumentheme },
         { nameof(StaticThemes.Luxtheme), StaticThemes.Luxtheme },
         { nameof(StaticThemes.Materiatheme), StaticThemes.Materiatheme },
-        { nameof(StaticThemes.Mintytheme), StaticThemes.Mintytheme },
-        { nameof(StaticThemes.NewTheme), StaticThemes.NewTheme }
+        { nameof(StaticThemes.Mintytheme), StaticThemes.Mintytheme }
     };
 
     public void Dispose()

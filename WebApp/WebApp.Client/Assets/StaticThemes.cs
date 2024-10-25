@@ -4,7 +4,7 @@ namespace WebApp.Client.Assets;
 
 public static class StaticThemes
 {
-    public static readonly MudTheme Default = new();
+    public static readonly MudTheme DefaultMudTheme = new();
     /*
 !
 * Bootswatch v5.3.3 (https://bootswatch.com)
@@ -3078,7 +3078,7 @@ public static class StaticThemes
 
     
       // New theme
-    public static readonly MudTheme NewTheme = new()
+    public static readonly MudTheme DefaultTheme = new()
     {
         PaletteLight = new PaletteLight()
         {
