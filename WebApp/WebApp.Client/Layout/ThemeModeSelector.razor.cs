@@ -13,7 +13,17 @@ public partial class ThemeModeSelector : ComponentBase, IDisposable
     private Dictionary<string, MudTheme> MudThemes { get; set; } = new()
     {
         { nameof(StaticThemes.Default), StaticThemes.Default },
-        { nameof(StaticThemes.Zephyrtheme), StaticThemes.Zephyrtheme }
+        { nameof(StaticThemes.Zephyrtheme), StaticThemes.Zephyrtheme },
+        { nameof(StaticThemes.Ceruleantheme), StaticThemes.Ceruleantheme },
+        { nameof(StaticThemes.Cosmotheme), StaticThemes.Cosmotheme },
+        { nameof(StaticThemes.Flatlytheme), StaticThemes.Flatlytheme },
+        { nameof(StaticThemes.Cyborgtheme), StaticThemes.Cyborgtheme },
+        { nameof(StaticThemes.Journaltheme), StaticThemes.Journaltheme },
+        { nameof(StaticThemes.Literatheme), StaticThemes.Literatheme },
+        { nameof(StaticThemes.Lumentheme), StaticThemes.Lumentheme },
+        { nameof(StaticThemes.Luxtheme), StaticThemes.Luxtheme },
+        { nameof(StaticThemes.Materiatheme), StaticThemes.Materiatheme },
+        { nameof(StaticThemes.Mintytheme), StaticThemes.Mintytheme }
     };
 
     public void Dispose()
@@ -26,7 +36,11 @@ public partial class ThemeModeSelector : ComponentBase, IDisposable
         if (firstRender)
         {
             CustomStateContainer.OnChanged += StateHasChanged;
-            Theme = MudThemes.First().Key;
+            Theme = await JsRuntime.GetLocalStorage<string>("Theme");
+            if(string.IsNullOrEmpty(Theme))
+                Theme = MudThemes.First().Key;
+
+            CustomStateContainer.MudTheme = MudThemes[Theme];
             var isDarkMode = await JsRuntime.GetLocalStorage(nameof(CustomStateContainer.IsDarkMode));
             if (isDarkMode != null)
             {
@@ -37,7 +51,10 @@ public partial class ThemeModeSelector : ComponentBase, IDisposable
             {
                 IsDarkMode = null;
             }
+
+            await InvokeAsync(StateHasChanged);
         }
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private Task WatchSystemPreference(bool mode)
@@ -70,7 +87,6 @@ public partial class ThemeModeSelector : ComponentBase, IDisposable
                 await JsRuntime.RemoveLocalStorage(nameof(CustomStateContainer.IsDarkMode));
                 break;
         }
-
 
 
         await InvokeAsync(StateHasChanged);
