@@ -11,9 +11,9 @@ public class ParallelQueuedHostedService(IParallelBackgroundTaskQueue parallelBa
 {
     private readonly TaskFactory _factory = new(new LimitedConcurrencyLevelTaskScheduler(options.Value.BackgroundQueue.MaxParallelThreads));
 
-    protected override  Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        logger.LogInformation("""{Name} is running.""", nameof(ParallelQueuedHostedService));
+        logger.LogInformation("""{Name} is running with max {threads} threads.""", nameof(ParallelQueuedHostedService), options.Value.BackgroundQueue.MaxParallelThreads);
         return ProcessTaskQueueAsync(stoppingToken);
     }
 
@@ -31,7 +31,7 @@ public class ParallelQueuedHostedService(IParallelBackgroundTaskQueue parallelBa
                     tasks.Add(task);
                 }
 
-                await Task.WhenAll(tasks); 
+                await Task.WhenAll(tasks);
                 await Task.Delay(500, stoppingToken);
             }
             catch (OperationCanceledException)
