@@ -827,16 +827,8 @@ public class FilesController(
         }
         catch (OperationCanceledException)
         {
-            await section.Body.CopyToAsync(memoryStream, cancellationToken);
-            var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancellationToken);
-
-            await memoryStream.DisposeAsync();
-            await UpdateFileProperties(file, saveResult, string.IsNullOrEmpty(section.ContentType) ? saveResult.ContentType : section.ContentType, trustedFileNameForDisplay);
-            if (file.FileSize <= 0)
-            {
-                await DeleteFileAsync(file.Id.ToString());
-                logger.LogInformation("Image file are empty");
-            }
+            await DeleteFileAsync(file.Id.ToString());
+            logger.LogInformation("Image file are empty");
         }
         finally
         {
