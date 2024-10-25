@@ -96,6 +96,7 @@ public partial class ThemeModeSelector : ComponentBase, IDisposable
     {
         Theme = arg;
         CustomStateContainer.MudTheme = MudThemes[arg];
+        await JsRuntime.SetLocalStorage("Theme", Theme);
         await InvokeAsync(StateHasChanged);
     }
 }
