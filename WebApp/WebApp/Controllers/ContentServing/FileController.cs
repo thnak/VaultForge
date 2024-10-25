@@ -821,30 +821,56 @@ public class FilesController(
     {
         var memoryStream = new MemoryStream();
 
-        await section.Body.CopyToAsync(memoryStream, cancellationToken);
-        var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancellationToken);
+        try
+        {
+            await section.Body.CopyToAsync(memoryStream, cancellationToken);
+            var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancellationToken);
 
-        await memoryStream.DisposeAsync();
-        UpdateFileProperties(file, saveResult, string.IsNullOrEmpty(section.ContentType) ? saveResult.ContentType : section.ContentType, trustedFileNameForDisplay);
-        if (file.FileSize <= 0)
-        {
-            await DeleteFileAsync(file.Id.ToString());
+            UpdateFileProperties(file, saveResult, string.IsNullOrEmpty(section.ContentType) ? saveResult.ContentType : section.ContentType, trustedFileNameForDisplay);
+            if (file.FileSize <= 0)
+            {
+                await DeleteFileAsync(file.Id.ToString());
+                logger.LogInformation("Image file are empty");
+            }
         }
-        else
+        catch (OperationCanceledException)
         {
-            logger.LogInformation("Image file are empty");
+            await section.Body.CopyToAsync(memoryStream, cancellationToken);
+            var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancellationToken);
+
+            await memoryStream.DisposeAsync();
+            UpdateFileProperties(file, saveResult, string.IsNullOrEmpty(section.ContentType) ? saveResult.ContentType : section.ContentType, trustedFileNameForDisplay);
+            if (file.FileSize <= 0)
+            {
+                await DeleteFileAsync(file.Id.ToString());
+                logger.LogInformation("Image file are empty");
+            }
+        }
+        finally
+        {
+            await memoryStream.DisposeAsync();
         }
     }
 
     private async Task ProcessNonImageFileSection(MultipartSection section, FileInfoModel file, CancellationToken cancellationToken, string trustedFileNameForDisplay)
     {
         var tempFile = Path.GetTempFileName();
-        var memoryStream = new FileStream(tempFile, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: options.Value.FileFolders.Length * 1024, FileOptions.None);
-        await section.Body.CopyToAsync(memoryStream, cancellationToken);
-        await memoryStream.FlushAsync(cancellationToken);
-        await memoryStream.DisposeAsync();
-        var contentType = section.ContentType;
-        await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async token => await SaveNonImageFileAsync(tempFile, file, token, contentType, trustedFileNameForDisplay), default);
+        var memoryStream = new FileStream(tempFile, FileMode.Create, FileAccess.Write, FileShare.Read, bufferSize: options.Value.FileFolders.Length * 1024, FileOptions.None);
+        try
+        {
+            await section.Body.CopyToAsync(memoryStream, cancellationToken);
+            await memoryStream.FlushAsync(cancellationToken);
+            var contentType = section.ContentType;
+            await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async token => await SaveNonImageFileAsync(tempFile, file, token, contentType, trustedFileNameForDisplay), default);
+        }
+        catch (OperationCanceledException)
+        {
+            await DeleteFileAsync(file.Id.ToString());
+        }
+        finally
+        {
+            await memoryStream.DisposeAsync();
+        }
     }
 
     private async Task SaveNonImageFileAsync(string path, FileInfoModel file, CancellationToken cancellationToken, string? sectionContentType, string trustedFileNameForDisplay)
@@ -858,9 +884,6 @@ public class FilesController(
         if (file.FileSize <= 0)
         {
             await DeleteFileAsync(file.Id.ToString());
-        }
-        else
-        {
             logger.LogInformation("Non Image file are empty");
         }
     }
