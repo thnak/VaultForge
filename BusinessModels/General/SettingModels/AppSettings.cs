@@ -5,7 +5,7 @@ public class AppSettings
     public string FileFolder { get; set; } = string.Empty;
     public string[] FileFolders { get; set; } = [];
     public int StripeSize { get; set; } = 4096;
-    public int ReadWriteBufferSize { get; set; } = 10 * 1024 * 1024;
+    public int ReadWriteBufferSize { get; set; } = 2 * 1024;
     public string[] FolderWatchList { get; set; } = [];
     public BackgroundQueue BackgroundQueue { get; set; } = new();
     public ThumbnailSetting ThumbnailSetting { get; set; } = new();

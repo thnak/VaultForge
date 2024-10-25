@@ -67,6 +67,11 @@ public static class StringExtension
         return base64String;
     }
 
+    public static string UrlFriendlyEncode(this string self)
+    {
+        return HttpUtility.UrlEncode(self);
+    }
+
     public static string Encode2Base64String(this string message)
     {
         var base64String = Convert.ToBase64String(Encoding.Unicode.GetBytes(message));

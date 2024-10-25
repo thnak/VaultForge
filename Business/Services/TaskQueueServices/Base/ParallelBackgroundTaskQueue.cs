@@ -2,6 +2,7 @@
 using System.Threading.Channels;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.General.SettingModels;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Business.Services.TaskQueueServices.Base;
@@ -10,9 +11,10 @@ public class ParallelBackgroundTaskQueue : IParallelBackgroundTaskQueue
 {
     private readonly Channel<Func<CancellationToken, ValueTask>> _queue;
 
-    public ParallelBackgroundTaskQueue(IOptions<AppSettings> appSettings)
+    public ParallelBackgroundTaskQueue(IOptions<AppSettings> appSettings, ILogger<ParallelBackgroundTaskQueue> logger)
     {
         var size = appSettings.Value.BackgroundQueue.ParallelQueueSize;
+        logger.LogInformation($"Queue size: {size}");
         BoundedChannelOptions options = new(size)
         {
             FullMode = BoundedChannelFullMode.Wait,

@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Business.Services;
+namespace Business.Services.Configure;
 
-public static class Culture
+public static class CultureService
 {
     public static IServiceCollection AddCultureService(this IServiceCollection service)
     {

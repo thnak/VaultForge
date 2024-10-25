@@ -2,6 +2,7 @@
 using System.Threading.Channels;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.General.SettingModels;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Business.Services.TaskQueueServices.Base;
@@ -10,19 +11,10 @@ public sealed class SequenceBackgroundTaskQueue : ISequenceBackgroundTaskQueue
 {
     private readonly Channel<Func<CancellationToken, ValueTask>> _queue;
 
-    public int Count
-    {
-        get
-        {
-            if (_queue.Reader.CanCount)
-                return _queue.Reader.Count;
-            return 0;
-        }
-    }
-
-    public SequenceBackgroundTaskQueue(IOptions<AppSettings> appSettings)
+    public SequenceBackgroundTaskQueue(IOptions<AppSettings> appSettings, ILogger<SequenceBackgroundTaskQueue> logger)
     {
         var size = appSettings.Value.BackgroundQueue.SequenceQueueSize;
+        logger.LogInformation($"Queue size is {size}");
         BoundedChannelOptions options = new(size)
         {
             FullMode = BoundedChannelFullMode.Wait,

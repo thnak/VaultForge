@@ -13,9 +13,9 @@ using Protector;
 using Protector.KeyProvider;
 using Protector.Tracer;
 
-namespace Business.Services;
+namespace Business.Services.Configure;
 
-public static class Authenticate
+public static class AuthenticateService
 {
     public static IServiceCollection AddAuthenticateService(this IServiceCollection service)
     {

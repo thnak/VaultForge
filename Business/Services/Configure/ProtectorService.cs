@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Protector;
 
-namespace Business.Services;
+namespace Business.Services.Configure;
 
 public static class ProtectorService
 {

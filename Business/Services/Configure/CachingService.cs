@@ -1,5 +1,5 @@
 ﻿using Business.Models;
-
+using Microsoft.Extensions.DependencyInjection;
 #if DEBUG
 #else
 using Microsoft.AspNetCore.Builder;
@@ -7,11 +7,9 @@ using Microsoft.AspNetCore.ResponseCompression;
 #endif
 
 
-using Microsoft.Extensions.DependencyInjection;
+namespace Business.Services.Configure;
 
-namespace Business.Services;
-
-public static class Caching
+public static class CachingService
 {
     public static IServiceCollection AddCachingService(this IServiceCollection service)
     {

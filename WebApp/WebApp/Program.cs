@@ -1,34 +1,8 @@
-using Business.Business.Interfaces.Advertisement;
-using Business.Business.Interfaces.Chat;
-using Business.Business.Interfaces.FileSystem;
-using Business.Business.Interfaces.InternetOfThings;
-using Business.Business.Interfaces.User;
-using Business.Business.Repositories.Advertisement;
-using Business.Business.Repositories.Chat;
-using Business.Business.Repositories.FileSystem;
-using Business.Business.Repositories.InternetOfThings;
-using Business.Business.Repositories.User;
-using Business.Data;
 using Business.Data.Interfaces;
-using Business.Data.Interfaces.Advertisement;
-using Business.Data.Interfaces.Chat;
-using Business.Data.Interfaces.FileSystem;
-using Business.Data.Interfaces.InternetOfThings;
-using Business.Data.Interfaces.User;
-using Business.Data.Repositories;
-using Business.Data.Repositories.Advertisement;
-using Business.Data.Repositories.Chat;
-using Business.Data.Repositories.FileSystem;
-using Business.Data.Repositories.InternetOfThings;
-using Business.Data.Repositories.User;
 using Business.Exceptions;
 using Business.LogProvider;
 using Business.Services;
-using Business.Services.FileSystem;
-using Business.Services.Interfaces;
-using Business.Services.TaskQueueServices;
-using Business.Services.TaskQueueServices.Base;
-using Business.Services.TaskQueueServices.Base.Interfaces;
+using Business.Services.Configure;
 using Business.SocketHubs;
 using BusinessModels.Converter;
 using BusinessModels.General.SettingModels;
@@ -102,40 +76,7 @@ public class Program
 
         #region Additionnal services
 
-        builder.Services.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
-
-        builder.Services.AddSingleton<RedundantArrayOfIndependentDisks>();
-
-        builder.Services.AddSingleton<IUserDataLayer, UserDataLayer>();
-        builder.Services.AddSingleton<IUserBusinessLayer, UserBusinessLayer>();
-
-        builder.Services.AddSingleton<IFolderSystemDatalayer, FolderSystemDatalayer>();
-        builder.Services.AddSingleton<IFolderSystemBusinessLayer, FolderSystemBusinessLayer>();
-
-        builder.Services.AddSingleton<IFileSystemDatalayer, FileSystemDatalayer>();
-        builder.Services.AddSingleton<IFileSystemBusinessLayer, FileSystemBusinessLayer>();
-
-        builder.Services.AddSingleton<IAdvertisementDataLayer, AdvertisementDataLayer>();
-        builder.Services.AddSingleton<IAdvertisementBusinessLayer, AdvertisementBusinessLayer>();
-
-        builder.Services.AddSingleton<IChatWithLlmDataLayer, ChatWithLlmDataLayer>();
-        builder.Services.AddSingleton<IChatWithLlmBusinessLayer, ChatWithLlmBusinessLayer>();
-
-        builder.Services.AddSingleton<IThumbnailService, ThumbnailService>();
-
-        builder.Services.AddSingleton<IIoTDataLayer, IoTDataLayer>();
-        builder.Services.AddSingleton<IIoTBusinessLayer, IoTBusinessLayer>();
-
-        builder.Services.AddHostedService<FileSystemWatcherService>();
-
-        builder.Services.AddSingleton<IParallelBackgroundTaskQueue, ParallelBackgroundTaskQueue>();
-        builder.Services.AddSingleton<ISequenceBackgroundTaskQueue, SequenceBackgroundTaskQueue>();
-
-        builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
-        builder.Services.AddHostedService<FileCheckSumService>();
-
-        builder.Services.AddHostedService<SequenceQueuedHostedService>();
-        builder.Services.AddHostedService<ParallelQueuedHostedService>();
+        builder.Services.AddDataServiceCollection();
 
         #endregion
 
