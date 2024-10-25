@@ -832,7 +832,7 @@ public class FilesController(
         }
         else
         {
-            logger.LogInformation("File empty");
+            logger.LogInformation("Image file are empty");
         }
     }
 
@@ -841,9 +841,10 @@ public class FilesController(
         var tempFile = Path.GetTempFileName();
         var memoryStream = new FileStream(tempFile, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: options.Value.FileFolders.Length * 1024, FileOptions.None);
         await section.Body.CopyToAsync(memoryStream, cancellationToken);
+        await memoryStream.FlushAsync(cancellationToken);
         await memoryStream.DisposeAsync();
         var contentType = section.ContentType;
-        await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async (token) => await SaveNonImageFileAsync(tempFile, file, token, contentType, trustedFileNameForDisplay), default);
+        await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async token => await SaveNonImageFileAsync(tempFile, file, token, contentType, trustedFileNameForDisplay), default);
     }
 
     private async Task SaveNonImageFileAsync(string path, FileInfoModel file, CancellationToken cancellationToken, string? sectionContentType, string trustedFileNameForDisplay)
@@ -860,7 +861,7 @@ public class FilesController(
         }
         else
         {
-            logger.LogInformation("File empty");
+            logger.LogInformation("Non Image file are empty");
         }
     }
 
