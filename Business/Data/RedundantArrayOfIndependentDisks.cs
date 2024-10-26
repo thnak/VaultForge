@@ -77,25 +77,16 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                 StripSize = _stripSize
             };
 
-            int index = 0;
             string[] arrayDisk = [..options.Value.FileFolders];
             arrayDisk.Shuffle();
-            List<FileRaidDataBlockModel> disks = arrayDisk.Select(x => new FileRaidDataBlockModel()
-            {
-                AbsolutePath = Path.Combine(x, $"_{DateTime.UtcNow:yyMMdd}", raidModel.Id + Path.GetRandomFileName()),
-                CreationTime = DateTime.UtcNow,
-                ModificationTime = DateTime.UtcNow,
-                RelativePath = raidModel.Id.ToString(),
-                Index = index++
-            }).ToList();
+            List<FileRaidDataBlockModel> disks = GetShuffledDisks(arrayDisk, raidModel.Id);
 
             foreach (var disk in disks)
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(disk.AbsolutePath)!);
             }
 
-            var result = await WriteDataAsync(stream, raidModel.StripSize, disks[0].AbsolutePath, disks[1].AbsolutePath, disks[2].AbsolutePath, cancellationToken);
-            // result.TotalByteWritten = byteWrite;
+            var result = await WriteDataAsync(stream, raidModel.StripSize, cancellationToken, disks.Select(x=>x.AbsolutePath));
             raidModel.Size = result.TotalByteWritten;
             raidModel.CheckSum = result.CheckSum;
             disks[0].Size = result.TotalByteWritten1;
@@ -110,6 +101,22 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         {
             return new();
         }
+    }
+
+    private List<FileRaidDataBlockModel> GetShuffledDisks(string[] fileFolders, ObjectId raidId)
+    {
+        string[] arrayDisk = fileFolders.ToArray();
+        arrayDisk.Shuffle();
+        int index = 0;
+
+        return arrayDisk.Select(x => new FileRaidDataBlockModel
+        {
+            AbsolutePath = Path.Combine(x, $"_{DateTime.UtcNow:yyMMdd}", raidId + Path.GetRandomFileName()),
+            CreationTime = DateTime.UtcNow,
+            ModificationTime = DateTime.UtcNow,
+            RelativePath = raidId.ToString(),
+            Index = index++
+        }).ToList();
     }
 
     public async Task ReadGetDataAsync(Stream outputStream, string path, CancellationToken cancellationToken = default)
@@ -133,29 +140,6 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
 
         dataBlocks = dataBlocks.OrderBy(x => x.Index).DistinctBy(x => x.AbsolutePath).ToList();
         await ReadDataWithRecoveryAsync(outputStream, raidData.StripSize, raidData.Size, dataBlocks[0].AbsolutePath, dataBlocks[1].AbsolutePath, dataBlocks[2].AbsolutePath);
-    }
-
-    public async Task<long> ReadAndSeek(Stream outputStream, string path, long seekPosition, CancellationToken cancellationToken = default)
-    {
-        var raidData = Get(path);
-        if (raidData == null)
-        {
-            throw new Exception($"File {path} already exists");
-        }
-
-        var dataBlocksFilter = Builders<FileRaidDataBlockModel>.Filter.Eq(x => x.RelativePath, raidData.Id.ToString());
-
-        var fileData = await _fileMetaDataDataDb.FindAsync(dataBlocksFilter, cancellationToken: cancellationToken);
-        List<FileRaidDataBlockModel> dataBlocks = fileData.ToList();
-        await foreach (var model in GetDataBlocks(raidData.Id.ToString(), cancellationToken, m => m.AbsolutePath, m => m.Status, model => model.Index))
-        {
-            if (model.Status != FileRaidStatus.Normal)
-                model.AbsolutePath = string.Empty;
-            dataBlocks.Add(model);
-        }
-
-        dataBlocks = dataBlocks.OrderBy(x => x.Index).DistinctBy(x => x.AbsolutePath).ToList();
-        return await ReadDataWithRecoveryAndSeekAsync(outputStream, seekPosition, raidData.StripSize, raidData.Size, dataBlocks[0].AbsolutePath, dataBlocks[1].AbsolutePath, dataBlocks[2].AbsolutePath, cancellationToken);
     }
 
     public async Task<RaidFileInfo?> GetDataBlockPaths(string path, CancellationToken cancellationToken = default)
@@ -218,22 +202,6 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
     {
         FilterDefinition<FileRaidModel> filter = ObjectId.TryParse(key, out var id) ? Builders<FileRaidModel>.Filter.Eq(x => x.Id, id) : Builders<FileRaidModel>.Filter.Eq(x => x.RelativePath, key);
         return _fileDataDb.Find(filter).Any();
-    }
-
-    private async Task<bool> IsAvailableDataBlock(string key)
-    {
-        Expression<Func<FileRaidDataBlockModel, object>>[] fieldsToFetch =
-        [
-            x => x.Id,
-            x => x.Status
-        ];
-        var findOption = new FindOptions<FileRaidDataBlockModel, FileRaidDataBlockModel>()
-        {
-            Projection = fieldsToFetch.ProjectionBuilder()
-        };
-        var filter = Builders<FileRaidDataBlockModel>.Filter.Eq(x => x.AbsolutePath, key);
-        var dataModel = await _fileMetaDataDataDb.FindAsync(filter, options: findOption);
-        return dataModel.FirstOrDefault()?.Status == FileRaidStatus.Normal;
     }
 
     public async IAsyncEnumerable<FileRaidDataBlockModel> GetDataBlocks(string path, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FileRaidDataBlockModel, object>>[] fieldsToFetch)
@@ -420,100 +388,6 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         outputStream.SeekBeginOrigin();
     }
 
-    async Task<long> ReadDataWithRecoveryAndSeekAsync(Stream outputStream, long seekPosition, int stripeSize, long originalFileSize, string file1Path, string file2Path, string file3Path, CancellationToken cancellationToken = default)
-    {
-        // Check if any of the files are corrupted or missing
-        bool isFile1Corrupted = !File.Exists(file1Path);
-        bool isFile2Corrupted = !File.Exists(file2Path);
-        bool isFile3Corrupted = !File.Exists(file3Path);
-
-        if (isFile1Corrupted && isFile2Corrupted || isFile3Corrupted && isFile1Corrupted || isFile2Corrupted && isFile3Corrupted)
-        {
-            throw new Exception("More than 2 disks are failed. Data recovery is impossible.");
-        }
-
-        // Open streams for files that exist
-        await using FileStream? file1 = isFile1Corrupted ? null : new FileStream(file1Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: stripeSize, useAsync: true);
-        await using FileStream? file2 = isFile2Corrupted ? null : new FileStream(file2Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: stripeSize, useAsync: true);
-        await using FileStream? file3 = isFile3Corrupted ? null : new FileStream(file3Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: stripeSize, useAsync: true);
-
-        byte[] buffer1 = new byte[stripeSize];
-        byte[] buffer2 = new byte[stripeSize];
-        byte[] parityBuffer = new byte[stripeSize];
-
-        long totalBytesWritten = 0;
-        int stripeIndex = 0;
-
-        // Seek to the correct stripe
-        long stripeToSeek = seekPosition / stripeSize; // Calculate the stripe index to seek to
-        long bytesToSkip = seekPosition % stripeSize; // Calculate remaining bytes to skip
-
-        // Move to the required stripe
-        while (stripeIndex < stripeToSeek)
-        {
-            // Skip the stripes that we're not reading
-            switch (stripeIndex % 3)
-            {
-                case 0:
-                    totalBytesWritten = await ReadStripeAsync(file1, file2, file3, buffer1, buffer2, parityBuffer, stripeSize, cancellationToken);
-                    break;
-                case 1:
-                    totalBytesWritten = await ReadStripeAsync(file1, file3, file2, buffer1, buffer2, parityBuffer, stripeSize, cancellationToken);
-                    break;
-                case 2:
-                    totalBytesWritten = await ReadStripeAsync(file2, file3, file1, buffer2, buffer1, parityBuffer, stripeSize, cancellationToken);
-                    break;
-            }
-
-            stripeIndex++;
-        }
-
-        // Now we are at the required stripe
-        switch (stripeIndex % 3)
-        {
-            case 0:
-                totalBytesWritten = await ReadStripeAsync(file1, file2, file3, buffer1, buffer2, parityBuffer, stripeSize, cancellationToken);
-                break;
-            case 1:
-                totalBytesWritten = await ReadStripeAsync(file1, file3, file2, buffer1, buffer2, parityBuffer, stripeSize, cancellationToken);
-                break;
-            case 2:
-                totalBytesWritten = await ReadStripeAsync(file2, file3, file1, buffer2, buffer1, parityBuffer, stripeSize, cancellationToken);
-                break;
-        }
-
-        // Write the remaining bytes
-
-        await outputStream.WriteAsync(buffer1, 0, (int)Math.Min(bytesToSkip, stripeSize), cancellationToken);
-        await outputStream.FlushAsync(cancellationToken);
-        return totalBytesWritten;
-    }
-
-    // Helper method to read a single stripe
-    private async Task<long> ReadStripeAsync(FileStream? file1, FileStream? file2, FileStream? file3, byte[] buffer1, byte[] buffer2, byte[] parityBuffer, int stripeSize, CancellationToken cancellationToken = default)
-    {
-        // Read data from the files based on availability and handle recovery
-        // Similar logic to what you've implemented previously
-
-        // For example:
-        if (file1 != null)
-        {
-            return await file1.ReadAsync(buffer1, 0, stripeSize, cancellationToken);
-        }
-
-        if (file2 != null)
-        {
-            return await file2.ReadAsync(buffer2, 0, stripeSize, cancellationToken);
-        }
-
-        if (file3 != null)
-        {
-            return await file3.ReadAsync(parityBuffer, 0, stripeSize, cancellationToken);
-        }
-
-        return 0;
-    }
-
     private FileStream? OpenFileWrite(string path, int bufferSize)
     {
         FileStream? file1 = null;
@@ -539,8 +413,145 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         await Task.WhenAll(tasksFlush);
     }
 
+    public async Task<WriteDataResult> WriteDataAsync(Stream inputStream, int stripeSize, CancellationToken cancellationToken = default, params IEnumerable<string> filePaths)
+    {
+        var pathsArray = filePaths.ToArray();
+        List<FileStream?> fileStreams = pathsArray.Select(path => OpenFileWrite(path, _readWriteBufferSize)).ToList();
+
+        try
+        {
+            inputStream.SeekBeginOrigin();
+            var writeDataResult = await ProcessInputStreamAsync(inputStream, stripeSize, cancellationToken, fileStreams);
+
+            await FlushAndDisposeAsync(fileStreams);
+
+            return writeDataResult;
+        }
+        catch (OperationCanceledException)
+        {
+            DeletePhysicFiles(pathsArray);
+            return new WriteDataResult();
+        }
+    }
+
+    private async Task<WriteDataResult> ProcessInputStreamAsync(Stream inputStream, int stripeSize, CancellationToken cancellationToken, List<FileStream?> fileStreams)
+    {
+        long totalBytesWritten = 0;
+        long[] fileBytesWritten = new long[fileStreams.Count];
+        byte[][] buffers = Enumerable.Range(0, fileStreams.Count).Select(_=>new byte[stripeSize]).ToArray();
+
+        int[] bytesRead = new int[2];
+        int stripeCount = 0;
+        string? detectedContentType = null;
+
+        using MD5 md5Hasher = MD5.Create();
+        bool hasMoreData = true;
+
+        while (hasMoreData)
+        {
+            using MemoryStream bufferStream = await ReadStreamWithLimitAsync(inputStream);
+            hasMoreData = bufferStream.Length > 0;
+
+            while ((bytesRead[0] = await bufferStream.ReadAsync(buffers[0], 0, stripeSize, cancellationToken)) > 0)
+            {
+                bytesRead[1] = await bufferStream.ReadAsync(buffers[1], 0, stripeSize, cancellationToken);
+
+                if (detectedContentType == null)
+                {
+                    detectedContentType = DetectContentType(buffers[0], buffers[2]);
+                }
+
+                md5Hasher.TransformBlock(buffers[0], 0, bytesRead[0], null, 0);
+                md5Hasher.TransformBlock(buffers[1], 0, bytesRead[1], null, 0);
+
+                totalBytesWritten += bytesRead.Sum();
+                UpdateFileBytesWritten(fileBytesWritten, bytesRead, stripeSize);
+
+                buffers[2] = buffers[0].XorParity(buffers[1]);
+
+                var writeTasks = CreateWriteTasks(stripeCount, stripeSize, cancellationToken, buffers, fileStreams);
+                await Task.WhenAll(writeTasks);
+
+                stripeCount++;
+            }
+        }
+
+        md5Hasher.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
+
+        return new WriteDataResult
+        {
+            CheckSum = ConvertChecksumToHex(md5Hasher.Hash),
+            TotalByteWritten = totalBytesWritten,
+            TotalByteWritten1 = fileBytesWritten[0],
+            TotalByteWritten2 = fileBytesWritten[1],
+            TotalByteWritten3 = fileBytesWritten[2],
+            ContentType = detectedContentType?.GetMimeTypeFromExtension() ?? string.Empty,
+        };
+    }
+
+    private string DetectContentType(byte[] buffer0, byte[] buffer2)
+    {
+        return buffer0.Concat(buffer2).ToArray().GetCorrectExtension("");
+    }
+
+    private void UpdateFileBytesWritten(long[] fileBytesWritten, int[] bytesRead, int stripeSize)
+    {
+        fileBytesWritten[0] += bytesRead[0];
+        fileBytesWritten[1] += bytesRead[1];
+        fileBytesWritten[2] += stripeSize;
+    }
+
+    private static Task[] CreateWriteTasks(int stripeCount, int stripeSize, CancellationToken cancellationToken, byte[][] buffers, List<FileStream?> fileStreams)
+    {
+        switch (stripeCount % 3)
+        {
+            case 0:
+            {
+                return
+                [
+                    fileStreams[0]?.WriteAsync(buffers[0], 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                    fileStreams[1]?.WriteAsync(buffers[1], 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                    fileStreams[2]?.WriteAsync(buffers[2], 0, stripeSize, cancellationToken) ?? Task.CompletedTask
+                ];
+            }
+            case 1:
+                return
+                [
+                    fileStreams[0]?.WriteAsync(buffers[0], 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                    fileStreams[1]?.WriteAsync(buffers[2], 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                    fileStreams[2]?.WriteAsync(buffers[1], 0, stripeSize, cancellationToken) ?? Task.CompletedTask
+                ];
+            case 2:
+                return
+                [
+                    fileStreams[0]?.WriteAsync(buffers[2], 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                    fileStreams[1]?.WriteAsync(buffers[0], 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                    fileStreams[2]?.WriteAsync(buffers[1], 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                ];
+            default: return [];
+        }
+    }
+
+    private string ConvertChecksumToHex(byte[]? hash)
+    {
+        StringBuilder checksumBuilder = new();
+        if (hash != null)
+        {
+            foreach (byte b in hash)
+            {
+                checksumBuilder.Append(b.ToString("x2"));
+            }
+        }
+
+        return checksumBuilder.ToString();
+    }
+
     async Task<WriteDataResult> WriteDataAsync(Stream inputStream, int stripeSize, string file1Path, string file2Path, string file3Path, CancellationToken cancellationToken = default)
     {
+        FileStream? file1 = OpenFileWrite(file1Path, _readWriteBufferSize);
+        FileStream? file2 = OpenFileWrite(file2Path, _readWriteBufferSize);
+        FileStream? file3 = OpenFileWrite(file3Path, _readWriteBufferSize);
+        List<FileStream?> streams = [file1, file2, file3];
         try
         {
             inputStream.SeekBeginOrigin();
@@ -549,14 +560,9 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             long totalByteWritten2 = 0;
             long totalByteWritten3 = 0;
 
-            FileStream? file1 = OpenFileWrite(file1Path, _readWriteBufferSize);
-            FileStream? file2 = OpenFileWrite(file2Path, _readWriteBufferSize);
-            FileStream? file3 = OpenFileWrite(file3Path, _readWriteBufferSize);
-
-
-            byte[] buffer1 = new byte[stripeSize];
-            byte[] buffer2 = new byte[stripeSize];
-            int bytesRead1;
+            // last index of buffers is stripe buffer
+            byte[][] buffers = [new byte[stripeSize], new byte[stripeSize], new byte[stripeSize]];
+            int[] byteReads = [0, 0];
             int stripeIndex = 0;
             string? contentType = null;
 
@@ -568,24 +574,24 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             {
                 using MemoryStream bufferStream = await ReadStreamWithLimitAsync(inputStream);
                 bufferIsAlive = bufferStream.Length > 0;
-                while ((bytesRead1 = await bufferStream.ReadAsync(buffer1, 0, stripeSize, cancellationToken)) > 0)
+                while ((byteReads[0] = await bufferStream.ReadAsync(buffers[0], 0, stripeSize, cancellationToken)) > 0)
                 {
-                    var bytesRead2 = await bufferStream.ReadAsync(buffer2, 0, stripeSize, cancellationToken);
+                    byteReads[1] = await bufferStream.ReadAsync(buffers[1], 0, stripeSize, cancellationToken);
                     if (contentType == null)
                     {
-                        byte[] temp = [..buffer1, ..buffer1];
+                        byte[] temp = [..buffers[0], ..buffers[2]];
                         contentType = temp.GetCorrectExtension("");
                     }
 
-                    sha256.TransformBlock(buffer1, 0, bytesRead1, null, 0);
-                    sha256.TransformBlock(buffer2, 0, bytesRead2, null, 0);
+                    sha256.TransformBlock(buffers[0], 0, byteReads[0], null, 0);
+                    sha256.TransformBlock(buffers[1], 0, byteReads[1], null, 0);
 
-                    totalByteWrite += bytesRead1 + bytesRead2;
-                    totalByteWritten1 += bytesRead1;
-                    totalByteWritten2 += bytesRead2;
+                    totalByteWrite += byteReads[0] + byteReads[1];
+                    totalByteWritten1 += byteReads[0];
+                    totalByteWritten2 += byteReads[1];
                     totalByteWritten3 += stripeSize;
 
-                    var parityBuffer = buffer1.XorParity(buffer2);
+                    buffers[2] = buffers[0].XorParity(buffers[1]);
 
                     // Create tasks for writing data and parity in parallel
                     Task[] writeTasks = [];
@@ -596,9 +602,9 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                             // Parity goes to file 3
                             writeTasks =
                             [
-                                file1?.WriteAsync(buffer1, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
-                                file2?.WriteAsync(buffer2, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
-                                file3?.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken) ?? Task.CompletedTask
+                                streams[0]?.WriteAsync(buffers[0], 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                                streams[1]?.WriteAsync(buffers[1], 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                                streams[2]?.WriteAsync(buffers[2], 0, stripeSize, cancellationToken) ?? Task.CompletedTask
                             ];
                             break;
 
@@ -606,9 +612,9 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                             // Parity goes to file 2
                             writeTasks =
                             [
-                                file1?.WriteAsync(buffer1, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
-                                file2?.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
-                                file3?.WriteAsync(buffer2, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                                streams[0]?.WriteAsync(buffers[0], 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                                streams[1]?.WriteAsync(buffers[2], 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                                streams[2]?.WriteAsync(buffers[1], 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
                             ];
                             break;
 
@@ -616,9 +622,9 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                             // Parity goes to file 1
                             writeTasks =
                             [
-                                file1?.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
-                                file2?.WriteAsync(buffer1, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
-                                file3?.WriteAsync(buffer2, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                                streams[0]?.WriteAsync(buffers[2], 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                                streams[1]?.WriteAsync(buffers[0], 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                                streams[2]?.WriteAsync(buffers[1], 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
                             ];
                             break;
                     }
@@ -629,8 +635,6 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                 }
             }
 
-
-            List<FileStream?> streams = [file1, file2, file3];
 
             await FlushAndDisposeAsync(streams);
 
@@ -657,10 +661,17 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         }
         catch (OperationCanceledException)
         {
-            File.Delete(file1Path);
-            File.Delete(file2Path);
-            File.Delete(file3Path);
+            DeletePhysicFiles(file1Path, file2Path, file3Path);
             return new();
+        }
+    }
+
+    private void DeletePhysicFiles(params IEnumerable<string> fileStreams)
+    {
+        foreach (var path in fileStreams)
+        {
+            if (File.Exists(path))
+                File.Delete(path);
         }
     }
 

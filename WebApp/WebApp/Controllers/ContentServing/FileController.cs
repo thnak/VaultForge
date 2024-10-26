@@ -456,29 +456,27 @@ public class FilesController(
     [AllowAnonymous]
     public async Task<IActionResult> ImportMovieResource(string folderCode, [FromForm] string url)
     {
-        var folder = folderServe.Get(folderCode);
-        if (folder == null) return BadRequest(AppLang.Folder_could_not_be_found);
-
-        var cancelToken = HttpContext.RequestAborted;
-        var httpClient = new HttpClient();
-        var response = await httpClient.GetAsync(url, cancelToken);
-
-        string fileName = response.Content.Headers.GetFileNameFromHeaders() ?? url.GetFileNameFromUrl();
-
-        var memoryStream = new FileStream(Path.GetTempFileName(), FileMode.Create, FileAccess.ReadWrite, FileShare.None, bufferSize: 100 * 1024 * 1024, FileOptions.DeleteOnClose);
-        Response.RegisterForDisposeAsync(memoryStream);
-        await response.Content.CopyToAsync(memoryStream, cancelToken);
-
-        var file = new FileInfoModel()
+        await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async (token) =>
         {
-            RootFolder = folder.Id.ToString(),
-            FileName = fileName,
-            ContentType = response.Content.Headers.ContentType?.MediaType ?? string.Empty,
-        };
-        await folderServe.CreateFileAsync(folder.OwnerUsername, file, cancelToken);
-        await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancelToken);
+            var folder = folderServe.Get(folderCode);
+            if (folder == null) return;
 
-        await fileServe.CreateAsync(file, cancelToken);
+            var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync(url, token);
+
+            string fileName = response.Content.Headers.GetFileNameFromHeaders() ?? url.GetFileNameFromUrl();
+
+            var file = new FileInfoModel()
+            {
+                RootFolder = folder.Id.ToString(),
+                FileName = fileName,
+                ContentType = response.Content.Headers.ContentType?.MediaType ?? string.Empty,
+            };
+            await folderServe.CreateFileAsync(folder.OwnerUsername, file, token);
+            var stream = await response.Content.ReadAsStreamAsync(token);
+            await raidService.WriteDataAsync(stream, file.AbsolutePath, token);
+            await fileServe.CreateAsync(file, token);
+        });
 
         return Ok();
     }
@@ -819,42 +817,6 @@ public class FilesController(
         finally
         {
             await memoryStream.DisposeAsync();
-        }
-    }
-
-    private async Task ProcessNonImageFileSection(MultipartSection section, FileInfoModel file, CancellationToken cancellationToken, string trustedFileNameForDisplay)
-    {
-        var tempFile = Path.GetTempFileName();
-        var memoryStream = new FileStream(tempFile, FileMode.Create, FileAccess.Write, FileShare.Read, bufferSize: options.Value.FileFolders.Length * 1024, FileOptions.None);
-        try
-        {
-            await section.Body.CopyToAsync(memoryStream, cancellationToken);
-            await memoryStream.FlushAsync(cancellationToken);
-            var contentType = section.ContentType;
-            await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async token => await SaveNonImageFileAsync(tempFile, file, token, contentType, trustedFileNameForDisplay), default);
-        }
-        catch (OperationCanceledException)
-        {
-            await DeleteFileAsync(file.Id.ToString());
-        }
-        finally
-        {
-            await memoryStream.DisposeAsync();
-        }
-    }
-
-    private async Task SaveNonImageFileAsync(string path, FileInfoModel file, CancellationToken cancellationToken, string? sectionContentType, string trustedFileNameForDisplay)
-    {
-        FileStream memoryStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.None, bufferSize: options.Value.FileFolders.Length * 1024, FileOptions.DeleteOnClose);
-        var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancellationToken);
-        await memoryStream.DisposeAsync();
-
-        await UpdateFileProperties(file, saveResult, string.IsNullOrEmpty(sectionContentType) ? saveResult.ContentType : sectionContentType, trustedFileNameForDisplay);
-
-        if (file.FileSize <= 0)
-        {
-            await DeleteFileAsync(file.Id.ToString());
-            logger.LogInformation("Non Image file are empty");
         }
     }
 
