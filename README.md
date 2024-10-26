@@ -33,4 +33,4 @@ Follow these steps to install and set up VaultForge on your own server:
 
 1. Clone the repo:
    ```bash
-   git clone https://github.com/your-username/vaultforge.git
+   git clone https://github.com/thnak/VaultForge.git
