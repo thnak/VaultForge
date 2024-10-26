@@ -529,6 +529,16 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         return file1;
     }
 
+    private async Task FlushAndDisposeAsync(params IEnumerable<FileStream?> files)
+    {
+        List<Task> tasksFlush = files.Where(x => x != default).Select(async x =>
+        {
+            await x!.FlushAsync(CancellationToken.None);
+            await x.DisposeAsync();
+        }).ToList();
+        await Task.WhenAll(tasksFlush);
+    }
+
     async Task<WriteDataResult> WriteDataAsync(Stream inputStream, int stripeSize, string file1Path, string file2Path, string file3Path, CancellationToken cancellationToken = default)
     {
         try
@@ -552,84 +562,77 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
 
             using MD5 sha256 = MD5.Create();
 
-            while ((bytesRead1 = await inputStream.ReadAsync(buffer1, 0, stripeSize, cancellationToken)) > 0)
-            {
-                var bytesRead2 = await inputStream.ReadAsync(buffer2, 0, stripeSize, cancellationToken);
+            bool bufferIsAlive = true;
 
-                if (contentType == null)
+            while (bufferIsAlive)
+            {
+                using MemoryStream bufferStream = await ReadStreamWithLimitAsync(inputStream);
+                bufferIsAlive = bufferStream.Length > 0;
+                while ((bytesRead1 = await bufferStream.ReadAsync(buffer1, 0, stripeSize, cancellationToken)) > 0)
                 {
-                    byte[] temp = [..buffer1, ..buffer1];
-                    contentType = temp.GetCorrectExtension("");
+                    var bytesRead2 = await bufferStream.ReadAsync(buffer2, 0, stripeSize, cancellationToken);
+                    if (contentType == null)
+                    {
+                        byte[] temp = [..buffer1, ..buffer1];
+                        contentType = temp.GetCorrectExtension("");
+                    }
+
+                    sha256.TransformBlock(buffer1, 0, bytesRead1, null, 0);
+                    sha256.TransformBlock(buffer2, 0, bytesRead2, null, 0);
+
+                    totalByteWrite += bytesRead1 + bytesRead2;
+                    totalByteWritten1 += bytesRead1;
+                    totalByteWritten2 += bytesRead2;
+                    totalByteWritten3 += stripeSize;
+
+                    var parityBuffer = buffer1.XorParity(buffer2);
+
+                    // Create tasks for writing data and parity in parallel
+                    Task[] writeTasks = [];
+
+                    switch (stripeIndex % 3)
+                    {
+                        case 0:
+                            // Parity goes to file 3
+                            writeTasks =
+                            [
+                                file1?.WriteAsync(buffer1, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                                file2?.WriteAsync(buffer2, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                                file3?.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken) ?? Task.CompletedTask
+                            ];
+                            break;
+
+                        case 1:
+                            // Parity goes to file 2
+                            writeTasks =
+                            [
+                                file1?.WriteAsync(buffer1, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                                file2?.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                                file3?.WriteAsync(buffer2, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                            ];
+                            break;
+
+                        case 2:
+                            // Parity goes to file 1
+                            writeTasks =
+                            [
+                                file1?.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                                file2?.WriteAsync(buffer1, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                                file3?.WriteAsync(buffer2, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
+                            ];
+                            break;
+                    }
+
+                    // Wait for all tasks (writes) to complete in parallel
+                    await Task.WhenAll(writeTasks);
+                    stripeIndex++;
                 }
-
-                sha256.TransformBlock(buffer1, 0, bytesRead1, null, 0);
-                sha256.TransformBlock(buffer2, 0, bytesRead2, null, 0);
-
-                totalByteWrite += bytesRead1 + bytesRead2;
-                totalByteWritten1 += bytesRead1;
-                totalByteWritten2 += bytesRead2;
-                totalByteWritten3 += stripeSize;
-
-                var parityBuffer = buffer1.XorParity(buffer2);
-
-                // Create tasks for writing data and parity in parallel
-                Task[] writeTasks = [];
-
-                switch (stripeIndex % 3)
-                {
-                    case 0:
-                        // Parity goes to file 3
-                        writeTasks =
-                        [
-                            file1?.WriteAsync(buffer1, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
-                            file2?.WriteAsync(buffer2, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
-                            file3?.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken) ?? Task.CompletedTask
-                        ];
-                        break;
-
-                    case 1:
-                        // Parity goes to file 2
-                        writeTasks =
-                        [
-                            file1?.WriteAsync(buffer1, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
-                            file2?.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
-                            file3?.WriteAsync(buffer2, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
-                        ];
-                        break;
-
-                    case 2:
-                        // Parity goes to file 1
-                        writeTasks =
-                        [
-                            file1?.WriteAsync(parityBuffer, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
-                            file2?.WriteAsync(buffer1, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
-                            file3?.WriteAsync(buffer2, 0, stripeSize, cancellationToken) ?? Task.CompletedTask,
-                        ];
-                        break;
-                }
-
-                // Wait for all tasks (writes) to complete in parallel
-                await Task.WhenAll(writeTasks);
-                stripeIndex++;
             }
 
-            if (file1 != null)
-            {
-                await file1.FlushAsync(cancellationToken);
-                await file1.DisposeAsync().ConfigureAwait(false);
-            }
 
-            if (file2 != null)
-            {
-                await file2.FlushAsync(cancellationToken);
-                await file2.DisposeAsync().ConfigureAwait(false);
-            }
+            List<FileStream?> streams = [file1, file2, file3];
 
-            if (file3 != null)
-            {
-                await file3.FlushAsync(cancellationToken);
-                await file3.DisposeAsync().ConfigureAwait(false);
-            }
+            await FlushAndDisposeAsync(streams);
 
             sha256.TransformFinalBlock([], 0, 0);
             StringBuilder checksum = new StringBuilder();
@@ -660,6 +663,30 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             return new();
         }
     }
+
+    public async Task<MemoryStream> ReadStreamWithLimitAsync(Stream clientStream, int maxBufferSizeInBytes = 4 * 1024 * 1024) // 4MB limit
+    {
+        const int bufferSize = 8192; // 8 KB buffer size
+        byte[] buffer = new byte[bufferSize];
+        int bytesRead;
+        int remainingSize = maxBufferSizeInBytes;
+
+        // Create a MemoryStream to hold the stream data with a capacity of maxBufferSizeInBytes
+        MemoryStream memoryStream = new MemoryStream();
+
+        // Read the client stream in chunks and write to the memory stream until the limit is reached
+        while ((bytesRead = await clientStream.ReadAsync(buffer, 0, Math.Min(remainingSize, bufferSize))) > 0)
+        {
+            await memoryStream.WriteAsync(buffer, 0, bytesRead);
+            remainingSize -= bytesRead;
+        }
+
+        // Optionally, reset the memory stream's position to the beginning if you plan to read from it later
+        memoryStream.Position = 0;
+
+        return memoryStream;
+    }
+
 
     public class RaidFileInfo
     {

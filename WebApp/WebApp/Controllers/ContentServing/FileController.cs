@@ -791,15 +791,7 @@ public class FilesController(
         }
 
         var fileId = file.Id.ToString();
-
-        if (section.ContentType?.IsImageFile() == true)
-        {
-            await ProcessImageFileSection(section, file, cancellationToken, trustedFileNameForDisplay);
-        }
-        else
-        {
-            await ProcessNonImageFileSection(section, file, cancellationToken, trustedFileNameForDisplay);
-        }
+        await ProcessImageFileSection(section, file, cancellationToken, trustedFileNameForDisplay);
 
         return fileId;
     }
@@ -810,8 +802,7 @@ public class FilesController(
 
         try
         {
-            await section.Body.CopyToAsync(memoryStream, cancellationToken);
-            var saveResult = await raidService.WriteDataAsync(memoryStream, file.AbsolutePath, cancellationToken);
+            var saveResult = await raidService.WriteDataAsync(section.Body, file.AbsolutePath, cancellationToken);
 
             await UpdateFileProperties(file, saveResult, string.IsNullOrEmpty(section.ContentType) ? saveResult.ContentType : section.ContentType, trustedFileNameForDisplay);
             if (file.FileSize <= 0)
