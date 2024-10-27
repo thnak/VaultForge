@@ -14,7 +14,7 @@ public sealed class SequenceBackgroundTaskQueue : ISequenceBackgroundTaskQueue
     public SequenceBackgroundTaskQueue(IOptions<AppSettings> appSettings, ILogger<SequenceBackgroundTaskQueue> logger)
     {
         var size = appSettings.Value.BackgroundQueue.SequenceQueueSize;
-        logger.LogInformation($"Queue size is {size}");
+        logger.LogInformation($"Init sequence queue size is {size:N0}");
         BoundedChannelOptions options = new(size)
         {
             FullMode = BoundedChannelFullMode.Wait,
@@ -24,7 +24,6 @@ public sealed class SequenceBackgroundTaskQueue : ISequenceBackgroundTaskQueue
 
     public async ValueTask QueueBackgroundWorkItemAsync(Func<CancellationToken, ValueTask> workItem, CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(workItem);
         try
         {
             await _queue.Writer.WriteAsync(workItem, cancellationToken);

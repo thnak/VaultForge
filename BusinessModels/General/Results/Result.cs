@@ -57,5 +57,9 @@ public enum ErrorType
     /// <summary>
     /// Unhandled error
     /// </summary>
-    Unknown
+    Unknown,
+    /// <summary>
+    /// Permission denid
+    /// </summary>
+    PermissionDenied,
 }

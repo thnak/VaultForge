@@ -14,7 +14,7 @@ public class ParallelBackgroundTaskQueue : IParallelBackgroundTaskQueue
     public ParallelBackgroundTaskQueue(IOptions<AppSettings> appSettings, ILogger<ParallelBackgroundTaskQueue> logger)
     {
         var size = appSettings.Value.BackgroundQueue.ParallelQueueSize;
-        logger.LogInformation($"Queue size: {size}");
+        logger.LogInformation($"Init parallel queue size is {size:N0}");
         BoundedChannelOptions options = new(size)
         {
             FullMode = BoundedChannelFullMode.Wait,
@@ -24,7 +24,6 @@ public class ParallelBackgroundTaskQueue : IParallelBackgroundTaskQueue
 
     public async ValueTask QueueBackgroundWorkItemAsync(Func<CancellationToken, ValueTask> workItem, CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(workItem);
         try
         {
             await _queue.Writer.WriteAsync(workItem, cancellationToken);

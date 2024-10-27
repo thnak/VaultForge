@@ -340,4 +340,9 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
     {
         return Get("Anonymous")!;
     }
+
+    public void Dispose()
+    {
+        _semaphore.Dispose();
+    }
 }

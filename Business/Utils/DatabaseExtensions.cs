@@ -1,6 +1,4 @@
 using System.Linq.Expressions;
-using Business.Data.Interfaces;
-using Business.Data.Repositories;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -8,11 +6,6 @@ namespace Business.Utils;
 
 public static class DatabaseExtensions
 {
-    public static async Task InitAsync<T>(this MongoDataInitializer initializer) where T : IMongoDataInitializer
-    {
-        if (Activator.CreateInstance(typeof(T), initializer) is IMongoDataInitializer service) await service.InitializeAsync();
-    }
-    
     public static string GetFieldName<T>(this Expression<Func<T, object>> expression)
     {
         if (expression.Body is UnaryExpression unaryExpression)

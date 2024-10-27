@@ -5,6 +5,7 @@ using System.Web;
 using Business.Attribute;
 using Business.Business.Interfaces.FileSystem;
 using Business.Data;
+using Business.Data.StorageSpace;
 using Business.Models;
 using Business.Services.Interfaces;
 using Business.Services.TaskQueueServices.Base.Interfaces;
@@ -718,7 +719,7 @@ public class FilesController(
                 return BadRequest("Folder deleted");
 
             var boundary = MediaTypeHeaderValue.Parse(Request.ContentType).GetBoundary(int.MaxValue);
-            var reader = new MultipartReader(boundary, HttpContext.Request.Body, options.Value.FileFolders.Length * 1024);
+            var reader = new MultipartReader(boundary, HttpContext.Request.Body, options.Value.Storage.BufferSize);
             var section = await reader.ReadNextSectionAsync(cancellationToken);
 
             while (section != null && !cancellationToken.IsCancellationRequested)

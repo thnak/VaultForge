@@ -23,7 +23,7 @@ public class FileSystemWatcherService(
         {
             await e.FullPath.CheckFileSizeStable();
 
-            var workDir = appSettings.Value.TransCodeConverterScriptDir;
+            var workDir = appSettings.Value.VideoTransCode.WorkingDirectory;
 
             await TerminalExtension.ExecuteCommandAsync($"./convert_to_hls.sh \"{e.FullPath}\"", workDir, token);
 
@@ -46,12 +46,17 @@ public class FileSystemWatcherService(
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        var watchResources = appSettings.Value.FolderWatchList;
-        var watchStorageResources = appSettings.Value.FileFolders;
+        var watchResources = appSettings.Value.Storage.FolderWatchList;
+        var watchStorageResources = appSettings.Value.Storage.Disks;
         string[] watchExtensionFilters = ["*.mp4", "*.mkv"];
 
         foreach (var watchResource in watchResources)
         {
+            if (!Directory.Exists(watchResource))
+            {
+                logger.LogError($"Could not find {watchResource}");
+                continue;
+            }
             foreach (var extension in watchExtensionFilters)
             {
                 FileSystemWatcher watcher = new FileSystemWatcher();
@@ -67,6 +72,11 @@ public class FileSystemWatcherService(
 
         foreach (var storageResource in watchStorageResources)
         {
+            if (!Directory.Exists(storageResource))
+            {
+                logger.LogError($"Could not find {storageResource}");
+                continue;
+            }
             FileSystemWatcher watcher = new FileSystemWatcher();
             watcher.Path = storageResource;
             // watcher.Deleted += WatcherOnDeleted;

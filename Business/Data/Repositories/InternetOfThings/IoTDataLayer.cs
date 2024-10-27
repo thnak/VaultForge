@@ -152,4 +152,9 @@ public class IoTDataLayer : IIoTDataLayer
     {
         throw new NotImplementedException();
     }
+
+    public void Dispose()
+    {
+        _semaphore.Dispose();
+    }
 }

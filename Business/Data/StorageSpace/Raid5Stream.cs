@@ -1,7 +1,7 @@
 ﻿using Business.Utils;
 using BusinessModels.Resources;
 
-namespace Business.Data;
+namespace Business.Data.StorageSpace;
 
 public class Raid5Stream : Stream
 {

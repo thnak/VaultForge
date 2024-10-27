@@ -3,8 +3,8 @@ using System.Linq.Expressions;
 using System.Text;
 using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.User;
-using Business.Data;
 using Business.Data.Interfaces.FileSystem;
+using Business.Data.StorageSpace;
 using Business.Models;
 using Business.Services;
 using Business.Services.TaskQueueServices.Base.Interfaces;
@@ -31,14 +31,12 @@ public class FolderSystemBusinessLayer(
     IFolderSystemDatalayer folderSystemService,
     IFileSystemBusinessLayer fileSystemService,
     IUserBusinessLayer userService,
-    IOptions<AppSettings> options,
     ILogger<FolderSystemBusinessLayer> logger,
     IMemoryCache memoryCache,
     RedundantArrayOfIndependentDisks raidService,
     IParallelBackgroundTaskQueue parallelBackgroundTaskQueue)
     : IFolderSystemBusinessLayer, IDisposable
 {
-    private readonly string _workingDir = options.Value.FileFolder;
     private readonly CacheKeyManager _cacheKeyManager = new(memoryCache, nameof(FolderSystemBusinessLayer));
 
 
@@ -290,11 +288,11 @@ public class FolderSystemBusinessLayer(
     {
         var dateString = DateTime.UtcNow.ToString("dd-MM-yyy");
 
-        var filePath = Path.Combine(_workingDir, dateString, Path.GetRandomFileName());
+        var filePath = Path.Combine(dateString, Path.GetRandomFileName());
 
         file.AbsolutePath = filePath;
         file.RootFolder = folder.Id.ToString();
-        file.RelativePath = Path.Combine(folder.RelativePath, $"/{file.FileName}");
+        file.RelativePath = Path.Combine(folder.RelativePath, file.FileName);
         var res = await fileSystemService.CreateAsync(file, cancellationTokenSource);
         if (res.IsSuccess)
         {

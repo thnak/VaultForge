@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.FileSystem;
+using Business.Data.StorageSpace;
 using Business.Models;
 using Business.Utils;
 using Business.Utils.ExpressionExtensions;
@@ -512,5 +513,10 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         {
             memoryCache.Set(SearchIndexNameLastSeenId, currentLastSeenId.Value, TimeSpan.FromMinutes(30)); // Cache for 30 minutes
         }
+    }
+
+    public void Dispose()
+    {
+        _semaphore.Dispose();
     }
 }

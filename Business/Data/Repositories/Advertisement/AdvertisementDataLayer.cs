@@ -283,4 +283,9 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
             return (false, ex.Message);
         }
     }
+
+    public void Dispose()
+    {
+        _semaphore.Dispose();
+    }
 }

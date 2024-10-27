@@ -524,4 +524,9 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     {
         throw new NotImplementedException();
     }
+
+    public void Dispose()
+    {
+        _semaphore.Dispose();
+    }
 }

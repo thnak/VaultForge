@@ -8,22 +8,21 @@ namespace Business.Data.Repositories;
 
 public class MongoDataLayerContext : IMongoDataLayerContext
 {
-    public MongoDataLayerContext(IOptions<DbSettingModel> settings)
+    public MongoDataLayerContext(IOptions<AppSettings> settings)
     {
-        var dbName = settings.Value.DatabaseName;
-        var user = settings.Value.UserName;
-        var pass = settings.Value.Password;
+        var dbName = settings.Value.DbSetting.DatabaseName;
+        var user = settings.Value.DbSetting.UserName;
+        var pass = settings.Value.DbSetting.Password;
 
         MongoIdentity identity = new MongoInternalIdentity("admin", user);
         MongoIdentityEvidence evidence = new PasswordEvidence(pass);
-
-
+        
         var setup = new MongoClientSettings
         {
             Scheme = ConnectionStringScheme.MongoDB,
-            Server = new MongoServerAddress(settings.Value.ConnectionString, settings.Value.Port),
+            Server = new MongoServerAddress(settings.Value.DbSetting.ConnectionString, settings.Value.DbSetting.Port),
             Credential = new MongoCredential("SCRAM-SHA-1", identity, evidence),
-            MaxConnectionPoolSize = 200,
+            MaxConnectionPoolSize = settings.Value.DbSetting.MaxConnectionPoolSize,
             WaitQueueTimeout = TimeSpan.FromMinutes(1)
         };
 

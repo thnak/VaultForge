@@ -1,19 +1,18 @@
-using Business.Data;
+using Business.Data.Interfaces;
 using Business.Data.Interfaces.Advertisement;
 using Business.Data.Interfaces.Chat;
 using Business.Data.Interfaces.FileSystem;
 using Business.Data.Interfaces.User;
-using Business.Services.Interfaces;
+using Business.Data.StorageSpace;
+using Business.Services.TaskQueueServices.Base.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Business.Services;
 
-public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime hostApplicationLifetime, IServiceScopeFactory serviceScopeFactory, ILogger<HostApplicationLifetimeEventsHostedService> logger) : IHostedService
+public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime hostApplicationLifetime, IParallelBackgroundTaskQueue queue, IServiceScopeFactory serviceScopeFactory, ILogger<HostApplicationLifetimeEventsHostedService> logger) : IHostedService
 {
-    private readonly CancellationTokenSource _cancellationTokenSource = new();
-
     public Task StartAsync(CancellationToken cancellationToken)
     {
         hostApplicationLifetime.ApplicationStarted.Register(OnStarted);
@@ -23,31 +22,42 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
     }
 
 
-    public async Task StopAsync(CancellationToken cancellationToken)
+    public Task StopAsync(CancellationToken cancellationToken)
     {
-        await _cancellationTokenSource.CancelAsync();
+        return Task.CompletedTask;
     }
 
     private void OnStarted()
     {
-        logger.LogInformation("OnStarted");
-        var cancelToken = _cancellationTokenSource.Token;
-        using var scope = serviceScopeFactory.CreateScope();
-        scope.ServiceProvider.GetService<IUserDataLayer>()!.InitializeAsync(cancelToken);
-        scope.ServiceProvider.GetService<IFileSystemDatalayer>()?.InitializeAsync(cancelToken);
-        scope.ServiceProvider.GetService<IFolderSystemDatalayer>()?.InitializeAsync(cancelToken);
-        scope.ServiceProvider.GetService<IAdvertisementDataLayer>()?.InitializeAsync(cancelToken);
-        scope.ServiceProvider.GetService<IChatWithLlmDataLayer>()?.InitializeAsync(cancelToken);
-        scope.ServiceProvider.GetService<RedundantArrayOfIndependentDisks>()?.InitializeAsync(cancelToken);
+        logger.LogInformation("Application started");
+        QueueInitializationTask<IUserDataLayer>();
+        QueueInitializationTask<IFileSystemDatalayer>();
+        QueueInitializationTask<IFolderSystemDatalayer>();
+        QueueInitializationTask<IAdvertisementDataLayer>();
+        QueueInitializationTask<IChatWithLlmDataLayer>();
+        QueueInitializationTask<RedundantArrayOfIndependentDisks>();
+    }
+
+    private void QueueInitializationTask<TDataLayer>() where TDataLayer : IMongoDataInitializer
+    {
+        queue.QueueBackgroundWorkItemAsync(async token =>
+        {
+            using var scope = serviceScopeFactory.CreateScope();
+            using var dataLayer = scope.ServiceProvider.GetService<TDataLayer>();
+            if (dataLayer != null)
+            {
+                await dataLayer.InitializeAsync(token);
+            }
+        });
     }
 
     private void OnStopping()
     {
-        logger.LogInformation("OnStopping");
+        logger.LogInformation("Application stopping");
     }
 
     private void OnStopped()
     {
-        logger.LogInformation("OnStopped");
+        logger.LogInformation("Application stopped");
     }
 }

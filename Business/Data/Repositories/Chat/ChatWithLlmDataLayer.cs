@@ -254,4 +254,9 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
     {
         throw new NotImplementedException();
     }
+
+    public void Dispose()
+    {
+        _semaphore.Dispose();
+    }
 }

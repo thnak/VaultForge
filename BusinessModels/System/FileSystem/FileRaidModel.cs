@@ -35,5 +35,7 @@ public class FileRaidModel
 public enum RaidType
 {
     Raid5,
-    Raid6
+    Raid6,
+    Raid0,
+    Raid1
 }

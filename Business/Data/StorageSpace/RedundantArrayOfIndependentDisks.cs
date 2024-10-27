@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using Business.Data.Interfaces;
+using Business.Data.StorageSpace.Utils;
 using Business.Utils;
 using Business.Utils.Helper;
 using Business.Utils.StringExtensions;
@@ -15,15 +16,15 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace Business.Data;
+namespace Business.Data.StorageSpace;
 
-public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, ILogger<RedundantArrayOfIndependentDisks> logger, IOptions<AppSettings> options)
+public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, ILogger<RedundantArrayOfIndependentDisks> logger, IOptions<AppSettings> options) : IMongoDataInitializer
 {
     private readonly IMongoCollection<FileRaidModel> _fileDataDb = context.MongoDatabase.GetCollection<FileRaidModel>("FileRaid");
     private readonly IMongoCollection<FileRaidDataBlockModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileRaidDataBlockModel>("FileRaidDataBlock");
     private readonly SemaphoreSlim _semaphore = new(100, 1000);
-    private readonly int _stripSize = options.Value.StripeSize;
-    private readonly int _readWriteBufferSize = options.Value.ReadWriteBufferSize;
+    private readonly int _stripSize = options.Value.Storage.StripSize;
+    private readonly int _readWriteBufferSize = options.Value.Storage.BufferSize;
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
@@ -45,10 +46,11 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             List<CreateIndexModel<FileRaidDataBlockModel>> indexDataBlockModels = [dataBlockPathIndexModel, absoluteDataBlockPathIndexModel];
             await _fileMetaDataDataDb.Indexes.CreateManyAsync(indexDataBlockModels, cancellationToken);
 
-            if (options.Value.FileFolders.Length < 3)
+            CheckDiskSpace(options.Value.Storage.Disks);
+            if (!options.Value.Storage.Disks.ValidateStorageFormat(options.Value.Storage.DefaultRaidType))
             {
-                logger.LogError("FileFolders count is less than 3");
-                return (false, "Folder count is less than 3");
+                logger.LogError("Invalid Storage Format");
+                return (false, "Invalid Storage Format");
             }
 
             return (true, AppLang.Success);
@@ -61,6 +63,35 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         finally
         {
             _semaphore.Release();
+        }
+    }
+
+    private void CheckDiskSpace(IEnumerable<string> diskSpaces)
+    {
+        foreach (var disk in diskSpaces)
+        {
+            if (!Directory.Exists(disk))
+                logger.LogError($"Disk Space {disk} does not exist");
+            else
+            {
+                try
+                {
+                    DriveInfo driveInfo = new DriveInfo(disk);
+
+                    long availableSpace = driveInfo.AvailableFreeSpace;
+                    long totalSpace = driveInfo.TotalSize / 1024 / 1024;
+                    long usedSpace = (totalSpace - availableSpace) / 1024 / 1024;
+
+                    logger.LogInformation($"Disk {disk} information:");
+                    logger.LogInformation($"- Total Space: {totalSpace:N0} MB");
+                    logger.LogInformation($"- Used Space: {usedSpace:N0} MB");
+                    logger.LogInformation($"- Available Space: {availableSpace:N0} MB");
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, $"An error occurred while retrieving information for disk {disk}");
+                }
+            }
         }
     }
 
@@ -77,14 +108,11 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                 StripSize = _stripSize
             };
 
-            string[] arrayDisk = [..options.Value.FileFolders];
+            string[] arrayDisk = [..options.Value.Storage.Disks];
             arrayDisk.Shuffle();
-            List<FileRaidDataBlockModel> disks = GetShuffledDisks(arrayDisk, raidModel.Id);
+            List<FileRaidDataBlockModel> disks = arrayDisk.GetShuffledDisks(raidModel.Id);
 
-            foreach (var disk in disks)
-            {
-                Directory.CreateDirectory(Path.GetDirectoryName(disk.AbsolutePath)!);
-            }
+            disks.InitPhysicFolder();
 
             var result = await WriteDataAsync(stream, raidModel.StripSize, cancellationToken, disks.Select(x => x.AbsolutePath));
             raidModel.Size = result.TotalByteWritten;
@@ -101,22 +129,6 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         {
             return new();
         }
-    }
-
-    private List<FileRaidDataBlockModel> GetShuffledDisks(string[] fileFolders, ObjectId raidId)
-    {
-        string[] arrayDisk = fileFolders.ToArray();
-        arrayDisk.Shuffle();
-        int index = 0;
-
-        return arrayDisk.Select(x => new FileRaidDataBlockModel
-        {
-            AbsolutePath = Path.Combine(x, $"_{DateTime.UtcNow:yyMMdd}", raidId + Path.GetRandomFileName()),
-            CreationTime = DateTime.UtcNow,
-            ModificationTime = DateTime.UtcNow,
-            RelativePath = raidId.ToString(),
-            Index = index++
-        }).ToList();
     }
 
     public async Task ReadGetDataAsync(Stream outputStream, string path, CancellationToken cancellationToken = default)
@@ -389,20 +401,6 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         outputStream.SeekBeginOrigin();
     }
 
-    private FileStream? OpenFileWrite(string path, int bufferSize)
-    {
-        FileStream? file1 = null;
-        try
-        {
-            file1 = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: bufferSize, useAsync: true);
-        }
-        catch (Exception)
-        {
-            //
-        }
-
-        return file1;
-    }
 
     private async Task FlushAndDisposeAsync(params IEnumerable<FileStream?> files)
     {
@@ -417,7 +415,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
     public async Task<WriteDataResult> WriteDataAsync(Stream inputStream, int stripeSize, CancellationToken cancellationToken = default, params IEnumerable<string> filePaths)
     {
         var pathsArray = filePaths.ToArray();
-        List<FileStream?> fileStreams = pathsArray.Select(path => OpenFileWrite(path, _readWriteBufferSize)).ToList();
+        List<FileStream?> fileStreams = pathsArray.Select(path => path.OpenFileWrite(_readWriteBufferSize).Value).ToList();
 
         try
         {
@@ -428,7 +426,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         }
         catch (OperationCanceledException)
         {
-            DeletePhysicFiles(pathsArray);
+            pathsArray.DeletePhysicFiles();
             return new WriteDataResult();
         }
         finally
@@ -512,15 +510,16 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         int[] sortIndex = new int[fileStreams.Count];
         sortIndex[fileStripeIndex] = lastIndex;
         int index = 0;
-        
+
         List<Task> tasks = [];
         for (int i = 0; i < sortIndex.Length; i++)
         {
-            if(fileStripeIndex == i)
+            if (fileStripeIndex == i)
             {
                 tasks.Add(fileStreams[i]?.WriteAsync(buffers[fileStripeIndex], 0, stripeSize, cancellationToken) ?? Task.CompletedTask);
                 continue;
             }
+
             tasks.Add(fileStreams[i]?.WriteAsync(buffers[index++], 0, stripeSize, cancellationToken) ?? Task.CompletedTask);
         }
 
@@ -541,16 +540,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         return checksumBuilder.ToString();
     }
 
-    private void DeletePhysicFiles(params IEnumerable<string> fileStreams)
-    {
-        foreach (var path in fileStreams)
-        {
-            if (File.Exists(path))
-                File.Delete(path);
-        }
-    }
-
-    public async Task<MemoryStream> ReadStreamWithLimitAsync(Stream clientStream, int maxBufferSizeInBytes = 4 * 1024 * 1024) // 4MB limit
+    private async Task<MemoryStream> ReadStreamWithLimitAsync(Stream clientStream, int maxBufferSizeInBytes = 4 * 1024 * 1024) // 4MB limit
     {
         const int bufferSize = 8192; // 8 KB buffer size
         byte[] buffer = new byte[bufferSize];
@@ -592,5 +582,10 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         public string CheckSum { get; set; } = string.Empty;
 
         public string ContentType { get; set; } = string.Empty;
+    }
+
+    public void Dispose()
+    {
+        _semaphore.Dispose();
     }
 }
