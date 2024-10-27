@@ -78,15 +78,15 @@ public static class RaidStorageExtensions
     public static Result<FileStream?> OpenFileWrite(this string path, int bufferSize)
     {
         FileStream? file1;
-        if (!File.Exists(path))
-            return Result<FileStream?>.Failure("File does not exist", ErrorType.NotFound);
+        if (File.Exists(path))
+            return Result<FileStream?>.Failure("File already exists", ErrorType.NotFound);
         try
         {
             file1 = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: bufferSize, useAsync: true);
         }
-        catch (IOException)
+        catch (IOException exception)
         {
-            return Result<FileStream?>.Failure("File already exists", ErrorType.PermissionDenied);
+            return Result<FileStream?>.Failure(exception.Message, ErrorType.PermissionDenied);
         }
         catch (Exception exception)
         {
