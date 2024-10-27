@@ -67,7 +67,6 @@ public class Program
 
         #region Configure Setting
 
-        builder.Services.Configure<DbSettingModel>(builder.Configuration.GetSection("DBSetting"));
         builder.Services.Configure<AppCertificate>(builder.Configuration.GetSection("AppCertificate"));
         builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 

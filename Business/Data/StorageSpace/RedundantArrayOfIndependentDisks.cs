@@ -68,6 +68,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
 
     private void CheckDiskSpace(IEnumerable<string> diskSpaces)
     {
+        StringBuilder stringBuilder = new StringBuilder();
         foreach (var disk in diskSpaces)
         {
             if (!Directory.Exists(disk))
@@ -77,15 +78,13 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                 try
                 {
                     DriveInfo driveInfo = new DriveInfo(disk);
-
-                    long availableSpace = driveInfo.AvailableFreeSpace;
+                    long availableSpace = driveInfo.AvailableFreeSpace / 1024 / 1024;
                     long totalSpace = driveInfo.TotalSize / 1024 / 1024;
-                    long usedSpace = (totalSpace - availableSpace) / 1024 / 1024;
-
-                    logger.LogInformation($"Disk {disk} information:");
-                    logger.LogInformation($"- Total Space: {totalSpace:N0} MB");
-                    logger.LogInformation($"- Used Space: {usedSpace:N0} MB");
-                    logger.LogInformation($"- Available Space: {availableSpace:N0} MB");
+                    long usedSpace = totalSpace - availableSpace;
+                    stringBuilder.AppendLine($"Disk {disk} information:");
+                    stringBuilder.AppendLine($"- Total Space: {totalSpace:N0} MB");
+                    stringBuilder.AppendLine($"- Used Space: {usedSpace:N0} MB");
+                    stringBuilder.AppendLine($"- Available Space: {availableSpace:N0} MB\n");
                 }
                 catch (Exception ex)
                 {
@@ -93,6 +92,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                 }
             }
         }
+        logger.LogInformation(stringBuilder.ToString());
     }
 
     public async Task<WriteDataResult> WriteDataAsync(Stream stream, string path, CancellationToken cancellationToken = default)
