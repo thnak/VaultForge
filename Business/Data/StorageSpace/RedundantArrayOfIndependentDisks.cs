@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Business.Data.Interfaces;
 using Business.Data.StorageSpace.Utils;
+using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.Utils;
 using Business.Utils.Helper;
 using Business.Utils.StringExtensions;
@@ -18,7 +19,7 @@ using MongoDB.Driver;
 
 namespace Business.Data.StorageSpace;
 
-public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, ILogger<RedundantArrayOfIndependentDisks> logger, IOptions<AppSettings> options) : IMongoDataInitializer
+public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IParallelBackgroundTaskQueue queue, ILogger<RedundantArrayOfIndependentDisks> logger, IOptions<AppSettings> options) : IMongoDataInitializer
 {
     private readonly IMongoCollection<FileRaidModel> _fileDataDb = context.MongoDatabase.GetCollection<FileRaidModel>("FileRaid");
     private readonly IMongoCollection<FileRaidDataBlockModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileRaidDataBlockModel>("FileRaidDataBlock");
@@ -188,29 +189,34 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
     {
         var raidModel = Get(path);
         if (raidModel == null)
+        {
+            logger.LogError($"{path} Not found. Delete failed");
             return;
+        }
 
         var id = raidModel.Id.ToString();
-        _ = Task.Run(async () =>
-        {
-            await foreach (var model in GetDataBlocks(id, cancellationToken: default))
-            {
-                try
-                {
-                    if (File.Exists(model.AbsolutePath))
-                        File.Delete(model.AbsolutePath);
-                }
-                catch (Exception e)
-                {
-                    logger.LogError(e, $"[{model.AbsolutePath}] Failed to delete file");
-                }
-            }
-
-            await _fileDataDb.DeleteOneAsync(x => x.Id == raidModel.Id);
-            await _fileMetaDataDataDb.DeleteManyAsync(x => x.RelativePath == id);
-        });
+        queue.QueueBackgroundWorkItemAsync(async _ => await DeleteAllDataBlocks(id));
     }
 
+    private async Task DeleteAllDataBlocks(string id)
+    {
+        await foreach (var model in GetDataBlocks(id, cancellationToken: default))
+        {
+            try
+            {
+                if (File.Exists(model.AbsolutePath))
+                    File.Delete(model.AbsolutePath);
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e, $"[{model.AbsolutePath}] Failed to delete file");
+            }
+        }
+
+        await _fileDataDb.DeleteOneAsync(x => x.Id == ObjectId.Parse(id));
+        await _fileMetaDataDataDb.DeleteManyAsync(x => x.RelativePath == id);
+    }
+    
     public bool Exists(string key)
     {
         FilterDefinition<FileRaidModel> filter = ObjectId.TryParse(key, out var id) ? Builders<FileRaidModel>.Filter.Eq(x => x.Id, id) : Builders<FileRaidModel>.Filter.Eq(x => x.RelativePath, key);

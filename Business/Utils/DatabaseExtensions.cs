@@ -38,9 +38,9 @@ public static class DatabaseExtensions
         throw new InvalidOperationException("Invalid expression");
     }
     
-    public static ProjectionDefinition<T>? ProjectionBuilder<T>(this Expression<Func<T, object>>[] expression)
+    public static ProjectionDefinition<T> ProjectionBuilder<T>(this Expression<Func<T, object>>[] expression)
     {
-        ProjectionDefinition<T>? projection = null;
+        ProjectionDefinition<T> projection = new BsonDocumentProjectionDefinition<T>(new BsonDocument());
 
         if (expression.Length > 0)
         {
