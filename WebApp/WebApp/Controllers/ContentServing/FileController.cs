@@ -262,13 +262,12 @@ public class FilesController(
             raid5Stream.Seek(from, SeekOrigin.Begin);
 
             _ = await raid5Stream.ReadAsync(buffer, 0, length, cancelToken);
-
+            await raid5Stream.DisposeAsync();
             // Set headers for partial content response
             Response.Headers.Append("Content-Range", $"bytes {from}-{to}/{file.FileSize}");
             Response.Headers.Append("Accept-Ranges", "bytes");
             Response.ContentLength = length;
             Response.StatusCode = StatusCodes.Status206PartialContent;
-            Response.RegisterForDispose(raid5Stream);
 
             return File(buffer, "video/mp4");
         }
