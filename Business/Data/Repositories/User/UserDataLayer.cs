@@ -50,7 +50,8 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
                     JoinTime = DateTime.UtcNow,
                     Roles = [..PolicyNamesAndRoles.System.Roles.Split(",")]
                 }, cancellationToken);
-                logger.LogInformation(result.Message);
+                if (!result.IsSuccess)
+                    logger.LogError(result.Message);
             }
 
             defaultUser = "Anonymous".ComputeSha256Hash();
@@ -64,7 +65,8 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
                     Password = passWord.ComputeSha256Hash(),
                     JoinTime = DateTime.UtcNow
                 }, cancellationToken);
-                logger.LogInformation(result.Message);
+                if (!result.IsSuccess)
+                    logger.LogError(result.Message);
             }
 
             logger.LogInformation(@"[Init] User data layer");
@@ -249,7 +251,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
             if (string.IsNullOrWhiteSpace(model.UserName)) return Result<bool>.Failure(AppLang.User_name_is_not_valid, ErrorType.Validation);
             var query = await _dataDb.Find(x => x.UserName == model.UserName).AnyAsync(cancellationToken: cancellationToken);
             if (query) return Result<bool>.Failure(AppLang.User_is_already_exists, ErrorType.NotFound);
-            
+
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
             return Result<bool>.Success(AppLang.Create_successfully);
         }
