@@ -25,7 +25,7 @@ public class UserModel
 
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(5)]
-    public DateTime JoinDate { get; set; } = DateTime.UtcNow;
+    public DateTime JoinTime { get; set; } = DateTime.UtcNow;
 
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(6)]

@@ -43,13 +43,14 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
             if (system == null)
             {
                 var passWord = "PassWd2@";
-                await CreateAsync(new UserModel
+                var result = await CreateAsync(new UserModel
                 {
                     UserName = defaultUser,
                     Password = passWord.ComputeSha256Hash(),
-                    JoinDate = DateTime.UtcNow,
+                    JoinTime = DateTime.UtcNow,
                     Roles = [..PolicyNamesAndRoles.System.Roles.Split(",")]
                 }, cancellationToken);
+                logger.LogInformation(result.Message);
             }
 
             defaultUser = "Anonymous".ComputeSha256Hash();
@@ -57,12 +58,13 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
             if (system == null)
             {
                 var passWord = "PassWd2@";
-                await CreateAsync(new UserModel
+                var result = await CreateAsync(new UserModel
                 {
                     UserName = defaultUser,
                     Password = passWord.ComputeSha256Hash(),
-                    JoinDate = DateTime.UtcNow
+                    JoinTime = DateTime.UtcNow
                 }, cancellationToken);
+                logger.LogInformation(result.Message);
             }
 
             logger.LogInformation(@"[Init] User data layer");
