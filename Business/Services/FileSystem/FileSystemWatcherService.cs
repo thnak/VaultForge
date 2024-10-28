@@ -65,7 +65,7 @@ public class FileSystemWatcherService(
                 {
                     try
                     {
-                        logger.LogInformation($"Watching files in {watchResource}. It may take a few minutes.");
+                        logger.LogInformation($"Watching files in {watchResource} with extension {extension}. It may take a few minutes.");
                         FileSystemWatcher watcher = new FileSystemWatcher();
                         watcher.Path = watchResource;
                         watcher.Filter = extension;
