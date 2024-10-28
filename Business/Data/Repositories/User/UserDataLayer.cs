@@ -248,7 +248,8 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         {
             if (string.IsNullOrWhiteSpace(model.UserName)) return Result<bool>.Failure(AppLang.User_name_is_not_valid, ErrorType.Validation);
             var query = await _dataDb.Find(x => x.UserName == model.UserName).AnyAsync(cancellationToken: cancellationToken);
-            if (!query) return Result<bool>.Failure(AppLang.User_is_already_exists, ErrorType.NotFound);
+            if (query) return Result<bool>.Failure(AppLang.User_is_already_exists, ErrorType.NotFound);
+            
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
             return Result<bool>.Success(AppLang.Create_successfully);
         }
