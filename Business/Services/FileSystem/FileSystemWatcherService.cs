@@ -63,16 +63,24 @@ public class FileSystemWatcherService(
             {
                 parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(_ =>
                 {
-                    logger.LogInformation($"Watching files in {storageResource}. It may take a few minutes.");
-                    FileSystemWatcher watcher = new FileSystemWatcher();
-                    watcher.Path = watchResource;
-                    watcher.Filter = storageResource;
-                    watcher.Created += WatcherOnCreated;
-                    watcher.EnableRaisingEvents = true;
-                    watcher.IncludeSubdirectories = true;
-                    _watchers.Add(watcher);
-                    logger.LogInformation($"Watcher started. Now listen to file system changes on {watchResource} with extension {storageResource}.");
-                    return ValueTask.CompletedTask;
+                    try
+                    {
+                        logger.LogInformation($"Watching files in {storageResource}. It may take a few minutes.");
+                        FileSystemWatcher watcher = new FileSystemWatcher();
+                        watcher.Path = watchResource;
+                        watcher.Filter = storageResource;
+                        watcher.Created += WatcherOnCreated;
+                        watcher.EnableRaisingEvents = true;
+                        watcher.IncludeSubdirectories = true;
+                        _watchers.Add(watcher);
+                        logger.LogInformation($"Watcher started. Now listen to file system changes on {watchResource} with extension {storageResource}.");
+                        return ValueTask.CompletedTask;
+                    }
+                    catch (Exception e)
+                    {
+                        logger.LogError(e, e.Message);
+                        return ValueTask.CompletedTask;
+                    }
                 }, cancellationToken);
             }
         }
@@ -87,18 +95,26 @@ public class FileSystemWatcherService(
 
             parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(_ =>
             {
-                logger.LogInformation($"Watching files in {storageResource}. It may take a few minutes.");
-                FileSystemWatcher watcher = new FileSystemWatcher();
-                watcher.Path = storageResource;
-                // watcher.Deleted += WatcherOnDeleted;
-                watcher.Error += WatcherOnError;
-                // watcher.Changed += WatchStorageResourcesChanged;
-                // watcher.Renamed += WatchStorageResourcesRenamed;
-                watcher.EnableRaisingEvents = true;
-                watcher.IncludeSubdirectories = true;
-                _watchers.Add(watcher);
-                logger.LogInformation($"Watcher started. Now listen to file system changes on {storageResource}.");
-                return ValueTask.CompletedTask;
+                try
+                {
+                    logger.LogInformation($"Watching files in {storageResource}. It may take a few minutes.");
+                    FileSystemWatcher watcher = new FileSystemWatcher();
+                    watcher.Path = storageResource;
+                    // watcher.Deleted += WatcherOnDeleted;
+                    watcher.Error += WatcherOnError;
+                    // watcher.Changed += WatchStorageResourcesChanged;
+                    // watcher.Renamed += WatchStorageResourcesRenamed;
+                    watcher.EnableRaisingEvents = true;
+                    watcher.IncludeSubdirectories = true;
+                    _watchers.Add(watcher);
+                    logger.LogInformation($"Watcher started. Now listen to file system changes on {storageResource}.");
+                    return ValueTask.CompletedTask;
+                }
+                catch (Exception e)
+                {
+                    logger.LogError(e, e.Message);
+                    return ValueTask.CompletedTask;
+                }
             }, cancellationToken);
         }
 
