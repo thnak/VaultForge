@@ -59,21 +59,21 @@ public class FileSystemWatcherService(
                 continue;
             }
 
-            foreach (var storageResource in watchExtensionFilters)
+            foreach (var extension in watchExtensionFilters)
             {
                 parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(_ =>
                 {
                     try
                     {
-                        logger.LogInformation($"Watching files in {storageResource}. It may take a few minutes.");
+                        logger.LogInformation($"Watching files in {watchResource}. It may take a few minutes.");
                         FileSystemWatcher watcher = new FileSystemWatcher();
                         watcher.Path = watchResource;
-                        watcher.Filter = storageResource;
+                        watcher.Filter = extension;
                         watcher.Created += WatcherOnCreated;
                         watcher.EnableRaisingEvents = true;
                         watcher.IncludeSubdirectories = true;
                         _watchers.Add(watcher);
-                        logger.LogInformation($"Watcher started. Now listen to file system changes on {watchResource} with extension {storageResource}.");
+                        logger.LogInformation($"Watcher started. Now listen to file system changes on {watchResource} with extension {extension}.");
                         return ValueTask.CompletedTask;
                     }
                     catch (Exception e)
