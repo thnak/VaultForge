@@ -1,6 +1,4 @@
-using Business.Data.Interfaces;
 using Business.Exceptions;
-using Business.LogProvider;
 using Business.Services;
 using Business.Services.Configure;
 using Business.SocketHubs;
@@ -142,19 +140,16 @@ public class Program
         builder.Services.AddScoped<LazyAssemblyLoader>();
 
         #region Logging
-
-        builder.Services.AddLogging(options =>
-        {
-            // options.ClearProviders();
-#pragma warning disable ASP0000
-            var serviceProvider = builder.Services.BuildServiceProvider();
-#pragma warning restore ASP0000
-
-            options.AddProvider(new MongoDbLoggerProvider(serviceProvider.GetRequiredService<IMongoDataLayerContext>()));
-            options.SetMinimumLevel(LogLevel.Debug);
-        });
-        builder.Services.AddHttpLogging();
-        builder.Logging.SetMinimumLevel(LogLevel.Information);
+        
+        // builder.Services.AddLogging(options =>
+        // {
+        //     // options.ClearProviders();
+        //     var serviceProvider = builder.Services.BuildServiceProvider();
+        //     options.AddProvider(new MongoDbLoggerProvider(serviceProvider.GetRequiredService<IMongoDataLayerContext>()));
+        //     options.SetMinimumLevel(LogLevel.Debug);
+        // });
+        // builder.Services.AddHttpLogging();
+        // builder.Logging.SetMinimumLevel(LogLevel.Information);
 
         #endregion
 

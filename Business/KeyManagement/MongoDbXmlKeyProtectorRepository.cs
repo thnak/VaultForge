@@ -1,6 +1,7 @@
 using System.Xml.Linq;
 using Business.Data.Interfaces;
 using Microsoft.AspNetCore.DataProtection.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using Protector.Models;
 
@@ -16,9 +17,16 @@ public interface IMongoDbXmlKeyProtectorRepository : IXmlRepository
     long CleanupOldKeys(DateTime cutoffDate);
 }
 
-public class MongoDbXmlKeyProtectorRepository(IMongoDataLayerContext context) : IMongoDbXmlKeyProtectorRepository
+public class MongoDbXmlKeyProtectorRepository : IMongoDbXmlKeyProtectorRepository
 {
-    private readonly IMongoCollection<DataProtectionKey> _collection = context.MongoDatabase.GetCollection<DataProtectionKey>("DataProtectionKeys");
+    private readonly IMongoCollection<DataProtectionKey> _collection;
+
+    public MongoDbXmlKeyProtectorRepository(IServiceScopeFactory factory)
+    {
+        using var scope = factory.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<IMongoDataLayerContext>();
+        _collection = context.MongoDatabase.GetCollection<DataProtectionKey>("DataProtectionKeys");
+    }
 
     public IReadOnlyCollection<XElement> GetAllElements()
     {

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
@@ -41,18 +42,17 @@ public static class ProtectorService
                 ValidationAlgorithm = ValidationAlgorithm.HMACSHA512
             })
             .SetApplicationName(CookieNames.Name)
-            .SetDefaultKeyLifetime(TimeSpan.FromDays(7))
-            .AddKeyManagementOptions(options =>
+            .SetDefaultKeyLifetime(TimeSpan.FromDays(7));
+        service.AddOptions<KeyManagementOptions>()
+            .Configure<IServiceScopeFactory>((options, factory) =>
             {
                 options.AuthenticatedEncryptorConfiguration = new AuthenticatedEncryptorConfiguration
                 {
                     EncryptionAlgorithm = EncryptionAlgorithm.AES_256_GCM,
                     ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
                 };
-#pragma warning disable ASP0000
-                options.XmlRepository = service.BuildServiceProvider().GetService<IMongoDbXmlKeyProtectorRepository>();
-#pragma warning restore ASP0000
                 options.AutoGenerateKeys = true;
+                options.XmlRepository = new MongoDbXmlKeyProtectorRepository(factory);
             });
 
         service.Configure<ForwardedHeadersOptions>(options =>

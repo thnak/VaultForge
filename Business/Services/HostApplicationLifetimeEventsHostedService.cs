@@ -43,11 +43,8 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
         queue.QueueBackgroundWorkItemAsync(async token =>
         {
             using var scope = serviceScopeFactory.CreateScope();
-            var dataLayer = scope.ServiceProvider.GetService<TDataLayer>();
-            if (dataLayer != null)
-            {
-                await dataLayer.InitializeAsync(token);
-            }
+            var dataLayer = scope.ServiceProvider.GetRequiredService<TDataLayer>();
+            await dataLayer.InitializeAsync(token);
         });
     }
 

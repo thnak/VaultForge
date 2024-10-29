@@ -2,7 +2,7 @@
 
 namespace Business.Data.Interfaces;
 
-public interface IMongoDataLayerContext
+public interface IMongoDataLayerContext : IDisposable
 {
     IMongoDatabase MongoDatabase { get; }
 }

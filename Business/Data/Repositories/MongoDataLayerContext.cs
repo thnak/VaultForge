@@ -56,4 +56,9 @@ public class MongoDataLayerContext : IMongoDataLayerContext
     }
 
     public IMongoDatabase MongoDatabase { get; }
+
+    public void Dispose()
+    {
+        MongoDatabase.Client.Dispose();
+    }
 }
