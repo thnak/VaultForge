@@ -4,19 +4,19 @@ customScrollbar.id = 'custom-scrollbar';
 document.body.appendChild(customScrollbar);
 
 // Create the thumb element for the scrollbar
-let thumb = document.createElement('div');
-thumb.classList.add('thumb');
-customScrollbar.appendChild(thumb);
+let htmlScrollDivElement = document.createElement('div');
+htmlScrollDivElement.classList.add('thumb');
+customScrollbar.appendChild(htmlScrollDivElement);
 
-let hideTimeout;
-let isDragging = false; // Flag to track if the user is dragging
-let startY; // Variable to store the initial Y position when dragging starts
+let scrollHideTimeout;
+let scrollIsDragging = false; // Flag to track if the user is dragging
+let scrollStartY; // Variable to store the initial Y position when dragging starts
 let startScrollTop; // Variable to store the initial scroll position when dragging starts
 
 // Function to start dragging
-thumb.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    startY = e.clientY; // Get the initial Y position when the drag starts
+htmlScrollDivElement.addEventListener('mousedown', (e) => {
+    scrollIsDragging = true;
+    scrollStartY = e.clientY; // Get the initial Y position when the drag starts
     startScrollTop = window.scrollY; // Get the current scroll position
 
     // Prevent text selection or other default behaviors while dragging
@@ -28,8 +28,8 @@ thumb.addEventListener('mousedown', (e) => {
 
 // Function to handle the dragging movement
 document.addEventListener('mousemove', (e) => {
-    if (isDragging) {
-        const deltaY = e.clientY - startY; // Calculate the movement distance
+    if (scrollIsDragging) {
+        const deltaY = e.clientY - scrollStartY; // Calculate the movement distance
         const contentHeight = document.documentElement.scrollHeight;
         const viewportHeight = window.innerHeight;
 
@@ -43,14 +43,14 @@ document.addEventListener('mousemove', (e) => {
 
 // Function to stop dragging
 document.addEventListener('mouseup', () => {
-    if (isDragging) {
-        isDragging = false;
+    if (scrollIsDragging) {
+        scrollIsDragging = false;
 
         // Re-enable text selection after dragging ends
         document.body.style.userSelect = '';
 
         // Hide the scrollbar after 1 second of inactivity
-        hideTimeout = setTimeout(() => {
+        scrollHideTimeout = setTimeout(() => {
             customScrollbar.style.opacity = '0';
         }, 1000);
     }
@@ -63,18 +63,18 @@ function updateScrollbar() {
     const scrollTop = window.scrollY;
     const thumbHeight = Math.max(viewportHeight / contentHeight * viewportHeight, 30); // Set minimum thumb height
 
-    thumb.style.height = `${thumbHeight}px`;
-    thumb.style.top = `${scrollTop / contentHeight * viewportHeight}px`;
+    htmlScrollDivElement.style.height = `${thumbHeight}px`;
+    htmlScrollDivElement.style.top = `${scrollTop / contentHeight * viewportHeight}px`;
 
     // Show the scrollbar
     customScrollbar.style.opacity = '1';
 
     // Clear previous timeout if the user is still scrolling
-    if (!isDragging && hideTimeout) clearTimeout(hideTimeout);
+    if (!scrollIsDragging && scrollHideTimeout) clearTimeout(scrollHideTimeout);
 
     // Hide the scrollbar after 1 second of inactivity (only if not dragging)
-    if (!isDragging) {
-        hideTimeout = setTimeout(() => {
+    if (!scrollIsDragging) {
+        scrollHideTimeout = setTimeout(() => {
             customScrollbar.style.opacity = '0';
         }, 1000);
     }
