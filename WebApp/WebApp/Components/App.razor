@@ -23,9 +23,10 @@
     <link href="@Assets["css/app.css"]" rel="stylesheet" />
     <link href="@Assets["css/RedditMobileMenu.css"]" rel="stylesheet" />
     <link data-name="vs/editor/editor.main" href="@Assets["css/editor.main.min.css"]" rel="stylesheet" >
+    <link href="@Assets["css/scrollbar.css"]" rel="stylesheet"/>
+    <link href="@Assets["favicon.ico"]" rel="icon" type="image/x-icon" />
 
     <ImportMap />
-    <link href="@Assets["favicon.ico"]" rel="icon" type="image/x-icon" />
     <HeadOutlet @rendermode="@RenderModeForPage()" />
 </head>
 
@@ -58,15 +59,13 @@
 
 <Routes @rendermode="@RenderModeForPage()" />
 
-@* <script src="@Assets["_content/BlazorMonaco/jsInterop.js"]"></script> *@
-@* <script src="@Assets["_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js"]"></script> *@
-@* <script src="@Assets["Pages/ContentManagementSystem/Editor/ContentCreatorPage.razor.js"]"></script> *@
-@* <script src="@Assets["_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js"]"></script> *@
+
 <script src="_framework/blazor.web.js" ></script>
 <script src="@Assets["_content/MudBlazor/MudBlazor.min.js"]" ></script>
 <script src="@Assets["js/app.js"]" ></script>
 <script src="@Assets["js/eventListener.js"]" ></script>
 <script src="@Assets["js/encryption.js"]" ></script>
+<script src="@Assets["js/scrollbar.js"]"></script>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script src="js/avatar.js"></script>
 </body>

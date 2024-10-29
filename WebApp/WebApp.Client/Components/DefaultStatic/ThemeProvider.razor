@@ -1,7 +1,7 @@
 @implements IDisposable
 
 <CascadingValue IsFixed Name="UsePopoverProvider" Value="false" >
-    <MudThemeProvider @bind-IsDarkMode="@CustomStateContainer.IsDarkMode" @ref="MudThemeProvider" Theme="@CustomStateContainer.MudTheme" ></MudThemeProvider>
+    <MudThemeProvider @bind-IsDarkMode="@CustomStateContainer.IsDarkMode" @ref="MudThemeProvider" Theme="@CustomStateContainer.MudTheme" DefaultScrollbar="true"></MudThemeProvider>
 </CascadingValue>
 
 @code {

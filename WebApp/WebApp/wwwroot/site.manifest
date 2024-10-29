@@ -1,7 +1,7 @@
 {
         "start_url":"/",
-        "name": "VaultForge ",
-        "short_name": "VaultForge ",
+        "name": "VaultForge",
+        "short_name": "VaultForge",
         "icons": [
         {
         "src": "/android-chrome-192x192.png",

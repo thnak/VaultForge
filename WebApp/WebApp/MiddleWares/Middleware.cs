@@ -61,17 +61,17 @@ public class Middleware(RequestDelegate next, ILogger<Middleware> logger)
 
     private Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
-        var recordModel = new ErrorRecordModel
+        logger.LogError(exception, context.Request.Method + " " + context.Request.PathBase + context.Request.Path + context.Request.QueryString);
+#if DEBUG
+        throw exception;
+#else
+var recordModel = new ErrorRecordModel
         {
             Message = exception.Message,
             RequestId = context.TraceIdentifier,
             Src = exception.Source ?? string.Empty,
             Href = context.Request.Path
         };
-        logger.LogError(exception, context.Request.Method + " " + context.Request.PathBase + context.Request.Path + context.Request.QueryString);
-#if DEBUG
-        throw exception;
-#else
         context.Response.Redirect($"{PageRoutes.Error.ErrorPage.AppendAndEncodeBase64StringAsUri(recordModel.Encode2Base64String())}");
         return Task.CompletedTask;
 #endif
