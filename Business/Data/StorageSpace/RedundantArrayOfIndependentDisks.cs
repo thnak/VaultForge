@@ -196,7 +196,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IP
         }
 
         var id = raidModel.Id.ToString();
-        await queue.QueueBackgroundWorkItemAsync(async _ => await DeleteAllDataBlocks(id));
+        await DeleteAllDataBlocks(id);
     }
 
     private async Task DeleteAllDataBlocks(string id)

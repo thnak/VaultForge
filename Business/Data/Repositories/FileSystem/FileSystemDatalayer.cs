@@ -17,7 +17,7 @@ using MongoDB.Driver;
 
 namespace Business.Data.Repositories.FileSystem;
 
-public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSystemDatalayer> logger, IParallelBackgroundTaskQueue queue, IMemoryCache memoryCache, RedundantArrayOfIndependentDisks raidService) : IFileSystemDatalayer
+public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSystemDatalayer> logger, IParallelBackgroundTaskQueue parallelQueue, ISequenceBackgroundTaskQueue sequenceQueue, IMemoryCache memoryCache, RedundantArrayOfIndependentDisks raidService) : IFileSystemDatalayer
 {
     private readonly IMongoCollection<FileInfoModel> _fileDataDb = context.MongoDatabase.GetCollection<FileInfoModel>("FileInfo");
     private readonly IMongoCollection<FileMetadataModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileMetadataModel>("FileMetaData");
@@ -368,21 +368,6 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             if (ObjectId.TryParse(key, out var id)) filter |= Builders<FileInfoModel>.Filter.Eq(x => x.Id, id);
 
             await _fileDataDb.DeleteManyAsync(filter, cancelToken);
-
-            await queue.QueueBackgroundWorkItemAsync(async (serverToken) =>
-            {
-                List<string> extendFiles = new List<string>();
-                await foreach (var extendFile in Where(file => file.ParentResource == key, serverToken, model => model.Id))
-                {
-                    extendFiles.Add(extendFile.Id.ToString());
-                }
-
-                foreach (var extendFile in extendFiles)
-                {
-                    await DeleteAsync(extendFile, serverToken);
-                }
-            });
-
             await raidService.DeleteAsync(query.AbsolutePath);
 
             DeleteMetadata(query.MetadataId);
@@ -400,6 +385,19 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         finally
         {
             _semaphore.Release();
+            await sequenceQueue.QueueBackgroundWorkItemAsync(async (serverToken) =>
+            {
+                List<string> extendFiles = new List<string>();
+                await foreach (var extendFile in Where(file => file.ParentResource == key, serverToken, model => model.Id))
+                {
+                    extendFiles.Add(extendFile.Id.ToString());
+                }
+
+                foreach (var extendFile in extendFiles)
+                {
+                    await DeleteAsync(extendFile, serverToken);
+                }
+            });
         }
     }
 

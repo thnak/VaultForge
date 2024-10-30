@@ -25,9 +25,10 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationToken);
         try
         {
+            await _semaphore.WaitAsync(cancellationToken);
+
             var keys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath).Ascending(x => x.OwnerUsername);
             var absolutePathAndUserIndexModel = new CreateIndexModel<FolderInfoModel>(keys, new CreateIndexOptions { Unique = true });
 
@@ -212,7 +213,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
                 }
             } // Limit the number of results
         };
-        var searchResults = await _dataDb.AggregateAsync<FolderInfoModel>(pipeline, null, cancellationToken);
+        using var searchResults = await _dataDb.AggregateAsync<FolderInfoModel>(pipeline, null, cancellationToken);
         while (await searchResults.MoveNextAsync(cancellationToken))
             foreach (var user in searchResults.Current)
                 if (user != default)
@@ -392,8 +393,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     }
 
 
-    public IAsyncEnumerable<(bool, string, string)> ReplaceAsync(IEnumerable<FolderInfoModel> models,
-        CancellationToken cancellationToken = default)
+    public IAsyncEnumerable<(bool, string, string)> ReplaceAsync(IEnumerable<FolderInfoModel> models, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -416,6 +416,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
                 folder.PreviousType = FolderContentType.Folder;
                 await CreateAsync(folder, cancelToken);
             }
+
             return (true, AppLang.Delete_successfully);
         }
 
@@ -503,7 +504,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
         if (currentLastSeenId.HasValue && hasIdCheck)
         {
-            memoryCache.Set(SearchIndexNameLastSeenId, currentLastSeenId.Value, TimeSpan.FromMinutes(30)); // Cache for 30 minutes
+            memoryCache.Set(SearchIndexNameLastSeenId, currentLastSeenId.Value, TimeSpan.FromSeconds(30)); // Cache for 30 minutes
         }
     }
 

@@ -19,7 +19,6 @@ using BusinessModels.Validator.Folder;
 using BusinessModels.WebContent.Drive;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using Protector.Utils;
 
@@ -32,7 +31,8 @@ public class FolderSystemBusinessLayer(
     ILogger<FolderSystemBusinessLayer> logger,
     IMemoryCache memoryCache,
     RedundantArrayOfIndependentDisks raidService,
-    IParallelBackgroundTaskQueue parallelBackgroundTaskQueue)
+    IParallelBackgroundTaskQueue parallelBackgroundTaskQueue,
+    ISequenceBackgroundTaskQueue sequenceBackgroundTaskQueue)
     : IFolderSystemBusinessLayer, IDisposable
 {
     private readonly CacheKeyManager _cacheKeyManager = new(memoryCache, nameof(FolderSystemBusinessLayer));
@@ -159,10 +159,10 @@ public class FolderSystemBusinessLayer(
         var res = await folderSystemService.DeleteAsync(key, cancelToken);
         if (res.Item1)
         {
-            await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async _ =>
+            await sequenceBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken1 =>
             {
                 List<FolderInfoModel> folders = new List<FolderInfoModel>();
-                var folderList = folderSystemService.Where(x => x.RootFolder == key, default, model => model.Id);
+                var folderList = folderSystemService.Where(x => x.RootFolder == key, serverToken1, model => model.Id);
                 await foreach (var fol in folderList)
                 {
                     folders.Add(fol);
@@ -170,19 +170,19 @@ public class FolderSystemBusinessLayer(
                 logger.LogInformation($"Deleting {folders.Count:N0} folders");
                 foreach (var folderStack in folders)
                 {
-                    await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async (serverToken) =>
+                    await sequenceBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async (serverToken) =>
                     {
                         var folderId = folderStack.Id.ToString();
                         await DeleteAsync(folderId, serverToken);
                         await DeleteAsync(folderId, serverToken);
-                    });
+                    }, serverToken1);
                 }
             }, default);
 
-            await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async _ =>
+            await sequenceBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken1 =>
             {
                 List<FileInfoModel> files = new List<FileInfoModel>();
-                var cursor = fileSystemService.Where(x => x.RootFolder == key, default, model => model.Id);
+                var cursor = fileSystemService.Where(x => x.RootFolder == key, serverToken1, model => model.Id);
                 await foreach (var file in cursor)
                 {
                     files.Add(file);
@@ -191,12 +191,12 @@ public class FolderSystemBusinessLayer(
                 logger.LogInformation($"Deleting {files.Count:N0} files");
                 foreach (var file in files)
                 {
-                    await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken =>
+                    await sequenceBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken =>
                     {
                         var fileId = file.Id.ToString();
                         await fileSystemService.DeleteAsync(fileId, serverToken);
                         await fileSystemService.DeleteAsync(fileId, serverToken);
-                    });
+                    }, serverToken1);
                 }
             }, default);
         }
@@ -386,14 +386,12 @@ public class FolderSystemBusinessLayer(
 
     public Task<long> GetFolderByteSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
     {
-        var folders = folderSystemService.Where(predicate, cancellationTokenSource);
         long total = 0;
         return Task.FromResult(total);
     }
 
     public Task<(long, long)> GetFolderContentsSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
     {
-        var folders = folderSystemService.Where(predicate, cancellationTokenSource);
         long totalFolders = 0;
         long totalFiles = 0;
         return Task.FromResult((totalFolders, totalFiles));
