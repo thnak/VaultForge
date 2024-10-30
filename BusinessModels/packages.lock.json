@@ -279,6 +279,7 @@
         "resolved": "9.0.0-rc.2.24473.5",
         "contentHash": "H5AjBGypFRWRQuKC9S1jCXUk591TOunwT2RIIPC7NISRuQFPGKefzk8xwdNmZWVCi3e+gdkx4WVfu8NdXMviQw=="
       }
-    }
+    },
+    "net9.0/win-x64": {}
   }
 }

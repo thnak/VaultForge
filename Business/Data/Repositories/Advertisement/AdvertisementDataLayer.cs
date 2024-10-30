@@ -48,7 +48,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         var findOptions = fieldsToFetch.Any() ? new FindOptions<ArticleModel, ArticleModel>() { Projection = fieldsToFetch.ProjectionBuilder() } : null;
         var filter = Builders<ArticleModel>.Filter.Where(x => x.Author.Contains(keyWord) || x.Title.Contains(keyWord));
 
-        var cursor = await _dataDb.FindAsync(filter, findOptions, cancellationToken);
+        using var cursor = await _dataDb.FindAsync(filter, findOptions, cancellationToken);
         while (await cursor.MoveNextAsync(cancellationToken))
         {
             foreach (var model in cursor.Current)
@@ -61,7 +61,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
     public async IAsyncEnumerable<ArticleModel> Where(Expression<Func<ArticleModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<ArticleModel, object>>[] fieldsToFetch)
     {
         var options = fieldsToFetch.Any() ? new FindOptions<ArticleModel, ArticleModel> { Projection = fieldsToFetch.ProjectionBuilder() } : null;
-        var cursor = await _dataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);
+        using var cursor = await _dataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);
         while (await cursor.MoveNextAsync(cancellationToken))
         {
             foreach (var model in cursor.Current)
