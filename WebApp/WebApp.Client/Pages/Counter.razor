@@ -1,6 +1,7 @@
-﻿@rendermode InteractiveAuto
+﻿@rendermode InteractiveWebAssembly
 @using System.Diagnostics
 @attribute [Route("/counter")]
+@implements IAsyncDisposable
 
 <PageTitle>.NET Worker Multithreading</PageTitle>
 
@@ -239,4 +240,19 @@
     {
         return DateTime.Now.ToString("HH:mm:ss:fff");
     }
+
+
+    public async ValueTask DisposeAsync()
+    {
+        foreach (var worker in _workers)
+        {
+            await worker.DisposeAsync();
+        }
+
+        foreach (var background in _backgroundServices)
+        {
+            await background.DisposeAsync();
+        }
+    }
+
 }
