@@ -166,7 +166,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             Projection = projection
         };
 
-        var cursor = await _fileDataDb.FindAsync(filter, options, cancellationToken);
+        using var cursor = await _fileDataDb.FindAsync(filter, options, cancellationToken);
         while (await cursor.MoveNextAsync(cancellationToken))
         {
             foreach (var document in cursor.Current)
@@ -179,7 +179,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
     public async IAsyncEnumerable<FileInfoModel> Where(Expression<Func<FileInfoModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
     {
         var options = fieldsToFetch.Any() ? new FindOptions<FileInfoModel, FileInfoModel> { Projection = fieldsToFetch.ProjectionBuilder() } : null;
-        var cursor = await _fileDataDb.FindAsync(predicate, options: options, cancellationToken: cancellationToken);
+        using var cursor = await _fileDataDb.FindAsync(predicate, options: options, cancellationToken: cancellationToken);
         while (await cursor.MoveNextAsync(cancellationToken))
         {
             foreach (var model in cursor.Current)
@@ -208,7 +208,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
     public async IAsyncEnumerable<FileInfoModel> GetAllAsync([EnumeratorCancellation] CancellationToken cancellationToken)
     {
         var filter = Builders<FileInfoModel>.Filter.Empty;
-        var cursor = await _fileDataDb.FindAsync(filter, cancellationToken: cancellationToken);
+        using var cursor = await _fileDataDb.FindAsync(filter, cancellationToken: cancellationToken);
         while (await cursor.MoveNextAsync(cancellationToken))
         {
             foreach (var model in cursor.Current)
@@ -371,9 +371,15 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
             await queue.QueueBackgroundWorkItemAsync(async (serverToken) =>
             {
+                List<string> extendFiles = new List<string>();
                 await foreach (var extendFile in Where(file => file.ParentResource == key, serverToken, model => model.Id))
                 {
-                    await DeleteAsync(extendFile.Id.ToString(), serverToken);
+                    extendFiles.Add(extendFile.Id.ToString());
+                }
+
+                foreach (var extendFile in extendFiles)
+                {
+                    await DeleteAsync(extendFile, serverToken);
                 }
             });
 
@@ -461,7 +467,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
                 Limit = pageSize,
                 Skip = pageSize * pageNumber,
             };
-            var cursor = await _fileDataDb.FindAsync(filter, options, cancellationToken: cancellationToken);
+            using var cursor = await _fileDataDb.FindAsync(filter, options, cancellationToken: cancellationToken);
             while (await cursor.MoveNextAsync(cancellationToken))
             {
                 foreach (var model in cursor.Current)
@@ -500,7 +506,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
         filter = lastSeenId.HasValue ? filterBuilder.And(filter, filterBuilder.Lt(f => f.Id, lastSeenId.Value)) : Builders<FileInfoModel>.Filter.Where(predicate);
 
-        var cursor = await _fileDataDb.FindAsync(filter, options, cancellationToken: cancellationToken);
+        using var cursor = await _fileDataDb.FindAsync(filter, options, cancellationToken: cancellationToken);
 
         ObjectId? currentLastSeenId = null;
 

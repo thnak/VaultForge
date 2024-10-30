@@ -83,7 +83,7 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
                 Projection = fieldsToFetch.ProjectionBuilder()
             }
             : null;
-        var cursor = await _dataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);
+        using var cursor = await _dataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);
         while (await cursor.MoveNextAsync(cancellationToken))
         {
             foreach (var model in cursor.Current)

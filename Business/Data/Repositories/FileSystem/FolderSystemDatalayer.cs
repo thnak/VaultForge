@@ -241,7 +241,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     public async IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
     {
         var options = fieldsToFetch.Any() ? new FindOptions<FolderInfoModel, FolderInfoModel> { Projection = fieldsToFetch.ProjectionBuilder() } : null;
-        var cursor = await _dataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);
+        using var cursor = await _dataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);
         while (await cursor.MoveNextAsync(cancellationToken))
         {
             foreach (var model in cursor.Current)
@@ -273,7 +273,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     public async IAsyncEnumerable<FolderInfoModel> GetAllAsync([EnumeratorCancellation] CancellationToken cancellationToken)
     {
         var filter = Builders<FolderInfoModel>.Filter.Empty;
-        var cursor = await _dataDb.FindAsync(filter, cancellationToken: cancellationToken);
+        using var cursor = await _dataDb.FindAsync(filter, cancellationToken: cancellationToken);
         while (await cursor.MoveNextAsync(cancellationToken))
         {
             foreach (var model in cursor.Current)
@@ -449,7 +449,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             if (fieldsToFetch.Any())
                 options.Projection = fieldsToFetch.ProjectionBuilder();
 
-            var cursor = await _dataDb.FindAsync(filter, options, cancellationToken: cancellationToken);
+            using var cursor = await _dataDb.FindAsync(filter, options, cancellationToken: cancellationToken);
             while (await cursor.MoveNextAsync(cancellationToken))
             {
                 foreach (var model in cursor.Current)
@@ -487,7 +487,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
         filter = lastSeenId.HasValue ? filterBuilder.And(filter, filterBuilder.Lt(f => f.Id, lastSeenId.Value)) : Builders<FolderInfoModel>.Filter.Where(predicate);
 
-        var cursor = await _dataDb.FindAsync(filter, options, cancellationToken: cancellationToken);
+        using var cursor = await _dataDb.FindAsync(filter, options, cancellationToken: cancellationToken);
 
         ObjectId? currentLastSeenId = null;
 

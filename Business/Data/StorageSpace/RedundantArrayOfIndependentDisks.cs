@@ -53,7 +53,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IP
                 logger.LogError("Invalid Storage Format");
                 return (false, "Invalid Storage Format");
             }
-
+            logger.LogInformation($"Using RAID option: {options.Value.Storage.DefaultRaidType}");
             return (true, AppLang.Success);
         }
         catch (OperationCanceledException e)
@@ -143,7 +143,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IP
 
         var dataBlocksFilter = Builders<FileRaidDataBlockModel>.Filter.Eq(x => x.RelativePath, raidData.Id.ToString());
 
-        var fileData = await _fileMetaDataDataDb.FindAsync(dataBlocksFilter, cancellationToken: cancellationToken);
+        using var fileData = await _fileMetaDataDataDb.FindAsync(dataBlocksFilter, cancellationToken: cancellationToken);
         List<FileRaidDataBlockModel> dataBlocks = fileData.ToList();
         await foreach (var model in GetDataBlocks(raidData.Id.ToString(), cancellationToken, m => m.AbsolutePath, m => m.Status, model => model.Index))
         {
@@ -167,7 +167,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IP
 
         var dataBlocksFilter = Builders<FileRaidDataBlockModel>.Filter.Eq(x => x.RelativePath, raidData.Id.ToString());
 
-        var fileData = await _fileMetaDataDataDb.FindAsync(dataBlocksFilter, cancellationToken: cancellationToken);
+        using var fileData = await _fileMetaDataDataDb.FindAsync(dataBlocksFilter, cancellationToken: cancellationToken);
         List<FileRaidDataBlockModel> dataBlocks = fileData.ToList();
         await foreach (var model in GetDataBlocks(raidData.Id.ToString(), cancellationToken, m => m.AbsolutePath, m => m.Status, model => model.Index))
         {
@@ -231,7 +231,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IP
             Projection = fieldsToFetch.ProjectionBuilder()
         };
         var filter = Builders<FileRaidDataBlockModel>.Filter.Eq(x => x.RelativePath, path);
-        var dataModel = await _fileMetaDataDataDb.FindAsync(filter, options: findOption, cancellationToken: cancellationToken);
+        using var dataModel = await _fileMetaDataDataDb.FindAsync(filter, options: findOption, cancellationToken: cancellationToken);
         while (await dataModel.MoveNextAsync(cancellationToken))
         {
             foreach (var model in dataModel.Current)
