@@ -93,6 +93,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IP
                 }
             }
         }
+
         logger.LogInformation(stringBuilder.ToString());
     }
 
@@ -185,7 +186,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IP
         };
     }
 
-    public void Delete(string path)
+    public async Task DeleteAsync(string path)
     {
         var raidModel = Get(path);
         if (raidModel == null)
@@ -195,7 +196,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IP
         }
 
         var id = raidModel.Id.ToString();
-        queue.QueueBackgroundWorkItemAsync(async _ => await DeleteAllDataBlocks(id));
+        await queue.QueueBackgroundWorkItemAsync(async _ => await DeleteAllDataBlocks(id));
     }
 
     private async Task DeleteAllDataBlocks(string id)
@@ -216,7 +217,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IP
         await _fileDataDb.DeleteOneAsync(x => x.Id == ObjectId.Parse(id));
         await _fileMetaDataDataDb.DeleteManyAsync(x => x.RelativePath == id);
     }
-    
+
     public bool Exists(string key)
     {
         FilterDefinition<FileRaidModel> filter = ObjectId.TryParse(key, out var id) ? Builders<FileRaidModel>.Filter.Eq(x => x.Id, id) : Builders<FileRaidModel>.Filter.Eq(x => x.RelativePath, key);

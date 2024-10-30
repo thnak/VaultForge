@@ -377,7 +377,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
                 }
             });
 
-            raidService.Delete(query.AbsolutePath);
+            await raidService.DeleteAsync(query.AbsolutePath);
 
             DeleteMetadata(query.MetadataId);
             return (true, AppLang.Delete_successfully);
