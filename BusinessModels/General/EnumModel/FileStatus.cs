@@ -12,9 +12,14 @@ public enum FileStatus
 public enum FileClassify
 {
     Normal,
+    /// <summary>
+    /// xem trước
+    /// </summary>
     ThumbnailFile,
+    /// <summary>
+    /// tối ưu để xem trên web
+    /// </summary>
     ThumbnailWebpFile,
-    FounderFile,
     M3U8File,
     M3U8FileSegment
 }

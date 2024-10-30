@@ -10,14 +10,8 @@ public static class EnumExtensions
         {
             case FolderContentType.Folder:
                 return FileStatus.File;
-            case FolderContentType.File:
-                return FileStatus.File;
-            case FolderContentType.HiddenFile:
-                return FileStatus.HiddenFile;
             case FolderContentType.HiddenFolder:
                 return FileStatus.HiddenFile;
-            case FolderContentType.DeletedFile:
-                return FileStatus.DeletedFile;
             case FolderContentType.DeletedFolder:
                 return FileStatus.DeletedFile;
         }

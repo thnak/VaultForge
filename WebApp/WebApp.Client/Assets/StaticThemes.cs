@@ -3197,7 +3197,7 @@ public static class StaticThemes
             DrawerMiniWidthRight = "60px",
             DrawerWidthLeft = "250px",
             DrawerWidthRight = "250px",
-            AppbarHeight = "70px",
+            AppbarHeight = "70px"
         },
         Typography = new Typography()
         {

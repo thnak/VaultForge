@@ -75,9 +75,9 @@
       },
       "MudBlazor": {
         "type": "Direct",
-        "requested": "[7.13.0, )",
-        "resolved": "7.13.0",
-        "contentHash": "FapnlYCCN84ah+5vwMjcLAvdwFUXhsNxroi7y1sRI0vqYtUR6IZu0CaTbI9zcFAjDHQ4acHVNN71rcRbOfX+Rg==",
+        "requested": "[7.15.0, )",
+        "resolved": "7.15.0",
+        "contentHash": "b2+hO7ZTGwsGhu9SoowuNe2ETeF1GzExpg/hIYR++rSh+vy4v/QD0iOsrATWv3LdFJXSgk3d1+XIr5srW3jBiA==",
         "dependencies": {
           "Microsoft.AspNetCore.Components": "8.0.8",
           "Microsoft.AspNetCore.Components.Web": "8.0.8",
@@ -279,7 +279,6 @@
         "resolved": "9.0.0-rc.2.24473.5",
         "contentHash": "H5AjBGypFRWRQuKC9S1jCXUk591TOunwT2RIIPC7NISRuQFPGKefzk8xwdNmZWVCi3e+gdkx4WVfu8NdXMviQw=="
       }
-    },
-    "net9.0/linux-x64": {}
+    }
   }
 }

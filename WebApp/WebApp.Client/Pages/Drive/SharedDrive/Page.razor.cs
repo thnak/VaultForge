@@ -384,7 +384,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         if (isDeletedPage)
         {
             ShowHidden = true;
-            FolderContentType[] types = [FolderContentType.DeletedFile, FolderContentType.DeletedFolder];
+            FolderContentType[] types = [FolderContentType.DeletedFolder];
             formData.Add(new StringContent(types.ToJson()), "contentTypes");
         }
 
@@ -412,6 +412,8 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 TotalPages = Math.Max(folder.TotalFolderPages, folder.TotalFilePages);
                 FileItemList.Clear();
                 foreach (var file in folder.Files)
+                {
+                    var fileId = file.Id.ToString();
                     FileItemList.Add(new DropItem
                     {
                         Identifier = "File",
@@ -419,15 +421,15 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                         Name = file.FileName,
                         Rename = new ButtonAction
                         {
-                            Action = () => RenameFile(file.Id.ToString(), file.FileName, "/api/files/re-name-file").ConfigureAwait(false)
+                            Action = () => RenameFile(fileId, file.FileName, "/api/files/re-name-file").ConfigureAwait(false)
                         },
                         Open = new ButtonAction()
                         {
-                            Action = () => OpenFileDetailDialog(file.Id.ToString()).ConfigureAwait(false)
+                            Action = () => OpenFileDetailDialog(fileId).ConfigureAwait(false)
                         },
                         Download = new ButtonAction
                         {
-                            Action = () => Download(file.Id.ToString()).ConfigureAwait(false)
+                            Action = () => Download(fileId).ConfigureAwait(false)
                         },
                         Delete = new ButtonAction
                         {
@@ -443,12 +445,13 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                         },
                         DbLickEvent = new ButtonAction()
                         {
-                            Action = () => OpenFileDetailDialog(file.Id.ToString()).ConfigureAwait(false)
+                            Action = () => OpenFileDetailDialog(fileId).ConfigureAwait(false)
                         },
                         ItemClassList = InitStyleElement(file.Status),
-                        Thumbnail = InitElementBackgroundStyle(file.Thumbnail),
+                        Thumbnail = InitElementBackgroundStyle(fileId),
                         Menu = InitMenuItem(file)
                     });
+                }
 
                 FolderItemList.Clear();
                 foreach (var f in folder.Folders)
@@ -522,7 +525,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         styleBuilder.Append("background-repeat:no-repeat;");
         return styleBuilder.ToString();
     }
-    
+
     #endregion
 
 

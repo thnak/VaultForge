@@ -4,7 +4,6 @@ using System.Text;
 using System.Web;
 using Business.Attribute;
 using Business.Business.Interfaces.FileSystem;
-using Business.Data;
 using Business.Data.StorageSpace;
 using Business.Models;
 using Business.Services.Interfaces;
@@ -58,15 +57,10 @@ public class FilesController(
         var file = await fileServe.GetRandomFileAsync(rootWallpaperFolder.Id.ToString(), cancelToken);
         if (file == null) return NotFound();
 
-
-        var webpImageContent = file.ExtendResource.FirstOrDefault(x => x.Classify == FileClassify.ThumbnailWebpFile);
-        if (webpImageContent != null)
+        var fileThumbnail = await fileServe.GetSubFileByClassifyAsync(file.Id.ToString(), FileClassify.ThumbnailWebpFile, cancelToken);
+        if (fileThumbnail != null)
         {
-            var webpImage = fileServe.Get(webpImageContent.Id);
-            if (webpImage != null)
-            {
-                file = webpImage;
-            }
+            file = fileThumbnail;
         }
 
         var memoryStream = new MemoryStream();
@@ -103,73 +97,73 @@ public class FilesController(
         return BadRequest(result.Message);
     }
 
-    [HttpGet("get-file")]
-    [IgnoreAntiforgeryToken]
-    public async Task<IActionResult> GetFile(string id)
-    {
-        var cancelToken = HttpContext.RequestAborted;
-        id = id.Split(".").First();
-        var file = fileServe.Get(id);
-        if (file == null) return NotFound();
-
-        var webpImageContent = file.ExtendResource.FirstOrDefault(x => x is { Classify: FileClassify.M3U8File or FileClassify.M3U8FileSegment or FileClassify.ThumbnailWebpFile });
-        if (webpImageContent != null)
-        {
-            var resId = webpImageContent.Id.Split(".").First();
-            var webpImage = fileServe.Get(resId);
-            if (webpImage != null)
-            {
-                file = webpImage;
-            }
-        }
-
-        var now = DateTime.UtcNow;
-        var cd = new ContentDisposition
-        {
-            FileName = HttpUtility.UrlEncode(file.FileName),
-            Inline = true, // false = prompt the user for downloading;  true = browser to try to show the file inline,
-            CreationDate = now,
-            ModificationDate = now,
-            ReadDate = now
-        };
-        Response.Headers.Append("Content-Disposition", cd.ToString());
-        Response.ContentType = file.ContentType;
-        Response.Headers.ContentType = file.ContentType;
-        Response.StatusCode = 200;
-        Response.ContentLength = file.FileSize;
-
-        MemoryStream ms = new MemoryStream();
-        Response.RegisterForDispose(ms);
-
-        await raidService.ReadGetDataAsync(ms, file.AbsolutePath, cancelToken);
-
-        if (file is { Classify: FileClassify.M3U8File })
-        {
-            var streamReader = new StreamReader(ms);
-            Response.RegisterForDispose(streamReader);
-            string[] lines = (await streamReader.ReadToEndAsync(cancelToken)).Split("\n");
-            ms.Seek(0, SeekOrigin.Begin);
-            for (var i = 0; i < lines.Length; i++)
-            {
-                var line = lines[i];
-                if (line.Contains(".m3u8") || line.Contains(".ts") || line.Contains(".vtt"))
-                {
-                    lines[i] = $"{HttpContext.Request.Scheme}://" + HttpContext.Request.Host.Value + HttpContext.Request.Path + "?id=" + line;
-                    lines[i] = lines[i].Trim();
-                }
-            }
-
-            var stringContent = string.Join("\n", lines);
-            return Content(stringContent, file.ContentType);
-        }
-
-        return new FileStreamResult(ms, file.ContentType)
-        {
-            FileDownloadName = file.FileName,
-            LastModified = file.ModifiedTime,
-            EnableRangeProcessing = true
-        };
-    }
+    // [HttpGet("get-file")]
+    // [IgnoreAntiforgeryToken]
+    // public async Task<IActionResult> GetFile(string id)
+    // {
+    //     var cancelToken = HttpContext.RequestAborted;
+    //     id = id.Split(".").First();
+    //     var file = fileServe.GetSubFileByClassifyAsync(id, cancelToken, []);
+    //     if (file == null) return NotFound();
+    //
+    //     var webpImageContent = file.ParentResource.FirstOrDefault(x => x is { Classify: FileClassify.M3U8File or FileClassify.M3U8FileSegment or FileClassify.ThumbnailWebpFile });
+    //     if (webpImageContent != null)
+    //     {
+    //         var resId = webpImageContent.Id.Split(".").First();
+    //         var webpImage = fileServe.Get(resId);
+    //         if (webpImage != null)
+    //         {
+    //             file = webpImage;
+    //         }
+    //     }
+    //
+    //     var now = DateTime.UtcNow;
+    //     var cd = new ContentDisposition
+    //     {
+    //         FileName = HttpUtility.UrlEncode(file.FileName),
+    //         Inline = true, // false = prompt the user for downloading;  true = browser to try to show the file inline,
+    //         CreationDate = now,
+    //         ModificationDate = now,
+    //         ReadDate = now
+    //     };
+    //     Response.Headers.Append("Content-Disposition", cd.ToString());
+    //     Response.ContentType = file.ContentType;
+    //     Response.Headers.ContentType = file.ContentType;
+    //     Response.StatusCode = 200;
+    //     Response.ContentLength = file.FileSize;
+    //
+    //     MemoryStream ms = new MemoryStream();
+    //     Response.RegisterForDispose(ms);
+    //
+    //     await raidService.ReadGetDataAsync(ms, file.AbsolutePath, cancelToken);
+    //
+    //     if (file is { Classify: FileClassify.M3U8File })
+    //     {
+    //         var streamReader = new StreamReader(ms);
+    //         Response.RegisterForDispose(streamReader);
+    //         string[] lines = (await streamReader.ReadToEndAsync(cancelToken)).Split("\n");
+    //         ms.Seek(0, SeekOrigin.Begin);
+    //         for (var i = 0; i < lines.Length; i++)
+    //         {
+    //             var line = lines[i];
+    //             if (line.Contains(".m3u8") || line.Contains(".ts") || line.Contains(".vtt"))
+    //             {
+    //                 lines[i] = $"{HttpContext.Request.Scheme}://" + HttpContext.Request.Host.Value + HttpContext.Request.Path + "?id=" + line;
+    //                 lines[i] = lines[i].Trim();
+    //             }
+    //         }
+    //
+    //         var stringContent = string.Join("\n", lines);
+    //         return Content(stringContent, file.ContentType);
+    //     }
+    //
+    //     return new FileStreamResult(ms, file.ContentType)
+    //     {
+    //         FileDownloadName = file.FileName,
+    //         LastModified = file.ModifiedTime,
+    //         EnableRangeProcessing = true
+    //     };
+    // }
 
     [HttpGet("download-file")]
     [IgnoreAntiforgeryToken]
@@ -263,13 +257,12 @@ public class FilesController(
             raid5Stream.Seek(from, SeekOrigin.Begin);
 
             _ = await raid5Stream.ReadAsync(buffer, 0, length, cancelToken);
-
+            await raid5Stream.DisposeAsync();
             // Set headers for partial content response
             Response.Headers.Append("Content-Range", $"bytes {from}-{to}/{file.FileSize}");
             Response.Headers.Append("Accept-Ranges", "bytes");
             Response.ContentLength = length;
             Response.StatusCode = StatusCodes.Status206PartialContent;
-            Response.RegisterForDispose(raid5Stream);
 
             return File(buffer, "video/mp4");
         }
@@ -362,10 +355,10 @@ public class FilesController(
             }
             else
             {
-                contentFolderTypesList = [FolderContentType.File, FolderContentType.Folder];
+                contentFolderTypesList = [FolderContentType.Folder];
             }
 
-            if (!contentFolderTypesList.Any(x => x is FolderContentType.DeletedFile or FolderContentType.DeletedFolder))
+            if (!contentFolderTypesList.Any(x => x is FolderContentType.DeletedFolder))
                 contentFolderTypesList.Add(FolderContentType.SystemFolder);
 
             var contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).Distinct().ToList();
@@ -549,7 +542,6 @@ public class FilesController(
         var fileDeleteStatus = await fileServe.DeleteAsync(fileId);
         if (fileDeleteStatus.Item1)
         {
-            folder.Contents = folder.Contents.Where(x => x.Id != fileId).ToList();
             await folderServe.UpdateAsync(folder);
         }
 
@@ -610,8 +602,6 @@ public class FilesController(
         var files = fileCodes.Select(fileServe.Get).Where(x => x != default).ToList();
 
         Dictionary<string, FolderContent> contentsDict = new();
-        foreach (var file in currentFolder.Contents) contentsDict.TryAdd(file.Id, file);
-
 
         foreach (var file in files)
         {
@@ -626,14 +616,8 @@ public class FilesController(
 
             var fileId = file.Id.ToString();
             contentsDict.Remove(fileId);
-            targetFolder.Contents.Add(new FolderContent
-            {
-                Id = file.Id.ToString(),
-                Type = FolderContentType.File
-            });
         }
 
-        currentFolder.Contents = contentsDict.Values.ToList();
 
         await folderServe.UpdateAsync(targetFolder, cancelToken);
         await folderServe.UpdateAsync(currentFolder, cancelToken);
@@ -656,11 +640,6 @@ public class FilesController(
         if (folder == default) return NotFound(AppLang.Folder_could_not_be_found);
 
         folder.RelativePath = targetFolder.RelativePath + '/' + folder.FolderName;
-        targetFolder.Contents.Add(new FolderContent
-        {
-            Id = folderCode,
-            Type = FolderContentType.Folder
-        });
 
         await folderServe.UpdateAsync(targetFolder);
         await folderServe.UpdateAsync(folder);
@@ -688,5 +667,176 @@ public class FilesController(
 
         return Ok();
     }
-    
+
+
+    [HttpPost("upload-physical/{folderCodes}")]
+    [DisableFormValueModelBinding]
+    [AllowAnonymous]
+    [IgnoreAntiforgeryToken]
+    public async Task<IActionResult> UploadPhysical(string folderCodes)
+    {
+        string folderKeyString = AppLang.Folder;
+        string fileKeyString = AppLang.File;
+        var cancellationToken = HttpContext.RequestAborted;
+
+        try
+        {
+            // Validate request
+            if (!IsValidRequest(out IActionResult? errorResult))
+            {
+                return errorResult ?? BadRequest();
+            }
+
+            // Validate folder
+            var folder = folderServe.Get(folderCodes);
+            if (folder == null)
+            {
+                ModelState.AddModelError(folderKeyString, AppLang.Folder_could_not_be_found);
+                return BadRequest(ModelState);
+            }
+
+            if (folder.Type == FolderContentType.DeletedFolder)
+                return BadRequest("Folder deleted");
+
+            var boundary = MediaTypeHeaderValue.Parse(Request.ContentType).GetBoundary(int.MaxValue);
+            var reader = new MultipartReader(boundary, HttpContext.Request.Body, options.Value.Storage.BufferSize);
+            var section = await reader.ReadNextSectionAsync(cancellationToken);
+
+            while (section != null && !cancellationToken.IsCancellationRequested)
+            {
+                if (ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var contentDisposition))
+                {
+                    if (contentDisposition.HasFileContentDisposition())
+                    {
+                        var trustedFileNameForDisplay = contentDisposition.FileName.Value ?? Path.GetRandomFileName();
+                        await ProcessFileSection(folderCodes, section, trustedFileNameForDisplay, cancellationToken);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(fileKeyString, "The request couldn't be processed (Error 2).");
+                    }
+                }
+
+                section = await reader.ReadNextSectionAsync(cancellationToken);
+            }
+
+            return ModelState.IsValid ? Ok(AppLang.Successfully_uploaded) : BadRequest(ModelState);
+        }
+        catch (OperationCanceledException ex)
+        {
+            return Ok(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError(AppLang.Exception, ex.Message);
+            logger.LogError(ex, null);
+            return StatusCode(500, ModelState);
+        }
+    }
+
+    #region upload-physical/{folderCodes}
+
+    private bool IsValidRequest(out IActionResult? errorResult)
+    {
+        string fileKeyString = AppLang.File;
+
+        if (string.IsNullOrEmpty(Request.ContentType) || !MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
+        {
+            ModelState.AddModelError(fileKeyString, "The request couldn't be processed (Error 1).");
+            errorResult = BadRequest(ModelState);
+            return false;
+        }
+
+        errorResult = null;
+        return true;
+    }
+
+    private async Task ProcessFileSection(string folderCodes, MultipartSection section, string trustedFileNameForDisplay, CancellationToken cancellationToken)
+    {
+        var file = new FileInfoModel { FileName = trustedFileNameForDisplay };
+        try
+        {
+            var folder = folderServe.Get(folderCodes);
+            if (folder == null)
+            {
+                return;
+            }
+
+            var createFileResult = await folderServe.CreateFileAsync(folder, file, cancellationToken);
+
+            if (!createFileResult.Item1)
+            {
+                await DeleteFileAsync(file.Id.ToString());
+                return;
+            }
+
+            await ProcessImageFileSection(section, file, cancellationToken, trustedFileNameForDisplay);
+        }
+        catch (Exception)
+        {
+            await DeleteFileAsync(file.Id.ToString());
+        }
+    }
+
+    private async Task ProcessImageFileSection(MultipartSection section, FileInfoModel file, CancellationToken cancellationToken, string trustedFileNameForDisplay)
+    {
+        try
+        {
+            var saveResult = await raidService.WriteDataAsync(section.Body, file.AbsolutePath, cancellationToken);
+
+            await UpdateFileProperties(file, saveResult, string.IsNullOrEmpty(section.ContentType) ? saveResult.ContentType : section.ContentType, trustedFileNameForDisplay);
+            if (file.FileSize <= 0)
+            {
+                await DeleteFileAsync(file.Id.ToString());
+                logger.LogInformation("Image file are empty");
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            await DeleteFileAsync(file.Id.ToString());
+            logger.LogInformation("Image file are empty");
+        }
+    }
+
+    private async Task UpdateFileProperties(FileInfoModel file, RedundantArrayOfIndependentDisks.WriteDataResult saveResult, string contentType, string trustedFileNameForDisplay)
+    {
+        file.FileSize = saveResult.TotalByteWritten;
+        file.ContentType = saveResult.ContentType;
+        file.Checksum = saveResult.CheckSum;
+
+        if (string.IsNullOrEmpty(file.ContentType))
+        {
+            file.ContentType = contentType;
+        }
+        else if (file.ContentType == "application/octet-stream")
+        {
+            file.ContentType = Path.GetExtension(trustedFileNameForDisplay).GetMimeTypeFromExtension();
+        }
+
+        var updateResult = await fileServe.UpdateAsync(file.Id.ToString(), GetFileFieldUpdates(file));
+        await thumbnailService.AddThumbnailRequest(file.Id.ToString());
+
+        if (!updateResult.Item1)
+        {
+            logger.LogError(updateResult.Item2);
+        }
+    }
+
+    private static FieldUpdate<FileInfoModel> GetFileFieldUpdates(FileInfoModel file)
+    {
+        return new FieldUpdate<FileInfoModel>
+        {
+            { x => x.FileSize, file.FileSize },
+            { x => x.ContentType, file.ContentType },
+            { x => x.Checksum, file.Checksum }
+        };
+    }
+
+    private async Task DeleteFileAsync(string fileId)
+    {
+        await fileServe.DeleteAsync(fileId);
+        await fileServe.DeleteAsync(fileId);
+    }
+
+    #endregion
 }

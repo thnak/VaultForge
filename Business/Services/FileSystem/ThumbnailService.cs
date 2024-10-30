@@ -1,7 +1,5 @@
 ﻿using Business.Business.Interfaces.FileSystem;
-using Business.Data;
 using Business.Data.StorageSpace;
-using Business.Models;
 using Business.Services.Interfaces;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.General.EnumModel;
@@ -52,7 +50,7 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IOptions<AppSe
     {
         // Load the image from the absolute path
         var imagePath = fileInfo.AbsolutePath;
-        var fileId = fileInfo.Id.ToString();
+        var fileSourceId = fileInfo.Id.ToString();
         int attempts = 0;
         int maxRetries = 3;
 
@@ -68,8 +66,8 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IOptions<AppSe
             try
             {
                 // Define the thumbnail path
-                var thumbnailFileName = $"{fileId}_thumb.webp";
-                var extendedFileName = $"{fileId}_ext.webp";
+                var thumbnailFileName = $"{fileSourceId}_thumb.webp";
+                var extendedFileName = $"{fileSourceId}_ext.webp";
                 var thumbnailPath = Path.Combine(Path.GetDirectoryName(imagePath)!, "thumbnails", thumbnailFileName);
                 var extendImagePath = Path.Combine(Path.GetDirectoryName(imagePath)!, "thumbnails", extendedFileName);
 
@@ -116,7 +114,8 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IOptions<AppSe
                     CreatedDate = DateTime.Now,
                     ModifiedTime = DateTime.Now,
                     ContentType = "image/webp",
-                    RootFolder = fileInfo.RootFolder
+                    RootFolder = fileInfo.RootFolder,
+                    ParentResource = fileSourceId
                 };
 
                 FileInfoModel extendedFile = new FileInfoModel()
@@ -128,25 +127,13 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IOptions<AppSe
                     CreatedDate = DateTime.Now,
                     ModifiedTime = DateTime.Now,
                     ContentType = "image/webp",
-                    RootFolder = fileInfo.RootFolder
+                    RootFolder = fileInfo.RootFolder,
+                    ParentResource = fileSourceId
                 };
-
-                // Update the fileInfo with the thumbnail path
-                fileInfo.Thumbnail = thumbnailFile.Id.ToString();
-                fileInfo.ExtendResource.Add(new FileContents()
-                {
-                    Id = extendedFile.Id.ToString(),
-                    Classify = FileClassify.ThumbnailWebpFile
-                });
 
 
                 await fileService.CreateAsync(thumbnailFile, cancellationToken);
                 await fileService.CreateAsync(extendedFile, cancellationToken);
-                await fileService.UpdateAsync(fileId, new FieldUpdate<FileInfoModel>()
-                {
-                    { x => x.Thumbnail, fileInfo.Thumbnail },
-                    { x => x.ExtendResource, fileInfo.ExtendResource }
-                }, cancellationToken);
                 break;
             }
             catch (OutOfMemoryException)
@@ -161,11 +148,11 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IOptions<AppSe
             }
             catch (MongoException)
             {
-                logger.LogWarning($"File with ID {fileId} already exists.");
+                logger.LogWarning($"File with ID {fileSourceId} already exists.");
             }
         }
 
-        if (attempts >= maxRetries) logger.LogError($"[File|{fileId}] Too many retries");
+        if (attempts >= maxRetries) logger.LogError($"[File|{fileSourceId}] Too many retries");
     }
 
     private async Task<long> SaveStream(RedundantArrayOfIndependentDisks service, Stream stream, string thumbnailPath, CancellationToken cancellationToken = default)

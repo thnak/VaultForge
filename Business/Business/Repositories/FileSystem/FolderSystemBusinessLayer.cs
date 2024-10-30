@@ -12,7 +12,6 @@ using Business.Utils.Helper;
 using Business.Utils.StringExtensions;
 using BusinessModels.General.EnumModel;
 using BusinessModels.General.Results;
-using BusinessModels.General.SettingModels;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
@@ -20,7 +19,6 @@ using BusinessModels.Validator.Folder;
 using BusinessModels.WebContent.Drive;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Protector.Utils;
@@ -169,7 +167,7 @@ public class FolderSystemBusinessLayer(
                 {
                     folders.Add(fol);
                 }
-
+                logger.LogInformation($"Deleting {folders.Count:N0} folders");
                 foreach (var folderStack in folders)
                 {
                     await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async (serverToken) =>
@@ -190,6 +188,7 @@ public class FolderSystemBusinessLayer(
                     files.Add(file);
                 }
 
+                logger.LogInformation($"Deleting {files.Count:N0} files");
                 foreach (var file in files)
                 {
                     await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken =>
@@ -385,52 +384,19 @@ public class FolderSystemBusinessLayer(
         return fileSystemService.GetFileSize(predicate, cancellationTokenSource);
     }
 
-    public async Task<long> GetFolderByteSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
+    public Task<long> GetFolderByteSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
     {
         var folders = folderSystemService.Where(predicate, cancellationTokenSource);
         long total = 0;
-        await foreach (var folder in folders)
-        foreach (var content in folder.Contents)
-            if (content is { Type: FolderContentType.File or FolderContentType.HiddenFile })
-            {
-                var file = fileSystemService.Get(content.Id);
-                if (file == null)
-                {
-                    logger.LogInformation($@"[Error] file by id {content} can not be found");
-                    continue;
-                }
-
-                total += file.FileSize;
-            }
-            else
-            {
-                var id = ObjectId.Parse(content.Id);
-                total += await GetFolderByteSize(e => e.Id == id, cancellationTokenSource);
-            }
-
-        return total;
+        return Task.FromResult(total);
     }
 
-    public async Task<(long, long)> GetFolderContentsSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
+    public Task<(long, long)> GetFolderContentsSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
     {
         var folders = folderSystemService.Where(predicate, cancellationTokenSource);
         long totalFolders = 0;
         long totalFiles = 0;
-        await foreach (var folder in folders)
-        foreach (var content in folder.Contents)
-            if (content is { Type: FolderContentType.File or FolderContentType.HiddenFile })
-            {
-                totalFiles++;
-            }
-            else
-            {
-                var id = ObjectId.Parse(content.Id);
-                var (numFolders, numFiles) = await GetFolderContentsSize(e => e.Id == id, cancellationTokenSource);
-                totalFiles += numFiles;
-                totalFolders += numFolders;
-            }
-
-        return (totalFolders, totalFiles);
+        return Task.FromResult((totalFolders, totalFiles));
     }
 
     public async Task<FolderRequest> GetFolderRequestAsync(string folderId, Expression<Func<FolderInfoModel, bool>> folderPredicate, Expression<Func<FileInfoModel, bool>> filePredicate, int pageSize, int pageNumber, bool forceLoad = false, CancellationToken cancellationToken = default)
@@ -517,7 +483,6 @@ public class FolderSystemBusinessLayer(
             {
                 model => model.Id,
                 model => model.FileName,
-                model => model.Thumbnail,
                 model => model.Status,
                 model => model.RootFolder,
                 model => model.ContentType,
@@ -597,20 +562,12 @@ public class FolderSystemBusinessLayer(
 
         foreach (var file in m3U8Files)
         {
-            var resId = await ReadM3U8Files(storageFolder, file, cancellationToken);
+            await ReadM3U8Files(storageFolder, file, cancellationToken);
 
             var fileInfor = new FileInfoModel()
             {
                 FileName = path,
                 ContentType = "video/mp4",
-                ExtendResource =
-                [
-                    new FileContents()
-                    {
-                        Id = resId,
-                        Classify = FileClassify.M3U8File,
-                    }
-                ],
                 RootFolder = requestNewFolder.RootId,
                 ModifiedTime = DateTime.UtcNow,
                 CreatedDate = DateTime.Today
@@ -729,7 +686,6 @@ public class FolderSystemBusinessLayer(
         {
             model => model.Id,
             model => model.FileName,
-            model => model.Thumbnail,
             model => model.Status,
             model => model.RootFolder,
             model => model.ContentType,

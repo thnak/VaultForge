@@ -4,7 +4,6 @@ using System.Text;
 using System.Web;
 using Business.Attribute;
 using Business.Business.Interfaces.FileSystem;
-using Business.Data;
 using Business.Data.StorageSpace;
 using Business.Models;
 using Business.Services.Interfaces;
@@ -58,15 +57,10 @@ public class FilesController(
         var file = await fileServe.GetRandomFileAsync(rootWallpaperFolder.Id.ToString(), cancelToken);
         if (file == null) return NotFound();
 
-
-        var webpImageContent = file.ExtendResource.FirstOrDefault(x => x.Classify == FileClassify.ThumbnailWebpFile);
-        if (webpImageContent != null)
+        var fileThumbnail = await fileServe.GetSubFileByClassifyAsync(file.Id.ToString(), FileClassify.ThumbnailWebpFile, cancelToken);
+        if (fileThumbnail != null)
         {
-            var webpImage = fileServe.Get(webpImageContent.Id);
-            if (webpImage != null)
-            {
-                file = webpImage;
-            }
+            file = fileThumbnail;
         }
 
         var memoryStream = new MemoryStream();
@@ -105,24 +99,18 @@ public class FilesController(
 
     [HttpGet("get-file")]
     [IgnoreAntiforgeryToken]
-    public async Task<IActionResult> GetFile(string id)
+    public async Task<IActionResult> GetFile(string id, string? type)
     {
+        if (!Enum.TryParse<FileClassify>(type, out var fileClassify))
+        {
+            fileClassify = FileClassify.ThumbnailFile;
+        }
         var cancelToken = HttpContext.RequestAborted;
         id = id.Split(".").First();
-        var file = fileServe.Get(id);
-        if (file == null) return NotFound();
-
-        var webpImageContent = file.ExtendResource.FirstOrDefault(x => x is { Classify: FileClassify.M3U8File or FileClassify.M3U8FileSegment or FileClassify.ThumbnailWebpFile });
-        if (webpImageContent != null)
-        {
-            var resId = webpImageContent.Id.Split(".").First();
-            var webpImage = fileServe.Get(resId);
-            if (webpImage != null)
-            {
-                file = webpImage;
-            }
-        }
-
+        var fileList = await fileServe.GetSubFileByClassifyAsync(id, cancelToken, [fileClassify]);
+        if (fileList.Count == 0) return NotFound();
+        var file = fileList.First();
+    
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
@@ -137,12 +125,12 @@ public class FilesController(
         Response.Headers.ContentType = file.ContentType;
         Response.StatusCode = 200;
         Response.ContentLength = file.FileSize;
-
+    
         MemoryStream ms = new MemoryStream();
         Response.RegisterForDispose(ms);
-
+    
         await raidService.ReadGetDataAsync(ms, file.AbsolutePath, cancelToken);
-
+    
         if (file is { Classify: FileClassify.M3U8File })
         {
             var streamReader = new StreamReader(ms);
@@ -158,11 +146,11 @@ public class FilesController(
                     lines[i] = lines[i].Trim();
                 }
             }
-
+    
             var stringContent = string.Join("\n", lines);
             return Content(stringContent, file.ContentType);
         }
-
+    
         return new FileStreamResult(ms, file.ContentType)
         {
             FileDownloadName = file.FileName,
@@ -336,7 +324,7 @@ public class FilesController(
     [OutputCache(Duration = 10)]
     [ResponseCache(Duration = 50)]
     public async Task<IActionResult> GetSharedFolder(string username, [FromForm] string? id, [FromForm] string? password,
-        [FromForm] int page, [FromForm] int pageSize, [FromForm] string? contentTypes, [FromForm] bool? forceReLoad, [FromForm] bool? allowSystemResoure)
+        [FromForm] int page, [FromForm] int pageSize, [FromForm] string? contentTypes, [FromForm] bool? forceReLoad)
     {
         var cancelToken = HttpContext.RequestAborted;
         try
@@ -361,10 +349,10 @@ public class FilesController(
             }
             else
             {
-                contentFolderTypesList = [FolderContentType.File, FolderContentType.Folder];
+                contentFolderTypesList = [ FolderContentType.Folder];
             }
 
-            if (!contentFolderTypesList.Any(x => x is FolderContentType.DeletedFile or FolderContentType.DeletedFolder))
+            if (!contentFolderTypesList.Any(x => x is  FolderContentType.DeletedFolder))
                 contentFolderTypesList.Add(FolderContentType.SystemFolder);
 
             var contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).Distinct().ToList();
@@ -548,7 +536,6 @@ public class FilesController(
         var fileDeleteStatus = await fileServe.DeleteAsync(fileId);
         if (fileDeleteStatus.Item1)
         {
-            folder.Contents = folder.Contents.Where(x => x.Id != fileId).ToList();
             await folderServe.UpdateAsync(folder);
         }
 
@@ -609,7 +596,6 @@ public class FilesController(
         var files = fileCodes.Select(fileServe.Get).Where(x => x != default).ToList();
 
         Dictionary<string, FolderContent> contentsDict = new();
-        foreach (var file in currentFolder.Contents) contentsDict.TryAdd(file.Id, file);
 
 
         foreach (var file in files)
@@ -625,15 +611,9 @@ public class FilesController(
 
             var fileId = file.Id.ToString();
             contentsDict.Remove(fileId);
-            targetFolder.Contents.Add(new FolderContent
-            {
-                Id = file.Id.ToString(),
-                Type = FolderContentType.File
-            });
+           
         }
-
-        currentFolder.Contents = contentsDict.Values.ToList();
-
+        
         await folderServe.UpdateAsync(targetFolder, cancelToken);
         await folderServe.UpdateAsync(currentFolder, cancelToken);
         await foreach (var x in fileServe.UpdateAsync(files!, cancelToken))
@@ -655,11 +635,6 @@ public class FilesController(
         if (folder == default) return NotFound(AppLang.Folder_could_not_be_found);
 
         folder.RelativePath = targetFolder.RelativePath + '/' + folder.FolderName;
-        targetFolder.Contents.Add(new FolderContent
-        {
-            Id = folderCode,
-            Type = FolderContentType.Folder
-        });
 
         await folderServe.UpdateAsync(targetFolder);
         await folderServe.UpdateAsync(folder);
@@ -771,33 +746,35 @@ public class FilesController(
         return true;
     }
 
-    private async Task<string> ProcessFileSection(string folderCodes, MultipartSection section, string trustedFileNameForDisplay, CancellationToken cancellationToken)
+    private async Task ProcessFileSection(string folderCodes, MultipartSection section, string trustedFileNameForDisplay, CancellationToken cancellationToken)
     {
-        var folder = folderServe.Get(folderCodes);
-        if (folder == null)
-        {
-            return string.Empty;
-        }
-
         var file = new FileInfoModel { FileName = trustedFileNameForDisplay };
-        var createFileResult = await folderServe.CreateFileAsync(folder, file, cancellationToken);
+        try
+        {
+            var folder = folderServe.Get(folderCodes);
+            if (folder == null)
+            {
+                return;
+            }
 
-        if (!createFileResult.Item1)
+            var createFileResult = await folderServe.CreateFileAsync(folder, file, cancellationToken);
+
+            if (!createFileResult.Item1)
+            {
+                await DeleteFileAsync(file.Id.ToString());
+                return;
+            }
+
+            await ProcessImageFileSection(section, file, cancellationToken, trustedFileNameForDisplay);
+        }
+        catch (Exception)
         {
             await DeleteFileAsync(file.Id.ToString());
-            return string.Empty;
         }
-
-        var fileId = file.Id.ToString();
-        await ProcessImageFileSection(section, file, cancellationToken, trustedFileNameForDisplay);
-
-        return fileId;
     }
 
     private async Task ProcessImageFileSection(MultipartSection section, FileInfoModel file, CancellationToken cancellationToken, string trustedFileNameForDisplay)
     {
-        var memoryStream = new MemoryStream();
-
         try
         {
             var saveResult = await raidService.WriteDataAsync(section.Body, file.AbsolutePath, cancellationToken);
@@ -813,10 +790,6 @@ public class FilesController(
         {
             await DeleteFileAsync(file.Id.ToString());
             logger.LogInformation("Image file are empty");
-        }
-        finally
-        {
-            await memoryStream.DisposeAsync();
         }
     }
 

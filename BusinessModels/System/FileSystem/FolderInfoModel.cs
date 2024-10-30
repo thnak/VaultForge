@@ -23,13 +23,6 @@ public class FolderInfoModel
     public string FolderName { get; set; } = string.Empty;
 
     /// <summary>
-    ///     List of content in the folder, include their child folder
-    /// </summary>
-    [Key(2)]
-    [BsonIgnore]
-    public List<FolderContent> Contents { get; set; } = [];
-
-    /// <summary>
     ///     The one that own this folder
     /// </summary>
     [Key(3)]
@@ -42,7 +35,7 @@ public class FolderInfoModel
     ///     Share this folder to other user
     /// </summary>
     [Key(5)]
-    public List<string> SharedTo { get; set; } = [];
+    public string SharedTo { get; set; } = string.Empty;
 
     /// <summary>
     ///     Folder password

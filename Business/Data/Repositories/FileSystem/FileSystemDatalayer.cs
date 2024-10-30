@@ -4,6 +4,7 @@ using Business.Data.Interfaces;
 using Business.Data.Interfaces.FileSystem;
 using Business.Data.StorageSpace;
 using Business.Models;
+using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.Utils;
 using Business.Utils.ExpressionExtensions;
 using BusinessModels.General.Results;
@@ -16,7 +17,7 @@ using MongoDB.Driver;
 
 namespace Business.Data.Repositories.FileSystem;
 
-public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSystemDatalayer> logger, IMemoryCache memoryCache, RedundantArrayOfIndependentDisks raidService) : IFileSystemDatalayer
+public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSystemDatalayer> logger, IParallelBackgroundTaskQueue queue, IMemoryCache memoryCache, RedundantArrayOfIndependentDisks raidService) : IFileSystemDatalayer
 {
     private readonly IMongoCollection<FileInfoModel> _fileDataDb = context.MongoDatabase.GetCollection<FileInfoModel>("FileInfo");
     private readonly IMongoCollection<FileMetadataModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileMetadataModel>("FileMetaData");
@@ -40,7 +41,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
             var rootAndStatusKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Status);
             var rootAndStatusIndexModel = new CreateIndexModel<FileInfoModel>(rootAndStatusKey, new CreateIndexOptions { Unique = false });
-            
+
             var rootAndClassifyKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Classify);
             var rootAndClassifyIndexModel = new CreateIndexModel<FileInfoModel>(rootAndClassifyKey, new CreateIndexOptions { Unique = false });
 
@@ -53,7 +54,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
             var createDateAndStatusKeysDefinition = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.CreatedDate).Ascending(x => x.Status);
             var createDateAndStatusIndexModel = new CreateIndexModel<FileInfoModel>(createDateAndStatusKeysDefinition);
-            
+
             var createDateAndClassifyKeysDefinition = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.CreatedDate).Ascending(x => x.Classify);
             var createDateAndClassifyIndexModel = new CreateIndexModel<FileInfoModel>(createDateAndClassifyKeysDefinition);
 
@@ -68,8 +69,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
             var statusIndexKeys = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.Status);
             var statusIndexModel = new CreateIndexModel<FileInfoModel>(statusIndexKeys);
-            
-            
+
 
             var contentTypeIndexKeys = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.ContentType);
             var contentTypeIndexModel = new CreateIndexModel<FileInfoModel>(contentTypeIndexKeys);
@@ -158,7 +158,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
     {
         var filter = Builders<FileInfoModel>.Filter.Where(f => f.FileName.Contains(keyWord));
         // Build projection
-        ProjectionDefinition<FileInfoModel>? projection = fieldsToFetch.ProjectionBuilder();
+        ProjectionDefinition<FileInfoModel> projection = fieldsToFetch.ProjectionBuilder();
 
         // Fetch the documents from the database
         var options = new FindOptions<FileInfoModel, FileInfoModel>
@@ -368,18 +368,23 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             if (ObjectId.TryParse(key, out var id)) filter |= Builders<FileInfoModel>.Filter.Eq(x => x.Id, id);
 
             await _fileDataDb.DeleteManyAsync(filter, cancelToken);
+
+            await queue.QueueBackgroundWorkItemAsync(async (serverToken) =>
+            {
+                await foreach (var extendFile in Where(file => file.ParentResource == key, serverToken, model => model.Id))
+                {
+                    await DeleteAsync(extendFile.Id.ToString(), serverToken);
+                }
+            });
+
             raidService.Delete(query.AbsolutePath);
 
-            if (!string.IsNullOrEmpty(query.Thumbnail))
-            {
-                await DeleteAsync(query.Thumbnail);
-            }
-
             DeleteMetadata(query.MetadataId);
-
-            foreach (var extend in query.ExtendResource) await DeleteAsync(extend.Id);
-
             return (true, AppLang.Delete_successfully);
+        }
+        catch (OperationCanceledException)
+        {
+            return (false, AppLang.Cancel);
         }
         catch (Exception ex)
         {

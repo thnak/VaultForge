@@ -143,6 +143,32 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da, IMemoryCache memor
         return da.GetRandomFileAsync(rootFolderId, cancellationToken);
     }
 
+    public async Task<FileInfoModel?> GetSubFileByClassifyAsync(string fileId, FileClassify classify, CancellationToken cancellationToken = default)
+    {
+        var files = Where(x => x.ParentResource == fileId && x.Classify == classify, cancellationToken);
+        await foreach (var file in files)
+        {
+            return file;
+        }
+
+        return default;
+    }
+
+    public async Task<List<FileInfoModel>> GetSubFileByClassifyAsync(string fileId, CancellationToken cancellationToken = default, params IEnumerable<FileClassify> classify)
+    {
+        List<FileInfoModel> filesList = new List<FileInfoModel>();
+        foreach (var ctx in classify)
+        {
+            var files = Where(x => x.ParentResource == fileId && x.Classify == ctx, cancellationToken);
+            await foreach (var file in files)
+            {
+                filesList.Add(file);
+            }
+        }
+
+        return filesList;
+    }
+
     public IAsyncEnumerable<FileInfoModel> GetContentFormParentFolderAsync(string id, int pageNumber, int pageSize, CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
     {
         return da.GetContentFormParentFolderAsync(id, pageNumber, pageSize, cancellationToken, fieldsToFetch);

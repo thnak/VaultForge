@@ -19,7 +19,7 @@ public class FileInfoModel
     ///     Dùng cho resource có nhiều biến thể như độ phân giải, chất lượng
     /// </summary>
     [Key(1)]
-    public List<FileContents> ExtendResource { get; set; } = new();
+    public string ParentResource { get; set; } = string.Empty;
 
     [Key(2)] public string FileName { get; set; } = string.Empty; // Name of the file
 
@@ -27,7 +27,7 @@ public class FileInfoModel
 
     [Key(4)] public long FileSize { get; set; } // Size of the file in bytes
 
-    [Key(5)] public List<string> Tags { get; set; } = new();
+    [Key(5)] public string TagId { get; set; } = string.Empty;
 
     [Key(6)] public string MetadataId { get; set; } = string.Empty;
 
@@ -59,7 +59,6 @@ public class FileInfoModel
 
     [Key(11)] public string RootFolder { get; set; } = string.Empty;
 
-    [Key(12)] public string Thumbnail { get; set; } = string.Empty;
 
     [Key(13)] public FileStatus Status { get; set; }
 
