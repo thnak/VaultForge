@@ -253,6 +253,8 @@
         {
             await background.DisposeAsync();
         }
+        _workers.Clear();
+        _backgroundServices.Clear();
     }
 
 }
