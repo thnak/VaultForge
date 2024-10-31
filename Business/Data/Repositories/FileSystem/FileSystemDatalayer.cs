@@ -520,7 +520,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
         if (currentLastSeenId.HasValue && hasIdCheck)
         {
-            memoryCache.Set(SearchIndexNameLastSeenId, currentLastSeenId.Value, TimeSpan.FromMinutes(30)); // Cache for 30 minutes
+            memoryCache.Set(SearchIndexNameLastSeenId, currentLastSeenId.Value, TimeSpan.FromSeconds(10));
         }
     }
 

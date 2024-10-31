@@ -411,7 +411,7 @@ public class FolderSystemBusinessLayer(
             if (forceLoad)
             {
                 var result = await GetFolderRequest(folderId, folderPredicate, filePredicate, pageSize, pageNumber, cancellationToken);
-                _cacheKeyManager.Set(key, result, new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10) });
+                _cacheKeyManager.Set(key, result, new MemoryCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10) });
                 return result;
             }
             else
