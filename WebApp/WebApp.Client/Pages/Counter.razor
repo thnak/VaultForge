@@ -244,17 +244,16 @@
 
     public async ValueTask DisposeAsync()
     {
-        foreach (var worker in _workers)
-        {
-            await worker.DisposeAsync();
-        }
-
         foreach (var background in _backgroundServices)
         {
             await background.DisposeAsync();
         }
+        
+        foreach (var worker in _workers)
+        {
+            await worker.DisposeAsync();
+        }
         _workers.Clear();
         _backgroundServices.Clear();
     }
-
 }
