@@ -87,12 +87,12 @@ public partial class HeadContentContainer : ComponentBase, IDisposable
             new Dictionary<string, string>
             {
                 { "name", "url" },
-                { "content", Navigation.Uri }
+                { "content", Navigation.BaseUri }
             },
             new Dictionary<string, string>
             {
                 { "name", "site_name" },
-                { "content", "thnak dev app" }
+                { "content", "VaultForge" }
             },
         ];
 
@@ -121,9 +121,9 @@ public partial class HeadContentContainer : ComponentBase, IDisposable
         {
             PreviousMetaProperties = Properties;
             MetaRenderFragment = CreateComponent();
+            return InvokeAsync(StateHasChanged);
         }
-
-        return InvokeAsync(StateHasChanged);
+        return Task.CompletedTask;
     }
 
     private RenderFragment CreateComponent() => builder =>

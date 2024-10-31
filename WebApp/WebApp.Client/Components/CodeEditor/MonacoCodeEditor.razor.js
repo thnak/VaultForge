@@ -27,7 +27,6 @@
         require(['vs/editor/editor.main'], () => {
             this.RootElement = document.getElementById(this.containerId);
             if (this.RootElement === null) {
-
                 return;
             }
 
@@ -73,7 +72,6 @@
                 } catch (e) {
                     console.log(e);
                 }
-                console.log('HTML Content on KeyDown:', htmlContent);
             });
 
             // Similarly, add keydown event listeners for CSS and JS editors
@@ -84,7 +82,6 @@
                 } catch (e) {
                     console.log(e);
                 }
-                console.log('CSS Content on KeyDown:', cssContent);
             });
 
             this.javascriptEditor.onKeyDown(async (e) => {
@@ -94,7 +91,6 @@
                 } catch (e) {
                     console.log(e);
                 }
-                console.log('JS Content on KeyDown:', jsContent);
             });
 
             console.log(`Monaco Editor initialized for container: ${this.containerId}`);
