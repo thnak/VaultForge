@@ -77,8 +77,8 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
                 userAndTypeIndexModel, userIndexModel,
             ];
 
+            await _dataDb.Indexes.DropAllAsync(cancellationToken);
             await _dataDb.Indexes.CreateManyAsync(indexes, cancellationToken: cancellationToken);
-
 
             var anonymousUser = "Anonymous".ComputeSha256Hash();
             var anonymousFolder = Get(anonymousUser, "/root");

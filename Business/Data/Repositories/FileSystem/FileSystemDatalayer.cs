@@ -44,6 +44,9 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
             var rootAndClassifyKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Classify);
             var rootAndClassifyIndexModel = new CreateIndexModel<FileInfoModel>(rootAndClassifyKey, new CreateIndexOptions { Unique = false });
+            
+            var rootAndClassifyAndStatusKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Classify).Ascending(x=>x.Status);
+            var rootAndClassifyAndStatusIndexModel = new CreateIndexModel<FileInfoModel>(rootAndClassifyAndStatusKey, new CreateIndexOptions { Unique = false });
 
             var rootAndContentTypeKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.ContentType);
             var rootAndContentTypeIndexModel = new CreateIndexModel<FileInfoModel>(rootAndContentTypeKey);
@@ -84,9 +87,11 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
                 createDateAndStatusIndexModel, rootAndStatusIndexModel,
                 rootAndContentTypeIndexModel, createDateAndContentTypeIndexModel,
                 statusIndexModel, contentTypeIndexModel,
-                relativePathIndexModel, rootAndClassifyIndexModel, createDateAndClassifyIndexModel
+                relativePathIndexModel, rootAndClassifyIndexModel, createDateAndClassifyIndexModel,
+                rootAndClassifyAndStatusIndexModel
             ];
 
+            await _fileDataDb.Indexes.DropAllAsync(cancellationToken);
             await _fileDataDb.Indexes.CreateManyAsync(createIndexModelLis, cancellationToken);
 
             logger.LogInformation(@"[Init] File info data layer");
