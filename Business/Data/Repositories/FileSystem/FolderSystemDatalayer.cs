@@ -5,6 +5,7 @@ using Business.Data.Interfaces.FileSystem;
 using Business.Models;
 using Business.Utils;
 using Business.Utils.ExpressionExtensions;
+using Business.Utils.StringExtensions;
 using BusinessModels.General.EnumModel;
 using BusinessModels.General.Results;
 using BusinessModels.Resources;
@@ -21,7 +22,6 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 {
     private readonly IMongoCollection<FolderInfoModel> _dataDb = context.MongoDatabase.GetCollection<FolderInfoModel>("FolderInfo");
     private readonly SemaphoreSlim _semaphore = new(100, 1000);
-    private const string SearchIndexNameLastSeenId = "FolderInfoSearchIndexLastSeenId";
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
@@ -470,8 +470,8 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         ObjectId? lastSeenId = null;
 
         bool hasIdCheck = predicate.PredicateContainsIdCheck(f => f.Id);
-
-        if (!hasIdCheck && memoryCache.TryGetValue<ObjectId>(SearchIndexNameLastSeenId, out var cachedLastSeenId))
+        var stringKey = predicate.GetCacheKey();
+        if (!hasIdCheck && memoryCache.TryGetValue<ObjectId>(stringKey, out var cachedLastSeenId))
         {
             lastSeenId = cachedLastSeenId;
         }
@@ -504,7 +504,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
         if (currentLastSeenId.HasValue && hasIdCheck)
         {
-            memoryCache.Set(SearchIndexNameLastSeenId, currentLastSeenId.Value, TimeSpan.FromSeconds(30)); // Cache for 30 minutes
+            memoryCache.Set(stringKey, currentLastSeenId.Value, TimeSpan.FromSeconds(10)); // Cache for 30 minutes
         }
     }
 

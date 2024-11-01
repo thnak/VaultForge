@@ -7,6 +7,7 @@ using Business.Models;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.Utils;
 using Business.Utils.ExpressionExtensions;
+using Business.Utils.StringExtensions;
 using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
@@ -22,7 +23,6 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
     private readonly IMongoCollection<FileInfoModel> _fileDataDb = context.MongoDatabase.GetCollection<FileInfoModel>("FileInfo");
     private readonly IMongoCollection<FileMetadataModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileMetadataModel>("FileMetaData");
     private readonly SemaphoreSlim _semaphore = new(100, 1000);
-    private const string SearchIndexNameLastSeenId = "FileInfoSearchIndexLastSeenId";
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
@@ -485,8 +485,9 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         ObjectId? lastSeenId = null;
 
         bool hasIdCheck = predicate.PredicateContainsIdCheck(f => f.Id);
+        var stringKey = predicate.GetCacheKey();
 
-        if (!hasIdCheck && memoryCache.TryGetValue<ObjectId>(SearchIndexNameLastSeenId, out var cachedLastSeenId))
+        if (!hasIdCheck && memoryCache.TryGetValue<ObjectId>(stringKey, out var cachedLastSeenId))
         {
             lastSeenId = cachedLastSeenId;
         }
@@ -520,7 +521,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
         if (currentLastSeenId.HasValue && hasIdCheck)
         {
-            memoryCache.Set(SearchIndexNameLastSeenId, currentLastSeenId.Value, TimeSpan.FromSeconds(10));
+            memoryCache.Set(stringKey, currentLastSeenId.Value, TimeSpan.FromSeconds(10));
         }
     }
 

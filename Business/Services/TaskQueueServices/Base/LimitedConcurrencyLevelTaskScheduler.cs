@@ -5,24 +5,38 @@ public class LimitedConcurrencyLevelTaskScheduler : TaskScheduler
     // Indicates whether the current thread is processing work items.
     [ThreadStatic] private static bool _currentThreadIsProcessingItems;
 
-    // The list of tasks to be executed
-    private readonly LinkedList<Task> _tasks = new(); // protected by lock(_tasks)
+    /// <summary>
+    /// The list of tasks to be executed, protected by lock(_lock)
+    /// </summary>
+    private readonly LinkedList<Task> _tasks = new();
+
     private readonly Lock _lock = new();
 
-    // The maximum concurrency level allowed by this scheduler.
+    /// <summary>
+    /// The maximum concurrency level allowed by this scheduler.
+    /// </summary>
     private readonly int _maxDegreeOfParallelism;
 
-    // Indicates whether the scheduler is currently processing work items.
+    /// <summary>
+    /// Indicates whether the scheduler is currently processing work items.
+    /// </summary>
     private int _delegatesQueuedOrRunning;
 
-    // Creates a new instance with the specified degree of parallelism.
+    /// <summary>
+    /// Creates a new instance with the specified degree of parallelism.
+    /// </summary>
+    /// <param name="maxDegreeOfParallelism"></param>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
     public LimitedConcurrencyLevelTaskScheduler(int maxDegreeOfParallelism)
     {
         if (maxDegreeOfParallelism < 1) throw new ArgumentOutOfRangeException(nameof(maxDegreeOfParallelism));
         _maxDegreeOfParallelism = maxDegreeOfParallelism;
     }
 
-    // Queues a task to the scheduler.
+    /// <summary>
+    /// Queues a task to the scheduler.
+    /// </summary>
+    /// <param name="task"></param>
     protected sealed override void QueueTask(Task task)
     {
         // Add the task to the list of tasks to be processed.  If there aren't enough
@@ -38,7 +52,9 @@ public class LimitedConcurrencyLevelTaskScheduler : TaskScheduler
         }
     }
 
-    // Inform the ThreadPool that there's work to be executed for this scheduler.
+    /// <summary>
+    /// Inform the ThreadPool that there's work to be executed for this scheduler.
+    /// </summary>
     private void NotifyThreadPoolOfPendingWork()
     {
         ThreadPool.UnsafeQueueUserWorkItem(_ =>
@@ -79,7 +95,12 @@ public class LimitedConcurrencyLevelTaskScheduler : TaskScheduler
         }, null);
     }
 
-    // Attempts to execute the specified task on the current thread.
+    /// <summary>
+    /// Attempts to execute the specified task on the current thread.
+    /// </summary>
+    /// <param name="task"></param>
+    /// <param name="taskWasPreviouslyQueued"></param>
+    /// <returns></returns>
     protected sealed override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued)
     {
         // If this thread isn't already processing a task, we don't support inlining
@@ -95,16 +116,26 @@ public class LimitedConcurrencyLevelTaskScheduler : TaskScheduler
         return TryExecuteTask(task);
     }
 
-    // Attempt to remove a previously scheduled task from the scheduler.
+    /// <summary>
+    /// Attempt to remove a previously scheduled task from the scheduler.
+    /// </summary>
+    /// <param name="task"></param>
+    /// <returns></returns>
     protected sealed override bool TryDequeue(Task task)
     {
         lock (_lock) return _tasks.Remove(task);
     }
 
-    // Gets the maximum concurrency level supported by this scheduler.
+    /// <summary>
+    /// Gets the maximum concurrency level supported by this scheduler.
+    /// </summary>
     public sealed override int MaximumConcurrencyLevel => _maxDegreeOfParallelism;
 
-    // Gets an enumerable of the tasks currently scheduled on this scheduler.
+    /// <summary>
+    /// Gets an enumerable of the tasks currently scheduled on this scheduler.
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="NotSupportedException"></exception>
     protected sealed override IEnumerable<Task> GetScheduledTasks()
     {
         bool lockTaken = false;
