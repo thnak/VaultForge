@@ -84,9 +84,9 @@ public class ChatWithLlama : IDisposable
     }
 
 
-    public Task<Message> ChatAsync(string prompt, CancellationToken cancellationToken = default)
+    public async Task<Message> ChatAsync(string prompt, CancellationToken cancellationToken = default)
     {
-        return _chatClient.SendAsync(prompt, cancellationToken: cancellationToken);
+        return await _chatClient.SendAsync(prompt, cancellationToken: cancellationToken);
     }
 
     public Task<Message> ChatAsync(string prompt, List<string> images, CancellationToken cancellationToken = default)
@@ -94,6 +94,13 @@ public class ChatWithLlama : IDisposable
         return _chatClient.SendAsync(prompt, imagesAsBase64: images, cancellationToken: cancellationToken);
     }
 
+    public async Task<float[]> GenerateEmbeddingAsync(string model, string prompt, CancellationToken cancellationToken = default)
+    {
+        var em = await _ollamaApiClient.Embeddings.GenerateEmbeddingAsync(model, prompt, new RequestOptions(), null, cancellationToken);
+        if (em.Embedding != null) return em.Embedding.Select(x => (float)x).ToArray();
+        return [];
+    }
+    
     public List<Message> History
     {
         get => _chatClient.History;

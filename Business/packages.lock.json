@@ -186,11 +186,12 @@
       },
       "Ollama": {
         "type": "Direct",
-        "requested": "[1.11.0, )",
-        "resolved": "1.11.0",
-        "contentHash": "90I7eex/RC30EvzfIs/DiQbKpX0b9weQgsuT5Syq+OK1wo8ER9VWJBGKW7SKsRZEnLlAhEef9lIfxjmMk2qL2A==",
+        "requested": "[1.12.1-dev.1, )",
+        "resolved": "1.12.1-dev.1",
+        "contentHash": "PMwkM32A+Iq5NHTnatO2AkZDilPpZshQolWxkQQpZUVhixF3YLuJJxlErQ3U408VobvvX2gmZVbzzBEmyPfzgA==",
         "dependencies": {
-          "System.Text.Json": "8.0.4"
+          "CSharpToJsonSchema": "3.9.1",
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
         }
       },
       "runtime.native.System.Net.Http": {
@@ -315,9 +316,9 @@
       },
       "System.Text.Encoding.CodePages": {
         "type": "Direct",
-        "requested": "[8.0.0, )",
-        "resolved": "8.0.0",
-        "contentHash": "OZIsVplFGaVY90G2SbpgU7EnCoOO5pw1t4ic21dBF3/1omrJFpAGoNAVpPyMVOC90/hvgkGG3VFqR13YgZMQfg=="
+        "requested": "[9.0.0-rc.2.24473.5, )",
+        "resolved": "9.0.0-rc.2.24473.5",
+        "contentHash": "H1e56lFcgmKStcHlfRZQHn0Ck4Lb2BQIMbTrIq+5CT3LLn8uyL9R7kSM0RtYaIoOl5bD5NvGXjNQvReNY1siAA=="
       },
       "System.Text.Encoding.Extensions": {
         "type": "Direct",
@@ -339,9 +340,9 @@
       },
       "System.Text.Json": {
         "type": "Direct",
-        "requested": "[8.0.5, )",
-        "resolved": "8.0.5",
-        "contentHash": "0f1B50Ss7rqxXiaBJyzUu9bWFOO2/zSlifZ/UNMdiIpDYe4cY4LQQicP4nirK1OS31I43rn062UIJ1Q9bpmHpg=="
+        "requested": "[9.0.0-rc.2.24473.5, )",
+        "resolved": "9.0.0-rc.2.24473.5",
+        "contentHash": "IsQCD+zBcFhteX7fUrS4cU/GvfLPy8F4oLtC9VBcF1U1qu1gZB/zlAxW8G0kqmAiXI84/gowZtcX1MjLk2QWoQ=="
       },
       "System.Text.RegularExpressions": {
         "type": "Direct",
@@ -364,6 +365,14 @@
         "contentHash": "34w9I7nyszfEYBY8g7T3B0AtWlOivNh+QoWc3KECRwbmcNyqWmb4huihtmpH2Ds7rIRRHMMPv9yfPBxxjBn03g==",
         "dependencies": {
           "System.Text.Encoding.CodePages": "4.5.0"
+        }
+      },
+      "CSharpToJsonSchema": {
+        "type": "Transitive",
+        "resolved": "3.9.1",
+        "contentHash": "8thddOQxXepA/8bUInWDoo7BGBP0ENll7glvsghO2zZdVfCAsRNRrI3bbLlnYkhmSP4oWHzo5569W0UOHv4F6A==",
+        "dependencies": {
+          "System.Text.Json": "9.0.0-rc.1.24431.7"
         }
       },
       "DnsClient": {
