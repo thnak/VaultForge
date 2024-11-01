@@ -186,12 +186,11 @@
       },
       "Ollama": {
         "type": "Direct",
-        "requested": "[1.12.1-dev.1, )",
-        "resolved": "1.12.1-dev.1",
-        "contentHash": "PMwkM32A+Iq5NHTnatO2AkZDilPpZshQolWxkQQpZUVhixF3YLuJJxlErQ3U408VobvvX2gmZVbzzBEmyPfzgA==",
+        "requested": "[1.11.0, )",
+        "resolved": "1.11.0",
+        "contentHash": "90I7eex/RC30EvzfIs/DiQbKpX0b9weQgsuT5Syq+OK1wo8ER9VWJBGKW7SKsRZEnLlAhEef9lIfxjmMk2qL2A==",
         "dependencies": {
-          "CSharpToJsonSchema": "3.9.1",
-          "System.Text.Json": "9.0.0-rc.2.24473.5"
+          "System.Text.Json": "8.0.4"
         }
       },
       "runtime.native.System.Net.Http": {
@@ -365,14 +364,6 @@
         "contentHash": "34w9I7nyszfEYBY8g7T3B0AtWlOivNh+QoWc3KECRwbmcNyqWmb4huihtmpH2Ds7rIRRHMMPv9yfPBxxjBn03g==",
         "dependencies": {
           "System.Text.Encoding.CodePages": "4.5.0"
-        }
-      },
-      "CSharpToJsonSchema": {
-        "type": "Transitive",
-        "resolved": "3.9.1",
-        "contentHash": "8thddOQxXepA/8bUInWDoo7BGBP0ENll7glvsghO2zZdVfCAsRNRrI3bbLlnYkhmSP4oWHzo5569W0UOHv4F6A==",
-        "dependencies": {
-          "System.Text.Json": "9.0.0-rc.1.24431.7"
         }
       },
       "DnsClient": {
