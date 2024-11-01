@@ -7,6 +7,7 @@ public class LimitedConcurrencyLevelTaskScheduler : TaskScheduler
 
     // The list of tasks to be executed
     private readonly LinkedList<Task> _tasks = new(); // protected by lock(_tasks)
+    private readonly Lock _lock = new();
 
     // The maximum concurrency level allowed by this scheduler.
     private readonly int _maxDegreeOfParallelism;
@@ -26,7 +27,7 @@ public class LimitedConcurrencyLevelTaskScheduler : TaskScheduler
     {
         // Add the task to the list of tasks to be processed.  If there aren't enough
         // delegates currently queued or running to process tasks, schedule another.
-        lock (_tasks)
+        lock (_lock)
         {
             _tasks.AddLast(task);
             if (_delegatesQueuedOrRunning < _maxDegreeOfParallelism)
@@ -51,7 +52,7 @@ public class LimitedConcurrencyLevelTaskScheduler : TaskScheduler
                 while (true)
                 {
                     Task? item;
-                    lock (_tasks)
+                    lock (_lock)
                     {
                         // When there are no more items to be processed,
                         // note that we're done processing, and get out.
@@ -97,7 +98,7 @@ public class LimitedConcurrencyLevelTaskScheduler : TaskScheduler
     // Attempt to remove a previously scheduled task from the scheduler.
     protected sealed override bool TryDequeue(Task task)
     {
-        lock (_tasks) return _tasks.Remove(task);
+        lock (_lock) return _tasks.Remove(task);
     }
 
     // Gets the maximum concurrency level supported by this scheduler.
