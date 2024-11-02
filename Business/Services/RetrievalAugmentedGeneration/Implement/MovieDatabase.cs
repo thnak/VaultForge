@@ -107,6 +107,7 @@ public class MovieDatabase : IMovieDatabase
             model => model.Description,
             model => model.FileName,
             model => model.Vector,
+            model => model.AbsolutePath
         };
         var cursor = FileSystem.Where(model => model.Classify == FileClassify.Normal && model.ContentType.Contains("image"), cancellationToken, field2Fetch);
         int index = 0;
