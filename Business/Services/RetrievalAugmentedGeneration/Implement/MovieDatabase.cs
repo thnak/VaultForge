@@ -19,12 +19,12 @@ public class MovieDatabase : IMovieDatabase
     private IEmbeddingGenerator<string, Embedding<float>> Generator { get; set; }
     private ILogger<MovieDatabase> Logger { get; set; }
     private IFileSystemBusinessLayer FileSystem { get; set; }
-    
+
     public MovieDatabase(IFileSystemBusinessLayer fileSystemBusinessLayer, ILogger<MovieDatabase> logger)
     {
         FileSystem = fileSystemBusinessLayer;
         Logger = logger;
-        
+
         var vectorStore = new InMemoryVectorStore();
         Movies = vectorStore.GetCollection<int, Movie>("movies");
         Generator = new OllamaEmbeddingGenerator(new Uri("http://localhost:11434/"), "all-minilm");
@@ -33,7 +33,7 @@ public class MovieDatabase : IMovieDatabase
     public async Task InitializeAsync(CancellationToken cancellationToken = default)
     {
         await Movies.CreateCollectionIfNotExistsAsync(cancellationToken);
-        await InitSampleData();
+        await InitDescription(cancellationToken);
     }
 
     public void Dispose()
@@ -114,11 +114,20 @@ public class MovieDatabase : IMovieDatabase
         }
     }
 
-    private async Task InitDescription()
+    private async Task InitDescription(CancellationToken cancellationToken = default)
     {
-        var files = new List<FileInfoModel>();
-        var cursor = FileSystem.Where(model => model.Classify == FileClassify.Normal && model.ContentType == "image/jpeg");
-        
+        var cursor = FileSystem.Where(model => model.Classify == FileClassify.Normal && model.ContentType.Contains("image"), cancellationToken, model => model.FileName);
+        int index = 0;
+        await foreach (var file in cursor)
+        {
+            var model = new Movie()
+            {
+                Key = index++,
+                Title = file.FileName
+            };
+            model.Vector = await Generator.GenerateEmbeddingVectorAsync(file.FileName, cancellationToken: cancellationToken);
+            await Movies.UpsertAsync(model, cancellationToken: cancellationToken);
+        }
     }
 
     #endregion

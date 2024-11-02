@@ -4,7 +4,6 @@ using System.Security.Cryptography;
 using System.Text;
 using Business.Data.Interfaces;
 using Business.Data.StorageSpace.Utils;
-using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.Utils;
 using Business.Utils.Helper;
 using Business.Utils.StringExtensions;
@@ -19,7 +18,7 @@ using MongoDB.Driver;
 
 namespace Business.Data.StorageSpace;
 
-public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IParallelBackgroundTaskQueue queue, ILogger<RedundantArrayOfIndependentDisks> logger, IOptions<AppSettings> options) : IMongoDataInitializer
+public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, ILogger<RedundantArrayOfIndependentDisks> logger, IOptions<AppSettings> options) : IMongoDataInitializer
 {
     private readonly IMongoCollection<FileRaidModel> _fileDataDb = context.MongoDatabase.GetCollection<FileRaidModel>("FileRaid");
     private readonly IMongoCollection<FileRaidDataBlockModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileRaidDataBlockModel>("FileRaidDataBlock");
