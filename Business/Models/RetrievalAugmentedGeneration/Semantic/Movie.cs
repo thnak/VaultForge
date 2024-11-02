@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.VectorData;
+using MongoDB.Bson;
 
 namespace Business.Models.RetrievalAugmentedGeneration.Semantic;
 
 public class Movie
 {
     [VectorStoreRecordKey]
-    public int Key {get;set;}
+    public ObjectId Key {get;set;}
 
     [VectorStoreRecordData] public string Title { get; set; } = string.Empty;
 

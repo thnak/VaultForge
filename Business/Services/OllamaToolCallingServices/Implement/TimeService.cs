@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using Business.Services.OllamaToolCallingServices.Interfaces;
 
-namespace Business.Services.OllamaToolCallingServices;
+namespace Business.Services.OllamaToolCallingServices.Implement;
 
 
 public class TimeService : ITimeService

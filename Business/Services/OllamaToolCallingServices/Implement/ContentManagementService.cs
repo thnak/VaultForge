@@ -6,7 +6,7 @@ using BusinessModels.Advertisement;
 using BusinessModels.Resources;
 using BusinessModels.Utils;
 
-namespace Business.Services.OllamaToolCallingServices;
+namespace Business.Services.OllamaToolCallingServices.Implement;
 
 public class ContentManagementService(IAdvertisementBusinessLayer businessLayer) : IContentManagementService
 {

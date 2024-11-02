@@ -3,7 +3,7 @@ using Abot2.Crawler;
 using Abot2.Poco;
 using Business.Services.OllamaToolCallingServices.Interfaces;
 
-namespace Business.Services.OllamaToolCallingServices;
+namespace Business.Services.OllamaToolCallingServices.Implement;
 
 public class LamaWebCrawlerService : ILamaWebCrawlerService
 {

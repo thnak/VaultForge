@@ -2,7 +2,7 @@
 using BusinessModels.forecast;
 using BusinessModels.Utils;
 
-namespace Business.Services.OllamaToolCallingServices;
+namespace Business.Services.OllamaToolCallingServices.Implement;
 
 public class WeatherService(string baseUri) : IWeatherService
 {

@@ -2,7 +2,7 @@
 using System.Text.Json;
 using Business.Services.OllamaToolCallingServices.Interfaces;
 
-namespace Business.Services.OllamaToolCallingServices;
+namespace Business.Services.OllamaToolCallingServices.Implement;
 
 public class MathService : IMathService
 {

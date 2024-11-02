@@ -1,7 +1,7 @@
 ﻿using Business.Services.Ffmpeg;
 using Business.Services.OllamaToolCallingServices.Interfaces;
 
-namespace Business.Services.OllamaToolCallingServices;
+namespace Business.Services.OllamaToolCallingServices.Implement;
 
 public class FileSystemHandlerService : IFileSystemHandlerService
 {
