@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using Business.Business.Interfaces.FileSystem;
 using Business.Data.StorageSpace;
+using Business.Models;
 using Business.Models.RetrievalAugmentedGeneration.Semantic;
 using Business.Services.RetrievalAugmentedGeneration.Interface;
 using Business.Services.RetrievalAugmentedGeneration.Utils;
@@ -8,6 +10,7 @@ using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.General.EnumModel;
 using BusinessModels.General.Results;
 using BusinessModels.General.SettingModels;
+using BusinessModels.System.FileSystem;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -93,11 +96,32 @@ public class MovieDatabase : IMovieDatabase
 
     private async Task InitDescription(CancellationToken cancellationToken = default)
     {
-        var cursor = FileSystem.Where(model => model.Classify == FileClassify.Normal && model.ContentType.Contains("image"), cancellationToken, model => model.Id, model => model.FileName, model => model.AbsolutePath);
+        var field2Fetch = new Expression<Func<FileInfoModel, object>>[]
+        {
+            model => model.Id,
+            model => model.Description,
+            model => model.FileName,
+            model => model.Vector,
+        };
+        var cursor = FileSystem.Where(model => model.Classify == FileClassify.Normal && model.ContentType.Contains("image"), cancellationToken, field2Fetch);
         int index = 0;
         await foreach (var file in cursor)
         {
             var key = index++;
+            var fileId = file.Id.ToString();
+            
+            if (file.Vector.Any())
+            {
+                await Movies.UpsertAsync(new Movie()
+                {
+                    Description = file.Description,
+                    Key = key,
+                    Title = file.FileName,
+                    Vector = file.Vector,
+                }, cancellationToken: cancellationToken);
+                continue;
+            }
+
             await Queue.QueueBackgroundWorkItemAsync(async serverToken =>
             {
                 using MemoryStream stream = new();
@@ -118,6 +142,13 @@ public class MovieDatabase : IMovieDatabase
                     Description = description,
                     Vector = await Generator.GenerateEmbeddingVectorAsync(description, cancellationToken: serverToken)
                 };
+                
+                await FileSystem.UpdateAsync(fileId, new FieldUpdate<FileInfoModel>()
+                {
+                    { x=> x.Description, description },
+                    { x=> x.Vector, model.Vector }
+                }, serverToken);
+                
                 await Movies.UpsertAsync(model, cancellationToken: serverToken);
             }, cancellationToken);
         }

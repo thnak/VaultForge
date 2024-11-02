@@ -86,11 +86,10 @@ public class FileInfoModel
         }
     }
 
-    #region Front-End Properties
 
-    [BsonIgnore] [Key(18)] public FileMetadataModel Metadata { get; set; } = new FileMetadataModel();
+    [Key(18)] public float[] Vector { get; set; } = [];
+    [Key(19)] public string Description { get; set; } = string.Empty;
 
-    #endregion
 
     #region Front-End Methods
 
