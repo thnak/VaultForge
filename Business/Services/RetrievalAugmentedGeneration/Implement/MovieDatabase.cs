@@ -2,9 +2,9 @@
 using Business.Business.Interfaces.FileSystem;
 using Business.Models.RetrievalAugmentedGeneration.Semantic;
 using Business.Services.RetrievalAugmentedGeneration.Interface;
+using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.General.EnumModel;
 using BusinessModels.General.Results;
-using BusinessModels.System.FileSystem;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.VectorData;
@@ -19,11 +19,13 @@ public class MovieDatabase : IMovieDatabase
     private IEmbeddingGenerator<string, Embedding<float>> Generator { get; set; }
     private ILogger<MovieDatabase> Logger { get; set; }
     private IFileSystemBusinessLayer FileSystem { get; set; }
+    private IParallelBackgroundTaskQueue Queue { get; set; }
 
-    public MovieDatabase(IFileSystemBusinessLayer fileSystemBusinessLayer, ILogger<MovieDatabase> logger)
+    public MovieDatabase(IFileSystemBusinessLayer fileSystemBusinessLayer, ILogger<MovieDatabase> logger, IParallelBackgroundTaskQueue queue)
     {
         FileSystem = fileSystemBusinessLayer;
         Logger = logger;
+        Queue = queue;
 
         var vectorStore = new InMemoryVectorStore();
         Movies = vectorStore.GetCollection<int, Movie>("movies");
@@ -120,14 +122,19 @@ public class MovieDatabase : IMovieDatabase
         int index = 0;
         await foreach (var file in cursor)
         {
-            var model = new Movie()
+            int modelIndex = index++;
+            await Queue.QueueBackgroundWorkItemAsync(async serverToken =>
             {
-                Key = index++,
-                Title = file.FileName
-            };
-            model.Vector = await Generator.GenerateEmbeddingVectorAsync(file.FileName, cancellationToken: cancellationToken);
-            await Movies.UpsertAsync(model, cancellationToken: cancellationToken);
+                var model = new Movie
+                {
+                    Key = modelIndex,
+                    Title = file.FileName,
+                    Vector = await Generator.GenerateEmbeddingVectorAsync(file.FileName, cancellationToken: serverToken)
+                };
+                await Movies.UpsertAsync(model, cancellationToken: serverToken);
+            }, cancellationToken);
         }
+        Logger.LogInformation($"Initialized total {index:N0} documents.");
     }
 
     #endregion
