@@ -71,6 +71,11 @@ public class MovieDatabase : IMovieDatabase
         }
     }
 
+    public async Task RequestIndexAsync(string key, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<SearchResult<Movie>> SearchAsync(string query, int maxSize, CancellationToken cancellationToken = default)
     {
         var searchOptions = new VectorSearchOptions()
