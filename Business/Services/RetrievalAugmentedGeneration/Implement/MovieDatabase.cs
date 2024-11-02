@@ -68,11 +68,11 @@ public class MovieDatabase : IMovieDatabase
         }
     }
 
-    public async Task<SearchResult<Movie>> SearchAsync(string query, CancellationToken cancellationToken = default)
+    public async Task<SearchResult<Movie>> SearchAsync(string query, int maxSize, CancellationToken cancellationToken = default)
     {
         var searchOptions = new VectorSearchOptions()
         {
-            Top = 1,
+            Top = maxSize,
             VectorPropertyName = "Vector",
             IncludeVectors = false,
             IncludeTotalCount = true
@@ -97,7 +97,7 @@ public class MovieDatabase : IMovieDatabase
         int index = 0;
         await foreach (var file in cursor)
         {
-            index++;
+            var key = index++;
             await Queue.QueueBackgroundWorkItemAsync(async serverToken =>
             {
                 using MemoryStream stream = new();
@@ -113,8 +113,9 @@ public class MovieDatabase : IMovieDatabase
 
                 var model = new Movie
                 {
-                    Key = file.Id,
+                    Key = key,
                     Title = file.FileName,
+                    Description = description,
                     Vector = await Generator.GenerateEmbeddingVectorAsync(description, cancellationToken: serverToken)
                 };
                 await Movies.UpsertAsync(model, cancellationToken: serverToken);

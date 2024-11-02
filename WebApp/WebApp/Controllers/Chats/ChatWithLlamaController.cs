@@ -63,16 +63,15 @@ public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithL
     [HttpPost("search-chat")]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
-    public async Task<IActionResult> GetEmbeddingAsync([FromForm] string prompt)
+    public async Task<IActionResult> GetEmbeddingAsync([FromForm] string prompt, [FromForm] int maxResult)
     {
-        var result = await movieDatabase.SearchAsync(prompt);
-
+        var result = await movieDatabase.SearchAsync(prompt, maxResult);
         StringBuilder stringBuilder = new StringBuilder();
         foreach (var searchScore in result.Value)
         {
-            stringBuilder.AppendLine($"{searchScore.Value.Title}: {searchScore.Score}");
+            stringBuilder.AppendLine($"[{searchScore.Score:N2}] {searchScore.Value.Title}:\nDescription: {searchScore.Value.Description}\n");
         }
-        
+
         return Ok(stringBuilder.ToString());
     }
 }

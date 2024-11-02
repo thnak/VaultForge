@@ -6,5 +6,5 @@ public interface IRepositoryData<T> : IBaseInitialize, IDisposable where T : cla
 {
     public Task AddAsync(T entity, CancellationToken cancellationToken = default);
     public Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken = default);
-    public Task<SearchResult<T>> SearchAsync(string query, CancellationToken cancellationToken = default);
+    public Task<SearchResult<T>> SearchAsync(string query, int maxSize, CancellationToken cancellationToken = default);
 }

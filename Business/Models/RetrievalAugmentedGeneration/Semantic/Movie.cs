@@ -6,7 +6,7 @@ namespace Business.Models.RetrievalAugmentedGeneration.Semantic;
 public class Movie
 {
     [VectorStoreRecordKey]
-    public ObjectId Key {get;set;}
+    public int Key {get;set;}
 
     [VectorStoreRecordData] public string Title { get; set; } = string.Empty;
 
