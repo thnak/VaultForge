@@ -141,18 +141,19 @@ public class MovieDatabase : IMovieDatabase
                     return;
                 }
 
+                var vector = (await Generator.GenerateEmbeddingVectorAsync(description, cancellationToken: serverToken)).ToArray();
                 var model = new Movie
                 {
                     Key = key,
                     Title = file.FileName,
                     Description = description,
-                    Vector = await Generator.GenerateEmbeddingVectorAsync(description, cancellationToken: serverToken)
+                    Vector = vector,
                 };
                 
                 await FileSystem.UpdateAsync(fileId, new FieldUpdate<FileInfoModel>()
                 {
                     { x=> x.Description, description },
-                    { x=> x.Vector, model.Vector }
+                    { x=> x.Vector, vector }
                 }, serverToken);
                 
                 await Movies.UpsertAsync(model, cancellationToken: serverToken);
