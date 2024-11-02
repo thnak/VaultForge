@@ -9,6 +9,7 @@ public class AppSettings
     public ThumbnailSetting ThumbnailSetting { get; set; } = new();
     public Storage Storage { get; set; } = new();
     public VideoTransCode VideoTransCode { get; set; } = new();
+    public OllamaConfig OllamaConfig { get; set; } = new();
 }
 
 public class BackgroundQueue
@@ -46,4 +47,12 @@ public class DbSettingModel
     public string UserName { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
     public int MaxConnectionPoolSize { get; set; } = 200;
+}
+
+public class OllamaConfig
+{
+    public string ConnectionString { get; set; } = "http://localhost:11434/";
+    public string TextEmbeddingModel { get; set; } = "nomic-embed-text";
+    public string TextGeneratorModel { get; set; } = "llama3.2";
+    public string Image2TextModel { get; set; } = "minicpm-v";
 }

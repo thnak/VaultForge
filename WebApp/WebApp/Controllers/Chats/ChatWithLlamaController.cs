@@ -1,18 +1,20 @@
 ﻿using System.Text;
 using Business.Services;
 using Business.Services.RetrievalAugmentedGeneration.Interface;
+using BusinessModels.General.SettingModels;
 using BusinessModels.Utils;
 using BusinessModels.WebContent;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Ollama;
 
 namespace WebApp.Controllers.Chats;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithLlamaController> logger, IMovieDatabase movieDatabase, IServiceProvider serviceProvider) : ControllerBase
+public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithLlamaController> logger, IMovieDatabase movieDatabase, IServiceProvider serviceProvider, IOptions<AppSettings> options) : ControllerBase
 {
     [HttpPost("chat")]
     [AllowAnonymous]
@@ -30,7 +32,7 @@ public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithL
                 return [];
             }) ?? [];
 
-            var chat = new ChatWithLlama(systemPrompt ?? string.Empty, new Uri("http://192.168.1.18:11434/api"), serviceProvider, model, autoCallTools is true);
+            var chat = new ChatWithLlama(systemPrompt ?? string.Empty, new Uri($"{options.Value.OllamaConfig.ConnectionString}api"), serviceProvider, model, autoCallTools is true);
             chat.History = messages.Any() ? [..messages] : chat.History;
             var mess = images != default ? await chat.ChatAsync(question, images, HttpContext.RequestAborted) : await chat.ChatAsync(question, HttpContext.RequestAborted);
             HttpContext.Response.RegisterForDispose(chat);
