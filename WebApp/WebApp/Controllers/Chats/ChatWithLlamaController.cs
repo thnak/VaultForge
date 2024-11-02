@@ -1,4 +1,6 @@
-﻿using Business.Services;
+﻿using System.Text;
+using Business.Services;
+using Business.Services.RetrievalAugmentedGeneration.Interface;
 using BusinessModels.Utils;
 using BusinessModels.WebContent;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +12,7 @@ namespace WebApp.Controllers.Chats;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithLlamaController> logger, IServiceProvider serviceProvider) : ControllerBase
+public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithLlamaController> logger, IMovieDatabase movieDatabase, IServiceProvider serviceProvider) : ControllerBase
 {
     [HttpPost("chat")]
     [AllowAnonymous]
@@ -19,9 +21,9 @@ public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithL
     {
         try
         {
-            if(startNew is true)
+            if (startNew is true)
                 memoryCache.Remove(nameof(ChatWithLlamaController) + systemPrompt);
-            
+
             List<Message> messages = memoryCache.GetOrCreate<List<Message>>(nameof(ChatWithLlamaController) + systemPrompt, entry =>
             {
                 entry.Priority = CacheItemPriority.NeverRemove;
@@ -32,7 +34,7 @@ public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithL
             chat.History = messages.Any() ? [..messages] : chat.History;
             var mess = images != default ? await chat.ChatAsync(question, images, HttpContext.RequestAborted) : await chat.ChatAsync(question, HttpContext.RequestAborted);
             HttpContext.Response.RegisterForDispose(chat);
-            
+
             //messages.Add(mess);
             memoryCache.Set<List<Message>>(nameof(ChatWithLlamaController) + systemPrompt, [..chat.History], new MemoryCacheEntryOptions() { Priority = CacheItemPriority.NeverRemove });
 
@@ -56,10 +58,19 @@ public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithL
         }
     }
 
-    [HttpPost("get-embedding")]
-    public async Task GetEmbeddingAsync([FromForm] string prompt)
+    [HttpPost("search-chat")]
+    [AllowAnonymous]
+    [IgnoreAntiforgeryToken]
+    public async Task<IActionResult> GetEmbeddingAsync([FromForm] string prompt)
     {
+        var result = await movieDatabase.SearchAsync(prompt);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        foreach (var searchScore in result.Value)
+        {
+            stringBuilder.AppendLine($"{searchScore.Value.Title}: {searchScore.Score}");
+        }
         
+        return Ok(stringBuilder.ToString());
     }
-    
 }
