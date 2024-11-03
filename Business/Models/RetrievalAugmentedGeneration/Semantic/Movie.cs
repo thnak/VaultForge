@@ -12,6 +12,6 @@ public class Movie
 
     [VectorStoreRecordData] public string Description { get; set; } = string.Empty;
 
-    [VectorStoreRecordVector(384, DistanceFunction.CosineSimilarity)]
+    [VectorStoreRecordVector(768, DistanceFunction.CosineSimilarity)]
     public ReadOnlyMemory<float> Vector {get;set;}
 }

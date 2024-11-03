@@ -30,6 +30,7 @@ public class MovieDatabase : IMovieDatabase
     private RedundantArrayOfIndependentDisks Raid { get; }
     private string OllamaApiEndpoint { get; }
     private string Image2TextModel { get; }
+    private int TotalIndexed { get; set; }
 
     public MovieDatabase(IFileSystemBusinessLayer fileSystemBusinessLayer, RedundantArrayOfIndependentDisks raid, ILogger<MovieDatabase> logger, ISequenceBackgroundTaskQueue queue, IOptions<AppSettings> options)
     {
@@ -73,7 +74,45 @@ public class MovieDatabase : IMovieDatabase
 
     public async Task RequestIndexAsync(string key, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var file = FileSystem.Get(key);
+        if (file != null)
+        {
+            if (!file.Vector.Any())
+            {
+                await Queue.QueueBackgroundWorkItemAsync(async serverToken => { await Request(file, serverToken); }, cancellationToken);
+            }
+        }
+    }
+
+    private async Task Request(FileInfoModel file, CancellationToken cancellationToken = default)
+    {
+        using MemoryStream stream = new();
+        await Raid.ReadGetDataAsync(stream, file.AbsolutePath, cancellationToken);
+        stream.Seek(0, SeekOrigin.Begin);
+
+        var description = await RetrievalAugmentedGenerationExtension.GenerateDescription(stream, $"{OllamaApiEndpoint}api/generate", Image2TextModel, cancellationToken);
+        if (string.IsNullOrEmpty(description))
+        {
+            Logger.LogError($"Description is null for {file.AbsolutePath}");
+            return;
+        }
+
+        var vector = (await Generator.GenerateEmbeddingVectorAsync(description, cancellationToken: cancellationToken)).ToArray();
+        var model = new Movie
+        {
+            Key = TotalIndexed++,
+            Title = file.FileName,
+            Description = description,
+            Vector = vector,
+        };
+
+        await FileSystem.UpdateAsync(file.Id.ToString(), new FieldUpdate<FileInfoModel>()
+        {
+            { x => x.Description, description },
+            { x => x.Vector, vector }
+        }, cancellationToken);
+
+        await Movies.UpsertAsync(model, cancellationToken: cancellationToken);
     }
 
     public async Task<SearchResult<Movie>> SearchAsync(string query, int maxSize, CancellationToken cancellationToken = default)
@@ -114,8 +153,6 @@ public class MovieDatabase : IMovieDatabase
         await foreach (var file in cursor)
         {
             var key = index++;
-            var fileId = file.Id.ToString();
-            
             if (file.Vector.Any())
             {
                 await Movies.UpsertAsync(new Movie()
@@ -128,36 +165,7 @@ public class MovieDatabase : IMovieDatabase
                 continue;
             }
 
-            await Queue.QueueBackgroundWorkItemAsync(async serverToken =>
-            {
-                using MemoryStream stream = new();
-                await Raid.ReadGetDataAsync(stream, file.AbsolutePath, cancellationToken);
-                stream.Seek(0, SeekOrigin.Begin);
-
-                var description = await RetrievalAugmentedGenerationExtension.GenerateDescription(stream, $"{OllamaApiEndpoint}api/generate", Image2TextModel, serverToken);
-                if (string.IsNullOrEmpty(description))
-                {
-                    Logger.LogError($"Description is null for {file.AbsolutePath}");
-                    return;
-                }
-
-                var vector = (await Generator.GenerateEmbeddingVectorAsync(description, cancellationToken: serverToken)).ToArray();
-                var model = new Movie
-                {
-                    Key = key,
-                    Title = file.FileName,
-                    Description = description,
-                    Vector = vector,
-                };
-                
-                await FileSystem.UpdateAsync(fileId, new FieldUpdate<FileInfoModel>()
-                {
-                    { x=> x.Description, description },
-                    { x=> x.Vector, vector }
-                }, serverToken);
-                
-                await Movies.UpsertAsync(model, cancellationToken: serverToken);
-            }, cancellationToken);
+            await Queue.QueueBackgroundWorkItemAsync(async serverToken => { await Request(file, serverToken); }, cancellationToken);
         }
 
         Logger.LogInformation($"Initialized total {index:N0} documents.");
