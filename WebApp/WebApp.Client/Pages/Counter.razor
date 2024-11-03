@@ -196,7 +196,7 @@
                         (_, eventInfo) =>
                         {
                             progressRef.Progress = (int)Math.Floor(100 * ((decimal)eventInfo.Progress / _sliceSize));
-                            StateHasChanged();
+                            // StateHasChanged();
                         });
                 }
             }
