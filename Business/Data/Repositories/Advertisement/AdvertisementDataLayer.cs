@@ -81,6 +81,20 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         return _dataDb.Find(x => x.Title == key).FirstOrDefault();
     }
 
+    public async Task<Result<ArticleModel?>> Get(string key, params Expression<Func<ArticleModel, object>>[] fieldsToFetch)
+    {
+        if (ObjectId.TryParse(key, out ObjectId objectId))
+        {
+            var findOptions = fieldsToFetch.Any() ? new FindOptions<ArticleModel, ArticleModel>() { Projection = fieldsToFetch.ProjectionBuilder(), Limit = 1 } : null;
+            using var cursor = await _dataDb.FindAsync(x => x.Id == objectId, findOptions);
+            var article = cursor.FirstOrDefault();
+            if (article != null) return Result<ArticleModel?>.Success(article);
+            return Result<ArticleModel?>.Failure(AppLang.Article_does_not_exist, ErrorType.NotFound);
+        }
+
+        return Result<ArticleModel?>.Failure(AppLang.Invalid_key, ErrorType.Validation);
+    }
+
     public async IAsyncEnumerable<ArticleModel?> GetAsync(List<string> keys, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         await _semaphore.WaitAsync(cancellationToken);

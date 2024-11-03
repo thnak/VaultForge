@@ -23,13 +23,14 @@ public interface IBusinessLayerRepository<T> where T : class
     IAsyncEnumerable<T> Where(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] fieldsToFetch);
 
     T? Get(string key);
+    Task<Result<T?>> Get(string key, params Expression<Func<T, object>>[] fieldsToFetch);
     IAsyncEnumerable<T?> GetAsync(List<string> keys, CancellationToken cancellationToken = default);
     Task<(T[], long)> GetAllAsync(int page, int size, CancellationToken cancellationToken = default);
     IAsyncEnumerable<T> GetAllAsync(CancellationToken cancellationToken);
     Task<Result<bool>> CreateAsync(T model, CancellationToken cancellationToken = default);
     IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<T> models, CancellationToken cancellationToken = default);
     Task<(bool, string)> UpdateAsync(T model, CancellationToken cancellationToken = default);
-    Task<(bool, string)> UpdateAsync(string key, FieldUpdate<T> updates , CancellationToken cancellationToken = default);
+    Task<(bool, string)> UpdateAsync(string key, FieldUpdate<T> updates, CancellationToken cancellationToken = default);
 
     IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<T> models, CancellationToken cancellationToken = default);
     Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default);

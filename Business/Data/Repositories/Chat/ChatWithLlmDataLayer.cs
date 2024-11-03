@@ -113,6 +113,20 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
         }
     }
 
+    public async Task<Result<ChatWithChatBotMessageModel?>> Get(string key, params Expression<Func<ChatWithChatBotMessageModel, object>>[] fieldsToFetch)
+    {
+        if (ObjectId.TryParse(key, out ObjectId objectId))
+        {
+            var findOptions = fieldsToFetch.Any() ? new FindOptions<ChatWithChatBotMessageModel, ChatWithChatBotMessageModel>() { Projection = fieldsToFetch.ProjectionBuilder(), Limit = 1 } : null;
+            using var cursor = await _dataDb.FindAsync(x => x.Id == objectId, findOptions);
+            var chat = cursor.FirstOrDefault();
+            if (chat != null) return Result<ChatWithChatBotMessageModel?>.Success(chat);
+            return Result<ChatWithChatBotMessageModel?>.Failure(AppLang.Article_does_not_exist, ErrorType.NotFound);
+        }
+
+        return Result<ChatWithChatBotMessageModel?>.Failure(AppLang.Invalid_key, ErrorType.Validation);
+    }
+
     public async IAsyncEnumerable<ChatWithChatBotMessageModel?> GetAsync(List<string> keys, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         await _semaphore.WaitAsync(cancellationToken);

@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Business.Business.Interfaces.FileSystem;
 using Business.Services;
 using Business.Services.RetrievalAugmentedGeneration.Interface;
 using BusinessModels.General.SettingModels;
@@ -14,7 +15,9 @@ namespace WebApp.Controllers.Chats;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithLlamaController> logger, IMovieDatabase movieDatabase, IServiceProvider serviceProvider, IOptions<AppSettings> options) : ControllerBase
+public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithLlamaController> logger, 
+    IFileInfoVectorDb fileInfoVectorDb, IFileSystemBusinessLayer fileBl,
+    IServiceProvider serviceProvider, IOptions<AppSettings> options) : ControllerBase
 {
     [HttpPost("chat")]
     [AllowAnonymous]
@@ -65,11 +68,14 @@ public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithL
     [IgnoreAntiforgeryToken]
     public async Task<IActionResult> GetEmbeddingAsync([FromForm] string prompt, [FromForm] int maxResult)
     {
-        var result = await movieDatabase.SearchAsync(prompt, maxResult);
+        var result = await fileInfoVectorDb.SearchAsync(prompt, maxResult);
         StringBuilder stringBuilder = new StringBuilder();
         foreach (var searchScore in result.Value)
         {
-            stringBuilder.AppendLine($"[{searchScore.Score:N2}] {searchScore.Value.Title}:\nDescription: {searchScore.Value.Description}\n");
+            var fileResult = await fileBl.Get(searchScore.Value.FileId, model => model.Id, model => model.Description);
+            if(!fileResult.IsSuccess) continue;
+            var file = fileResult.Value;
+            stringBuilder.AppendLine($"[{searchScore.Score:N2}] {file.Id}:\nDescription: {file.Description}\n");
         }
 
         return Ok(stringBuilder.ToString());

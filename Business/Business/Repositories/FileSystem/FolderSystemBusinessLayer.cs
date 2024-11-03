@@ -99,6 +99,11 @@ public class FolderSystemBusinessLayer(
         return folderSystemService.Get(key);
     }
 
+    public Task<Result<FolderInfoModel?>> Get(string key, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
+    {
+        return folderSystemService.Get(key, fieldsToFetch);
+    }
+
     public IAsyncEnumerable<FolderInfoModel?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)
     {
         return folderSystemService.GetAsync(keys, cancellationToken);

@@ -53,6 +53,7 @@ public interface IDataLayerRepository<T> where T : class
 
     IAsyncEnumerable<T> Where(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] fieldsToFetch);
     T? Get(string key);
+    Task<Result<T?>> Get(string key, params Expression<Func<T, object>>[] fieldsToFetch);
     IAsyncEnumerable<T?> GetAsync(List<string> keys, CancellationToken cancellationToken = default);
     Task<(T[], long)> GetAllAsync(int page, int size, CancellationToken cancellationToken = default);
     IAsyncEnumerable<T> GetAllAsync(CancellationToken cancellationToken);

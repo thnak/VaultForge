@@ -57,6 +57,11 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         return userDl.Get(key);
     }
 
+    public Task<Result<UserModel?>> Get(string key, params Expression<Func<UserModel, object>>[] fieldsToFetch)
+    {
+        return userDl.Get(key, fieldsToFetch);
+    }
+
     public IAsyncEnumerable<UserModel?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)
     {
         return userDl.GetAsync(keys, cancellationToken);

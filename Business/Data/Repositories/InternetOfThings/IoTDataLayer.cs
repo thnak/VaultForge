@@ -2,10 +2,12 @@
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.InternetOfThings;
 using Business.Models;
+using Business.Utils;
 using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
 using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using WriteConcern = MongoDB.Driver.WriteConcern;
 
@@ -92,6 +94,20 @@ public class IoTDataLayer : IIoTDataLayer
     public IoTRecord? Get(string key)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<Result<IoTRecord?>> Get(string key, params Expression<Func<IoTRecord, object>>[] fieldsToFetch)
+    {
+        if (ObjectId.TryParse(key, out ObjectId objectId))
+        {
+            var findOptions = fieldsToFetch.Any() ? new FindOptions<IoTRecord, IoTRecord>() { Projection = fieldsToFetch.ProjectionBuilder(), Limit = 1 } : null;
+            using var cursor = await _dataDb.FindAsync(x => x.Id == objectId, findOptions);
+            var article = cursor.FirstOrDefault();
+            if (article != null) return Result<IoTRecord?>.Success(article);
+            return Result<IoTRecord?>.Failure(AppLang.Article_does_not_exist, ErrorType.NotFound);
+        }
+
+        return Result<IoTRecord?>.Failure(AppLang.Invalid_key, ErrorType.Validation);
     }
 
     public IAsyncEnumerable<IoTRecord?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)

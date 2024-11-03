@@ -178,6 +178,24 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         }
     }
 
+    public async Task<Result<UserModel?>> Get(string key, params Expression<Func<UserModel, object>>[] fieldsToFetch)
+    {
+        var findOptions = fieldsToFetch.Any() ? new FindOptions<UserModel, UserModel>() { Projection = fieldsToFetch.ProjectionBuilder(), Limit = 1 } : null;
+        IAsyncCursor<UserModel>? cursor;
+        if (ObjectId.TryParse(key, out ObjectId objectId))
+        {
+            cursor = await _dataDb.FindAsync(x => x.ObjectId == objectId, findOptions);
+        }
+        else
+        {
+            cursor = await _dataDb.FindAsync(x => x.UserName == key, findOptions);
+        }
+
+        var userModel = cursor.FirstOrDefault();
+        if (userModel != null) return Result<UserModel?>.Success(userModel);
+        return Result<UserModel?>.Failure(AppLang.Article_does_not_exist, ErrorType.NotFound);
+    }
+
     public async IAsyncEnumerable<UserModel?> GetAsync(List<string> keys,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {

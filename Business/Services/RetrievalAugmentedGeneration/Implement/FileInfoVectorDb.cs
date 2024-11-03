@@ -20,11 +20,11 @@ using Microsoft.SemanticKernel.Connectors.InMemory;
 namespace Business.Services.RetrievalAugmentedGeneration.Implement;
 
 [Experimental("SKEXP0020")]
-public class MovieDatabase : IMovieDatabase
+public class FileInfoVectorDb : IFileInfoVectorDb
 {
-    private IVectorStoreRecordCollection<int, Movie> Movies { get; }
+    private IVectorStoreRecordCollection<int, FileVectorModel> FileInfoCollection { get; }
     private IEmbeddingGenerator<string, Embedding<float>> Generator { get; }
-    private ILogger<MovieDatabase> Logger { get; }
+    private ILogger<FileInfoVectorDb> Logger { get; }
     private IFileSystemBusinessLayer FileSystem { get; }
     private ISequenceBackgroundTaskQueue Queue { get; }
     private RedundantArrayOfIndependentDisks Raid { get; }
@@ -32,7 +32,7 @@ public class MovieDatabase : IMovieDatabase
     private string Image2TextModel { get; }
     private int TotalIndexed { get; set; }
 
-    public MovieDatabase(IFileSystemBusinessLayer fileSystemBusinessLayer, RedundantArrayOfIndependentDisks raid, ILogger<MovieDatabase> logger, ISequenceBackgroundTaskQueue queue, IOptions<AppSettings> options)
+    public FileInfoVectorDb(IFileSystemBusinessLayer fileSystemBusinessLayer, RedundantArrayOfIndependentDisks raid, ILogger<FileInfoVectorDb> logger, ISequenceBackgroundTaskQueue queue, IOptions<AppSettings> options)
     {
         FileSystem = fileSystemBusinessLayer;
         Logger = logger;
@@ -43,28 +43,30 @@ public class MovieDatabase : IMovieDatabase
         Image2TextModel = options.Value.OllamaConfig.Image2TextModel;
 
         var vectorStore = new InMemoryVectorStore();
-        Movies = vectorStore.GetCollection<int, Movie>("movies");
+        FileInfoCollection = vectorStore.GetCollection<int, FileVectorModel>(nameof(FileInfoModel));
         Generator = new OllamaEmbeddingGenerator(new Uri(OllamaApiEndpoint), options.Value.OllamaConfig.TextEmbeddingModel);
     }
 
     public async Task InitializeAsync(CancellationToken cancellationToken = default)
     {
-        await Movies.CreateCollectionIfNotExistsAsync(cancellationToken);
+        await FileInfoCollection.CreateCollectionIfNotExistsAsync(cancellationToken);
         await InitDescription(cancellationToken);
     }
 
     public void Dispose()
     {
-        Movies.DeleteCollectionAsync();
+        FileInfoCollection.DeleteCollectionAsync();
     }
 
-    public async Task AddAsync(Movie entity, CancellationToken cancellationToken = default)
+    public async Task AddAsync(FileVectorModel entity, CancellationToken cancellationToken = default)
     {
-        entity.Vector = await Generator.GenerateEmbeddingVectorAsync(entity.Description, cancellationToken: cancellationToken);
-        await Movies.UpsertAsync(entity, null, cancellationToken);
+        var file = FileSystem.Get(entity.FileId);
+        if(file is null) return;
+        entity.Vector = await Generator.GenerateEmbeddingVectorAsync(file.Description, cancellationToken: cancellationToken);
+        await FileInfoCollection.UpsertAsync(entity, null, cancellationToken);
     }
 
-    public async Task AddRangeAsync(IEnumerable<Movie> entities, CancellationToken cancellationToken = default)
+    public async Task AddRangeAsync(IEnumerable<FileVectorModel> entities, CancellationToken cancellationToken = default)
     {
         foreach (var entity in entities)
         {
@@ -98,11 +100,10 @@ public class MovieDatabase : IMovieDatabase
         }
 
         var vector = (await Generator.GenerateEmbeddingVectorAsync(description, cancellationToken: cancellationToken)).ToArray();
-        var model = new Movie
+        var model = new FileVectorModel
         {
-            Key = TotalIndexed++,
-            Title = file.FileName,
-            Description = description,
+            Index = TotalIndexed++,
+            FileId = file.Id.ToString(),
             Vector = vector,
         };
 
@@ -112,10 +113,10 @@ public class MovieDatabase : IMovieDatabase
             { x => x.Vector, vector }
         }, cancellationToken);
 
-        await Movies.UpsertAsync(model, cancellationToken: cancellationToken);
+        await FileInfoCollection.UpsertAsync(model, cancellationToken: cancellationToken);
     }
 
-    public async Task<SearchResult<Movie>> SearchAsync(string query, int maxSize, CancellationToken cancellationToken = default)
+    public async Task<SearchResult<FileVectorModel>> SearchAsync(string query, int maxSize, CancellationToken cancellationToken = default)
     {
         var searchOptions = new VectorSearchOptions()
         {
@@ -126,14 +127,14 @@ public class MovieDatabase : IMovieDatabase
         };
 
         var queryEmbedding = await Generator.GenerateEmbeddingVectorAsync(query, cancellationToken: cancellationToken);
-        var cursor = await Movies.VectorizedSearchAsync(queryEmbedding, searchOptions, cancellationToken: cancellationToken);
-        List<SearchScore<Movie>> result = new();
+        var cursor = await FileInfoCollection.VectorizedSearchAsync(queryEmbedding, searchOptions, cancellationToken: cancellationToken);
+        List<SearchScore<FileVectorModel>> result = new();
         await foreach (var item in cursor.Results.WithCancellation(cancellationToken))
         {
-            result.Add(new SearchScore<Movie>(item.Record, item.Score ?? 0));
+            result.Add(new SearchScore<FileVectorModel>(item.Record, item.Score ?? 0));
         }
 
-        return SearchResult<Movie>.Success(result);
+        return SearchResult<FileVectorModel>.Success(result);
     }
 
     #region Private functions
@@ -155,11 +156,10 @@ public class MovieDatabase : IMovieDatabase
             var key = index++;
             if (file.Vector.Any())
             {
-                await Movies.UpsertAsync(new Movie()
+                await FileInfoCollection.UpsertAsync(new FileVectorModel()
                 {
-                    Description = file.Description,
-                    Key = key,
-                    Title = file.FileName,
+                    Index = key,
+                    FileId = file.Id.ToString(),
                     Vector = file.Vector,
                 }, cancellationToken: cancellationToken);
                 continue;

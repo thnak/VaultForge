@@ -25,7 +25,7 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
     private void OnStarted()
     {
         logger.LogInformation("Adding RAG services");
-        QueueInitializationTask<IMovieDatabase>();
+        QueueInitializationTask<IFileInfoVectorDb>();
     }
 
     private void QueueInitializationTask<TDataLayer>() where TDataLayer : IBaseInitialize

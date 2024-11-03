@@ -259,6 +259,20 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         return _dataDb.Find(filter).Limit(1).FirstOrDefault();
     }
 
+    public async Task<Result<FolderInfoModel?>> Get(string key, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
+    {
+        if (ObjectId.TryParse(key, out ObjectId objectId))
+        {
+            var findOptions = fieldsToFetch.Any() ? new FindOptions<FolderInfoModel, FolderInfoModel>() { Projection = fieldsToFetch.ProjectionBuilder(), Limit = 1 } : null;
+            using var cursor = await _dataDb.FindAsync(x => x.Id == objectId, findOptions);
+            var folder = cursor.FirstOrDefault();
+            if (folder != null) return Result<FolderInfoModel?>.Success(folder);
+            return Result<FolderInfoModel?>.Failure(AppLang.Article_does_not_exist, ErrorType.NotFound);
+        }
+
+        return Result<FolderInfoModel?>.Failure(AppLang.Invalid_key, ErrorType.Validation);
+    }
+
     public IAsyncEnumerable<FolderInfoModel?> GetAsync(List<string> keys,
         CancellationToken cancellationToken = default)
     {

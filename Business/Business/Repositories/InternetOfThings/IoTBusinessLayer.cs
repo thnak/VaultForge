@@ -4,7 +4,6 @@ using Business.Data.Interfaces.InternetOfThings;
 using Business.Models;
 using BusinessModels.General.Results;
 using BusinessModels.System.InternetOfThings;
-using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
 namespace Business.Business.Repositories.InternetOfThings;
@@ -49,6 +48,11 @@ public class IoTBusinessLayer(IIoTDataLayer data) : IIoTBusinessLayer
     public IoTRecord? Get(string key)
     {
         throw new NotImplementedException();
+    }
+
+    public Task<Result<IoTRecord?>> Get(string key, params Expression<Func<IoTRecord, object>>[] fieldsToFetch)
+    {
+        return data.Get(key, fieldsToFetch);
     }
 
     public IAsyncEnumerable<IoTRecord?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)

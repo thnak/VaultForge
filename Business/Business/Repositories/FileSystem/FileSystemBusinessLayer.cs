@@ -75,6 +75,11 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da, IMemoryCache memor
         return da.Get(key);
     }
 
+    public Task<Result<FileInfoModel?>> Get(string key, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
+    {
+        return da.Get(key, fieldsToFetch);
+    }
+
     public IAsyncEnumerable<FileInfoModel?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)
     {
         return da.GetAsync(keys, cancellationToken);

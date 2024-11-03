@@ -2,6 +2,6 @@
 
 namespace Business.Services.RetrievalAugmentedGeneration.Interface;
 
-public interface IMovieDatabase : IRepositoryData<Movie>
+public interface IFileInfoVectorDb : IRepositoryData<FileVectorModel>
 {
 }

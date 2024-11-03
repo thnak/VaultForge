@@ -50,6 +50,11 @@ public class ChatWithLlmBusinessLayer(IChatWithLlmDataLayer dataLayer) : IChatWi
         return dataLayer.Get(key);
     }
 
+    public Task<Result<ChatWithChatBotMessageModel?>> Get(string key, params Expression<Func<ChatWithChatBotMessageModel, object>>[] fieldsToFetch)
+    {
+        return dataLayer.Get(key, fieldsToFetch);
+    }
+
     public IAsyncEnumerable<ChatWithChatBotMessageModel?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)
     {
        return dataLayer.GetAsync(keys, cancellationToken);

@@ -15,7 +15,7 @@ using SixLabors.ImageSharp.Processing;
 
 namespace Business.Services.FileSystem;
 
-public class ThumbnailService(IParallelBackgroundTaskQueue queue, IMovieDatabase movieVectorDb, IOptions<AppSettings> options, IFileSystemBusinessLayer fileService, RedundantArrayOfIndependentDisks raidService, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
+public class ThumbnailService(IParallelBackgroundTaskQueue queue, IFileInfoVectorDb movieVectorDb, IOptions<AppSettings> options, IFileSystemBusinessLayer fileService, RedundantArrayOfIndependentDisks raidService, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
 {
     public Task AddThumbnailRequest(string imageId)
     {

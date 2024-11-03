@@ -50,6 +50,11 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
         return dataLayer.Get(key);
     }
 
+    public Task<Result<ArticleModel?>> Get(string key, params Expression<Func<ArticleModel, object>>[] fieldsToFetch)
+    {
+        return dataLayer.Get(key, fieldsToFetch);
+    }
+
     public IAsyncEnumerable<ArticleModel?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();

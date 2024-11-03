@@ -200,6 +200,19 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         return _fileDataDb.Find(filter).Limit(1).FirstOrDefault();
     }
 
+    public async Task<Result<FileInfoModel?>> Get(string key, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
+    {
+        if (ObjectId.TryParse(key, out ObjectId objectId))
+        {
+            var findOptions = fieldsToFetch.Any() ? new FindOptions<FileInfoModel, FileInfoModel>() { Projection = fieldsToFetch.ProjectionBuilder(), Limit = 1 } : null;
+            using var cursor = await _fileDataDb.FindAsync(x => x.Id == objectId, findOptions);
+            var fileModel = cursor.FirstOrDefault();
+            if (fileModel != null) return Result<FileInfoModel?>.Success(fileModel);
+            return Result<FileInfoModel?>.Failure(AppLang.Article_does_not_exist, ErrorType.NotFound);
+        }
+
+        return Result<FileInfoModel?>.Failure(AppLang.Invalid_key, ErrorType.Validation);    }
+
     public IAsyncEnumerable<FileInfoModel?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
