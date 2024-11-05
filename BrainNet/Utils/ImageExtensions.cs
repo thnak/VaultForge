@@ -1,5 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Numerics.Tensors;
+using Microsoft.ML.OnnxRuntime.Tensors;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using Tensor = System.Numerics.Tensors.Tensor;
 
 namespace BrainNet.Utils;
 
@@ -9,13 +13,13 @@ public static class ImageExtensions
     public static void SampleCompute()
     {
         // Create a tensor (1 x 3).
-        Tensor<int> t0 = Tensor.Create([1, 2, 3], [1, 3]); // [[1, 2, 3]]
+        System.Numerics.Tensors.Tensor<int> t0 = Tensor.Create([1, 2, 3], [1, 3]); // [[1, 2, 3]]
 
 // Reshape tensor (3 x 1).
-        Tensor<int> t1 = t0.Reshape(3, 1); // [[1], [2], [3]]
+        System.Numerics.Tensors.Tensor<int> t1 = t0.Reshape(3, 1); // [[1], [2], [3]]
 
 // Slice tensor (2 x 1).
-        Tensor<int> t2 = t1.Slice(1.., ..); // [[2], [3]]
+        System.Numerics.Tensors.Tensor<int> t2 = t1.Slice(1.., ..); // [[2], [3]]
 
 // Broadcast tensor (3 x 1) -> (3 x 3).
 // [
@@ -39,8 +43,27 @@ public static class ImageExtensions
     [Experimental("SYSLIB5001")]
     public static ReadOnlyTensorSpan<float> Device(this float[] array)
     {
-        Tensor<float> tensor = Tensor.Create(array, []);
+        System.Numerics.Tensors.Tensor<float> tensor = Tensor.Create(array, []);
         var result = Tensor.Divide(tensor, 2f);
         return result.AsReadOnlyTensorSpan();
+    }
+
+    public static DenseTensor<float> Image2DenseTensor(Image<Rgb24> image)
+    {
+        int[] shape = new[] { 3, image.Height, image.Width };
+
+        DenseTensor<float> feed = new DenseTensor<float>(shape);
+
+        Parallel.For(0, shape[1], y =>
+        {
+            for (var x = 0; x < shape[2]; x++)
+            {
+                feed[0, y, x] = image[x, y].R;
+                feed[1, y, x] = image[x, y].G;
+                feed[2, y, x] = image[x, y].B;
+            }
+        });
+
+        return feed;
     }
 }

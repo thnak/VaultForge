@@ -45,6 +45,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\BrainNet\BrainNet.csproj" />
         <ProjectReference Include="..\BusinessModels\BusinessModels.csproj" />
         <ProjectReference Include="..\Protector\Protector.csproj" />
     </ItemGroup>

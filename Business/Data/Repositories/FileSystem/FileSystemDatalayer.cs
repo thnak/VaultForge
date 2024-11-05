@@ -1,7 +1,12 @@
+using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
+using BrainNet.Database;
+using BrainNet.Models.Setting;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.FileSystem;
+using Business.Data.Interfaces.User;
 using Business.Data.StorageSpace;
 using Business.Models;
 using Business.Services.TaskQueueServices.Base.Interfaces;
@@ -9,21 +14,25 @@ using Business.Utils;
 using Business.Utils.ExpressionExtensions;
 using Business.Utils.StringExtensions;
 using BusinessModels.General.Results;
+using BusinessModels.General.SettingModels;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Business.Data.Repositories.FileSystem;
 
-public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSystemDatalayer> logger, ISequenceBackgroundTaskQueue sequenceQueue, IMemoryCache memoryCache, RedundantArrayOfIndependentDisks raidService) : IFileSystemDatalayer
+public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSystemDatalayer> logger, IUserDataLayer userDataLayer, IOptions<AppSettings> options, ISequenceBackgroundTaskQueue sequenceQueue, IMemoryCache memoryCache, RedundantArrayOfIndependentDisks raidService) : IFileSystemDatalayer
 {
     private readonly IMongoCollection<FileInfoModel> _fileDataDb = context.MongoDatabase.GetCollection<FileInfoModel>("FileInfo");
     private readonly IMongoCollection<FileMetadataModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileMetadataModel>("FileMetaData");
     private readonly SemaphoreSlim _semaphore = new(100, 1000);
+    private readonly ConcurrentDictionary<string, IVectorDb> VectorDbs = new();
 
+    [Experimental("SKEXP0020")]
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
         try
@@ -44,8 +53,8 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
             var rootAndClassifyKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Classify);
             var rootAndClassifyIndexModel = new CreateIndexModel<FileInfoModel>(rootAndClassifyKey, new CreateIndexOptions { Unique = false });
-            
-            var rootAndClassifyAndStatusKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Classify).Ascending(x=>x.Status);
+
+            var rootAndClassifyAndStatusKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Classify).Ascending(x => x.Status);
             var rootAndClassifyAndStatusIndexModel = new CreateIndexModel<FileInfoModel>(rootAndClassifyAndStatusKey, new CreateIndexOptions { Unique = false });
 
             var rootAndContentTypeKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.ContentType);
@@ -101,6 +110,17 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
 
             await _fileMetaDataDataDb.Indexes.CreateOneAsync(metaIndexModel, cancellationToken: cancellationToken);
+
+            await foreach (var user in userDataLayer.GetAllAsync(cancellationToken))
+            {
+                VectorDbs.TryAdd(user.UserName, new VectorDb(new VectorDbConfig()
+                {
+                    Name = user.UserName,
+                    OllamaConnectionString = options.Value.OllamaConfig.ConnectionString,
+                    OllamaTextEmbeddingModelName = options.Value.OllamaConfig.TextEmbeddingModel
+                }));
+                // VectorDbs[user.UserName]
+            }
 
             return (true, string.Empty);
         }
@@ -211,7 +231,8 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             return Result<FileInfoModel?>.Failure(AppLang.Article_does_not_exist, ErrorType.NotFound);
         }
 
-        return Result<FileInfoModel?>.Failure(AppLang.Invalid_key, ErrorType.Validation);    }
+        return Result<FileInfoModel?>.Failure(AppLang.Invalid_key, ErrorType.Validation);
+    }
 
     public IAsyncEnumerable<FileInfoModel?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)
     {

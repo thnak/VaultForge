@@ -55,6 +55,11 @@
         "resolved": "2.5.187",
         "contentHash": "/IvvMMS8opvlHjEJ/fR2Cal4Co726Kj77Z8KiohFhuHfLHHmb9uUxW5+tSCL4ToKFfkQlrS3HD638mRq83ySqA=="
       },
+      "Microsoft.AI.DirectML": {
+        "type": "Transitive",
+        "resolved": "1.15.2",
+        "contentHash": "FVvIJWnT14L5cTEr8uc40mY2lAdtzcAcgsas4i4HF7EcZMr8RJyLWTCxQj1K7fi7DNykBufQe1K5HDh/oIBz0g=="
+      },
       "Microsoft.AspNetCore.Authentication.JwtBearer": {
         "type": "Transitive",
         "resolved": "9.0.0-rc.2.24474.3",
@@ -486,6 +491,31 @@
         "type": "Transitive",
         "resolved": "8.0.8",
         "contentHash": "vJhGdkYKvytLIMi5J2vpsyfjPKzSm7dnCfdGwjt4skvJcomlJyKDTA3wAwxIMuMbiWcOi1HuiQ6R+85C+qFJrw=="
+      },
+      "Microsoft.ML.OnnxRuntime": {
+        "type": "Transitive",
+        "resolved": "1.20.0",
+        "contentHash": "0vki11cpz/GGe2R3McIEXQTO+5LQdtRGILlaqULnAq/dYxjIMkLIFwj/JyBS0mKr4gEjgr9DNewc1pZmNdcHQQ==",
+        "dependencies": {
+          "Microsoft.ML.OnnxRuntime.Managed": "1.20.0"
+        }
+      },
+      "Microsoft.ML.OnnxRuntime.DirectML": {
+        "type": "Transitive",
+        "resolved": "1.20.0",
+        "contentHash": "O83kLO41lWqnsxTexf/zEhC9F3E2A6Jg4edesIQjb40WgN1Qz3h59qN5LXtcvmOYd0bUjwplAwAEn8UhTXuR+Q==",
+        "dependencies": {
+          "Microsoft.AI.DirectML": "1.15.2",
+          "Microsoft.ML.OnnxRuntime.Managed": "1.20.0"
+        }
+      },
+      "Microsoft.ML.OnnxRuntime.Managed": {
+        "type": "Transitive",
+        "resolved": "1.20.0",
+        "contentHash": "oo5zUEnnVFD0vFLAiHqj2ya48nVxhPwonjIT8uT7QXv/oHfDHa0u+o0yUKERVssqPtyt5D5xiBAiHjZintu7tg==",
+        "dependencies": {
+          "System.Memory": "4.5.5"
+        }
       },
       "Microsoft.Net.Http.Headers": {
         "type": "Transitive",
@@ -1235,8 +1265,8 @@
       },
       "System.Numerics.Tensors": {
         "type": "Transitive",
-        "resolved": "8.0.0",
-        "contentHash": "fhODzTe9ON9IzmRfyVeA6L8yXOciMtpq1YufkRVBliggcVKZE+XDxqIn46+yF4PWR6wNPuDpXtPpuY86VcKxUA=="
+        "resolved": "9.0.0-rc.2.24473.5",
+        "contentHash": "RwBK09cds8C+803cdUIhKGsFx+oRy3ySDAnqlhGyiXjv1eh545VDaVXq3a500UEnN2yWFbjKPhYKSt4roGyc0Q=="
       },
       "System.ObjectModel": {
         "type": "Transitive",
@@ -1714,10 +1744,24 @@
         "resolved": "0.7.3",
         "contentHash": "U9Ix4l4cl58Kzz1rJzj5hoVTjmbx1qGMwzAcbv1j/d3NzrFaESIurQyg+ow4mivCgkE3S413y+U9k4WdnEIkRA=="
       },
+      "brainnet": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.Extensions.AI.Ollama": "[9.0.0-preview.9.24525.1, )",
+          "Microsoft.Extensions.Options": "[9.0.0-rc.2.24473.5, )",
+          "Microsoft.Extensions.VectorData.Abstractions": "[9.0.0-preview.1.24523.1, )",
+          "Microsoft.ML.OnnxRuntime": "[1.20.0, )",
+          "Microsoft.ML.OnnxRuntime.DirectML": "[1.20.0, )",
+          "Microsoft.SemanticKernel.Connectors.InMemory": "[1.26.0-preview, )",
+          "SixLabors.ImageSharp": "[3.1.5, )",
+          "System.Numerics.Tensors": "[9.0.0-rc.2.24473.5, )"
+        }
+      },
       "business": {
         "type": "Project",
         "dependencies": {
           "Abot": "[2.0.70, )",
+          "BrainNet": "[1.0.0, )",
           "Build5Nines.SharpVector": "[1.0.0, )",
           "BusinessModels": "[1.0.0, )",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "[9.0.0-rc.2.24474.3, )",
