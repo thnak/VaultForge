@@ -1,7 +1,6 @@
 ﻿using Business.Business.Interfaces.FileSystem;
 using Business.Data.StorageSpace;
 using Business.Services.Interfaces;
-using Business.Services.RetrievalAugmentedGeneration.Interface;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.General.EnumModel;
 using BusinessModels.General.SettingModels;
@@ -15,7 +14,7 @@ using SixLabors.ImageSharp.Processing;
 
 namespace Business.Services.FileSystem;
 
-public class ThumbnailService(IParallelBackgroundTaskQueue queue, IFileInfoVectorDb movieVectorDb, IOptions<AppSettings> options, IFileSystemBusinessLayer fileService, RedundantArrayOfIndependentDisks raidService, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
+public class ThumbnailService(IParallelBackgroundTaskQueue queue, IFolderSystemBusinessLayer folderService, IOptions<AppSettings> options, IFileSystemBusinessLayer fileService, RedundantArrayOfIndependentDisks raidService, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
 {
     public Task AddThumbnailRequest(string imageId)
     {
@@ -54,7 +53,7 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IFileInfoVecto
         var fileSourceId = fileInfo.Id.ToString();
         int attempts = 0;
         int maxRetries = 3;
-        await movieVectorDb.RequestIndexAsync(fileInfo.Id.ToString(), cancellationToken);
+        await folderService.RequestIndexAsync(fileInfo.Id.ToString(), cancellationToken);
 
         if (!raidService.Exists(imagePath))
         {

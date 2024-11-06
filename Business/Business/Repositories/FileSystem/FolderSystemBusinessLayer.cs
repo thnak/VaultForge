@@ -3,7 +3,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Text;
 using BrainNet.Database;
+using BrainNet.Models.Result;
 using BrainNet.Models.Setting;
+using BrainNet.Models.Vector;
 using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.User;
 using Business.Data.Interfaces.FileSystem;
@@ -47,20 +49,33 @@ public class FolderSystemBusinessLayer(
     [Experimental("SKEXP0020")]
     public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
-        await foreach (var user in userService.GetAllAsync(cancellationToken))
+        try
         {
-            var collectionName = user.UserName.GetVectorName(nameof(FolderSystemBusinessLayer));
-            var success = _vectorDbs.TryAdd(collectionName, new VectorDb(new VectorDbConfig()
+            await foreach (var user in userService.GetAllAsync(cancellationToken))
             {
-                Name = user.UserName,
-                OllamaConnectionString = options.Value.OllamaConfig.ConnectionString,
-                OllamaTextEmbeddingModelName = options.Value.OllamaConfig.TextEmbeddingModel
-            }, logger));
-            if (success)
-                await _vectorDbs[collectionName].Init();
-        }
+                var collectionName = user.UserName.GetVectorName(nameof(FolderSystemBusinessLayer));
+                var success = _vectorDbs.TryAdd(collectionName, new VectorDb(new VectorDbConfig()
+                {
+                    Name = user.UserName,
+                    OllamaConnectionString = options.Value.OllamaConfig.ConnectionString,
+                    OllamaTextEmbeddingModelName = options.Value.OllamaConfig.TextEmbeddingModel
+                }, logger));
+                if (success)
+                {
+                    await _vectorDbs[collectionName].Init();
+                }
+            }
 
-        return Result<string>.Success(AppLang.Success);
+            return Result<string>.Success(AppLang.Success);
+        }
+        catch (OperationCanceledException e)
+        {
+            return Result<bool>.Failure(e.Message, ErrorType.Cancelled);
+        }
+        catch (Exception e)
+        {
+            return Result<bool>.Failure(e.Message, ErrorType.Unknown);
+        }
     }
 
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
@@ -608,8 +623,72 @@ public class FolderSystemBusinessLayer(
         return Result<FolderInfoModel?>.Success(storageFolder);
     }
 
+    public async Task RequestIndexAsync(string key, CancellationToken cancellationToken = default)
+    {
+        var file = fileSystemService.Get(key);
+        if (file != null)
+        {
+            var folder = Get(file.RootFolder);
+            if (folder != null)
+            {
+                if (!file.Vector.Any())
+                {
+                    await sequenceBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken => { await Request(folder.OwnerUsername.GetVectorName(nameof(FolderSystemBusinessLayer)), file, serverToken); }, cancellationToken);
+                }
+            }
+        }
+    }
+
+    public async Task<List<SearchScore<VectorRecord>>> SearchRagFromAllDb(string query, int count, CancellationToken cancellationToken = default)
+    {
+        float[] vectorSearch = [];
+        List<SearchScore<VectorRecord>> result = [];
+        foreach (var collectionPair in _vectorDbs)
+        {
+            if (vectorSearch.Length == 0)
+            {
+                vectorSearch = await collectionPair.Value.GenerateVectorsFromDescription(query, cancellationToken);
+            }
+
+            await foreach (var co in collectionPair.Value.Search(vectorSearch, count, cancellationToken))
+            {
+                result.Add(co);
+            }
+        }
+
+        result = [..result.OrderBy(x => x.Score).Take(count)];
+        return result;
+    }
+
 
     #region Private Mothods
+
+    private async Task Request(string collectionName, FileInfoModel file, CancellationToken cancellationToken = default)
+    {
+        using MemoryStream stream = new();
+        await raidService.ReadGetDataAsync(stream, file.AbsolutePath, cancellationToken);
+        stream.Seek(0, SeekOrigin.Begin);
+
+        var description = await _vectorDbs[collectionName].GenerateImageDescription(stream, cancellationToken);
+        if (string.IsNullOrEmpty(description))
+        {
+            logger.LogError($"Description is null for {file.AbsolutePath}");
+            return;
+        }
+
+        var vector = await _vectorDbs[collectionName].GenerateVectorsFromDescription(description, cancellationToken);
+        var model = new VectorRecord()
+        {
+            Key = file.Id.ToString(),
+            Vector = vector,
+        };
+        await _vectorDbs[collectionName].AddNewRecordAsync(model, cancellationToken);
+        await fileSystemService.UpdateAsync(file.Id.ToString(), new FieldUpdate<FileInfoModel>()
+        {
+            { x => x.Description, description },
+            { x => x.Vector, vector }
+        }, cancellationToken);
+    }
 
     private async Task<string> ReadM3U8Files(FolderInfoModel folderStorage, string path, CancellationToken cancellationToken = default)
     {

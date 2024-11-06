@@ -1,7 +1,6 @@
 using Business.Exceptions;
 using Business.Services;
 using Business.Services.Configure;
-using Business.Services.RetrievalAugmentedGeneration.Utils;
 using Business.SocketHubs;
 using BusinessModels.Converter;
 using BusinessModels.General.SettingModels;
@@ -75,9 +74,6 @@ public class Program
         #region Additionnal services
 
         builder.Services.AddDataServiceCollection();
-
-        #pragma warning disable SKEXP0020 // Type or member is obsolete
-        builder.Services.AddRetrievalAugmentedGeneration();
         
         #endregion
 

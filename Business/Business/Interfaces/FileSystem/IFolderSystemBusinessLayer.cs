@@ -1,4 +1,6 @@
 using System.Linq.Expressions;
+using BrainNet.Models.Result;
+using BrainNet.Models.Vector;
 using BusinessModels.General.Results;
 using BusinessModels.People;
 using BusinessModels.System.FileSystem;
@@ -51,4 +53,9 @@ public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInf
     public Task<FolderRequest> GetDeletedContentAsync(string? userName, int pageSize, int page, CancellationToken cancellationToken = default);
     public Task<Result<FolderInfoModel?>> InsertMediaContent(string path, CancellationToken cancellationToken = default);
 
+    #region RAG
+    public Task RequestIndexAsync(string key, CancellationToken cancellationToken = default);
+    public Task<List<SearchScore<VectorRecord>>> SearchRagFromAllDb(string query, int count, CancellationToken cancellationToken = default);
+    #endregion
+    
 }

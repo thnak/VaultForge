@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using BrainNet.Models.Result;
 using BrainNet.Models.Setting;
 using BrainNet.Models.Vector;
+using BrainNet.Utils;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.VectorData;
@@ -18,13 +20,18 @@ public class VectorDb : IVectorDb
     private ILogger Logger { get; set; }
     private int TotalRecord { get; set; }
     private bool _disposed;
+    private readonly string ConnectionString;
+    private readonly string Image2TextModelName;
 
     public VectorDb(VectorDbConfig config, ILogger logger)
     {
         Logger = logger;
         var vectorStore = new InMemoryVectorStore();
+        ConnectionString = config.OllamaConnectionString;
+        Image2TextModelName = config.OllamaImage2TextModelName;
+
         Collection = vectorStore.GetCollection<int, VectorRecord>(config.Name);
-        Generator = new OllamaEmbeddingGenerator(new Uri(config.OllamaConnectionString), config.OllamaTextEmbeddingModelName);
+        Generator = new OllamaEmbeddingGenerator(new Uri(ConnectionString), config.OllamaTextEmbeddingModelName);
     }
 
     private async Task InitSampleData()
@@ -68,7 +75,7 @@ public class VectorDb : IVectorDb
         try
         {
             await Semaphore.WaitAsync(cancellationToken);
-            vectorRecord.Index = TotalRecord++;
+            // vectorRecord.Index = TotalRecord++;
             if (vectorRecord.Vector.Length < 0)
             {
                 vectorRecord.Vector = await Generator.GenerateEmbeddingVectorAsync(vectorRecord.Description, cancellationToken: cancellationToken);
@@ -86,19 +93,72 @@ public class VectorDb : IVectorDb
         }
     }
 
-    public async IAsyncEnumerable<VectorRecord> Search(string query, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    public async Task AddNewRecordAsync(IReadOnlyCollection<VectorRecord> vectorRecords, CancellationToken cancellationToken = default)
     {
+        await foreach (var _ in Collection.UpsertBatchAsync(vectorRecords, cancellationToken: cancellationToken))
+        {
+            //
+        }
+    }
+
+    public async Task DeleteRecordAsync(int key, CancellationToken cancellationToken = default)
+    {
+        await Collection.DeleteAsync(key, cancellationToken: cancellationToken);
+    }
+
+    public Task DeleteRecordAsync(IReadOnlyCollection<int> keys, CancellationToken cancellationToken = default)
+    {
+        return Collection.DeleteBatchAsync(keys, cancellationToken: cancellationToken);
+    }
+
+    public async Task<float[]> GenerateVectorsFromDescription(string description, CancellationToken cancellationToken = default)
+    {
+        var queryEmbedding = await Generator.GenerateEmbeddingVectorAsync(description, cancellationToken: cancellationToken);
+        return queryEmbedding.ToArray();
+    }
+
+    public async Task<string> GenerateImageDescription(MemoryStream stream, CancellationToken cancellationToken = default)
+    {
+        var description = await stream.GenerateDescription(ConnectionString + "api/generate", Image2TextModelName, cancellationToken);
+        return description;
+    }
+
+    public async IAsyncEnumerable<SearchScore<VectorRecord>> Search(string query, int count, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        var searchOptions = new VectorSearchOptions()
+        {
+            Top = count,
+            VectorPropertyName = "Vector",
+            IncludeVectors = false,
+            IncludeTotalCount = true
+        };
         var queryEmbedding = await Generator.GenerateEmbeddingVectorAsync(query, cancellationToken: cancellationToken);
-        var cursor = await Collection.VectorizedSearchAsync(queryEmbedding, cancellationToken: cancellationToken);
+        var cursor = await Collection.VectorizedSearchAsync(queryEmbedding, searchOptions, cancellationToken: cancellationToken);
         await foreach (var result in cursor.Results.WithCancellation(cancellationToken))
         {
-            yield return result.Record;
+            yield return new SearchScore<VectorRecord>(result.Record, result.Score ?? 0);
+        }
+    }
+
+    public async IAsyncEnumerable<SearchScore<VectorRecord>> Search(float[] vector, int count, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        var searchOptions = new VectorSearchOptions()
+        {
+            Top = count,
+            VectorPropertyName = "Vector",
+            IncludeVectors = false,
+            IncludeTotalCount = true
+        };
+        var cursor = await Collection.VectorizedSearchAsync(vector, searchOptions, cancellationToken: cancellationToken);
+        await foreach (var result in cursor.Results.WithCancellation(cancellationToken))
+        {
+            yield return new SearchScore<VectorRecord>(result.Record, result.Score ?? 0);
         }
     }
 
     public async Task Init()
     {
-        Logger.LogInformation($"[VectorDB][{Collection.CollectionName}] Initializing...]");
+        Logger.LogInformation($"[VectorDB][{Collection.CollectionName}] Initializing...");
         await Collection.CreateCollectionIfNotExistsAsync();
         await InitSampleData();
     }

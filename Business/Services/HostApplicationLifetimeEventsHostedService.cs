@@ -47,7 +47,13 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
         {
             using var scope = serviceScopeFactory.CreateScope();
             var dataLayer = scope.ServiceProvider.GetRequiredService<TDataLayer>();
-            await dataLayer.InitializeAsync(token);
+            var result = await dataLayer.InitializeAsync(token);
+            if (result.IsSuccess)
+                logger.LogInformation(result.Message);
+            else
+            {
+                logger.LogError(result.Message);
+            }
         });
     }
 

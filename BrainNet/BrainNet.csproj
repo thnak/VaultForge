@@ -12,6 +12,7 @@
       <PackageReference Include="Microsoft.Extensions.VectorData.Abstractions" Version="9.0.0-preview.1.24523.1" />
       <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.20.0" />
       <PackageReference Include="Microsoft.SemanticKernel.Connectors.InMemory" Version="1.26.0-preview" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
       <PackageReference Include="System.Numerics.Tensors" Version="9.0.0-rc.2.24473.5" />
     </ItemGroup>

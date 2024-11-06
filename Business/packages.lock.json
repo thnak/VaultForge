@@ -1788,6 +1788,7 @@
           "Microsoft.ML.OnnxRuntime": "[1.20.0, )",
           "Microsoft.ML.OnnxRuntime.DirectML": "[1.20.0, )",
           "Microsoft.SemanticKernel.Connectors.InMemory": "[1.26.0-preview, )",
+          "Newtonsoft.Json": "[13.0.3, )",
           "SixLabors.ImageSharp": "[3.1.5, )",
           "System.Numerics.Tensors": "[9.0.0-rc.2.24473.5, )"
         }
