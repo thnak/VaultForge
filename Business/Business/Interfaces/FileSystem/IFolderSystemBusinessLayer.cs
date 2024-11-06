@@ -6,7 +6,7 @@ using BusinessModels.WebContent.Drive;
 
 namespace Business.Business.Interfaces.FileSystem;
 
-public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInfoModel>
+public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInfoModel>, IExtendService, IDisposable, IAsyncDisposable
 {
     /// <summary>
     /// Lấy người dùng theo tên hoặc lấy mặc định Anonymous

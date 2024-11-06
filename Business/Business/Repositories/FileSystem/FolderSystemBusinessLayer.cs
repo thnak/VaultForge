@@ -1,6 +1,9 @@
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Text;
+using BrainNet.Database;
+using BrainNet.Models.Setting;
 using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.User;
 using Business.Data.Interfaces.FileSystem;
@@ -12,6 +15,7 @@ using Business.Utils.Helper;
 using Business.Utils.StringExtensions;
 using BusinessModels.General.EnumModel;
 using BusinessModels.General.Results;
+using BusinessModels.General.SettingModels;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
@@ -19,6 +23,7 @@ using BusinessModels.Validator.Folder;
 using BusinessModels.WebContent.Drive;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Protector.Utils;
 
@@ -32,11 +37,31 @@ public class FolderSystemBusinessLayer(
     IMemoryCache memoryCache,
     RedundantArrayOfIndependentDisks raidService,
     IParallelBackgroundTaskQueue parallelBackgroundTaskQueue,
-    ISequenceBackgroundTaskQueue sequenceBackgroundTaskQueue)
-    : IFolderSystemBusinessLayer, IDisposable
+    ISequenceBackgroundTaskQueue sequenceBackgroundTaskQueue,
+    IOptions<AppSettings> options)
+    : IFolderSystemBusinessLayer
 {
     private readonly CacheKeyManager _cacheKeyManager = new(memoryCache, nameof(FolderSystemBusinessLayer));
+    private readonly ConcurrentDictionary<string, IVectorDb> _vectorDbs = new();
 
+    [Experimental("SKEXP0020")]
+    public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
+    {
+        await foreach (var user in userService.GetAllAsync(cancellationToken))
+        {
+            var collectionName = user.UserName.GetVectorName(nameof(FolderSystemBusinessLayer));
+            var success = _vectorDbs.TryAdd(collectionName, new VectorDb(new VectorDbConfig()
+            {
+                Name = user.UserName,
+                OllamaConnectionString = options.Value.OllamaConfig.ConnectionString,
+                OllamaTextEmbeddingModelName = options.Value.OllamaConfig.TextEmbeddingModel
+            }, logger));
+            if (success)
+                await _vectorDbs[collectionName].Init();
+        }
+
+        return Result<string>.Success(AppLang.Success);
+    }
 
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
@@ -172,6 +197,7 @@ public class FolderSystemBusinessLayer(
                 {
                     folders.Add(fol);
                 }
+
                 logger.LogInformation($"Deleting {folders.Count:N0} folders");
                 foreach (var folderStack in folders)
                 {
@@ -182,7 +208,7 @@ public class FolderSystemBusinessLayer(
                         await DeleteAsync(folderId, serverToken);
                     }, serverToken1);
                 }
-            }, default);
+            }, cancelToken);
 
             await sequenceBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken1 =>
             {
@@ -203,7 +229,7 @@ public class FolderSystemBusinessLayer(
                         await fileSystemService.DeleteAsync(fileId, serverToken);
                     }, serverToken1);
                 }
-            }, default);
+            }, cancelToken);
         }
 
         return res;
@@ -442,11 +468,11 @@ public class FolderSystemBusinessLayer(
                 keyBuilder.Append(i.ToString());
                 key = keyBuilder.ToString();
                 var i1 = i;
-                await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async (token) => await _cacheKeyManager.GetOrCreateAsync(key, async entry =>
+                await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async token => await _cacheKeyManager.GetOrCreateAsync(key, async entry =>
                 {
                     entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10);
                     return await GetFolderRequest(folderId, folderPredicate, filePredicate, pageSize, i1, token);
-                }), default);
+                }), cancellationToken);
             }
         }
     }
@@ -567,7 +593,7 @@ public class FolderSystemBusinessLayer(
         {
             await ReadM3U8Files(storageFolder, file, cancellationToken);
 
-            var fileInfor = new FileInfoModel()
+            var fileInfo = new FileInfoModel()
             {
                 FileName = path,
                 ContentType = "video/mp4",
@@ -575,8 +601,8 @@ public class FolderSystemBusinessLayer(
                 ModifiedTime = DateTime.UtcNow,
                 CreatedDate = DateTime.Today
             };
-            await CreateFileAsync(storageFolder, fileInfor, cancellationToken);
-            logger.LogInformation($"Add {fileInfor.Id}");
+            await CreateFileAsync(storageFolder, fileInfo, cancellationToken);
+            logger.LogInformation($"Add {fileInfo.Id}");
         }
 
         return Result<FolderInfoModel?>.Success(storageFolder);
@@ -733,6 +759,19 @@ public class FolderSystemBusinessLayer(
 
     public void Dispose()
     {
+        foreach (var keyValuePair in _vectorDbs)
+        {
+            keyValuePair.Value.Dispose();
+        }
+
         _cacheKeyManager.Dispose();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        foreach (var keyValuePair in _vectorDbs)
+        {
+            await keyValuePair.Value.DisposeAsync();
+        }
     }
 }

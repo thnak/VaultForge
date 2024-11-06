@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using BrainNet.Models;
 using BrainNet.Models.Setting;
 using BrainNet.Models.Vector;
 using Microsoft.Extensions.AI;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.VectorData;
 using Microsoft.SemanticKernel.Connectors.InMemory;
 
@@ -12,15 +12,18 @@ namespace BrainNet.Database;
 [Experimental("SKEXP0020")]
 public class VectorDb : IVectorDb
 {
-    private IVectorStoreRecordCollection<int, VectorRecord> Movies { get; set; }
+    private IVectorStoreRecordCollection<int, VectorRecord> Collection { get; set; }
     private IEmbeddingGenerator<string, Embedding<float>> Generator { get; set; }
     private SemaphoreSlim Semaphore { get; } = new(1, 1);
+    private ILogger Logger { get; set; }
     private int TotalRecord { get; set; }
+    private bool _disposed;
 
-    public VectorDb(VectorDbConfig config)
+    public VectorDb(VectorDbConfig config, ILogger logger)
     {
+        Logger = logger;
         var vectorStore = new InMemoryVectorStore();
-        Movies = vectorStore.GetCollection<int, VectorRecord>(config.Name);
+        Collection = vectorStore.GetCollection<int, VectorRecord>(config.Name);
         Generator = new OllamaEmbeddingGenerator(new Uri(config.OllamaConnectionString), config.OllamaTextEmbeddingModelName);
     }
 
@@ -56,7 +59,7 @@ public class VectorDb : IVectorDb
         foreach (var movie in movieData)
         {
             movie.Vector = await Generator.GenerateEmbeddingVectorAsync(movie.Description);
-            await Movies.UpsertAsync(movie);
+            await Collection.UpsertAsync(movie);
         }
     }
 
@@ -71,7 +74,7 @@ public class VectorDb : IVectorDb
                 vectorRecord.Vector = await Generator.GenerateEmbeddingVectorAsync(vectorRecord.Description, cancellationToken: cancellationToken);
             }
 
-            await Movies.UpsertAsync(vectorRecord, null, cancellationToken);
+            await Collection.UpsertAsync(vectorRecord, null, cancellationToken);
         }
         catch (OperationCanceledException)
         {
@@ -86,7 +89,7 @@ public class VectorDb : IVectorDb
     public async IAsyncEnumerable<VectorRecord> Search(string query, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         var queryEmbedding = await Generator.GenerateEmbeddingVectorAsync(query, cancellationToken: cancellationToken);
-        var cursor = await Movies.VectorizedSearchAsync(queryEmbedding, cancellationToken: cancellationToken);
+        var cursor = await Collection.VectorizedSearchAsync(queryEmbedding, cancellationToken: cancellationToken);
         await foreach (var result in cursor.Results.WithCancellation(cancellationToken))
         {
             yield return result.Record;
@@ -95,13 +98,29 @@ public class VectorDb : IVectorDb
 
     public async Task Init()
     {
-        await Movies.CreateCollectionIfNotExistsAsync();
+        Logger.LogInformation($"[VectorDB][{Collection.CollectionName}] Initializing...]");
+        await Collection.CreateCollectionIfNotExistsAsync();
         await InitSampleData();
     }
 
     public void Dispose()
     {
+        if (_disposed) return;
+
         Generator.Dispose();
         Semaphore.Dispose();
+
+        _disposed = true;
+        GC.SuppressFinalize(this); // Prevents finalizer if Dispose was called.
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_disposed) return;
+
+        await Collection.DeleteCollectionAsync();
+
+        _disposed = true;
+        GC.SuppressFinalize(this); // Prevents finalizer if DisposeAsync was called.
     }
 }

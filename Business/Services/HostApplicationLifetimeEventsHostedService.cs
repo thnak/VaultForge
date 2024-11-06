@@ -1,3 +1,5 @@
+using Business.Business.Interfaces;
+using Business.Business.Interfaces.FileSystem;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.Advertisement;
 using Business.Data.Interfaces.Chat;
@@ -36,6 +38,17 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
         QueueInitializationTask<IAdvertisementDataLayer>();
         QueueInitializationTask<IChatWithLlmDataLayer>();
         QueueInitializationTask<RedundantArrayOfIndependentDisks>();
+        QueueInitializationExtendServiceTask<IFolderSystemBusinessLayer>();
+    }
+
+    private void QueueInitializationExtendServiceTask<TDataLayer>() where TDataLayer : IExtendService
+    {
+        queue.QueueBackgroundWorkItemAsync(async token =>
+        {
+            using var scope = serviceScopeFactory.CreateScope();
+            var dataLayer = scope.ServiceProvider.GetRequiredService<TDataLayer>();
+            await dataLayer.InitializeAsync(token);
+        });
     }
 
     private void QueueInitializationTask<TDataLayer>() where TDataLayer : IMongoDataInitializer

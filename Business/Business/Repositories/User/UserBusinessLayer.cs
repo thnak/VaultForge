@@ -74,7 +74,7 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
 
     public IAsyncEnumerable<UserModel> GetAllAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return userDl.GetAllAsync(cancellationToken);
     }
 
     public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<UserModel> updates, CancellationToken cancellationToken = default)
