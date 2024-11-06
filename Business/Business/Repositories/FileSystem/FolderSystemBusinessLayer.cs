@@ -63,6 +63,11 @@ public class FolderSystemBusinessLayer(
                 if (success)
                 {
                     await _vectorDbs[collectionName].Init();
+                    var rootFolder = Get(user.UserName, "/root");
+                    if (rootFolder != null)
+                    {
+                        await InitVectorDbData(rootFolder);
+                    }
                 }
             }
 
@@ -75,6 +80,22 @@ public class FolderSystemBusinessLayer(
         catch (Exception e)
         {
             return Result<bool>.Failure(e.Message, ErrorType.Unknown);
+        }
+    }
+
+    private async Task InitVectorDbData(FolderInfoModel folderRoot)
+    {
+        var rootFolderId = folderRoot.Id.ToString();
+        var files = fileSystemService.Where(x => x.RootFolder == rootFolderId && x.Classify == FileClassify.Normal && x.Status == FileStatus.File);
+        await foreach (var file in files)
+        {
+            await RequestIndexAsync(file.Id.ToString());
+        }
+
+        var folders = Where(x => x.RootFolder == rootFolderId && x.Type == FolderContentType.Folder);
+        await foreach (var folder in folders)
+        {
+            await InitVectorDbData(folder);
         }
     }
 
