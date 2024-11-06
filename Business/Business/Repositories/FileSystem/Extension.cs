@@ -4,6 +4,6 @@ public static class Extension
 {
     public static string GetVectorName(this string name, string provider)
     {
-        return $";{provider};{name}";
+        return $"{provider};{name}";
     }
 }

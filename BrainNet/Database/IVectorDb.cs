@@ -14,6 +14,6 @@ public interface IVectorDb : IDisposable, IAsyncDisposable
     public Task<string> GenerateImageDescription(MemoryStream stream, CancellationToken cancellationToken = default);
     
     public IAsyncEnumerable<SearchScore<VectorRecord>> Search(string query, int count, CancellationToken cancellationToken = default);
-    public IAsyncEnumerable<SearchScore<VectorRecord>> Search(float[] vector, int count, CancellationToken cancellationToken = default);
+    public IAsyncEnumerable<SearchScore<VectorRecord>> Search(ReadOnlyMemory<float> vector, int count, CancellationToken cancellationToken = default);
     public Task Init();
 }

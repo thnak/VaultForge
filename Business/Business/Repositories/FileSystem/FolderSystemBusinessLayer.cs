@@ -53,22 +53,7 @@ public class FolderSystemBusinessLayer(
         {
             await foreach (var user in userService.GetAllAsync(cancellationToken))
             {
-                var collectionName = user.UserName.GetVectorName(nameof(FolderSystemBusinessLayer));
-                var success = _vectorDbs.TryAdd(collectionName, new VectorDb(new VectorDbConfig()
-                {
-                    Name = user.UserName,
-                    OllamaConnectionString = options.Value.OllamaConfig.ConnectionString,
-                    OllamaTextEmbeddingModelName = options.Value.OllamaConfig.TextEmbeddingModel
-                }, logger));
-                if (success)
-                {
-                    await _vectorDbs[collectionName].Init();
-                    var rootFolder = Get(user.UserName, "/root");
-                    if (rootFolder != null)
-                    {
-                        await InitVectorDbData(rootFolder);
-                    }
-                }
+                await GetOrInitCollection(user.UserName);
             }
 
             return Result<string>.Success(AppLang.Success);
@@ -83,6 +68,31 @@ public class FolderSystemBusinessLayer(
         }
     }
 
+    [Experimental("SKEXP0020")]
+    private async Task<IVectorDb> GetOrInitCollection(string userName)
+    {
+        var collectionName = userName.GetVectorName(nameof(FolderSystemBusinessLayer));
+        var success = _vectorDbs.TryAdd(collectionName, new VectorDb(new VectorDbConfig()
+        {
+            Name = collectionName,
+            OllamaConnectionString = options.Value.OllamaConfig.ConnectionString,
+            OllamaTextEmbeddingModelName = options.Value.OllamaConfig.TextEmbeddingModel,
+            OllamaImage2TextModelName = options.Value.OllamaConfig.Image2TextModel
+        }, logger));
+        if (success)
+        {
+            await _vectorDbs[collectionName].Init();
+            var rootFolder = Get(userName, "/root");
+            if (rootFolder != null)
+            {
+                await InitVectorDbData(rootFolder);
+            }
+        }
+
+        return _vectorDbs[collectionName];
+    }
+
+    [Experimental("SKEXP0020")]
     private async Task InitVectorDbData(FolderInfoModel folderRoot)
     {
         var rootFolderId = folderRoot.Id.ToString();
@@ -92,7 +102,8 @@ public class FolderSystemBusinessLayer(
             await RequestIndexAsync(file.Id.ToString());
         }
 
-        var folders = Where(x => x.RootFolder == rootFolderId && x.Type == FolderContentType.Folder);
+        FolderContentType[] folderContentTypes = [FolderContentType.Folder, FolderContentType.SystemFolder, FolderContentType.Folder];
+        var folders = Where(x => x.RootFolder == rootFolderId && folderContentTypes.Contains(x.Type));
         await foreach (var folder in folders)
         {
             await InitVectorDbData(folder);
@@ -644,6 +655,7 @@ public class FolderSystemBusinessLayer(
         return Result<FolderInfoModel?>.Success(storageFolder);
     }
 
+    [Experimental("SKEXP0020")]
     public async Task RequestIndexAsync(string key, CancellationToken cancellationToken = default)
     {
         var file = fileSystemService.Get(key);
@@ -654,7 +666,7 @@ public class FolderSystemBusinessLayer(
             {
                 if (!file.Vector.Any())
                 {
-                    await sequenceBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken => { await Request(folder.OwnerUsername.GetVectorName(nameof(FolderSystemBusinessLayer)), file, serverToken); }, cancellationToken);
+                    await sequenceBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken => { await Request(folder.OwnerUsername, file, serverToken).ConfigureAwait(false); }, cancellationToken);
                 }
             }
         }
@@ -684,26 +696,28 @@ public class FolderSystemBusinessLayer(
 
     #region Private Mothods
 
-    private async Task Request(string collectionName, FileInfoModel file, CancellationToken cancellationToken = default)
+    [Experimental("SKEXP0020")]
+    private async Task Request(string userName, FileInfoModel file, CancellationToken cancellationToken = default)
     {
         using MemoryStream stream = new();
         await raidService.ReadGetDataAsync(stream, file.AbsolutePath, cancellationToken);
         stream.Seek(0, SeekOrigin.Begin);
 
-        var description = await _vectorDbs[collectionName].GenerateImageDescription(stream, cancellationToken);
+        var collection = await GetOrInitCollection(userName);
+        var description = await collection.GenerateImageDescription(stream, cancellationToken);
         if (string.IsNullOrEmpty(description))
         {
             logger.LogError($"Description is null for {file.AbsolutePath}");
             return;
         }
 
-        var vector = await _vectorDbs[collectionName].GenerateVectorsFromDescription(description, cancellationToken);
+        var vector = await collection.GenerateVectorsFromDescription(description, cancellationToken);
         var model = new VectorRecord()
         {
             Key = file.Id.ToString(),
             Vector = vector,
         };
-        await _vectorDbs[collectionName].AddNewRecordAsync(model, cancellationToken);
+        await collection.AddNewRecordAsync(model, cancellationToken);
         await fileSystemService.UpdateAsync(file.Id.ToString(), new FieldUpdate<FileInfoModel>()
         {
             { x => x.Description, description },
