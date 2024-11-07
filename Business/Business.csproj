@@ -20,7 +20,6 @@
         <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.0-rc.2.24474.3" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0-rc.2.24473.5" />
         <PackageReference Include="Microsoft.Extensions.VectorData.Abstractions" Version="9.0.0-preview.1.24523.1" />
-        <PackageReference Include="Microsoft.SemanticKernel.Connectors.InMemory" Version="1.26.0-preview" />
         <PackageReference Include="MongoDB.Analyzer" Version="1.5.0" />
         <PackageReference Include="MongoDB.Driver" Version="3.0.0" />
         <PackageReference Include="MongoDB.EntityFrameworkCore" Version="8.2.0" />

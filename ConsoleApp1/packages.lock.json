@@ -2,6 +2,16 @@
   "version": 1,
   "dependencies": {
     "net9.0": {
+      "Ollama": {
+        "type": "Direct",
+        "requested": "[1.12.0, )",
+        "resolved": "1.12.0",
+        "contentHash": "YVQZLgrnljqEfMNjMO+lykOlKt6ffWUBANAwjZoKxV+xmSk4C66XP9ZR3YBCifUSioqqiVGRgtmp/CuLPa1D3w==",
+        "dependencies": {
+          "CSharpToJsonSchema": "3.9.1",
+          "System.Text.Json": "9.0.0-rc.2.24473.5"
+        }
+      },
       "Abot": {
         "type": "Transitive",
         "resolved": "2.0.70",
@@ -27,6 +37,14 @@
         "type": "Transitive",
         "resolved": "1.0.0",
         "contentHash": "NopGvFsEOAoTrUijZ3dlSqemVm2jMYpcd+9qdlZomBF+oCzl1qaoA3perGrPIIW6649wu+ooQBASbfU6abDRFQ=="
+      },
+      "CSharpToJsonSchema": {
+        "type": "Transitive",
+        "resolved": "3.9.1",
+        "contentHash": "8thddOQxXepA/8bUInWDoo7BGBP0ENll7glvsghO2zZdVfCAsRNRrI3bbLlnYkhmSP4oWHzo5569W0UOHv4F6A==",
+        "dependencies": {
+          "System.Text.Json": "9.0.0-rc.1.24431.7"
+        }
       },
       "DnsClient": {
         "type": "Transitive",
@@ -542,8 +560,8 @@
       },
       "Microsoft.SemanticKernel.Abstractions": {
         "type": "Transitive",
-        "resolved": "1.26.0",
-        "contentHash": "zvSl9tSByc8DZcFR+ii5O4dNg3AskEjtcd5kqp8lJAIhHslyNpR5kD0EkHPaxAsyJyCCD2TR0J1TOUwjBkxDAA==",
+        "resolved": "1.27.0",
+        "contentHash": "9cqMUjAyjzWt4HcSVND7oOyXymhFZgcs6aBpRb9A47IjGJraclTfYBLb+eyNiCYUMxPAn25s9ArwZMiDip8EFg==",
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "8.0.0",
           "Microsoft.Bcl.HashCode": "1.1.1",
@@ -557,10 +575,10 @@
       },
       "Microsoft.SemanticKernel.Connectors.InMemory": {
         "type": "Transitive",
-        "resolved": "1.26.0-preview",
-        "contentHash": "zNJxFR3+IyyNiKIbNuU+jrH8vQEqLUJTMN9WObyun+MpLzKrr/DAIb9caYnLPKVDatA3j+albj0LhDpQf7r07g==",
+        "resolved": "1.27.0-preview",
+        "contentHash": "qKA3Z5JQb9kvGuNs6dnA0rLHws9ImVNCQ/53ue1fhtoPPncj88MH/MOoZw5NbatfhZtnzZNsEHjzHGTcPcr73g==",
         "dependencies": {
-          "Microsoft.SemanticKernel.Abstractions": "1.26.0",
+          "Microsoft.SemanticKernel.Abstractions": "1.27.0",
           "System.Numerics.Tensors": "8.0.0"
         }
       },
@@ -744,14 +762,6 @@
         "dependencies": {
           "NETStandard.Library": "1.6.0",
           "System.Net.Requests": "4.0.11"
-        }
-      },
-      "Ollama": {
-        "type": "Transitive",
-        "resolved": "1.11.0",
-        "contentHash": "90I7eex/RC30EvzfIs/DiQbKpX0b9weQgsuT5Syq+OK1wo8ER9VWJBGKW7SKsRZEnLlAhEef9lIfxjmMk2qL2A==",
-        "dependencies": {
-          "System.Text.Json": "8.0.4"
         }
       },
       "Pipelines.Sockets.Unofficial": {
@@ -1752,7 +1762,7 @@
           "Microsoft.Extensions.VectorData.Abstractions": "[9.0.0-preview.1.24523.1, )",
           "Microsoft.ML.OnnxRuntime": "[1.20.0, )",
           "Microsoft.ML.OnnxRuntime.DirectML": "[1.20.0, )",
-          "Microsoft.SemanticKernel.Connectors.InMemory": "[1.26.0-preview, )",
+          "Microsoft.SemanticKernel.Connectors.InMemory": "[1.27.0-preview, )",
           "Newtonsoft.Json": "[13.0.3, )",
           "SixLabors.ImageSharp": "[3.1.5, )",
           "System.Numerics.Tensors": "[9.0.0-rc.2.24473.5, )"
@@ -1776,7 +1786,6 @@
           "Microsoft.Extensions.Caching.StackExchangeRedis": "[9.0.0-rc.2.24474.3, )",
           "Microsoft.Extensions.Options": "[9.0.0-rc.2.24473.5, )",
           "Microsoft.Extensions.VectorData.Abstractions": "[9.0.0-preview.1.24523.1, )",
-          "Microsoft.SemanticKernel.Connectors.InMemory": "[1.26.0-preview, )",
           "MongoDB.Analyzer": "[1.5.0, )",
           "MongoDB.Driver": "[3.0.0, )",
           "MongoDB.EntityFrameworkCore": "[8.2.0, )",

@@ -8,12 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Business\Business.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Disk1\" />
-      <Folder Include="Disk2\" />
+      <PackageReference Include="Ollama" Version="1.12.0" />
     </ItemGroup>
 
 </Project>

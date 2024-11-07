@@ -11,13 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Protector", "Protector\Prot
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessModels", "BusinessModels\BusinessModels.csproj", "{42BD63ED-5653-4F45-AEB0-9F518A787100}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp\WebApp.csproj", "{FD0BC397-F330-4905-AF2F-E70208F3A2B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "WebApp\WebApp\WebApp.csproj", "{FD0BC397-F330-4905-AF2F-E70208F3A2B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp.Client", "WebApp\WebApp.Client\WebApp.Client.csproj", "{2E1D1263-24F8-45F5-90E6-9AC9C0DA9025}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp.Client", "WebApp\WebApp.Client\WebApp.Client.csproj", "{2E1D1263-24F8-45F5-90E6-9AC9C0DA9025}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{AD0CC7B4-F2C5-49BB-9873-9CDFE67A60CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{AD0CC7B4-F2C5-49BB-9873-9CDFE67A60CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrainNet", "BrainNet\BrainNet.csproj", "{B0B162BE-282F-44DD-BECF-2C37CB14C12C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrainNet", "BrainNet\BrainNet.csproj", "{B0B162BE-282F-44DD-BECF-2C37CB14C12C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

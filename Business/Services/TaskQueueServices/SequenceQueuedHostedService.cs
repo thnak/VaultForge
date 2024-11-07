@@ -14,12 +14,15 @@ public sealed class SequenceQueuedHostedService(ISequenceBackgroundTaskQueue tas
 
     private async Task ProcessTaskQueueAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
+        using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+        while (!stoppingToken.IsCancellationRequested && await timer.WaitForNextTickAsync(stoppingToken))
         {
             try
             {
-                Func<CancellationToken, ValueTask> workItem = await taskQueue.DequeueAsync(stoppingToken);
-                await workItem(stoppingToken);
+                while (taskQueue.TryDequeue(out Func<CancellationToken, ValueTask>? workItem))
+                {
+                    await workItem(stoppingToken);
+                }
             }
             catch (OperationCanceledException)
             {
@@ -27,7 +30,7 @@ public sealed class SequenceQueuedHostedService(ISequenceBackgroundTaskQueue tas
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error occurred executing task work item.");
+                logger.LogError(ex, ex.Message);
             }
         }
     }
@@ -35,7 +38,6 @@ public sealed class SequenceQueuedHostedService(ISequenceBackgroundTaskQueue tas
     public override async Task StopAsync(CancellationToken stoppingToken)
     {
         logger.LogInformation($"{nameof(SequenceQueuedHostedService)} is stopping.");
-
         await base.StopAsync(stoppingToken);
     }
 }

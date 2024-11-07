@@ -19,20 +19,29 @@ public class ParallelQueuedHostedService(IParallelBackgroundTaskQueue parallelBa
 
     private async Task ProcessTaskQueueAsync(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
+        using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+        int count = 0;
+        int maxCount = Environment.ProcessorCount;
+        List<Task> tasks = [];
+        while (!stoppingToken.IsCancellationRequested && await timer.WaitForNextTickAsync(stoppingToken))
         {
             try
             {
-                List<Task> tasks = new List<Task>();
-
                 while (parallelBackgroundTaskQueue.TryDequeue(out Func<CancellationToken, ValueTask>? workItem))
                 {
-                    var task = _factory.StartNew(async () => await workItem(stoppingToken), stoppingToken);
+                    var item = workItem;
+                    var task = _factory.StartNew(async () => await item(stoppingToken), stoppingToken);
                     tasks.Add(task);
+                    count++;
+                    if (count != maxCount) continue;
+                    await Task.WhenAll(tasks);
+                    tasks.Clear();
+                    count = 0;
                 }
 
                 await Task.WhenAll(tasks);
-                await Task.Delay(500, stoppingToken);
+                tasks.Clear();
+                count = 0;
             }
             catch (OperationCanceledException)
             {
@@ -40,7 +49,7 @@ public class ParallelQueuedHostedService(IParallelBackgroundTaskQueue parallelBa
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error occurred executing task work item.");
+                logger.LogError(ex, ex.Message);
             }
         }
     }

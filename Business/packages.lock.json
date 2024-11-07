@@ -141,16 +141,6 @@
         "resolved": "9.0.0-preview.1.24523.1",
         "contentHash": "5TUbyFZN8v2eWQXwF7WyAAHCW+OMdsmEVEWw1N1J7L5xA25UD0BtUXxO1kc8Nzkc6c1YGN/NwarySgiY84ALlg=="
       },
-      "Microsoft.SemanticKernel.Connectors.InMemory": {
-        "type": "Direct",
-        "requested": "[1.26.0-preview, )",
-        "resolved": "1.26.0-preview",
-        "contentHash": "zNJxFR3+IyyNiKIbNuU+jrH8vQEqLUJTMN9WObyun+MpLzKrr/DAIb9caYnLPKVDatA3j+albj0LhDpQf7r07g==",
-        "dependencies": {
-          "Microsoft.SemanticKernel.Abstractions": "1.26.0",
-          "System.Numerics.Tensors": "8.0.0"
-        }
-      },
       "MongoDB.Analyzer": {
         "type": "Direct",
         "requested": "[1.5.0, )",
@@ -799,8 +789,8 @@
       },
       "Microsoft.SemanticKernel.Abstractions": {
         "type": "Transitive",
-        "resolved": "1.26.0",
-        "contentHash": "zvSl9tSByc8DZcFR+ii5O4dNg3AskEjtcd5kqp8lJAIhHslyNpR5kD0EkHPaxAsyJyCCD2TR0J1TOUwjBkxDAA==",
+        "resolved": "1.27.0",
+        "contentHash": "9cqMUjAyjzWt4HcSVND7oOyXymhFZgcs6aBpRb9A47IjGJraclTfYBLb+eyNiCYUMxPAn25s9ArwZMiDip8EFg==",
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "8.0.0",
           "Microsoft.Bcl.HashCode": "1.1.1",
@@ -810,6 +800,15 @@
           "Microsoft.Extensions.VectorData.Abstractions": "9.0.0-preview.1.24523.1",
           "System.Diagnostics.DiagnosticSource": "8.0.1",
           "System.Text.Json": "8.0.5"
+        }
+      },
+      "Microsoft.SemanticKernel.Connectors.InMemory": {
+        "type": "Transitive",
+        "resolved": "1.27.0-preview",
+        "contentHash": "qKA3Z5JQb9kvGuNs6dnA0rLHws9ImVNCQ/53ue1fhtoPPncj88MH/MOoZw5NbatfhZtnzZNsEHjzHGTcPcr73g==",
+        "dependencies": {
+          "Microsoft.SemanticKernel.Abstractions": "1.27.0",
+          "System.Numerics.Tensors": "8.0.0"
         }
       },
       "Microsoft.Win32.Primitives": {
@@ -1787,7 +1786,7 @@
           "Microsoft.Extensions.VectorData.Abstractions": "[9.0.0-preview.1.24523.1, )",
           "Microsoft.ML.OnnxRuntime": "[1.20.0, )",
           "Microsoft.ML.OnnxRuntime.DirectML": "[1.20.0, )",
-          "Microsoft.SemanticKernel.Connectors.InMemory": "[1.26.0-preview, )",
+          "Microsoft.SemanticKernel.Connectors.InMemory": "[1.27.0-preview, )",
           "Newtonsoft.Json": "[13.0.3, )",
           "SixLabors.ImageSharp": "[3.1.5, )",
           "System.Numerics.Tensors": "[9.0.0-rc.2.24473.5, )"

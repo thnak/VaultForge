@@ -8,12 +8,12 @@
             </MudIconButton>
         </MudTooltip>
     </div>
-    <div class="flex-1">
+    <div class="flex-1" >
         <MudSelect AnchorOrigin="Origin.BottomCenter"
-                   Value="@Theme" ValueChanged="@ThemeValueChanged"
-                   Class="culture-selector"
-                   Margin="Margin.Dense"
+                   Class="culture-selector" Margin="Margin.Dense"
                    T="string"
+                   Value="@Theme"
+                   ValueChanged="@ThemeValueChanged"
                    Variant="Variant.Text" >
             @foreach (var item in MudThemes)
             {
