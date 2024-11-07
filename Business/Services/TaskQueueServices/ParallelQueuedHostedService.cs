@@ -20,28 +20,35 @@ public class ParallelQueuedHostedService(IParallelBackgroundTaskQueue parallelBa
     private async Task ProcessTaskQueueAsync(CancellationToken stoppingToken)
     {
         using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
-        int count = 0;
-        int maxCount = Environment.ProcessorCount;
-        List<Task> tasks = [];
+        // int count = 0;
+        // int maxCount = Environment.ProcessorCount;
+        // List<Task> tasks = [];
         while (!stoppingToken.IsCancellationRequested && await timer.WaitForNextTickAsync(stoppingToken))
         {
             try
             {
                 while (parallelBackgroundTaskQueue.TryDequeue(out Func<CancellationToken, ValueTask>? workItem))
                 {
-                    var item = workItem;
-                    var task = _factory.StartNew(async () => await item(stoppingToken), stoppingToken);
-                    tasks.Add(task);
-                    count++;
-                    if (count != maxCount) continue;
-                    await Task.WhenAll(tasks);
-                    tasks.Clear();
-                    count = 0;
+                    _ = _factory.StartNew(async () => await workItem(stoppingToken), stoppingToken).ConfigureAwait(false);
+                    // var item = workItem;
+                    // var task = _factory.StartNew(async () => await item(stoppingToken), stoppingToken);
+                    // tasks.Add(task);
+                    // count++;
+                    // if (count != maxCount) continue;
+                    // var worked = await Task.WhenAny(tasks);
+                    // tasks.Remove(worked);
+                    // if (parallelBackgroundTaskQueue.TryDequeue(out Func<CancellationToken, ValueTask>? workItem2))
+                    // {
+                    //     logger.LogInformation("Add task when a parallel task queue finished.");
+                    //     tasks.Add(_factory.StartNew(async () => await workItem2(stoppingToken), stoppingToken));
+                    // }
+                    // logger.LogInformation("reset counter");
+                    // count = 0;
                 }
 
-                await Task.WhenAll(tasks);
-                tasks.Clear();
-                count = 0;
+                // await Task.WhenAll(tasks);
+                // tasks.Clear();
+                // count = 0;
             }
             catch (OperationCanceledException)
             {
