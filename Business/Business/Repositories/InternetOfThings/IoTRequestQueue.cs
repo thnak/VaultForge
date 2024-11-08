@@ -12,50 +12,54 @@ using Microsoft.Extensions.Options;
 
 namespace Business.Business.Repositories.InternetOfThings;
 
-public class IoTRequestQueue : IHostedService, IDisposable, IAsyncDisposable
+public class IoTRequestQueue : BackgroundService
 {
     private readonly Channel<IoTRecord> _channel;
-    private readonly ConcurrentBag<IoTRecord> _batch;
-    private readonly Timer _batchTimer;
+    private Timer? BatchTimer { get; set; }
     private readonly IParallelBackgroundTaskQueue _queue;
     private readonly IIoTBusinessLayer _iotBusinessLayer;
     private readonly Lock _lock = new();
-    private ILogger<IoTRequestQueue> logger;
+    private readonly ILogger<IoTRequestQueue> _logger;
+    private readonly int _timePeriod;
 
     public IoTRequestQueue(IOptions<AppSettings> options, IParallelBackgroundTaskQueue queue, IIoTBusinessLayer iotBusinessLayer, ILogger<IoTRequestQueue> logger)
     {
         var maxQueueSize = options.Value.IoTRequestQueueConfig.MaxQueueSize;
-        var timePeriod = options.Value.IoTRequestQueueConfig.TimePeriodInSecond;
+        _timePeriod = options.Value.IoTRequestQueueConfig.TimePeriodInSecond;
         BoundedChannelOptions boundedChannelOptions = new(maxQueueSize)
         {
             FullMode = BoundedChannelFullMode.DropOldest,
         };
         _channel = Channel.CreateBounded<IoTRecord>(boundedChannelOptions);
-        _batch = new ConcurrentBag<IoTRecord>();
         _queue = queue;
         _iotBusinessLayer = iotBusinessLayer;
-        this.logger = logger;
+        _logger = logger;
         logger.LogInformation($"Initialized IoT request queue {options.Value.IoTRequestQueueConfig.ToJson()}");
-        _batchTimer = new Timer(InsertPeriodTimerCallback, null, TimeSpan.Zero, TimeSpan.FromSeconds(timePeriod));
     }
 
     private void InsertPeriodTimerCallback(object? state)
     {
         lock (_lock)
         {
-            List<IoTRecord> batchToInsert = [.._batch];
-            if (batchToInsert.Count == 0)
-                return;
-
             _queue.QueueBackgroundWorkItemAsync(async serverToken =>
             {
-                var result = await InsertBatchIntoDatabase(batchToInsert, serverToken);
+                ConcurrentBag<IoTRecord> batch = [];
+                while (await _channel.Reader.WaitToReadAsync(serverToken))
+                {
+                    while (_channel.Reader.TryRead(out var data))
+                    {
+                        batch.Add(data);
+                    }
+                }
+
+                if (batch.Count == 0)
+                    return;
+                var result = await InsertBatchIntoDatabase(batch, serverToken);
                 if (!result.IsSuccess)
                 {
-                    logger.LogWarning(result.Message);
+                    _logger.LogWarning(result.Message);
                 }
             });
-            _batch.Clear();
         }
     }
 
@@ -65,34 +69,21 @@ public class IoTRequestQueue : IHostedService, IDisposable, IAsyncDisposable
     }
 
 
-    private Task<Result<bool>> InsertBatchIntoDatabase(List<IoTRecord> batch, CancellationToken cancellationToken = default)
+    private Task<Result<bool>> InsertBatchIntoDatabase(IReadOnlyCollection<IoTRecord> batch, CancellationToken cancellationToken = default)
     {
         return _iotBusinessLayer.CreateAsync(batch, cancellationToken);
     }
 
-    public void Dispose()
+
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _batchTimer.Dispose();
+        BatchTimer = new Timer(InsertPeriodTimerCallback, null, TimeSpan.Zero, TimeSpan.FromSeconds(_timePeriod));
+        return Task.CompletedTask;
     }
 
-    public async ValueTask DisposeAsync()
+    public override async Task StopAsync(CancellationToken stoppingToken)
     {
-        await _batchTimer.DisposeAsync();
-    }
-
-    public async Task StartAsync(CancellationToken cancellationToken)
-    {
-        while (await _channel.Reader.WaitToReadAsync(cancellationToken))
-        {
-            while (_channel.Reader.TryRead(out var data))
-            {
-                _batch.Add(data);
-            }
-        }
-    }
-
-    public async Task StopAsync(CancellationToken cancellationToken)
-    {
-        await DisposeAsync();
+        if (BatchTimer != null) await BatchTimer.DisposeAsync();
+        await base.StopAsync(stoppingToken);
     }
 }

@@ -17,6 +17,12 @@ public class ParallelQueuedHostedService(IParallelBackgroundTaskQueue parallelBa
         return ProcessTaskQueueAsync(stoppingToken);
     }
 
+    public override async Task StopAsync(CancellationToken stoppingToken)
+    {
+        logger.LogInformation($"{nameof(ParallelQueuedHostedService)} is stopping.");
+        await base.StopAsync(stoppingToken);
+    }
+
     private async Task ProcessTaskQueueAsync(CancellationToken stoppingToken)
     {
         using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
@@ -38,11 +44,5 @@ public class ParallelQueuedHostedService(IParallelBackgroundTaskQueue parallelBa
                 logger.LogError(ex, ex.Message);
             }
         }
-    }
-
-    public override async Task StopAsync(CancellationToken stoppingToken)
-    {
-        logger.LogInformation($"{nameof(ParallelQueuedHostedService)} is stopping.");
-        await base.StopAsync(stoppingToken);
     }
 }
