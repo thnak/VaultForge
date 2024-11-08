@@ -5,12 +5,14 @@ using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.General.Results;
 using BusinessModels.General.SettingModels;
 using BusinessModels.System.InternetOfThings;
+using BusinessModels.Utils;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Business.Business.Repositories.InternetOfThings;
 
-public class IoTRequestQueue : IDisposable, IAsyncDisposable
+public class IoTRequestQueue : IHostedService, IDisposable, IAsyncDisposable
 {
     private readonly Channel<IoTRecord> _channel;
     private readonly ConcurrentBag<IoTRecord> _batch;
@@ -33,9 +35,8 @@ public class IoTRequestQueue : IDisposable, IAsyncDisposable
         _queue = queue;
         _iotBusinessLayer = iotBusinessLayer;
         this.logger = logger;
-
+        logger.LogInformation($"Initialized IoT request queue {options.Value.IoTRequestQueueConfig.ToJson()}");
         _batchTimer = new Timer(InsertPeriodTimerCallback, null, TimeSpan.Zero, TimeSpan.FromSeconds(timePeriod));
-        StartProcessing();
     }
 
     private void InsertPeriodTimerCallback(object? state)
@@ -63,17 +64,6 @@ public class IoTRequestQueue : IDisposable, IAsyncDisposable
         return await _channel.Writer.WaitToWriteAsync(cancellationToken) && _channel.Writer.TryWrite(data);
     }
 
-    private async void StartProcessing()
-    {
-        while (await _channel.Reader.WaitToReadAsync())
-        {
-            while (_channel.Reader.TryRead(out var data))
-            {
-                _batch.Add(data);
-            }
-        }
-    }
-
 
     private Task<Result<bool>> InsertBatchIntoDatabase(List<IoTRecord> batch, CancellationToken cancellationToken = default)
     {
@@ -88,5 +78,21 @@ public class IoTRequestQueue : IDisposable, IAsyncDisposable
     public async ValueTask DisposeAsync()
     {
         await _batchTimer.DisposeAsync();
+    }
+
+    public async Task StartAsync(CancellationToken cancellationToken)
+    {
+        while (await _channel.Reader.WaitToReadAsync(cancellationToken))
+        {
+            while (_channel.Reader.TryRead(out var data))
+            {
+                _batch.Add(data);
+            }
+        }
+    }
+
+    public async Task StopAsync(CancellationToken cancellationToken)
+    {
+        await DisposeAsync();
     }
 }

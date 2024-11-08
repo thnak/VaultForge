@@ -7,6 +7,6 @@ public static class BusinessExtension
 {
     public static void AddExtendBusinessService(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddSingleton<IoTRequestQueue>();
+        serviceCollection.AddHostedService<IoTRequestQueue>();
     }
 }
