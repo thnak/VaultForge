@@ -201,7 +201,7 @@ public class FolderSystemBusinessLayer(
         return folderSystemService.CreateAsync(model, cancellationToken);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FolderInfoModel> models, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> CreateAsync(IReadOnlyCollection<FolderInfoModel> models, CancellationToken cancellationToken = default)
     {
         return folderSystemService.CreateAsync(models, cancellationToken);
     }

@@ -75,7 +75,7 @@ public class ChatWithLlmBusinessLayer(IChatWithLlmDataLayer dataLayer) : IChatWi
         return dataLayer.CreateAsync(model, cancellationToken);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<ChatWithChatBotMessageModel> models, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> CreateAsync(IReadOnlyCollection<ChatWithChatBotMessageModel> models, CancellationToken cancellationToken = default)
     {
         return dataLayer.CreateAsync(models, cancellationToken);
     }

@@ -87,7 +87,7 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         return userDl.CreateAsync(model, cancellationToken);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<UserModel> models, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> CreateAsync(IReadOnlyCollection<UserModel> models, CancellationToken cancellationToken = default)
     {
         return userDl.CreateAsync(models, cancellationToken);
     }

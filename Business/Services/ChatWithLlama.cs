@@ -1,5 +1,4 @@
 ﻿using Business.Business.Interfaces.Advertisement;
-using Business.Services.OllamaToolCallingServices;
 using Business.Services.OllamaToolCallingServices.Implement;
 using Business.Services.OllamaToolCallingServices.Interfaces;
 using Microsoft.Extensions.DependencyInjection;

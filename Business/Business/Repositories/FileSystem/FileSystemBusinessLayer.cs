@@ -105,7 +105,7 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da, IMemoryCache memor
         return da.CreateAsync(model, cancellationToken);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FileInfoModel> models, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> CreateAsync(IReadOnlyCollection<FileInfoModel> models, CancellationToken cancellationToken = default)
     {
         return da.CreateAsync(models, cancellationToken);
     }
@@ -117,7 +117,7 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da, IMemoryCache memor
 
     public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<FileInfoModel> models, CancellationToken cancellationToken = default)
     {
-        return da.CreateAsync(models, cancellationToken);
+        throw new NotImplementedException();
     }
 
     public async Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)

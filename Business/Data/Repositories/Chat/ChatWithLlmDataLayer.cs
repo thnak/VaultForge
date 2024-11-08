@@ -171,7 +171,7 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
         }
     }
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<ChatWithChatBotMessageModel> models, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> CreateAsync(IReadOnlyCollection<ChatWithChatBotMessageModel> models, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

@@ -196,13 +196,9 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
     }
 
 
-    public async IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<ArticleModel> models, [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    public Task<Result<bool>> CreateAsync(IReadOnlyCollection<ArticleModel> models, CancellationToken cancellationToken = default)
     {
-        foreach (var model in models.TakeWhile(_ => cancellationToken.IsCancellationRequested == false))
-        {
-            var result = await CreateAsync(model, cancellationToken);
-            yield return (result.Value, result.Message, "");
-        }
+        throw new NotImplementedException();
     }
 
     public async Task<(bool, string)> ReplaceAsync(ArticleModel model, CancellationToken cancellationToken = default)

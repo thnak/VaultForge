@@ -371,7 +371,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         }
     }
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FolderInfoModel> models,
+    public Task<Result<bool>> CreateAsync(IReadOnlyCollection<FolderInfoModel> models,
         CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();

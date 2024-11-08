@@ -75,9 +75,9 @@ public class IoTBusinessLayer(IIoTDataLayer data) : IIoTBusinessLayer
         return data.CreateAsync(model, cancellationToken);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<IoTRecord> models, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> CreateAsync(IReadOnlyCollection<IoTRecord> models, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return data.CreateAsync(models, cancellationToken);
     }
 
     public Task<(bool, string)> UpdateAsync(IoTRecord model, CancellationToken cancellationToken = default)

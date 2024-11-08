@@ -296,7 +296,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
     }
 
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<UserModel> models,
+    public Task<Result<bool>> CreateAsync(IReadOnlyCollection<UserModel> models,
         CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();

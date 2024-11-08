@@ -28,7 +28,7 @@ public interface IBusinessLayerRepository<T> where T : class
     Task<(T[], long)> GetAllAsync(int page, int size, CancellationToken cancellationToken = default);
     IAsyncEnumerable<T> GetAllAsync(CancellationToken cancellationToken);
     Task<Result<bool>> CreateAsync(T model, CancellationToken cancellationToken = default);
-    IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<T> models, CancellationToken cancellationToken = default);
+    Task<Result<bool>> CreateAsync(IReadOnlyCollection<T> models, CancellationToken cancellationToken = default);
     Task<(bool, string)> UpdateAsync(T model, CancellationToken cancellationToken = default);
     Task<(bool, string)> UpdateAsync(string key, FieldUpdate<T> updates, CancellationToken cancellationToken = default);
 

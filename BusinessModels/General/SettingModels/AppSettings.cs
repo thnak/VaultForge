@@ -10,6 +10,8 @@ public class AppSettings
     public Storage Storage { get; set; } = new();
     public VideoTransCode VideoTransCode { get; set; } = new();
     public OllamaConfig OllamaConfig { get; set; } = new();
+    public IoTCircuitBreaker IoTCircuitBreaker { get; set; } = new();
+    public IoTRequestQueueConfig IoTRequestQueueConfig { get; set; } = new();
 }
 
 public class BackgroundQueue
@@ -55,4 +57,16 @@ public class OllamaConfig
     public string TextEmbeddingModel { get; set; } = "nomic-embed-text";
     public string TextGeneratorModel { get; set; } = "llama3.2";
     public string Image2TextModel { get; set; } = "minicpm-v";
+}
+
+public class IoTCircuitBreaker
+{
+    public int ExceptionsAllowedBeforeBreaking { get; set; } = 5;
+    public int DurationOfBreakInSecond { get; set; } = 30;
+}
+
+public class IoTRequestQueueConfig
+{
+    public int MaxQueueSize { get; set; } = 1000;
+    public int TimePeriodInSecond { get; set; } = 10;
 }

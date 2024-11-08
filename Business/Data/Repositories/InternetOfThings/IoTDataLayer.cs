@@ -144,9 +144,23 @@ public class IoTDataLayer : IIoTDataLayer
         }
     }
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<IoTRecord> models, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> CreateAsync(IReadOnlyCollection<IoTRecord> models, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _semaphore.WaitAsync(cancellationToken);
+            await _dataDb.InsertManyAsync(models, cancellationToken: cancellationToken);
+            return Result<bool>.Success(AppLang.Create_successfully);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, null);
+            return Result<bool>.Failure(e.Message, ErrorType.Unknown);
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
     }
 
     public Task<(bool, string)> ReplaceAsync(IoTRecord model, CancellationToken cancellationToken = default)

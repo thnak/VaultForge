@@ -320,7 +320,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         }
     }
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<FileInfoModel> models, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> CreateAsync(IReadOnlyCollection<FileInfoModel> models, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

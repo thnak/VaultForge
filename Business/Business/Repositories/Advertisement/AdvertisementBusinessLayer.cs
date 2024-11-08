@@ -80,7 +80,7 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
         return dataLayer.CreateAsync(model, cancellationToken);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> CreateAsync(IEnumerable<ArticleModel> models, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> CreateAsync(IReadOnlyCollection<ArticleModel> models, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

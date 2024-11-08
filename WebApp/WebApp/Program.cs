@@ -1,6 +1,8 @@
+using Business.Business.Utils;
 using Business.Exceptions;
 using Business.Services;
 using Business.Services.Configure;
+using Business.Services.Http.CircuitBreakers;
 using Business.SocketHubs;
 using BusinessModels.Converter;
 using BusinessModels.General.SettingModels;
@@ -74,6 +76,7 @@ public class Program
         #region Additionnal services
 
         builder.Services.AddDataServiceCollection();
+        builder.Services.AddExtendBusinessService();
         
         #endregion
 
@@ -101,6 +104,12 @@ public class Program
         #region Rate Limit
 
         builder.Services.AddRateLimitService();
+
+        #endregion
+
+        #region CurcuitBreaker
+
+        builder.Services.AddCircuitBreaker();
 
         #endregion
 
@@ -140,7 +149,7 @@ public class Program
         builder.Services.AddScoped<LazyAssemblyLoader>();
 
         #region Logging
-        
+
         // builder.Services.AddLogging(options =>
         // {
         //     // options.ClearProviders();
@@ -186,7 +195,7 @@ public class Program
         app.UseAuthentication();
         app.UseAuthorization();
 
-        
+
         app.MapStaticAssets();
         app.MapControllers();
         app.UseMiddleware<Middleware>();
