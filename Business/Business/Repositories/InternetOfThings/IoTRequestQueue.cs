@@ -13,7 +13,7 @@ namespace Business.Business.Repositories.InternetOfThings;
 public class IoTRequestQueue : IDisposable, IAsyncDisposable
 {
     private readonly Channel<IoTRecord> _channel;
-
+    private readonly ConcurrentBag<IoTRecord> _batch;
     private readonly Timer _batchTimer;
     private readonly IParallelBackgroundTaskQueue _queue;
     private readonly IIoTBusinessLayer _iotBusinessLayer;
@@ -28,44 +28,50 @@ public class IoTRequestQueue : IDisposable, IAsyncDisposable
         {
             FullMode = BoundedChannelFullMode.DropOldest,
         };
-        this.logger = logger;
         _channel = Channel.CreateBounded<IoTRecord>(boundedChannelOptions);
+        _batch = new ConcurrentBag<IoTRecord>();
         _queue = queue;
         _iotBusinessLayer = iotBusinessLayer;
+        this.logger = logger;
 
         _batchTimer = new Timer(InsertPeriodTimerCallback, null, TimeSpan.Zero, TimeSpan.FromSeconds(timePeriod));
+        StartProcessing();
     }
 
     private void InsertPeriodTimerCallback(object? state)
     {
         lock (_lock)
         {
+            List<IoTRecord> batchToInsert = [.._batch];
+            if (batchToInsert.Count == 0)
+                return;
+
             _queue.QueueBackgroundWorkItemAsync(async serverToken =>
             {
-                ConcurrentBag<IoTRecord> batch = [];
-                while (await _channel.Reader.WaitToReadAsync(serverToken))
-                {
-                    while (_channel.Reader.TryRead(out var data))
-                    {
-                        batch.Add(data);
-                    }
-                }
-
-                if (batch.Count == 0)
-                    return;
-
-                var result = await InsertBatchIntoDatabase(batch.ToList(), serverToken);
+                var result = await InsertBatchIntoDatabase(batchToInsert, serverToken);
                 if (!result.IsSuccess)
                 {
                     logger.LogWarning(result.Message);
                 }
             });
+            _batch.Clear();
         }
     }
 
     public async Task<bool> QueueRequest(IoTRecord data, CancellationToken cancellationToken = default)
     {
         return await _channel.Writer.WaitToWriteAsync(cancellationToken) && _channel.Writer.TryWrite(data);
+    }
+
+    private async void StartProcessing()
+    {
+        while (await _channel.Reader.WaitToReadAsync())
+        {
+            while (_channel.Reader.TryRead(out var data))
+            {
+                _batch.Add(data);
+            }
+        }
     }
 
 
