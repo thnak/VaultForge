@@ -67,6 +67,6 @@ public class IoTCircuitBreaker
 
 public class IoTRequestQueueConfig
 {
-    public int MaxQueueSize { get; set; } = 1000;
+    public int MaxQueueSize { get; set; } = 100000;
     public int TimePeriodInSecond { get; set; } = 10;
 }
