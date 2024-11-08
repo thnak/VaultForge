@@ -76,7 +76,7 @@ public class Program
         #region Additionnal services
 
         builder.Services.AddDataServiceCollection();
-        builder.Services.AddExtendBusinessService();
+        builder.Services.AddIotQueueService();
         
         #endregion
 

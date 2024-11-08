@@ -1,4 +1,4 @@
-﻿using Business.Business.Repositories.InternetOfThings;
+﻿using Business.Business.Interfaces.InternetOfThings;
 using Business.Services.Http.CircuitBreakers;
 using BusinessModels.System.InternetOfThings;
 using Microsoft.AspNetCore.Authorization;
@@ -10,10 +10,10 @@ namespace WebApp.Controllers.InternetOfThings;
 [IgnoreAntiforgeryToken]
 [Route("api/[controller]")]
 [ApiController]
-public class IoTController(IoTCircuitBreakerService circuitBreakerService, IoTRequestQueue requestQueue, ILogger<IoTController> logger) : ControllerBase
+public class IoTController(IoTCircuitBreakerService circuitBreakerService, IIotRequestQueue requestQueueHostedService, ILogger<IoTController> logger) : ControllerBase
 {
     [HttpPost("add-record")]
-    public async Task<IActionResult> AddRecord([FromForm] string deviceId, [FromForm] double value)
+    public async Task<IActionResult> AddRecord([FromForm] string deviceId, [FromForm] float value)
     {
         var cancelToken = HttpContext.RequestAborted;
         var success = await circuitBreakerService.TryProcessRequest(async () =>
@@ -21,7 +21,7 @@ public class IoTController(IoTCircuitBreakerService circuitBreakerService, IoTRe
             try
             {
                 IoTRecord record = new IoTRecord(deviceId, value);
-                var queueResult = await requestQueue.QueueRequest(record, cancelToken);
+                var queueResult = await requestQueueHostedService.QueueRequest(record, cancelToken);
                 if (!queueResult)
                 {
                     logger.LogWarning($"Error while processing request {deviceId}");

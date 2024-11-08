@@ -24,7 +24,7 @@ public class IoTRecord
     /// Sensor data (could be temperature, humidity, etc.)
     /// </summary>
     [BsonElement("sensorData")]
-    public double SensorData { get; set; }
+    public float SensorData { get; set; }
 
     /// <summary>
     /// What kind of sensor this is (e.g., temperature, humidity)
@@ -44,7 +44,7 @@ public class IoTRecord
     [BsonElement("metadata")]
     public DeviceMetadata? Metadata { get; set; }
 
-    public IoTRecord(string deviceId, double sensorData, DeviceMetadata? metadata = null)
+    public IoTRecord(string deviceId, float sensorData, DeviceMetadata? metadata = null)
     {
         Id = ObjectId.GenerateNewId();
         Timestamp = DateTime.UtcNow; // Set to current time by default
