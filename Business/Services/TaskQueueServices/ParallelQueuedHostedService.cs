@@ -28,20 +28,9 @@ public class ParallelQueuedHostedService(IParallelBackgroundTaskQueue parallelBa
         using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
         while (!stoppingToken.IsCancellationRequested && await timer.WaitForNextTickAsync(stoppingToken))
         {
-            try
+            while (parallelBackgroundTaskQueue.TryDequeue(out Func<CancellationToken, ValueTask>? workItem))
             {
-                while (parallelBackgroundTaskQueue.TryDequeue(out Func<CancellationToken, ValueTask>? workItem))
-                {
-                    _ = _factory.StartNew(async () => await workItem(stoppingToken), stoppingToken).ConfigureAwait(false);
-                }
-            }
-            catch (OperationCanceledException)
-            {
-                // Prevent throwing if stoppingToken was signaled
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, ex.Message);
+                _ = _factory.StartNew(async () => await workItem(stoppingToken), stoppingToken).ConfigureAwait(false);
             }
         }
     }

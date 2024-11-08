@@ -12,26 +12,22 @@ namespace Business.Business.Repositories.InternetOfThings;
 public class IoTRequestQueueHostedService(IOptions<AppSettings> options, IIotRequestQueue iotRequestQueue, IParallelBackgroundTaskQueue queue, IIoTBusinessLayer iotBusinessLayer, ILogger<IoTRequestQueueHostedService> logger) : BackgroundService
 {
     private Timer? BatchTimer { get; set; }
-    private readonly Lock _lock = new();
     private readonly int _timePeriod = options.Value.IoTRequestQueueConfig.TimePeriodInSecond;
 
     private void InsertPeriodTimerCallback(object? state)
     {
-        lock (_lock)
+        queue.QueueBackgroundWorkItemAsync(async serverToken =>
         {
-            queue.QueueBackgroundWorkItemAsync(async serverToken =>
+            ConcurrentBag<IoTRecord> batch = [];
+            while (iotRequestQueue.TryRead(out var data))
             {
-                ConcurrentBag<IoTRecord> batch = [];
-                while (iotRequestQueue.TryRead(out var data))
-                {
-                    batch.Add(data);
-                }
+                batch.Add(data);
+            }
 
-                if (batch.Count == 0)
-                    return;
-                await InsertBatchIntoDatabase(batch, serverToken);
-            });
-        }
+            if (batch.Count == 0)
+                return;
+            await InsertBatchIntoDatabase(batch, serverToken);
+        });
     }
 
     private async Task InsertBatchIntoDatabase(IReadOnlyCollection<IoTRecord> batch, CancellationToken cancellationToken = default)
