@@ -2,7 +2,6 @@
 using System.Security.Cryptography;
 using System.Text;
 using Business.Business.Interfaces.FileSystem;
-using Business.Data;
 using Business.Data.StorageSpace;
 using Business.Models;
 using Business.Services.TaskQueueServices.Base.Interfaces;
@@ -12,9 +11,9 @@ using BusinessModels.Utils;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Business.Services.FileSystem;
+namespace Business.Services.HostedServices.FileSystem;
 
-public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLayer, ILogger<FileCheckSumService> logger, RedundantArrayOfIndependentDisks disks, ISequenceBackgroundTaskQueue queue) : IHostedService
+public class FileCheckSumHostedService(IFileSystemBusinessLayer fileSystemBusinessLayer, ILogger<FileCheckSumHostedService> logger, RedundantArrayOfIndependentDisks disks, ISequenceBackgroundTaskQueue queue) : IHostedService
 {
     private Timer? _timer;
     private bool _isRunning;
@@ -162,7 +161,7 @@ public class FileCheckSumService(IFileSystemBusinessLayer fileSystemBusinessLaye
     public Task StartAsync(CancellationToken cancellationToken)
     {
         var dueTime = DateTime.Today.AddDays(1).AddHours(2) - DateTime.Now;
-        logger.LogInformation($"Starting FileCheckSumService after {dueTime}");
+        logger.LogInformation($"Starting FileCheckSumHostedService after {dueTime}");
         _timer = new Timer(DoWork, null, dueTime, TimeSpan.FromDays(1));
         return Task.CompletedTask;
     }

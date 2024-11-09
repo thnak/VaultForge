@@ -22,6 +22,13 @@ public class ParallelBackgroundTaskQueue : IParallelBackgroundTaskQueue
         _queue = Channel.CreateBounded<Func<CancellationToken, ValueTask>>(options);
     }
 
+    public int CountItemSize()
+    {
+        if (_queue.Reader.CanCount)
+            return _queue.Reader.Count;
+        return 0;
+    }
+
     public async ValueTask QueueBackgroundWorkItemAsync(Func<CancellationToken, ValueTask> workItem, CancellationToken cancellationToken = default)
     {
         try

@@ -1,7 +1,7 @@
 ﻿<div class="d-flex flex-row gap-1" >
     <div>
-        <MudTooltip Arrow Color="Color.Secondary" Placement="Placement.Right" Text="Theme" >
-            <MudIconButton Class="blazor-SmAndDown-hidden" Color="Color.Inherit"
+        <MudTooltip Arrow Color="MudColor.Secondary" Placement="Placement.Right" Text="Theme" >
+            <MudIconButton Class="blazor-SmAndDown-hidden" Color="MudColor.Inherit"
                            Icon="@(IsDarkMode.HasValue ? IsDarkMode.Value ? Icons.Material.Filled.DarkMode : Icons.Material.Filled.LightMode : Icons.Material.Filled.AutoMode)"
                            OnClick="@ThemeModeChanged" >
                 @(IsDarkMode.HasValue ? IsDarkMode.Value ? AppLang.Dark_mode : AppLang.Light_mode : AppLang.System_preference)

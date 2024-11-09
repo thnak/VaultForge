@@ -2,13 +2,13 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Business.Services.TaskQueueServices;
+namespace Business.Services.BackgroundServices.Base;
 
-public sealed class SequenceQueuedHostedService(ISequenceBackgroundTaskQueue taskQueue, ILogger<SequenceQueuedHostedService> logger) : BackgroundService
+public sealed class SequenceQueuedBackgroundService(ISequenceBackgroundTaskQueue taskQueue, ILogger<SequenceQueuedBackgroundService> logger) : BackgroundService
 {
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        logger.LogInformation("""{Name} is running.""", nameof(SequenceQueuedHostedService));
+        logger.LogInformation("""{Name} is running.""", nameof(SequenceQueuedBackgroundService));
         return ProcessTaskQueueAsync(stoppingToken);
     }
 
@@ -37,7 +37,7 @@ public sealed class SequenceQueuedHostedService(ISequenceBackgroundTaskQueue tas
 
     public override async Task StopAsync(CancellationToken stoppingToken)
     {
-        logger.LogInformation($"{nameof(SequenceQueuedHostedService)} is stopping.");
+        logger.LogInformation($"{nameof(SequenceQueuedBackgroundService)} is stopping.");
         await base.StopAsync(stoppingToken);
     }
 }

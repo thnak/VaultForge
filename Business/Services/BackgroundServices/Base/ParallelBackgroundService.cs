@@ -5,21 +5,21 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Business.Services.TaskQueueServices;
+namespace Business.Services.BackgroundServices.Base;
 
-public class ParallelQueuedHostedService(IParallelBackgroundTaskQueue parallelBackgroundTaskQueue, IOptions<AppSettings> options, ILogger<ParallelQueuedHostedService> logger) : BackgroundService
+public class ParallelBackgroundService(IParallelBackgroundTaskQueue parallelBackgroundTaskQueue, IOptions<AppSettings> options, ILogger<ParallelBackgroundService> logger) : BackgroundService
 {
     private readonly TaskFactory _factory = new(new LimitedConcurrencyLevelTaskScheduler(options.Value.BackgroundQueue.MaxParallelThreads));
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        logger.LogInformation("""{Name} is running with max {threads} threads.""", nameof(ParallelQueuedHostedService), options.Value.BackgroundQueue.MaxParallelThreads);
+        logger.LogInformation("""{Name} is running with max {threads} threads.""", nameof(ParallelBackgroundService), options.Value.BackgroundQueue.MaxParallelThreads);
         return ProcessTaskQueueAsync(stoppingToken);
     }
 
     public override async Task StopAsync(CancellationToken stoppingToken)
     {
-        logger.LogInformation($"{nameof(ParallelQueuedHostedService)} is stopping.");
+        logger.LogInformation($"{nameof(ParallelBackgroundService)} is stopping.");
         await base.StopAsync(stoppingToken);
     }
 

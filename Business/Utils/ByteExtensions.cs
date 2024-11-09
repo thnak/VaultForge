@@ -21,7 +21,7 @@ public static class ByteExtensions
                 var data1Vector = new Vector<byte>(data1, i);
 
                 // XOR the vectors
-                var resultVector = Vector.Xor(data0Vector, data1Vector);
+                var resultVector = data0Vector ^ data1Vector;
 
                 // Store the result back into the parity array
                 resultVector.CopyTo(parity, i);
@@ -37,5 +37,22 @@ public static class ByteExtensions
         }
 
         return parity;
+    }
+
+    public static byte[] XorParity(this byte[][] data)
+    {
+        int length = data.First().Length;
+
+        // Initialize the result array for storing the XOR parity
+        byte[] result = new byte[length];
+        data.First().CopyTo(result, 0);
+
+        int loopLenght = data.Length - 1;
+        for (int i = 1; i < loopLenght; i++)
+        {
+            result.XorParity(data[i + 1]).CopyTo(result, 0);
+        }
+
+        return result;
     }
 }

@@ -21,9 +21,12 @@ using Business.Data.Repositories.FileSystem;
 using Business.Data.Repositories.InternetOfThings;
 using Business.Data.Repositories.User;
 using Business.Data.StorageSpace;
+using Business.Services.BackgroundServices.Base;
+using Business.Services.BackgroundServices.ServerHealth;
 using Business.Services.FileSystem;
+using Business.Services.HostedServices.Base;
+using Business.Services.HostedServices.FileSystem;
 using Business.Services.Interfaces;
-using Business.Services.TaskQueueServices;
 using Business.Services.TaskQueueServices.Base;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
@@ -68,15 +71,15 @@ public static class DataService
     {
         service.AddSingleton<IParallelBackgroundTaskQueue, ParallelBackgroundTaskQueue>();
         service.AddSingleton<ISequenceBackgroundTaskQueue, SequenceBackgroundTaskQueue>();
-
-        service.AddHostedService<SequenceQueuedHostedService>();
-        service.AddHostedService<ParallelQueuedHostedService>();
+        service.AddHostedService<Worker>();
+        service.AddHostedService<SequenceQueuedBackgroundService>();
+        service.AddHostedService<ParallelBackgroundService>();
     }
 
     private static void AddAdvancedServiceCollection(this IServiceCollection service)
     {
         service.AddSingleton<IThumbnailService, ThumbnailService>();
-        service.AddHostedService<FileCheckSumService>();
-        service.AddHostedService<FileSystemWatcherService>();
+        service.AddHostedService<FileCheckSumHostedService>();
+        service.AddHostedService<FileSystemWatcherHostedService>();
     }
 }

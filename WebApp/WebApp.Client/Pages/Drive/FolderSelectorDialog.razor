@@ -12,11 +12,11 @@
             <div>
                 @if (Loading)
                 {
-                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
+                    <MudProgressCircular Color="MudColor.Primary" Indeterminate="true" Size="MudSize.Small"/>
                 }
                 else
                 {
-                    <MudIconButton Color="Color.Secondary" Icon="@Icons.Material.Filled.CreateNewFolder" OnClick="@AddNewFolder"/>
+                    <MudIconButton Color="MudColor.Secondary" Icon="@Icons.Material.Filled.CreateNewFolder" OnClick="@AddNewFolder"/>
                 }
             </div>
         </div>
@@ -27,7 +27,7 @@
             <MudDataGrid Filterable="false" FixedFooter FixedHeader Height="450px" @ref="DataGrid" ServerData="ServerReload" T="FolderInfoModel">
                 <ToolBarContent>
                     <div>
-                        <MudTooltip Arrow Color="Color.Secondary" Placement="Placement.Top" Text="@Folder.RelativePath">
+                        <MudTooltip Arrow Color="MudColor.Secondary" Placement="Placement.Top" Text="@Folder.RelativePath">
                             <MudText >
                                 @AppLang.Current_location: @Folder.FolderName
                             </MudText>
@@ -36,7 +36,7 @@
                     <MudSpacer/>
                     <div style="width: 300px">
                         <MudAutocomplete Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" Class="mt-0" Clearable ToStringFunc="ToStringFunc"
-                                         CoerceText CoerceValue IconSize="Size.Medium" Placeholder="@AppLang.Search" SearchFunc="SearchFolder" ShowProgressIndicator
+                                         CoerceText CoerceValue IconSize="MudSize.Medium" Placeholder="@AppLang.Search" SearchFunc="SearchFolder" ShowProgressIndicator
                                          T="FolderInfoModel" Value="@SearchString" ValueChanged="FolderSearchChanged" Variant="Variant.Outlined">
                             <ItemTemplate Context="templateContext">
                                 <div class="d-flex flex-column gap-0">
@@ -65,7 +65,7 @@
         </MudPaper>
     </DialogContent>
     <DialogActions>
-        <MudButton Color="Color.Error" OnClick="@Cancel" Variant="Variant.Outlined" Class="rounded-pill">@AppLang.Cancel</MudButton>
-        <MudButton Color="Color.Success" OnClick="@Submit" Variant="Variant.Filled" Class="rounded-pill">@AppLang.Submit</MudButton>
+        <MudButton Color="MudColor.Error" OnClick="@Cancel" Variant="Variant.Outlined" Class="rounded-pill">@AppLang.Cancel</MudButton>
+        <MudButton Color="MudColor.Success" OnClick="@Submit" Variant="Variant.Filled" Class="rounded-pill">@AppLang.Submit</MudButton>
     </DialogActions>
 </MudDialog>

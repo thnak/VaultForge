@@ -1,4 +1,5 @@
-﻿using BusinessModels.General.SettingModels;
+﻿using BusinessModels.General.Results;
+using BusinessModels.General.SettingModels;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Polly;
@@ -25,7 +26,7 @@ public class IoTCircuitBreakerService(IOptions<AppSettings> options, ILogger<IoT
 
         try
         {
-            await _circuitBreaker.ExecuteAsync(async () => { await process(); });
+            await _circuitBreaker.ExecuteAsync(process);
             return true;
         }
         catch (BrokenCircuitException)
@@ -37,6 +38,30 @@ public class IoTCircuitBreakerService(IOptions<AppSettings> options, ILogger<IoT
         {
             logger.LogError(ex, $"Request failed: {ex.Message}");
             return false;
+        }
+    }
+
+    public async Task<Result<T?>> TryProcessRequest<T>(Func<Task<Result<T?>>> process)
+    {
+        if (_circuitBreaker.CircuitState == CircuitState.Open)
+        {
+            logger.LogWarning("Circuit is open, rejecting request.");
+            return Result<T>.Failure("Circuit is open, rejecting request.", ErrorType.Validation);
+        }
+
+        try
+        {
+            return await _circuitBreaker.ExecuteAsync(process);
+        }
+        catch (BrokenCircuitException)
+        {
+            logger.LogWarning("Circuit is open, rejecting request.");
+            return Result<T?>.Failure("Circuit is open, rejecting request.", ErrorType.Validation);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, $"Request failed: {ex.Message}");
+            return Result<T?>.Failure("Circuit is open, rejecting request.", ErrorType.Unknown);
         }
     }
 }

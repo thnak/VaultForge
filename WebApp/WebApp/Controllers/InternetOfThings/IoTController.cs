@@ -13,14 +13,14 @@ namespace WebApp.Controllers.InternetOfThings;
 public class IoTController(IoTCircuitBreakerService circuitBreakerService, IIotRequestQueue requestQueueHostedService, ILogger<IoTController> logger) : ControllerBase
 {
     [HttpPost("add-record")]
-    public async Task<IActionResult> AddRecord([FromForm] string deviceId, [FromForm] float value)
+    public async Task<IActionResult> AddRecord([FromForm] string deviceId, [FromForm] float value, [FromForm] SensorType sensorType)
     {
         var cancelToken = HttpContext.RequestAborted;
         var success = await circuitBreakerService.TryProcessRequest(async () =>
         {
             try
             {
-                IoTRecord record = new IoTRecord(deviceId, value);
+                IoTRecord record = new IoTRecord(deviceId, value, sensorType);
                 var queueResult = await requestQueueHostedService.QueueRequest(record, cancelToken);
                 if (!queueResult)
                 {
@@ -35,9 +35,9 @@ public class IoTController(IoTCircuitBreakerService circuitBreakerService, IIotR
         if (!success)
         {
             logger.LogWarning("Server is overloaded, try again later.");
-            return StatusCode(429, "Server is overloaded, try again later.");
+            return StatusCode(429, string.Empty);
         }
 
-        return Ok("Request processed successfully.");
+        return Ok();
     }
 }

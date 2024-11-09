@@ -44,12 +44,13 @@ public class IoTRecord
     [BsonElement("metadata")]
     public DeviceMetadata? Metadata { get; set; }
 
-    public IoTRecord(string deviceId, float sensorData, DeviceMetadata? metadata = null)
+    public IoTRecord(string deviceId, float sensorData, SensorType sensorType, DeviceMetadata? metadata = null)
     {
         Id = ObjectId.GenerateNewId();
         Timestamp = DateTime.UtcNow; // Set to current time by default
         DeviceId = deviceId;
         SensorData = sensorData;
+        SensorType = sensorType;
         Metadata = metadata;
         Date = Timestamp.Date;
         Hour = Timestamp.Hour;

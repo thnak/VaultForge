@@ -5,7 +5,7 @@
 <MudAppBar Class="pr-6"
            Dense Elevation="1"
            Fixed >
-    <MudIconButton Color="Color.Inherit" UserAttributes="@MenuBarButtonAttribute"
+    <MudIconButton Color="MudColor.Inherit" UserAttributes="@MenuBarButtonAttribute"
                    Icon="@Icons.Material.Filled.Menu"
                    OnClick="@HandleDrawerOpen" />
     
@@ -32,10 +32,10 @@
             </ActivatorContent>
 
             <ChildContent>
-                <MudMenuItem Href="@PageRoutes.Account.Profile" Icon="@Icons.Material.Filled.AccountBox" IconColor="Color.Default" >
+                <MudMenuItem Href="@PageRoutes.Account.Profile" Icon="@Icons.Material.Filled.AccountBox" IconColor="MudColor.Default" >
                     @AppLang.Profile
                 </MudMenuItem>
-                <MudMenuItem Icon="@Icons.Material.Filled.Logout" IconColor="Color.Default" OnClick="@LogOut" >
+                <MudMenuItem Icon="@Icons.Material.Filled.Logout" IconColor="MudColor.Default" OnClick="@LogOut" >
                     @AppLang.Logout
                 </MudMenuItem>
             </ChildContent>

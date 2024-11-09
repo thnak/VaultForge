@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Business.Services;
+namespace Business.Services.HostedServices.Base;
 
 public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime hostApplicationLifetime, IParallelBackgroundTaskQueue queue, IServiceScopeFactory serviceScopeFactory, ILogger<HostApplicationLifetimeEventsHostedService> logger) : IHostedService
 {
