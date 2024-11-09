@@ -13,7 +13,8 @@ public partial class ServerTime : ComponentBase, IAsyncDisposable
         if (firstRender)
         {
             hubConnection = new HubConnectionBuilder()
-                .WithUrl("https://localhost:7158/hubs/clock")
+                .WithUrl(Navigation.BaseUri + "hubs/clock")
+                .AddMessagePackProtocol()
                 .WithAutomaticReconnect()
                 .Build();
             hubConnection.On<DateTime>("ShowTime", ShowTime);
