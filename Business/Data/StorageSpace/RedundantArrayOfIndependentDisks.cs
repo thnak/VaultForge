@@ -475,7 +475,8 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                 }
 
                 byte[][] subset = buffers.Take(realDataDisks).ToArray();
-                bytesRead[realDataDisks] = bytesRead.Take(realDataDisks).Min();
+                var realBytesRead = bytesRead.Take(realDataDisks).ToArray();
+                bytesRead[realDataDisks] = realBytesRead.Max();
                 buffers[realDataDisks] = subset.XorParity();
 
 
@@ -484,10 +485,10 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                     detectedContentType = DetectContentType(buffers[0], buffers[1]);
                 }
 
-                var writeTasks = CreateWriteTasks(stripeCount, stripeSize, cancellationToken, buffers, fileStreams);
+                var writeTasks = CreateWriteTasks(stripeCount, bytesRead, cancellationToken, buffers, fileStreams);
                 await Task.WhenAll(writeTasks);
 
-                totalBytesWritten += bytesRead.Sum();
+                totalBytesWritten += realBytesRead.Sum();
                 UpdateFileBytesWritten(fileBytesWritten, bytesRead, stripeSize);
 
                 stripeCount++;
@@ -520,25 +521,24 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         fileBytesWritten[bytesRead.Length - 1] += stripeSize;
     }
 
-    private static List<Task> CreateWriteTasks(int stripeCount, int stripeSize, CancellationToken cancellationToken, byte[][] buffers, List<FileStream?> fileStreams)
+    private static List<Task> CreateWriteTasks(int stripeCount, int[] byteWrites, CancellationToken cancellationToken, byte[][] buffers, List<FileStream?> fileStreams)
     {
         int stripeIndex = stripeCount % fileStreams.Count;
         int lastIndex = fileStreams.Count - 1;
         int fileStripeIndex = lastIndex - stripeIndex;
-        int[] sortIndex = new int[fileStreams.Count];
-        sortIndex[fileStripeIndex] = lastIndex;
         int index = 0;
 
         List<Task> tasks = [];
-        for (int i = 0; i < sortIndex.Length; i++)
+        for (int i = 0; i < fileStreams.Count; i++)
         {
             if (fileStripeIndex == i)
             {
-                tasks.Add(fileStreams[i]?.WriteAsync(buffers[lastIndex], 0, stripeSize, cancellationToken) ?? Task.CompletedTask);
+                tasks.Add(fileStreams[i]?.WriteAsync(buffers[lastIndex], 0, byteWrites[lastIndex], cancellationToken) ?? Task.CompletedTask);
                 continue;
             }
 
-            tasks.Add(fileStreams[i]?.WriteAsync(buffers[index++], 0, stripeSize, cancellationToken) ?? Task.CompletedTask);
+            tasks.Add(fileStreams[i]?.WriteAsync(buffers[index], 0, byteWrites[index], cancellationToken) ?? Task.CompletedTask);
+            index++;
         }
 
         return tasks;

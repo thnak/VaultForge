@@ -175,11 +175,7 @@ public class FilesController(
             ModificationDate = now,
             ReadDate = now
         };
-        Response.Headers.Append("Content-Disposition", cd.ToString());
-        Response.ContentType = file.ContentType;
-        Response.Headers.ContentType = file.ContentType;
-        Response.StatusCode = 200;
-        Response.ContentLength = file.FileSize;
+       
         MemoryStream ms = new MemoryStream();
         await raidService.ReadGetDataAsync(ms, file.AbsolutePath, cancelToken);
         Response.RegisterForDispose(ms);
@@ -207,15 +203,19 @@ public class FilesController(
 
         if (file.Checksum == checksum.ToString())
         {
-            return new FileStreamResult(ms, file.ContentType)
-            {
-                FileDownloadName = file.FileName,
-                LastModified = file.ModifiedTime,
-                EnableRangeProcessing = false
-            };
+            logger.LogError("file check error");
         }
 
-        return BadRequest();
+        Response.Headers.Append("Content-Disposition", cd.ToString());
+        // Response.ContentType = file.ContentType;
+        // Response.Headers.ContentType = file.ContentType;
+        // Response.StatusCode = 200;
+        return new FileStreamResult(ms, file.ContentType)
+        {
+            FileDownloadName = file.FileName,
+            LastModified = file.ModifiedTime,
+            EnableRangeProcessing = false
+        };
     }
 
     [HttpGet("stream-raid")]
