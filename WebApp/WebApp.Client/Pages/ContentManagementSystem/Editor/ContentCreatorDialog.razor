@@ -44,11 +44,11 @@
         </MudForm>
     </DialogContent>
     <DialogActions>
-        <MudButton Class="rounded-pill" Color="Color.Error" OnClick="@Cancel" Variant="Variant.Outlined" >@AppLang.Cancel</MudButton>
-        <MudButton Class="rounded-pill" Color="Color.Success" Disabled="@Processing" OnClick="DialogSubmit" Variant="Variant.Filled" >
+        <MudButton Class="rounded-pill" Color="MudColor.Error" OnClick="@Cancel" Variant="Variant.Outlined" >@AppLang.Cancel</MudButton>
+        <MudButton Class="rounded-pill" Color="MudColor.Success" Disabled="@Processing" OnClick="DialogSubmit" Variant="Variant.Filled" >
             @if (Processing)
             {
-                <MudProgressCircular Class="ms-n1" Indeterminate="true" Size="Size.Small" />
+                <MudProgressCircular Class="ms-n1" Indeterminate="true" Size="MudSize.Small" />
                 <MudText Class="ms-2" >@AppLang.Processing</MudText>
             }
             else

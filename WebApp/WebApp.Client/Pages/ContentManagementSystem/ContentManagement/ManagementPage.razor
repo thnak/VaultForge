@@ -7,7 +7,7 @@
 <PageTitle>@Title</PageTitle>
 
 <SectionContent SectionId="@AppBar.TopBarSection1" >
-    <MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.Add" OnClick="@AddNewArticle" ></MudIconButton>
+    <MudIconButton Color="MudColor.Primary" Icon="@Icons.Material.Filled.Add" OnClick="@AddNewArticle" ></MudIconButton>
 </SectionContent>
 
 <HeadContent>
@@ -26,11 +26,11 @@
                 <div class="d-flex flex-row gap-3 align-center" >
                     <MudLink Href="@CreateEditLink(context.Item)" >Edit Link</MudLink>
                     <MudLink Href="@CreatePreviewLink(context.Item)" >Preview Link</MudLink>
-                    <MudTooltip Arrow Color="Color.Secondary" Placement="Placement.Top" Text="Copy" >
-                        <MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.FileCopy" OnClick="@(() => CopyLink(context.Item))" ></MudIconButton>
+                    <MudTooltip Arrow Color="MudColor.Secondary" Placement="Placement.Top" Text="Copy" >
+                        <MudIconButton Color="MudColor.Primary" Icon="@Icons.Material.Filled.FileCopy" OnClick="@(() => CopyLink(context.Item))" ></MudIconButton>
                     </MudTooltip>
-                    <MudTooltip Arrow Color="Color.Secondary" Placement="Placement.Top" Text="@AppLang.Delete" >
-                        <MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteItem(context.Item))" ></MudIconButton>
+                    <MudTooltip Arrow Color="MudColor.Secondary" Placement="Placement.Top" Text="@AppLang.Delete" >
+                        <MudIconButton Color="MudColor.Primary" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteItem(context.Item))" ></MudIconButton>
                     </MudTooltip>
                     
                 </div>

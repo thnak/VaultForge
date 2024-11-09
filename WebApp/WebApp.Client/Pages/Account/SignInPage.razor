@@ -22,26 +22,26 @@
 
     <div class="main-form">
         <MudCarousel AutoCycle="false" @bind-SelectedIndex="CurrentIndex" Class="mud-width-full" EnableSwipeGesture="false" @ref="CarouselLogin" ShowArrows="false" ShowBullets="false" TData="object">
-            <MudCarouselItem Color="@Color.Default" Transition="Transition.Slide">
+            <MudCarouselItem Color="MudColor.Default" Transition="Transition.Slide">
                 <div class="d-flex mud-height-full mud-width-full">
                     <MudForm @bind-Errors="@FormError" @bind-IsValid="IsValid" Class="align-center justify-center mud-width-full" @ref="FormUser">
                         <div class="form gap-3">
                             <AntiforgeryToken/>
-                            <MudText Align="Align.Center" Color="Color.Primary" Typo="Typo.h5">@AppLang.Create_Account</MudText>
-                            <MudTextField Adornment="Adornment.Start" AdornmentColor="Color.Primary" AdornmentIcon="fa-solid fa-user" @bind-Value="CurrentRequestModel.UserName"
+                            <MudText Align="MudAlign.Center" Color="MudColor.Primary" Typo="Typo.h5">@AppLang.Create_Account</MudText>
+                            <MudTextField Adornment="Adornment.Start" AdornmentColor="MudColor.Primary" AdornmentIcon="fa-solid fa-user" @bind-Value="CurrentRequestModel.UserName"
                                           Class="mud-width-full"
                                           Error="@(!string.IsNullOrEmpty(UserErrorText))" ErrorText="@UserErrorText" For="() => CurrentRequestModel.UserName" InputType="InputType.Text"
                                           OnAdornmentClick="UsernameClickEvent" Placeholder="@AppLang.Username"
                                           Required T="string" UserAttributes="@(new Dictionary<string, object> { { "name", "Username" }, { "autocomplete", "current-username" } })" Variant="Variant.Outlined">
                             </MudTextField>
 
-                            <MudButton Class="rounded-pill" Color="Color.Primary"
+                            <MudButton Class="rounded-pill" Color="MudColor.Primary"
                                        Disabled="@Loading" FullWidth
                                        OnClick="UsernameProcess"
                                        Style="max-width: 400px" Variant="Variant.Filled">
                                 @if (Loading)
                                 {
-                                    <MudProgressCircular Class="ms-n1" Indeterminate="true" Size="Size.Small"/>
+                                    <MudProgressCircular Class="ms-n1" Indeterminate="true" Size="MudSize.Small"/>
                                     <MudText Class="ms-2">@AppLang.Processing</MudText>
                                 }
                                 else
@@ -54,14 +54,14 @@
                 </div>
             </MudCarouselItem>
             @* Password *@
-            <MudCarouselItem Color="@Color.Default" Transition="Transition.Slide">
+            <MudCarouselItem Color="@MudColor.Default" Transition="Transition.Slide">
                 <div class="d-flex mud-height-full mud-width-full">
                     <MudForm @bind-Errors="@FormError" @bind-IsValid="IsValid" Class="align-center justify-center mud-width-full" @ref="PasswordForm">
                         <div class="form gap-3">
                             <AntiforgeryToken/>
-                            <MudText Align="Align.Center" Color="Color.Primary" Typo="Typo.h5">@AppLang.Enter_password</MudText>
+                            <MudText Align="MudAlign.Center" Color="MudColor.Primary" Typo="Typo.h5">@AppLang.Enter_password</MudText>
 
-                            <MudTextField Adornment="Adornment.Start" AdornmentColor="Color.Primary" AdornmentIcon="@PasswordIcon" @bind-Value="CurrentRequestModel.Password"
+                            <MudTextField Adornment="Adornment.Start" AdornmentColor="MudColor.Primary" AdornmentIcon="@PasswordIcon" @bind-Value="CurrentRequestModel.Password"
                                           Class="mud-width-full"
                                           Error="@(!string.IsNullOrEmpty(PasswordErrorText))" ErrorText="@PasswordErrorText" For="() => CurrentRequestModel.Password"
                                           InputType="PasswordInput" OnAdornmentClick="PasswordShowEvent"
@@ -69,13 +69,13 @@
                                           Variant="Variant.Outlined">
                             </MudTextField>
 
-                            <MudButton Class="rounded-pill" Color="Color.Primary"
+                            <MudButton Class="rounded-pill" Color="MudColor.Primary"
                                        Disabled="@Loading" FullWidth
                                        OnClick="PasswordProcess"
                                        Style="max-width: 400px" Variant="Variant.Filled">
                                 @if (Loading)
                                 {
-                                    <MudProgressCircular Class="ms-n1" Indeterminate="true" Size="Size.Small"/>
+                                    <MudProgressCircular Class="ms-n1" Indeterminate="true" Size="MudSize.Small"/>
                                     <MudText Class="ms-2">@AppLang.Processing</MudText>
                                 }
                                 else
@@ -90,11 +90,11 @@
             @* Password *@
 
 
-            <MudCarouselItem Color="@Color.Default" Transition="Transition.Fade">
+            <MudCarouselItem Color="@MudColor.Default" Transition="Transition.Fade">
                 <div class="align-center d-flex flex-column justify-center mud-height-full mud-width-full">
                     <div class="mud-width-full">
-                        <MudText Align="Align.Center" Typo="Typo.h5">@AppLang.One_moment_please</MudText>
-                        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small"/>
+                        <MudText Align="MudAlign.Center" Typo="Typo.h5">@AppLang.One_moment_please</MudText>
+                        <MudProgressLinear Color="MudColor.Primary" Indeterminate="true" Size="MudSize.Small"/>
                         <div class="d-none">
                             <form action="/api/Account/login" id="loginForm" method="post">
                                 <AntiforgeryToken/>

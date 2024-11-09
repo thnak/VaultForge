@@ -93,7 +93,10 @@ public class FilesController(
     {
         var result = await folderServe.InsertMediaContent(path);
         if (result.IsSuccess)
+        {
             return Ok(result.Message);
+        }
+
         return BadRequest(result.Message);
     }
 

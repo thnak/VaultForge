@@ -52,6 +52,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                 logger.LogError("Invalid Storage Format");
                 return (false, "Invalid Storage Format");
             }
+
             logger.LogInformation($"Using RAID option: {options.Value.Storage.DefaultRaidType}");
             return (true, AppLang.Success);
         }
@@ -118,9 +119,10 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             var result = await WriteDataAsync(stream, raidModel.StripSize, cancellationToken, disks.Select(x => x.AbsolutePath));
             raidModel.Size = result.TotalByteWritten;
             raidModel.CheckSum = result.CheckSum;
-            disks[0].Size = result.TotalByteWritten1;
-            disks[1].Size = result.TotalByteWritten2;
-            disks[2].Size = result.TotalByteWritten3;
+            for (int i = 0; i < result.TotalByteWritePerDisk.Length; i++)
+            {
+                disks[i].Size = result.TotalByteWritePerDisk[i];
+            }
 
             await _fileDataDb.InsertOneAsync(raidModel, null, cancellationToken);
             await _fileMetaDataDataDb.InsertManyAsync(disks, null, cancellationToken);
@@ -444,10 +446,13 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
     private async Task<WriteDataResult> ProcessInputStreamAsync(Stream inputStream, int stripeSize, CancellationToken cancellationToken, List<FileStream?> fileStreams)
     {
         long totalBytesWritten = 0;
-        long[] fileBytesWritten = new long[fileStreams.Count];
-        byte[][] buffers = Enumerable.Range(0, fileStreams.Count).Select(_ => new byte[stripeSize]).ToArray();
+        int numDisks = fileStreams.Count;
+        long[] fileBytesWritten = new long[numDisks];
+        byte[][] buffers = Enumerable.Range(0, numDisks).Select(_ => new byte[stripeSize]).ToArray();
 
-        int[] bytesRead = new int[2];
+        int realDataDisks = fileStreams.Count - 1;
+
+        int[] bytesRead = new int[numDisks];
         int stripeCount = 0;
         string? detectedContentType = null;
 
@@ -461,37 +466,42 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
 
             while ((bytesRead[0] = await bufferStream.ReadAsync(buffers[0], 0, stripeSize, cancellationToken)) > 0)
             {
-                bytesRead[1] = await bufferStream.ReadAsync(buffers[1], 0, stripeSize, cancellationToken);
+                md5Hasher.TransformBlock(buffers[0], 0, bytesRead[0], null, 0);
+
+                for (int i = 1; i < realDataDisks; i++)
+                {
+                    bytesRead[i] = await bufferStream.ReadAsync(buffers[i], 0, stripeSize, cancellationToken);
+                    md5Hasher.TransformBlock(buffers[i], 0, bytesRead[i], null, 0);
+                }
+
+                byte[][] subset = buffers.Take(realDataDisks).ToArray();
+                var realBytesRead = bytesRead.Take(realDataDisks).ToArray();
+                bytesRead[realDataDisks] = realBytesRead.Max();
+                buffers[realDataDisks] = subset.XorParity();
+
 
                 if (detectedContentType == null)
                 {
-                    detectedContentType = DetectContentType(buffers[0], buffers[2]);
+                    detectedContentType = DetectContentType(buffers[0], buffers[1]);
                 }
 
-                md5Hasher.TransformBlock(buffers[0], 0, bytesRead[0], null, 0);
-                md5Hasher.TransformBlock(buffers[1], 0, bytesRead[1], null, 0);
-
-                totalBytesWritten += bytesRead.Sum();
-                UpdateFileBytesWritten(fileBytesWritten, bytesRead, stripeSize);
-
-                buffers[2] = buffers[0].XorParity(buffers[1]);
-
-                var writeTasks = CreateWriteTasks(stripeCount, stripeSize, cancellationToken, buffers, fileStreams);
+                var writeTasks = CreateWriteTasks(stripeCount, bytesRead, cancellationToken, buffers, fileStreams);
                 await Task.WhenAll(writeTasks);
+
+                totalBytesWritten += realBytesRead.Sum();
+                UpdateFileBytesWritten(fileBytesWritten, bytesRead, stripeSize);
 
                 stripeCount++;
             }
         }
 
-        md5Hasher.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
+        md5Hasher.TransformFinalBlock([], 0, 0);
 
         return new WriteDataResult
         {
             CheckSum = ConvertChecksumToHex(md5Hasher.Hash),
             TotalByteWritten = totalBytesWritten,
-            TotalByteWritten1 = fileBytesWritten[0],
-            TotalByteWritten2 = fileBytesWritten[1],
-            TotalByteWritten3 = fileBytesWritten[2],
+            TotalByteWritePerDisk = fileBytesWritten,
             ContentType = detectedContentType?.GetMimeTypeFromExtension() ?? string.Empty,
         };
     }
@@ -503,30 +513,32 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
 
     private void UpdateFileBytesWritten(long[] fileBytesWritten, int[] bytesRead, int stripeSize)
     {
-        fileBytesWritten[0] += bytesRead[0];
-        fileBytesWritten[1] += bytesRead[1];
-        fileBytesWritten[2] += stripeSize;
+        for (int i = 0; i < bytesRead.Length - 1; i++)
+        {
+            fileBytesWritten[i] += bytesRead[i];
+        }
+
+        fileBytesWritten[bytesRead.Length - 1] += stripeSize;
     }
 
-    private static List<Task> CreateWriteTasks(int stripeCount, int stripeSize, CancellationToken cancellationToken, byte[][] buffers, List<FileStream?> fileStreams)
+    private static List<Task> CreateWriteTasks(int stripeCount, int[] byteWrites, CancellationToken cancellationToken, byte[][] buffers, List<FileStream?> fileStreams)
     {
         int stripeIndex = stripeCount % fileStreams.Count;
         int lastIndex = fileStreams.Count - 1;
         int fileStripeIndex = lastIndex - stripeIndex;
-        int[] sortIndex = new int[fileStreams.Count];
-        sortIndex[fileStripeIndex] = lastIndex;
         int index = 0;
 
         List<Task> tasks = [];
-        for (int i = 0; i < sortIndex.Length; i++)
+        for (int i = 0; i < fileStreams.Count; i++)
         {
             if (fileStripeIndex == i)
             {
-                tasks.Add(fileStreams[i]?.WriteAsync(buffers[fileStripeIndex], 0, stripeSize, cancellationToken) ?? Task.CompletedTask);
+                tasks.Add(fileStreams[i]?.WriteAsync(buffers[lastIndex], 0, byteWrites[lastIndex], cancellationToken) ?? Task.CompletedTask);
                 continue;
             }
 
-            tasks.Add(fileStreams[i]?.WriteAsync(buffers[index++], 0, stripeSize, cancellationToken) ?? Task.CompletedTask);
+            tasks.Add(fileStreams[i]?.WriteAsync(buffers[index], 0, byteWrites[index], cancellationToken) ?? Task.CompletedTask);
+            index++;
         }
 
         return tasks;
@@ -582,9 +594,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
     public class WriteDataResult
     {
         public long TotalByteWritten { get; set; }
-        public long TotalByteWritten1 { get; set; }
-        public long TotalByteWritten2 { get; set; }
-        public long TotalByteWritten3 { get; set; }
+        public long[] TotalByteWritePerDisk { get; set; } = [];
         public string CheckSum { get; set; } = string.Empty;
 
         public string ContentType { get; set; } = string.Empty;

@@ -28,7 +28,11 @@ using Business.Exceptions;
 using Business.KeyManagement;
 using Business.Models;
 using Business.Services;
+using Business.Services.BackgroundServices.Base;
 using Business.Services.FileSystem;
+using Business.Services.HostedServices;
+using Business.Services.HostedServices.Base;
+using Business.Services.HostedServices.FileSystem;
 using Business.Services.Interfaces;
 using Business.Services.TaskQueueServices;
 using Business.Services.TaskQueueServices.Base;
@@ -102,16 +106,16 @@ public abstract class Program
 
         builder.Services.AddSingleton<IThumbnailService, ThumbnailService>();
 
-        builder.Services.AddHostedService<FileSystemWatcherService>();
+        builder.Services.AddHostedService<FileSystemWatcherHostedService>();
         
         builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
-        builder.Services.AddHostedService<FileCheckSumService>();
+        builder.Services.AddHostedService<FileCheckSumHostedService>();
 
         builder.Services.AddSingleton<IParallelBackgroundTaskQueue, ParallelBackgroundTaskQueue>();
         builder.Services.AddSingleton<ISequenceBackgroundTaskQueue, SequenceBackgroundTaskQueue>();
         
-        builder.Services.AddHostedService<SequenceQueuedHostedService>();
-        builder.Services.AddHostedService<ParallelQueuedHostedService>();
+        builder.Services.AddHostedService<SequenceQueuedBackgroundService>();
+        builder.Services.AddHostedService<ParallelBackgroundService>();
 
         #region Cultures
 

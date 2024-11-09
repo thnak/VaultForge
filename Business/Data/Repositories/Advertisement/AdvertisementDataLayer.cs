@@ -88,7 +88,11 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
             var findOptions = fieldsToFetch.Any() ? new FindOptions<ArticleModel, ArticleModel>() { Projection = fieldsToFetch.ProjectionBuilder(), Limit = 1 } : null;
             using var cursor = await _dataDb.FindAsync(x => x.Id == objectId, findOptions);
             var article = cursor.FirstOrDefault();
-            if (article != null) return Result<ArticleModel?>.Success(article);
+            if (article != null)
+            {
+                return Result<ArticleModel?>.Success(article);
+            }
+
             return Result<ArticleModel?>.Failure(AppLang.Article_does_not_exist, ErrorType.NotFound);
         }
 

@@ -1,4 +1,5 @@
-﻿@rendermode InteractiveAuto
+﻿@using WebApp.Client.Components.Clock
+@rendermode InteractiveWebAssembly
 @attribute [Route(PageRoutes.Home.Root.Src)]
 
 @* @attribute [Authorize] *@
@@ -12,5 +13,42 @@
 <MudButton OnClick="@Crypting" >Encrypt</MudButton>
 <MudButton OnClick="@DeCrypting" >DeEncrypt</MudButton>
 
-<MudButton Color="Color.Primary" OnClick="@GetWeather" Variant="Variant.Filled" >Get Weather</MudButton>
+<MudButton Color="MudColor.Primary" OnClick="@GetWeather" Variant="Variant.Filled" >Get Weather</MudButton>
 
+<ServerTime></ServerTime>
+
+<ApexChart TItem="MyData"
+           Title="Sample Data">
+
+    <ApexPointSeries TItem="MyData"
+                     Items="Data"
+                     Name="Net Profit"
+                     SeriesType="SeriesType.Bar"
+                     XValue="e => e.Category"
+                     YValue="e=> e.NetProfit" />
+
+    <ApexPointSeries TItem="MyData"
+                     Items="Data"
+                     Name="Revenue"
+                     SeriesType="SeriesType.Bar"
+                     XValue="e => e.Category"
+                     YValue="e=> e.Revenue" />
+</ApexChart>
+    
+
+@code {
+    private List<MyData> Data { get; set; } = new();
+    protected override void OnInitialized()
+    {
+        Data.Add(new MyData { Category = "Jan", NetProfit = 12, Revenue = 33 });
+        Data.Add(new MyData { Category = "Feb", NetProfit = 43, Revenue = 42 });
+        Data.Add(new MyData { Category = "Mar", NetProfit = 112, Revenue = 23 });
+    }
+
+    public class MyData
+    {
+        public string Category { get; set; } = string.Empty;
+        public int NetProfit { get; set; }
+        public int Revenue { get; set; }
+    }
+}

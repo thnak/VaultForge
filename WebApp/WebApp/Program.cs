@@ -18,6 +18,7 @@ using WebApp.Client.Services;
 using WebApp.Client.Services.Http;
 using WebApp.Components;
 using WebApp.MiddleWares;
+using WebApp.Utils;
 using _Imports = WebApp.Client._Imports;
 
 namespace WebApp;
@@ -205,7 +206,9 @@ public class Program
             .AddInteractiveWebAssemblyRenderMode()
             .AddInteractiveServerRenderMode()
             .AddAdditionalAssemblies(typeof(_Imports).Assembly);
-        app.MapHub<PageCreatorHub>("/PageCreatorHub");
+        
+        app.MapSignalRHubs();
+        
         app.Run();
     }
 }

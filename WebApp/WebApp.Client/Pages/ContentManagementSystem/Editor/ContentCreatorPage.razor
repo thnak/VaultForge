@@ -8,13 +8,13 @@
 <PageTitle>@Title</PageTitle>
 
 <SectionContent SectionId="@AppBar.TopBarSection1" >
-    <MudIconButton Color="Color.Primary" Icon="@Icons.Material.Filled.Add" OnClick="@AddNewArticle" ></MudIconButton>
+    <MudIconButton Color="MudColor.Primary" Icon="@Icons.Material.Filled.Add" OnClick="@AddNewArticle" ></MudIconButton>
 </SectionContent>
 
 @if (Loading)
 {
     <SectionContent SectionId="@AppBar.TopBarSection2" >
-        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small" />
+        <MudProgressCircular Color="MudColor.Primary" Indeterminate="true" Size="MudSize.Small" />
     </SectionContent>
 }
 

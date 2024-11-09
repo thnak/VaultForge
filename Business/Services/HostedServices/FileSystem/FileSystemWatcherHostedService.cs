@@ -1,17 +1,17 @@
 ﻿using Business.Business.Interfaces.FileSystem;
+using Business.Services.Ffmpeg;
+using Business.Services.TaskQueueServices.Base.Interfaces;
+using Business.Utils.Helper;
 using BusinessModels.General.SettingModels;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Business.Services.Ffmpeg;
-using Business.Services.TaskQueueServices.Base.Interfaces;
-using Business.Utils.Helper;
 
-namespace Business.Services.FileSystem;
+namespace Business.Services.HostedServices.FileSystem;
 
-public class FileSystemWatcherService(
+public class FileSystemWatcherHostedService(
     IOptions<AppSettings> appSettings,
-    ILogger<FileSystemWatcherService> logger,
+    ILogger<FileSystemWatcherHostedService> logger,
     ISequenceBackgroundTaskQueue taskQueueService,
     IParallelBackgroundTaskQueue parallelBackgroundTaskQueue,
     IFolderSystemBusinessLayer folderSystemBusinessLayer) : IHostedService

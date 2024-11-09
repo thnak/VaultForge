@@ -2,6 +2,16 @@
   "version": 1,
   "dependencies": {
     "net9.0": {
+      "Blazor-ApexCharts": {
+        "type": "Direct",
+        "requested": "[3.5.0, )",
+        "resolved": "3.5.0",
+        "contentHash": "PEl2PflOJOXy/31GDvHYoYmkL8CpEZndWtjGOV9S4PICwXZfUJpv8HFuJK2d8MqdZ/Z+7c2DJRc2OQ8hv8yLDw==",
+        "dependencies": {
+          "Microsoft.AspNetCore.Components": "8.0.8",
+          "Microsoft.AspNetCore.Components.Web": "8.0.8"
+        }
+      },
       "Blazored.Toast": {
         "type": "Direct",
         "requested": "[4.2.1, )",
