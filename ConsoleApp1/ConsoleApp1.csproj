@@ -11,4 +11,8 @@
       <PackageReference Include="Ollama" Version="1.12.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\BrainNet\BrainNet.csproj" />
+    </ItemGroup>
+
 </Project>

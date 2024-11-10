@@ -1,4 +1,5 @@
-﻿using Microsoft.ML.OnnxRuntime.Tensors;
+﻿using Microsoft.ML.OnnxRuntime;
+using Microsoft.ML.OnnxRuntime.Tensors;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
 using SixLabors.ImageSharp.PixelFormats;
@@ -32,7 +33,36 @@ public static class ImageExtension
         var height = image.Height;
 
         var tensorSpan = target.Buffer;
-        
+
+        if (image.DangerousTryGetSinglePixelMemory(out var memory))
+        {
+            Parallel.For(0, width * height, index =>
+            {
+                var pixel = memory.Span[index];
+                WritePixel(tensorSpan.Span, index, pixel);
+            });
+        }
+        else
+        {
+            Parallel.For(0, height, y =>
+            {
+                var rowSpan = image.DangerousGetPixelRowMemory(y).Span;
+                for (int x = 0; x < width; x++)
+                {
+                    var pixel = rowSpan[x];
+                    WritePixel(tensorSpan.Span, x, pixel);
+                }
+            });
+        }
+    }
+
+    public static void PreprocessImage(this Image<Rgb24> image, DenseTensor<Float16> target)
+    {
+        var width = image.Width;
+        var height = image.Height;
+
+        var tensorSpan = target.Buffer;
+
         if (image.DangerousTryGetSinglePixelMemory(out var memory))
         {
             Parallel.For(0, width * height, index =>
@@ -58,5 +88,10 @@ public static class ImageExtension
     private static void WritePixel(Span<float> tensorSpan, int tensorIndex, Rgb24 pixel)
     {
         tensorSpan[tensorIndex] = pixel.R / 255f;
+    }
+
+    private static void WritePixel(Span<Float16> tensorSpan, int tensorIndex, Rgb24 pixel)
+    {
+        tensorSpan[tensorIndex] = (Float16)(pixel.R / 255f);
     }
 }
