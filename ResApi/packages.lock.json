@@ -530,6 +530,16 @@
           "Microsoft.ML.OnnxRuntime.Managed": "1.20.0"
         }
       },
+      "Microsoft.ML.OnnxRuntime.Extensions": {
+        "type": "Transitive",
+        "resolved": "0.13.0",
+        "contentHash": "J99sOl+oWYVPh4T5D1JZgdUvTcX2bOQtKSG1sOm89UnVLDGtG1E2VHz2oHFJTaGyM8C8PrKnK9McYOll+qJduw=="
+      },
+      "Microsoft.ML.OnnxRuntime.Extensions.Dummy": {
+        "type": "Transitive",
+        "resolved": "0.13.0",
+        "contentHash": "cWxpmQ1+g6gxxukcf0b2qweSE8Q+vvCbtFsZtAG2kNKgnRA+NKrxQZE/+GL1miAPX1zcc0WlGcMY2NKFV+/mLQ=="
+      },
       "Microsoft.ML.OnnxRuntime.Managed": {
         "type": "Transitive",
         "resolved": "1.20.0",
@@ -1782,6 +1792,8 @@
           "Microsoft.Extensions.VectorData.Abstractions": "[9.0.0-preview.1.24523.1, )",
           "Microsoft.ML.OnnxRuntime": "[1.20.0, )",
           "Microsoft.ML.OnnxRuntime.DirectML": "[1.20.0, )",
+          "Microsoft.ML.OnnxRuntime.Extensions": "[0.13.0, )",
+          "Microsoft.ML.OnnxRuntime.Extensions.Dummy": "[0.13.0, )",
           "Microsoft.SemanticKernel.Connectors.InMemory": "[1.27.0-preview, )",
           "Newtonsoft.Json": "[13.0.3, )",
           "SixLabors.ImageSharp": "[3.1.5, )",
