@@ -1,5 +1,6 @@
 using Business.Business.Interfaces;
 using Business.Business.Interfaces.FileSystem;
+using Business.Business.Interfaces.User;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.Advertisement;
 using Business.Data.Interfaces.Chat;
@@ -37,8 +38,12 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
         QueueInitializationTask<IFolderSystemDatalayer>();
         QueueInitializationTask<IAdvertisementDataLayer>();
         QueueInitializationTask<IChatWithLlmDataLayer>();
+        QueueInitializationTask<IFaceDataLayer>();
+
+
         QueueInitializationTask<RedundantArrayOfIndependentDisks>();
         QueueInitializationExtendServiceTask<IFolderSystemBusinessLayer>();
+        QueueInitializationExtendServiceTask<IFaceBusinessLayer>();
     }
 
     private void QueueInitializationExtendServiceTask<TDataLayer>() where TDataLayer : IExtendService

@@ -10,7 +10,7 @@ public class YoloBoundingBox
     public int BatchId { get; set; }
 
     /// <summary>
-    /// bounding box with shape x y height width
+    /// bounding box with shape x y width height
     /// </summary>
     public int[] Bbox { get; init; } = [];
 
@@ -36,6 +36,6 @@ public class YoloBoundingBox
 
     public int X => Bbox[0];
     public int Y => Bbox[1];
-    public int Height => Bbox[2];
-    public int Width => Bbox[3];
+    public int Height => Bbox[3];
+    public int Width => Bbox[2];
 }

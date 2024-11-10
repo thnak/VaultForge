@@ -2,7 +2,7 @@
 
 public interface IFaceEmbedding : IDisposable
 {
-    public Task<float[]> GetEmbeddingArray(Stream stream);
-    public Task<float[]> GetEmbeddingArray(string imagePath);
+    public float[] GetEmbeddingArray(Stream stream);
+    public float[] GetEmbeddingArray(string imagePath);
 
 }

@@ -1,12 +1,9 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using BusinessModels.Base;
 
 namespace BusinessModels.System.VersionControlModel;
 
-public class VersionRegisterModel
+public class VersionRegisterModel : BaseModelEntry
 {
-    [BsonId] public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
-
     public string Hash { get; set; } = string.Empty;
 
     public DateTime Time { get; set; }

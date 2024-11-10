@@ -1,12 +1,11 @@
-﻿using MongoDB.Bson;
+﻿using BusinessModels.Base;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace BusinessModels.System.InternetOfThings;
 
-public class IoTRecord
+public class IoTRecord : BaseModelEntry
 {
-    [BsonId] public ObjectId Id { get; set; }
-
     /// <summary>
     /// The timestamp for when the data was recorded
     /// </summary>
@@ -107,6 +106,6 @@ public enum SensorType
     Gyroscope,
     Magnetometer,
     HeartRate,
-    GPS,
+    Gps,
     PingStatus
 }

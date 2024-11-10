@@ -1,19 +1,14 @@
-using System.Text.Json.Serialization;
-using BusinessModels.Converter;
+using BusinessModels.Base;
 using BusinessModels.General.EnumModel;
 using MessagePack;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace BusinessModels.System.FileSystem;
 
 [MessagePackObject]
-public class FileInfoModel
+public class FileInfoModel : BaseModelEntry
 {
-    [JsonConverter(typeof(ObjectIdConverter))]
-    [BsonId]
-    [Key(0)]
-    public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
+   
 
     /// <summary>
     ///     Dùng cho resource có nhiều biến thể như độ phân giải, chất lượng

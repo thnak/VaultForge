@@ -1,13 +1,12 @@
+using BusinessModels.Base;
 using MessagePack;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace BusinessModels.System.FileSystem;
 
 [MessagePackObject]
-public class FileMetadataModel
+public class FileMetadataModel : BaseModelEntry
 {
-    [BsonId] [Key(0)] public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
     [Key(1)] public TimeSpan Duration { get; set; } // Duration of the media file
     [Key(2)] public int? Width { get; set; } // Width of the media (if applicable, e.g., video, image)
     [Key(3)] public int? Height { get; set; } // Height of the media (if applicable, e.g., video, image)

@@ -4,39 +4,14 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.RateLimiting;
 using Business.Authenticate.AuthorizationRequirement;
 using Business.Authenticate.TokenProvider;
-using Business.Business.Interfaces.Advertisement;
-using Business.Business.Interfaces.Chat;
-using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.User;
-using Business.Business.Repositories.Advertisement;
-using Business.Business.Repositories.Chat;
-using Business.Business.Repositories.FileSystem;
-using Business.Business.Repositories.User;
-using Business.Data;
-using Business.Data.Interfaces;
-using Business.Data.Interfaces.Advertisement;
-using Business.Data.Interfaces.Chat;
-using Business.Data.Interfaces.FileSystem;
-using Business.Data.Interfaces.User;
-using Business.Data.Repositories;
-using Business.Data.Repositories.Advertisement;
-using Business.Data.Repositories.Chat;
-using Business.Data.Repositories.FileSystem;
-using Business.Data.Repositories.User;
-using Business.Data.StorageSpace;
+using Business.Business.Utils;
 using Business.Exceptions;
 using Business.KeyManagement;
 using Business.Models;
-using Business.Services;
-using Business.Services.BackgroundServices.Base;
-using Business.Services.FileSystem;
-using Business.Services.HostedServices;
-using Business.Services.HostedServices.Base;
-using Business.Services.HostedServices.FileSystem;
-using Business.Services.Interfaces;
-using Business.Services.TaskQueueServices;
-using Business.Services.TaskQueueServices.Base;
-using Business.Services.TaskQueueServices.Base.Interfaces;
+using Business.Services.Configure;
+using Business.Services.Http.CircuitBreakers;
+using Business.Utils.HttpExtension;
 using BusinessModels.Converter;
 using BusinessModels.General.SettingModels;
 using BusinessModels.Resources;
@@ -85,37 +60,12 @@ public abstract class Program
         builder.Services.Configure<AppCertificate>(builder.Configuration.GetSection("AppCertificate"));
         builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
-        builder.Services.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
+        #region Additionnal services
 
-        builder.Services.AddSingleton<RedundantArrayOfIndependentDisks>();
+        builder.Services.AddDataServiceCollection();
+        builder.Services.AddIotQueueService();
 
-        builder.Services.AddSingleton<IUserDataLayer, UserDataLayer>();
-        builder.Services.AddSingleton<IUserBusinessLayer, UserBusinessLayer>();
-
-        builder.Services.AddSingleton<IFolderSystemDatalayer, FolderSystemDatalayer>();
-        builder.Services.AddSingleton<IFolderSystemBusinessLayer, FolderSystemBusinessLayer>();
-
-        builder.Services.AddSingleton<IFileSystemDatalayer, FileSystemDatalayer>();
-        builder.Services.AddSingleton<IFileSystemBusinessLayer, FileSystemBusinessLayer>();
-
-        builder.Services.AddSingleton<IAdvertisementDataLayer, AdvertisementDataLayer>();
-        builder.Services.AddSingleton<IAdvertisementBusinessLayer, AdvertisementBusinessLayer>();
-
-        builder.Services.AddSingleton<IChatWithLlmDataLayer, ChatWithLlmDataLayer>();
-        builder.Services.AddSingleton<IChatWithLlmBusinessLayer, ChatWithLlmBusinessLayer>();
-
-        builder.Services.AddSingleton<IThumbnailService, ThumbnailService>();
-
-        builder.Services.AddHostedService<FileSystemWatcherHostedService>();
-        
-        builder.Services.AddHostedService<HostApplicationLifetimeEventsHostedService>();
-        builder.Services.AddHostedService<FileCheckSumHostedService>();
-
-        builder.Services.AddSingleton<IParallelBackgroundTaskQueue, ParallelBackgroundTaskQueue>();
-        builder.Services.AddSingleton<ISequenceBackgroundTaskQueue, SequenceBackgroundTaskQueue>();
-        
-        builder.Services.AddHostedService<SequenceQueuedBackgroundService>();
-        builder.Services.AddHostedService<ParallelBackgroundService>();
+        #endregion
 
         #region Cultures
 
@@ -501,6 +451,18 @@ public abstract class Program
 
         #endregion
 
+        #region CurcuitBreaker
+
+        builder.Services.AddCircuitBreaker();
+
+        #endregion
+
+        #region SignalR
+
+        builder.Services.AddSignalRService();
+
+        #endregion
+
         #region Exception Handler
 
         builder.Services.AddExceptionHandler<ErrorHandling>();
@@ -533,9 +495,10 @@ public abstract class Program
 
         app.UseAuthorization();
         app.MapControllers();
-        
+
         app.UseExceptionHandler(_ => { });
         app.UseMiddleware<GlobalMiddleware>();
+        app.MapSignalRHubs();
 
         app.Run();
     }

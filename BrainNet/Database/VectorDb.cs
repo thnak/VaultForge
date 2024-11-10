@@ -14,7 +14,7 @@ namespace BrainNet.Database;
 [Experimental("SKEXP0020")]
 public class VectorDb : IVectorDb
 {
-    private IVectorStoreRecordCollection<int, VectorRecord> Collection { get; }
+    private IVectorStoreRecordCollection<Guid, VectorRecord> Collection { get; }
     private IEmbeddingGenerator<string, Embedding<float>> Generator { get; }
     private SemaphoreSlim Semaphore { get; } = new(1, 1);
     private ILogger Logger { get; set; }
@@ -22,6 +22,7 @@ public class VectorDb : IVectorDb
     private string ConnectionString { get; }
     private string Image2TextModelName { get; }
     private double SearchThresholds { get; }
+    private int TotalRecord { get; set; }
 
     public VectorDb(VectorDbConfig config, ILogger logger)
     {
@@ -31,7 +32,7 @@ public class VectorDb : IVectorDb
         Image2TextModelName = config.OllamaImage2TextModelName;
         SearchThresholds = config.SearchThresholds;
 
-        Collection = vectorStore.GetCollection<int, VectorRecord>(config.Name);
+        Collection = vectorStore.GetCollection<Guid, VectorRecord>(config.Name);
         Generator = new OllamaEmbeddingGenerator(new Uri(ConnectionString), config.OllamaTextEmbeddingModelName);
     }
     
@@ -66,12 +67,12 @@ public class VectorDb : IVectorDb
         }
     }
 
-    public async Task DeleteRecordAsync(int key, CancellationToken cancellationToken = default)
+    public async Task DeleteRecordAsync(Guid key, CancellationToken cancellationToken = default)
     {
         await Collection.DeleteAsync(key, cancellationToken: cancellationToken);
     }
 
-    public Task DeleteRecordAsync(IReadOnlyCollection<int> keys, CancellationToken cancellationToken = default)
+    public Task DeleteRecordAsync(IReadOnlyCollection<Guid> keys, CancellationToken cancellationToken = default)
     {
         return Collection.DeleteBatchAsync(keys, cancellationToken: cancellationToken);
     }
@@ -107,6 +108,7 @@ public class VectorDb : IVectorDb
             IncludeTotalCount = true
         };
         var cursor = await Collection.VectorizedSearchAsync(vector, searchOptions, cancellationToken: cancellationToken);
+        
         await foreach (var result in cursor.Results.WithCancellation(cancellationToken))
         {
             var score = result.Score ?? 0;
@@ -114,6 +116,18 @@ public class VectorDb : IVectorDb
             
             yield return new SearchScore<VectorRecord>(result.Record, result.Score ?? 0);
         }
+    }
+
+    public async Task<long> Count(IReadOnlyCollection<float> vector, CancellationToken cancellationToken = default)
+    {
+        var searchOptions = new VectorSearchOptions()
+        {
+            VectorPropertyName = "Vector",
+            IncludeVectors = false,
+            IncludeTotalCount = true
+        };
+        var cursor = await Collection.VectorizedSearchAsync(vector, searchOptions, cancellationToken: cancellationToken);
+        return cursor.TotalCount ?? 0;
     }
 
     public async Task Init()

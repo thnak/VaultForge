@@ -5,7 +5,7 @@ namespace BusinessModels.General.Results;
 
 public class Result<T>
 {
-    [MaybeNull] public T Value { get; }
+    public T? Value { get; }
 
     [MemberNotNullWhen(true, nameof(Value))]
     public bool IsSuccess { get; }

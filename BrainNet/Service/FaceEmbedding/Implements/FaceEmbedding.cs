@@ -49,29 +49,28 @@ public class FaceEmbedding : IFaceEmbedding
         InputDimensions = Session.InputMetadata.First().Value.Dimensions;
     }
 
-    public Task<float[]> GetEmbeddingArray(Stream stream)
+    public float[] GetEmbeddingArray(Stream stream)
     {
         Image<Rgb24> image = Image.Load<Rgb24>(stream);
         return ProcessImageAsync(image);
     }
 
-    public Task<float[]> GetEmbeddingArray(string imagePath)
+    public float[] GetEmbeddingArray(string imagePath)
     {
         Image<Rgb24> image = Image.Load<Rgb24>(imagePath);
         return ProcessImageAsync(image);
     }
 
-    private async Task<float[]> ProcessImageAsync(Image<Rgb24> image)
+    private float[] ProcessImageAsync(Image<Rgb24> image)
     {
         int[] tensorShape = [..InputDimensions];
         tensorShape[0] = 1;
         image.Mutate(x => x.Resize(tensorShape[2], tensorShape[3]));
-        DenseTensor<Float16> processedImage = new(tensorShape);
+        DenseTensor<float> processedImage = new(tensorShape);
         image.PreprocessImage(processedImage);
         using var inputOrtValue = OrtValue.CreateTensorValueFromMemory(OrtMemoryInfo.DefaultInstance, processedImage.Buffer, tensorShape.Select(x => (long)x).ToArray());
-        
+
         using var outputs = Session.Run(new RunOptions(), InputNames, [inputOrtValue], OutputNames);
-        // var outputs = await Session.RunAsync(new RunOptions(), InputNames, [inputOrtValue], OutputNames, []);
         return outputs.First().GetTensorDataAsSpan<float>().ToArray();
     }
 

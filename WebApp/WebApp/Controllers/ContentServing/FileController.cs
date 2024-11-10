@@ -594,9 +594,7 @@ public class FilesController(
         }
 
         var files = fileCodes.Select(fileServe.Get).Where(x => x != default).ToList();
-
-        Dictionary<string, FolderContent> contentsDict = new();
-
+        
 
         foreach (var file in files)
         {
@@ -608,10 +606,6 @@ public class FilesController(
 
             var fileName = file.RelativePath.Split("/").Last();
             file.RelativePath = targetFolder.RelativePath + '/' + fileName;
-
-            var fileId = file.Id.ToString();
-            contentsDict.Remove(fileId);
-           
         }
         
         await folderServe.UpdateAsync(targetFolder, cancelToken);

@@ -184,7 +184,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         IAsyncCursor<UserModel>? cursor;
         if (ObjectId.TryParse(key, out ObjectId objectId))
         {
-            cursor = await _dataDb.FindAsync(x => x.ObjectId == objectId, findOptions);
+            cursor = await _dataDb.FindAsync(x => x.Id == objectId, findOptions);
         }
         else
         {
@@ -220,7 +220,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
             foreach (var user in cursor.Current)
             {
                 yield return user;
-            }   
+            }
         }
     }
 
@@ -230,32 +230,11 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         {
             await _semaphore.WaitAsync(cancellationToken);
 
-            ObjectId.TryParse(key, out var id);
-            var filter = Builders<UserModel>.Filter.Eq(f => f.ObjectId, id);
+            var result = await _dataDb.UpdateAsync(key, updates, cancellationToken);
+            if (result.IsSuccess)
+                return (true, result.Message);
 
-            // Build the update definition by combining multiple updates
-            var updateDefinitionBuilder = Builders<UserModel>.Update;
-            var updateDefinitions = new List<UpdateDefinition<UserModel>>();
-
-            if (updates.Any())
-            {
-                foreach (var update in updates)
-                {
-                    var fieldName = update.Key;
-                    var fieldValue = update.Value;
-
-                    // Add the field-specific update to the list
-                    updateDefinitions.Add(updateDefinitionBuilder.Set(fieldName, fieldValue));
-                }
-
-                // Combine all update definitions into one
-                var combinedUpdate = updateDefinitionBuilder.Combine(updateDefinitions);
-
-                await _dataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
-            }
-
-
-            return (true, AppLang.Update_successfully);
+            return (false, AppLang.User_update_failed);
         }
         catch (OperationCanceledException)
         {

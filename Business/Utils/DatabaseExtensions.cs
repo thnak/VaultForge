@@ -1,4 +1,8 @@
 using System.Linq.Expressions;
+using Business.Models;
+using Business.Models.RetrievalAugmentedGeneration.Vector;
+using BusinessModels.Base;
+using BusinessModels.General.Results;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -37,7 +41,7 @@ public static class DatabaseExtensions
 
         throw new InvalidOperationException("Invalid expression");
     }
-    
+
     public static ProjectionDefinition<T> ProjectionBuilder<T>(this Expression<Func<T, object>>[] expression)
     {
         ProjectionDefinition<T> projection = new BsonDocumentProjectionDefinition<T>(new BsonDocument());
@@ -56,6 +60,39 @@ public static class DatabaseExtensions
 
             projection = projectionBuilder.Combine(bsonProjection);
         }
+
         return projection;
-    } 
+    }
+
+    public static async Task<Result<bool>> UpdateAsync<T>(this IMongoCollection<T> collection, string key, FieldUpdate<T> updates, CancellationToken cancellationToken = default) where T : BaseModelEntry
+    {
+        if (ObjectId.TryParse(key, out var id))
+        {
+            var filter = Builders<T>.Filter.Eq(f => f.Id, id);
+
+            // Build the update definition by combining multiple updates
+            var updateDefinitionBuilder = Builders<T>.Update;
+            var updateDefinitions = new List<UpdateDefinition<T>>();
+
+            if (updates.Any())
+            {
+                foreach (var update in updates)
+                {
+                    var fieldName = update.Key;
+                    var fieldValue = update.Value;
+
+                    // Add the field-specific update to the list
+                    updateDefinitions.Add(updateDefinitionBuilder.Set(fieldName, fieldValue));
+                }
+
+                // Combine all update definitions into one
+                var combinedUpdate = updateDefinitionBuilder.Combine(updateDefinitions);
+
+                await collection.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
+                return Result<bool>.Success("");
+            }
+        }
+
+        return Result<bool>.Failure("Invalid key", ErrorType.Validation);
+    }
 }

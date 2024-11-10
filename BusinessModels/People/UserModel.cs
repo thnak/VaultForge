@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using BusinessModels.Base;
 using MessagePack;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -6,13 +7,8 @@ using MongoDB.Bson.Serialization.Attributes;
 namespace BusinessModels.People;
 
 [MessagePackObject]
-public class UserModel
+public class UserModel : BaseModelEntry
 {
-    [BsonId]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Key(0)]
-    public ObjectId ObjectId { get; set; } = ObjectId.GenerateNewId();
-
     [Key(1)] public string UserName { get; set; } = string.Empty;
 
     [Key(19)] public string Password { get; set; } = string.Empty;
@@ -69,5 +65,6 @@ public class UserModel
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(17)]
     public DateTime LastLogin { get; set; }
+
     [Key(18)] public string Avatar { get; set; } = "default_user.jpg";
 }

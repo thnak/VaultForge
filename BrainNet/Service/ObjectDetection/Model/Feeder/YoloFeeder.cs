@@ -32,9 +32,8 @@ public class YoloFeeder
         ImageShape.Add(imageShape);
     }
 
-    public void SetTensor(string path)
+    public void SetTensor(Image<Rgb24> image)
     {
-        Image<Rgb24> image = Image.Load<Rgb24>(path);
         DenseTensor<float> tensor = new DenseTensor<float>([3, image.Height, image.Width]);
         image.Image2DenseTensor(tensor);
         int[] imageShape = [image.Height, image.Width];
@@ -44,6 +43,12 @@ public class YoloFeeder
         Dwdhs.Add(lettered.Item3);
         Ratios.Add(lettered.Item2);
         ImageShape.Add(imageShape);
+    }
+    
+    public void SetTensor(string path)
+    {
+        Image<Rgb24> image = Image.Load<Rgb24>(path);
+        SetTensor(image);
     }
 
     public (DenseTensor<float> tensor, List<float[]> dwdhs, List<float[]> ratios, List<int[]> imageShape) GetBatchTensor()

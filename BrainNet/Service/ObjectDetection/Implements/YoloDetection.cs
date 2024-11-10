@@ -16,8 +16,10 @@ public class YoloDetection : IYoloDetection
     private IOptions<BrainNetSettingModel> Options { get; }
     private string[] InputNames { get; set; } = null!;
     private string[] OutputNames { get; set; } = null!;
-    private int[] InputDimensions { get; set; } = [];
+    public int[] InputDimensions { get; set; } = [];
+    public int[] OutputDimensions { get; set; } = [];
     public IReadOnlyCollection<string> CategoryReadOnlyCollection { get; set; } = [];
+    public int Stride { get; set; }
 
     public YoloDetection(string modelPath)
     {
@@ -41,6 +43,7 @@ public class YoloDetection : IYoloDetection
         InputNames = Session.GetInputNames();
         OutputNames = Session.GetOutputNames();
         InputDimensions = Session.InputMetadata.First().Value.Dimensions;
+        OutputDimensions = Session.OutputMetadata.First().Value.Dimensions;
     }
 
     private SessionOptions InitSessionOption()
@@ -87,6 +90,15 @@ public class YoloDetection : IYoloDetection
 
             CategoryReadOnlyCollection = list.ToArray();
         }
+
+        if (customMetadata.TryGetValue("stride", out var strideString))
+        {
+            List<float>? Strides = JsonConvert.DeserializeObject<List<float>>(strideString);
+            if (Strides != null)
+            {
+                Stride = Strides.Any() ? (int)Strides.Max() : 32;
+            }
+        }
     }
 
     public void Dispose()
@@ -99,9 +111,10 @@ public class YoloDetection : IYoloDetection
         var feed = tensorFeed.GetBatchTensor();
         var tensor = feed.tensor;
         long[] newDim = [tensor.Dimensions[0], tensor.Dimensions[1], tensor.Dimensions[2], tensor.Dimensions[3]];
+        long[] outDim = [..OutputDimensions];
+        outDim[0] = newDim[0];
         using var inputOrtValue = OrtValue.CreateTensorValueFromMemory(OrtMemoryInfo.DefaultInstance, tensor.Buffer, newDim);
         var inputs = new Dictionary<string, OrtValue> { { InputNames.First(), inputOrtValue } };
-
         using var fromResult = Session.Run(new RunOptions(), inputs, OutputNames);
 
         float[] resultArrays = fromResult[0].Value.GetTensorDataAsSpan<float>().ToArray();

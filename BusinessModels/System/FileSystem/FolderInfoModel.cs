@@ -1,21 +1,14 @@
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using BusinessModels.Converter;
+using BusinessModels.Base;
 using BusinessModels.General.EnumModel;
 using MessagePack;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace BusinessModels.System.FileSystem;
 
 [MessagePackObject]
-public class FolderInfoModel
+public class FolderInfoModel : BaseModelEntry
 {
-    [JsonConverter(typeof(ObjectIdConverter))]
-    [BsonId]
-    [Key(0)]
-    public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
-
     /// <summary>
     ///     Name of the folder
     /// </summary>
@@ -50,8 +43,7 @@ public class FolderInfoModel
     [Key(7)]
     public DateTime CreateDate { get; set; }
 
-    [BsonIgnore]
-    private DateTime _createTime;
+    [BsonIgnore] private DateTime _createTime;
 
     /// <summary>
     ///     Create time of the file entry
@@ -67,7 +59,7 @@ public class FolderInfoModel
             CreateDate = _createTime.Date;
         }
     }
-    
+
     /// <summary>
     ///     Last modified date of the file
     /// </summary>

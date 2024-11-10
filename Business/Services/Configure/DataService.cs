@@ -38,7 +38,7 @@ public static class DataService
     public static void AddDataServiceCollection(this IServiceCollection service)
     {
         service.AddAdvancedSystemServices();
-        
+
         service.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
 
         service.AddSingleton<RedundantArrayOfIndependentDisks>();
@@ -61,6 +61,8 @@ public static class DataService
         service.AddSingleton<IIoTDataLayer, IoTDataLayer>();
         service.AddSingleton<IIoTBusinessLayer, IoTBusinessLayer>();
 
+        service.AddSingleton<IFaceDataLayer, FaceDataLayer>();
+        service.AddSingleton<IFaceBusinessLayer, FaceBusinessLayer>();
 
         service.AddHostedService<HostApplicationLifetimeEventsHostedService>();
 

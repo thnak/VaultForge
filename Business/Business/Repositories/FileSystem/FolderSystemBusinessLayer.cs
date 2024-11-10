@@ -68,6 +68,11 @@ public class FolderSystemBusinessLayer(
         }
     }
 
+    public Task<Result<List<SearchScore<VectorRecord>>?>> SearchVectorAsync(float[] vector, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
     [Experimental("SKEXP0020")]
     private async Task<IVectorDb> GetOrInitCollection(string userName)
     {

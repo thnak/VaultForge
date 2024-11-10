@@ -1,13 +1,10 @@
-﻿using MongoDB.Bson;
+﻿using BusinessModels.Base;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace BusinessModels.System.FileSystem;
 
-public class FileRaidDataBlockModel
+public class FileRaidDataBlockModel : BaseModelEntry
 {
-    [BsonId]
-    public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
-
     /// <summary>
     /// Liên kết với fileRaidModel
     /// </summary>
@@ -25,9 +22,9 @@ public class FileRaidDataBlockModel
     public DateTime ModificationTime { get; set; } = DateTime.Now;
 
     public long Size { get; set; }
-    
+
     public FileRaidStatus Status { get; set; }
-    
+
     public int Index { get; set; }
 }
 

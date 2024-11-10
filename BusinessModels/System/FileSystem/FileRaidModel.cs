@@ -1,4 +1,4 @@
-﻿using MongoDB.Bson;
+﻿using BusinessModels.Base;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace BusinessModels.System.FileSystem;
@@ -6,10 +6,8 @@ namespace BusinessModels.System.FileSystem;
 /// <summary>
 /// Mỗi đối tượng này ứng với 1 tập tin
 /// </summary>
-public class FileRaidModel
+public class FileRaidModel : BaseModelEntry
 {
-    [BsonId] public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
-
     /// <summary>
     /// Đường dẫn đến model hiện tại, Unique
     /// </summary>

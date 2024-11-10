@@ -3,7 +3,7 @@ using Business.Exceptions;
 using Business.Services;
 using Business.Services.Configure;
 using Business.Services.Http.CircuitBreakers;
-using Business.SocketHubs;
+using Business.Utils.HttpExtension;
 using BusinessModels.Converter;
 using BusinessModels.General.SettingModels;
 using BusinessModels.Resources;
@@ -18,7 +18,6 @@ using WebApp.Client.Services;
 using WebApp.Client.Services.Http;
 using WebApp.Components;
 using WebApp.MiddleWares;
-using WebApp.Utils;
 using _Imports = WebApp.Client._Imports;
 
 namespace WebApp;
@@ -116,25 +115,7 @@ public class Program
 
         #region SignalR
 
-        StaticCompositeResolver.Instance.Register(
-            StandardResolver.Instance,
-            NativeDecimalResolver.Instance,
-            NativeGuidResolver.Instance,
-            NativeDateTimeResolver.Instance,
-            MongoObjectIdResolver.INSTANCE);
-
-        builder.Services.AddSignalR(options =>
-            {
-                options.EnableDetailedErrors = true;
-                options.MaximumReceiveMessageSize = int.MaxValue;
-                options.MaximumParallelInvocationsPerClient = 100;
-            }).AddJsonProtocol(options => { options.PayloadSerializerOptions.Converters.Add(new ObjectIdConverter()); })
-            .AddMessagePackProtocol(options =>
-            {
-                options.SerializerOptions = MessagePackSerializerOptions.Standard
-                    .WithResolver(StaticCompositeResolver.Instance)
-                    .WithSecurity(MessagePackSecurity.UntrustedData);
-            });
+        builder.Services.AddSignalRService();
 
         #endregion
 

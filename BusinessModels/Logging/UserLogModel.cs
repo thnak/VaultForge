@@ -1,15 +1,12 @@
-﻿using MessagePack;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using BusinessModels.Base;
+using MessagePack;
 
 namespace BusinessModels.Logging;
 
 [MessagePackObject]
-public class UserLogModel
+public class UserLogModel : BaseModelEntry
 {
-    [BsonId] [Key(0)] public ObjectId ObjectId { get; set; } = ObjectId.GenerateNewId();
-
-    [Key(1)] public string Id { get; set; } = Guid.NewGuid().ToString();
+    [Key(1)] public string LogId { get; set; } = Guid.NewGuid().ToString();
 
     [Key(2)] public int Time { get; set; }
 

@@ -112,7 +112,7 @@ public class FilesController(
     //     var webpImageContent = file.ParentResource.FirstOrDefault(x => x is { Classify: FileClassify.M3U8File or FileClassify.M3U8FileSegment or FileClassify.ThumbnailWebpFile });
     //     if (webpImageContent != null)
     //     {
-    //         var resId = webpImageContent.Id.Split(".").First();
+    //         var resId = webpImageContent.LogId.Split(".").First();
     //         var webpImage = fileServe.Get(resId);
     //         if (webpImage != null)
     //         {
@@ -603,9 +603,7 @@ public class FilesController(
         }
 
         var files = fileCodes.Select(fileServe.Get).Where(x => x != default).ToList();
-
-        Dictionary<string, FolderContent> contentsDict = new();
-
+        
         foreach (var file in files)
         {
             if (file == default)
@@ -618,7 +616,6 @@ public class FilesController(
             file.RelativePath = targetFolder.RelativePath + '/' + fileName;
 
             var fileId = file.Id.ToString();
-            contentsDict.Remove(fileId);
         }
 
 

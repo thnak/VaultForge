@@ -46,7 +46,7 @@ public class YoloPrediction
                 int batchId = (int)slice[0];
                 float[] boxArray = [slice[1], slice[2], slice[3], slice[4]];
                 float[] doubleDwDhs = [Dwdhs[batchId][1], Dwdhs[batchId][0], Dwdhs[batchId][1], Dwdhs[batchId][0]];
-
+                int[] oriImageShapes = ImageShapes[batchId];
                 boxArray[0] -= doubleDwDhs[0];
                 boxArray[1] -= doubleDwDhs[1];
                 boxArray[2] -= doubleDwDhs[2];
@@ -61,7 +61,7 @@ public class YoloPrediction
                     Score = slice[6],
                     ClassName = Categories[clsIdx],
                     Box = box,
-                    Bbox = Xyxy2Xywh(box)
+                    Bbox = Xyxy2Xywh(box, oriImageShapes[0], oriImageShapes[1])
                 });
             });
         }
@@ -73,14 +73,16 @@ public class YoloPrediction
     /// convert xyxy to xywh 
     /// </summary>
     /// <param name="inputs"></param>
+    /// <param name="imageHeight"></param>
+    /// <param name="imageWidth"></param>
     /// <returns></returns>
-    private static int[] Xyxy2Xywh(IReadOnlyList<int> inputs)
+    private int[] Xyxy2Xywh(IReadOnlyList<int> inputs, int imageHeight, int imageWidth)
     {
         var feed = new int[inputs.Count];
         feed[0] = inputs[0];
         feed[1] = inputs[1];
-        feed[2] = inputs[2] - inputs[0];
-        feed[3] = inputs[3] - inputs[1];
+        feed[2] = Math.Min(inputs[2], imageWidth) - inputs[0];
+        feed[3] = Math.Min(inputs[3], imageHeight) - inputs[1];
         return feed;
     }
 }
