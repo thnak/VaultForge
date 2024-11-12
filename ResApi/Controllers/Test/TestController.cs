@@ -87,6 +87,58 @@ public class TestController(ILogger<TestController> logger, IFaceBusinessLayer f
         return Ok();
     }
 
+    [HttpGet("test2")]
+    public async Task<IActionResult> Index2()
+    {
+        using var faceEmbedding = new FaceEmbedding("C:/Users/thanh/Git/CodeWithMe/ConsoleApp1/arcfaceresnet100-8.onnx");
+
+        string[] allowedExtensions = { ".jpg", ".jpeg", ".png", ".bmp", ".gif" };
+        string folderPath = "C:/Users/thanh/Downloads/archive/Faces/Faces";
+
+        var imageFiles = new List<string>();
+        foreach (var fileImage in Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories).Where(file => allowedExtensions.Contains(Path.GetExtension(file).ToLower())))
+        {
+            imageFiles.Add(fileImage);
+        }
+
+        logger.LogInformation($"Found {imageFiles.Count} images");
+
+        var fileGroupByName = imageFiles.GroupBy(image => Path.GetFileNameWithoutExtension(image).Split("_").First());
+
+        foreach (var fileGroup in fileGroupByName)
+        {
+            foreach (var file in fileGroup)
+            {
+                var vector = faceEmbedding.GetEmbeddingArray(file);
+
+                var faceStorage = await faceBusinessLayer.SearchVectorAsync(vector);
+                if (faceStorage.IsSuccess)
+                {
+                    var face = faceStorage.Value.First();
+                    if (face.Score <= 0.98)
+                    {
+                        logger.LogInformation($"Found vector {face.Value.Key} for {fileGroup.Key} {face.Score:P1}");
+                        await faceBusinessLayer.CreateAsync(new FaceVectorStorageModel()
+                        {
+                            Vector = vector,
+                            Owner = fileGroup.Key ?? string.Empty,
+                        });
+                    }
+                }
+                else
+                {
+                    logger.LogWarning("Failed to find vector");
+                    await faceBusinessLayer.CreateAsync(new FaceVectorStorageModel()
+                    {
+                        Vector = vector,
+                        Owner = fileGroup.Key ?? string.Empty,
+                    });
+                }
+            }
+        }
+
+        return Ok();
+    }
 
     [HttpPost("seach-face")]
     [AllowAnonymous]

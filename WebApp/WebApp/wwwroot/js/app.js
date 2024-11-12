@@ -9,7 +9,8 @@ if ('serviceWorker' in navigator) {
 
 window.CloseProgressBar = () => {
     const progressWrapper = document.getElementById("progress-wrapper");
-    progressWrapper.classList.add('closed');
+    if(progressWrapper)
+        progressWrapper.classList.add('closed');
 }
 
 window.requestNotificationPermission = async () => {

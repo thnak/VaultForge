@@ -10,6 +10,6 @@ public class VectorRecord
     [VectorStoreRecordData] public string Title { get; set; } = string.Empty;
     [VectorStoreRecordData] public string Description { get; set; } = string.Empty;
 
-    [VectorStoreRecordVector(128, DistanceFunction.CosineSimilarity)]
+    [VectorStoreRecordVector(512, DistanceFunction.CosineSimilarity)]
     public ReadOnlyMemory<float> Vector { get; set; }
 }

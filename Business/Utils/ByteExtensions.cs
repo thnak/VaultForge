@@ -47,10 +47,9 @@ public static class ByteExtensions
         byte[] result = new byte[length];
         data.First().CopyTo(result, 0);
 
-        int loopLenght = data.Length - 1;
-        for (int i = 1; i < loopLenght; i++)
+        for (int i = 1; i < data.Length; i++)
         {
-            result.XorParity(data[i + 1]).CopyTo(result, 0);
+            result.XorParity(data[i]).CopyTo(result, 0);
         }
 
         return result;

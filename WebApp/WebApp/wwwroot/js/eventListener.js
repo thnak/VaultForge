@@ -9,6 +9,7 @@ window.deleteTemplateCache = () => {
 window.Download = (url) => {
     const ele = document.createElement("a");
     ele.href = url;
+    ele.download = url;
     ele.classList.add('d-none');
     document.body.appendChild(ele);
     ele.click();
@@ -120,7 +121,7 @@ async function PageChangeSize() {
 // Events Listener
 //
 
-window.InitAppEventListener = () => {
+window.InitAppEventListener = async () => {
     window.addEventListener("pagehide", PageHideEvent);
     window.addEventListener("pageshow", PageShowEvent);
     window.addEventListener("contextmenu", ContextMenuEvent);
@@ -132,5 +133,5 @@ window.InitAppEventListener = () => {
     document.addEventListener("fullscreenchange", FullScreenEvent);
     window.addEventListener('resize', PageChangeSize);
     console.log("Init event listener");
-    DotNet.invokeMethodAsync(assemblyName, 'TouchEventListenerAsync', "ontouchstart" in document.documentElement);
+    await DotNet.invokeMethodAsync(assemblyName, 'TouchEventListenerAsync', "ontouchstart" in document.documentElement);
 }
