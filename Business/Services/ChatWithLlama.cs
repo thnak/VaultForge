@@ -1,6 +1,6 @@
 ﻿using Business.Business.Interfaces.Advertisement;
-using Business.Services.OllamaToolCallingServices.Implement;
-using Business.Services.OllamaToolCallingServices.Interfaces;
+// using Business.Services.OllamaToolCallingServices.Implement;
+// using Business.Services.OllamaToolCallingServices.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Ollama;
 
@@ -55,19 +55,19 @@ public class ChatWithLlama : IDisposable
 
     private void InitCallService()
     {
-        var service = new MathService();
-        var timeService = new TimeService();
-        var weatherService = new WeatherService("https://api.weatherapi.com");
-        var webCrawler = new LamaWebCrawlerService();
-
-        var commandService = new FileSystemHandlerService();
+        // var service = new MathService();
+        // var timeService = new TimeService();
+        // var weatherService = new WeatherService("https://api.weatherapi.com");
+        // var webCrawler = new LamaWebCrawlerService();
+        //
+        // var commandService = new FileSystemHandlerService();
         
         
-        _chatClient.AddToolService(timeService.AsTools(), timeService.AsCalls());
-        _chatClient.AddToolService(service.AsTools(), service.AsCalls());
-        _chatClient.AddToolService(weatherService.AsTools(), weatherService.AsCalls());
-        _chatClient.AddToolService(webCrawler.AsTools(), webCrawler.AsCalls());
-        _chatClient.AddToolService(commandService.AsTools(), commandService.AsCalls());
+        // _chatClient.AddToolService(timeService.AsTools(), timeService.AsCalls());
+        // _chatClient.AddToolService(service.AsTools(), service.AsCalls());
+        // _chatClient.AddToolService(weatherService.AsTools(), weatherService.AsCalls());
+        // _chatClient.AddToolService(webCrawler.AsTools(), webCrawler.AsCalls());
+        // _chatClient.AddToolService(commandService.AsTools(), commandService.AsCalls());
         
         if (_serviceProvider != default)
         {
@@ -75,11 +75,11 @@ public class ChatWithLlama : IDisposable
             var adv = scope.ServiceProvider.GetService<IAdvertisementBusinessLayer>();
             if (adv == default)
             {
-                return;
+                // return;
             }
 
-            var contentManagementService = new ContentManagementService(adv);
-            _chatClient.AddToolService(contentManagementService.AsTools(), contentManagementService.AsCalls());
+            // var contentManagementService = new ContentManagementService(adv);
+            // _chatClient.AddToolService(contentManagementService.AsTools(), contentManagementService.AsCalls());
         }
     }
 

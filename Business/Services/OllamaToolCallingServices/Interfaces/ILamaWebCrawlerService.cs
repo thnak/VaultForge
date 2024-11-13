@@ -3,7 +3,7 @@ using Ollama;
 
 namespace Business.Services.OllamaToolCallingServices.Interfaces;
 
-[OllamaTools]
+// [OllamaTools]
 public interface ILamaWebCrawlerService
 {
     [Description("collects website data from the provided website url")]

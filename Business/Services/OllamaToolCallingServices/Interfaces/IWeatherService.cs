@@ -3,7 +3,7 @@ using Ollama;
 
 namespace Business.Services.OllamaToolCallingServices.Interfaces;
 
-[OllamaTools]
+// [OllamaTools]
 public interface IWeatherService
 {
     [Description("get current weather in a given locatiion")]

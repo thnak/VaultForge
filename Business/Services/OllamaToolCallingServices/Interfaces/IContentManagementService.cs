@@ -3,7 +3,7 @@ using Ollama;
 
 namespace Business.Services.OllamaToolCallingServices.Interfaces;
 
-[OllamaTools]
+// [OllamaTools]
 public interface IContentManagementService
 {
     [Description("check supported iso code languages of article handler")]

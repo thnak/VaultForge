@@ -3,7 +3,7 @@ using Ollama;
 
 namespace Business.Services.OllamaToolCallingServices.Interfaces;
 
-[OllamaTools]
+// [OllamaTools]
 public interface IFileSystemHandlerService
 {
     [Description("read video stream information by FFMPEG")]

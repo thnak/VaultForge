@@ -8,15 +8,15 @@
 
     <ItemGroup>
         <PackageReference Include="FluentValidation" Version="11.10.0" />
-        <PackageReference Include="MessagePack" Version="2.5.187"/>
-        <PackageReference Include="MessagePack.Annotations" Version="2.5.187"/>
-        <PackageReference Include="MessagePackAnalyzer" Version="2.5.187">
+        <PackageReference Include="MessagePack" Version="2.5.192" />
+        <PackageReference Include="MessagePack.Annotations" Version="2.5.192" />
+        <PackageReference Include="MessagePackAnalyzer" Version="2.5.192">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.0-rc.2.24474.3" />
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" Version="9.0.0-rc.2.24474.3" />
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="9.0.0-rc.2.24474.3" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" Version="9.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="9.0.0" />
         <PackageReference Include="MongoDB.Bson" Version="3.0.0" />
         <PackageReference Include="MudBlazor" Version="7.15.0" />
     </ItemGroup>

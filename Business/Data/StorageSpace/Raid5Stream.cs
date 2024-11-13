@@ -1,4 +1,5 @@
-﻿using Business.Utils;
+﻿using Business.Data.StorageSpace.Utils;
+using Business.Utils;
 using BusinessModels.Resources;
 
 namespace Business.Data.StorageSpace;
@@ -19,9 +20,11 @@ public class Raid5Stream : Stream
     private bool isFile1Corrupted;
     private bool isFile2Corrupted;
     private bool isFile3Corrupted;
-    private FileStream? file1;
-    private FileStream? file2;
-    private FileStream? file3;
+
+    // private FileStream? file1;
+    // private FileStream? file2;
+    // private FileStream? file3;
+    private FileStream?[] FileStreams { get; set; } = [];
     private int _readWriteBufferSize = 10 * 1024;
 
 
@@ -31,12 +34,17 @@ public class Raid5Stream : Stream
         isFile2Corrupted = !File.Exists(file2Path) || string.IsNullOrEmpty(file2Path);
         isFile3Corrupted = !File.Exists(file3Path) || string.IsNullOrEmpty(file3Path);
 
+        List<string> path = [file1Path, file2Path, file3Path];
+        FileStreams = path.OpenFile(FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: _readWriteBufferSize);
 
-        file1 = isFile1Corrupted ? null : new FileStream(file1Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: _readWriteBufferSize, useAsync: true);
-        file2 = isFile2Corrupted ? null : new FileStream(file2Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: _readWriteBufferSize, useAsync: true);
-        file3 = isFile3Corrupted ? null : new FileStream(file3Path, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: _readWriteBufferSize, useAsync: true);
+        _originalSize = originalSize;
+        _stripeSize = stripeSize;
+        _position = 0;
+    }
 
-
+    public Raid5Stream(List<string> path, long originalSize, int stripeSize)
+    {
+        FileStreams = path.OpenFile(FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: _readWriteBufferSize);
         _originalSize = originalSize;
         _stripeSize = stripeSize;
         _position = 0;
@@ -129,10 +137,7 @@ public class Raid5Stream : Stream
         // Seek each file stream to the start of the stripe
         var seekPosition = StripeRowIndex * _stripeSize;
 
-
-        file1?.Seek(seekPosition, SeekOrigin.Begin);
-        file2?.Seek(seekPosition, SeekOrigin.Begin);
-        file3?.Seek(seekPosition, SeekOrigin.Begin);
+        FileStreams.Seek(seekPosition, SeekOrigin.Begin);
 
         // Adjust the read pointers to account for the position within the stripe
         _position = newPosition;
@@ -152,9 +157,8 @@ public class Raid5Stream : Stream
 
     public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
     {
-        byte[] buffer1 = new byte[_stripeSize];
-        byte[] buffer2 = new byte[_stripeSize];
-        byte[] parityBuffer = new byte[_stripeSize];
+        int totalFileStream = FileStreams.Length;
+        byte[][] readBuffers = Enumerable.Range(0, totalFileStream).Select(_ => new byte[_stripeSize]).ToArray();
 
         int totalBytesWritten = 0;
 
@@ -165,47 +169,44 @@ public class Raid5Stream : Stream
         EndPaddingSize = (int)(newPosition % _stripeSize);
         StartPaddingSize = Math.Min(StartPaddingSize, count);
 
-
         while (totalBytesWritten < count)
         {
-            Task<int> readTask1 = Task.FromResult(0);
-            Task<int> readTask2 = Task.FromResult(0);
-            Task<int> readTask3;
+            Task<int>[] readTasks = new Task<int>[count];
 
             // Determine the current stripe pattern and read from available files
-            switch (StripeRowIndex % 3)
+            switch (StripeRowIndex % totalFileStream)
             {
                 case 0:
                     // Parity in file 3, data in file 1 and file 2
                     if (isFile1Corrupted)
                     {
                         // Recover data1 using parity and data2
-                        readTask2 = file2!.ReadAsync(buffer2, 0, _stripeSize, cancellationToken);
-                        readTask1 = file3!.ReadAsync(parityBuffer, 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTask1, readTask2);
-                        buffer1 = parityBuffer.XorParity(buffer2);
+                        readTasks[1] = FileStreams[1]!.ReadAsync(readBuffers[1], 0, _stripeSize, cancellationToken);
+                        readTasks[0] = FileStreams[2]!.ReadAsync(readBuffers[totalFileStream - 1], 0, _stripeSize, cancellationToken);
+                        await Task.WhenAll(readTasks);
+                        readBuffers[0] = readBuffers[totalFileStream - 1].XorParity(readBuffers[1]);
                     }
                     else if (isFile2Corrupted)
                     {
                         // Recover data2 using parity and data1
-                        readTask1 = file1!.ReadAsync(buffer1, 0, _stripeSize, cancellationToken);
-                        readTask2 = file3!.ReadAsync(parityBuffer, 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTask1, readTask2);
-                        buffer2 = parityBuffer.XorParity(buffer1);
+                        readTasks[0] = FileStreams[0]!.ReadAsync(readBuffers[0], 0, _stripeSize, cancellationToken);
+                        readTasks[1] = FileStreams[2]!.ReadAsync(readBuffers[totalFileStream - 1], 0, _stripeSize, cancellationToken);
+                        await Task.WhenAll(readTasks[0], readTasks[1]);
+                        readBuffers[1] = readBuffers[totalFileStream - 1].XorParity(readBuffers[0]);
                     }
                     else if (isFile3Corrupted)
                     {
                         // Read data, calculate parity to verify correctness
-                        readTask1 = file1!.ReadAsync(buffer1, 0, _stripeSize, cancellationToken);
-                        readTask2 = file2!.ReadAsync(buffer2, 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTask1, readTask2);
+                        readTasks[0] = FileStreams[0]!.ReadAsync(readBuffers[0], 0, _stripeSize, cancellationToken);
+                        readTasks[1] = FileStreams[1]!.ReadAsync(readBuffers[1], 0, _stripeSize, cancellationToken);
+                        await Task.WhenAll(readTasks[0], readTasks[1]);
                     }
                     else
                     {
-                        readTask1 = file1!.ReadAsync(buffer1, 0, _stripeSize, cancellationToken);
-                        readTask2 = file2!.ReadAsync(buffer2, 0, _stripeSize, cancellationToken);
-                        readTask3 = file3!.ReadAsync(parityBuffer, 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTask1, readTask2, readTask3);
+                        readTasks[0] = FileStreams[0]!.ReadAsync(readBuffers[0], 0, _stripeSize, cancellationToken);
+                        readTasks[1] = FileStreams[1]!.ReadAsync(readBuffers[1], 0, _stripeSize, cancellationToken);
+                        readTasks[2] = FileStreams[2]!.ReadAsync(readBuffers[totalFileStream - 1], 0, _stripeSize, cancellationToken);
+                        await Task.WhenAll(readTasks[0], readTasks[1], readTasks[2]);
                     }
 
                     break;
@@ -214,30 +215,30 @@ public class Raid5Stream : Stream
                     // Parity in file 2, data in file 1 and file 3
                     if (isFile1Corrupted)
                     {
-                        readTask2 = file3!.ReadAsync(buffer2, 0, _stripeSize, cancellationToken);
-                        readTask1 = file2!.ReadAsync(parityBuffer, 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTask1, readTask2);
-                        buffer1 = parityBuffer.XorParity(buffer2);
+                        readTasks[1] = FileStreams[2]!.ReadAsync(readBuffers[1], 0, _stripeSize, cancellationToken);
+                        readTasks[0] = FileStreams[1]!.ReadAsync(readBuffers[totalFileStream - 1], 0, _stripeSize, cancellationToken);
+                        await Task.WhenAll(readTasks[0], readTasks[1]);
+                        readBuffers[0] = readBuffers[totalFileStream - 1].XorParity(readBuffers[1]);
                     }
                     else if (isFile3Corrupted)
                     {
-                        readTask1 = file1!.ReadAsync(buffer1, 0, _stripeSize, cancellationToken);
-                        readTask2 = file2!.ReadAsync(parityBuffer, 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTask1, readTask2);
-                        buffer2 = parityBuffer.XorParity(buffer1);
+                        readTasks[0] = FileStreams[0]!.ReadAsync(readBuffers[0], 0, _stripeSize, cancellationToken);
+                        readTasks[1] = FileStreams[1]!.ReadAsync(readBuffers[totalFileStream - 1], 0, _stripeSize, cancellationToken);
+                        await Task.WhenAll(readTasks[0], readTasks[1]);
+                        readBuffers[1] = readBuffers[totalFileStream - 1].XorParity(readBuffers[0]);
                     }
                     else if (isFile2Corrupted)
                     {
-                        readTask1 = file1!.ReadAsync(buffer1, 0, _stripeSize, cancellationToken);
-                        readTask2 = file3!.ReadAsync(buffer2, 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTask1, readTask2);
+                        readTasks[0] = FileStreams[0]!.ReadAsync(readBuffers[0], 0, _stripeSize, cancellationToken);
+                        readTasks[1] = FileStreams[2]!.ReadAsync(readBuffers[1], 0, _stripeSize, cancellationToken);
+                        await Task.WhenAll(readTasks[0], readTasks[1]);
                     }
                     else
                     {
-                        readTask1 = file1!.ReadAsync(buffer1, 0, _stripeSize, cancellationToken);
-                        readTask2 = file3!.ReadAsync(buffer2, 0, _stripeSize, cancellationToken);
-                        readTask3 = file2!.ReadAsync(parityBuffer, 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTask1, readTask2, readTask3);
+                        readTasks[0] = FileStreams[0]!.ReadAsync(readBuffers[0], 0, _stripeSize, cancellationToken);
+                        readTasks[1] = FileStreams[2]!.ReadAsync(readBuffers[1], 0, _stripeSize, cancellationToken);
+                        readTasks[2] = FileStreams[1]!.ReadAsync(readBuffers[totalFileStream - 1], 0, _stripeSize, cancellationToken);
+                        await Task.WhenAll(readTasks[0], readTasks[1], readTasks[2]);
                     }
 
                     break;
@@ -246,37 +247,37 @@ public class Raid5Stream : Stream
                     // Parity in file 1, data in file 2 and file 3
                     if (isFile2Corrupted)
                     {
-                        readTask2 = file3!.ReadAsync(buffer2, 0, _stripeSize, cancellationToken);
-                        readTask1 = file1!.ReadAsync(parityBuffer, 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTask1, readTask2);
-                        buffer1 = parityBuffer.XorParity(buffer2);
+                        readTasks[1] = FileStreams[2]!.ReadAsync(readBuffers[1], 0, _stripeSize, cancellationToken);
+                        readTasks[0] = FileStreams[0]!.ReadAsync(readBuffers[totalFileStream - 1], 0, _stripeSize, cancellationToken);
+                        await Task.WhenAll(readTasks[0], readTasks[1]);
+                        readBuffers[0] = readBuffers[totalFileStream - 1].XorParity(readBuffers[1]);
                     }
                     else if (isFile3Corrupted)
                     {
-                        readTask1 = file2!.ReadAsync(buffer1, 0, _stripeSize, cancellationToken);
-                        readTask2 = file1!.ReadAsync(parityBuffer, 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTask1, readTask2);
-                        buffer2 = parityBuffer.XorParity(buffer1);
+                        readTasks[0] = FileStreams[1]!.ReadAsync(readBuffers[0], 0, _stripeSize, cancellationToken);
+                        readTasks[1] = FileStreams[0]!.ReadAsync(readBuffers[totalFileStream - 1], 0, _stripeSize, cancellationToken);
+                        await Task.WhenAll(readTasks[0], readTasks[1]);
+                        readBuffers[1] = readBuffers[totalFileStream - 1].XorParity(readBuffers[0]);
                     }
                     else if (isFile1Corrupted)
                     {
-                        readTask1 = file2!.ReadAsync(buffer1, 0, _stripeSize, cancellationToken);
-                        readTask2 = file3!.ReadAsync(buffer2, 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTask1, readTask2);
+                        readTasks[0] = FileStreams[1]!.ReadAsync(readBuffers[0], 0, _stripeSize, cancellationToken);
+                        readTasks[1] = FileStreams[2]!.ReadAsync(readBuffers[1], 0, _stripeSize, cancellationToken);
+                        await Task.WhenAll(readTasks[0], readTasks[1]);
                     }
                     else
                     {
-                        readTask1 = file2!.ReadAsync(buffer1, 0, _stripeSize, cancellationToken);
-                        readTask2 = file3!.ReadAsync(buffer2, 0, _stripeSize, cancellationToken);
-                        readTask3 = file1!.ReadAsync(parityBuffer, 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTask1, readTask2, readTask3);
+                        readTasks[0] = FileStreams[1]!.ReadAsync(readBuffers[0], 0, _stripeSize, cancellationToken);
+                        readTasks[1] = FileStreams[2]!.ReadAsync(readBuffers[1], 0, _stripeSize, cancellationToken);
+                        readTasks[2] = FileStreams[0]!.ReadAsync(readBuffers[totalFileStream - 1], 0, _stripeSize, cancellationToken);
+                        await Task.WhenAll(readTasks[0], readTasks[1], readTasks[2]);
                     }
 
                     break;
             }
 
-            var bytesRead1 = await readTask1;
-            var bytesRead2 = await readTask2;
+            var bytesRead1 = await readTasks[0];
+            var bytesRead2 = await readTasks[1];
 
             if (bytesRead1 == 0 && bytesRead2 == 0)
             {
@@ -289,13 +290,13 @@ public class Raid5Stream : Stream
             if (StripeIndex == StartPadStripIndex)
             {
                 writeSize1 = Math.Min(StartPaddingSize, count - totalBytesWritten);
-                Array.Copy(buffer1, StartPadding, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize1), writeSize1);
+                Array.Copy(readBuffers[0], StartPadding, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize1), writeSize1);
                 totalBytesWritten += writeSize1;
             }
             else if (StripeIndex >= StartPadStripIndex)
             {
                 writeSize1 = Math.Min(writeSize1, count - totalBytesWritten);
-                Array.Copy(buffer1, 0, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize1), writeSize1);
+                Array.Copy(readBuffers[0], 0, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize1), writeSize1);
                 totalBytesWritten += writeSize1;
             }
 
@@ -307,14 +308,14 @@ public class Raid5Stream : Stream
             if (StripeIndex == StartPadStripIndex)
             {
                 writeSize2 = Math.Min(StartPaddingSize, count - totalBytesWritten);
-                Array.Copy(buffer2, StartPadding, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize2), writeSize2);
+                Array.Copy(readBuffers[1], StartPadding, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize2), writeSize2);
                 totalBytesWritten += writeSize2;
             }
 
             else if (StripeIndex >= StartPadStripIndex)
             {
                 writeSize2 = Math.Min(writeSize2, count - totalBytesWritten);
-                Array.Copy(buffer2, 0, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize2), writeSize2);
+                Array.Copy(readBuffers[1], 0, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize2), writeSize2);
                 totalBytesWritten += writeSize2;
             }
 
@@ -335,9 +336,9 @@ public class Raid5Stream : Stream
     {
         if (disposing)
         {
-            file1?.Dispose();
-            file2?.Dispose();
-            file3?.Dispose();
+            FileStreams[0]?.Dispose();
+            FileStreams[1]?.Dispose();
+            FileStreams[2]?.Dispose();
         }
 
         base.Dispose(disposing);
@@ -345,9 +346,9 @@ public class Raid5Stream : Stream
 
     public override async ValueTask DisposeAsync()
     {
-        if (file1 != null) await file1.DisposeAsync();
-        if (file2 != null) await file2.DisposeAsync();
-        if (file3 != null) await file3.DisposeAsync();
+        if (FileStreams[0] != null) await FileStreams[0]!.DisposeAsync();
+        if (FileStreams[1] != null) await FileStreams[1]!.DisposeAsync();
+        if (FileStreams[2] != null) await FileStreams[2]!.DisposeAsync();
         await base.DisposeAsync();
     }
 }

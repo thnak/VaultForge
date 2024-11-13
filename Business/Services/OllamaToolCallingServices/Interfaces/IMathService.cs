@@ -3,7 +3,7 @@ using Ollama;
 
 namespace Business.Services.OllamaToolCallingServices.Interfaces;
 
-[OllamaTools]
+// [OllamaTools]
 public interface IMathService
 {
     [Description("respone to user")]
