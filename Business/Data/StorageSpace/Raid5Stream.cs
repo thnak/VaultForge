@@ -171,7 +171,7 @@ public class Raid5Stream : Stream
 
         while (totalBytesWritten < count)
         {
-            Task<int>[] readTasks = new Task<int>[count];
+            Task<int>[] readTasks = new Task<int>[totalFileStream];
 
             // Determine the current stripe pattern and read from available files
             switch (StripeRowIndex % totalFileStream)
