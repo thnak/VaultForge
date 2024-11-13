@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "appInsights1": {
+      "type": "appInsights",
+      "dynamicId": null
+    },
+    "secrets1": {
+      "type": "secrets"
+    },
+    "redis1": {
+      "type": "redis",
+      "connectionId": "CacheConnection",
+      "dynamicId": null
+    }
+  }
+}

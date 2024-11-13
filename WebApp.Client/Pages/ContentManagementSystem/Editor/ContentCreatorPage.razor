@@ -1,0 +1,29 @@
+﻿@attribute [Route(PageRoutes.ContentCreator.Index.Src)]
+@rendermode InteractiveWebAssembly
+@attribute [Authorize]
+@using WebApp.Client.Components.CodeEditor
+
+
+<!--suppress CssUnresolvedCustomProperty -->
+<PageTitle>@Title</PageTitle>
+
+<SectionContent SectionId="@AppBar.TopBarSection1" >
+    <MudIconButton Color="MudColor.Primary" Icon="@Icons.Material.Filled.Add" OnClick="@AddNewArticle" ></MudIconButton>
+</SectionContent>
+
+@if (Loading)
+{
+    <SectionContent SectionId="@AppBar.TopBarSection2" >
+        <MudProgressCircular Color="MudColor.Primary" Indeterminate="true" Size="MudSize.Small" />
+    </SectionContent>
+}
+
+<HeadContent>
+    <HeadContentContainer MetaProperty="@MetaData" />
+</HeadContent>
+
+<div class="mud-width-full overflow-x-hidden" style="height: calc(100dvh - var(--mud-appbar-height))" >
+
+    <MonacoCodeEditor @ref="MonacoCodeEditor" Code="@Article" CodeChanged="@ArticalChanged"/>
+    
+</div>

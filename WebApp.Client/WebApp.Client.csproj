@@ -1,0 +1,109 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
+		<StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+		<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+		<!-- <WasmEnableThreads>true</WasmEnableThreads> -->
+		<BlazorWebAssemblyJiterpreter>false</BlazorWebAssemblyJiterpreter>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PublicSign>false</PublicSign>
+		<DelaySign>true</DelaySign>
+		<UserSecretsId>6c72c4d0-4967-45db-befd-b35bca4ee0c1</UserSecretsId>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+		<RunAOTCompilation>false</RunAOTCompilation>
+		<WasmStripILAfterAOT>false</WasmStripILAfterAOT>
+		<WasmEnableExceptionHandling>true</WasmEnableExceptionHandling>
+		<BlazorEnableCompression>false</BlazorEnableCompression>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<!-- <RunAOTCompilation>true</RunAOTCompilation>
+		<WasmStripILAfterAOT>true</WasmStripILAfterAOT> -->
+		<WasmEnableExceptionHandling>true</WasmEnableExceptionHandling>
+		<BlazorEnableCompression>true</BlazorEnableCompression>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Blazor-ApexCharts" Version="4.0.0" />
+		<PackageReference Include="Blazored.Toast" Version="4.2.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.0" />
+		<PackageReference Include="Tewr.BlazorWorker.BackgroundService" Version="4.1.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\BusinessModels\BusinessModels.csproj" />
+
+		<EmbeddedResource Update="..\BusinessModels\Resources\AppLang.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<LastGenOutput>AppLang.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+		<EmbeddedResource Update="..\BusinessModels\Resources\AppLang.vi-VN.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<DependentUpon>AppLang.resx</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="..\BusinessModels\Resources\AppLang.en-US.resx">
+			<Generator>PublicResXFileCodeGenerator</Generator>
+			<DependentUpon>AppLang.resx</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="..\BusinessModels\Resources\AppLang.de-DE.resx">
+			<DependentUpon>AppLang.resx</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="..\BusinessModels\Resources\AppLang.es-ES.resx">
+			<DependentUpon>AppLang.resx</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="..\BusinessModels\Resources\AppLang.ja-JP.resx">
+			<DependentUpon>AppLang.resx</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="..\BusinessModels\Resources\AppLang.ko-KR.resx">
+			<DependentUpon>AppLang.resx</DependentUpon>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="Components\CodeEditor\MonacoCodeEditor.razor" />
+	  <_ContentIncludedByDefault Remove="Components\ConfirmDialog\ConfirmDialog.razor" />
+	  <_ContentIncludedByDefault Remove="Components\ConfirmDialog\ConfirmWithFieldDialog.razor" />
+	  <_ContentIncludedByDefault Remove="Components\ConfirmDialog\PasswordRequiredDialog.razor" />
+	  <_ContentIncludedByDefault Remove="Components\Container\HeadContentContainer.razor" />
+	  <_ContentIncludedByDefault Remove="Components\DefaultStatic\AccessDenied.razor" />
+	  <_ContentIncludedByDefault Remove="Components\DefaultStatic\ErrorHanding.razor" />
+	  <_ContentIncludedByDefault Remove="Components\DefaultStatic\Loading.razor" />
+	  <_ContentIncludedByDefault Remove="Components\DefaultStatic\NotFoundComponent.razor" />
+	  <_ContentIncludedByDefault Remove="Components\DefaultStatic\ThemeProvider.razor" />
+	  <_ContentIncludedByDefault Remove="Components\menus\RedditMobileMenu.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\CodeEditor\MonacoCodeEditor.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\ConfirmDialog\ConfirmDialog.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\ConfirmDialog\ConfirmWithFieldDialog.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\ConfirmDialog\PasswordRequiredDialog.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\Container\HeadContentContainer.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\DefaultStatic\AccessDenied.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\DefaultStatic\ErrorHanding.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\DefaultStatic\Loading.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\DefaultStatic\NotFoundComponent.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\DefaultStatic\ThemeProvider.razor" />
+	  <_ContentIncludedByDefault Remove="Pages\Components\menus\RedditMobileMenu.razor" />
+	  <_ContentIncludedByDefault Remove="Components\User\UserAvatarEditorDialog.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <AdditionalFiles Include="Components\CodeEditor\MonacoCodeEditor.razor" />
+	  <AdditionalFiles Include="Components\ConfirmDialog\ConfirmDialog.razor" />
+	  <AdditionalFiles Include="Components\ConfirmDialog\ConfirmWithFieldDialog.razor" />
+	  <AdditionalFiles Include="Components\ConfirmDialog\PasswordRequiredDialog.razor" />
+	  <AdditionalFiles Include="Components\Container\HeadContentContainer.razor" />
+	  <AdditionalFiles Include="Components\DefaultStatic\AccessDenied.razor" />
+	  <AdditionalFiles Include="Components\DefaultStatic\ErrorHanding.razor" />
+	  <AdditionalFiles Include="Components\DefaultStatic\Loading.razor" />
+	  <AdditionalFiles Include="Components\DefaultStatic\NotFoundComponent.razor" />
+	  <AdditionalFiles Include="Components\DefaultStatic\ThemeProvider.razor" />
+	</ItemGroup>
+
+</Project>

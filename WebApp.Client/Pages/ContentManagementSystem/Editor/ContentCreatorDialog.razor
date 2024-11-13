@@ -1,0 +1,60 @@
+﻿<MudDialog>
+    <DialogContent>
+        <style>
+            .mud-input-slot.mud-input-root.mud-input-root-outlined.mud-input-root-adorned-end.mud-input-root-margin-dense.mud-select-input,
+            .center-flag > .mud-list-item-text > .mud-typography.mud-typography-body1 {
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 8px;
+                align-items: center !important;
+            }
+            .mud-input-control-input-container{
+                width: 100%;
+            }
+        </style>
+        <MudForm Class="d-flex flex-column gap-2" Model="@_article" @ref="_form" Validation="@(_fluentValidator?.ValidateValue)" >
+
+            <MudTextField @bind-Value="_article.Title" For="@(() => _article.Title)" Immediate Label="@AppLang.Title" T="string" Variant="Variant.Outlined" ></MudTextField>
+
+            <MudSelect @bind-Value="_article.Language" For="@(() => _article.Language)" Immediate Label="@AppLang.Language" T="string" Variant="Variant.Outlined" >
+
+                @foreach (var culture in AllowedCulture.SupportedCultures)
+                {
+                    <MudSelectItem Class="center-flag" @key="culture.Name" Value="@culture.Name" >
+                        <img alt="@culture.NativeName" class="mr-1" height="14" src="@Flags[culture.Name]" />
+                        @culture.NativeName
+                    </MudSelectItem>
+                }
+            </MudSelect>
+
+            <MudTextField @bind-Value="_article.Summary" For="@(() => _article.Summary)" Immediate Label="@AppLang.Description" T="string" Variant="Variant.Outlined" ></MudTextField>
+
+            <MudTextField @bind-Value="_article.Author" For="@(() => _article.Author)" Immediate Label="@AppLang.Author" T="string" Variant="Variant.Outlined" ></MudTextField>
+
+            <MudTextField Adornment="Adornment.End" AdornmentAriaLabel="@AppLang.Add_tags" AdornmentIcon="@Icons.Material.Filled.Add" @bind-Value="CurrentTag" Immediate Label="@AppLang.Add_tags" OnAdornmentClick="@AddTag" Variant="Variant.Outlined" />
+
+            <MudField Class="d-flex flex-row flex-wrap gap-2" Label="@AppLang.Tags" Variant="Variant.Outlined" >
+                @foreach (var x in _article.Keywords.ToArray())
+                {
+                    <MudChip Color="@RandomColor()" @key="x" OnClose="@RemoveKeyWords" T="string" >@x</MudChip>
+                }
+            </MudField>
+
+
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Class="rounded-pill" Color="MudColor.Error" OnClick="@Cancel" Variant="Variant.Outlined" >@AppLang.Cancel</MudButton>
+        <MudButton Class="rounded-pill" Color="MudColor.Success" Disabled="@Processing" OnClick="DialogSubmit" Variant="Variant.Filled" >
+            @if (Processing)
+            {
+                <MudProgressCircular Class="ms-n1" Indeterminate="true" Size="MudSize.Small" />
+                <MudText Class="ms-2" >@AppLang.Processing</MudText>
+            }
+            else
+            {
+                <MudText>@AppLang.Submit</MudText>
+            }
+        </MudButton>
+    </DialogActions>
+</MudDialog>

@@ -1,0 +1,112 @@
+﻿@using System.Text.RegularExpressions
+@using Microsoft.Net.Http.Headers
+@inject ILogger<App> Logger
+<!DOCTYPE html>
+<!--suppress HtmlRequiredTitleElement -->
+<html lang="" >
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1,shrink-to-fit=no,viewport-fit=cover" name="viewport" />
+    <meta content="lsN6bSc4Yd1CLrf9JE_0ytdHW7rw0KKxupfVdu28aoc" name="google-site-verification" />
+    <meta content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" name="googlebot" >
+    <meta content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" name="bingbot" >
+    <base href="/" />
+    <link href="@Assets["apple-touch-icon.png"]" rel="apple-touch-icon" sizes="180x180" >
+    <link href="@Assets["favicon-32x32.png"]" rel="icon" sizes="32x32" type="image/png" >
+    <link href="@Assets["favicon-16x16.png"]" rel="icon" sizes="16x16" type="image/png" >
+    <link href="@Assets["site.manifest"]" rel="manifest" >
+    <link href="@Assets["css/google-api.css"]" rel="stylesheet" type="text/css" />
+    <link href="@Assets["fontawesome-free-6.5.2-web/css/all.css"]" rel="stylesheet" />
+    <link href="@Assets["_content/MudBlazor/MudBlazor.min.css"]" rel="stylesheet" />
+    <link href="@Assets["WebApp.styles.css"]" rel="stylesheet" />
+    <link href="@Assets["css/app.css"]" rel="stylesheet" />
+    <link href="@Assets["css/RedditMobileMenu.css"]" rel="stylesheet" />
+    <link data-name="vs/editor/editor.main" href="@Assets["css/editor.main.min.css"]" rel="stylesheet" >
+    <link href="@Assets["favicon.ico"]" rel="icon" type="image/x-icon" />
+
+    <ImportMap />
+    <HeadOutlet @rendermode="@RenderModeForPage()" />
+</head>
+
+<body>
+
+@* Loading Progress *@
+
+<div class="refresh-icon" id="refreshIcon" >
+    <img alt="reload" src="@Assets["images/200w.gif"]" >
+</div>
+
+@if (IsWasm)
+{
+    <div class="progress-wrapper" id="progress-wrapper" >
+        <div class="progress-box-wrap" >
+            <div class="box one" ></div>
+            <div class="box two" ></div>
+            <div class="box three" ></div>
+            <div class="box four" ></div>
+            <div class="box five" ></div>
+            <div class="box six" ></div>
+        </div>
+        <div class="progress-bar" >
+            <div class="progress" ></div>
+        </div>
+    </div>
+}
+
+@* Loading Progress *@
+
+<Routes @rendermode="@RenderModeForPage()" />
+
+
+<script src="_framework/blazor.web.js" ></script>
+<script src="@Assets["_content/MudBlazor/MudBlazor.min.js"]" ></script>
+<script src="@Assets["js/app.js"]" ></script>
+<script src="@Assets["js/eventListener.js"]" ></script>
+<script src="@Assets["js/encryption.js"]" ></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="js/avatar.js"></script>
+</body>
+
+</html>
+
+@code
+{
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
+    private bool IsBot { get; set; }
+    private bool IsWasm { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var userAgent = HttpContextAccessor?.HttpContext?.Request.Headers[HeaderNames.UserAgent];
+        if (userAgent.HasValue)
+        {
+            var agent = userAgent.ToString();
+            if (!string.IsNullOrWhiteSpace(agent))
+            {
+                IsBot = Regex.IsMatch(agent, @"bot|crawler|baiduspider|80legs|ia_archiver|voyager|curl|wget|yahoo! slurp|mediapartners-google", RegexOptions.IgnoreCase);
+                if (IsBot)
+                    Logger.LogInformation($"[BOT][True]");
+            }
+        }
+
+        Logger.LogInformation($"[IP|{HttpContextAccessor?.HttpContext?.Connection.RemoteIpAddress?.ToString()}]");
+        base.OnInitialized();
+    }
+
+    private IComponentRenderMode? RenderModeForPage()
+    {
+        IsWasm = false;
+        var mode = HttpContext.GetEndpoint()?.Metadata.GetMetadata<RenderModeAttribute>()?.Mode;
+        if (mode == null) return null;
+
+        if (mode == InteractiveWebAssembly)
+        {
+            IsWasm = true;
+            return new InteractiveWebAssemblyRenderMode(false);
+        }
+
+        return mode;
+    }
+
+}

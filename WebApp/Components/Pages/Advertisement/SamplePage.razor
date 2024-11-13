@@ -1,0 +1,13 @@
+﻿@using Microsoft.AspNetCore.OutputCaching
+@attribute [Route(PageRoutes.Advertisement.Index.Src)]
+@attribute [AllowAnonymous]
+@attribute [OutputCache(Duration = 5 )]
+@layout BlankLayout
+
+<PageTitle>@Title</PageTitle>
+
+<HeadContent>
+    <HeadContentContainer MetaProperty="@Metadata"/>
+</HeadContent>
+
+@PageRenderFragment

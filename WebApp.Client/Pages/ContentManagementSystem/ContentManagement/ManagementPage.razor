@@ -1,0 +1,47 @@
+﻿@using BusinessModels.Advertisement
+@attribute [Route(PageRoutes.ContentCreator.Management.Src)]
+@rendermode InteractiveWebAssembly
+@attribute [AllowAnonymous]
+
+
+<PageTitle>@Title</PageTitle>
+
+<SectionContent SectionId="@AppBar.TopBarSection1" >
+    <MudIconButton Color="MudColor.Primary" Icon="@Icons.Material.Filled.Add" OnClick="@AddNewArticle" ></MudIconButton>
+</SectionContent>
+
+<HeadContent>
+    <HeadContentContainer MetaProperty="@Metadata" />
+</HeadContent>
+
+
+<MudDataGrid Filterable FixedHeader Height="calc(100dvh - var(--mud-appbar-height) * 2)" ItemSize="52.68f" @ref="DataGrid" ServerData="ServerDataFunc" T="ArticleModel" Virtualize="true" >
+    <Columns>
+        <PropertyColumn Property="x => x.Id" Title="ID" />
+        <PropertyColumn Property="x => x.Title" Title="@AppLang.Title" />
+        <PropertyColumn Property="x => x.Language" Title="@AppLang.Language" />
+        <PropertyColumn Property="x => x.Summary" Title="@AppLang.Description" />
+        <PropertyColumn Property="x => x.Summary" Title="@AppLang.Edit" >
+            <CellTemplate>
+                <div class="d-flex flex-row gap-3 align-center" >
+                    <MudLink Href="@CreateEditLink(context.Item)" >Edit Link</MudLink>
+                    <MudLink Href="@CreatePreviewLink(context.Item)" >Preview Link</MudLink>
+                    <MudTooltip Arrow Color="MudColor.Secondary" Placement="Placement.Top" Text="Copy" >
+                        <MudIconButton Color="MudColor.Primary" Icon="@Icons.Material.Filled.FileCopy" OnClick="@(() => CopyLink(context.Item))" ></MudIconButton>
+                    </MudTooltip>
+                    <MudTooltip Arrow Color="MudColor.Secondary" Placement="Placement.Top" Text="@AppLang.Delete" >
+                        <MudIconButton Color="MudColor.Primary" Icon="@Icons.Material.Filled.Delete" OnClick="@(() => DeleteItem(context.Item))" ></MudIconButton>
+                    </MudTooltip>
+                    
+                </div>
+            </CellTemplate>
+        </PropertyColumn>
+    </Columns>
+    <RowLoadingContent>
+        <tr class="mud-table-row" >
+            <td class="mud-table-cell" colspan="1000" >
+                @AppLang.Loading...
+            </td>
+        </tr>
+    </RowLoadingContent>
+</MudDataGrid>

@@ -1,0 +1,19 @@
+@rendermode InteractiveServer
+@attribute [Route(PageRoutes.Error.NotFound)]
+@attribute [Route(PageRoutes.Error.Default404)]
+@layout BlankLayout
+
+<PageTitle>@Title</PageTitle>
+
+<HeadContent>
+    <HeadContentContainer MetaProperty="@Metadata" />
+</HeadContent>
+
+<div class="container" >
+    <h1>404 Not Found</h1>
+    <p>Oops! @AppLang.The_page_you_were_looking_for_does_not_exist__Don_t_worry__it_happens_to_the_best_of_us_</p>
+    <p>
+        Please check the URL in the address bar, or
+        <a href="/" >click here</a> to go back to the homepage.
+    </p>
+</div>

@@ -1,0 +1,53 @@
+@using AlignItems = MudBlazor.AlignItems
+@using Color = MudBlazor.Color
+@using MouseEvent = MudBlazor.MouseEvent
+
+<MudAppBar Class="pr-6"
+           Dense Elevation="1"
+           Fixed >
+    <MudIconButton Color="MudColor.Inherit" UserAttributes="@MenuBarButtonAttribute"
+                   Icon="@Icons.Material.Filled.Menu"
+                   OnClick="@HandleDrawerOpen" />
+    
+    <SectionContent SectionId="@TopBarSectionN"/>
+
+    <MudSpacer />
+
+
+    <MudStack AlignItems="AlignItems.Center" Row >
+        <SectionOutlet SectionId="@TopBarSection1" />
+        <SectionOutlet SectionId="@TopBarSection2" />
+        <SectionOutlet SectionId="@TopBarSection3" />
+
+
+        <MudMenu ActivationEvent="@MouseEvent.LeftClick" AnchorOrigin="Origin.BottomCenter"
+                 TransformOrigin="Origin.TopRight" >
+            <ActivatorContent>
+                <MudBadge Bordered Class="d-flex"
+                          Color="@OnLineColor" Dot Overlap >
+                    <MudAvatar>
+                        <MudImage Alt="HubClientUser.Me.UserName" Src="" />
+                    </MudAvatar>
+                </MudBadge>
+            </ActivatorContent>
+
+            <ChildContent>
+                <MudMenuItem Href="@PageRoutes.Account.Profile" Icon="@Icons.Material.Filled.AccountBox" IconColor="MudColor.Default" >
+                    @AppLang.Profile
+                </MudMenuItem>
+                <MudMenuItem Icon="@Icons.Material.Filled.Logout" IconColor="MudColor.Default" OnClick="@LogOut" >
+                    @AppLang.Logout
+                </MudMenuItem>
+            </ChildContent>
+        </MudMenu>
+    </MudStack>
+</MudAppBar>
+
+<style>
+    .mud-badge.mud-badge-dot {
+        height: 9px !important;
+        width: 18px !important;
+        border-radius: 999px !important;
+        min-width: unset !important;
+    }
+</style>

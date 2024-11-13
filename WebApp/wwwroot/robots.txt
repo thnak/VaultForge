@@ -1,0 +1,6 @@
+﻿User-agent: *
+Allow: *
+
+User-agent: *
+Allow: *
+Sitemap: https://thnakdevserver.ddns.net/sitemap.xml

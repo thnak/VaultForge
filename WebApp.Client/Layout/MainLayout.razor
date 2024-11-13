@@ -1,0 +1,33 @@
+﻿@inherits LayoutComponentBase
+
+<MudLayout Style="@("background-color:var(--mud-palette-background-grey)")">
+    <AppBar HandleDrawerOpen="@DrawerToggle"/>
+    <MudDrawer Anchor="Anchor.Start"
+               @bind-Open="@_drawerOpen"
+               Breakpoint="Breakpoint.Xl"
+               ClipMode="DrawerClipMode.Docked"
+               Elevation="1">
+        <MudDrawerHeader Class="align-center justify-center">
+            <MudText Typo="Typo.h6">Web</MudText>
+        </MudDrawerHeader>
+        
+        <SectionOutlet SectionId="@NavMenu"/>
+        
+        <MudSpacer/>
+        <ThemeModeSelector/>
+        <CultureSelector/>
+    </MudDrawer>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+    <MudScrollToTop TopOffset="100">
+        <MudFab Color="MudColor.Primary" StartIcon="@Icons.Material.Filled.ArrowUpward"></MudFab>
+    </MudScrollToTop>
+</MudLayout>
+
+<style>
+    .mud-drawer-content > .mud-select{
+        flex-grow: unset !important;
+        overflow: hidden;
+    }
+</style>

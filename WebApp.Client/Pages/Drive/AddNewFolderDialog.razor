@@ -1,0 +1,11 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudForm Model="@Name" @ref="Form" >
+            <MudTextField @bind-Value="Name" For="@(() => Name)" Label="@AppLang.FolderName" Required T="string" Validation="@Validator.Validation" Variant="Variant.Outlined" />
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudColor.Error" OnClick="@Cancel" Variant="Variant.Outlined" Class="rounded-pill">@AppLang.Cancel</MudButton>
+        <MudButton Color="MudColor.Success" OnClick="@Submit" Variant="Variant.Filled" Class="rounded-pill">@AppLang.Submit</MudButton>
+    </DialogActions>
+</MudDialog>

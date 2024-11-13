@@ -1,0 +1,59 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TieredPGO>true</TieredPGO>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <ApplicationIcon>wwwroot\favicon.ico</ApplicationIcon>
+        <Authors>https://github.com/thnak</Authors>
+        <PackageProjectUrl>https://github.com/thnak/CodeWithMe</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/thnak/CodeWithMe</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/thnak/CodeWithMe</RepositoryUrl>
+        <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+        <PublishTrimmed>False</PublishTrimmed>
+        <PublishAot>False</PublishAot>
+        <ServerGarbageCollection>true</ServerGarbageCollection>
+        <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
+
+        <UserSecretsId>ad3cb7c5-8183-40ac-987e-18d3b3a48ad7</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerComposeProjectPath>docker-compose.dcproj</DockerComposeProjectPath>
+        <RuntimeIdentifiers>linux-x64</RuntimeIdentifiers>
+        <EnableSdkContainerDebugging>True</EnableSdkContainerDebugging>
+        <ContainerBaseImage>mcr.microsoft.com/dotnet/aspnet:9.0-noble</ContainerBaseImage>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Azure.Identity" Version="1.13.1" />
+        <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Azure.StackExchangeRedis" Version="3.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+        <ProjectReference Include="..\Business\Business.csproj" />
+        <ProjectReference Include="..\Protector\Protector.csproj" />
+        <ProjectReference Include="..\WebApp.Client\WebApp.Client.csproj" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="myCA.pfx">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ContainerPort Include="8081" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
+
+</Project>
