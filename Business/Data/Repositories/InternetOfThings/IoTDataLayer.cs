@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.InternetOfThings;
 using Business.Models;
@@ -42,16 +43,23 @@ public class IoTDataLayer : IIoTDataLayer
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
-        var dateIndexKeys = Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date);
-        var dateIndexModel = new CreateIndexModel<IoTRecord>(dateIndexKeys);
-
-        var date2HourIndexKeys = Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Hour);
-        var date2HourIndexModel = new CreateIndexModel<IoTRecord>(date2HourIndexKeys);
+        IndexKeysDefinition<IoTRecord>[] indexKeysDefinitions = [
+            Builders<IoTRecord>.IndexKeys.Descending(x=>x.DeviceId).Descending(x => x.Timestamp),
+            Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date),
+            Builders<IoTRecord>.IndexKeys.Descending(x => x.Date),
+            Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Hour),
+            Builders<IoTRecord>.IndexKeys.Descending(x => x.Date).Descending(x => x.Hour),
+            Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Descending(x => x.Hour),
+            Builders<IoTRecord>.IndexKeys.Descending(x => x.Date).Ascending(x => x.Hour),
+            Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Hour).Ascending(x => x.SensorType),
+            Builders<IoTRecord>.IndexKeys.Descending(x => x.Date).Descending(x => x.Hour).Ascending(x => x.SensorType),
+            Builders<IoTRecord>.IndexKeys.Ascending(x=>x.DeviceId).Ascending(x => x.Date).Ascending(x => x.Hour).Ascending(x => x.SensorType),
+            Builders<IoTRecord>.IndexKeys.Ascending(x=>x.DeviceId).Descending(x => x.Date).Ascending(x => x.Hour).Ascending(x => x.SensorType),
+        ];
         
-        var date2HourTypeIndexKeys = Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Hour).Ascending(x=>x.SensorType);
-        var date2HourTypeIndexModel = new CreateIndexModel<IoTRecord>(date2HourTypeIndexKeys);
-
-        await _dataDb.Indexes.CreateManyAsync([dateIndexModel, date2HourIndexModel, date2HourTypeIndexModel], cancellationToken);
+        
+        var indexModels = indexKeysDefinitions.Select(x=> new CreateIndexModel<IoTRecord>(x));
+        await _dataDb.Indexes.CreateManyAsync(indexModels, cancellationToken);
 
         return await Task.FromResult((true, string.Empty));
     }
@@ -86,9 +94,18 @@ public class IoTDataLayer : IIoTDataLayer
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<IoTRecord> Where(Expression<Func<IoTRecord, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<IoTRecord, object>>[] fieldsToFetch)
+    public async IAsyncEnumerable<IoTRecord> Where(Expression<Func<IoTRecord, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<IoTRecord, object>>[] fieldsToFetch)
     {
-        throw new NotImplementedException();
+        var options = fieldsToFetch.Any() ? new FindOptions<IoTRecord, IoTRecord> { Projection = fieldsToFetch.ProjectionBuilder() } : null;
+        using var cursor = await _dataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);
+        while (await cursor.MoveNextAsync(cancellationToken))
+        {
+            foreach (var model in cursor.Current)
+            {
+                if (model != default)
+                    yield return model;
+            }
+        }
     }
 
     public IoTRecord? Get(string key)

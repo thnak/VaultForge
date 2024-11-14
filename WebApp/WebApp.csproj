@@ -17,6 +17,7 @@
         <PublishTrimmed>False</PublishTrimmed>
         <PublishAot>False</PublishAot>
         <ServerGarbageCollection>true</ServerGarbageCollection>
+        <GarbageCollectionAdaptationMode>0</GarbageCollectionAdaptationMode>
         <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
 
         <UserSecretsId>ad3cb7c5-8183-40ac-987e-18d3b3a48ad7</UserSecretsId>

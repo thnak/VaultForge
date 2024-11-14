@@ -30,69 +30,46 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         {
             await _semaphore.WaitAsync(cancellationToken);
 
-            var absolutePathKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath);
-            var absolutePathIndexModel = new CreateIndexModel<FileInfoModel>(absolutePathKey, new CreateIndexOptions { Unique = true });
-
-            var rootFolderIndexKeysDefinition = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder);
-            var rootFolderIndexModel = new CreateIndexModel<FileInfoModel>(rootFolderIndexKeysDefinition);
-
-            var rootFolderAndCreateDateKeysDefinition = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.CreatedDate);
-            var rootFolderAndCreateDateIndexModel = new CreateIndexModel<FileInfoModel>(rootFolderAndCreateDateKeysDefinition);
-
-            var rootAndStatusKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Status);
-            var rootAndStatusIndexModel = new CreateIndexModel<FileInfoModel>(rootAndStatusKey, new CreateIndexOptions { Unique = false });
-
-            var rootAndClassifyKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Classify);
-            var rootAndClassifyIndexModel = new CreateIndexModel<FileInfoModel>(rootAndClassifyKey, new CreateIndexOptions { Unique = false });
-
-            var rootAndClassifyAndStatusKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Classify).Ascending(x => x.Status);
-            var rootAndClassifyAndStatusIndexModel = new CreateIndexModel<FileInfoModel>(rootAndClassifyAndStatusKey, new CreateIndexOptions { Unique = false });
-
-            var rootAndContentTypeKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.ContentType);
-            var rootAndContentTypeIndexModel = new CreateIndexModel<FileInfoModel>(rootAndContentTypeKey);
-
-
-            var createDateKeysDefinition = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.CreatedDate);
-            var createDateIndexModel = new CreateIndexModel<FileInfoModel>(createDateKeysDefinition);
-
-            var createDateAndStatusKeysDefinition = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.CreatedDate).Ascending(x => x.Status);
-            var createDateAndStatusIndexModel = new CreateIndexModel<FileInfoModel>(createDateAndStatusKeysDefinition);
-
-            var createDateAndClassifyKeysDefinition = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.CreatedDate).Ascending(x => x.Classify);
-            var createDateAndClassifyIndexModel = new CreateIndexModel<FileInfoModel>(createDateAndClassifyKeysDefinition);
-
-            var createDateAndContentTypeKeysDefinition = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.CreatedDate).Ascending(x => x.ContentType);
-            var createDateAndContentTypeIndexModel = new CreateIndexModel<FileInfoModel>(createDateAndContentTypeKeysDefinition);
-
-            var relativePathIndexKey = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RelativePath);
-            var relativePathIndexModel = new CreateIndexModel<FileInfoModel>(relativePathIndexKey, new CreateIndexOptions { Unique = false });
-
-            var searchIndexKeys = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RelativePath).Ascending(x => x.RootFolder);
-            var searchIndexModel = new CreateIndexModel<FileInfoModel>(searchIndexKeys, new CreateIndexOptions { Unique = false });
-
-            var statusIndexKeys = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.Status);
-            var statusIndexModel = new CreateIndexModel<FileInfoModel>(statusIndexKeys);
-
-
-            var contentTypeIndexKeys = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.ContentType);
-            var contentTypeIndexModel = new CreateIndexModel<FileInfoModel>(contentTypeIndexKeys);
-
-            var nameAndRelativeAndRootKeys = Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RelativePath).Ascending(x => x.RootFolder).Ascending(x => x.ContentType);
-            var nameAndRelativeAndRootIndexModel = new CreateIndexModel<FileInfoModel>(nameAndRelativeAndRootKeys, new CreateIndexOptions { Unique = false });
-
-            List<CreateIndexModel<FileInfoModel>> createIndexModelLis =
+            IndexKeysDefinition<FileInfoModel>[] uniqueIndexesDefinitions = [Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath)];
+            IndexKeysDefinition<FileInfoModel>[] indexKeysDefinitions =
             [
-                rootFolderIndexModel, rootFolderAndCreateDateIndexModel, searchIndexModel, absolutePathIndexModel,
-                nameAndRelativeAndRootIndexModel, createDateIndexModel,
-                createDateAndStatusIndexModel, rootAndStatusIndexModel,
-                rootAndContentTypeIndexModel, createDateAndContentTypeIndexModel,
-                statusIndexModel, contentTypeIndexModel,
-                relativePathIndexModel, rootAndClassifyIndexModel, createDateAndClassifyIndexModel,
-                rootAndClassifyAndStatusIndexModel
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder),
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.CreatedDate),
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Descending(x => x.CreatedDate),
+
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Status),
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Classify),
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Classify).Ascending(x => x.Status),
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.ContentType),
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.CreatedDate),
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.ModifiedTime),
+                Builders<FileInfoModel>.IndexKeys.Descending(x => x.ModifiedTime),
+
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.ModifiedTime),
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Descending(x => x.ModifiedTime),
+
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.RelativePath),
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Descending(x => x.RelativePath),
+
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.FileName),
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Descending(x => x.FileName),
+
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.ContentType).Ascending(x => x.RelativePath),
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.ContentType).Descending(x => x.RelativePath),
+
+
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.CreatedDate).Ascending(x => x.Status),
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.CreatedDate).Ascending(x => x.Classify),
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.CreatedDate).Ascending(x => x.ContentType),
+
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.Status),
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.ContentType),
             ];
+            var modelIndexes = indexKeysDefinitions.Select(x => new CreateIndexModel<FileInfoModel>(x));
+            var uniqueIndexes = uniqueIndexesDefinitions.Select(x => new CreateIndexModel<FileInfoModel>(x, new CreateIndexOptions { Unique = true }));
 
             await _fileDataDb.Indexes.DropAllAsync(cancellationToken);
-            await _fileDataDb.Indexes.CreateManyAsync(createIndexModelLis, cancellationToken);
+            await _fileDataDb.Indexes.CreateManyAsync([..modelIndexes, ..uniqueIndexes], cancellationToken);
 
             logger.LogInformation(@"[Init] File info data layer");
 

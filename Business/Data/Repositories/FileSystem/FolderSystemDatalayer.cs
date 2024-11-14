@@ -29,56 +29,31 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         {
             await _semaphore.WaitAsync(cancellationToken);
 
-            var keys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath).Ascending(x => x.OwnerUsername);
-            var absolutePathAndUserIndexModel = new CreateIndexModel<FolderInfoModel>(keys, new CreateIndexOptions { Unique = true });
-
-            var absKeys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath);
-            var absolutePathIndexModel = new CreateIndexModel<FolderInfoModel>(absKeys, new CreateIndexOptions { Unique = false });
-
-            var createDateKey = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.CreateDate);
-            var createDateIndexModel = new CreateIndexModel<FolderInfoModel>(createDateKey, new CreateIndexOptions { Unique = false });
-
-            var createDateAndTypeKey = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.CreateDate).Ascending(x => x.Type);
-            var createDateIndexAndTypeModel = new CreateIndexModel<FolderInfoModel>(createDateAndTypeKey, new CreateIndexOptions { Unique = false });
-
-            var absAndTypeKey = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath).Ascending(x => x.Type);
-            var absAndTypeIndexModel = new CreateIndexModel<FolderInfoModel>(absAndTypeKey, new CreateIndexOptions { Unique = false });
-
-            var rootFolderIdKey = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RootFolder);
-            var rootFolderIdIndexModel = new CreateIndexModel<FolderInfoModel>(rootFolderIdKey, new CreateIndexOptions { Unique = false });
-
-            var relativePathAndUserKey = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RelativePath).Ascending(x => x.OwnerUsername);
-            var relativePathAndUserIndexModel = new CreateIndexModel<FolderInfoModel>(relativePathAndUserKey, new CreateIndexOptions { Unique = true });
-
-            var rootFolderIdAndTypeKey = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Type);
-            var rootFolderIdIndexAndTypeModel = new CreateIndexModel<FolderInfoModel>(rootFolderIdAndTypeKey, new CreateIndexOptions { Unique = false });
-
-            var rootFolderAndFolderName = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.FolderName);
-            var rootFolderAndFolderIndexModel = new CreateIndexModel<FolderInfoModel>(rootFolderAndFolderName, new CreateIndexOptions { Unique = false });
-
-            var searchIndexKeys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.FolderName).Ascending(x => x.Type);
-            var searchIndexModel = new CreateIndexModel<FolderInfoModel>(searchIndexKeys, new CreateIndexOptions() { Unique = false });
-
-            var typeIndexKeys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.Type);
-            var typeIndexModel = new CreateIndexModel<FolderInfoModel>(typeIndexKeys, new CreateIndexOptions { Unique = false });
-
-            var userIndexKeys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.OwnerUsername);
-            var userIndexModel = new CreateIndexModel<FolderInfoModel>(userIndexKeys, new CreateIndexOptions { Unique = false });
-
-            var userAndTypeIndexKeys = Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.OwnerUsername).Ascending(x => x.Type);
-            var userAndTypeIndexModel = new CreateIndexModel<FolderInfoModel>(userAndTypeIndexKeys, new CreateIndexOptions { Unique = false });
-
-            List<CreateIndexModel<FolderInfoModel>> indexes =
+            IndexKeysDefinition<FolderInfoModel>[] indexKeysDefinitions =
             [
-                absolutePathAndUserIndexModel, absolutePathIndexModel, rootFolderIdIndexAndTypeModel,
-                searchIndexModel, rootFolderIdIndexModel, rootFolderAndFolderIndexModel,
-                absAndTypeIndexModel, createDateIndexModel, createDateIndexAndTypeModel,
-                relativePathAndUserIndexModel, typeIndexModel,
-                userAndTypeIndexModel, userIndexModel,
+                Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath).Ascending(x => x.OwnerUsername),
+                Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath),
+                Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.CreateDate),
+                Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.CreateDate).Ascending(x => x.Type),
+                Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath).Ascending(x => x.Type),
+                Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RootFolder),
+                Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RelativePath).Ascending(x => x.OwnerUsername),
+                Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Type),
+                Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.FolderName),
+                Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Descending(x => x.FolderName),
+
+                Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.FolderName).Ascending(x => x.Type),
+                Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Descending(x => x.FolderName).Ascending(x => x.Type),
+
+                Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.Type),
+                Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.OwnerUsername),
+                Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.OwnerUsername).Ascending(x => x.Type)
             ];
+            var indexModels = indexKeysDefinitions.Select(x => new CreateIndexModel<FolderInfoModel>(x));
+
 
             await _dataDb.Indexes.DropAllAsync(cancellationToken);
-            await _dataDb.Indexes.CreateManyAsync(indexes, cancellationToken: cancellationToken);
+            await _dataDb.Indexes.CreateManyAsync(indexModels, cancellationToken: cancellationToken);
 
             var anonymousUser = "Anonymous".ComputeSha256Hash();
             var anonymousFolder = Get(anonymousUser, "/root");
