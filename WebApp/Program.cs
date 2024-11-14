@@ -71,7 +71,7 @@ public class Program
 
         builder.Services.AddDataServiceCollection();
         builder.Services.AddIotQueueService();
-        
+
         #endregion
 
         #region Caching
@@ -118,6 +118,8 @@ public class Program
         builder.Services.AddExceptionHandler<ErrorHandling>();
 
         #endregion
+
+        builder.WebHost.ConfigureAppConfiguration((_, configurationBuilder) => { configurationBuilder.AddEnvironmentVariables(); });
 
         builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new ObjectIdConverter()); });
         builder.Services.AddEndpointsApiExplorer();
@@ -181,9 +183,9 @@ public class Program
             .AddInteractiveWebAssemblyRenderMode()
             .AddInteractiveServerRenderMode()
             .AddAdditionalAssemblies(typeof(_Imports).Assembly);
-        
+
         app.MapSignalRHubs();
-        
+
         app.Run();
     }
 }

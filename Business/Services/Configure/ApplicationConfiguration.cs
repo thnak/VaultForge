@@ -9,10 +9,10 @@ public class ApplicationConfiguration
 
     public ApplicationConfiguration(IOptions<AppSettings> appSettings)
     {
-        Configs.OllamaConfig.ConnectionString = GetEnvironmentVariable(nameof(appSettings.Value.OllamaConfig.ConnectionString), appSettings.Value.OllamaConfig.ConnectionString);
-        Configs.OllamaConfig.Image2TextModel = GetEnvironmentVariable(nameof(appSettings.Value.OllamaConfig.Image2TextModel), appSettings.Value.OllamaConfig.Image2TextModel);
-        Configs.OllamaConfig.TextEmbeddingModel = GetEnvironmentVariable(nameof(appSettings.Value.OllamaConfig.TextEmbeddingModel), appSettings.Value.OllamaConfig.TextEmbeddingModel);
-        Configs.OllamaConfig.TextGeneratorModel = GetEnvironmentVariable(nameof(appSettings.Value.OllamaConfig.TextGeneratorModel), appSettings.Value.OllamaConfig.TextGeneratorModel);
+        Configs.OllamaConfig.ConnectionString = GetEnvironmentVariable("OllamaConfigConnectionString", appSettings.Value.OllamaConfig.ConnectionString);
+        Configs.OllamaConfig.Image2TextModel = GetEnvironmentVariable("OllamaConfigImage2TextModel", appSettings.Value.OllamaConfig.Image2TextModel);
+        Configs.OllamaConfig.TextEmbeddingModel = GetEnvironmentVariable("OllamaConfigTextEmbeddingModel", appSettings.Value.OllamaConfig.TextEmbeddingModel);
+        Configs.OllamaConfig.TextGeneratorModel = GetEnvironmentVariable("OllamaConfigTextGeneratorModel", appSettings.Value.OllamaConfig.TextGeneratorModel);
 
         Configs.Storage.Disks = GetEnvironmentVariables("StorageDisks", appSettings.Value.Storage.Disks);
         Configs.Storage.DefaultRaidType = GetEnumEnvironmentVariable("StorageDefaultRaidType", appSettings.Value.Storage.DefaultRaidType);
