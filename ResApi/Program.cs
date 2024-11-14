@@ -31,7 +31,6 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Protector;
-using Protector.Certificates.Models;
 using Protector.KeyProvider;
 using Protector.Tracer;
 using ResApi.Middleware;

@@ -1,18 +1,13 @@
 using Business.Business.Utils;
 using Business.Exceptions;
-using Business.Services;
 using Business.Services.Configure;
 using Business.Services.Http.CircuitBreakers;
 using Business.Utils.HttpExtension;
 using BusinessModels.Converter;
-using BusinessModels.General.SettingModels;
 using BusinessModels.Resources;
-using MessagePack;
-using MessagePack.Resolvers;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Services;
 using Microsoft.Extensions.Options;
-using Protector.Certificates.Models;
 using WebApp.Authenticate;
 using WebApp.Client.Services;
 using WebApp.Client.Services.Http;
@@ -67,8 +62,7 @@ public class Program
 
         #region Configure Setting
 
-        builder.Services.Configure<AppCertificate>(builder.Configuration.GetSection("AppCertificate"));
-        builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+        builder.AddAppOptions();
 
         #endregion
 

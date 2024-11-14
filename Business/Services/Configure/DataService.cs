@@ -29,6 +29,8 @@ using Business.Services.HostedServices.FileSystem;
 using Business.Services.Interfaces;
 using Business.Services.TaskQueueServices.Base;
 using Business.Services.TaskQueueServices.Base.Interfaces;
+using BusinessModels.General.SettingModels;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Services.Configure;
@@ -67,6 +69,12 @@ public static class DataService
         service.AddHostedService<HostApplicationLifetimeEventsHostedService>();
 
         service.AddAdvancedServiceCollection();
+    }
+
+    public static void AddAppOptions(this WebApplicationBuilder builder)
+    {
+        builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+        builder.Services.AddSingleton<ApplicationConfiguration>();
     }
 
     private static void AddAdvancedSystemServices(this IServiceCollection service)

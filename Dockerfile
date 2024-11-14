@@ -4,7 +4,7 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-FROM ubuntu:20.04
+FROM ubuntu:24.10
 
 
 RUN apt-get update
@@ -39,7 +39,7 @@ RUN dotnet build "WebApp.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "WebApp.csproj" -r linux-x64 --self-contained true -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "WebApp.csproj" -r linux-x64 --self-contained true -c $BUILD_CONFIGURATION -o /app/publish 
 
 FROM base AS final
 WORKDIR /app

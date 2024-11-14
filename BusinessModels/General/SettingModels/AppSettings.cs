@@ -12,6 +12,7 @@ public class AppSettings
     public OllamaConfig OllamaConfig { get; set; } = new();
     public IoTCircuitBreaker IoTCircuitBreaker { get; set; } = new();
     public IoTRequestQueueConfig IoTRequestQueueConfig { get; set; } = new();
+    public AppCertificate AppCertificate { get; set; } = new();
 }
 
 public class BackgroundQueue
@@ -69,4 +70,10 @@ public class IoTRequestQueueConfig
 {
     public int MaxQueueSize { get; set; } = 100_000;
     public int TimePeriodInSecond { get; set; } = 5;
+}
+
+public class AppCertificate
+{
+    public string FilePath { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
 }

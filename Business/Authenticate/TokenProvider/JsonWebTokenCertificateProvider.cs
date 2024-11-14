@@ -2,13 +2,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using Business.Data.Interfaces;
+using Business.Services.Configure;
 using BusinessModels.Secure;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Protector;
-using Protector.Certificates.Models;
 
 namespace Business.Authenticate.TokenProvider;
 
@@ -27,9 +26,9 @@ public class JsonWebTokenCertificateProvider : IJsonWebTokenCertificateProvider
     private const string SearchIndexString = "TotkenSearchIndex";
     private const string TableName = "Totken";
 
-    public JsonWebTokenCertificateProvider(IOptions<AppCertificate> settings, IMongoDataLayerContext context)
+    public JsonWebTokenCertificateProvider(ApplicationConfiguration settings, IMongoDataLayerContext context)
     {
-        X509Certificate2 certificate = X509CertificateLoader.LoadPkcs12FromFile(settings.Value.FilePath, settings.Value.Password);
+        X509Certificate2 certificate = X509CertificateLoader.LoadPkcs12FromFile(settings.GetAppCertificate.FilePath, settings.GetAppCertificate.Password);
         Key = new X509SecurityKey(certificate);
 
         DataDb = context.MongoDatabase.GetCollection<TokenModel>(TableName);
