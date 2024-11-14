@@ -33,7 +33,6 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             IndexKeysDefinition<FileInfoModel>[] uniqueIndexesDefinitions = [Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath)];
             IndexKeysDefinition<FileInfoModel>[] indexKeysDefinitions =
             [
-                Builders<FileInfoModel>.IndexKeys.Descending(x => x.Id),
                 Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x=>x.Id),
                 Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Descending(x=>x.Id),
                 Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder),

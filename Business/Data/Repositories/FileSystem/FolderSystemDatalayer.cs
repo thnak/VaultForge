@@ -31,7 +31,6 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
             IndexKeysDefinition<FolderInfoModel>[] indexKeysDefinitions =
             [
-                Builders<FolderInfoModel>.IndexKeys.Descending(x => x.Id),
                 Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath).Ascending(x => x.OwnerUsername),
                 Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath),
                 Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.CreateDate),
