@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using Business.Business.Interfaces.InternetOfThings;
+using Business.Services.Configure;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.General.SettingModels;
 using BusinessModels.System.InternetOfThings;
@@ -9,10 +10,10 @@ using Microsoft.Extensions.Options;
 
 namespace Business.Business.Repositories.InternetOfThings;
 
-public class IoTRequestQueueHostedService(IOptions<AppSettings> options, IIotRequestQueue iotRequestQueue, IParallelBackgroundTaskQueue queue, IIoTBusinessLayer iotBusinessLayer, ILogger<IoTRequestQueueHostedService> logger) : BackgroundService
+public class IoTRequestQueueHostedService(ApplicationConfiguration options, IIotRequestQueue iotRequestQueue, IParallelBackgroundTaskQueue queue, IIoTBusinessLayer iotBusinessLayer, ILogger<IoTRequestQueueHostedService> logger) : BackgroundService
 {
     private Timer? BatchTimer { get; set; }
-    private readonly int _timePeriod = options.Value.IoTRequestQueueConfig.TimePeriodInSecond;
+    private readonly int _timePeriod = options.GetIoTRequestQueueConfig.TimePeriodInSecond;
 
     private void InsertPeriodTimerCallback(object? state)
     {

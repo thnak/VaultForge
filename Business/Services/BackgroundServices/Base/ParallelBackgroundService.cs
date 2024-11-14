@@ -1,19 +1,18 @@
-﻿using Business.Services.TaskQueueServices.Base;
+﻿using Business.Services.Configure;
+using Business.Services.TaskQueueServices.Base;
 using Business.Services.TaskQueueServices.Base.Interfaces;
-using BusinessModels.General.SettingModels;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Business.Services.BackgroundServices.Base;
 
-public class ParallelBackgroundService(IParallelBackgroundTaskQueue parallelBackgroundTaskQueue, IOptions<AppSettings> options, ILogger<ParallelBackgroundService> logger) : BackgroundService
+public class ParallelBackgroundService(IParallelBackgroundTaskQueue parallelBackgroundTaskQueue, ApplicationConfiguration options, ILogger<ParallelBackgroundService> logger) : BackgroundService
 {
-    private readonly TaskFactory _factory = new(new LimitedConcurrencyLevelTaskScheduler(options.Value.BackgroundQueue.MaxParallelThreads));
+    private readonly TaskFactory _factory = new(new LimitedConcurrencyLevelTaskScheduler(options.GetBackgroundQueue.MaxParallelThreads));
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        logger.LogInformation("""{Name} is running with max {threads} threads.""", nameof(ParallelBackgroundService), options.Value.BackgroundQueue.MaxParallelThreads);
+        logger.LogInformation("""{Name} is running with max {threads} threads.""", nameof(ParallelBackgroundService), options.GetBackgroundQueue.MaxParallelThreads);
         return ProcessTaskQueueAsync(stoppingToken);
     }
 

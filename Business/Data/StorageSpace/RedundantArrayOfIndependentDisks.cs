@@ -4,27 +4,26 @@ using System.Security.Cryptography;
 using System.Text;
 using Business.Data.Interfaces;
 using Business.Data.StorageSpace.Utils;
+using Business.Services.Configure;
 using Business.Utils;
 using Business.Utils.Helper;
 using Business.Utils.StringExtensions;
-using BusinessModels.General.SettingModels;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Business.Data.StorageSpace;
 
-public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, ILogger<RedundantArrayOfIndependentDisks> logger, IOptions<AppSettings> options) : IMongoDataInitializer
+public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, ILogger<RedundantArrayOfIndependentDisks> logger, ApplicationConfiguration options) : IMongoDataInitializer
 {
     private readonly IMongoCollection<FileRaidModel> _fileDataDb = context.MongoDatabase.GetCollection<FileRaidModel>("FileRaid");
     private readonly IMongoCollection<FileRaidDataBlockModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileRaidDataBlockModel>("FileRaidDataBlock");
     private readonly SemaphoreSlim _semaphore = new(100, 1000);
-    private readonly int _stripSize = options.Value.Storage.StripSize;
-    private readonly int _readWriteBufferSize = options.Value.Storage.BufferSize;
+    private readonly int _stripSize = options.GetStorage.StripSize;
+    private readonly int _readWriteBufferSize = options.GetStorage.BufferSize;
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
@@ -46,14 +45,14 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             List<CreateIndexModel<FileRaidDataBlockModel>> indexDataBlockModels = [dataBlockPathIndexModel, absoluteDataBlockPathIndexModel];
             await _fileMetaDataDataDb.Indexes.CreateManyAsync(indexDataBlockModels, cancellationToken);
 
-            CheckDiskSpace(options.Value.Storage.Disks);
-            if (!options.Value.Storage.Disks.ValidateStorageFormat(options.Value.Storage.DefaultRaidType))
+            CheckDiskSpace(options.GetStorage.Disks);
+            if (!options.GetStorage.Disks.ValidateStorageFormat(options.GetStorage.DefaultRaidType))
             {
                 logger.LogError("Invalid Storage Format");
                 return (false, "Invalid Storage Format");
             }
 
-            logger.LogInformation($"Using RAID option: {options.Value.Storage.DefaultRaidType}");
+            logger.LogInformation($"Using RAID option: {options.GetStorage.DefaultRaidType}");
             return (true, AppLang.Success);
         }
         catch (OperationCanceledException e)
@@ -110,7 +109,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                 StripSize = _stripSize
             };
 
-            string[] arrayDisk = [..options.Value.Storage.Disks];
+            string[] arrayDisk = [..options.GetStorage.Disks];
             arrayDisk.Shuffle();
             List<FileRaidDataBlockModel> disks = arrayDisk.GetShuffledDisks(raidModel.Id);
 

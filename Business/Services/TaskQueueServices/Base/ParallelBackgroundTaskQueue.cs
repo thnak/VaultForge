@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Threading.Channels;
+using Business.Services.Configure;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.General.SettingModels;
 using Microsoft.Extensions.Logging;
@@ -11,9 +12,9 @@ public class ParallelBackgroundTaskQueue : IParallelBackgroundTaskQueue
 {
     private readonly Channel<Func<CancellationToken, ValueTask>> _queue;
 
-    public ParallelBackgroundTaskQueue(IOptions<AppSettings> appSettings, ILogger<ParallelBackgroundTaskQueue> logger)
+    public ParallelBackgroundTaskQueue(ApplicationConfiguration appSettings, ILogger<ParallelBackgroundTaskQueue> logger)
     {
-        var size = appSettings.Value.BackgroundQueue.ParallelQueueSize;
+        var size = appSettings.GetBackgroundQueue.ParallelQueueSize;
         logger.LogInformation($"Init parallel queue size is {size:N0}");
         BoundedChannelOptions options = new(size)
         {

@@ -6,11 +6,11 @@ using Business.Attribute;
 using Business.Business.Interfaces.FileSystem;
 using Business.Data.StorageSpace;
 using Business.Models;
+using Business.Services.Configure;
 using Business.Services.Interfaces;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.Utils.Helper;
 using BusinessModels.General.EnumModel;
-using BusinessModels.General.SettingModels;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
@@ -20,7 +20,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Protector.Utils;
 
@@ -37,7 +36,7 @@ public class FilesController(
     ILogger<FilesController> logger,
     RedundantArrayOfIndependentDisks raidService,
     IParallelBackgroundTaskQueue parallelBackgroundTaskQueue,
-    IOptions<AppSettings> options) : ControllerBase
+    ApplicationConfiguration options) : ControllerBase
 {
     [HttpGet("get-file-wall-paper")]
     [IgnoreAntiforgeryToken]
@@ -699,7 +698,7 @@ public class FilesController(
                 return BadRequest("Folder deleted");
 
             var boundary = MediaTypeHeaderValue.Parse(Request.ContentType).GetBoundary(int.MaxValue);
-            var reader = new MultipartReader(boundary, HttpContext.Request.Body, options.Value.Storage.BufferSize);
+            var reader = new MultipartReader(boundary, HttpContext.Request.Body, options.GetStorage.BufferSize);
             var section = await reader.ReadNextSectionAsync(cancellationToken);
 
             while (section != null && !cancellationToken.IsCancellationRequested)

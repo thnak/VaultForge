@@ -41,6 +41,9 @@ public class ApplicationConfiguration
 
         Configs.AppCertificate.FilePath = GetEnvironmentVariable("AppCertificateFilePath", appSettings.Value.AppCertificate.FilePath);
         Configs.AppCertificate.Password = GetEnvironmentVariable("AppCertificatePassword", appSettings.Value.AppCertificate.Password);
+        
+        Configs.VideoTransCode.WorkingDirectory = GetEnvironmentVariable("VideoTransCodeWorkingDirectory", appSettings.Value.VideoTransCode.WorkingDirectory);
+        Configs.VideoTransCode.VideoEncoder = GetEnvironmentVariable("VideoTransCodeVideoEncoder", appSettings.Value.VideoTransCode.VideoEncoder);
     }
 
     public OllamaConfig GetOllamaConfig => Configs.OllamaConfig;
@@ -50,8 +53,8 @@ public class ApplicationConfiguration
     public ThumbnailSetting GetThumbnailSetting => Configs.ThumbnailSetting;
     public DbSettingModel GetDbSetting => Configs.DbSetting;
     public BackgroundQueue GetBackgroundQueue => Configs.BackgroundQueue;
-
     public AppCertificate GetAppCertificate => Configs.AppCertificate;
+    public VideoTransCode GetVideoTransCode => Configs.VideoTransCode;
 
     private string GetEnvironmentVariable(string key, string defaultValue)
     {

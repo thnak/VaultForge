@@ -1,8 +1,7 @@
 using System.Text;
 using Business.Data.Interfaces;
-using BusinessModels.General.SettingModels;
+using Business.Services.Configure;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Configuration;
 
@@ -10,14 +9,14 @@ namespace Business.Data.Repositories;
 
 public class MongoDataLayerContext : IMongoDataLayerContext
 {
-    public MongoDataLayerContext(IOptions<AppSettings> settings, ILogger<IMongoDataLayerContext> logger)
+    public MongoDataLayerContext(ApplicationConfiguration settings, ILogger<IMongoDataLayerContext> logger)
     {
-        var dbName = settings.Value.DbSetting.DatabaseName;
-        var user = settings.Value.DbSetting.UserName;
-        var pass = settings.Value.DbSetting.Password;
+        var dbName = settings.GetDbSetting.DatabaseName;
+        var user = settings.GetDbSetting.UserName;
+        var pass = settings.GetDbSetting.Password;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.AppendLine("MongoDB configuration:");
-        stringBuilder.AppendLine($"- connectionString: {settings.Value.DbSetting.ConnectionString}");
+        stringBuilder.AppendLine($"- connectionString: {settings.GetDbSetting.ConnectionString}");
         stringBuilder.AppendLine($"- dbName: {dbName}");
         stringBuilder.AppendLine($"- user: {user}");
         stringBuilder.AppendLine($"- pass: {pass}");
@@ -29,9 +28,9 @@ public class MongoDataLayerContext : IMongoDataLayerContext
         var setup = new MongoClientSettings
         {
             Scheme = ConnectionStringScheme.MongoDB,
-            Server = new MongoServerAddress(settings.Value.DbSetting.ConnectionString, settings.Value.DbSetting.Port),
+            Server = new MongoServerAddress(settings.GetDbSetting.ConnectionString, settings.GetDbSetting.Port),
             Credential = new MongoCredential("SCRAM-SHA-1", identity, evidence),
-            MaxConnectionPoolSize = settings.Value.DbSetting.MaxConnectionPoolSize,
+            MaxConnectionPoolSize = settings.GetDbSetting.MaxConnectionPoolSize,
             WaitQueueTimeout = TimeSpan.FromMinutes(1)
         };
 

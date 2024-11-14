@@ -12,12 +12,12 @@ using Business.Data.Interfaces.FileSystem;
 using Business.Data.StorageSpace;
 using Business.Models;
 using Business.Services;
+using Business.Services.Configure;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.Utils.Helper;
 using Business.Utils.StringExtensions;
 using BusinessModels.General.EnumModel;
 using BusinessModels.General.Results;
-using BusinessModels.General.SettingModels;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
@@ -25,7 +25,6 @@ using BusinessModels.Validator.Folder;
 using BusinessModels.WebContent.Drive;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Protector.Utils;
 
@@ -40,7 +39,7 @@ public class FolderSystemBusinessLayer(
     RedundantArrayOfIndependentDisks raidService,
     IParallelBackgroundTaskQueue parallelBackgroundTaskQueue,
     ISequenceBackgroundTaskQueue sequenceBackgroundTaskQueue,
-    IOptions<AppSettings> options)
+    ApplicationConfiguration options)
     : IFolderSystemBusinessLayer
 {
     private readonly CacheKeyManager _cacheKeyManager = new(memoryCache, nameof(FolderSystemBusinessLayer));
@@ -80,9 +79,9 @@ public class FolderSystemBusinessLayer(
         var success = _vectorDbs.TryAdd(collectionName, new VectorDb(new VectorDbConfig()
         {
             Name = collectionName,
-            OllamaConnectionString = options.Value.OllamaConfig.ConnectionString,
-            OllamaTextEmbeddingModelName = options.Value.OllamaConfig.TextEmbeddingModel,
-            OllamaImage2TextModelName = options.Value.OllamaConfig.Image2TextModel
+            OllamaConnectionString = options.GetOllamaConfig.ConnectionString,
+            OllamaTextEmbeddingModelName = options.GetOllamaConfig.TextEmbeddingModel,
+            OllamaImage2TextModelName = options.GetOllamaConfig.Image2TextModel
         }, logger));
         if (success)
         {

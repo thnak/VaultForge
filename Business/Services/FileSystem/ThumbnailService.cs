@@ -1,20 +1,19 @@
 ﻿using Business.Business.Interfaces.FileSystem;
 using Business.Data.StorageSpace;
+using Business.Services.Configure;
 using Business.Services.Interfaces;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.General.EnumModel;
-using BusinessModels.General.SettingModels;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 
 namespace Business.Services.FileSystem;
 
-public class ThumbnailService(IParallelBackgroundTaskQueue queue, IFolderSystemBusinessLayer folderService, IOptions<AppSettings> options, IFileSystemBusinessLayer fileService, RedundantArrayOfIndependentDisks raidService, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
+public class ThumbnailService(IParallelBackgroundTaskQueue queue, IFolderSystemBusinessLayer folderService, ApplicationConfiguration options, IFileSystemBusinessLayer fileService, RedundantArrayOfIndependentDisks raidService, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
 {
     public Task AddThumbnailRequest(string imageId)
     {
@@ -82,13 +81,13 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IFolderSystemB
 
                 if (width > height)
                 {
-                    height = (int)(height * (options.Value.ThumbnailSetting.ImageThumbnailSize / (double)width));
-                    width = options.Value.ThumbnailSetting.ImageThumbnailSize;
+                    height = (int)(height * (options.GetThumbnailSetting.ImageThumbnailSize / (double)width));
+                    width = options.GetThumbnailSetting.ImageThumbnailSize;
                 }
                 else
                 {
-                    width = (int)(width * (options.Value.ThumbnailSetting.ImageThumbnailSize / (double)height));
-                    height = options.Value.ThumbnailSetting.ImageThumbnailSize;
+                    width = (int)(width * (options.GetThumbnailSetting.ImageThumbnailSize / (double)height));
+                    height = options.GetThumbnailSetting.ImageThumbnailSize;
                 }
 
                 // Create a thumbnail

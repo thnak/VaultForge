@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Threading.Channels;
 using Business.Business.Interfaces.InternetOfThings;
-using BusinessModels.General.SettingModels;
+using Business.Services.Configure;
 using BusinessModels.System.InternetOfThings;
-using Microsoft.Extensions.Options;
 
 namespace Business.Business.Repositories.InternetOfThings;
 
@@ -11,9 +10,9 @@ public class IotRequestQueue : IIotRequestQueue
 {
     private readonly Channel<IoTRecord> _channel;
 
-    public IotRequestQueue(IOptions<AppSettings> options)
+    public IotRequestQueue(ApplicationConfiguration options)
     {
-        var maxQueueSize = options.Value.IoTRequestQueueConfig.MaxQueueSize;
+        var maxQueueSize = options.GetIoTRequestQueueConfig.MaxQueueSize;
         BoundedChannelOptions boundedChannelOptions = new(maxQueueSize)
         {
             FullMode = BoundedChannelFullMode.DropOldest,

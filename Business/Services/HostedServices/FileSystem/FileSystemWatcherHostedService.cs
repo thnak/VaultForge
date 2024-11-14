@@ -1,16 +1,15 @@
 ﻿using Business.Business.Interfaces.FileSystem;
+using Business.Services.Configure;
 using Business.Services.Ffmpeg;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.Utils.Helper;
-using BusinessModels.General.SettingModels;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Business.Services.HostedServices.FileSystem;
 
 public class FileSystemWatcherHostedService(
-    IOptions<AppSettings> appSettings,
+    ApplicationConfiguration appSettings,
     ILogger<FileSystemWatcherHostedService> logger,
     ISequenceBackgroundTaskQueue taskQueueService,
     IParallelBackgroundTaskQueue parallelBackgroundTaskQueue,
@@ -24,7 +23,7 @@ public class FileSystemWatcherHostedService(
         {
             await e.FullPath.CheckFileSizeStable();
 
-            var workDir = appSettings.Value.VideoTransCode.WorkingDirectory;
+            var workDir = appSettings.GetVideoTransCode.WorkingDirectory;
 
             await TerminalExtension.ExecuteCommandAsync($"./convert_to_hls.sh \"{e.FullPath}\"", workDir, token);
 
@@ -47,8 +46,8 @@ public class FileSystemWatcherHostedService(
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        var watchResources = appSettings.Value.Storage.FolderWatchList;
-        var watchStorageResources = appSettings.Value.Storage.Disks;
+        var watchResources = appSettings.GetStorage.FolderWatchList;
+        var watchStorageResources = appSettings.GetStorage.Disks;
         string[] watchExtensionFilters = ["*.mp4", "*.mkv"];
 
         foreach (var watchResource in watchResources)

@@ -1,13 +1,12 @@
 ﻿using System.Text;
 using Business.Business.Interfaces.FileSystem;
 using Business.Services;
-using BusinessModels.General.SettingModels;
+using Business.Services.Configure;
 using BusinessModels.Utils;
 using BusinessModels.WebContent;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
 using Ollama;
 
 namespace WebApp.Controllers.Chats;
@@ -15,7 +14,7 @@ namespace WebApp.Controllers.Chats;
 [ApiController]
 [Route("api/[controller]")]
 public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithLlamaController> logger, IFileSystemBusinessLayer fileBl, IFolderSystemBusinessLayer folderBl,
-    IServiceProvider serviceProvider, IOptions<AppSettings> options) : ControllerBase
+    IServiceProvider serviceProvider, ApplicationConfiguration options) : ControllerBase
 {
     [HttpPost("chat")]
     [AllowAnonymous]
@@ -33,7 +32,7 @@ public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithL
                 return [];
             }) ?? [];
 
-            var chat = new ChatWithLlama(systemPrompt ?? string.Empty, new Uri($"{options.Value.OllamaConfig.ConnectionString}api"), serviceProvider, model, autoCallTools is true);
+            var chat = new ChatWithLlama(systemPrompt ?? string.Empty, new Uri($"{options.GetOllamaConfig.ConnectionString}api"), serviceProvider, model, autoCallTools is true);
             chat.History = messages.Any() ? [..messages] : chat.History;
             var mess = images != default ? await chat.ChatAsync(question, images, HttpContext.RequestAborted) : await chat.ChatAsync(question, HttpContext.RequestAborted);
             HttpContext.Response.RegisterForDispose(chat);

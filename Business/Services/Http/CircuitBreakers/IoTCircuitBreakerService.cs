@@ -1,17 +1,16 @@
-﻿using BusinessModels.General.Results;
-using BusinessModels.General.SettingModels;
+﻿using Business.Services.Configure;
+using BusinessModels.General.Results;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Polly;
 using Polly.CircuitBreaker;
 
 namespace Business.Services.Http.CircuitBreakers;
 
-public class IoTCircuitBreakerService(IOptions<AppSettings> options, ILogger<IoTCircuitBreakerService> logger)
+public class IoTCircuitBreakerService(ApplicationConfiguration options, ILogger<IoTCircuitBreakerService> logger)
 {
     private readonly AsyncCircuitBreakerPolicy _circuitBreaker = Policy
         .Handle<Exception>()
-        .CircuitBreakerAsync(exceptionsAllowedBeforeBreaking: options.Value.IoTCircuitBreaker.ExceptionsAllowedBeforeBreaking, durationOfBreak: TimeSpan.FromSeconds(options.Value.IoTCircuitBreaker.DurationOfBreakInSecond));
+        .CircuitBreakerAsync(exceptionsAllowedBeforeBreaking: options.GetIoTCircuitBreaker.ExceptionsAllowedBeforeBreaking, durationOfBreak: TimeSpan.FromSeconds(options.GetIoTCircuitBreaker.DurationOfBreakInSecond));
 
     // Break after 5 failures
     // Stop for 30 seconds
