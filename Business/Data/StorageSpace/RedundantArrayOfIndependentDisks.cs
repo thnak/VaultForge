@@ -114,13 +114,19 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             List<FileRaidDataBlockModel> disks = arrayDisk.GetShuffledDisks(raidModel.Id);
 
             disks.InitPhysicFolder();
-
-            var result = await WriteDataAsync(stream, raidModel.StripSize, cancellationToken, disks.Select(x => x.AbsolutePath));
+            await using Raid5Stream streamDisk = new Raid5Stream(disks.Select(x => x.AbsolutePath), 0, raidModel.StripSize, FileMode.Create, FileAccess.Write, FileShare.Read);
+            await streamDisk.CopyFromAsync(stream, cancellationToken: cancellationToken);
+            WriteDataResult result = new WriteDataResult()
+            {
+                CheckSum = string.Empty,
+                TotalByteWritten = streamDisk.Length,
+                TotalByteWritePerDisk = streamDisk.FileStreams.Select(x => x?.Length ?? 0).ToArray(),
+            };
             raidModel.Size = result.TotalByteWritten;
             raidModel.CheckSum = result.CheckSum;
             for (int i = 0; i < result.TotalByteWritePerDisk.Length; i++)
             {
-                disks[i].Size = result.TotalByteWritePerDisk[i];
+                disks[i].Size = streamDisk.FileStreams[i]?.Length ?? 0;
             }
 
             await _fileDataDb.InsertOneAsync(raidModel, null, cancellationToken);
@@ -460,7 +466,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
 
         while (hasMoreData)
         {
-            using MemoryStream bufferStream = await ReadStreamWithLimitAsync(inputStream);
+            using MemoryStream bufferStream = await inputStream.ReadStreamWithLimitAsync();
             hasMoreData = bufferStream.Length > 0;
 
             while ((bytesRead[0] = await bufferStream.ReadAsync(buffers[0], 0, stripeSize, cancellationToken)) > 0)
@@ -481,10 +487,10 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
 
                 if (detectedContentType == null)
                 {
-                    detectedContentType = DetectContentType(buffers[0], buffers[1]);
+                    detectedContentType = buffers[0].DetectContentType(buffers[1]);
                 }
 
-                var writeTasks = CreateWriteTasks(stripeCount, bytesRead, cancellationToken, buffers, fileStreams);
+                var writeTasks = fileStreams.CreateWriteTasks(stripeCount, bytesRead, cancellationToken, buffers);
                 await Task.WhenAll(writeTasks);
 
                 totalBytesWritten += realBytesRead.Sum();
@@ -498,17 +504,13 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
 
         return new WriteDataResult
         {
-            CheckSum = ConvertChecksumToHex(md5Hasher.Hash),
+            CheckSum = md5Hasher.Hash.ConvertChecksumToHex(),
             TotalByteWritten = totalBytesWritten,
             TotalByteWritePerDisk = fileBytesWritten,
             ContentType = detectedContentType?.GetMimeTypeFromExtension() ?? string.Empty,
         };
     }
 
-    private string DetectContentType(byte[] buffer0, byte[] buffer2)
-    {
-        return buffer0.Concat(buffer2).ToArray().GetCorrectExtension("");
-    }
 
     private void UpdateFileBytesWritten(long[] fileBytesWritten, int[] bytesRead, int stripeSize)
     {
@@ -519,67 +521,6 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
 
         fileBytesWritten[bytesRead.Length - 1] += stripeSize;
     }
-
-    private static List<Task> CreateWriteTasks(int stripeCount, int[] byteWrites, CancellationToken cancellationToken, byte[][] buffers, List<FileStream?> fileStreams)
-    {
-        int stripeIndex = stripeCount % fileStreams.Count;
-        int lastIndex = fileStreams.Count - 1;
-        int fileStripeIndex = lastIndex - stripeIndex;
-        int index = 0;
-
-        List<Task> tasks = [];
-        for (int i = 0; i < fileStreams.Count; i++)
-        {
-            if (fileStripeIndex == i)
-            {
-                tasks.Add(fileStreams[i]?.WriteAsync(buffers[lastIndex], 0, byteWrites[lastIndex], cancellationToken) ?? Task.CompletedTask);
-                continue;
-            }
-
-            tasks.Add(fileStreams[i]?.WriteAsync(buffers[index], 0, byteWrites[index], cancellationToken) ?? Task.CompletedTask);
-            index++;
-        }
-
-        return tasks;
-    }
-
-    private string ConvertChecksumToHex(byte[]? hash)
-    {
-        StringBuilder checksumBuilder = new();
-        if (hash != null)
-        {
-            foreach (byte b in hash)
-            {
-                checksumBuilder.Append(b.ToString("x2"));
-            }
-        }
-
-        return checksumBuilder.ToString();
-    }
-
-    private async Task<MemoryStream> ReadStreamWithLimitAsync(Stream clientStream, int maxBufferSizeInBytes = 4 * 1024 * 1024) // 4MB limit
-    {
-        const int bufferSize = 8192; // 8 KB buffer size
-        byte[] buffer = new byte[bufferSize];
-        int bytesRead;
-        int remainingSize = maxBufferSizeInBytes;
-
-        // Create a MemoryStream to hold the stream data with a capacity of maxBufferSizeInBytes
-        MemoryStream memoryStream = new MemoryStream();
-
-        // Read the client stream in chunks and write to the memory stream until the limit is reached
-        while ((bytesRead = await clientStream.ReadAsync(buffer, 0, Math.Min(remainingSize, bufferSize))) > 0)
-        {
-            await memoryStream.WriteAsync(buffer, 0, bytesRead);
-            remainingSize -= bytesRead;
-        }
-
-        // Optionally, reset the memory stream's position to the beginning if you plan to read from it later
-        memoryStream.Position = 0;
-
-        return memoryStream;
-    }
-
 
     public class RaidFileInfo
     {

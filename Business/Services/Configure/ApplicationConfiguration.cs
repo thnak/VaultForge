@@ -24,13 +24,13 @@ public class ApplicationConfiguration
         Configs.IoTRequestQueueConfig.TimePeriodInSecond = GetIntEnvironmentVariable("IoTRequestQueueConfigTimePeriodInSecond", appSettings.Value.IoTRequestQueueConfig.TimePeriodInSecond);
 
         Configs.IoTCircuitBreaker.ExceptionsAllowedBeforeBreaking = GetIntEnvironmentVariable("IoTCircuitBreakerExceptionsAllowedBeforeBreaking", appSettings.Value.IoTCircuitBreaker.ExceptionsAllowedBeforeBreaking);
-        Configs.IoTCircuitBreaker.DurationOfBreakInSecond = GetIntEnvironmentVariable("IoTCircuitBreaker.DurationOfBreakInSecond", appSettings.Value.IoTCircuitBreaker.DurationOfBreakInSecond);
+        Configs.IoTCircuitBreaker.DurationOfBreakInSecond = GetIntEnvironmentVariable("IoTCircuitBreakerDurationOfBreakInSecond", appSettings.Value.IoTCircuitBreaker.DurationOfBreakInSecond);
 
         Configs.BackgroundQueue.ParallelQueueSize = GetIntEnvironmentVariable("BackgroundQueueParallelQueueSize", appSettings.Value.BackgroundQueue.ParallelQueueSize);
         Configs.BackgroundQueue.SequenceQueueSize = GetIntEnvironmentVariable("BackgroundQueueSequenceQueueSize", appSettings.Value.BackgroundQueue.SequenceQueueSize);
         Configs.BackgroundQueue.MaxParallelThreads = GetIntEnvironmentVariable("BackgroundQueueMaxParallelThreads", appSettings.Value.BackgroundQueue.MaxParallelThreads);
 
-        Configs.ThumbnailSetting.ImageThumbnailSize = GetIntEnvironmentVariable("ThumbnailSetting.ImageThumbnailSize", appSettings.Value.ThumbnailSetting.ImageThumbnailSize);
+        Configs.ThumbnailSetting.ImageThumbnailSize = GetIntEnvironmentVariable("ThumbnailSettingImageThumbnailSize", appSettings.Value.ThumbnailSetting.ImageThumbnailSize);
 
         Configs.DbSetting.ConnectionString = GetEnvironmentVariable("DbSettingConnectionString", appSettings.Value.DbSetting.ConnectionString);
         Configs.DbSetting.DatabaseName = GetEnvironmentVariable("DbSettingDatabaseName", appSettings.Value.DbSetting.DatabaseName);
