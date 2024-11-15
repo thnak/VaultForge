@@ -116,6 +116,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             disks.InitPhysicFolder();
             await using Raid5Stream streamDisk = new Raid5Stream(disks.Select(x => x.AbsolutePath), 0, raidModel.StripSize, FileMode.Create, FileAccess.Write, FileShare.Read);
             await streamDisk.CopyFromAsync(stream, cancellationToken: cancellationToken);
+            await streamDisk.FlushAsync(cancellationToken);
             WriteDataResult result = new WriteDataResult()
             {
                 CheckSum = string.Empty,
@@ -423,103 +424,6 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             await x.DisposeAsync();
         }).ToList();
         await Task.WhenAll(tasksFlush);
-    }
-
-    public async Task<WriteDataResult> WriteDataAsync(Stream inputStream, int stripeSize, CancellationToken cancellationToken = default, params IEnumerable<string> filePaths)
-    {
-        var pathsArray = filePaths.ToArray();
-        List<FileStream?> fileStreams = pathsArray.Select(path => path.OpenFileWrite(_readWriteBufferSize).Value).ToList();
-
-        try
-        {
-            inputStream.SeekBeginOrigin();
-            var writeDataResult = await ProcessInputStreamAsync(inputStream, stripeSize, cancellationToken, fileStreams);
-
-            return writeDataResult;
-        }
-        catch (OperationCanceledException)
-        {
-            pathsArray.DeletePhysicFiles();
-            return new WriteDataResult();
-        }
-        finally
-        {
-            await FlushAndDisposeAsync(fileStreams);
-        }
-    }
-
-    private async Task<WriteDataResult> ProcessInputStreamAsync(Stream inputStream, int stripeSize, CancellationToken cancellationToken, List<FileStream?> fileStreams)
-    {
-        long totalBytesWritten = 0;
-        int numDisks = fileStreams.Count;
-        long[] fileBytesWritten = new long[numDisks];
-        byte[][] buffers = Enumerable.Range(0, numDisks).Select(_ => new byte[stripeSize]).ToArray();
-
-        int realDataDisks = fileStreams.Count - 1;
-
-        int[] bytesRead = new int[numDisks];
-        int stripeCount = 0;
-        string? detectedContentType = null;
-
-        using MD5 md5Hasher = MD5.Create();
-        bool hasMoreData = true;
-
-        while (hasMoreData)
-        {
-            using MemoryStream bufferStream = await inputStream.ReadStreamWithLimitAsync();
-            hasMoreData = bufferStream.Length > 0;
-
-            while ((bytesRead[0] = await bufferStream.ReadAsync(buffers[0], 0, stripeSize, cancellationToken)) > 0)
-            {
-                md5Hasher.TransformBlock(buffers[0], 0, bytesRead[0], null, 0);
-
-                for (int i = 1; i < realDataDisks; i++)
-                {
-                    bytesRead[i] = await bufferStream.ReadAsync(buffers[i], 0, stripeSize, cancellationToken);
-                    md5Hasher.TransformBlock(buffers[i], 0, bytesRead[i], null, 0);
-                }
-
-                byte[][] subset = buffers.Take(realDataDisks).ToArray();
-                var realBytesRead = bytesRead.Take(realDataDisks).ToArray();
-                bytesRead[realDataDisks] = realBytesRead.Max();
-                buffers[realDataDisks] = subset.XorParity();
-
-
-                if (detectedContentType == null)
-                {
-                    detectedContentType = buffers[0].DetectContentType(buffers[1]);
-                }
-
-                var writeTasks = fileStreams.CreateWriteTasks(stripeCount, bytesRead, cancellationToken, buffers);
-                await Task.WhenAll(writeTasks);
-
-                totalBytesWritten += realBytesRead.Sum();
-                UpdateFileBytesWritten(fileBytesWritten, bytesRead, stripeSize);
-
-                stripeCount++;
-            }
-        }
-
-        md5Hasher.TransformFinalBlock([], 0, 0);
-
-        return new WriteDataResult
-        {
-            CheckSum = md5Hasher.Hash.ConvertChecksumToHex(),
-            TotalByteWritten = totalBytesWritten,
-            TotalByteWritePerDisk = fileBytesWritten,
-            ContentType = detectedContentType?.GetMimeTypeFromExtension() ?? string.Empty,
-        };
-    }
-
-
-    private void UpdateFileBytesWritten(long[] fileBytesWritten, int[] bytesRead, int stripeSize)
-    {
-        for (int i = 0; i < bytesRead.Length - 1; i++)
-        {
-            fileBytesWritten[i] += bytesRead[i];
-        }
-
-        fileBytesWritten[bytesRead.Length - 1] += stripeSize;
     }
 
     public class RaidFileInfo

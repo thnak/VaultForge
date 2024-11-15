@@ -372,7 +372,8 @@ public class Raid5Stream : Stream
                     continue;
                 readBuffers[i].CopyTo(parityBuffers[parityIndex++], 0);
             }
-            readBytes[errorIndex] = parityBuffers.Max(x=>x.Length);
+
+            readBytes[errorIndex] = parityBuffers.Max(x => x.Length);
             readBuffers[errorIndex] = parityBuffers.XorParity();
         }
     }
