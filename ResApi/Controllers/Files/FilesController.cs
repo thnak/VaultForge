@@ -255,7 +255,7 @@ public class FilesController(
 
             byte[] buffer = new byte[length];
 
-            Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files[0], pathArray.Files[1], pathArray.Files[2], pathArray.FileSize, pathArray.StripeSize);
+            Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files, pathArray.FileSize, pathArray.StripeSize, FileMode.Open, FileAccess.Read, FileShare.Read);
             raid5Stream.Seek(from, SeekOrigin.Begin);
 
             _ = await raid5Stream.ReadAsync(buffer, 0, length, cancelToken);

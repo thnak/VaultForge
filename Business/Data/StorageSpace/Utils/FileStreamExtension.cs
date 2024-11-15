@@ -61,6 +61,26 @@ public static class FileStreamExtension
         return tasks;
     }
 
+    public static int[] GenerateRaid5Indices(this int fileStreamsCount, int stripeCount)
+    {
+        int[] indices = new int[fileStreamsCount];
+        int lastIndex = fileStreamsCount - 1;
+        indices[lastIndex] = lastIndex - (stripeCount % fileStreamsCount);
+
+        int index = 0;
+        for (int i = 0; i < lastIndex; i++)
+        {
+            indices[i] = index++;
+            if (indices[i] == indices[lastIndex])
+            {
+                indices[i] = index++;
+            }
+        }
+
+        return indices;
+    }
+
+
     public static List<Task> CreateWriteTasks(this FileStream?[] fileStreams, int stripeCount, int[] byteWrites, CancellationToken cancellationToken, byte[][] buffers)
     {
         int stripeIndex = stripeCount % fileStreams.Length;

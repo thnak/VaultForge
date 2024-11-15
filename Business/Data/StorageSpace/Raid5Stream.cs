@@ -10,7 +10,7 @@ public class Raid5Stream : Stream
     private readonly int _stripeSize;
     private long _position;
     private long StripeIndex { get; set; }
-    private long StripeRowIndex { get; set; }
+    private int StripeRowIndex { get; set; }
     private long StartPadStripIndex { get; set; }
     private int StartPadding { get; set; }
     private int StartPaddingSize { get; set; }
@@ -18,17 +18,6 @@ public class Raid5Stream : Stream
 
     public List<FileStream?> FileStreams { get; set; }
     private readonly int _readWriteBufferSize = 10 * 1024;
-
-
-    public Raid5Stream(string file1Path, string file2Path, string file3Path, long originalSize, int stripeSize)
-    {
-        List<string> path = [file1Path, file2Path, file3Path];
-        FileStreams = path.OpenFile(FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: _readWriteBufferSize);
-
-        _originalSize = originalSize;
-        _stripeSize = stripeSize;
-        _position = 0;
-    }
 
     public Raid5Stream(IEnumerable<string> path, long originalSize, int stripeSize, FileMode fileMode, FileAccess fileAccess, FileShare fileShare)
     {
@@ -102,7 +91,7 @@ public class Raid5Stream : Stream
             throw new ArgumentOutOfRangeException(nameof(offset), @"Seek position is out of range.");
 
         // Calculate which stripe the new position falls into and the offset within that stripe
-        StripeRowIndex = newPosition / 2 / _stripeSize;
+        StripeRowIndex = (int)(newPosition / 2 / _stripeSize);
 
         StripeIndex = newPosition / _stripeSize;
         if (StripeIndex > 1)
@@ -130,6 +119,16 @@ public class Raid5Stream : Stream
         StartPadding = StripeIndexStart(newPosition);
 
         return _position;
+    }
+
+    public override void CopyTo(Stream destination, int bufferSize)
+    {
+        byte[] buffer = new byte[bufferSize];
+        int bytesRead;
+        while ((bytesRead = Read(buffer, 0, bufferSize)) > 0)
+        {
+            destination.Write(buffer, 0, bytesRead);
+        }
     }
 
     public override async Task CopyToAsync(Stream destination, int bufferSize, CancellationToken cancellationToken)
@@ -339,6 +338,30 @@ public class Raid5Stream : Stream
         return totalBytesWritten;
     }
 
+    private async Task ReadAndRecoverDataAsync(int[] indices, byte[][] readBuffers, int[] readBytes, CancellationToken cancellationToken)
+    {
+        var readTasks = new Task<int>[indices.Length];
+        for (int i = 0; i < indices.Length; i++)
+        {
+            readTasks[i] = FileStreams[indices[i]]?.ReadAsync(readBuffers[i], 0, _stripeSize, cancellationToken) ?? Task.FromResult(0);
+        }
+
+        await Task.WhenAll(readTasks);
+
+        // update read bytes
+        for (int i = 0; i < indices.Length; i++)
+        {
+            readBytes[i] = await readTasks[i];
+        }
+
+        // If there's a missing file, recover it using parity
+        var lastIndicesIndex = indices.Length - 1;
+        if (FileStreams[indices[lastIndicesIndex]] == null)
+        {
+            readBuffers[indices[lastIndicesIndex]] = readBuffers.Take(lastIndicesIndex).ToArray().XorParity();
+        }
+    }
+
     public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
     {
         int totalFileStream = FileStreams.Count;
@@ -352,165 +375,71 @@ public class Raid5Stream : Stream
 
         while (totalBytesWritten < count)
         {
-            Task<int>[] readTasks = new Task<int>[totalFileStream];
+            int[] byteReads = new int[totalFileStream];
+            var indices = totalFileStream.GenerateRaid5Indices(StripeRowIndex);
+            await ReadAndRecoverDataAsync(indices, readBuffers, byteReads, cancellationToken);
 
-            // Determine the current stripe pattern and read from available files
-            switch (StripeRowIndex % totalFileStream)
-            {
-                case 0:
-                    // Parity in file 3, data in file 1 and file 2
-                    if (FileStreams[0] == null)
-                    {
-                        // Recover data1 using parity and data2
-                        readTasks[1] = FileStreams[1]!.ReadAsync(readBuffers[1], 0, _stripeSize, cancellationToken);
-                        readTasks[0] = FileStreams[2]!.ReadAsync(readBuffers[totalFileStream - 1], 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTasks);
-                        readBuffers[0] = readBuffers[totalFileStream - 1].XorParity(readBuffers[1]);
-                    }
-                    else if (FileStreams[1] == null)
-                    {
-                        // Recover data2 using parity and data1
-                        readTasks[0] = FileStreams[0]!.ReadAsync(readBuffers[0], 0, _stripeSize, cancellationToken);
-                        readTasks[1] = FileStreams[2]!.ReadAsync(readBuffers[totalFileStream - 1], 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTasks[0], readTasks[1]);
-                        readBuffers[1] = readBuffers[totalFileStream - 1].XorParity(readBuffers[0]);
-                    }
-                    else if (FileStreams[2] == null)
-                    {
-                        // Read data, calculate parity to verify correctness
-                        readTasks[0] = FileStreams[0]!.ReadAsync(readBuffers[0], 0, _stripeSize, cancellationToken);
-                        readTasks[1] = FileStreams[1]!.ReadAsync(readBuffers[1], 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTasks[0], readTasks[1]);
-                    }
-                    else
-                    {
-                        readTasks[0] = FileStreams[0]!.ReadAsync(readBuffers[0], 0, _stripeSize, cancellationToken);
-                        readTasks[1] = FileStreams[1]!.ReadAsync(readBuffers[1], 0, _stripeSize, cancellationToken);
-                        readTasks[2] = FileStreams[2]!.ReadAsync(readBuffers[totalFileStream - 1], 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTasks[0], readTasks[1], readTasks[2]);
-                    }
-
-                    break;
-
-                case 1:
-                    // Parity in file 2, data in file 1 and file 3
-                    if (FileStreams[0] == null)
-                    {
-                        readTasks[1] = FileStreams[2]!.ReadAsync(readBuffers[1], 0, _stripeSize, cancellationToken);
-                        readTasks[0] = FileStreams[1]!.ReadAsync(readBuffers[totalFileStream - 1], 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTasks[0], readTasks[1]);
-                        readBuffers[0] = readBuffers[totalFileStream - 1].XorParity(readBuffers[1]);
-                    }
-                    else if (FileStreams[2] == null)
-                    {
-                        readTasks[0] = FileStreams[0]!.ReadAsync(readBuffers[0], 0, _stripeSize, cancellationToken);
-                        readTasks[1] = FileStreams[1]!.ReadAsync(readBuffers[totalFileStream - 1], 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTasks[0], readTasks[1]);
-                        readBuffers[1] = readBuffers[totalFileStream - 1].XorParity(readBuffers[0]);
-                    }
-                    else if (FileStreams[1] == null)
-                    {
-                        readTasks[0] = FileStreams[0]!.ReadAsync(readBuffers[0], 0, _stripeSize, cancellationToken);
-                        readTasks[1] = FileStreams[2]!.ReadAsync(readBuffers[1], 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTasks[0], readTasks[1]);
-                    }
-                    else
-                    {
-                        readTasks[0] = FileStreams[0]!.ReadAsync(readBuffers[0], 0, _stripeSize, cancellationToken);
-                        readTasks[1] = FileStreams[2]!.ReadAsync(readBuffers[1], 0, _stripeSize, cancellationToken);
-                        readTasks[2] = FileStreams[1]!.ReadAsync(readBuffers[totalFileStream - 1], 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTasks[0], readTasks[1], readTasks[2]);
-                    }
-
-                    break;
-
-                case 2:
-                    // Parity in file 1, data in file 2 and file 3
-                    if (FileStreams[1] == null)
-                    {
-                        readTasks[1] = FileStreams[2]!.ReadAsync(readBuffers[1], 0, _stripeSize, cancellationToken);
-                        readTasks[0] = FileStreams[0]!.ReadAsync(readBuffers[totalFileStream - 1], 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTasks[0], readTasks[1]);
-                        readBuffers[0] = readBuffers[totalFileStream - 1].XorParity(readBuffers[1]);
-                    }
-                    else if (FileStreams[2] == null)
-                    {
-                        readTasks[0] = FileStreams[1]!.ReadAsync(readBuffers[0], 0, _stripeSize, cancellationToken);
-                        readTasks[1] = FileStreams[0]!.ReadAsync(readBuffers[totalFileStream - 1], 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTasks[0], readTasks[1]);
-                        readBuffers[1] = readBuffers[totalFileStream - 1].XorParity(readBuffers[0]);
-                    }
-                    else if (FileStreams[0] == null)
-                    {
-                        readTasks[0] = FileStreams[1]!.ReadAsync(readBuffers[0], 0, _stripeSize, cancellationToken);
-                        readTasks[1] = FileStreams[2]!.ReadAsync(readBuffers[1], 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTasks[0], readTasks[1]);
-                    }
-                    else
-                    {
-                        readTasks[0] = FileStreams[1]!.ReadAsync(readBuffers[0], 0, _stripeSize, cancellationToken);
-                        readTasks[1] = FileStreams[2]!.ReadAsync(readBuffers[1], 0, _stripeSize, cancellationToken);
-                        readTasks[2] = FileStreams[0]!.ReadAsync(readBuffers[totalFileStream - 1], 0, _stripeSize, cancellationToken);
-                        await Task.WhenAll(readTasks[0], readTasks[1], readTasks[2]);
-                    }
-
-                    break;
-            }
-
-            var bytesRead1 = await readTasks[0];
-            var bytesRead2 = await readTasks[1];
-
-            if (bytesRead1 == 0 && bytesRead2 == 0)
+            if (byteReads.Sum() == 0)
             {
                 break; // End of stream
             }
 
-
-            var writeSize1 = (int)Math.Min(_originalSize - _position, bytesRead1);
-
-            if (StripeIndex == StartPadStripIndex)
+            var byteReadArray = byteReads.Take(totalFileStream - 1).ToArray();
+            for (int i = 0; i < byteReadArray.Length; i++)
             {
-                writeSize1 = Math.Min(StartPaddingSize, count - totalBytesWritten);
-                Array.Copy(readBuffers[0], StartPadding, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize1), writeSize1);
-                totalBytesWritten += writeSize1;
-            }
-            else if (StripeIndex >= StartPadStripIndex)
-            {
-                writeSize1 = Math.Min(writeSize1, count - totalBytesWritten);
-                Array.Copy(readBuffers[0], 0, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize1), writeSize1);
-                totalBytesWritten += writeSize1;
-            }
+                var readSize = byteReadArray[i];
+                var writeSize1 = (int)Math.Min(_originalSize - _position, readSize);
 
-            _position += writeSize1;
-            StripeIndex++;
+                if (StripeIndex == StartPadStripIndex)
+                {
+                    writeSize1 = Math.Min(StartPaddingSize, count - totalBytesWritten);
+                    Array.Copy(readBuffers[i], StartPadding, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize1), writeSize1);
+                    totalBytesWritten += writeSize1;
+                }
+                else if (StripeIndex >= StartPadStripIndex)
+                {
+                    writeSize1 = Math.Min(writeSize1, count - totalBytesWritten);
+                    Array.Copy(readBuffers[i], 0, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize1), writeSize1);
+                    totalBytesWritten += writeSize1;
+                }
 
-            var writeSize2 = (int)Math.Min(_originalSize - _position, bytesRead2);
-
-            if (StripeIndex == StartPadStripIndex)
-            {
-                writeSize2 = Math.Min(StartPaddingSize, count - totalBytesWritten);
-                Array.Copy(readBuffers[1], StartPadding, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize2), writeSize2);
-                totalBytesWritten += writeSize2;
+                _position += writeSize1;
+                StripeIndex++;
             }
 
-            else if (StripeIndex >= StartPadStripIndex)
-            {
-                writeSize2 = Math.Min(writeSize2, count - totalBytesWritten);
-                Array.Copy(readBuffers[1], 0, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize2), writeSize2);
-                totalBytesWritten += writeSize2;
-            }
-
-            _position += writeSize2;
-            StripeIndex++;
             StripeRowIndex++;
         }
+
+        _originalSize += totalBytesWritten;
 
         return totalBytesWritten;
     }
 
+    public override void Flush()
+    {
+        foreach (var stream in FileStreams)
+        {
+            if (stream != null)
+                stream.Flush();
+        }
+    }
 
-    public override void Flush() => throw new NotSupportedException();
-    public override void SetLength(long value) => throw new NotSupportedException();
+    public override Task FlushAsync(CancellationToken cancellationToken)
+    {
+        List<Task> tasks = new List<Task>();
+        foreach (var stream in FileStreams)
+        {
+            if (stream != null) tasks.Add(stream.FlushAsync(cancellationToken));
+        }
+
+        return Task.WhenAll(tasks);
+    }
+
+    public override void SetLength(long value)
+    {
+        //
+    }
+
     public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
 
     protected override void Dispose(bool disposing)
@@ -527,9 +456,13 @@ public class Raid5Stream : Stream
 
     public override async ValueTask DisposeAsync()
     {
-        if (FileStreams[0] != null) await FileStreams[0]!.DisposeAsync();
-        if (FileStreams[1] != null) await FileStreams[1]!.DisposeAsync();
-        if (FileStreams[2] != null) await FileStreams[2]!.DisposeAsync();
-        await base.DisposeAsync();
+        List<Task> tasks = new List<Task>();
+        foreach (var stream in FileStreams)
+        {
+            if (stream != null)
+                tasks.Add(stream.DisposeAsync().AsTask());
+        }
+
+        await Task.WhenAll(tasks);
     }
 }
