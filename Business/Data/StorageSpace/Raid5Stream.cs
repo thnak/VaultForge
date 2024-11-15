@@ -341,9 +341,17 @@ public class Raid5Stream : Stream
     private async Task ReadAndRecoverDataAsync(int[] indices, byte[][] readBuffers, int[] readBytes, CancellationToken cancellationToken)
     {
         var readTasks = new Task<int>[indices.Length];
+        int errorIndex = -1;
         for (int i = 0; i < indices.Length; i++)
         {
-            readTasks[i] = FileStreams[indices[i]]?.ReadAsync(readBuffers[i], 0, _stripeSize, cancellationToken) ?? Task.FromResult(0);
+            var stream = FileStreams[indices[i]];
+            if (stream != null)
+                readTasks[i] = stream.ReadAsync(readBuffers[i], 0, _stripeSize, cancellationToken);
+            else
+            {
+                errorIndex = i;
+                readTasks[i] = Task.FromResult(0);
+            }
         }
 
         await Task.WhenAll(readTasks);
@@ -354,11 +362,18 @@ public class Raid5Stream : Stream
             readBytes[i] = await readTasks[i];
         }
 
-        // If there's a missing file, recover it using parity
-        var lastIndicesIndex = indices.Length - 1;
-        if (FileStreams[indices[lastIndicesIndex]] == null)
+        if (errorIndex != -1)
         {
-            readBuffers[indices[lastIndicesIndex]] = readBuffers.Take(lastIndicesIndex).ToArray().XorParity();
+            byte[][] parityBuffers = Enumerable.Range(0, indices.Length - 1).Select(_ => new byte[_stripeSize]).ToArray();
+            int parityIndex = 0;
+            for (int i = 0; i < indices.Length; i++)
+            {
+                if (i == errorIndex)
+                    continue;
+                readBuffers[i].CopyTo(parityBuffers[parityIndex++], 0);
+            }
+            readBytes[errorIndex] = parityBuffers.Max(x=>x.Length);
+            readBuffers[errorIndex] = parityBuffers.XorParity();
         }
     }
 
