@@ -176,7 +176,12 @@ public class FilesController(
         };
        
         MemoryStream ms = new MemoryStream();
-        await raidService.ReadGetDataAsync(ms, file.AbsolutePath, cancelToken);
+        var pathArray = await raidService.GetDataBlockPaths(file.AbsolutePath, cancelToken);
+        if (pathArray == default) return NotFound();
+        Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files, pathArray.FileSize, pathArray.StripeSize, FileMode.Open, FileAccess.Read, FileShare.Read);
+        await raid5Stream.CopyToAsync(ms, cancelToken);
+        ms.Seek(0, SeekOrigin.Begin);        
+
         Response.RegisterForDispose(ms);
 
         using SHA256 sha256 = SHA256.Create();

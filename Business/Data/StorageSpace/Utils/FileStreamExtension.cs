@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Numerics;
+using System.Security.Cryptography;
+using System.Text;
 using Business.Utils.Helper;
 
 namespace Business.Data.StorageSpace.Utils;
@@ -12,7 +14,7 @@ public static class FileStreamExtension
 
     public static async Task<MemoryStream> ReadStreamWithLimitAsync(this Stream clientStream, int maxBufferSizeInBytes = 4 * 1024 * 1024) // 4MB limit
     {
-        const int bufferSize = 8192; // 8 KB buffer size
+        const int bufferSize = 4096; // 8 KB buffer size
         byte[] buffer = new byte[bufferSize];
         int bytesRead;
         int remainingSize = maxBufferSizeInBytes;
@@ -33,72 +35,46 @@ public static class FileStreamExtension
         return memoryStream;
     }
 
-    public static string DetectContentType(this byte[] buffer0, byte[] buffer2)
-    {
-        return buffer0.Concat(buffer2).ToArray().GetCorrectExtension("");
-    }
-
-    public static List<Task> CreateWriteTasks(this List<FileStream?> fileStreams, int stripeCount, int[] byteWrites, CancellationToken cancellationToken, byte[][] buffers)
-    {
-        int stripeIndex = stripeCount % fileStreams.Count;
-        int lastIndex = fileStreams.Count - 1;
-        int fileStripeIndex = lastIndex - stripeIndex;
-        int index = 0;
-
-        List<Task> tasks = [];
-        for (int i = 0; i < fileStreams.Count; i++)
-        {
-            if (fileStripeIndex == i)
-            {
-                tasks.Add(fileStreams[i]?.WriteAsync(buffers[lastIndex], 0, byteWrites[lastIndex], cancellationToken) ?? Task.CompletedTask);
-                continue;
-            }
-
-            tasks.Add(fileStreams[i]?.WriteAsync(buffers[index], 0, byteWrites[index], cancellationToken) ?? Task.CompletedTask);
-            index++;
-        }
-
-        return tasks;
-    }
 
     public static int[] GenerateRaid5Indices(this int fileStreamsCount, int stripeCount)
     {
         int[] indices = new int[fileStreamsCount];
-        int lastIndex = fileStreamsCount - 1;
-        indices[lastIndex] = lastIndex - (stripeCount % fileStreamsCount);
 
-        int index = 0;
-        for (int i = 0; i < lastIndex; i++)
+        // Populate indices array based on the stripe row index and disk count
+        for (int i = 0; i < fileStreamsCount; i++)
         {
-            indices[i] = index++;
-            if (indices[i] == indices[lastIndex])
-            {
-                indices[i] = index++;
-            }
+            indices[i] = (i + stripeCount) % fileStreamsCount;
         }
 
         return indices;
     }
 
 
-    public static List<Task> CreateWriteTasks(this FileStream?[] fileStreams, int stripeCount, int[] byteWrites, CancellationToken cancellationToken, byte[][] buffers)
+    public static List<Task> CreateWriteTasks(this List<FileStream?> fileStreams, int[] indices, int[] byteWrites, CancellationToken cancellationToken, byte[][] buffers)
     {
-        int stripeIndex = stripeCount % fileStreams.Length;
-        int lastIndex = fileStreams.Length - 1;
-        int fileStripeIndex = lastIndex - stripeIndex;
-        int index = 0;
-
         List<Task> tasks = [];
-        for (int i = 0; i < fileStreams.Length; i++)
+        for (int i = 0; i < fileStreams.Count; i++)
         {
-            if (fileStripeIndex == i)
+            var stream = fileStreams[indices[i]];
+            if (stream != null)
             {
-                tasks.Add(fileStreams[i]?.WriteAsync(buffers[lastIndex], 0, byteWrites[lastIndex], cancellationToken) ?? Task.CompletedTask);
-                continue;
+                tasks.Add(stream.WriteAsync(buffers[i], 0, byteWrites[i], cancellationToken));
             }
+        }
 
-            tasks.Add(fileStreams[i]?.WriteAsync(buffers[index], 0, byteWrites[index], cancellationToken) ?? Task.CompletedTask);
-            index++;
+        return tasks;
+    }
+
+    public static List<Task> CreateWriteTasks<T>(this List<T?> fileStreams, int[] indices, int byteWrites, CancellationToken cancellationToken, byte[][] buffers) where T : Stream
+    {
+        List<Task> tasks = [];
+        for (int i = 0; i < fileStreams.Count; i++)
+        {
+            var stream = fileStreams[i];
+            if (stream != null)
+            {
+                tasks.Add(stream.WriteAsync(buffers[indices[i]], 0, byteWrites, cancellationToken));
+            }
         }
 
         return tasks;
@@ -139,7 +115,7 @@ public static class FileStreamExtension
         return fileStreams;
     }
 
-    public static void Seek(this IEnumerable<FileStream?> files, long offset, SeekOrigin origin)
+    public static void Seek<T>(this IEnumerable<T?> files, long offset, SeekOrigin origin) where T : Stream
     {
         foreach (var file in files)
         {
@@ -167,6 +143,110 @@ public static class FileStreamExtension
         for (int i = 0; i < length; i++)
         {
             byteReads[i] = await tasks[i];
+        }
+    }
+
+    public static byte[] XorParity(this byte[] data0, byte[] data1)
+    {
+        int vectorSize = Vector<byte>.Count;
+        int i = 0;
+
+        byte[] parity = new byte[data0.Length];
+
+        // Process in chunks of Vector<byte>.Count (size of SIMD vector)
+        if (Vector.IsHardwareAccelerated)
+        {
+            for (; i <= data1.Length - vectorSize; i += vectorSize)
+            {
+                // Load the current portion of the parity and data as vectors
+                var data0Vector = new Vector<byte>(data0, i);
+                var data1Vector = new Vector<byte>(data1, i);
+
+                // XOR the vectors
+                var resultVector = data0Vector ^ data1Vector;
+
+                // Store the result back into the parity array
+                resultVector.CopyTo(parity, i);
+            }
+
+            return parity;
+        }
+
+        // Fallback to scalar XOR for the remaining bytes (if any)
+        for (; i < data1.Length; i++)
+        {
+            parity[i] = (byte)(data0[i] ^ data1[i]);
+        }
+
+        return parity;
+    }
+
+    public static byte[] XorParity(this byte[][] data)
+    {
+        int length = data.First().Length;
+
+        // Initialize the result array for storing the XOR parity
+        byte[] result = new byte[length];
+        data.First().CopyTo(result, 0);
+
+        for (int i = 1; i < data.Length; i++)
+        {
+            result.XorParity(data[i]).CopyTo(result, 0);
+        }
+
+        return result;
+    }
+
+    public static bool CompareHashes(this MemoryStream stream1, MemoryStream stream2)
+    {
+        if (stream1 == null || stream2 == null)
+            throw new ArgumentNullException("MemoryStream cannot be null.");
+
+        // Reset stream positions to ensure we hash the entire content
+        stream1.Position = 0;
+        stream2.Position = 0;
+
+        using (var sha256 = SHA256.Create())
+        {
+            // Compute hashes
+            byte[] hash1 = sha256.ComputeHash(stream1);
+            byte[] hash2 = sha256.ComputeHash(stream2);
+
+            // Compare hashes
+            return hash1.SequenceEqual(hash2);
+        }
+    }
+
+    public static async Task Compare(this Stream fileStream1, Stream fileStream2)
+    {
+        var buffer1 = new byte[10];
+        var buffer2 = new byte[10];
+        int count = 0;
+        while ((await fileStream1.ReadAsync(buffer1, 0, buffer1.Length)) > 0)
+        {
+            await fileStream2.ReadAsync(buffer2, 0, buffer2.Length);
+
+            for (int i = 0; i < buffer1.Length; i++)
+            {
+                if (buffer1[i] == buffer2[i])
+                {
+                    count++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        Console.WriteLine($"Stop at position {count}");
+    }
+
+    public static void Fill<T>(this T[] array, T value)
+    {
+        for (int i = 0; i < array.Length; i++)
+        {
+            array[i] = value;
         }
     }
 }

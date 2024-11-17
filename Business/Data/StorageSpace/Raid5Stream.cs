@@ -1,6 +1,4 @@
 ﻿using Business.Data.StorageSpace.Utils;
-using Business.Utils;
-using BusinessModels.Resources;
 
 namespace Business.Data.StorageSpace;
 
@@ -9,22 +7,20 @@ public class Raid5Stream : Stream
     private long _originalSize;
     private readonly int _stripeSize;
     private long _position;
-    private long StripeIndex { get; set; }
+    private long StripeBlockIndex { get; set; }
     private int StripeRowIndex { get; set; }
-    private long StartPadStripIndex { get; set; }
-    private int StartPadding { get; set; }
+    private int ActualBufferSize { get; set; }
     private int StartPaddingSize { get; set; }
 
-
     public List<FileStream?> FileStreams { get; set; }
-    private readonly int _readWriteBufferSize = 10 * 1024;
 
     public Raid5Stream(IEnumerable<string> path, long originalSize, int stripeSize, FileMode fileMode, FileAccess fileAccess, FileShare fileShare)
     {
-        FileStreams = path.OpenFile(fileMode, fileAccess, fileShare, bufferSize: _readWriteBufferSize);
+        FileStreams = path.OpenFile(fileMode, fileAccess, fileShare, bufferSize: 4 * stripeSize);
         _originalSize = originalSize;
         _stripeSize = stripeSize;
         _position = 0;
+        ActualBufferSize = _stripeSize * (FileStreams.Count - 1);
     }
 
     private long FindStripeIndex(long size)
@@ -45,11 +41,6 @@ public class Raid5Stream : Stream
         return _stripeSize - size;
     }
 
-    private int StripeIndexStart(long size)
-    {
-        return _stripeSize - (int)StripeIndexBufferSize(size);
-    }
-
     public override bool CanSeek => true;
     public override bool CanRead => true;
     public override bool CanWrite => false;
@@ -58,12 +49,7 @@ public class Raid5Stream : Stream
     public override long Position
     {
         get => _position;
-        set
-        {
-            if (value < 0 || value > _originalSize)
-                throw new ArgumentOutOfRangeException(nameof(value), AppLang.Raid5Stream_Position_Position_is_out_of_range_);
-            _position = value;
-        }
+        set { _position = value; }
     }
 
     public override long Seek(long offset, SeekOrigin origin)
@@ -90,20 +76,21 @@ public class Raid5Stream : Stream
         if (newPosition < 0 || newPosition > _originalSize)
             throw new ArgumentOutOfRangeException(nameof(offset), @"Seek position is out of range.");
 
-        // Calculate which stripe the new position falls into and the offset within that stripe
-        StripeRowIndex = (int)(newPosition / 2 / _stripeSize);
+        int availableNumDisks = FileStreams.Count - 1;
 
-        StripeIndex = newPosition / _stripeSize;
-        if (StripeIndex > 1)
+        StripeRowIndex = (int)(newPosition / availableNumDisks / _stripeSize);
+
+        StripeBlockIndex = newPosition / _stripeSize;
+        if (StripeBlockIndex > 1)
         {
-            if (StripeIndex % 2 != 0)
+            if (StripeBlockIndex % availableNumDisks != 0)
             {
-                StripeIndex -= 1;
+                StripeBlockIndex -= 1;
             }
         }
         else
         {
-            StripeIndex = 0;
+            StripeBlockIndex = 0;
         }
 
         // Seek each file stream to the start of the stripe
@@ -113,10 +100,7 @@ public class Raid5Stream : Stream
 
         // Adjust the read pointers to account for the position within the stripe
         _position = newPosition;
-        StartPadStripIndex = (int)FindStripeIndex(newPosition);
-
-        StartPaddingSize = (int)StripeIndexBufferSize(newPosition);
-        StartPadding = StripeIndexStart(newPosition);
+        StartPaddingSize = (int)(newPosition % (ActualBufferSize * (StripeRowIndex + 1)));
 
         return _position;
     }
@@ -137,6 +121,7 @@ public class Raid5Stream : Stream
         int bytesRead;
         while ((bytesRead = await ReadAsync(buffer, 0, bufferSize, cancellationToken)) > 0)
         {
+            bytesRead = Math.Min(bufferSize, bytesRead);
             await destination.WriteAsync(buffer, 0, bytesRead, cancellationToken);
         }
     }
@@ -145,6 +130,7 @@ public class Raid5Stream : Stream
     {
         int numDisks = FileStreams.Count;
         byte[][] buffers = Enumerable.Range(0, numDisks).Select(_ => new byte[_stripeSize]).ToArray();
+        byte[][] subset = Enumerable.Range(0, numDisks - 1).Select(_ => new byte[_stripeSize]).ToArray();
 
         int realDataDisks = numDisks - 1;
 
@@ -165,12 +151,16 @@ public class Raid5Stream : Stream
                     bytesRead[i] = await bufferStream.ReadAsync(buffers[i], 0, _stripeSize, cancellationToken);
                 }
 
-                byte[][] subset = buffers.Take(realDataDisks).ToArray();
+                for (int i = 0; i < subset.Length; i++)
+                {
+                    buffers[i].CopyTo(subset[i], 0);
+                }
+
                 var realBytesRead = bytesRead.Take(realDataDisks).ToArray();
                 bytesRead[realDataDisks] = realBytesRead.Max();
                 buffers[realDataDisks] = subset.XorParity();
-
-                var writeTasks = FileStreams.CreateWriteTasks(stripeCount, bytesRead, cancellationToken, buffers);
+                var indices = numDisks.GenerateRaid5Indices(stripeCount);
+                var writeTasks = FileStreams.CreateWriteTasks(indices, _stripeSize, cancellationToken, buffers);
                 await Task.WhenAll(writeTasks);
 
                 var totalRead = realBytesRead.Sum();
@@ -185,188 +175,86 @@ public class Raid5Stream : Stream
     {
         int totalFileStream = FileStreams.Count;
         byte[][] readBuffers = Enumerable.Range(0, totalFileStream).Select(_ => new byte[_stripeSize]).ToArray();
+        byte[][] parityBuffers = Enumerable.Range(0, totalFileStream - 1).Select(_ => new byte[_stripeSize]).ToArray();
 
         int totalBytesWritten = 0;
+        var writeBufferSize = (int)Math.Ceiling((float)count / ActualBufferSize) * ActualBufferSize;
+        byte[] writeBuffer = new byte[writeBufferSize];
 
         count = (int)Math.Min(count, _originalSize);
+        int[] byteReads = new int[totalFileStream];
 
-        StartPaddingSize = Math.Min(StartPaddingSize, count);
-
-        while (totalBytesWritten < count)
+        while (totalBytesWritten < writeBufferSize)
         {
-            int[] readTasks = new int[totalFileStream];
+            byteReads.Fill(0);
+            var indices = totalFileStream.GenerateRaid5Indices(StripeRowIndex);
+            ReadAndRecoverData(indices, readBuffers, byteReads, parityBuffers);
 
-            // Determine the current stripe pattern and read from available files
-            switch (StripeRowIndex % totalFileStream)
-            {
-                case 0:
-                    // Parity in file 3, data in file 1 and file 2
-                    if (FileStreams[0] == null)
-                    {
-                        // Recover data1 using parity and data2
-                        readTasks[1] = FileStreams[1]!.Read(readBuffers[1], 0, _stripeSize);
-                        readTasks[0] = FileStreams[2]!.Read(readBuffers[totalFileStream - 1], 0, _stripeSize);
-                        readBuffers[0] = readBuffers[totalFileStream - 1].XorParity(readBuffers[1]);
-                    }
-                    else if (FileStreams[1] == null)
-                    {
-                        // Recover data2 using parity and data1
-                        readTasks[0] = FileStreams[0]!.Read(readBuffers[0], 0, _stripeSize);
-                        readTasks[1] = FileStreams[2]!.Read(readBuffers[totalFileStream - 1], 0, _stripeSize);
-                        readBuffers[1] = readBuffers[totalFileStream - 1].XorParity(readBuffers[0]);
-                    }
-                    else if (FileStreams[2] == null)
-                    {
-                        // Read data, calculate parity to verify correctness
-                        readTasks[0] = FileStreams[0]!.Read(readBuffers[0], 0, _stripeSize);
-                        readTasks[1] = FileStreams[1]!.Read(readBuffers[1], 0, _stripeSize);
-                    }
-                    else
-                    {
-                        readTasks[0] = FileStreams[0]!.Read(readBuffers[0], 0, _stripeSize);
-                        readTasks[1] = FileStreams[1]!.Read(readBuffers[1], 0, _stripeSize);
-                        readTasks[2] = FileStreams[2]!.Read(readBuffers[totalFileStream - 1], 0, _stripeSize);
-                    }
-
-                    break;
-
-                case 1:
-                    // Parity in file 2, data in file 1 and file 3
-                    if (FileStreams[0] == null)
-                    {
-                        readTasks[1] = FileStreams[2]!.Read(readBuffers[1], 0, _stripeSize);
-                        readTasks[0] = FileStreams[1]!.Read(readBuffers[totalFileStream - 1], 0, _stripeSize);
-                        readBuffers[0] = readBuffers[totalFileStream - 1].XorParity(readBuffers[1]);
-                    }
-                    else if (FileStreams[2] == null)
-                    {
-                        readTasks[0] = FileStreams[0]!.Read(readBuffers[0], 0, _stripeSize);
-                        readTasks[1] = FileStreams[1]!.Read(readBuffers[totalFileStream - 1], 0, _stripeSize);
-                        readBuffers[1] = readBuffers[totalFileStream - 1].XorParity(readBuffers[0]);
-                    }
-                    else if (FileStreams[1] == null)
-                    {
-                        readTasks[0] = FileStreams[0]!.Read(readBuffers[0], 0, _stripeSize);
-                        readTasks[1] = FileStreams[2]!.Read(readBuffers[1], 0, _stripeSize);
-                    }
-                    else
-                    {
-                        readTasks[0] = FileStreams[0]!.Read(readBuffers[0], 0, _stripeSize);
-                        readTasks[1] = FileStreams[2]!.Read(readBuffers[1], 0, _stripeSize);
-                        readTasks[2] = FileStreams[1]!.Read(readBuffers[totalFileStream - 1], 0, _stripeSize);
-                    }
-
-                    break;
-
-                case 2:
-                    // Parity in file 1, data in file 2 and file 3
-                    if (FileStreams[1] == null)
-                    {
-                        readTasks[1] = FileStreams[2]!.Read(readBuffers[1], 0, _stripeSize);
-                        readTasks[0] = FileStreams[0]!.Read(readBuffers[totalFileStream - 1], 0, _stripeSize);
-                        readBuffers[0] = readBuffers[totalFileStream - 1].XorParity(readBuffers[1]);
-                    }
-                    else if (FileStreams[2] == null)
-                    {
-                        readTasks[0] = FileStreams[1]!.Read(readBuffers[0], 0, _stripeSize);
-                        readTasks[1] = FileStreams[0]!.Read(readBuffers[totalFileStream - 1], 0, _stripeSize);
-                        readBuffers[1] = readBuffers[totalFileStream - 1].XorParity(readBuffers[0]);
-                    }
-                    else if (FileStreams[0] == null)
-                    {
-                        readTasks[0] = FileStreams[1]!.Read(readBuffers[0], 0, _stripeSize);
-                        readTasks[1] = FileStreams[2]!.Read(readBuffers[1], 0, _stripeSize);
-                    }
-                    else
-                    {
-                        readTasks[0] = FileStreams[1]!.Read(readBuffers[0], 0, _stripeSize);
-                        readTasks[1] = FileStreams[2]!.Read(readBuffers[1], 0, _stripeSize);
-                        readTasks[2] = FileStreams[0]!.Read(readBuffers[totalFileStream - 1], 0, _stripeSize);
-                    }
-
-                    break;
-            }
-
-            var bytesRead1 = readTasks[0];
-            var bytesRead2 = readTasks[1];
-
-            if (bytesRead1 == 0 && bytesRead2 == 0)
+            if (byteReads.Sum() == 0)
             {
                 break; // End of stream
             }
 
-
-            var writeSize1 = (int)Math.Min(_originalSize - _position, bytesRead1);
-
-            if (StripeIndex == StartPadStripIndex)
+            for (int i = 0; i < totalFileStream - 1; i++)
             {
-                writeSize1 = Math.Min(StartPaddingSize, count - totalBytesWritten);
-                Array.Copy(readBuffers[0], StartPadding, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize1), writeSize1);
-                totalBytesWritten += writeSize1;
-            }
-            else if (StripeIndex >= StartPadStripIndex)
-            {
-                writeSize1 = Math.Min(writeSize1, count - totalBytesWritten);
-                Array.Copy(readBuffers[0], 0, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize1), writeSize1);
-                totalBytesWritten += writeSize1;
+                if (_position >= _originalSize || totalBytesWritten > count) break;
+
+                var readSize = byteReads[i];
+                var writeSize1 = (int)Math.Min(_originalSize - _position, readSize);
+                Array.Copy(readBuffers[i], 0, writeBuffer, totalBytesWritten, writeSize1);
+                _position += readSize;
+                totalBytesWritten += readSize;
+                StripeBlockIndex++;
             }
 
-            _position += writeSize1;
-            StripeIndex++;
-
-            var writeSize2 = (int)Math.Min(_originalSize - _position, bytesRead2);
-
-            if (StripeIndex == StartPadStripIndex)
-            {
-                writeSize2 = Math.Min(StartPaddingSize, count - totalBytesWritten);
-                Array.Copy(readBuffers[1], StartPadding, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize2), writeSize2);
-                totalBytesWritten += writeSize2;
-            }
-
-            else if (StripeIndex >= StartPadStripIndex)
-            {
-                writeSize2 = Math.Min(writeSize2, count - totalBytesWritten);
-                Array.Copy(readBuffers[1], 0, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize2), writeSize2);
-                totalBytesWritten += writeSize2;
-            }
-
-            _position += writeSize2;
-            StripeIndex++;
             StripeRowIndex++;
         }
 
-        return totalBytesWritten;
+        int copySize = Math.Min(count, totalBytesWritten);
+        Array.Copy(writeBuffer, offset + StartPaddingSize, buffer, 0, copySize);
+        StartPaddingSize = 0;
+        return copySize;
     }
 
-    private async Task ReadAndRecoverDataAsync(int[] indices, byte[][] readBuffers, int[] readBytes, CancellationToken cancellationToken)
+    #region read data with recovery
+
+    private async Task ReadAndRecoverDataAsync(int[] indices, byte[][] readBuffers, int[] readBytes, byte[][] parityBuffers, CancellationToken cancellationToken)
     {
-        var readTasks = new Task<int>[indices.Length];
         int errorIndex = -1;
-        for (int i = 0; i < indices.Length; i++)
+        var indicesLength = indices.Length;
+        var lastIndex = indicesLength - 1;
+        Task<int>[] tasks = new Task<int>[indicesLength];
+
+        for (int i = 0; i < indicesLength; i++)
         {
-            var stream = FileStreams[indices[i]];
+            var stripIndex = indices[i];
+            var stream = FileStreams[i];
             if (stream != null)
-                readTasks[i] = stream.ReadAsync(readBuffers[i], 0, _stripeSize, cancellationToken);
+            {
+                tasks[stripIndex] = stream.ReadAsync(readBuffers[stripIndex], 0, _stripeSize, cancellationToken);
+            }
             else
             {
-                errorIndex = i;
-                readTasks[i] = Task.FromResult(0);
+                if (i != lastIndex)
+                {
+                    errorIndex = i;
+                }
+
+                tasks[stripIndex] = Task.FromResult(0);
             }
         }
 
-        await Task.WhenAll(readTasks);
+        await Task.WhenAll(tasks);
 
-        // update read bytes
-        for (int i = 0; i < indices.Length; i++)
+        for (int i = 0; i < indicesLength; i++)
         {
-            readBytes[i] = await readTasks[i];
+            readBytes[i] = await tasks[i];
         }
 
         if (errorIndex != -1)
         {
-            byte[][] parityBuffers = Enumerable.Range(0, indices.Length - 1).Select(_ => new byte[_stripeSize]).ToArray();
             int parityIndex = 0;
-            for (int i = 0; i < indices.Length; i++)
+            for (int i = 0; i < indicesLength; i++)
             {
                 if (i == errorIndex)
                     continue;
@@ -378,57 +266,92 @@ public class Raid5Stream : Stream
         }
     }
 
+    private void ReadAndRecoverData(int[] indices, byte[][] readBuffers, int[] readBytes, byte[][] parityBuffers)
+    {
+        int errorIndex = -1;
+        var indicesLength = indices.Length;
+        var lastIndex = indicesLength - 1;
+        // int[] tasks = new int[indicesLength];
+
+        for (int i = 0; i < indicesLength; i++)
+        {
+            var stripIndex = indices[i];
+            var stream = FileStreams[i];
+            if (stream != null)
+            {
+                readBytes[stripIndex] = stream.Read(readBuffers[stripIndex], 0, _stripeSize);
+            }
+            else
+            {
+                if (i != lastIndex)
+                {
+                    errorIndex = i;
+                }
+
+                readBytes[stripIndex] = 0;
+            }
+        }
+
+        if (errorIndex != -1)
+        {
+            int parityIndex = 0;
+            for (int i = 0; i < indicesLength; i++)
+            {
+                if (i == errorIndex)
+                    continue;
+                readBuffers[i].CopyTo(parityBuffers[parityIndex++], 0);
+            }
+
+            readBytes[errorIndex] = parityBuffers.Max(x => x.Length);
+            readBuffers[errorIndex] = parityBuffers.XorParity();
+        }
+    }
+
+    #endregion
+
     public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
     {
         int totalFileStream = FileStreams.Count;
         byte[][] readBuffers = Enumerable.Range(0, totalFileStream).Select(_ => new byte[_stripeSize]).ToArray();
+        byte[][] parityBuffers = Enumerable.Range(0, totalFileStream - 1).Select(_ => new byte[_stripeSize]).ToArray();
 
         int totalBytesWritten = 0;
+        var writeBufferSize = (int)Math.Ceiling((float)count / ActualBufferSize) * ActualBufferSize;
+        byte[] writeBuffer = new byte[writeBufferSize];
 
         count = (int)Math.Min(count, _originalSize);
+        int[] byteReads = new int[totalFileStream];
 
-        StartPaddingSize = Math.Min(StartPaddingSize, count);
-
-        while (totalBytesWritten < count)
+        while (totalBytesWritten < writeBufferSize)
         {
-            int[] byteReads = new int[totalFileStream];
+            byteReads.Fill(0);
             var indices = totalFileStream.GenerateRaid5Indices(StripeRowIndex);
-            await ReadAndRecoverDataAsync(indices, readBuffers, byteReads, cancellationToken);
+            await ReadAndRecoverDataAsync(indices, readBuffers, byteReads, parityBuffers, cancellationToken);
 
             if (byteReads.Sum() == 0)
             {
                 break; // End of stream
             }
 
-            var byteReadArray = byteReads.Take(totalFileStream - 1).ToArray();
-            for (int i = 0; i < byteReadArray.Length; i++)
+            for (int i = 0; i < totalFileStream - 1; i++)
             {
-                var readSize = byteReadArray[i];
+                if (_position >= _originalSize || totalBytesWritten > count) break;
+
+                var readSize = byteReads[i];
                 var writeSize1 = (int)Math.Min(_originalSize - _position, readSize);
-
-                if (StripeIndex == StartPadStripIndex)
-                {
-                    writeSize1 = Math.Min(StartPaddingSize, count - totalBytesWritten);
-                    Array.Copy(readBuffers[i], StartPadding, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize1), writeSize1);
-                    totalBytesWritten += writeSize1;
-                }
-                else if (StripeIndex >= StartPadStripIndex)
-                {
-                    writeSize1 = Math.Min(writeSize1, count - totalBytesWritten);
-                    Array.Copy(readBuffers[i], 0, buffer, Math.Min(offset + totalBytesWritten, buffer.Length - writeSize1), writeSize1);
-                    totalBytesWritten += writeSize1;
-                }
-
-                _position += writeSize1;
-                StripeIndex++;
+                Array.Copy(readBuffers[i], 0, writeBuffer, totalBytesWritten, writeSize1);
+                _position += readSize;
+                totalBytesWritten += readSize;
+                StripeBlockIndex++;
             }
 
             StripeRowIndex++;
         }
 
-        _originalSize += totalBytesWritten;
-
-        return totalBytesWritten;
+        int copySize = Math.Min(count, totalBytesWritten);
+        Array.Copy(writeBuffer, offset + StartPaddingSize, buffer, 0, copySize);
+        StartPaddingSize = 0;
+        return copySize;
     }
 
     public override void Flush()
