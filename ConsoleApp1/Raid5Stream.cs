@@ -1,7 +1,6 @@
 ﻿using System.Buffers;
-using Business.Data.StorageSpace.Utils;
 
-namespace Business.Data.StorageSpace;
+namespace ConsoleApp1;
 
 public class Raid5Stream : Stream
 {

@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Business.Data.StorageSpace.Utils;
+namespace ConsoleApp1;
 
 public static class FileStreamExtension
 {
@@ -47,7 +47,7 @@ public static class FileStreamExtension
 
         return indices;
     }
-    
+
     public static void GenerateRaid5Indices(this int fileStreamsCount, int stripeCount, int[] indices)
     {
         // Populate indices array based on the stripe row index and disk count
@@ -56,7 +56,6 @@ public static class FileStreamExtension
             indices[i] = (i + stripeCount) % fileStreamsCount;
         }
     }
-
 
     public static List<Task> CreateWriteTasks(this List<FileStream?> fileStreams, int[] indices, int[] byteWrites, CancellationToken cancellationToken, byte[][] buffers)
     {
@@ -72,18 +71,6 @@ public static class FileStreamExtension
 
         return tasks;
     }
-    
-    public static async Task WriteTasks<T>(this List<T?> fileStreams, int[] indices, int byteWrites, CancellationToken cancellationToken, byte[][] buffers) where T : Stream
-    {
-        for (int i = 0; i < fileStreams.Count; i++)
-        {
-            var stream = fileStreams[i];
-            if (stream != null)
-            {
-                await stream.WriteAsync(buffers[indices[i]], 0, byteWrites, cancellationToken);
-            }
-        }
-    }
 
     public static List<Task> CreateWriteTasks<T>(this List<T?> fileStreams, int[] indices, int byteWrites, CancellationToken cancellationToken, byte[][] buffers) where T : Stream
     {
@@ -98,6 +85,18 @@ public static class FileStreamExtension
         }
 
         return tasks;
+    }
+
+    public static async Task WriteTasks<T>(this List<T?> fileStreams, int[] indices, int byteWrites, CancellationToken cancellationToken, byte[][] buffers) where T : Stream
+    {
+        for (int i = 0; i < fileStreams.Count; i++)
+        {
+            var stream = fileStreams[i];
+            if (stream != null)
+            {
+                await stream.WriteAsync(buffers[indices[i]], 0, byteWrites, cancellationToken);
+            }
+        }
     }
 
     public static string ConvertChecksumToHex(this byte[]? hash)
@@ -217,7 +216,7 @@ public static class FileStreamExtension
         return result;
     }
 
-    public static bool CompareHashes(this MemoryStream stream1, MemoryStream stream2)
+    public static bool CompareHashes(this MemoryStream stream1, Stream stream2)
     {
         if (stream1 == null || stream2 == null)
             throw new ArgumentNullException("MemoryStream cannot be null.");

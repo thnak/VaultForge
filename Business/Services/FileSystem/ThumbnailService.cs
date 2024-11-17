@@ -52,7 +52,7 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, IFolderSystemB
         var fileSourceId = fileInfo.Id.ToString();
         int attempts = 0;
         int maxRetries = 3;
-        await folderService.RequestIndexAsync(fileInfo.Id.ToString(), cancellationToken);
+        // await folderService.RequestIndexAsync(fileInfo.Id.ToString(), cancellationToken);
 
         if (!raidService.Exists(imagePath))
         {
