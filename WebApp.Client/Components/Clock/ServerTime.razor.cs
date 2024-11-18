@@ -7,6 +7,7 @@ public partial class ServerTime : ComponentBase, IAsyncDisposable
 {
     private HubConnection? hubConnection { get; set; }
     private DateTime Date { get; set; }
+    private string ElementId { get; set; } = Guid.NewGuid().ToString();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

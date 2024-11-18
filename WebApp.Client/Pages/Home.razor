@@ -6,7 +6,7 @@
 
 <PageTitle>@LangDict[PageRoutes.Home.Root.Title]</PageTitle>
 <HeadContent>
-    <HeadContentContainer MetaProperty="@PageRoutes.Home.Root.MetaData"/>
+    <HeadContentContainer MetaProperty="@PageRoutes.Home.Root.MetaData" />
 </HeadContent>
 
 
@@ -15,29 +15,36 @@
 
 <MudButton Color="MudColor.Primary" OnClick="@GetWeather" Variant="Variant.Filled" >Get Weather</MudButton>
 
-<ServerTime></ServerTime>
+<div class="grid-container" >
+    @for (int i = 0; i < 100; i++)
+    {
+        var index = i;
+        <ServerTime @key="index" />
+    }
+</div>
 
-<ApexChart TItem="MyData"
-           Title="Sample Data">
+@* <ApexChart TItem="MyData" *@
+@*            Title="Sample Data"> *@
+@* *@
+@*     <ApexPointSeries TItem="MyData" *@
+@*                      Items="Data" *@
+@*                      Name="Net Profit" *@
+@*                      SeriesType="SeriesType.Bar" *@
+@*                      XValue="e => e.Category" *@
+@*                      YValue="e=> e.NetProfit" /> *@
+@* *@
+@*     <ApexPointSeries TItem="MyData" *@
+@*                      Items="Data" *@
+@*                      Name="Revenue" *@
+@*                      SeriesType="SeriesType.Bar" *@
+@*                      XValue="e => e.Category" *@
+@*                      YValue="e=> e.Revenue" /> *@
+@* </ApexChart> *@
 
-    <ApexPointSeries TItem="MyData"
-                     Items="Data"
-                     Name="Net Profit"
-                     SeriesType="SeriesType.Bar"
-                     XValue="e => e.Category"
-                     YValue="e=> e.NetProfit" />
-
-    <ApexPointSeries TItem="MyData"
-                     Items="Data"
-                     Name="Revenue"
-                     SeriesType="SeriesType.Bar"
-                     XValue="e => e.Category"
-                     YValue="e=> e.Revenue" />
-</ApexChart>
-    
 
 @code {
     private List<MyData> Data { get; set; } = new();
+
     protected override void OnInitialized()
     {
         Data.Add(new MyData { Category = "Jan", NetProfit = 12, Revenue = 33 });
@@ -51,4 +58,5 @@
         public int NetProfit { get; set; }
         public int Revenue { get; set; }
     }
+
 }

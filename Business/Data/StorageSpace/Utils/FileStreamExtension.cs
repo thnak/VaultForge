@@ -217,7 +217,7 @@ public static class FileStreamExtension
         return result;
     }
 
-    public static bool CompareHashes(this MemoryStream stream1, MemoryStream stream2)
+    public static bool CompareHashes(this Stream stream1, Stream stream2)
     {
         if (stream1 == null || stream2 == null)
             throw new ArgumentNullException("MemoryStream cannot be null.");

@@ -133,7 +133,7 @@ public class Raid5Stream : Stream
 
         int[] bytesRead = new int[realDataDisks];
         int stripeCount = 0;
-
+        long oldPosition = _position;
         bool hasMoreData = true;
 
         while (hasMoreData)
@@ -159,10 +159,11 @@ public class Raid5Stream : Stream
 
                 var totalRead = bytesRead.Sum();
                 _position += totalRead;
-                _originalSize += totalRead;
                 stripeCount++;
             }
         }
+
+        _originalSize = _position - oldPosition;
     }
 
     public override int Read(byte[] buffer, int offset, int count)

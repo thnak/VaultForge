@@ -132,7 +132,7 @@ public class Raid5Stream : Stream
 
         int[] bytesRead = new int[realDataDisks];
         int stripeCount = 0;
-
+        long oldPosition = _position;
         bool hasMoreData = true;
 
         while (hasMoreData)
@@ -158,10 +158,10 @@ public class Raid5Stream : Stream
 
                 var totalRead = bytesRead.Sum();
                 _position += totalRead;
-                _originalSize += totalRead;
                 stripeCount++;
             }
         }
+        _originalSize = _position - oldPosition;
     }
 
     public override int Read(byte[] buffer, int offset, int count)
@@ -175,22 +175,20 @@ public class Raid5Stream : Stream
         count = (int)Math.Min(count, _originalSize);
         int[] byteReads = new int[totalFileStream];
 
-        while (totalBytesWritten < writeBufferSize)
+        while (count > totalBytesWritten && _position < _originalSize && writeBuffer.Length > totalBytesWritten)
         {
             byteReads.Fill(0);
             totalFileStream.GenerateRaid5Indices(StripeRowIndex, _indicesArrayPool);
             ReadAndRecoverData(_indicesArrayPool, _readPooledArrays, byteReads, _parityPoolBuffers);
 
-
             for (int i = 0; i < totalFileStream - 1; i++)
             {
-                if (_position >= _originalSize || totalBytesWritten > count) break;
-
                 var readSize = byteReads[i];
                 var writeSize1 = (int)Math.Min(_originalSize - _position, readSize);
+                if (writeBuffer.Length <= totalBytesWritten) break;
                 Array.Copy(_readPooledArrays[i], 0, writeBuffer, totalBytesWritten, writeSize1);
-                _position += readSize;
-                totalBytesWritten += readSize;
+                _position += writeSize1;
+                totalBytesWritten += writeSize1;
                 StripeBlockIndex++;
             }
 
@@ -249,7 +247,7 @@ public class Raid5Stream : Stream
     private void ReadAndRecoverData(int[] indices, byte[][] readBuffers, int[] readBytes, byte[][] parityBuffers)
     {
         int errorIndex = -1;
-        var indicesLength = indices.Length;
+        var indicesLength = readBytes.Length;
         var lastIndex = indicesLength - 1;
 
         for (int i = 0; i < indicesLength; i++)

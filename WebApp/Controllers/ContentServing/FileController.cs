@@ -5,6 +5,7 @@ using System.Web;
 using Business.Attribute;
 using Business.Business.Interfaces.FileSystem;
 using Business.Data.StorageSpace;
+using Business.Data.StorageSpace.Utils;
 using Business.Models;
 using Business.Services.Configure;
 using Business.Services.Interfaces;
@@ -22,6 +23,7 @@ using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Net.Http.Headers;
 using Protector.Utils;
+using SixLabors.ImageSharp;
 
 namespace WebApp.Controllers.ContentServing;
 
@@ -104,12 +106,13 @@ public class FilesController(
         {
             fileClassify = FileClassify.ThumbnailFile;
         }
+
         var cancelToken = HttpContext.RequestAborted;
         id = id.Split(".").First();
         var fileList = await fileServe.GetSubFileByClassifyAsync(id, cancelToken, [fileClassify]);
         if (fileList.Count == 0) return NotFound();
         var file = fileList.First();
-    
+
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
@@ -124,12 +127,12 @@ public class FilesController(
         Response.Headers.ContentType = file.ContentType;
         Response.StatusCode = 200;
         Response.ContentLength = file.FileSize;
-    
+
         MemoryStream ms = new MemoryStream();
         Response.RegisterForDispose(ms);
-    
+
         await raidService.ReadGetDataAsync(ms, file.AbsolutePath, cancelToken);
-    
+
         if (file is { Classify: FileClassify.M3U8File })
         {
             var streamReader = new StreamReader(ms);
@@ -145,11 +148,11 @@ public class FilesController(
                     lines[i] = lines[i].Trim();
                 }
             }
-    
+
             var stringContent = string.Join("\n", lines);
             return Content(stringContent, file.ContentType);
         }
-    
+
         return new FileStreamResult(ms, file.ContentType)
         {
             FileDownloadName = file.FileName,
@@ -174,13 +177,13 @@ public class FilesController(
             ModificationDate = now,
             ReadDate = now
         };
-       
+
         MemoryStream ms = new MemoryStream();
         var pathArray = await raidService.GetDataBlockPaths(file.AbsolutePath, cancelToken);
         if (pathArray == default) return NotFound();
         Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files, pathArray.FileSize, pathArray.StripeSize, FileMode.Open, FileAccess.Read, FileShare.Read);
         await raid5Stream.CopyToAsync(ms, cancelToken);
-        ms.Seek(0, SeekOrigin.Begin);        
+        ms.Seek(0, SeekOrigin.Begin);
 
         Response.RegisterForDispose(ms);
 
@@ -353,10 +356,10 @@ public class FilesController(
             }
             else
             {
-                contentFolderTypesList = [ FolderContentType.Folder];
+                contentFolderTypesList = [FolderContentType.Folder];
             }
 
-            if (!contentFolderTypesList.Any(x => x is  FolderContentType.DeletedFolder))
+            if (!contentFolderTypesList.Any(x => x is FolderContentType.DeletedFolder))
                 contentFolderTypesList.Add(FolderContentType.SystemFolder);
 
             var contentFileTypesList = contentFolderTypesList.Select(x => x.MapFileContentType()).Distinct().ToList();
@@ -598,7 +601,7 @@ public class FilesController(
         }
 
         var files = fileCodes.Select(fileServe.Get).Where(x => x != default).ToList();
-        
+
 
         foreach (var file in files)
         {
@@ -611,7 +614,7 @@ public class FilesController(
             var fileName = file.RelativePath.Split("/").Last();
             file.RelativePath = targetFolder.RelativePath + '/' + fileName;
         }
-        
+
         await folderServe.UpdateAsync(targetFolder, cancelToken);
         await folderServe.UpdateAsync(currentFolder, cancelToken);
         await foreach (var x in fileServe.UpdateAsync(files!, cancelToken))
@@ -832,4 +835,47 @@ public class FilesController(
     }
 
     #endregion
+
+    [HttpGet("test")]
+    public async Task<IActionResult> Test(string path)
+    {
+        int stripSize = 4096;
+        int testLenght = 3689510;
+        FileStream memoryStream = new FileStream($"C:/Users/thanh/OneDrive/Pictures/WallPaper/{path}", FileMode.Open, FileAccess.Read);
+
+        string[] paths =
+        [
+            "C:/Users/thanh/source/VitualDisk1/bin.bin",
+            "C:/Users/thanh/source/VitualDisk2/bin.bin",
+            "C:/Users/thanh/source/VitualDisk3/bin.bin",
+            "C:/Users/thanh/source/VitualDisk4/bin.bin",
+            "C:/Users/thanh/source/VitualDisk5/bin.bin",
+            "C:/Users/thanh/source/VitualDisk6/bin.bin"
+        ];
+
+        // foreach (var pathString in paths)
+        // {
+        //     if(global::System.IO.File.Exists(pathString))
+        //         global::System.IO.File.Delete(pathString);
+        // }
+
+        Raid5Stream stream = new Raid5Stream(paths, memoryStream.Length, 4096, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
+
+        await stream.CopyFromAsync(memoryStream, testLenght);
+        await stream.FlushAsync();
+        stream.Seek(0, SeekOrigin.Begin);
+
+        MemoryStream outputStream = new MemoryStream();
+        await stream.CopyToAsync(outputStream, testLenght);
+
+        memoryStream.Seek(0, SeekOrigin.Begin);
+        outputStream.Seek(0, SeekOrigin.Begin);
+        var image = await Image.LoadAsync(outputStream);
+        
+        outputStream.Seek(0, SeekOrigin.Begin);
+        var isTheSame = outputStream.CompareHashes(memoryStream);
+        await stream.DisposeAsync();
+        
+        return Ok(isTheSame);
+    }
 }
