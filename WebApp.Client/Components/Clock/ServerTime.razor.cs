@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace WebApp.Client.Components.Clock;
 
-public partial class ServerTime : ComponentBase, IAsyncDisposable
+public partial class ServerTime(ILogger<ServerTime> logger) : ComponentBase, IAsyncDisposable
 {
     private HubConnection? hubConnection { get; set; }
     private DateTime Date { get; set; }
@@ -33,6 +33,10 @@ public partial class ServerTime : ComponentBase, IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        if (hubConnection != null) await hubConnection.DisposeAsync();
+        if (hubConnection != null)
+        {
+            logger.LogInformation($"Disposing ServerTime {ElementId}");
+            await hubConnection.DisposeAsync();
+        }
     }
 }
