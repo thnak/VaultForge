@@ -244,7 +244,7 @@ public static class FileStreamExtension
         int count = 0;
         while ((await fileStream1.ReadAsync(buffer1, 0, buffer1.Length)) > 0)
         {
-            await fileStream2.ReadAsync(buffer2, 0, buffer2.Length);
+            await fileStream2.ReadExactlyAsync(buffer2);
 
             for (int i = 0; i < buffer1.Length; i++)
             {

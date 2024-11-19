@@ -5,6 +5,7 @@ using BrainNet.Models.Result;
 using BrainNet.Models.Setting;
 using BrainNet.Models.Vector;
 using Business.Business.Interfaces.Wiki;
+using Business.Business.Utils;
 using Business.Data.Interfaces.Wiki;
 using Business.Models;
 using Business.Services.TaskQueueServices.Base.Interfaces;
@@ -183,5 +184,11 @@ public class WikipediaBusinessLayer(IWikipediaDataLayer dataLayer, ILogger<Wikip
     public async ValueTask DisposeAsync()
     {
         await _vectorDb.DisposeAsync();
+    }
+
+    [Experimental("SKEXP0020")]
+    public Task<List<SearchScore<VectorRecord>>> SearchRag(string query, int count, CancellationToken cancellationToken = default)
+    {
+        return _vectorDb.RagSearch(query, count, cancellationToken);
     }
 }

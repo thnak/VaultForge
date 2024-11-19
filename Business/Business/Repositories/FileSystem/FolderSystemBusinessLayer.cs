@@ -8,6 +8,7 @@ using BrainNet.Models.Setting;
 using BrainNet.Models.Vector;
 using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.User;
+using Business.Business.Utils;
 using Business.Data.Interfaces.FileSystem;
 using Business.Data.StorageSpace;
 using Business.Models;
@@ -676,25 +677,9 @@ internal class FolderSystemBusinessLayer(
         }
     }
 
-    public async Task<List<SearchScore<VectorRecord>>> SearchRagFromAllDb(string query, int count, CancellationToken cancellationToken = default)
+    public Task<List<SearchScore<VectorRecord>>> SearchRagFromAllDb(string query, int count, CancellationToken cancellationToken = default)
     {
-        float[] vectorSearch = [];
-        List<SearchScore<VectorRecord>> result = [];
-        foreach (var collectionPair in _vectorDbs)
-        {
-            if (vectorSearch.Length == 0)
-            {
-                vectorSearch = await collectionPair.Value.GenerateVectorsFromDescription(query, cancellationToken);
-            }
-
-            await foreach (var co in collectionPair.Value.Search(vectorSearch, count, cancellationToken))
-            {
-                result.Add(co);
-            }
-        }
-
-        result = [..result.OrderBy(x => x.Score).Take(count)];
-        return result;
+        return _vectorDbs.RagSearch(query, count, cancellationToken);
     }
 
 
