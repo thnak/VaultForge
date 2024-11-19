@@ -6,5 +6,5 @@ namespace Business.Business.Interfaces.Wiki;
 
 public interface IWikipediaBusinessLayer : IBusinessLayerRepository<WikipediaDatasetModel>, IExtendService, IDisposable, IAsyncDisposable
 {
-    Task<List<SearchScore<VectorRecord>>> SearchRag(string query, int count, CancellationToken cancellationToken = default)
+    Task<List<SearchScore<VectorRecord>>> SearchRag(string query, int count, CancellationToken cancellationToken = default);
 }
