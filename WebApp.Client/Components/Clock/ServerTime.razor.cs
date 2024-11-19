@@ -5,7 +5,7 @@ namespace WebApp.Client.Components.Clock;
 
 public partial class ServerTime(ILogger<ServerTime> logger) : ComponentBase, IAsyncDisposable
 {
-    private HubConnection? hubConnection { get; set; }
+    private HubConnection? HubConnection { get; set; }
     private DateTime Date { get; set; }
     private string ElementId { get; set; } = Guid.NewGuid().ToString();
 
@@ -13,13 +13,13 @@ public partial class ServerTime(ILogger<ServerTime> logger) : ComponentBase, IAs
     {
         if (firstRender)
         {
-            hubConnection = new HubConnectionBuilder()
+            HubConnection = new HubConnectionBuilder()
                 .WithUrl(Navigation.BaseUri + "hubs/clock")
                 .AddMessagePackProtocol()
                 .WithAutomaticReconnect()
                 .Build();
-            hubConnection.On<DateTime>("ShowTime", ShowTime);
-            await hubConnection.StartAsync();
+            HubConnection.On<DateTime>("ShowTime", ShowTime);
+            await HubConnection.StartAsync();
         }
 
         await base.OnAfterRenderAsync(firstRender);
@@ -33,10 +33,10 @@ public partial class ServerTime(ILogger<ServerTime> logger) : ComponentBase, IAs
 
     public async ValueTask DisposeAsync()
     {
-        if (hubConnection != null)
+        if (HubConnection != null)
         {
             logger.LogInformation($"Disposing ServerTime {ElementId}");
-            await hubConnection.DisposeAsync();
+            await HubConnection.DisposeAsync();
         }
     }
 }

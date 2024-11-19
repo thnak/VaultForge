@@ -8,6 +8,7 @@ using Business.Utils;
 using Business.Utils.StringExtensions;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
+using BusinessModels.Utils;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -158,6 +159,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         dataBlocks = dataBlocks.OrderBy(x => x.Index).DistinctBy(x => x.AbsolutePath).ToList();
         await using Raid5Stream stream = new Raid5Stream(dataBlocks.Select(x => x.AbsolutePath), raidData.Size, raidData.StripSize, FileMode.Open, FileAccess.Read, FileShare.Read);
         await stream.CopyToAsync(outputStream, (int)raidData.Size, cancellationToken: cancellationToken);
+        outputStream.SeekBeginOrigin();
     }
 
     public async Task<RaidFileInfo?> GetDataBlockPaths(string path, CancellationToken cancellationToken = default)

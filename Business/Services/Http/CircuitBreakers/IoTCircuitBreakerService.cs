@@ -15,28 +15,28 @@ public class IoTCircuitBreakerService(ApplicationConfiguration options, ILogger<
     // Break after 5 failures
     // Stop for 30 seconds
 
-    public async Task<bool> TryProcessRequest(Func<Task> process)
+    public async Task<Result<bool>> TryProcessRequest(Func<CancellationToken, Task> process, CancellationToken cancellationToken = default)
     {
         if (_circuitBreaker.CircuitState == CircuitState.Open)
         {
             logger.LogWarning("Circuit is open, rejecting request.");
-            return false;
+            return Result<bool>.Failure("Circuit is open, rejecting request.", ErrorType.PermissionDenied);
         }
 
         try
         {
-            await _circuitBreaker.ExecuteAsync(process);
-            return true;
+            await _circuitBreaker.ExecuteAsync(process, cancellationToken);
+            return Result<bool>.Success(true);
         }
         catch (BrokenCircuitException)
         {
             logger.LogWarning("Circuit is open, rejecting request.");
-            return false;
+            return Result<bool>.Failure("Circuit is open, rejecting request.", ErrorType.Unknown);
         }
         catch (Exception ex)
         {
             logger.LogError(ex, $"Request failed: {ex.Message}");
-            return false;
+            return Result<bool>.Failure($"Request failed: {ex.Message}", ErrorType.Unknown);
         }
     }
 

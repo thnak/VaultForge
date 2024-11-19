@@ -18,12 +18,12 @@ public class IoTController(IoTCircuitBreakerService circuitBreakerService, IIoTB
     public async Task<IActionResult> AddRecord([FromForm] string deviceId, [FromForm] float value, [FromForm] SensorType sensorType)
     {
         var cancelToken = HttpContext.RequestAborted;
-        var success = await circuitBreakerService.TryProcessRequest(async () =>
+        var success = await circuitBreakerService.TryProcessRequest(async token =>
         {
             try
             {
                 IoTRecord record = new IoTRecord(deviceId, value, sensorType);
-                var queueResult = await requestQueueHostedService.QueueRequest(record, cancelToken);
+                var queueResult = await requestQueueHostedService.QueueRequest(record, token);
                 if (!queueResult)
                 {
                     logger.LogWarning($"Error while processing request {deviceId}");
@@ -33,8 +33,8 @@ public class IoTController(IoTCircuitBreakerService circuitBreakerService, IIoTB
             {
                 //
             }
-        });
-        if (!success)
+        }, cancelToken);
+        if (!success.IsSuccess)
         {
             logger.LogWarning("Server is overloaded, try again later.");
             return StatusCode(429, string.Empty);

@@ -837,11 +837,10 @@ public class FilesController(
     #endregion
 
     [HttpGet("test")]
-    public async Task<IActionResult> Test(string path)
+    public async Task<IActionResult> Test([FromForm] IFormFile file)
     {
-        int stripSize = 4096;
-        int testLenght = 3689510;
-        FileStream memoryStream = new FileStream($"C:/Users/thanh/OneDrive/Pictures/WallPaper/{path}", FileMode.Open, FileAccess.Read);
+        Stream memoryStream = file.OpenReadStream(); 
+        int testLenght = (int)memoryStream.Length;
 
         string[] paths =
         [
@@ -853,13 +852,13 @@ public class FilesController(
             "C:/Users/thanh/source/VitualDisk6/bin.bin"
         ];
 
-        // foreach (var pathString in paths)
-        // {
-        //     if(global::System.IO.File.Exists(pathString))
-        //         global::System.IO.File.Delete(pathString);
-        // }
+        foreach (var pathString in paths)
+        {
+            if (global::System.IO.File.Exists(pathString))
+                global::System.IO.File.Delete(pathString);
+        }
 
-        Raid5Stream stream = new Raid5Stream(paths, memoryStream.Length, 4096, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
+        Raid5Stream stream = new Raid5Stream(paths, 0, 4096, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
 
         await stream.CopyFromAsync(memoryStream, testLenght);
         await stream.FlushAsync();
@@ -871,11 +870,11 @@ public class FilesController(
         memoryStream.Seek(0, SeekOrigin.Begin);
         outputStream.Seek(0, SeekOrigin.Begin);
         var image = await Image.LoadAsync(outputStream);
-        
+
         outputStream.Seek(0, SeekOrigin.Begin);
         var isTheSame = outputStream.CompareHashes(memoryStream);
         await stream.DisposeAsync();
-        
+
         return Ok(isTheSame);
     }
 }
