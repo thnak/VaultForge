@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Business.Models;
 
@@ -69,8 +70,7 @@ public class FieldUpdate : IEnumerable<KeyValuePair<string, object>>
         return default;
     }
 
-    public int Count =>
-        Parameters.Count;
+    public int Count => Parameters.Count;
 
     public object? this[string parameterName]
     {
@@ -86,5 +86,24 @@ public class FieldUpdate : IEnumerable<KeyValuePair<string, object>>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return Parameters.GetEnumerator();
+    }
+}
+
+public static class FieldUpdateExtensions
+{
+    public static void UpdateAllFields<T>(this FieldUpdate<T> fieldUpdate, T model)
+    {
+        if (fieldUpdate == null) throw new ArgumentNullException(nameof(fieldUpdate));
+        if (model == null) throw new ArgumentNullException(nameof(model));
+
+        var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        foreach (var property in properties)
+        {
+            if (property.CanRead) // Ensure the property is readable
+            {
+                var value = property.GetValue(model);
+                fieldUpdate.Add(property.Name, value);
+            }
+        }
     }
 }

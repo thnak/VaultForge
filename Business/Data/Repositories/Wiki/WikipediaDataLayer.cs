@@ -2,6 +2,7 @@
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.Wiki;
 using Business.Models;
+using Business.Utils;
 using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using BusinessModels.Wiki;
@@ -121,9 +122,20 @@ public class WikipediaDataLayer(IMongoDataLayerContext context, ILogger<Wikipedi
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<WikipediaDatasetModel> updates, CancellationToken cancellationToken = default)
+    public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<WikipediaDatasetModel> updates, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var result = await _dataDb.UpdateAsync(key, updates, cancellationToken: cancellationToken);
+            if (result.IsSuccess)
+                return (true, AppLang.Update_successfully);
+            return (false, AppLang.User_update_failed);
+        }
+        catch (OperationCanceledException)
+        {
+            logger.LogInformation("[Update] Operation cancelled");
+            return (false, string.Empty);
+        }
     }
 
     public IAsyncEnumerable<(bool, string, string)> ReplaceAsync(IEnumerable<WikipediaDatasetModel> models, CancellationToken cancellationToken = default)

@@ -12,13 +12,14 @@ namespace WebApp.Controllers.Wiki;
 public class WikiController(IWikipediaBusinessLayer wikipediaBusinessLayer) : ControllerBase
 {
     [HttpPost("insert")]
-    public async Task<IActionResult> InsertNew([FromForm] string title, [FromForm] string content, [FromForm] string url)
+    public async Task<IActionResult> InsertNew([FromForm] string title, [FromForm] string content, [FromForm] string url, [FromForm] string? lang)
     {
         await wikipediaBusinessLayer.CreateAsync(new WikipediaDatasetModel()
         {
             Title = title,
             Text = content,
-            Url = url
+            Url = url,
+            Language = lang ?? "en-US"
         });
         return Ok();
     }

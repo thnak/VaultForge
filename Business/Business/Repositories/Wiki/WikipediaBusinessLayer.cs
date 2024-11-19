@@ -89,7 +89,22 @@ public class WikipediaBusinessLayer(IWikipediaDataLayer dataLayer, ILogger<Wikip
         var result = await dataLayer.CreateAsync(model, cancellationToken);
         if (result.IsSuccess)
         {
-            await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async (serverToken) => await _vectorDb.GenerateVectorsFromDescription(model.Text, serverToken), cancellationToken);
+            await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken =>
+            {
+                var vector = await _vectorDb.GenerateVectorsFromDescription(model.Text, serverToken);
+                model.Vector = vector;
+                await UpdateAsync(model.Id.ToString(), new FieldUpdate<WikipediaDatasetModel>()
+                {
+                    { x => x.Vector, vector }
+                }, serverToken);
+                await _vectorDb.AddNewRecordAsync(new VectorRecord()
+                {
+                    Key = model.Id.ToString(),
+                    Vector = vector,
+                    Description = model.Text.Substring(0, 50),
+                    Title = model.Title,
+                }, serverToken);
+            }, cancellationToken);
         }
 
         return result;
@@ -102,12 +117,14 @@ public class WikipediaBusinessLayer(IWikipediaDataLayer dataLayer, ILogger<Wikip
 
     public Task<(bool, string)> UpdateAsync(WikipediaDatasetModel model, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        FieldUpdate<WikipediaDatasetModel> update = new FieldUpdate<WikipediaDatasetModel>();
+        update.UpdateAllFields(model);
+        return dataLayer.UpdateAsync(model.Id.ToString(), update, cancellationToken);
     }
 
     public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<WikipediaDatasetModel> updates, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return dataLayer.UpdateAsync(key, updates, cancellationToken);
     }
 
     public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<WikipediaDatasetModel> models, CancellationToken cancellationToken = default)

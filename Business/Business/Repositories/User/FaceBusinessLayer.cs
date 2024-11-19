@@ -102,7 +102,9 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, ILogger<FaceBusinessLay
 
     public Task<(bool, string)> UpdateAsync(FaceVectorStorageModel model, CancellationToken cancellationToken = default)
     {
-        return dataLayer.UpdateAsync(model.Id.ToString(), [], cancellationToken);
+        FieldUpdate<FaceVectorStorageModel> update = new FieldUpdate<FaceVectorStorageModel>();
+        update.UpdateAllFields(model);
+        return dataLayer.UpdateAsync(model.Id.ToString(), update, cancellationToken);
     }
 
     public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<FaceVectorStorageModel> updates, CancellationToken cancellationToken = default)
