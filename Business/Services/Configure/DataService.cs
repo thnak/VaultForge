@@ -3,23 +3,27 @@ using Business.Business.Interfaces.Chat;
 using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Business.Interfaces.User;
+using Business.Business.Interfaces.Wiki;
 using Business.Business.Repositories.Advertisement;
 using Business.Business.Repositories.Chat;
 using Business.Business.Repositories.FileSystem;
 using Business.Business.Repositories.InternetOfThings;
 using Business.Business.Repositories.User;
+using Business.Business.Repositories.Wiki;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.Advertisement;
 using Business.Data.Interfaces.Chat;
 using Business.Data.Interfaces.FileSystem;
 using Business.Data.Interfaces.InternetOfThings;
 using Business.Data.Interfaces.User;
+using Business.Data.Interfaces.Wiki;
 using Business.Data.Repositories;
 using Business.Data.Repositories.Advertisement;
 using Business.Data.Repositories.Chat;
 using Business.Data.Repositories.FileSystem;
 using Business.Data.Repositories.InternetOfThings;
 using Business.Data.Repositories.User;
+using Business.Data.Repositories.Wiki;
 using Business.Data.StorageSpace;
 using Business.Services.BackgroundServices.Base;
 using Business.Services.BackgroundServices.ServerHealth;
@@ -65,6 +69,9 @@ public static class DataService
 
         service.AddSingleton<IFaceDataLayer, FaceDataLayer>();
         service.AddSingleton<IFaceBusinessLayer, FaceBusinessLayer>();
+
+        service.AddSingleton<IWikipediaDataLayer, WikipediaDataLayer>();
+        service.AddSingleton<IWikipediaBusinessLayer, WikipediaBusinessLayer>();
 
         service.AddHostedService<HostApplicationLifetimeEventsHostedService>();
 

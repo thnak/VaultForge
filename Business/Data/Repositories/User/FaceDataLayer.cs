@@ -24,13 +24,15 @@ public class FaceDataLayer(IMongoDataLayerContext context, ILogger<FaceDataLayer
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
-        var labelKey = Builders<FaceVectorStorageModel>.IndexKeys.Ascending(x => x.Label);
-        var ownerKey = Builders<FaceVectorStorageModel>.IndexKeys.Ascending(x => x.Owner);
-        var labelAndOwnerKey = Builders<FaceVectorStorageModel>.IndexKeys.Ascending(x => x.Label).Ascending(x => x.Owner);
-
-        List<IndexKeysDefinition<FaceVectorStorageModel>> indexKeysDefinitions = [labelKey, ownerKey, labelAndOwnerKey];
+        List<IndexKeysDefinition<FaceVectorStorageModel>> indexKeysDefinitions =
+        [
+            Builders<FaceVectorStorageModel>.IndexKeys.Ascending(x => x.Label),
+            Builders<FaceVectorStorageModel>.IndexKeys.Ascending(x => x.Owner),
+            Builders<FaceVectorStorageModel>.IndexKeys.Ascending(x => x.Label).Ascending(x => x.Owner)
+        ];
         IEnumerable<CreateIndexModel<FaceVectorStorageModel>> indexesModels = indexKeysDefinitions.Select(x => new CreateIndexModel<FaceVectorStorageModel>(x));
 
+        await _dataDb.Indexes.DropAllAsync(cancellationToken);
         await _dataDb.Indexes.CreateManyAsync(indexesModels, cancellationToken);
         return (true, string.Empty);
     }
@@ -102,17 +104,9 @@ public class FaceDataLayer(IMongoDataLayerContext context, ILogger<FaceDataLayer
         throw new NotImplementedException();
     }
 
-    public async IAsyncEnumerable<FaceVectorStorageModel> GetAllAsync([EnumeratorCancellation] CancellationToken cancellationToken)
+    public IAsyncEnumerable<FaceVectorStorageModel> GetAllAsync(CancellationToken cancellationToken)
     {
-        var filter = Builders<FaceVectorStorageModel>.Filter.Empty;
-        using var cursor = await _dataDb.FindAsync(filter, cancellationToken: cancellationToken);
-        while (await cursor.MoveNextAsync(cancellationToken))
-        {
-            foreach (var model in cursor.Current)
-            {
-                yield return model;
-            }
-        }
+        return _dataDb.GetAll(cancellationToken);
     }
 
     public async Task<Result<bool>> CreateAsync(FaceVectorStorageModel model, CancellationToken cancellationToken = default)

@@ -22,7 +22,6 @@ public class VectorDb : IVectorDb
     private string ConnectionString { get; }
     private string Image2TextModelName { get; }
     private double SearchThresholds { get; }
-    private int TotalRecord { get; set; }
 
     public VectorDb(VectorDbConfig config, ILogger logger)
     {
