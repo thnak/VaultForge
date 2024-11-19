@@ -212,16 +212,9 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         throw new NotImplementedException();
     }
 
-    public async IAsyncEnumerable<UserModel> GetAllAsync([EnumeratorCancellation] CancellationToken cancellationToken)
+    public IAsyncEnumerable<UserModel> GetAllAsync(Expression<Func<UserModel, object>>[] field2Fetch, CancellationToken cancellationToken)
     {
-        using var cursor = await _dataDb.FindAsync(x => true, cancellationToken: cancellationToken);
-        while (await cursor.MoveNextAsync(cancellationToken))
-        {
-            foreach (var user in cursor.Current)
-            {
-                yield return user;
-            }
-        }
+        return _dataDb.GetAll(field2Fetch, cancellationToken);
     }
 
     public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<UserModel> updates, CancellationToken cancellationToken = default)

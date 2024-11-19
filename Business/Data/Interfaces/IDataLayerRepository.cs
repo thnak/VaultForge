@@ -56,7 +56,7 @@ public interface IDataLayerRepository<T> where T : class
     Task<Result<T?>> Get(string key, params Expression<Func<T, object>>[] fieldsToFetch);
     IAsyncEnumerable<T?> GetAsync(List<string> keys, CancellationToken cancellationToken = default);
     Task<(T[], long)> GetAllAsync(int page, int size, CancellationToken cancellationToken = default);
-    IAsyncEnumerable<T> GetAllAsync(CancellationToken cancellationToken);
+    IAsyncEnumerable<T> GetAllAsync(Expression<Func<T, object>>[] field2Fetch, CancellationToken cancellationToken);
     Task<Result<bool>> CreateAsync(T model, CancellationToken cancellationToken = default);
     Task<Result<bool>> CreateAsync(IReadOnlyCollection<T> models, CancellationToken cancellationToken = default);
     Task<(bool, string)> ReplaceAsync(T model, CancellationToken cancellationToken = default);

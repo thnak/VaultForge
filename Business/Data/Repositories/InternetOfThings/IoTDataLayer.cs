@@ -137,9 +137,9 @@ public class IoTDataLayer : IIoTDataLayer
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<IoTRecord> GetAllAsync(CancellationToken cancellationToken)
+    public IAsyncEnumerable<IoTRecord> GetAllAsync(Expression<Func<IoTRecord, object>>[] field2Fetch, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return _dataDb.GetAll(field2Fetch, cancellationToken);
     }
 
     public async Task<Result<bool>> CreateAsync(IoTRecord model, CancellationToken cancellationToken = default)

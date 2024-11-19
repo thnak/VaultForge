@@ -260,17 +260,9 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         throw new NotImplementedException();
     }
 
-    public async IAsyncEnumerable<FolderInfoModel> GetAllAsync([EnumeratorCancellation] CancellationToken cancellationToken)
+    public IAsyncEnumerable<FolderInfoModel> GetAllAsync(Expression<Func<FolderInfoModel, object>>[] field2Fetch, CancellationToken cancellationToken)
     {
-        var filter = Builders<FolderInfoModel>.Filter.Empty;
-        using var cursor = await _dataDb.FindAsync(filter, cancellationToken: cancellationToken);
-        while (await cursor.MoveNextAsync(cancellationToken))
-        {
-            foreach (var model in cursor.Current)
-            {
-                yield return model;
-            }
-        }
+        return _dataDb.GetAll(field2Fetch, cancellationToken);
     }
 
 

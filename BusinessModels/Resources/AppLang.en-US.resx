@@ -533,4 +533,7 @@ ClientY: {1}</value>
     <data name="Article does not exist" xml:space="preserve">
       <value>Article does not exist</value>
     </data>
+    <data name="The document already exists" xml:space="preserve">
+      <value>The document already exists</value>
+    </data>
 </root>

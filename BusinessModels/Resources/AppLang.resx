@@ -535,4 +535,7 @@ ClientY: {1}</value>
     <data name="Raid5Stream_Position_Position_is_out_of_range_" xml:space="preserve">
       <value>Position is out of range.</value>
     </data>
+    <data name="The document already exists" xml:space="preserve">
+      <value>The document already exists</value>
+    </data>
 </root>

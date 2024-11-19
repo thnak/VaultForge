@@ -65,10 +65,11 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
         return dataLayer.GetAllAsync(page, size, cancellationToken);
     }
 
-    public IAsyncEnumerable<ArticleModel> GetAllAsync(CancellationToken cancellationToken)
+    public IAsyncEnumerable<ArticleModel> GetAllAsync(Expression<Func<ArticleModel, object>>[] field2Fetch, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return dataLayer.GetAllAsync(field2Fetch, cancellationToken);
     }
+
 
     public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<ArticleModel> updates, CancellationToken cancellationToken = default)
     {

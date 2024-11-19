@@ -65,6 +65,11 @@ public class IoTBusinessLayer(IIoTDataLayer data) : IIoTBusinessLayer
         throw new NotImplementedException();
     }
 
+    public IAsyncEnumerable<IoTRecord> GetAllAsync(Expression<Func<IoTRecord, object>>[] field2Fetch, CancellationToken cancellationToken)
+    {
+        return data.GetAllAsync(field2Fetch, cancellationToken);
+    }
+
     public IAsyncEnumerable<IoTRecord> GetAllAsync(CancellationToken cancellationToken)
     {
         throw new NotImplementedException();

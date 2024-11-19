@@ -21,10 +21,10 @@ public class WikipediaDataLayer(IMongoDataLayerContext context, ILogger<Wikipedi
         List<IndexKeysDefinition<WikipediaDatasetModel>> indexKeysDefinitions =
         [
             Builders<WikipediaDatasetModel>.IndexKeys.Ascending(x => x.Title),
-            Builders<WikipediaDatasetModel>.IndexKeys.Ascending(x => x.Title),
             Builders<WikipediaDatasetModel>.IndexKeys.Ascending(x => x.Url)
         ];
-        IEnumerable<CreateIndexModel<WikipediaDatasetModel>> indexesModels = indexKeysDefinitions.Select(x => new CreateIndexModel<WikipediaDatasetModel>(x));
+
+        IEnumerable<CreateIndexModel<WikipediaDatasetModel>> indexesModels = indexKeysDefinitions.Select(x => new CreateIndexModel<WikipediaDatasetModel>(x, new CreateIndexOptions { Unique = true }));
 
         await _dataDb.Indexes.DropAllAsync(cancellationToken);
         await _dataDb.Indexes.CreateManyAsync(indexesModels, cancellationToken);
@@ -38,7 +38,7 @@ public class WikipediaDataLayer(IMongoDataLayerContext context, ILogger<Wikipedi
 
     public Task<long> GetDocumentSizeAsync(Expression<Func<WikipediaDatasetModel, bool>> predicate, CancellationToken cancellationToken = default)
     {
-        return _dataDb.EstimatedDocumentCountAsync(new EstimatedDocumentCountOptions() { }, cancellationToken);
+        return _dataDb.EstimatedDocumentCountAsync(new EstimatedDocumentCountOptions(), cancellationToken);
     }
 
     public IAsyncEnumerable<WikipediaDatasetModel> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default)
@@ -91,17 +91,17 @@ public class WikipediaDataLayer(IMongoDataLayerContext context, ILogger<Wikipedi
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<WikipediaDatasetModel> GetAllAsync(CancellationToken cancellationToken)
+    public IAsyncEnumerable<WikipediaDatasetModel> GetAllAsync(Expression<Func<WikipediaDatasetModel, object>>[] field2Fetch, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return _dataDb.GetAll(field2Fetch, cancellationToken);
     }
 
     public async Task<Result<bool>> CreateAsync(WikipediaDatasetModel model, CancellationToken cancellationToken = default)
     {
         try
         {
-            var isExists = await _dataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
-            if (isExists) return Result<bool>.Failure(AppLang.Folder_already_exists, ErrorType.Duplicate);
+            var isExists = await _dataDb.Find(x => x.Id == model.Id || x.Title == model.Title).AnyAsync(cancellationToken: cancellationToken);
+            if (isExists) return Result<bool>.Failure(AppLang.The_document_already_exists, ErrorType.Duplicate);
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
             return Result<bool>.Success(true);
         }

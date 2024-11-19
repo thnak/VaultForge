@@ -90,10 +90,11 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da, IMemoryCache memor
         return da.GetAllAsync(page, size, cancellationToken);
     }
 
-    public IAsyncEnumerable<FileInfoModel> GetAllAsync(CancellationToken cancellationToken)
+    public IAsyncEnumerable<FileInfoModel> GetAllAsync(Expression<Func<FileInfoModel, object>>[] field2Fetch, CancellationToken cancellationToken)
     {
-        return da.GetAllAsync(cancellationToken);
+        return da.GetAllAsync(field2Fetch, cancellationToken);
     }
+    
 
     public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<FileInfoModel> updates, CancellationToken cancellationToken = default)
     {

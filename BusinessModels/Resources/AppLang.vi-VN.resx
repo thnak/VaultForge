@@ -529,4 +529,7 @@ ClientY: {1}</value>
     <data name="Article already exists" xml:space="preserve">
       <value>Bài viết đã tồn tại</value>
     </data>
+    <data name="The document already exists" xml:space="preserve">
+      <value>Tài liệu đã tồn tại</value>
+    </data>
 </root>

@@ -30,7 +30,7 @@ using Protector.Utils;
 
 namespace Business.Business.Repositories.FileSystem;
 
-public class FolderSystemBusinessLayer(
+internal class FolderSystemBusinessLayer(
     IFolderSystemDatalayer folderSystemService,
     IFileSystemBusinessLayer fileSystemService,
     IUserBusinessLayer userService,
@@ -50,7 +50,7 @@ public class FolderSystemBusinessLayer(
     {
         try
         {
-            await foreach (var user in userService.GetAllAsync(cancellationToken))
+            await foreach (var user in userService.GetAllAsync([model => model.UserName], cancellationToken))
             {
                 await GetOrInitCollection(user.UserName);
             }
@@ -190,9 +190,9 @@ public class FolderSystemBusinessLayer(
         return folderSystemService.GetAllAsync(page, size, cancellationToken);
     }
 
-    public IAsyncEnumerable<FolderInfoModel> GetAllAsync(CancellationToken cancellationToken)
+    public IAsyncEnumerable<FolderInfoModel> GetAllAsync(Expression<Func<FolderInfoModel, object>>[] field2Fetch, CancellationToken cancellationToken)
     {
-        return folderSystemService.GetAllAsync(cancellationToken);
+        return folderSystemService.GetAllAsync(field2Fetch, cancellationToken);
     }
 
     public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<FolderInfoModel> updates, CancellationToken cancellationToken = default)

@@ -72,10 +72,11 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         return userDl.GetAllAsync(page, size, cancellationToken);
     }
 
-    public IAsyncEnumerable<UserModel> GetAllAsync(CancellationToken cancellationToken)
+    public IAsyncEnumerable<UserModel> GetAllAsync(Expression<Func<UserModel, object>>[] field2Fetch, CancellationToken cancellationToken)
     {
-        return userDl.GetAllAsync(cancellationToken);
+        return userDl.GetAllAsync(field2Fetch, cancellationToken);
     }
+
 
     public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<UserModel> updates, CancellationToken cancellationToken = default)
     {

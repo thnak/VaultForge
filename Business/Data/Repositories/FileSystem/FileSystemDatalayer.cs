@@ -203,17 +203,9 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         throw new NotImplementedException();
     }
 
-    public async IAsyncEnumerable<FileInfoModel> GetAllAsync([EnumeratorCancellation] CancellationToken cancellationToken)
+    public IAsyncEnumerable<FileInfoModel> GetAllAsync(Expression<Func<FileInfoModel, object>>[] field2Fetch, CancellationToken cancellationToken)
     {
-        var filter = Builders<FileInfoModel>.Filter.Empty;
-        using var cursor = await _fileDataDb.FindAsync(filter, cancellationToken: cancellationToken);
-        while (await cursor.MoveNextAsync(cancellationToken))
-        {
-            foreach (var model in cursor.Current)
-            {
-                yield return model;
-            }
-        }
+        return _fileDataDb.GetAll(field2Fetch, cancellationToken);
     }
 
     public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<FileInfoModel> updates, CancellationToken cancellationToken = default)

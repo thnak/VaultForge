@@ -1,4 +1,5 @@
 ﻿using BusinessModels.General.SettingModels;
+using BusinessModels.Utils;
 using Microsoft.Extensions.Options;
 
 namespace Business.Services.Configure;
@@ -41,9 +42,10 @@ public class ApplicationConfiguration
 
         Configs.AppCertificate.FilePath = GetEnvironmentVariable("AppCertificateFilePath", appSettings.Value.AppCertificate.FilePath);
         Configs.AppCertificate.Password = GetEnvironmentVariable("AppCertificatePassword", appSettings.Value.AppCertificate.Password);
-        
+
         Configs.VideoTransCode.WorkingDirectory = GetEnvironmentVariable("VideoTransCodeWorkingDirectory", appSettings.Value.VideoTransCode.WorkingDirectory);
         Configs.VideoTransCode.VideoEncoder = GetEnvironmentVariable("VideoTransCodeVideoEncoder", appSettings.Value.VideoTransCode.VideoEncoder);
+        DisplayGroupedConfigurations(InitLogoAsciiArt(), Configs.ConvertToDictionary());
     }
 
     public OllamaConfig GetOllamaConfig => Configs.OllamaConfig;
@@ -101,5 +103,50 @@ public class ApplicationConfiguration
         }
 
         return defaultValue;
+    }
+
+    private string InitLogoAsciiArt()
+    {
+        return @"
+__| |__________________________________________________________________________________| |__
+__   __________________________________________________________________________________   __
+  | |                                                                                  | |  
+  | |██╗   ██╗ █████╗ ██╗   ██╗██╗  ████████╗███████╗ ██████╗ ██████╗  ██████╗ ███████╗| |  
+  | |██║   ██║██╔══██╗██║   ██║██║  ╚══██╔══╝██╔════╝██╔═══██╗██╔══██╗██╔════╝ ██╔════╝| |  
+  | |██║   ██║███████║██║   ██║██║     ██║   █████╗  ██║   ██║██████╔╝██║  ███╗█████╗  | |  
+  | |╚██╗ ██╔╝██╔══██║██║   ██║██║     ██║   ██╔══╝  ██║   ██║██╔══██╗██║   ██║██╔══╝  | |  
+  | | ╚████╔╝ ██║  ██║╚██████╔╝███████╗██║   ██║     ╚██████╔╝██║  ██║╚██████╔╝███████╗| |  
+  | |  ╚═══╝  ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝   ╚═╝      ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝| |  
+__| |__________________________________________________________________________________| |__
+__   __________________________________________________________________________________   __
+  | |                                                                                  | |  
+        ";
+    }
+
+    public static void DisplayGroupedConfigurations(string appNameAscii, Dictionary<string, Dictionary<string, string>> groupedConfigurations)
+    {
+        // Display the ASCII art logo
+        Console.WriteLine(appNameAscii);
+        Console.WriteLine(new string('=', 100));
+        Console.WriteLine(@"VaultForge Configuration");
+        Console.WriteLine(new string('=', 100));
+
+        // Loop through each configuration group
+        foreach (var group in groupedConfigurations)
+        {
+            Console.WriteLine();
+            Console.WriteLine($@"[ {group.Key.ToUpper()} ]"); // Group title
+            Console.WriteLine(new string('-', 100)); // Separator
+
+            foreach (var config in group.Value)
+            {
+                Console.WriteLine($@"{config.Key,-30} : {config.Value}");
+            }
+
+            Console.WriteLine(new string('-', 100)); // Footer separator
+        }
+
+        Console.WriteLine();
+        Console.WriteLine(@"Application started successfully!");
     }
 }

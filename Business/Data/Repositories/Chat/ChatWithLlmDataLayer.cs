@@ -141,9 +141,9 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<ChatWithChatBotMessageModel> GetAllAsync(CancellationToken cancellationToken)
+    public IAsyncEnumerable<ChatWithChatBotMessageModel> GetAllAsync(Expression<Func<ChatWithChatBotMessageModel, object>>[] field2Fetch, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return _dataDb.GetAll(field2Fetch, cancellationToken);
     }
 
     public async Task<Result<bool>> CreateAsync(ChatWithChatBotMessageModel model, CancellationToken cancellationToken = default)

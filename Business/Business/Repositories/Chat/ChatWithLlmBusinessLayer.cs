@@ -65,9 +65,9 @@ public class ChatWithLlmBusinessLayer(IChatWithLlmDataLayer dataLayer) : IChatWi
         return dataLayer.GetAllAsync(page, size, cancellationToken);
     }
 
-    public IAsyncEnumerable<ChatWithChatBotMessageModel> GetAllAsync(CancellationToken cancellationToken)
+    public IAsyncEnumerable<ChatWithChatBotMessageModel> GetAllAsync(Expression<Func<ChatWithChatBotMessageModel, object>>[] field2Fetch, CancellationToken cancellationToken)
     {
-        return dataLayer.GetAllAsync(cancellationToken);
+        return dataLayer.GetAllAsync(field2Fetch, cancellationToken);
     }
 
     public Task<Result<bool>> CreateAsync(ChatWithChatBotMessageModel model, CancellationToken cancellationToken = default)

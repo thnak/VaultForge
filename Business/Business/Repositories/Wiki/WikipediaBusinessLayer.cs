@@ -78,9 +78,9 @@ public class WikipediaBusinessLayer(IWikipediaDataLayer dataLayer, ILogger<Wikip
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<WikipediaDatasetModel> GetAllAsync(CancellationToken cancellationToken)
+    public IAsyncEnumerable<WikipediaDatasetModel> GetAllAsync(Expression<Func<WikipediaDatasetModel, object>>[] field2Fetch, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return dataLayer.GetAllAsync(field2Fetch, cancellationToken);
     }
 
     [Experimental("SKEXP0020")]
@@ -91,19 +91,7 @@ public class WikipediaBusinessLayer(IWikipediaDataLayer dataLayer, ILogger<Wikip
         {
             await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken =>
             {
-                var vector = await _vectorDb.GenerateVectorsFromDescription(model.Text, serverToken);
-                model.Vector = vector;
-                await UpdateAsync(model.Id.ToString(), new FieldUpdate<WikipediaDatasetModel>()
-                {
-                    { x => x.Vector, vector }
-                }, serverToken);
-                await _vectorDb.AddNewRecordAsync(new VectorRecord()
-                {
-                    Key = model.Id.ToString(),
-                    Vector = vector,
-                    Description = model.Text.Substring(0, 50),
-                    Title = model.Title,
-                }, serverToken);
+                await RequestIndex(model, true, serverToken);
             }, cancellationToken);
         }
 
@@ -137,9 +125,47 @@ public class WikipediaBusinessLayer(IWikipediaDataLayer dataLayer, ILogger<Wikip
         throw new NotImplementedException();
     }
 
-    public Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
+    [Experimental("SKEXP0020")]
+    public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(Result<bool>.Success(""));
+        Expression<Func<WikipediaDatasetModel, object>>[] expression =
+        [
+            model => model.Id,
+            model => model.Title,
+            model => model.Vector,
+        ];
+        var cursor = dataLayer.GetAllAsync(expression, cancellationToken);
+        await foreach (var item in cursor)
+        {
+            await RequestIndex(item, true, cancellationToken);
+        }
+
+        return Result<bool>.Success("");
+    }
+
+    [Experimental("SKEXP0020")]
+    private async Task RequestIndex(WikipediaDatasetModel item, bool add2Vector, CancellationToken cancellationToken = default)
+    {
+        if (!item.Vector.Any())
+        {
+            var vector = await _vectorDb.GenerateVectorsFromDescription(item.Text, cancellationToken);
+            item.Vector = vector;
+            await UpdateAsync(item.Id.ToString(), new FieldUpdate<WikipediaDatasetModel>()
+            {
+                { x => x.Vector, vector }
+            }, cancellationToken);
+            add2Vector = true;
+        }
+
+        if (add2Vector)
+        {
+            await _vectorDb.AddNewRecordAsync(new VectorRecord()
+            {
+                Key = item.Id.ToString(),
+                Vector = item.Vector,
+                Title = item.Title,
+            }, cancellationToken);
+        }
     }
 
     public Task<Result<List<SearchScore<VectorRecord>>?>> SearchVectorAsync(float[] vector, CancellationToken cancellationToken = default)

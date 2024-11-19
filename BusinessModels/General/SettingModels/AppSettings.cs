@@ -1,3 +1,4 @@
+using System.Reflection;
 using BusinessModels.System.FileSystem;
 
 namespace BusinessModels.General.SettingModels;
@@ -76,4 +77,41 @@ public class AppCertificate
 {
     public string FilePath { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
+}
+
+public static class AppSettingsConverter
+{
+    public static Dictionary<string, Dictionary<string, string>> ConvertToDictionary(this AppSettings appSettings)
+    {
+        var result = new Dictionary<string, Dictionary<string, string>>();
+
+        foreach (var property in appSettings.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+        {
+            var groupName = property.Name;
+            var groupValue = property.GetValue(appSettings);
+
+            if (groupValue != null)
+            {
+                var groupDictionary = new Dictionary<string, string>();
+
+                foreach (var subProperty in groupValue.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                {
+                    var key = subProperty.Name;
+                    var value = subProperty.GetValue(groupValue) ?? null;
+                    if (value is Array array)
+                    {
+                        groupDictionary[key] = string.Join(", ", array.Cast<object>());
+                    }
+                    else
+                    {
+                        groupDictionary[key] = value?.ToString() ?? "null";
+                    }
+                }
+
+                result[groupName] = groupDictionary;
+            }
+        }
+
+        return result;
+    }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.User;
 using Business.Models;
@@ -104,9 +103,9 @@ public class FaceDataLayer(IMongoDataLayerContext context, ILogger<FaceDataLayer
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FaceVectorStorageModel> GetAllAsync(CancellationToken cancellationToken)
+    public IAsyncEnumerable<FaceVectorStorageModel> GetAllAsync(Expression<Func<FaceVectorStorageModel, object>>[] field2Fetch, CancellationToken cancellationToken)
     {
-        return _dataDb.GetAll(cancellationToken);
+        return _dataDb.GetAll(field2Fetch, cancellationToken);
     }
 
     public async Task<Result<bool>> CreateAsync(FaceVectorStorageModel model, CancellationToken cancellationToken = default)

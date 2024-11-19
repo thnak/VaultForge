@@ -81,7 +81,12 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, ILogger<FaceBusinessLay
 
     public IAsyncEnumerable<FaceVectorStorageModel> GetAllAsync(CancellationToken cancellationToken)
     {
-        return dataLayer.GetAllAsync(cancellationToken);
+        throw new NotImplementedException();
+    }
+
+    public IAsyncEnumerable<FaceVectorStorageModel> GetAllAsync(Expression<Func<FaceVectorStorageModel, object>>[] field2Fetch, CancellationToken cancellationToken)
+    {
+        return dataLayer.GetAllAsync(field2Fetch, cancellationToken);
     }
 
     [Experimental("SKEXP0020")]
@@ -126,7 +131,7 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, ILogger<FaceBusinessLay
     public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
         await _vectorDb.Init();
-        var cursor = GetAllAsync(cancellationToken);
+        var cursor = GetAllAsync([], cancellationToken);
         await foreach (var item in cursor)
         {
             await _vectorDb.AddNewRecordAsync(new VectorRecord()

@@ -122,11 +122,10 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         return (data.ToArray(), totalCount);
     }
 
-    public IAsyncEnumerable<ArticleModel> GetAllAsync(CancellationToken cancellationToken)
+    public IAsyncEnumerable<ArticleModel> GetAllAsync(Expression<Func<ArticleModel, object>>[] field2Fetch, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return _dataDb.GetAll(field2Fetch, cancellationToken);
     }
-
 
     public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<ArticleModel> updates, CancellationToken cancellationToken = default)
     {

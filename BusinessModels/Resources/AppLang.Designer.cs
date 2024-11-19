@@ -1096,6 +1096,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The document already exists.
+        /// </summary>
+        public static string The_document_already_exists {
+            get {
+                return ResourceManager.GetString("The document already exists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Trang bạn đang tìm kiếm không tồn tại. Đừng lo lắng, điều đó sẽ xảy ra với những người tốt nhất trong chúng ta!.
         /// </summary>
         public static string The_page_you_were_looking_for_does_not_exist__Don_t_worry__it_happens_to_the_best_of_us_ {

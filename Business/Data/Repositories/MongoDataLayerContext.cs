@@ -1,7 +1,5 @@
-using System.Text;
 using Business.Data.Interfaces;
 using Business.Services.Configure;
-using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Configuration;
 
@@ -9,18 +7,11 @@ namespace Business.Data.Repositories;
 
 public class MongoDataLayerContext : IMongoDataLayerContext
 {
-    public MongoDataLayerContext(ApplicationConfiguration settings, ILogger<IMongoDataLayerContext> logger)
+    public MongoDataLayerContext(ApplicationConfiguration settings)
     {
         var dbName = settings.GetDbSetting.DatabaseName;
         var user = settings.GetDbSetting.UserName;
         var pass = settings.GetDbSetting.Password;
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.AppendLine("MongoDB configuration:");
-        stringBuilder.AppendLine($"- connectionString: {settings.GetDbSetting.ConnectionString}");
-        stringBuilder.AppendLine($"- dbName: {dbName}");
-        stringBuilder.AppendLine($"- user: {user}");
-        stringBuilder.AppendLine($"- pass: {pass}");
-        logger.LogInformation(stringBuilder.ToString());
 
         MongoIdentity identity = new MongoInternalIdentity("admin", user);
         MongoIdentityEvidence evidence = new PasswordEvidence(pass);
