@@ -25,15 +25,19 @@ public class WikiController(IWikipediaBusinessLayer wikipediaBusinessLayer) : Co
         return Ok();
     }
 
-    [HttpGet("search")]
-    public async Task<IActionResult> GetWikipedias([FromQuery] string query)
+    [HttpPost("search")]
+    public async Task<IActionResult> GetWikipedias([FromForm] string query)
     {
         var token = HttpContext.RequestAborted;
         var result = await wikipediaBusinessLayer.SearchRag(query, 10, token);
         StringBuilder sb = new();
         foreach (var searchScore in result)
         {
-            sb.AppendLine($"{searchScore.Score:P1} {searchScore.Value.Key}: {searchScore.Value.Title}");
+            var wiki = wikipediaBusinessLayer.Get(searchScore.Value.Key);
+            if (wiki != null)
+            {
+                sb.AppendLine($"{searchScore.Score:P1}: {searchScore.Value.Title}\n{wiki.Text}\nUrl: {wiki.Url}");
+            }
         }
 
         var planText = sb.ToString();

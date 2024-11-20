@@ -15,8 +15,10 @@ namespace BrainNet.Database;
 public class VectorDb : IVectorDb
 {
     private IVectorStoreRecordCollection<Guid, VectorRecord> Collection { get; }
+
     private IEmbeddingGenerator<string, Embedding<float>> Generator { get; }
-    private SemaphoreSlim Semaphore { get; } = new(1, 1);
+
+    // private SemaphoreSlim Semaphore { get; } = new(1, 1);
     private ILogger Logger { get; set; }
     private bool _disposed;
     private string ConnectionString { get; }
@@ -34,12 +36,12 @@ public class VectorDb : IVectorDb
         Collection = vectorStore.GetCollection<Guid, VectorRecord>(config.Name);
         Generator = new OllamaEmbeddingGenerator(new Uri(ConnectionString), config.OllamaTextEmbeddingModelName);
     }
-    
+
     public async Task AddNewRecordAsync(VectorRecord vectorRecord, CancellationToken cancellationToken = default)
     {
         try
         {
-            await Semaphore.WaitAsync(cancellationToken);
+            // await Semaphore.WaitAsync(cancellationToken);
             // vectorRecord.Index = TotalRecord++;
             if (vectorRecord.Vector.Length < 0)
             {
@@ -51,10 +53,6 @@ public class VectorDb : IVectorDb
         catch (OperationCanceledException)
         {
             //
-        }
-        finally
-        {
-            Semaphore.Release();
         }
     }
 
@@ -107,12 +105,12 @@ public class VectorDb : IVectorDb
             IncludeTotalCount = true
         };
         var cursor = await Collection.VectorizedSearchAsync(vector, searchOptions, cancellationToken: cancellationToken);
-        
+
         await foreach (var result in cursor.Results.WithCancellation(cancellationToken))
         {
             var score = result.Score ?? 0;
-            if(score < SearchThresholds) continue;
-            
+            if (score < SearchThresholds) continue;
+
             yield return new SearchScore<VectorRecord>(result.Record, result.Score ?? 0);
         }
     }
@@ -140,8 +138,7 @@ public class VectorDb : IVectorDb
         if (_disposed) return;
 
         Generator.Dispose();
-        Semaphore.Dispose();
-
+        // Semaphore.Dispose();
         _disposed = true;
     }
 
@@ -150,7 +147,7 @@ public class VectorDb : IVectorDb
         if (_disposed) return;
         await Collection.DeleteCollectionAsync();
         Generator.Dispose();
-        Semaphore.Dispose();
+        // Semaphore.Dispose();
         _disposed = true;
     }
 }

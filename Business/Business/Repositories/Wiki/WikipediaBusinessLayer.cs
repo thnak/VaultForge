@@ -61,12 +61,12 @@ public class WikipediaBusinessLayer(IWikipediaDataLayer dataLayer, ILogger<Wikip
 
     public WikipediaDatasetModel? Get(string key)
     {
-        throw new NotImplementedException();
+        return dataLayer.Get(key);
     }
 
     public Task<Result<WikipediaDatasetModel?>> Get(string key, params Expression<Func<WikipediaDatasetModel, object>>[] fieldsToFetch)
     {
-        throw new NotImplementedException();
+        return dataLayer.Get(key, fieldsToFetch);
     }
 
     public IAsyncEnumerable<WikipediaDatasetModel?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)
@@ -90,10 +90,7 @@ public class WikipediaBusinessLayer(IWikipediaDataLayer dataLayer, ILogger<Wikip
         var result = await dataLayer.CreateAsync(model, cancellationToken);
         if (result.IsSuccess)
         {
-            await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken =>
-            {
-                await RequestIndex(model, true, serverToken);
-            }, cancellationToken);
+            await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken => { await RequestIndex(model, true, serverToken); }, cancellationToken);
         }
 
         return result;
@@ -139,7 +136,7 @@ public class WikipediaBusinessLayer(IWikipediaDataLayer dataLayer, ILogger<Wikip
         var cursor = dataLayer.GetAllAsync(expression, cancellationToken);
         await foreach (var item in cursor)
         {
-            await RequestIndex(item, true, cancellationToken);
+            await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken => await RequestIndex(item, true, serverToken), cancellationToken);
         }
 
         return Result<bool>.Success("");

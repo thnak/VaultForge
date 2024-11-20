@@ -37,15 +37,13 @@ public static class BusinessExtension
     {
         List<SearchScore<VectorRecord>> result = [];
         var vectorSearch = await vectorDb.GenerateVectorsFromDescription(query, cancellationToken);
-
-
         await foreach (var co in vectorDb.Search(vectorSearch, count, cancellationToken))
         {
             result.Add(co);
         }
 
 
-        result = [..result.OrderBy(x => x.Score).Take(count)];
+        result = [..result.OrderByDescending(x => x.Score).Take(count)];
         return result;
     }
 }
