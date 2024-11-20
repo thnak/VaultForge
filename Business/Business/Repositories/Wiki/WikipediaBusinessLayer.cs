@@ -129,6 +129,7 @@ public class WikipediaBusinessLayer(IWikipediaDataLayer dataLayer, ILogger<Wikip
     [Experimental("SKEXP0020")]
     public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
+        await _vectorDb.Init();
         Expression<Func<WikipediaDatasetModel, object>>[] expression =
         [
             model => model.Id,
