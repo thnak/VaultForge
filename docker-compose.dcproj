@@ -9,6 +9,8 @@
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>webapp</DockerServiceName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseX64|AnyCPU'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseX64|x64'" />
   <ItemGroup>
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>

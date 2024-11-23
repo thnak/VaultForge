@@ -2,6 +2,8 @@
 
     <PropertyGroup>
         <TieredPGO>true</TieredPGO>
+        <Configurations>Debug;Release;ReleaseX64</Configurations>
+        <Platforms>AnyCPU;x64</Platforms>
     </PropertyGroup>
 
     <PropertyGroup>

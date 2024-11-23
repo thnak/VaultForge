@@ -36,6 +36,7 @@ using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.General.SettingModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Business.Services.Configure;
 
@@ -76,6 +77,14 @@ public static class DataService
         service.AddHostedService<HostApplicationLifetimeEventsHostedService>();
 
         service.AddAdvancedServiceCollection();
+
+
+        service.Configure<HostOptions>(options =>
+        {
+            options.ServicesStartConcurrently = true;
+            options.ServicesStopConcurrently = true;
+            options.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.StopHost;
+        });
     }
 
     public static void AddAppOptions(this WebApplicationBuilder builder)

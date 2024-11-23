@@ -529,19 +529,19 @@
       },
       "Microsoft.ML.OnnxRuntime": {
         "type": "Transitive",
-        "resolved": "1.20.0",
-        "contentHash": "0vki11cpz/GGe2R3McIEXQTO+5LQdtRGILlaqULnAq/dYxjIMkLIFwj/JyBS0mKr4gEjgr9DNewc1pZmNdcHQQ==",
+        "resolved": "1.20.1",
+        "contentHash": "NzUD79BC6R7TKROLyB3XCzXTpbNZ1YfOdVbult7hoFvd/xyRecOMiRO5HTzkPXvaFlcvZ91+WNCiroAPzUE7Dw==",
         "dependencies": {
-          "Microsoft.ML.OnnxRuntime.Managed": "1.20.0"
+          "Microsoft.ML.OnnxRuntime.Managed": "1.20.1"
         }
       },
       "Microsoft.ML.OnnxRuntime.DirectML": {
         "type": "Transitive",
-        "resolved": "1.20.0",
-        "contentHash": "O83kLO41lWqnsxTexf/zEhC9F3E2A6Jg4edesIQjb40WgN1Qz3h59qN5LXtcvmOYd0bUjwplAwAEn8UhTXuR+Q==",
+        "resolved": "1.20.1",
+        "contentHash": "IQSqKIwOGJ8azkJxqT7h/xGkjw3AKdVd/f9BfnbwQVBRZ7W5vrv8nCirNYPO0Xr3XJ27RpSzXSKIRBkiQlhjyw==",
         "dependencies": {
           "Microsoft.AI.DirectML": "1.15.2",
-          "Microsoft.ML.OnnxRuntime.Managed": "1.20.0"
+          "Microsoft.ML.OnnxRuntime.Managed": "1.20.1"
         }
       },
       "Microsoft.ML.OnnxRuntime.Extensions": {
@@ -556,8 +556,8 @@
       },
       "Microsoft.ML.OnnxRuntime.Managed": {
         "type": "Transitive",
-        "resolved": "1.20.0",
-        "contentHash": "oo5zUEnnVFD0vFLAiHqj2ya48nVxhPwonjIT8uT7QXv/oHfDHa0u+o0yUKERVssqPtyt5D5xiBAiHjZintu7tg==",
+        "resolved": "1.20.1",
+        "contentHash": "+EVcEcKdq3gkw6iu8TYl2coJxfPnMi1YQc6eZ80BGNlw6mbBCxNGe6h4udDCwENYWsXFvYjoBc6412t40tl4ew==",
         "dependencies": {
           "System.Memory": "4.5.5"
         }
@@ -820,8 +820,8 @@
       },
       "Ollama": {
         "type": "Transitive",
-        "resolved": "1.12.1-dev.13",
-        "contentHash": "FU5NmRymkuRCfTj9IeOHEG5u/4DQltD6wwAR1dSJ4gmgBP9WyTYbjtY/c87dVrnumkd+lZEOEDBzphN6GCT53g==",
+        "resolved": "1.13.0",
+        "contentHash": "U/8EwrUEVToMMppc9CBmzDniCQomZ4ttsJpfT36pSxAyjZXkLJmLIt+oSGzUPVZRCOG/jonYhduiVB8gq/hwSA==",
         "dependencies": {
           "CSharpToJsonSchema": "3.10.1",
           "System.Text.Json": "9.0.0"
@@ -1836,8 +1836,8 @@
           "Microsoft.Extensions.AI.Ollama": "[9.0.0-preview.9.24556.5, )",
           "Microsoft.Extensions.Options": "[9.0.0, )",
           "Microsoft.Extensions.VectorData.Abstractions": "[9.0.0-preview.1.24523.1, )",
-          "Microsoft.ML.OnnxRuntime": "[1.20.0, )",
-          "Microsoft.ML.OnnxRuntime.DirectML": "[1.20.0, )",
+          "Microsoft.ML.OnnxRuntime": "[1.20.1, )",
+          "Microsoft.ML.OnnxRuntime.DirectML": "[1.20.1, )",
           "Microsoft.ML.OnnxRuntime.Extensions": "[0.13.0, )",
           "Microsoft.ML.OnnxRuntime.Extensions.Dummy": "[0.13.0, )",
           "Microsoft.SemanticKernel.Connectors.InMemory": "[1.30.0-preview, )",
@@ -1870,7 +1870,7 @@
           "NAudio": "[2.2.1, )",
           "NRobotsCore": "[1.1.3, )",
           "Newtonsoft.Json": "[13.0.3, )",
-          "Ollama": "[1.12.1-dev.13, )",
+          "Ollama": "[1.13.0, )",
           "Polly": "[8.5.0, )",
           "Protector": "[1.0.0, )",
           "SixLabors.ImageSharp": "[3.1.6, )",
