@@ -67,7 +67,7 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da, IMemoryCache memor
 
     public IAsyncEnumerable<FileInfoModel> Where(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
     {
-        return da.Where(predicate, cancellationToken, fieldsToFetch);
+        return da.WhereAsync(predicate, cancellationToken, fieldsToFetch);
     }
 
     public FileInfoModel? Get(string key)

@@ -42,7 +42,7 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
 
     public IAsyncEnumerable<ArticleModel> Where(Expression<Func<ArticleModel, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<ArticleModel, object>>[] fieldsToFetch)
     {
-        return dataLayer.Where(predicate, cancellationToken, fieldsToFetch);
+        return dataLayer.WhereAsync(predicate, cancellationToken, fieldsToFetch);
     }
 
     public ArticleModel? Get(string key)

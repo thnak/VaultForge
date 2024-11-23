@@ -1,6 +1,5 @@
 using System.Linq.Expressions;
 using Business.Models;
-using Business.Models.RetrievalAugmentedGeneration.Vector;
 using BusinessModels.Base;
 using BusinessModels.General.Results;
 using MongoDB.Bson;

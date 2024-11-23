@@ -42,7 +42,7 @@ public class ChatWithLlmBusinessLayer(IChatWithLlmDataLayer dataLayer) : IChatWi
 
     public IAsyncEnumerable<ChatWithChatBotMessageModel> Where(Expression<Func<ChatWithChatBotMessageModel, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<ChatWithChatBotMessageModel, object>>[] fieldsToFetch)
     {
-        return dataLayer.Where(predicate, cancellationToken, fieldsToFetch);
+        return dataLayer.WhereAsync(predicate, cancellationToken, fieldsToFetch);
     }
 
     public ChatWithChatBotMessageModel? Get(string key)

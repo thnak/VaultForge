@@ -61,7 +61,7 @@ public class WikipediaDataLayer(IMongoDataLayerContext context, ILogger<Wikipedi
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<WikipediaDatasetModel> Where(Expression<Func<WikipediaDatasetModel, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<WikipediaDatasetModel, object>>[] fieldsToFetch)
+    public IAsyncEnumerable<WikipediaDatasetModel> WhereAsync(Expression<Func<WikipediaDatasetModel, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<WikipediaDatasetModel, object>>[] fieldsToFetch)
     {
         throw new NotImplementedException();
     }

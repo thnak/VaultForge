@@ -160,7 +160,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         }
     }
 
-    public async IAsyncEnumerable<FileInfoModel> Where(Expression<Func<FileInfoModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
+    public async IAsyncEnumerable<FileInfoModel> WhereAsync(Expression<Func<FileInfoModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
     {
         var options = fieldsToFetch.Any() ? new FindOptions<FileInfoModel, FileInfoModel> { Projection = fieldsToFetch.ProjectionBuilder() } : null;
         using var cursor = await _fileDataDb.FindAsync(predicate, options: options, cancellationToken: cancellationToken);
@@ -378,7 +378,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             await sequenceQueue.QueueBackgroundWorkItemAsync(async (serverToken) =>
             {
                 List<string> extendFiles = new List<string>();
-                await foreach (var extendFile in Where(file => file.ParentResource == key, serverToken, model => model.Id))
+                await foreach (var extendFile in WhereAsync(file => file.ParentResource == key, serverToken, model => model.Id))
                 {
                     extendFiles.Add(extendFile.Id.ToString());
                 }

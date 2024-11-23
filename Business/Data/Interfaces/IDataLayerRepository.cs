@@ -51,7 +51,7 @@ public interface IDataLayerRepository<T> where T : class
     /// <returns></returns>
     IAsyncEnumerable<T> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] fieldsToFetch);
 
-    IAsyncEnumerable<T> Where(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] fieldsToFetch);
+    IAsyncEnumerable<T> WhereAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] fieldsToFetch);
     T? Get(string key);
     Task<Result<T?>> Get(string key, params Expression<Func<T, object>>[] fieldsToFetch);
     IAsyncEnumerable<T?> GetAsync(List<string> keys, CancellationToken cancellationToken = default);

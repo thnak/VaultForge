@@ -49,7 +49,7 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
 
     public IAsyncEnumerable<UserModel> Where(Expression<Func<UserModel, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<UserModel, object>>[] fieldsToFetch)
     {
-        return userDl.Where(predicate, cancellationToken, fieldsToFetch);
+        return userDl.WhereAsync(predicate, cancellationToken, fieldsToFetch);
     }
 
     public UserModel? Get(string key)

@@ -58,7 +58,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         }
     }
 
-    public async IAsyncEnumerable<ArticleModel> Where(Expression<Func<ArticleModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<ArticleModel, object>>[] fieldsToFetch)
+    public async IAsyncEnumerable<ArticleModel> WhereAsync(Expression<Func<ArticleModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<ArticleModel, object>>[] fieldsToFetch)
     {
         var options = fieldsToFetch.Any() ? new FindOptions<ArticleModel, ArticleModel> { Projection = fieldsToFetch.ProjectionBuilder() } : null;
         using var cursor = await _dataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);

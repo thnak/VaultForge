@@ -214,7 +214,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     }
 
 
-    public async IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
+    public async IAsyncEnumerable<FolderInfoModel> WhereAsync(Expression<Func<FolderInfoModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
     {
         var options = fieldsToFetch.Any() ? new FindOptions<FolderInfoModel, FolderInfoModel> { Projection = fieldsToFetch.ProjectionBuilder() } : null;
         using var cursor = await _dataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);

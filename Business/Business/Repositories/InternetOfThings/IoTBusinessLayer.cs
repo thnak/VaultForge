@@ -42,7 +42,7 @@ public class IoTBusinessLayer(IIoTDataLayer data) : IIoTBusinessLayer
 
     public IAsyncEnumerable<IoTRecord> Where(Expression<Func<IoTRecord, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<IoTRecord, object>>[] fieldsToFetch)
     {
-        return data.Where(predicate, cancellationToken, fieldsToFetch);
+        return data.WhereAsync(predicate, cancellationToken, fieldsToFetch);
     }
 
     public IoTRecord? Get(string key)

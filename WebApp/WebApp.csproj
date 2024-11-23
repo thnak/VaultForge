@@ -23,7 +23,7 @@
         <UserSecretsId>ad3cb7c5-8183-40ac-987e-18d3b3a48ad7</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerComposeProjectPath>docker-compose.dcproj</DockerComposeProjectPath>
-        <RuntimeIdentifiers>linux-x64</RuntimeIdentifiers>
+        <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
         <EnableSdkContainerDebugging>True</EnableSdkContainerDebugging>
         <ContainerBaseImage>mcr.microsoft.com/dotnet/aspnet:9.0-noble</ContainerBaseImage>
     </PropertyGroup>
@@ -36,12 +36,6 @@
         <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.0" />
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Update="myCA.pfx">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
     </ItemGroup>
 
     <ItemGroup>

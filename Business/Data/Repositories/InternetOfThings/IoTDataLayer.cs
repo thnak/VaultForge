@@ -94,7 +94,7 @@ public class IoTDataLayer : IIoTDataLayer
         throw new NotImplementedException();
     }
 
-    public async IAsyncEnumerable<IoTRecord> Where(Expression<Func<IoTRecord, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<IoTRecord, object>>[] fieldsToFetch)
+    public async IAsyncEnumerable<IoTRecord> WhereAsync(Expression<Func<IoTRecord, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<IoTRecord, object>>[] fieldsToFetch)
     {
         var options = fieldsToFetch.Any() ? new FindOptions<IoTRecord, IoTRecord> { Projection = fieldsToFetch.ProjectionBuilder() } : null;
         using var cursor = await _dataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);

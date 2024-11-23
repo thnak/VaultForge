@@ -150,7 +150,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         throw new NotImplementedException();
     }
 
-    public async IAsyncEnumerable<UserModel> Where(Expression<Func<UserModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<UserModel, object>>[] fieldsToFetch)
+    public async IAsyncEnumerable<UserModel> WhereAsync(Expression<Func<UserModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<UserModel, object>>[] fieldsToFetch)
     {
         var options = fieldsToFetch.Any() ? new FindOptions<UserModel, UserModel> { Projection = fieldsToFetch.ProjectionBuilder() } : null;
         using var cursor = await _dataDb.FindAsync(predicate, options, cancellationToken: cancellationToken);

@@ -168,7 +168,7 @@ internal class FolderSystemBusinessLayer(
 
     public IAsyncEnumerable<FolderInfoModel> Where(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<FolderInfoModel, object>>[] fieldsToFetch)
     {
-        return folderSystemService.Where(predicate, cancellationToken, fieldsToFetch);
+        return folderSystemService.WhereAsync(predicate, cancellationToken, fieldsToFetch);
     }
 
     public FolderInfoModel? Get(string key)
@@ -244,7 +244,7 @@ internal class FolderSystemBusinessLayer(
             await sequenceBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken1 =>
             {
                 List<FolderInfoModel> folders = new List<FolderInfoModel>();
-                var folderList = folderSystemService.Where(x => x.RootFolder == key, serverToken1, model => model.Id);
+                var folderList = folderSystemService.WhereAsync(x => x.RootFolder == key, serverToken1, model => model.Id);
                 await foreach (var fol in folderList)
                 {
                     folders.Add(fol);

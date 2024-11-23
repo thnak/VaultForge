@@ -75,7 +75,7 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
         throw new NotImplementedException();
     }
 
-    public async IAsyncEnumerable<ChatWithChatBotMessageModel> Where(Expression<Func<ChatWithChatBotMessageModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<ChatWithChatBotMessageModel, object>>[] fieldsToFetch)
+    public async IAsyncEnumerable<ChatWithChatBotMessageModel> WhereAsync(Expression<Func<ChatWithChatBotMessageModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<ChatWithChatBotMessageModel, object>>[] fieldsToFetch)
     {
         var options = fieldsToFetch.Any()
             ? new FindOptions<ChatWithChatBotMessageModel, ChatWithChatBotMessageModel>

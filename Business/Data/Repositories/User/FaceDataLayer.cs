@@ -66,7 +66,7 @@ public class FaceDataLayer(IMongoDataLayerContext context, ILogger<FaceDataLayer
         throw new NotImplementedException();
     }
 
-    public IAsyncEnumerable<FaceVectorStorageModel> Where(Expression<Func<FaceVectorStorageModel, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<FaceVectorStorageModel, object>>[] fieldsToFetch)
+    public IAsyncEnumerable<FaceVectorStorageModel> WhereAsync(Expression<Func<FaceVectorStorageModel, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<FaceVectorStorageModel, object>>[] fieldsToFetch)
     {
         throw new NotImplementedException();
     }

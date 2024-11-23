@@ -56,7 +56,7 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, ILogger<FaceBusinessLay
 
     public IAsyncEnumerable<FaceVectorStorageModel> Where(Expression<Func<FaceVectorStorageModel, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<FaceVectorStorageModel, object>>[] fieldsToFetch)
     {
-        return dataLayer.Where(predicate, cancellationToken, fieldsToFetch);
+        return dataLayer.WhereAsync(predicate, cancellationToken, fieldsToFetch);
     }
 
     public FaceVectorStorageModel? Get(string key)
