@@ -119,7 +119,7 @@ public class Program
 
         #endregion
 
-        builder.WebHost.ConfigureAppConfiguration((_, configurationBuilder) => { configurationBuilder.AddEnvironmentVariables(); });
+        builder.Configuration.AddEnvironmentVariables();
 
         builder.Services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new ObjectIdConverter()); });
         builder.Services.AddEndpointsApiExplorer();
