@@ -35,9 +35,6 @@
         <PackageReference Include="Microsoft.Azure.StackExchangeRedis" Version="3.2.0" />
         <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.0" />
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
-        <ProjectReference Include="..\Business\Business.csproj" />
-        <ProjectReference Include="..\Protector\Protector.csproj" />
-        <ProjectReference Include="..\WebApp.Client\WebApp.Client.csproj" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.0" />
     </ItemGroup>
 
@@ -55,6 +52,13 @@
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BrainNet\BrainNet.csproj" />
+      <ProjectReference Include="..\Business\Business.csproj" />
+      <ProjectReference Include="..\Protector\Protector.csproj" />
+      <ProjectReference Include="..\WebApp.Client\WebApp.Client.csproj" />
     </ItemGroup>
 
 </Project>

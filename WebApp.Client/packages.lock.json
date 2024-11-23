@@ -4,9 +4,9 @@
     "net9.0": {
       "Blazor-ApexCharts": {
         "type": "Direct",
-        "requested": "[4.0.0, )",
-        "resolved": "4.0.0",
-        "contentHash": "Lb2GxaXpZ12xkGRM5B/WZdPZYe8xpG/unkTvDG2X4wkqqeIdGndoDwX7/Ze9gmoKD254j+ND2kW1ZCZpsb4Rlw==",
+        "requested": "[4.0.1, )",
+        "resolved": "4.0.1",
+        "contentHash": "LhBgL7pLWtib89EiH9LNsON0xoPGG0lp8xITgb4aGzJJ7RSmmC4W429TOIuDZePpD+Zw0oxOFBr2CXUKLRhKnA==",
         "dependencies": {
           "Microsoft.AspNetCore.Components": "8.0.10",
           "Microsoft.AspNetCore.Components.Web": "8.0.10",
@@ -73,8 +73,8 @@
       },
       "FluentValidation": {
         "type": "Transitive",
-        "resolved": "11.10.0",
-        "contentHash": "qsJGSJDdZ8qiG+lVJ70PZfJHcEdq8UQZ/tZDXoj78/iHKG6lVKtMJsD11zyyv/IPc7rwqGqnFoFLTNzpo3IPYg=="
+        "resolved": "11.11.0",
+        "contentHash": "cyIVdQBwSipxWG8MA3Rqox7iNbUNUTK5bfJi9tIdm4CAfH71Oo5ABLP4/QyrUwuakqpUEPGtE43BDddvEehuYw=="
       },
       "MessagePack": {
         "type": "Transitive",
@@ -482,7 +482,7 @@
       "businessmodels": {
         "type": "Project",
         "dependencies": {
-          "FluentValidation": "[11.10.0, )",
+          "FluentValidation": "[11.11.0, )",
           "MessagePack": "[2.5.192, )",
           "MessagePack.Annotations": "[2.5.192, )",
           "Microsoft.AspNetCore.SignalR.Client": "[9.0.0, )",

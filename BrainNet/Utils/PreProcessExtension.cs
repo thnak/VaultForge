@@ -116,4 +116,12 @@ public static class PreProcessExtension
         });
         return outputImage;
     }
+    
+    public static List<string> ChunkTextByDelimiter(string text, char delimiter)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+            throw new ArgumentException("Text cannot be null or empty.", nameof(text));
+
+        return text.Split(delimiter).Select(chunk => chunk.Trim()).ToList();
+    }
 }

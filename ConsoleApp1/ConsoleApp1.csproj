@@ -8,7 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Ollama" Version="1.12.0" />
+      <PackageReference Include="Microsoft.SemanticKernel.Connectors.AzureOpenAI" Version="1.30.0" />
+      <PackageReference Include="Microsoft.SemanticKernel.Connectors.Ollama" Version="1.30.0-alpha" />
+      <PackageReference Include="Microsoft.SemanticKernel.Connectors.OpenAI" Version="1.30.0" />
+      <PackageReference Include="Ollama" Version="1.12.1-dev.13" />
     </ItemGroup>
 
     <ItemGroup>

@@ -153,7 +153,7 @@ public class Raid5Stream : Stream
                     _readPooledArrays[i].CopyTo(_parityPoolBuffers[i], 0);
                 }
 
-                _readPooledArrays[realDataDisks] = _parityPoolBuffers.XorParity();
+                _parityPoolBuffers.XorParity(_readPooledArrays[realDataDisks]);
                 numDisks.GenerateRaid5Indices(stripeCount, _indicesArrayPool);
                 await FileStreams.WriteTasks(_indicesArrayPool, _stripeSize, cancellationToken, _readPooledArrays);
 
@@ -244,7 +244,7 @@ public class Raid5Stream : Stream
             }
 
             readBytes[errorIndex] = parityBuffers.Max(x => x.Length);
-            readBuffers[errorIndex] = parityBuffers.XorParity();
+            parityBuffers.XorParity(readBuffers[errorIndex]);
         }
     }
 
@@ -284,7 +284,7 @@ public class Raid5Stream : Stream
             }
 
             readBytes[errorIndex] = parityBuffers.Max(x => x.Length);
-            readBuffers[errorIndex] = parityBuffers.XorParity();
+            parityBuffers.XorParity(readBuffers[errorIndex]);
         }
     }
 
