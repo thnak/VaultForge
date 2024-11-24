@@ -4,7 +4,6 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
         <Configurations>Debug;Release;ReleaseX64</Configurations>
         <Platforms>AnyCPU;x64</Platforms>
     </PropertyGroup>
@@ -14,8 +13,6 @@
       <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
       <PackageReference Include="Microsoft.Extensions.VectorData.Abstractions" Version="9.0.0-preview.1.24523.1" />
       <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.20.1" />
-      <PackageReference Include="Microsoft.ML.OnnxRuntime.Extensions" Version="0.13.0" />
-      <PackageReference Include="Microsoft.ML.OnnxRuntime.Extensions.Dummy" Version="0.13.0" />
       <PackageReference Include="Microsoft.SemanticKernel.Connectors.InMemory" Version="1.30.0-preview" />
       <PackageReference Include="Microsoft.SemanticKernel.Connectors.Ollama" Version="1.30.0-alpha" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
