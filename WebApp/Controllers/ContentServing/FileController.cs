@@ -244,7 +244,10 @@ public class FilesController(
 
             long from = long.Parse(range[0]);
             long to = range.Length > 1 && long.TryParse(range[1], out var endRange) ? endRange : file.FileSize - 1;
-
+            if (to - from > 1024 * 1024 * 4)
+            {
+                to = from + 1024 * 1024 * 4;
+            }
             if (from >= file.FileSize)
             {
                 return BadRequest("Requested range is not satisfiable.");
