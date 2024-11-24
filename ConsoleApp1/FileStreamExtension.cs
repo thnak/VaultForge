@@ -11,27 +11,22 @@ public static class FileStreamExtension
         return File.Exists(filePath) || string.IsNullOrEmpty(filePath);
     }
 
-    public static async Task<MemoryStream> ReadStreamWithLimitAsync(this Stream clientStream, int maxBufferSizeInBytes = 4 * 1024 * 1024) // 4MB limit
+    public static async Task ReadStreamWithLimitAsync(this Stream clientSourceStream, MemoryStream bufferStream, byte[] buffer) // 4MB limit
     {
-        const int bufferSize = 4096; // 8 KB buffer size
-        byte[] buffer = new byte[bufferSize];
         int bytesRead;
-        int remainingSize = maxBufferSizeInBytes;
-
-        // Create a MemoryStream to hold the stream data with a capacity of maxBufferSizeInBytes
-        MemoryStream memoryStream = new MemoryStream();
-
+        bufferStream.Seek(0, SeekOrigin.Begin);
+        bufferStream.SetLength(0);
+        int remainingSize = bufferStream.Capacity;
+        
         // Read the client stream in chunks and write to the memory stream until the limit is reached
-        while ((bytesRead = await clientStream.ReadAsync(buffer, 0, Math.Min(remainingSize, bufferSize))) > 0)
+        while ((bytesRead = await clientSourceStream.ReadAsync(buffer, 0, Math.Min(remainingSize, buffer.Length))) > 0)
         {
-            await memoryStream.WriteAsync(buffer, 0, bytesRead);
+            await bufferStream.WriteAsync(buffer, 0, bytesRead);
             remainingSize -= bytesRead;
         }
 
         // Optionally, reset the memory stream's position to the beginning if you plan to read from it later
-        memoryStream.Position = 0;
-
-        return memoryStream;
+        bufferStream.Seek(0, SeekOrigin.Begin);
     }
 
 
@@ -216,6 +211,46 @@ public static class FileStreamExtension
         return result;
     }
 
+    public static void XorParity(this byte[] data0, byte[] data1, byte[] parity)
+    {
+        int vectorSize = Vector<byte>.Count;
+        int i = 0;
+
+
+        // Process in chunks of Vector<byte>.Count (size of SIMD vector)
+        if (Vector.IsHardwareAccelerated)
+        {
+            for (; i <= data1.Length - vectorSize; i += vectorSize)
+            {
+                // Load the current portion of the parity and data as vectors
+                var data0Vector = new Vector<byte>(data0, i);
+                var data1Vector = new Vector<byte>(data1, i);
+
+                // XOR the vectors
+                var resultVector = data0Vector ^ data1Vector;
+
+                // Store the result back into the parity array
+                resultVector.CopyTo(parity, i);
+            }
+        }
+
+        // Fallback to scalar XOR for the remaining bytes (if any)
+        for (; i < data1.Length; i++)
+        {
+            parity[i] = (byte)(data0[i] ^ data1[i]);
+        }
+    }
+
+    public static void XorParity(this byte[][] data, byte[] parity)
+    {
+        // Initialize the result array for storing the XOR parity
+        data.First().CopyTo(parity, 0);
+        for (int i = 1; i < data.Length; i++)
+        {
+            parity.XorParity(data[i], parity);
+        }
+    }
+
     public static bool CompareHashes(this MemoryStream stream1, Stream stream2)
     {
         if (stream1 == null || stream2 == null)
@@ -241,11 +276,12 @@ public static class FileStreamExtension
         var buffer1 = new byte[10];
         var buffer2 = new byte[10];
         int count = 0;
-        while ((await fileStream1.ReadAsync(buffer1, 0, buffer1.Length)) > 0)
+        int readSize = 0;
+        while ((readSize = await fileStream1.ReadAsync(buffer1, 0, buffer1.Length)) > 0)
         {
             await fileStream2.ReadAsync(buffer2, 0, buffer2.Length);
 
-            for (int i = 0; i < buffer1.Length; i++)
+            for (int i = 0; i < readSize; i++)
             {
                 if (buffer1[i] == buffer2[i])
                 {
@@ -258,7 +294,7 @@ public static class FileStreamExtension
             }
         }
 
-        Console.WriteLine($"Stop at position {count}");
+        Console.WriteLine($"Stop at position {count:N0} {fileStream1.Length == count}");
     }
 
     public static void Fill<T>(this T[] array, T value)

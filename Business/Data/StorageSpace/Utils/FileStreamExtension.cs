@@ -11,27 +11,22 @@ public static class FileStreamExtension
         return File.Exists(filePath) || string.IsNullOrEmpty(filePath);
     }
 
-    public static async Task<MemoryStream> ReadStreamWithLimitAsync(this Stream clientStream, int maxBufferSizeInBytes = 4 * 1024 * 1024) // 4MB limit
+    public static async Task ReadStreamWithLimitAsync(this Stream clientSourceStream, MemoryStream bufferStream, byte[] buffer) // 4MB limit
     {
-        const int bufferSize = 4096; // 8 KB buffer size
-        byte[] buffer = new byte[bufferSize];
         int bytesRead;
-        int remainingSize = maxBufferSizeInBytes;
-
-        // Create a MemoryStream to hold the stream data with a capacity of maxBufferSizeInBytes
-        MemoryStream memoryStream = new MemoryStream();
+        bufferStream.Seek(0, SeekOrigin.Begin);
+        bufferStream.SetLength(0);
+        int remainingSize = bufferStream.Capacity;
 
         // Read the client stream in chunks and write to the memory stream until the limit is reached
-        while ((bytesRead = await clientStream.ReadAsync(buffer, 0, Math.Min(remainingSize, bufferSize))) > 0)
+        while ((bytesRead = await clientSourceStream.ReadAsync(buffer, 0, Math.Min(remainingSize, buffer.Length))) > 0)
         {
-            await memoryStream.WriteAsync(buffer, 0, bytesRead);
+            await bufferStream.WriteAsync(buffer, 0, bytesRead);
             remainingSize -= bytesRead;
         }
 
         // Optionally, reset the memory stream's position to the beginning if you plan to read from it later
-        memoryStream.Position = 0;
-
-        return memoryStream;
+        bufferStream.Seek(0, SeekOrigin.Begin);
     }
 
 
@@ -47,7 +42,7 @@ public static class FileStreamExtension
 
         return indices;
     }
-    
+
     public static void GenerateRaid5Indices(this int fileStreamsCount, int stripeCount, int[] indices)
     {
         // Populate indices array based on the stripe row index and disk count
@@ -72,7 +67,7 @@ public static class FileStreamExtension
 
         return tasks;
     }
-    
+
     public static async Task WriteTasks<T>(this List<T?> fileStreams, int[] indices, int byteWrites, CancellationToken cancellationToken, byte[][] buffers) where T : Stream
     {
         for (int i = 0; i < fileStreams.Count; i++)
@@ -117,7 +112,6 @@ public static class FileStreamExtension
     public static List<FileStream?> OpenFile(this IEnumerable<string> filePath, FileMode mode, FileAccess access, FileShare share, int bufferSize)
     {
         List<FileStream?> fileStreams = new();
-        int i = 0;
         foreach (var path in filePath)
         {
             try
@@ -129,7 +123,6 @@ public static class FileStreamExtension
                 fileStreams.Add(default);
             }
 
-            i++;
         }
 
         return fileStreams;
@@ -144,27 +137,7 @@ public static class FileStreamExtension
         }
     }
 
-    private static async Task ReadDiskWithParity(this FileStream?[] fileStreams, byte[][] buffers, int[] byteReads, int parityIndex)
-    {
-        var length = buffers.Length;
-        var readSize = buffers[0].Length;
-        Task<int>[] tasks = new Task<int>[length];
 
-        for (int i = 0; i < length; i++)
-        {
-            var fileStream = fileStreams[i];
-            if (fileStream != null)
-            {
-                tasks[i] = fileStream.ReadAsync(buffers[i], 0, readSize);
-            }
-        }
-
-        await Task.WhenAll(tasks);
-        for (int i = 0; i < length; i++)
-        {
-            byteReads[i] = await tasks[i];
-        }
-    }
 
     public static void XorParity(this byte[] data0, byte[] data1, byte[] parity)
     {
@@ -208,47 +181,17 @@ public static class FileStreamExtension
 
     public static bool CompareHashes(this Stream stream1, Stream stream2)
     {
-        if (stream1 == null || stream2 == null)
-            throw new ArgumentNullException("MemoryStream cannot be null.");
-
         // Reset stream positions to ensure we hash the entire content
         stream1.Position = 0;
         stream2.Position = 0;
 
-        using (var sha256 = SHA256.Create())
-        {
-            // Compute hashes
-            byte[] hash1 = sha256.ComputeHash(stream1);
-            byte[] hash2 = sha256.ComputeHash(stream2);
+        using var sha256 = SHA256.Create();
+        // Compute hashes
+        byte[] hash1 = sha256.ComputeHash(stream1);
+        byte[] hash2 = sha256.ComputeHash(stream2);
 
-            // Compare hashes
-            return hash1.SequenceEqual(hash2);
-        }
-    }
-
-    public static async Task Compare(this Stream fileStream1, Stream fileStream2)
-    {
-        var buffer1 = new byte[10];
-        var buffer2 = new byte[10];
-        int count = 0;
-        while ((await fileStream1.ReadAsync(buffer1, 0, buffer1.Length)) > 0)
-        {
-            await fileStream2.ReadExactlyAsync(buffer2);
-
-            for (int i = 0; i < buffer1.Length; i++)
-            {
-                if (buffer1[i] == buffer2[i])
-                {
-                    count++;
-                }
-                else
-                {
-                    break;
-                }
-            }
-        }
-
-        Console.WriteLine($"Stop at position {count}");
+        // Compare hashes
+        return hash1.SequenceEqual(hash2);
     }
 
     public static void Fill<T>(this T[] array, T value)

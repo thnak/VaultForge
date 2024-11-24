@@ -25,7 +25,7 @@ public class LightsPlugin
     [KernelFunction("change_state")]
     [Description("Changes the state of the light")]
     [return: Description("The updated state of the light; will return null if the light does not exist")]
-    public async Task<LightModel?> ChangeStateAsync(int id, bool isOn)
+    public async Task<LightModel?> ChangeStateAsync(int id = 1, bool isOn = true)
     {
         var light = lights.FirstOrDefault(light => light.Id == id);
 
@@ -43,12 +43,9 @@ public class LightsPlugin
 
 public class LightModel
 {
-    [JsonPropertyName("id")]
-    public int Id { get; set; }
+    [JsonPropertyName("id")] public int Id { get; set; }
 
-    [JsonPropertyName("name")]
-    public string Name { get; set; } = string.Empty;
+    [JsonPropertyName("name")] public string Name { get; set; } = string.Empty;
 
-    [JsonPropertyName("is_on")]
-    public bool? IsOn { get; set; }
+    [JsonPropertyName("is_on")] public bool? IsOn { get; set; }
 }
