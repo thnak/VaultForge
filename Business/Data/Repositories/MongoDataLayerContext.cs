@@ -1,5 +1,6 @@
 using Business.Data.Interfaces;
 using Business.Services.Configure;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Configuration;
 
@@ -7,7 +8,7 @@ namespace Business.Data.Repositories;
 
 public class MongoDataLayerContext : IMongoDataLayerContext
 {
-    public MongoDataLayerContext(ApplicationConfiguration settings)
+    public MongoDataLayerContext(ApplicationConfiguration settings, ILogger<MongoDataLayerContext> logger)
     {
         var dbName = settings.GetDbSetting.DatabaseName;
         var user = settings.GetDbSetting.UserName;
@@ -25,27 +26,23 @@ public class MongoDataLayerContext : IMongoDataLayerContext
             WaitQueueTimeout = TimeSpan.FromMinutes(1)
         };
 
-// #if DEBUG
-//         setup.Compressors =
-//         [
-//             new CompressorConfiguration(CompressorType.ZStandard),
-//             new CompressorConfiguration(CompressorType.Zlib),
-//             new CompressorConfiguration(CompressorType.Snappy),
-//             new CompressorConfiguration(CompressorType.Noop)
-//         ];
-// #else
-//         setup.Compressors =
-//         [
-//             new CompressorConfiguration(CompressorType.Noop)
-//         ];
-// #endif
-
-        var client = new MongoClient(setup);
-        var dbContext = client.GetDatabase(dbName);
-        MongoDatabase = dbContext ?? throw new Exception();
+        try
+        {
+            var client = new MongoClient(setup);
+            var dbContext = client.GetDatabase(dbName);
+            MongoDatabase = dbContext ?? throw new Exception();
+        }
+        catch (OperationCanceledException ex)
+        {
+            logger.LogInformation(ex.ToString());
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, e.Message);
+        }
     }
 
-    public IMongoDatabase MongoDatabase { get; }
+    public IMongoDatabase MongoDatabase { get; } = null!;
 
     public void Dispose()
     {

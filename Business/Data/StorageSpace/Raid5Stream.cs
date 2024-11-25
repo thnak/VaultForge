@@ -291,6 +291,7 @@ public class Raid5Stream : Stream
             if (totalBytesReadEachStripeRow == 0) break;
         }
 
+        Seek(_position, SeekOrigin.Begin);
         return totalByteReads;
     }
 
@@ -336,7 +337,8 @@ public class Raid5Stream : Stream
             _position += totalBytesReadEachStripeRow;
             if (totalBytesReadEachStripeRow == 0) break;
         }
-
+        
+        Seek(_position, SeekOrigin.Begin);
         return totalByteReads;
     }
 

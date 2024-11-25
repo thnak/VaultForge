@@ -19,6 +19,4 @@ public partial class FilesController(
     ILogger<FilesController> logger,
     RedundantArrayOfIndependentDisks raidService,
     IParallelBackgroundTaskQueue parallelBackgroundTaskQueue,
-    ApplicationConfiguration options) : ControllerBase
-{
-}
+    ApplicationConfiguration options) : ControllerBase;

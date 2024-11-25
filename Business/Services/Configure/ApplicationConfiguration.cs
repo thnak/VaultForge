@@ -1,5 +1,4 @@
 ﻿using BusinessModels.General.SettingModels;
-using BusinessModels.Utils;
 using Microsoft.Extensions.Options;
 
 namespace Business.Services.Configure;
@@ -10,42 +9,88 @@ public class ApplicationConfiguration
 
     public ApplicationConfiguration(IOptions<AppSettings> appSettings)
     {
-        Configs.OllamaConfig.ConnectionString = GetEnvironmentVariable("OllamaConfigConnectionString", appSettings.Value.OllamaConfig.ConnectionString);
-        Configs.OllamaConfig.Image2TextModel = GetEnvironmentVariable("OllamaConfigImage2TextModel", appSettings.Value.OllamaConfig.Image2TextModel);
-        Configs.OllamaConfig.TextEmbeddingModel = GetEnvironmentVariable("OllamaConfigTextEmbeddingModel", appSettings.Value.OllamaConfig.TextEmbeddingModel);
-        Configs.OllamaConfig.TextGeneratorModel = GetEnvironmentVariable("OllamaConfigTextGeneratorModel", appSettings.Value.OllamaConfig.TextGeneratorModel);
+        InitOllamaConfig(appSettings);
 
-        Configs.Storage.Disks = GetEnvironmentVariables("StorageDisks", appSettings.Value.Storage.Disks);
-        Configs.Storage.DefaultRaidType = GetEnumEnvironmentVariable("StorageDefaultRaidType", appSettings.Value.Storage.DefaultRaidType);
-        Configs.Storage.FolderWatchList = GetEnvironmentVariables("StorageFolderWatchList", appSettings.Value.Storage.FolderWatchList);
-        Configs.Storage.BufferSize = GetIntEnvironmentVariable("StorageBufferSize", appSettings.Value.Storage.BufferSize);
-        Configs.Storage.StripSize = GetIntEnvironmentVariable("StorageStripSize", appSettings.Value.Storage.StripSize);
+        InitStorageConfig(appSettings);
 
-        Configs.IoTRequestQueueConfig.MaxQueueSize = GetIntEnvironmentVariable("IoTRequestQueueConfigMaxQueueSize", appSettings.Value.IoTRequestQueueConfig.MaxQueueSize);
-        Configs.IoTRequestQueueConfig.TimePeriodInSecond = GetIntEnvironmentVariable("IoTRequestQueueConfigTimePeriodInSecond", appSettings.Value.IoTRequestQueueConfig.TimePeriodInSecond);
+        InitIotQueueConfig(appSettings);
 
+        InitIotCircuitConfig(appSettings);
+
+        InitBackgroundQueueConfig(appSettings);
+
+        InitImageThumbnailConfig(appSettings);
+
+        InitDatabaseConfig(appSettings);
+
+        InitCertificateConfig(appSettings);
+
+        InitVideoEncodeCofig(appSettings);
+
+        DisplayGroupedConfigurations(InitLogoAsciiArt(), Configs.ConvertToDictionary());
+    }
+
+    private void InitVideoEncodeCofig(IOptions<AppSettings> appSettings)
+    {
+        Configs.VideoTransCode.WorkingDirectory = GetEnvironmentVariable("VideoTransCodeWorkingDirectory", appSettings.Value.VideoTransCode.WorkingDirectory);
+        Configs.VideoTransCode.VideoEncoder = GetEnvironmentVariable("VideoTransCodeVideoEncoder", appSettings.Value.VideoTransCode.VideoEncoder);
+    }
+
+    private void InitCertificateConfig(IOptions<AppSettings> appSettings)
+    {
+        Configs.AppCertificate.FilePath = GetEnvironmentVariable("AppCertificateFilePath", appSettings.Value.AppCertificate.FilePath);
+        Configs.AppCertificate.Password = GetEnvironmentVariable("AppCertificatePassword", appSettings.Value.AppCertificate.Password);
+    }
+
+    private void InitImageThumbnailConfig(IOptions<AppSettings> appSettings)
+    {
+        Configs.ThumbnailSetting.ImageThumbnailSize = GetIntEnvironmentVariable("ThumbnailSettingImageThumbnailSize", appSettings.Value.ThumbnailSetting.ImageThumbnailSize);
+    }
+
+    private void InitIotCircuitConfig(IOptions<AppSettings> appSettings)
+    {
         Configs.IoTCircuitBreaker.ExceptionsAllowedBeforeBreaking = GetIntEnvironmentVariable("IoTCircuitBreakerExceptionsAllowedBeforeBreaking", appSettings.Value.IoTCircuitBreaker.ExceptionsAllowedBeforeBreaking);
         Configs.IoTCircuitBreaker.DurationOfBreakInSecond = GetIntEnvironmentVariable("IoTCircuitBreakerDurationOfBreakInSecond", appSettings.Value.IoTCircuitBreaker.DurationOfBreakInSecond);
+    }
 
+    private void InitBackgroundQueueConfig(IOptions<AppSettings> appSettings)
+    {
         Configs.BackgroundQueue.ParallelQueueSize = GetIntEnvironmentVariable("BackgroundQueueParallelQueueSize", appSettings.Value.BackgroundQueue.ParallelQueueSize);
         Configs.BackgroundQueue.SequenceQueueSize = GetIntEnvironmentVariable("BackgroundQueueSequenceQueueSize", appSettings.Value.BackgroundQueue.SequenceQueueSize);
         Configs.BackgroundQueue.MaxParallelThreads = GetIntEnvironmentVariable("BackgroundQueueMaxParallelThreads", appSettings.Value.BackgroundQueue.MaxParallelThreads);
+    }
 
-        Configs.ThumbnailSetting.ImageThumbnailSize = GetIntEnvironmentVariable("ThumbnailSettingImageThumbnailSize", appSettings.Value.ThumbnailSetting.ImageThumbnailSize);
-
+    private void InitDatabaseConfig(IOptions<AppSettings> appSettings)
+    {
         Configs.DbSetting.ConnectionString = GetEnvironmentVariable("DbSettingConnectionString", appSettings.Value.DbSetting.ConnectionString);
         Configs.DbSetting.DatabaseName = GetEnvironmentVariable("DbSettingDatabaseName", appSettings.Value.DbSetting.DatabaseName);
         Configs.DbSetting.Password = GetEnvironmentVariable("DbSettingPassword", appSettings.Value.DbSetting.Password);
         Configs.DbSetting.UserName = GetEnvironmentVariable("DbSettingUserName", appSettings.Value.DbSetting.UserName);
         Configs.DbSetting.Port = GetIntEnvironmentVariable("DbSettingPort", appSettings.Value.DbSetting.Port);
         Configs.DbSetting.MaxConnectionPoolSize = GetIntEnvironmentVariable("DbSettingMaxConnectionPoolSize", appSettings.Value.DbSetting.MaxConnectionPoolSize);
+    }
 
-        Configs.AppCertificate.FilePath = GetEnvironmentVariable("AppCertificateFilePath", appSettings.Value.AppCertificate.FilePath);
-        Configs.AppCertificate.Password = GetEnvironmentVariable("AppCertificatePassword", appSettings.Value.AppCertificate.Password);
+    private void InitIotQueueConfig(IOptions<AppSettings> appSettings)
+    {
+        Configs.IoTRequestQueueConfig.MaxQueueSize = GetIntEnvironmentVariable("IoTRequestQueueConfigMaxQueueSize", appSettings.Value.IoTRequestQueueConfig.MaxQueueSize);
+        Configs.IoTRequestQueueConfig.TimePeriodInSecond = GetIntEnvironmentVariable("IoTRequestQueueConfigTimePeriodInSecond", appSettings.Value.IoTRequestQueueConfig.TimePeriodInSecond);
+    }
 
-        Configs.VideoTransCode.WorkingDirectory = GetEnvironmentVariable("VideoTransCodeWorkingDirectory", appSettings.Value.VideoTransCode.WorkingDirectory);
-        Configs.VideoTransCode.VideoEncoder = GetEnvironmentVariable("VideoTransCodeVideoEncoder", appSettings.Value.VideoTransCode.VideoEncoder);
-        DisplayGroupedConfigurations(InitLogoAsciiArt(), Configs.ConvertToDictionary());
+    private void InitStorageConfig(IOptions<AppSettings> appSettings)
+    {
+        Configs.Storage.Disks = GetEnvironmentVariables("StorageDisks", appSettings.Value.Storage.Disks);
+        Configs.Storage.DefaultRaidType = GetEnumEnvironmentVariable("StorageDefaultRaidType", appSettings.Value.Storage.DefaultRaidType);
+        Configs.Storage.FolderWatchList = GetEnvironmentVariables("StorageFolderWatchList", appSettings.Value.Storage.FolderWatchList);
+        Configs.Storage.BufferSize = GetIntEnvironmentVariable("StorageBufferSize", appSettings.Value.Storage.BufferSize);
+        Configs.Storage.StripSize = GetIntEnvironmentVariable("StorageStripSize", appSettings.Value.Storage.StripSize);
+    }
+
+    private void InitOllamaConfig(IOptions<AppSettings> appSettings)
+    {
+        Configs.OllamaConfig.ConnectionString = GetEnvironmentVariable("OllamaConfigConnectionString", appSettings.Value.OllamaConfig.ConnectionString);
+        Configs.OllamaConfig.Image2TextModel = GetEnvironmentVariable("OllamaConfigImage2TextModel", appSettings.Value.OllamaConfig.Image2TextModel);
+        Configs.OllamaConfig.TextEmbeddingModel = GetEnvironmentVariable("OllamaConfigTextEmbeddingModel", appSettings.Value.OllamaConfig.TextEmbeddingModel);
+        Configs.OllamaConfig.TextGeneratorModel = GetEnvironmentVariable("OllamaConfigTextGeneratorModel", appSettings.Value.OllamaConfig.TextGeneratorModel);
     }
 
     public OllamaConfig GetOllamaConfig => Configs.OllamaConfig;
