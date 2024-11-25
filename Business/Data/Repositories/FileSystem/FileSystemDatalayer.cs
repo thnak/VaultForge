@@ -22,19 +22,16 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 {
     private readonly IMongoCollection<FileInfoModel> _fileDataDb = context.MongoDatabase.GetCollection<FileInfoModel>("FileInfo");
     private readonly IMongoCollection<FileMetadataModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileMetadataModel>("FileMetaData");
-    private readonly SemaphoreSlim _semaphore = new(100, 1000);
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
         try
         {
-            await _semaphore.WaitAsync(cancellationToken);
-
             IndexKeysDefinition<FileInfoModel>[] uniqueIndexesDefinitions = [Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath)];
             IndexKeysDefinition<FileInfoModel>[] indexKeysDefinitions =
             [
-                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x=>x.Id),
-                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Descending(x=>x.Id),
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Id),
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Descending(x => x.Id),
                 Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder),
                 Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.CreatedDate),
                 Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Descending(x => x.CreatedDate),
@@ -91,10 +88,6 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         {
             logger.LogError(ex, null);
             return (false, ex.Message);
-        }
-        finally
-        {
-            _semaphore.Release();
         }
     }
 
@@ -212,8 +205,6 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
     {
         try
         {
-            await _semaphore.WaitAsync(cancellationToken);
-
             if (ObjectId.TryParse(key, out var id))
             {
                 var filter = Builders<FileInfoModel>.Filter.Eq(f => f.Id, id);
@@ -254,18 +245,12 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             logger.LogInformation("[Update] Operation cancelled");
             return (false, string.Empty);
         }
-        finally
-        {
-            _semaphore.Release();
-        }
     }
 
     public async Task<Result<bool>> CreateAsync(FileInfoModel model, CancellationToken cancellationToken = default)
     {
         try
         {
-            await _semaphore.WaitAsync(cancellationToken);
-
             var filter = Builders<FileInfoModel>.Filter.Eq(x => x.Id, model.Id);
             var isExist = await _fileDataDb.Find(filter).AnyAsync(cancellationToken: cancellationToken);
             if (!isExist)
@@ -285,10 +270,6 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             logger.LogError(e, null);
             return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
-        finally
-        {
-            _semaphore.Release();
-        }
     }
 
     public Task<Result<bool>> CreateAsync(IReadOnlyCollection<FileInfoModel> models, CancellationToken cancellationToken = default)
@@ -300,8 +281,6 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
     {
         try
         {
-            await _semaphore.WaitAsync(cancellationToken);
-
             var isExists = await _fileDataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
             if (!isExists)
             {
@@ -325,10 +304,6 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             logger.LogError(e, null);
             return (false, e.Message);
         }
-        finally
-        {
-            _semaphore.Release();
-        }
     }
 
 
@@ -347,8 +322,6 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
     {
         try
         {
-            await _semaphore.WaitAsync(cancelToken);
-
             if (string.IsNullOrWhiteSpace(key)) return (false, AppLang.File_could_not_be_found);
 
             var query = Get(key);
@@ -374,7 +347,6 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
         }
         finally
         {
-            _semaphore.Release();
             await sequenceQueue.QueueBackgroundWorkItemAsync(async (serverToken) =>
             {
                 List<string> extendFiles = new List<string>();
@@ -517,6 +489,6 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
     public void Dispose()
     {
-        _semaphore.Dispose();
+        //
     }
 }

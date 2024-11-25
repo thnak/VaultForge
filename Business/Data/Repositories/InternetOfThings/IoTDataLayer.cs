@@ -39,7 +39,6 @@ public class IoTDataLayer : IIoTDataLayer
     private readonly IMongoCollection<IoTRecord> _dataDb;
     private readonly ILogger<IoTDataLayer> _logger;
 
-    private readonly SemaphoreSlim _semaphore = new(15000, 15000);
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
@@ -146,18 +145,17 @@ public class IoTDataLayer : IIoTDataLayer
     {
         try
         {
-            await _semaphore.WaitAsync(cancellationToken);
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
             return Result<bool>.Success(AppLang.Create_successfully);
+        }
+        catch (OperationCanceledException e)
+        {
+            return Result<bool>.Failure(e.Message, ErrorType.Cancelled);
         }
         catch (Exception e)
         {
             _logger.LogError(e, null);
             return Result<bool>.Failure(e.Message, ErrorType.Unknown);
-        }
-        finally
-        {
-            _semaphore.Release();
         }
     }
 
@@ -165,18 +163,17 @@ public class IoTDataLayer : IIoTDataLayer
     {
         try
         {
-            await _semaphore.WaitAsync(cancellationToken);
             await _dataDb.InsertManyAsync(models, cancellationToken: cancellationToken);
             return Result<bool>.Success(AppLang.Create_successfully);
+        }
+        catch (OperationCanceledException e)
+        {
+            return Result<bool>.Failure(e.Message, ErrorType.Cancelled);
         }
         catch (Exception e)
         {
             _logger.LogError(e, null);
             return Result<bool>.Failure(e.Message, ErrorType.Unknown);
-        }
-        finally
-        {
-            _semaphore.Release();
         }
     }
 
@@ -202,6 +199,6 @@ public class IoTDataLayer : IIoTDataLayer
 
     public void Dispose()
     {
-        _semaphore.Dispose();
+        //
     }
 }

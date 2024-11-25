@@ -21,13 +21,11 @@ namespace Business.Data.Repositories.FileSystem;
 public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<FolderSystemDatalayer> logger, IMemoryCache memoryCache) : IFolderSystemDatalayer
 {
     private readonly IMongoCollection<FolderInfoModel> _dataDb = context.MongoDatabase.GetCollection<FolderInfoModel>("FolderInfo");
-    private readonly SemaphoreSlim _semaphore = new(100, 1000);
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
         try
         {
-            await _semaphore.WaitAsync(cancellationToken);
 
             IndexKeysDefinition<FolderInfoModel>[] indexKeysDefinitions =
             [
@@ -124,14 +122,14 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             logger.LogInformation(@"[Init] Folder info data layer");
             return (true, string.Empty);
         }
+        catch (OperationCanceledException e)
+        {
+            return (false, e.Message);
+        }
         catch (MongoException ex)
         {
             logger.LogError(ex, null);
             return (false, ex.Message);
-        }
-        finally
-        {
-            _semaphore.Release();
         }
     }
 
@@ -270,7 +268,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     {
         try
         {
-            await _semaphore.WaitAsync(cancellationToken);
+            
 
             if (ObjectId.TryParse(key, out var id))
             {
@@ -309,17 +307,14 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             logger.LogInformation("[Update] Operation cancelled");
             return (false, string.Empty);
         }
-        finally
-        {
-            _semaphore.Release();
-        }
+
     }
 
     public async Task<Result<bool>> CreateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
     {
         try
         {
-            await _semaphore.WaitAsync(cancellationToken);
+            
             var isExists = await _dataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
             if (isExists) return Result<bool>.Failure(AppLang.Folder_already_exists, ErrorType.Duplicate);
             model.ModifiedTime = DateTime.UtcNow;
@@ -332,10 +327,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             logger.LogInformation("[Create] Operation cancelled");
             return Result<bool>.Failure("canceled", ErrorType.Cancelled);
         }
-        finally
-        {
-            _semaphore.Release();
-        }
+
     }
 
     public Task<Result<bool>> CreateAsync(IReadOnlyCollection<FolderInfoModel> models,
@@ -348,7 +340,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     {
         try
         {
-            await _semaphore.WaitAsync(cancellationToken);
+            
 
             var isExists = await _dataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
             if (!isExists)
@@ -363,14 +355,15 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
                 return (true, AppLang.Update_successfully);
             }
         }
+        catch (OperationCanceledException)
+        {
+            return (false, "cancel");
+        }
         catch (Exception e)
         {
             return (false, e.Message);
         }
-        finally
-        {
-            _semaphore.Release();
-        }
+
     }
 
 
@@ -511,6 +504,6 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
     public void Dispose()
     {
-        _semaphore.Dispose();
+        //
     }
 }

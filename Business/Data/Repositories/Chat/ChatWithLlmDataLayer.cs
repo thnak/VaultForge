@@ -18,7 +18,6 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
     private const string SearchIndexString = "MessageSearchIndex";
     private readonly IMongoCollection<ChatWithChatBotMessageModel> _dataDb = context.MongoDatabase.GetCollection<ChatWithChatBotMessageModel>("ChatWithChatBotMessage");
 
-    private readonly SemaphoreSlim _semaphore = new(1, 1);
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
@@ -129,11 +128,8 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
 
     public async IAsyncEnumerable<ChatWithChatBotMessageModel?> GetAsync(List<string> keys, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationToken);
         foreach (var userName in keys.TakeWhile(_ => !cancellationToken.IsCancellationRequested))
             yield return Get(userName);
-
-        _semaphore.Release();
     }
 
     public Task<(ChatWithChatBotMessageModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationToken = default)
@@ -148,7 +144,6 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
 
     public async Task<Result<bool>> CreateAsync(ChatWithChatBotMessageModel model, CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationToken);
         try
         {
             var query = await _dataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
@@ -165,10 +160,6 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
         {
             return Result<bool>.Failure(ex.Message, ErrorType.Unknown);
         }
-        finally
-        {
-            _semaphore.Release();
-        }
     }
 
     public Task<Result<bool>> CreateAsync(IReadOnlyCollection<ChatWithChatBotMessageModel> models, CancellationToken cancellationToken = default)
@@ -178,7 +169,6 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
 
     public async Task<(bool, string)> ReplaceAsync(ChatWithChatBotMessageModel model, CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationToken);
         try
         {
             var isExists = await _dataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
@@ -199,18 +189,12 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
         {
             return (false, e.Message);
         }
-        finally
-        {
-            _semaphore.Release();
-        }
     }
 
     public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<ChatWithChatBotMessageModel> updates, CancellationToken cancellationToken = default)
     {
         try
         {
-            await _semaphore.WaitAsync(cancellationToken);
-
             if (ObjectId.TryParse(key, out var id))
             {
                 var isExists = await _dataDb.Find(x => x.Id == id).AnyAsync(cancellationToken: cancellationToken);
@@ -253,10 +237,6 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
             logger.LogInformation("[Update] Operation cancelled");
             return (false, string.Empty);
         }
-        finally
-        {
-            _semaphore.Release();
-        }
     }
 
     public IAsyncEnumerable<(bool, string, string)> ReplaceAsync(IEnumerable<ChatWithChatBotMessageModel> models, CancellationToken cancellationToken = default)
@@ -271,6 +251,5 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
 
     public void Dispose()
     {
-        _semaphore.Dispose();
     }
 }

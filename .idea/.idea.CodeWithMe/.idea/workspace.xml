@@ -46,18 +46,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Delete.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Update.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/InsertFuture/FileInsertFuture.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Database/VectorDb.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Database/VectorDb.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Advertisement/AdvertisementDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Advertisement/AdvertisementDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Chat/ChatWithLlmDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Chat/ChatWithLlmDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IoTDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IoTDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/StorageSpace/RedundantArrayOfIndependentDisks.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/StorageSpace/RedundantArrayOfIndependentDisks.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/BackgroundServices/Base/ParallelBackgroundService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/BackgroundServices/Base/ParallelBackgroundService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/BackgroundServices/Base/SequenceQueuedBackgroundService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/BackgroundServices/Base/SequenceQueuedBackgroundService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Business/Services/Configure/DataService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/DataService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Business/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Business/packages.lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BusinessModels/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Protector/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Protector/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FileController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/packages.lock.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
@@ -84,7 +88,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="refactor-code-optimize-raid" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -95,12 +99,12 @@
     &quot;assignee&quot;: &quot;thnak&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/thnak/VaultForge",
-    "accountId": "fed8ac94-0743-48ac-a933-4b2dd22394a4"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/thnak/VaultForge&quot;,
+    &quot;accountId&quot;: &quot;fed8ac94-0743-48ac-a933-4b2dd22394a4&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/abc2c7226ff616316cd1e05d76e6c36b49ce06a1/src/Components/Web/src/Head/HeadContent.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/aspnetcore/abc2c7226ff616316cd1e05d76e6c36b49ce06a1/src/Mvc/Mvc.Core/src/ApplicationModels/InferParameterBindingInfoConvention.cs" root0="SKIP_HIGHLIGHTING" />
@@ -167,7 +171,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "XThreadsFramesViewSplitterKey": "0.370471",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "split-controller",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/thanh/Downloads",
     "list.type.of.created.stylesheet": "CSS",
@@ -1152,14 +1156,7 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/30cbb3994b59af56741aa3ee40719e511f42d9a2920f2a6f5ae81f8d1e78ee3/FunctionCallContentBuilder.cs</url>
           <line>51</line>
-          <properties documentPath="C:\Users\thanh\AppData\Roaming\JetBrains\Rider2024.3\resharper-host\SourcesCache\30cbb3994b59af56741aa3ee40719e511f42d9a2920f2a6f5ae81f8d1e78ee3\FunctionCallContentBuilder.cs" containingFunctionPresentation="Method 'Append'">
-            <startOffsets>
-              <option value="2177" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2375" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="C:\Users\thanh\AppData\Roaming\JetBrains\Rider2024.3\resharper-host\SourcesCache\30cbb3994b59af56741aa3ee40719e511f42d9a2920f2a6f5ae81f8d1e78ee3\FunctionCallContentBuilder.cs" containingFunctionPresentation="Method 'Append'" />
           <option name="timeStamp" value="54" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">

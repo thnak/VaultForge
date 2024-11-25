@@ -16,7 +16,7 @@ namespace Business.Data.Repositories.Advertisement;
 public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<AdvertisementDataLayer> logger) : IAdvertisementDataLayer
 {
     private readonly IMongoCollection<ArticleModel> _dataDb = context.MongoDatabase.GetCollection<ArticleModel>("Article");
-    private readonly SemaphoreSlim _semaphore = new(1);
+    
 
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
@@ -101,13 +101,13 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
 
     public async IAsyncEnumerable<ArticleModel?> GetAsync(List<string> keys, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationToken);
+        
         foreach (var key in keys.TakeWhile(_ => cancellationToken.IsCancellationRequested == false))
         {
             yield return Get(key);
         }
 
-        _semaphore.Release();
+        
     }
 
     public async Task<(ArticleModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationToken = default)
@@ -129,7 +129,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
 
     public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<ArticleModel> updates, CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationToken);
+        
 
         try
         {
@@ -167,15 +167,12 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
             logger.LogInformation("[Update] Operation cancelled");
             return (false, string.Empty);
         }
-        finally
-        {
-            _semaphore.Release();
-        }
+
     }
 
     public async Task<Result<bool>> CreateAsync(ArticleModel model, CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationToken);
+        
         try
         {
             var filter = Builders<ArticleModel>.Filter.Where(x => x.Title == model.Title && x.Language == model.Language);
@@ -192,10 +189,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         {
             return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
-        finally
-        {
-            _semaphore.Release();
-        }
+
     }
 
 
@@ -206,7 +200,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
 
     public async Task<(bool, string)> ReplaceAsync(ArticleModel model, CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationToken);
+        
         try
         {
             var file = Get(model.Id.ToString());
@@ -231,10 +225,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         {
             return (false, e.Message);
         }
-        finally
-        {
-            _semaphore.Release();
-        }
+
     }
 
 
@@ -299,6 +290,5 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
 
     public void Dispose()
     {
-        _semaphore.Dispose();
     }
 }
