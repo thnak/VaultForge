@@ -450,7 +450,7 @@
         }
       }
     },
-    "net9.0/linux-x64": {
+    "net9.0/win-x64": {
       "Microsoft.Win32.Registry": {
         "type": "Transitive",
         "resolved": "5.0.0",
