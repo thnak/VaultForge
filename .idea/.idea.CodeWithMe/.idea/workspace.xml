@@ -47,25 +47,33 @@
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp1/ConsoleApp1.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/ConsoleApp1.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp1/FileStreamExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/FileStreamExtension.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp1/LightsPlugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/LightsPlugin.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp1/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp1/Raid5Stream.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/Raid5Stream.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Database/VectorDb.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Database/VectorDb.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Advertisement/AdvertisementDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Advertisement/AdvertisementDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Chat/ChatWithLlmDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Chat/ChatWithLlmDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IoTDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IoTDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/StorageSpace/RedundantArrayOfIndependentDisks.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/StorageSpace/RedundantArrayOfIndependentDisks.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/BackgroundServices/Base/ParallelBackgroundService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/BackgroundServices/Base/ParallelBackgroundService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/BackgroundServices/Base/SequenceQueuedBackgroundService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/BackgroundServices/Base/SequenceQueuedBackgroundService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/DataService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/DataService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Business/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Protector/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Protector/packages.lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/packages.lock.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ChangesViewManager" show_ignored="true" />
   <component name="DpaMonitoringSettings">
     <option name="firstShow" value="false" />
   </component>
@@ -80,7 +88,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="refactor-code-optimize-raid" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -94,7 +102,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/thnak/VaultForge&quot;,
-    &quot;accountId&quot;: &quot;78be24ae-e6e7-4f51-9064-0f0e98755edc&quot;
+    &quot;accountId&quot;: &quot;fed8ac94-0743-48ac-a933-4b2dd22394a4&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
@@ -120,18 +128,10 @@
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Threading/Tasks/Task.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Security.Cryptography/src/System/Security/Cryptography/X509Certificates/CertificatePal.Windows.Import.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Text.Json/src/System/Text/Json/Serialization/JsonConverterOfT.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1210dd25fc2066996b471e34adeb2dec51c9ee1f76cca3e5364da31168eb27/StreamingFunctionCallUpdateContent.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/149195ca7993d052bd2bca622aef6cd71d45ad2999728b4bd0edaa5a7f567cde/IChatCompletionService.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/29b9095b6f479d183d31fb8dd32510123adcee3a46474dbed1ac25328dbb4c/Array.CoreCLR.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/30cbb3994b59af56741aa3ee40719e511f42d9a2920f2a6f5ae81f8d1e78ee3/FunctionCallContentBuilder.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/51f66aa638fc166d664ade5569af7a3c4c21a2b593ff516eae3a7b8bbc9e96/FunctionCallContent.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8a06b314b31fa2ec54ffc18e9d057e91891cf72182dd6ce1985a0a43c/MemoryStream.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a7214743958d513153be95d1a74ec78e83abe2a5f711bb6aace545d54df6/OllamaKernelBuilderExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2565b9d99fdde488bc7801b84387b2cc864959cfb63212e1ff576fc9c6bb7e/CancellationToken.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2854ce6d56c18d0d837d3a3ef9c4f2c7c77691fa3528c8394986ac7ce7719/StackFrameIterator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bd1d5c50194fea68ff3559c160230b0ab50f5acf4ce3061bffd6d62958e2182/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c7102cd0ffb8973777e61b1942c3fffac7e14016a511d055c3adf73ff91748/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/cd7efd392174bfb5e8d6b2f6d9bf4270cbd36bf549b7b6285ca474671644d094/StreamingChatMessageContent.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ce7580e8e0f6a2637f8ec8ab41c5fd2f845ad94ea18c76d554db62248d8954/HashAlgorithm.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d49485e469b7c56ea29d165b121cd86aa5aeb67e665b5f8c68166f6ede623c9/ArgumentOutOfRangeException.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -141,7 +141,7 @@
 }</component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="Toolset" />
+    <option name="selectedTabId" value="SWEA" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -163,7 +163,7 @@
     ".NET Launch Settings Profile.WebApp: IIS Express.executor": "Debug",
     ".NET Launch Settings Profile.WebApp: https.executor": "Debug",
     ".NET Launch Settings Profile.WebApp: no-browser.executor": "Debug",
-    ".NET Project.ConsoleApp1.executor": "Debug",
+    ".NET Project.ConsoleApp1.executor": "Run",
     ".NET Project.WebApp.Client.executor": "Debug",
     "Docker.WebApp/Dockerfile (1).executor": "Run",
     "Publish to folder.ResApi.executor": "Run",
@@ -171,7 +171,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "XThreadsFramesViewSplitterKey": "0.370471",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "split-controller",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/thanh/Downloads",
     "list.type.of.created.stylesheet": "CSS",
@@ -180,7 +180,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "RiderNuGetOptionsPageId",
+    "settings.editor.selected.configurable": "project.propDebugger",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -229,7 +229,7 @@
       <window_info anchor="right" id="Maven" order="4" weight="0.25" />
     </layout>
   </component>
-  <component name="RunManager" selected=".NET Project.ConsoleApp1">
+  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: no-browser">
     <configuration name="ResApi" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/ResApi/bin/Release/net9.0/linux-x64/publish" target_framework="net9.0" uuid_high="5905353364384007298" uuid_low="-8333852158807631372" />
       <method v="2" />
@@ -244,10 +244,6 @@
     </configuration>
     <configuration name="Unnamed" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/WebApp/WebApp/bin/Release/net9.0/linux-x64/publish" target_framework="net9.0" uuid_high="-212861499982460667" uuid_low="-5823181797240626509" />
-      <method v="2" />
-    </configuration>
-    <configuration name="ResApi: FolderProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
-      <riderPublish configuration="Release" platform="Any CPU" publish_profile="FolderProfile.pubxml" pubxml_path="$PROJECT_DIR$/ResApi/Properties/PublishProfiles/FolderProfile.pubxml" uuid_high="5905353364384007298" uuid_low="-8333852158807631372" />
       <method v="2" />
     </configuration>
     <configuration name="ConsoleApp1" type="DotNetProject" factoryName=".NET Project">
@@ -334,37 +330,6 @@
         <option name="Build" />
       </method>
     </configuration>
-    <configuration name="WebApp no browser" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/WebApp/WebApp/WebApp.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="no-browser" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <option name="RUNTIME_TYPE" value="coreclr" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-    <configuration name="WebApp: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/WebApp/WebApp.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="http" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
     <configuration name="WebApp: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/WebApp/WebApp/WebApp.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
@@ -418,37 +383,6 @@
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <option name="USE_MONO" value="0" />
       <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-    <configuration name="Web: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Web/Web/Web.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="http" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-    <configuration name="Web: https" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Web/Web/Web.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="https" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <browser name="37cae5b9-e8b2-4949-9172-aafa37fbc09c" />
       <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
       <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
       <option name="SEND_DEBUG_REQUEST" value="1" />
@@ -520,9 +454,6 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue=".NET Launch Settings Profile.Web: http" />
-      <item itemvalue=".NET Launch Settings Profile.Web: https" />
-      <item itemvalue=".NET Launch Settings Profile.WebApp no browser" />
       <item itemvalue=".NET Launch Settings Profile.WebApp: http" />
       <item itemvalue=".NET Launch Settings Profile.WebApp: https" />
       <item itemvalue=".NET Launch Settings Profile.WebApp: no-browser" />
@@ -534,7 +465,6 @@
       <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
       <item itemvalue="Publish to folder.Unnamed" />
       <item itemvalue="Publish to folder.ResApi" />
-      <item itemvalue="Publish to IIS.ResApi: FolderProfile" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -766,31 +696,9 @@
       <workItem from="1732338178716" duration="933000" />
       <workItem from="1732346159850" duration="5247000" />
       <workItem from="1732378491889" duration="613000" />
-      <workItem from="1732412502580" duration="25027000" />
-    </task>
-    <task id="LOCAL-00331" summary="reduce db pressure">
-      <option name="closed" value="true" />
-      <created>1730273984344</created>
-      <option name="number" value="00331" />
-      <option name="presentableId" value="LOCAL-00331" />
-      <option name="project" value="LOCAL" />
-      <updated>1730273984344</updated>
-    </task>
-    <task id="LOCAL-00332" summary="update">
-      <option name="closed" value="true" />
-      <created>1730275963388</created>
-      <option name="number" value="00332" />
-      <option name="presentableId" value="LOCAL-00332" />
-      <option name="project" value="LOCAL" />
-      <updated>1730275963388</updated>
-    </task>
-    <task id="LOCAL-00333" summary="reduce cache time">
-      <option name="closed" value="true" />
-      <created>1730334532355</created>
-      <option name="number" value="00333" />
-      <option name="presentableId" value="LOCAL-00333" />
-      <option name="project" value="LOCAL" />
-      <updated>1730334532355</updated>
+      <workItem from="1732412502580" duration="28173000" />
+      <workItem from="1732495768088" duration="1376000" />
+      <workItem from="1732497215180" duration="2757000" />
     </task>
     <task id="LOCAL-00334" summary="re order dispose web worker">
       <option name="closed" value="true" />
@@ -1160,7 +1068,31 @@
       <option name="project" value="LOCAL" />
       <updated>1732379056090</updated>
     </task>
-    <option name="localTasksCounter" value="380" />
+    <task id="LOCAL-00380" summary="remove non scene identifier, fix Raid5Stream.cs to support un-limit disk number">
+      <option name="closed" value="true" />
+      <created>1732467762884</created>
+      <option name="number" value="00380" />
+      <option name="presentableId" value="LOCAL-00380" />
+      <option name="project" value="LOCAL" />
+      <updated>1732467762885</updated>
+    </task>
+    <task id="LOCAL-00381" summary="remove unused pack">
+      <option name="closed" value="true" />
+      <created>1732468964174</created>
+      <option name="number" value="00381" />
+      <option name="presentableId" value="LOCAL-00381" />
+      <option name="project" value="LOCAL" />
+      <updated>1732468964174</updated>
+    </task>
+    <task id="LOCAL-00382" summary="limit extremely stream read issue">
+      <option name="closed" value="true" />
+      <created>1732469922212</created>
+      <option name="number" value="00382" />
+      <option name="presentableId" value="LOCAL-00382" />
+      <option name="project" value="LOCAL" />
+      <updated>1732469922213</updated>
+    </task>
+    <option name="localTasksCounter" value="383" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1168,6 +1100,16 @@
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="executable:docker" />
+    <option featureType="dependencySupport" implementationName="dotnet:Microsoft.Identity.Client" />
+    <option featureType="dependencySupport" implementationName="dotnet:Microsoft.ApplicationInsights.AspNetCore" />
+    <option featureType="dependencySupport" implementationName="executable:kubectl" />
+    <option featureType="dependencySupport" implementationName="dotnet:Microsoft.EntityFrameworkCore.Abstractions" />
+    <option featureType="dependencySupport" implementationName="dotnet:Microsoft.ApplicationInsights" />
+    <option featureType="dependencySupport" implementationName="dotnet:Microsoft.Extensions.Logging.ApplicationInsights" />
+    <option featureType="dependencySupport" implementationName="dotnet:Microsoft.EntityFrameworkCore" />
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -1181,9 +1123,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="change vector service to use inside bl" />
-    <MESSAGE value="refactor service" />
-    <MESSAGE value="add init data for vector data" />
     <MESSAGE value="fix some issue with init VectorDb.cs" />
     <MESSAGE value="small update for stack queue service" />
     <MESSAGE value="introduce not wait in parallel queue" />
@@ -1206,7 +1145,10 @@
     <MESSAGE value="fix OOM" />
     <MESSAGE value="add missing dependency, refactor" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="remove non scene identifier, fix Raid5Stream.cs to support un-limit disk number" />
+    <MESSAGE value="remove unused pack" />
+    <MESSAGE value="limit extremely stream read issue" />
+    <option name="LAST_COMMIT_MESSAGE" value="limit extremely stream read issue" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1214,28 +1156,8 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/30cbb3994b59af56741aa3ee40719e511f42d9a2920f2a6f5ae81f8d1e78ee3/FunctionCallContentBuilder.cs</url>
           <line>51</line>
-          <properties documentPath="C:\Users\thanh\AppData\Roaming\JetBrains\Rider2024.3\resharper-host\SourcesCache\30cbb3994b59af56741aa3ee40719e511f42d9a2920f2a6f5ae81f8d1e78ee3\FunctionCallContentBuilder.cs" containingFunctionPresentation="Method 'Append'">
-            <startOffsets>
-              <option value="2177" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2375" />
-            </endOffsets>
-          </properties>
+          <properties documentPath="C:\Users\thanh\AppData\Roaming\JetBrains\Rider2024.3\resharper-host\SourcesCache\30cbb3994b59af56741aa3ee40719e511f42d9a2920f2a6f5ae81f8d1e78ee3\FunctionCallContentBuilder.cs" containingFunctionPresentation="Method 'Append'" />
           <option name="timeStamp" value="54" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/ConsoleApp1/Raid5Stream.cs</url>
-          <line>320</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\ConsoleApp1\Raid5Stream.cs" containingFunctionPresentation="Method 'ReadAsync'">
-            <startOffsets>
-              <option value="11459" />
-            </startOffsets>
-            <endOffsets>
-              <option value="11479" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="110" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">
@@ -1247,9 +1169,7 @@
       <default-breakpoints>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints" />
         <breakpoint enabled="true" type="CidrExceptionBreakpoint" />
-        <breakpoint enabled="true" type="GDSCRIPT_EXCEPTION_BP_TYPE">
-          <properties exception="GdScript Exception" />
-        </breakpoint>
+        <breakpoint enabled="true" type="GDSCRIPT_EXCEPTION_BP_TYPE" />
         <breakpoint enabled="true" type="javascript-exception" />
       </default-breakpoints>
     </breakpoint-manager>

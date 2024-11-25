@@ -19,14 +19,12 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
 {
     private readonly IMongoCollection<FileRaidModel> _fileDataDb = context.MongoDatabase.GetCollection<FileRaidModel>("FileRaid");
     private readonly IMongoCollection<FileRaidDataBlockModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileRaidDataBlockModel>("FileRaidDataBlock");
-    private readonly SemaphoreSlim _semaphore = new(100, 1000);
     private readonly int _stripSize = options.GetStorage.StripSize;
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
         try
         {
-            await _semaphore.WaitAsync(cancellationToken);
             var relativePathKey = Builders<FileRaidModel>.IndexKeys.Ascending(x => x.RelativePath);
             var relativePathIndexModel = new CreateIndexModel<FileRaidModel>(relativePathKey, new CreateIndexOptions { Unique = true });
 
@@ -56,10 +54,6 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         {
             logger.LogError(e, "Operation cancelled");
             return (false, "Cancelled");
-        }
-        finally
-        {
-            _semaphore.Release();
         }
     }
 
@@ -273,6 +267,5 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
 
     public void Dispose()
     {
-        _semaphore.Dispose();
     }
 }

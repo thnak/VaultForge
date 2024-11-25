@@ -18,7 +18,6 @@ public class VectorDb : IVectorDb
 
     private IEmbeddingGenerator<string, Embedding<float>> Generator { get; }
 
-    // private SemaphoreSlim Semaphore { get; } = new(1, 1);
     private ILogger Logger { get; set; }
     private bool _disposed;
     private string ConnectionString { get; }
@@ -41,8 +40,6 @@ public class VectorDb : IVectorDb
     {
         try
         {
-            // await Semaphore.WaitAsync(cancellationToken);
-            // vectorRecord.Index = TotalRecord++;
             if (vectorRecord.Vector.Length < 0)
             {
                 vectorRecord.Vector = await Generator.GenerateEmbeddingVectorAsync(vectorRecord.Description, cancellationToken: cancellationToken);
@@ -138,7 +135,6 @@ public class VectorDb : IVectorDb
         if (_disposed) return;
 
         Generator.Dispose();
-        // Semaphore.Dispose();
         _disposed = true;
     }
 
@@ -147,7 +143,6 @@ public class VectorDb : IVectorDb
         if (_disposed) return;
         await Collection.DeleteCollectionAsync();
         Generator.Dispose();
-        // Semaphore.Dispose();
         _disposed = true;
     }
 }

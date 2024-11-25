@@ -671,7 +671,7 @@ internal class FolderSystemBusinessLayer(
             {
                 if (!file.Vector.Any())
                 {
-                    await sequenceBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken => { await Request(folder.OwnerUsername, file, serverToken).ConfigureAwait(false); }, cancellationToken);
+                    await sequenceBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken => { await Request(folder.OwnerUsername, file, serverToken); }, cancellationToken);
                 }
             }
         }

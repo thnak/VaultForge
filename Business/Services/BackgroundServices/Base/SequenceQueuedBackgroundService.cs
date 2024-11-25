@@ -26,7 +26,7 @@ public sealed class SequenceQueuedBackgroundService(ISequenceBackgroundTaskQueue
             }
             catch (OperationCanceledException)
             {
-                // Prevent throwing if stoppingToken was signaled
+                logger.LogInformation("""{Name} is cancelled""", nameof(SequenceQueuedBackgroundService));
             }
             catch (Exception ex)
             {

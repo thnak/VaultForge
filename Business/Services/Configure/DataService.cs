@@ -81,8 +81,8 @@ public static class DataService
 
         service.Configure<HostOptions>(options =>
         {
-            options.ServicesStartConcurrently = true;
-            options.ServicesStopConcurrently = true;
+            options.ServicesStartConcurrently = false;
+            options.ServicesStopConcurrently = false;
             options.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.StopHost;
         });
     }

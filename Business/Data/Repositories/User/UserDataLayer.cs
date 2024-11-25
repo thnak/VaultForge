@@ -19,9 +19,6 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
     private const string SearchIndexString = "UserSearchIndex";
     private readonly IMongoCollection<UserModel> _dataDb = context.MongoDatabase.GetCollection<UserModel>("User");
 
-    private readonly SemaphoreSlim _semaphore = new(1, 1);
-
-
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
         try
@@ -199,11 +196,8 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
     public async IAsyncEnumerable<UserModel?> GetAsync(List<string> keys,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationToken);
         foreach (var userName in keys.TakeWhile(_ => !cancellationToken.IsCancellationRequested))
             yield return Get(userName);
-
-        _semaphore.Release();
     }
 
     public Task<(UserModel[], long)> GetAllAsync(int page, int size,
@@ -221,8 +215,6 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
     {
         try
         {
-            await _semaphore.WaitAsync(cancellationToken);
-
             var result = await _dataDb.UpdateAsync(key, updates, cancellationToken);
             if (result.IsSuccess)
                 return (true, result.Message);
@@ -234,15 +226,10 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
             logger.LogInformation("[Update] Operation cancelled");
             return (false, string.Empty);
         }
-        finally
-        {
-            _semaphore.Release();
-        }
     }
 
     public async Task<Result<bool>> CreateAsync(UserModel model, CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationToken);
         try
         {
             if (string.IsNullOrWhiteSpace(model.UserName)) return Result<bool>.Failure(AppLang.User_name_is_not_valid, ErrorType.Validation);
@@ -261,10 +248,6 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         {
             return Result<bool>.Failure(ex.Message, ErrorType.Unknown);
         }
-        finally
-        {
-            _semaphore.Release();
-        }
     }
 
 
@@ -276,7 +259,6 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
 
     public async Task<(bool, string)> ReplaceAsync(UserModel model, CancellationToken cancellationToken = default)
     {
-        await _semaphore.WaitAsync(cancellationToken);
         try
         {
             if (Get(model.UserName) == null) return (false, AppLang.User_is_not_exists);
@@ -294,10 +276,6 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         catch (Exception e)
         {
             return (false, e.Message);
-        }
-        finally
-        {
-            _semaphore.Release();
         }
     }
 
@@ -345,6 +323,6 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
 
     public void Dispose()
     {
-        _semaphore.Dispose();
+        //
     }
 }

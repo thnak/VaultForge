@@ -25,12 +25,19 @@ public class ParallelBackgroundService(IParallelBackgroundTaskQueue parallelBack
     private async Task ProcessTaskQueueAsync(CancellationToken stoppingToken)
     {
         using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
-        while (!stoppingToken.IsCancellationRequested && await timer.WaitForNextTickAsync(stoppingToken))
+        try
         {
-            while (parallelBackgroundTaskQueue.TryDequeue(out Func<CancellationToken, ValueTask>? workItem))
+            while (!stoppingToken.IsCancellationRequested && await timer.WaitForNextTickAsync(stoppingToken))
             {
-                _ = _factory.StartNew(async () => await workItem(stoppingToken), stoppingToken).ConfigureAwait(false);
+                while (parallelBackgroundTaskQueue.TryDequeue(out Func<CancellationToken, ValueTask>? workItem))
+                {
+                    _ = _factory.StartNew(async () => await workItem(stoppingToken), stoppingToken).ConfigureAwait(false);
+                }
             }
+        }
+        catch (OperationCanceledException)
+        {
+            logger.LogInformation($"{nameof(ParallelBackgroundService)} cancelled.");
         }
     }
 }
