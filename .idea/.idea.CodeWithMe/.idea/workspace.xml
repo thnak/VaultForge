@@ -46,14 +46,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Protector/Utils/KeyGenExtensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/MongoDataLayerContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/MongoDataLayerContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/StorageSpace/Raid5Stream.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/StorageSpace/Raid5Stream.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp1/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/WebApp.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/WebApp.Client.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/InsertFuture/FileInsertFuture.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/StorageSpace/Utils/RaidStorageExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/StorageSpace/Utils/RaidStorageExtensions.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -93,7 +88,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/thnak/VaultForge&quot;,
-    &quot;accountId&quot;: &quot;fed8ac94-0743-48ac-a933-4b2dd22394a4&quot;
+    &quot;accountId&quot;: &quot;4e3de1c3-47ee-43d2-84fb-bc5a623b2110&quot;
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
@@ -122,6 +117,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2565b9d99fdde488bc7801b84387b2cc864959cfb63212e1ff576fc9c6bb7e/CancellationToken.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bd1d5c50194fea68ff3559c160230b0ab50f5acf4ce3061bffd6d62958e2182/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Services/Configure/ApplicationConfiguration.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -689,15 +685,8 @@
       <workItem from="1732495768088" duration="1376000" />
       <workItem from="1732497215180" duration="2757000" />
       <workItem from="1732541263590" duration="3145000" />
-      <workItem from="1732546291666" duration="1405000" />
-    </task>
-    <task id="LOCAL-00334" summary="re order dispose web worker">
-      <option name="closed" value="true" />
-      <created>1730335340771</created>
-      <option name="number" value="00334" />
-      <option name="presentableId" value="LOCAL-00334" />
-      <option name="project" value="LOCAL" />
-      <updated>1730335340771</updated>
+      <workItem from="1732546291666" duration="2716000" />
+      <workItem from="1732635433143" duration="438000" />
     </task>
     <task id="LOCAL-00335" summary="update">
       <option name="closed" value="true" />
@@ -1083,7 +1072,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732469922213</updated>
     </task>
-    <option name="localTasksCounter" value="383" />
+    <task id="LOCAL-00383" summary="small update">
+      <option name="closed" value="true" />
+      <created>1732549712860</created>
+      <option name="number" value="00383" />
+      <option name="presentableId" value="LOCAL-00383" />
+      <option name="project" value="LOCAL" />
+      <updated>1732549712861</updated>
+    </task>
+    <option name="localTasksCounter" value="384" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1135,11 +1132,11 @@
     <MESSAGE value="update appsettings.json" />
     <MESSAGE value="fix OOM" />
     <MESSAGE value="add missing dependency, refactor" />
-    <MESSAGE value="small update" />
     <MESSAGE value="remove non scene identifier, fix Raid5Stream.cs to support un-limit disk number" />
     <MESSAGE value="remove unused pack" />
     <MESSAGE value="limit extremely stream read issue" />
-    <option name="LAST_COMMIT_MESSAGE" value="limit extremely stream read issue" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

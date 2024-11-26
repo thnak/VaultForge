@@ -1,7 +1,9 @@
-﻿using Business.Utils.StringExtensions;
+﻿using System.Security.Cryptography;
+using Business.Utils.StringExtensions;
 using BusinessModels.General.Results;
 using BusinessModels.System.FileSystem;
 using MongoDB.Bson;
+using Protector.Utils;
 
 namespace Business.Data.StorageSpace.Utils;
 
@@ -42,9 +44,10 @@ public static class RaidStorageExtensions
         arrayDisk.Shuffle();
         int index = 0;
 
+        using var sha256 = SHA256.Create();
         return arrayDisk.Select(x => new FileRaidDataBlockModel
         {
-            AbsolutePath = Path.Combine(x, $"_{DateTime.UtcNow:yyMMdd}", raidId + Path.GetRandomFileName()),
+            AbsolutePath = Path.Combine(x, sha256.GenerateAliasKey(raidId, Guid.NewGuid().ToString())),
             CreationTime = DateTime.UtcNow,
             ModificationTime = DateTime.UtcNow,
             RelativePath = raidId.ToString(),
@@ -64,11 +67,11 @@ public static class RaidStorageExtensions
     {
         foreach (var file in filePaths)
         {
-            if(File.Exists(file))
+            if (File.Exists(file))
                 File.Delete(file);
         }
     }
-    
+
     /// <summary>
     /// try to open file,
     /// </summary>
