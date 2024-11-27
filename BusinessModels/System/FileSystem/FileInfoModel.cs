@@ -8,8 +8,6 @@ namespace BusinessModels.System.FileSystem;
 [MessagePackObject]
 public class FileInfoModel : BaseModelEntry
 {
-   
-
     /// <summary>
     ///     Dùng cho resource có nhiều biến thể như độ phân giải, chất lượng
     /// </summary>
@@ -23,7 +21,7 @@ public class FileInfoModel : BaseModelEntry
     [Key(4)] public long FileSize { get; set; } // Size of the file in bytes
 
     [Key(5)] public string TagId { get; set; } = string.Empty;
-
+    
     [Key(6)] public string MetadataId { get; set; } = string.Empty;
 
     /// <summary>
@@ -84,7 +82,7 @@ public class FileInfoModel : BaseModelEntry
 
     [Key(18)] public float[] Vector { get; set; } = [];
     [Key(19)] public string Description { get; set; } = string.Empty;
-
+    [Key(20)] public string AliasCode { get; set; } = string.Empty;
 
     #region Front-End Methods
 

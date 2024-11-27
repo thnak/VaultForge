@@ -26,7 +26,6 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     {
         try
         {
-
             IndexKeysDefinition<FolderInfoModel>[] indexKeysDefinitions =
             [
                 Builders<FolderInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath).Ascending(x => x.OwnerUsername),
@@ -268,8 +267,6 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     {
         try
         {
-            
-
             if (ObjectId.TryParse(key, out var id))
             {
                 var filter = Builders<FolderInfoModel>.Filter.Eq(f => f.Id, id);
@@ -307,18 +304,17 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             logger.LogInformation("[Update] Operation cancelled");
             return (false, string.Empty);
         }
-
     }
 
     public async Task<Result<bool>> CreateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
     {
         try
         {
-            
             var isExists = await _dataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
             if (isExists) return Result<bool>.Failure(AppLang.Folder_already_exists, ErrorType.Duplicate);
             model.ModifiedTime = DateTime.UtcNow;
             model.CreateTime = DateTime.UtcNow;
+            model.AliasCode = model.Id.GenerateAliasKey(model.OwnerUsername + DateTime.Now.Ticks);
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
             return Result<bool>.Success(true);
         }
@@ -327,7 +323,6 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             logger.LogInformation("[Create] Operation cancelled");
             return Result<bool>.Failure("canceled", ErrorType.Cancelled);
         }
-
     }
 
     public Task<Result<bool>> CreateAsync(IReadOnlyCollection<FolderInfoModel> models,
@@ -340,8 +335,6 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     {
         try
         {
-            
-
             var isExists = await _dataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
             if (!isExists)
             {
@@ -363,7 +356,6 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         {
             return (false, e.Message);
         }
-
     }
 
 

@@ -46,9 +46,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Protector/Utils/KeyGenExtensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/StorageSpace/Utils/RaidStorageExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/StorageSpace/Utils/RaidStorageExtensions.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -117,7 +115,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2565b9d99fdde488bc7801b84387b2cc864959cfb63212e1ff576fc9c6bb7e/CancellationToken.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bd1d5c50194fea68ff3559c160230b0ab50f5acf4ce3061bffd6d62958e2182/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Services/Configure/ApplicationConfiguration.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/StorageSpace/Utils/RaidStorageExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -686,15 +684,7 @@
       <workItem from="1732497215180" duration="2757000" />
       <workItem from="1732541263590" duration="3145000" />
       <workItem from="1732546291666" duration="2716000" />
-      <workItem from="1732635433143" duration="438000" />
-    </task>
-    <task id="LOCAL-00335" summary="update">
-      <option name="closed" value="true" />
-      <created>1730349524585</created>
-      <option name="number" value="00335" />
-      <option name="presentableId" value="LOCAL-00335" />
-      <option name="project" value="LOCAL" />
-      <updated>1730349524585</updated>
+      <workItem from="1732635433143" duration="1689000" />
     </task>
     <task id="LOCAL-00336" summary="update new lock object">
       <option name="closed" value="true" />
@@ -1080,7 +1070,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732549712861</updated>
     </task>
-    <option name="localTasksCounter" value="384" />
+    <task id="LOCAL-00384" summary="update">
+      <option name="closed" value="true" />
+      <created>1732636486877</created>
+      <option name="number" value="00384" />
+      <option name="presentableId" value="LOCAL-00384" />
+      <option name="project" value="LOCAL" />
+      <updated>1732636486877</updated>
+    </task>
+    <option name="localTasksCounter" value="385" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1111,7 +1109,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fix some issue with init VectorDb.cs" />
     <MESSAGE value="small update for stack queue service" />
     <MESSAGE value="introduce not wait in parallel queue" />
     <MESSAGE value="add polly, iot batch insert" />
@@ -1136,7 +1133,8 @@
     <MESSAGE value="remove unused pack" />
     <MESSAGE value="limit extremely stream read issue" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

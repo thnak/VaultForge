@@ -6,7 +6,7 @@ namespace Protector.Utils;
 
 public static class KeyGenExtensions
 {
-    public static string GenerateAliasKey(ObjectId fileId, string salt)
+    public static string GenerateAliasKey(this ObjectId fileId, string salt)
     {
         using var sha256 = SHA256.Create();
         // Combine ObjectId, salt, and timestamp for enhanced uniqueness

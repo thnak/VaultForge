@@ -87,7 +87,7 @@ public class FolderInfoModel : BaseModelEntry
     [Key(14)] public string Icon { get; set; } = string.Empty;
 
     [Key(15)] public string RootFolder { get; set; } = string.Empty;
-
+    [Key(18)] public string AliasCode { get; set; } = string.Empty;
 
     #region Front-End Properties
 

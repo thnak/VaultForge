@@ -15,6 +15,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Protector.Utils;
 
 namespace Business.Data.Repositories.FileSystem;
 
@@ -257,6 +258,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
             {
                 model.CreateTime = DateTime.UtcNow;
                 model.ModifiedTime = DateTime.UtcNow;
+                model.AliasCode = model.Id.GenerateAliasKey(DateTime.Now.Ticks.ToString());
                 await _fileDataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
                 return Result<bool>.Success(true);
             }
