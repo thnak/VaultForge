@@ -1,5 +1,7 @@
+using System.Net;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Web;
 using BusinessModels.Converter;
 
@@ -184,7 +186,7 @@ public static class StringExtension
         keyword = default;
         return true;
     }
-    
+
     public static bool IsImageFile(this string contentType)
     {
         string[] imageContentTypes = ["image/jpeg", "image/pjpeg", "image/gif", "image/x-png", "image/png", "image/bmp", "image/tiff", "image/webp", "image/tiff", "image/x-icon", "image/svg+xml", "image/bmp"];
@@ -195,5 +197,16 @@ public static class StringExtension
     {
         string[] videoContentTypes = ["video/mp4"];
         return videoContentTypes.Contains(contenType);
+    }
+
+    public static bool IsValidMacAddress(string macAddress)
+    {
+        var regex = new Regex("^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$");
+        return regex.IsMatch(macAddress);
+    }
+
+    public static bool IsValidIpAddress(string ipAddress)
+    {
+        return IPAddress.TryParse(ipAddress, out _);
     }
 }

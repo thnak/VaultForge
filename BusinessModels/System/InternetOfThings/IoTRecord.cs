@@ -1,4 +1,5 @@
 ﻿using BusinessModels.Base;
+using BusinessModels.System.InternetOfThings.type;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -16,8 +17,10 @@ public class IoTRecord : BaseModelEntry
     /// <summary>
     /// Sensor or device identifier
     /// </summary>
-    [BsonElement("deviceId")]
-    public string DeviceId { get; set; }
+    [BsonElement("sensorId")]
+    public string SensorId { get; set; }
+
+    [BsonElement("deviceId")] public string DeviceId { get; set; }
 
     /// <summary>
     /// Sensor data (could be temperature, humidity, etc.)
@@ -29,7 +32,8 @@ public class IoTRecord : BaseModelEntry
     /// What kind of sensor this is (e.g., temperature, humidity)
     /// </summary>
     [BsonElement("sensorType")]
-    public SensorType SensorType { get; set; }
+    [BsonRepresentation(BsonType.String)]
+    public IoTSensorType IoTSensorType { get; set; }
 
 
     [BsonDateTimeOptions(DateOnly = true, Kind = DateTimeKind.Utc)]
@@ -43,13 +47,14 @@ public class IoTRecord : BaseModelEntry
     [BsonElement("metadata")]
     public DeviceMetadata? Metadata { get; set; }
 
-    public IoTRecord(string deviceId, float sensorData, SensorType sensorType, DeviceMetadata? metadata = null)
+    public IoTRecord(string deviceId, string sensorId, float sensorData, IoTSensorType ioTSensorType, DeviceMetadata? metadata = null)
     {
         Id = ObjectId.GenerateNewId();
-        Timestamp = DateTime.UtcNow; // Set to current time by default
         DeviceId = deviceId;
+        Timestamp = DateTime.UtcNow; // Set to current time by default
+        SensorId = sensorId;
         SensorData = sensorData;
-        SensorType = sensorType;
+        IoTSensorType = ioTSensorType;
         Metadata = metadata;
         Date = Timestamp.Date;
         Hour = Timestamp.Hour;
@@ -93,19 +98,4 @@ public class DeviceMetadata
     [BsonElement("lastServiceDate")]
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime LastServiceDate { get; set; }
-}
-
-public enum SensorType
-{
-    Temperature,
-    Humidity,
-    Pressure,
-    Light,
-    Proximity,
-    Accelerometer,
-    Gyroscope,
-    Magnetometer,
-    HeartRate,
-    Gps,
-    PingStatus
 }

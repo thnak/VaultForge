@@ -28,7 +28,11 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
     {
         try
         {
-            IndexKeysDefinition<FileInfoModel>[] uniqueIndexesDefinitions = [Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath)];
+            IndexKeysDefinition<FileInfoModel>[] uniqueIndexesDefinitions =
+            [
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath),
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AliasCode)
+            ];
             IndexKeysDefinition<FileInfoModel>[] indexKeysDefinitions =
             [
                 Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RootFolder).Ascending(x => x.Id),
@@ -81,8 +85,9 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
 
             return (true, string.Empty);
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException ex)
         {
+            logger.LogInformation(ex.Message);
             return (false, string.Empty);
         }
         catch (MongoException ex)

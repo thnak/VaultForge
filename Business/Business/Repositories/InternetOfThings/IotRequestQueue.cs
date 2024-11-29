@@ -32,7 +32,7 @@ public class IotRequestQueue : IIotRequestQueue
         {
             var result = await _channel.Writer.WaitToWriteAsync(cancellationToken) && _channel.Writer.TryWrite(data);
             IncrementDailyRequestCount();
-            IncrementSensorRequestCount(data.DeviceId);
+            IncrementSensorRequestCount(data.SensorId);
             return result;
         }
         catch (OperationCanceledException)

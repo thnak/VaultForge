@@ -3,6 +3,7 @@ using System.Net.Mime;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Services.Http.CircuitBreakers;
 using BusinessModels.System.InternetOfThings;
+using BusinessModels.System.InternetOfThings.type;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,14 +16,14 @@ namespace WebApp.Controllers.InternetOfThings;
 public class IoTController(IoTCircuitBreakerService circuitBreakerService, IIoTBusinessLayer businessLayer, IIotRequestQueue requestQueueHostedService, ILogger<IoTController> logger) : ControllerBase
 {
     [HttpPost("add-record")]
-    public async Task<IActionResult> AddRecord([FromForm] string deviceId, [FromForm] float value, [FromForm] SensorType sensorType)
+    public async Task<IActionResult> AddRecord([FromForm] string deviceId, [FromForm] string sensorId, [FromForm] float value, [FromForm] IoTSensorType ioTSensorType)
     {
         var cancelToken = HttpContext.RequestAborted;
         var success = await circuitBreakerService.TryProcessRequest(async token =>
         {
             try
             {
-                IoTRecord record = new IoTRecord(deviceId, value, sensorType);
+                IoTRecord record = new IoTRecord(deviceId, sensorId, value, ioTSensorType);
                 var queueResult = await requestQueueHostedService.QueueRequest(record, token);
                 if (!queueResult)
                 {

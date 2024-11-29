@@ -43,17 +43,17 @@ public class IoTDataLayer : IIoTDataLayer
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
         IndexKeysDefinition<IoTRecord>[] indexKeysDefinitions = [
-            Builders<IoTRecord>.IndexKeys.Descending(x=>x.DeviceId).Descending(x => x.Timestamp),
+            Builders<IoTRecord>.IndexKeys.Descending(x=>x.SensorId).Descending(x => x.Timestamp),
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date),
             Builders<IoTRecord>.IndexKeys.Descending(x => x.Date),
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Hour),
             Builders<IoTRecord>.IndexKeys.Descending(x => x.Date).Descending(x => x.Hour),
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Descending(x => x.Hour),
             Builders<IoTRecord>.IndexKeys.Descending(x => x.Date).Ascending(x => x.Hour),
-            Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Hour).Ascending(x => x.SensorType),
-            Builders<IoTRecord>.IndexKeys.Descending(x => x.Date).Descending(x => x.Hour).Ascending(x => x.SensorType),
-            Builders<IoTRecord>.IndexKeys.Ascending(x=>x.DeviceId).Ascending(x => x.Date).Ascending(x => x.Hour).Ascending(x => x.SensorType),
-            Builders<IoTRecord>.IndexKeys.Ascending(x=>x.DeviceId).Descending(x => x.Date).Ascending(x => x.Hour).Ascending(x => x.SensorType),
+            Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Hour).Ascending(x => x.IoTSensorType),
+            Builders<IoTRecord>.IndexKeys.Descending(x => x.Date).Descending(x => x.Hour).Ascending(x => x.IoTSensorType),
+            Builders<IoTRecord>.IndexKeys.Ascending(x=>x.SensorId).Ascending(x => x.Date).Ascending(x => x.Hour).Ascending(x => x.IoTSensorType),
+            Builders<IoTRecord>.IndexKeys.Ascending(x=>x.SensorId).Descending(x => x.Date).Ascending(x => x.Hour).Ascending(x => x.IoTSensorType),
         ];
         
         
