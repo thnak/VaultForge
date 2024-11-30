@@ -8,8 +8,10 @@ namespace Business.Data.Repositories;
 
 public class MongoDataLayerContext : IMongoDataLayerContext
 {
+    private readonly ILogger<MongoDataLayerContext> _logger;
     public MongoDataLayerContext(ApplicationConfiguration settings, ILogger<MongoDataLayerContext> logger)
     {
+        _logger = logger;
         var dbName = settings.GetDbSetting.DatabaseName;
         var user = settings.GetDbSetting.UserName;
         var pass = settings.GetDbSetting.Password;
@@ -46,6 +48,8 @@ public class MongoDataLayerContext : IMongoDataLayerContext
 
     public void Dispose()
     {
+        _logger.LogInformation("Disposing MongoDataLayerContext");
         MongoDatabase.Client.Dispose();
+        _logger.LogInformation("Disposed MongoDataLayerContext");
     }
 }

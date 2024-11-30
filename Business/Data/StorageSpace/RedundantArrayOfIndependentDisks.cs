@@ -55,6 +55,11 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             logger.LogError(e, "Operation cancelled");
             return (false, "Cancelled");
         }
+        catch (Exception e)
+        {
+            logger.LogError(e, e.Message);
+            return (false, "Error");
+        }
     }
 
     private void CheckDiskSpace(IEnumerable<string> diskSpaces)

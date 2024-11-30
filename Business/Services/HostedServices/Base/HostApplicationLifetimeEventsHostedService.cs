@@ -16,14 +16,15 @@ using Microsoft.Extensions.Logging;
 
 namespace Business.Services.HostedServices.Base;
 
-public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime hostApplicationLifetime, IParallelBackgroundTaskQueue queue, IServiceScopeFactory serviceScopeFactory, ILogger<HostApplicationLifetimeEventsHostedService> logger) : IHostedService
+public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime hostApplicationLifetime,
+    IParallelBackgroundTaskQueue queue, IServiceScopeFactory serviceScopeFactory,
+    ILogger<HostApplicationLifetimeEventsHostedService> logger) : IHostedService
 {
-    public Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
-        hostApplicationLifetime.ApplicationStarted.Register(OnStarted);
+        await OnStarted(cancellationToken);
         hostApplicationLifetime.ApplicationStopping.Register(OnStopping);
         hostApplicationLifetime.ApplicationStopped.Register(OnStopped);
-        return Task.CompletedTask;
     }
 
 
@@ -32,27 +33,26 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
         return Task.CompletedTask;
     }
 
-    private void OnStarted()
+    private async Task OnStarted(CancellationToken cancellationToken)
     {
         logger.LogInformation("Application started");
-        QueueInitializationTask<IUserDataLayer>();
-        QueueInitializationTask<IFileSystemDatalayer>();
-        QueueInitializationTask<IFolderSystemDatalayer>();
-        QueueInitializationTask<IAdvertisementDataLayer>();
-        QueueInitializationTask<IChatWithLlmDataLayer>();
-        QueueInitializationTask<IFaceDataLayer>();
-        QueueInitializationTask<IWikipediaDataLayer>();
+        await QueueInitializationTask<IUserDataLayer>(cancellationToken);
+        await QueueInitializationTask<IFileSystemDatalayer>(cancellationToken);
+        await QueueInitializationTask<IFolderSystemDatalayer>(cancellationToken);
+        await QueueInitializationTask<IAdvertisementDataLayer>(cancellationToken);
+        await QueueInitializationTask<IChatWithLlmDataLayer>(cancellationToken);
+        await QueueInitializationTask<IFaceDataLayer>(cancellationToken);
+        await QueueInitializationTask<IWikipediaDataLayer>(cancellationToken);
+        await QueueInitializationTask<RedundantArrayOfIndependentDisks>(cancellationToken);
 
-
-        QueueInitializationTask<RedundantArrayOfIndependentDisks>();
-        QueueInitializationExtendServiceTask<IFolderSystemBusinessLayer>();
-        QueueInitializationExtendServiceTask<IFaceBusinessLayer>();
-        QueueInitializationExtendServiceTask<IWikipediaBusinessLayer>();
+        await QueueInitializationExtendServiceTask<IFolderSystemBusinessLayer>(cancellationToken);
+        await QueueInitializationExtendServiceTask<IFaceBusinessLayer>(cancellationToken);
+        await QueueInitializationExtendServiceTask<IWikipediaBusinessLayer>(cancellationToken);
     }
 
-    private void QueueInitializationExtendServiceTask<TDataLayer>() where TDataLayer : IExtendService
+    private async Task QueueInitializationExtendServiceTask<TDataLayer>(CancellationToken cancellationToken) where TDataLayer : IExtendService
     {
-        queue.QueueBackgroundWorkItemAsync(async token =>
+        await queue.QueueBackgroundWorkItemAsync(async token =>
         {
             using var scope = serviceScopeFactory.CreateScope();
             var dataLayer = scope.ServiceProvider.GetRequiredService<TDataLayer>();
@@ -63,17 +63,17 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
             {
                 logger.LogError(result.Message);
             }
-        });
+        }, cancellationToken);
     }
 
-    private void QueueInitializationTask<TDataLayer>() where TDataLayer : IMongoDataInitializer
+    private async Task QueueInitializationTask<TDataLayer>(CancellationToken cancellationToken) where TDataLayer : IMongoDataInitializer
     {
-        queue.QueueBackgroundWorkItemAsync(async token =>
+        await queue.QueueBackgroundWorkItemAsync(async token =>
         {
             using var scope = serviceScopeFactory.CreateScope();
             var dataLayer = scope.ServiceProvider.GetRequiredService<TDataLayer>();
             await dataLayer.InitializeAsync(token);
-        });
+        }, cancellationToken);
     }
 
     private void OnStopping()
