@@ -6,7 +6,7 @@ namespace BusinessModels.System.InternetOfThings;
 
 public class IoTDeviceGroup : BaseModelEntry
 {
-    [BsonElement("alias")] public string AliasCode { get; set; } = string.Empty;
+    [BsonElement("groupId")] public string GroupId { get; set; } = string.Empty;
     [BsonElement("groupName")] public string GroupName { get; set; } = string.Empty;
 
     [BsonElement("description")] public string Description { get; set; } = string.Empty;

@@ -25,12 +25,12 @@ public class ApplicationConfiguration
 
         InitCertificateConfig(appSettings);
 
-        InitVideoEncodeCofig(appSettings);
+        InitVideoEncodeConfig(appSettings);
 
         DisplayGroupedConfigurations(InitLogoAsciiArt(), Configs.ConvertToDictionary());
     }
 
-    private void InitVideoEncodeCofig(IOptions<AppSettings> appSettings)
+    private void InitVideoEncodeConfig(IOptions<AppSettings> appSettings)
     {
         Configs.VideoTransCode.WorkingDirectory = GetEnvironmentVariable("VideoTransCodeWorkingDirectory", appSettings.Value.VideoTransCode.WorkingDirectory);
         Configs.VideoTransCode.VideoEncoder = GetEnvironmentVariable("VideoTransCodeVideoEncoder", appSettings.Value.VideoTransCode.VideoEncoder);

@@ -9,7 +9,6 @@ namespace BusinessModels.System.InternetOfThings;
 public class IoTSensor : BaseModelEntry
 {
     [BsonElement("sensorId")] public string SensorId { get; set; } = string.Empty;
-
     [BsonElement("sensorName")] public string SensorName { get; set; } = string.Empty;
 
     [BsonElement("sensorType")]

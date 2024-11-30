@@ -10,9 +10,6 @@ public class IoTDevice : BaseModelEntry
 {
     [BsonElement("deviceId")] public string DeviceId { get; set; } = string.Empty;
     [BsonElement("deviceName")] public string DeviceName { get; set; } = string.Empty;
-
-    [BsonElement("alias")]
-    public string AliasCode { get; set; } = string.Empty;
     
     [BsonElement("group")] public ObjectId DeviceGroup { get; set; }
 

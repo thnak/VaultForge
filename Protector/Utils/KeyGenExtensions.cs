@@ -14,16 +14,16 @@ public static class KeyGenExtensions
         var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(input));
 
         // Convert to hexadecimal and take the first 12 characters
-        return BitConverter.ToString(hash).Replace("-", "").Substring(0, 12);
+        return BitConverter.ToString(hash).Replace("-", "");
     }
-    
-    public static string GenerateAliasKey(this SHA256 sha256,ObjectId fileId, string salt)
+
+    public static string GenerateAliasKey(this SHA256 sha256, ObjectId fileId, string salt)
     {
         // Combine ObjectId, salt, and timestamp for enhanced uniqueness
         var input = $"{fileId}{salt}{DateTime.UtcNow.Ticks}";
         var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(input));
 
         // Convert to hexadecimal and take the first 12 characters
-        return BitConverter.ToString(hash).Replace("-", "").Substring(0, 12);
+        return BitConverter.ToString(hash).Replace("-", "");
     }
 }
