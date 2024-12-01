@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BusinessModels.Utils;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace WebApp.Client.Components.Clock;
@@ -13,11 +14,7 @@ public partial class ServerTime(ILogger<ServerTime> logger) : ComponentBase, IAs
     {
         if (firstRender)
         {
-            HubConnection = new HubConnectionBuilder()
-                .WithUrl(Navigation.BaseUri + "hubs/clock")
-                .AddMessagePackProtocol()
-                .WithAutomaticReconnect()
-                .Build();
+            HubConnection = new HubConnectionBuilder().InitConnection(Navigation.BaseUri + "hubs/clock");
             HubConnection.On<DateTime>("ShowTime", ShowTime);
             await HubConnection.StartAsync();
         }

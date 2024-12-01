@@ -47,12 +47,7 @@
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDeviceGroup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDeviceGroup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTSensor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTSensor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Protector/Utils/KeyGenExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Protector/Utils/KeyGenExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/People/ConversationModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/People/ConversationModel.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -130,21 +125,12 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d6602ff1ddf35b711bc3b983d596213d7dcb8daab122c98f3e6db39b5daca137/DropIndexOperation.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/appsettings.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/appsettings.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Protector/Utils/KeyGenExtensions.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/WebApp/appsettings.Development.json">
-      <ranges>
-        <range start1="13" end1="14" start2="13" end2="14" changelist="79a7685d-f71b-43fb-8362-ef0c954eb8da" />
-        <range start1="45" end1="46" start2="45" end2="46" changelist="f2173a79-3de8-4a27-84c9-7929eceefadd" />
-      </ranges>
-    </file>
-  </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="SWEA" />
@@ -713,23 +699,9 @@
       <workItem from="1732840278626" duration="2193000" />
       <workItem from="1732843155598" duration="8630000" />
       <workItem from="1732900940599" duration="7914000" />
-      <workItem from="1732958562782" duration="531000" />
-    </task>
-    <task id="LOCAL-00340" summary="add missing">
-      <option name="closed" value="true" />
-      <created>1730478474898</created>
-      <option name="number" value="00340" />
-      <option name="presentableId" value="LOCAL-00340" />
-      <option name="project" value="LOCAL" />
-      <updated>1730478474898</updated>
-    </task>
-    <task id="LOCAL-00341" summary="update">
-      <option name="closed" value="true" />
-      <created>1730524638361</created>
-      <option name="number" value="00341" />
-      <option name="presentableId" value="LOCAL-00341" />
-      <option name="project" value="LOCAL" />
-      <updated>1730524638361</updated>
+      <workItem from="1732958562782" duration="1322000" />
+      <workItem from="1732963679364" duration="1433000" />
+      <workItem from="1733024031071" duration="459000" />
     </task>
     <task id="LOCAL-00342" summary="update service">
       <option name="closed" value="true" />
@@ -1107,7 +1079,23 @@
       <option name="project" value="LOCAL" />
       <updated>1732932431906</updated>
     </task>
-    <option name="localTasksCounter" value="389" />
+    <task id="LOCAL-00389" summary="update">
+      <option name="closed" value="true" />
+      <created>1732959131431</created>
+      <option name="number" value="00389" />
+      <option name="presentableId" value="LOCAL-00389" />
+      <option name="project" value="LOCAL" />
+      <updated>1732959131432</updated>
+    </task>
+    <task id="LOCAL-00390" summary="update">
+      <option name="closed" value="true" />
+      <created>1732965073019</created>
+      <option name="number" value="00390" />
+      <option name="presentableId" value="LOCAL-00390" />
+      <option name="project" value="LOCAL" />
+      <updated>1732965073019</updated>
+    </task>
+    <option name="localTasksCounter" value="391" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

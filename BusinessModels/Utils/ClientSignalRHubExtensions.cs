@@ -1,4 +1,5 @@
-﻿using BusinessModels.Converter;
+﻿using System.Diagnostics.CodeAnalysis;
+using BusinessModels.Converter;
 using MessagePack;
 using MessagePack.Resolvers;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -25,5 +26,21 @@ public static class ClientSignalRHubExtensions
         }
 
         return hubConnectionBuilder.Build();
+    }
+
+    public static HubConnection InitConnection(this HubConnectionBuilder builder,[StringSyntax(StringSyntaxAttribute.Uri)] string uri)
+    {
+        return builder.WithUrl(uri)
+            .AddMessagePackProtocol(options =>
+            {
+                options.SerializerOptions =
+                    MessagePackSerializerOptions.Standard.WithResolver(CompositeResolver.Create(StandardResolver.Instance,
+                        NativeDecimalResolver.Instance,
+                        NativeGuidResolver.Instance,
+                        NativeDateTimeResolver.Instance,
+                        MongoObjectIdResolver.Instance));
+            })
+            .WithAutomaticReconnect()
+            .Build();
     }
 }

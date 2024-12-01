@@ -94,4 +94,9 @@ public static class DatabaseExtensions
 
         return Result<bool>.Failure("Invalid key", ErrorType.Validation);
     }
+
+    public static ObjectId DefaultId()
+    {
+        return new ObjectId("000000000000000000000000");
+    }
 }

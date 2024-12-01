@@ -23,7 +23,7 @@ public static class WebApplicationExtenstion
             NativeDecimalResolver.Instance,
             NativeGuidResolver.Instance,
             NativeDateTimeResolver.Instance,
-            MongoObjectIdResolver.INSTANCE);
+            MongoObjectIdResolver.Instance);
 
         services.AddSignalR(options =>
             {

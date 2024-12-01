@@ -8,7 +8,7 @@ namespace BusinessModels.Converter;
 
 public class MongoObjectIdResolver : IFormatterResolver
 {
-    public static readonly IFormatterResolver INSTANCE = new MongoObjectIdResolver();
+    public static readonly IFormatterResolver Instance = new MongoObjectIdResolver();
 
     private MongoObjectIdResolver() { }
 

@@ -28,7 +28,7 @@ internal class Program
             NativeDecimalResolver.Instance,
             NativeGuidResolver.Instance,
             NativeDateTimeResolver.Instance,
-            MongoObjectIdResolver.INSTANCE);
+            MongoObjectIdResolver.Instance);
         
         #region Authorize
 
