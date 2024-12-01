@@ -41,4 +41,14 @@ public static class ClientSignalRHubExtensions
                 MongoObjectIdResolver.Instance))
             .WithSecurity(MessagePackSecurity.UntrustedData);
     }
+
+    public static void RegisterResolvers()
+    {
+        StaticCompositeResolver.Instance.Register(
+            StandardResolver.Instance,
+            NativeDecimalResolver.Instance,
+            NativeGuidResolver.Instance,
+            NativeDateTimeResolver.Instance,
+            MongoObjectIdResolver.Instance);
+    }
 }

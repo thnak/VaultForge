@@ -19,12 +19,7 @@ public static class WebApplicationExtenstion
 
     public static void AddSignalRService(this IServiceCollection services)
     {
-        StaticCompositeResolver.Instance.Register(
-            StandardResolver.Instance,
-            NativeDecimalResolver.Instance,
-            NativeGuidResolver.Instance,
-            NativeDateTimeResolver.Instance,
-            MongoObjectIdResolver.Instance);
+        ClientSignalRHubExtensions.RegisterResolvers();
 
         services.AddSignalR(options =>
             {

@@ -1,8 +1,7 @@
 using System.Globalization;
 using BlazorWorker.Core;
-using BusinessModels.Converter;
 using BusinessModels.Resources;
-using MessagePack.Resolvers;
+using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Components.WebAssembly.Services;
@@ -22,13 +21,8 @@ internal class Program
         builder.Services.AddFrontEndService();
         builder.Services.AddFrontEndSingletonService();
         builder.Services.AddWorkerFactory();
-        StaticCompositeResolver.Instance.Register(
-            StandardResolver.Instance,
-            NativeDecimalResolver.Instance,
-            NativeGuidResolver.Instance,
-            NativeDateTimeResolver.Instance,
-            MongoObjectIdResolver.Instance);
-        
+        ClientSignalRHubExtensions.RegisterResolvers();
+
         #region Authorize
 
         builder.Services.AddAuthorizationCore();

@@ -11,7 +11,7 @@ public class Worker(IHubContext<ClockHub, IClock> clockHub) : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            await clockHub.Clients.All.ShowTime(DateTime.Now);
+            await clockHub.Clients.All.ShowTime(DateTime.UtcNow);
             await Task.Delay(1000, stoppingToken);
         }
     }
