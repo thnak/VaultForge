@@ -17,7 +17,7 @@ public partial class SensorSignal(ILogger<SensorSignal> logger) : ComponentBase,
         if (firstRender)
         {
             var cancellationToken = CancellationTokenSource.Token;
-            HubConnection = new HubConnectionBuilder().InitConnection(Navigation.BaseUri + "/hubs/iotSensor");
+            HubConnection = new HubConnectionBuilder().InitConnection(Navigation.BaseUri + "hubs/iotSensor");
             HubConnection.On<ulong>("ReceiveCount", ShowValue);
             HubConnection.On<string>("ReceiveMessage", ReceiveMessage);
             
