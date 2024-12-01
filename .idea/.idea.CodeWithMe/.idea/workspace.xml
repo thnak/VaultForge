@@ -45,8 +45,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="restyle">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Utils/ClientSignalRHubExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/ClientSignalRHubExtensions.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -701,15 +702,7 @@
       <workItem from="1732958562782" duration="1322000" />
       <workItem from="1732963679364" duration="1433000" />
       <workItem from="1733024031071" duration="459000" />
-      <workItem from="1733026640873" duration="12797000" />
-    </task>
-    <task id="LOCAL-00350" summary="update property type">
-      <option name="closed" value="true" />
-      <created>1730569326341</created>
-      <option name="number" value="00350" />
-      <option name="presentableId" value="LOCAL-00350" />
-      <option name="project" value="LOCAL" />
-      <updated>1730569326342</updated>
+      <workItem from="1733026640873" duration="12860000" />
     </task>
     <task id="LOCAL-00351" summary="update service">
       <option name="closed" value="true" />
@@ -1095,7 +1088,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733049430316</updated>
     </task>
-    <option name="localTasksCounter" value="399" />
+    <task id="LOCAL-00399" summary="update">
+      <option name="closed" value="true" />
+      <created>1733051960826</created>
+      <option name="number" value="00399" />
+      <option name="presentableId" value="LOCAL-00399" />
+      <option name="project" value="LOCAL" />
+      <updated>1733051960826</updated>
+    </task>
+    <option name="localTasksCounter" value="400" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1148,10 +1149,10 @@
     <MESSAGE value="update page" />
     <MESSAGE value="update config" />
     <MESSAGE value="show" />
-    <MESSAGE value="update" />
     <MESSAGE value="shit" />
     <MESSAGE value="restyle" />
-    <option name="LAST_COMMIT_MESSAGE" value="restyle" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

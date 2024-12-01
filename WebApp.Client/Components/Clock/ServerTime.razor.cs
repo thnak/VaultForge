@@ -24,7 +24,7 @@ public partial class ServerTime(ILogger<ServerTime> logger) : ComponentBase, IAs
 
     public Task ShowTime(DateTime currentTime)
     {
-        Date = currentTime;
+        Date = currentTime.ToLocalTime();
         return InvokeAsync(StateHasChanged);
     }
 
