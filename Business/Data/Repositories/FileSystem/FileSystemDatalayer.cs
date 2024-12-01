@@ -11,6 +11,7 @@ using Business.Utils.StringExtensions;
 using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
@@ -19,10 +20,11 @@ using Protector.Utils;
 
 namespace Business.Data.Repositories.FileSystem;
 
-public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSystemDatalayer> logger, ISequenceBackgroundTaskQueue sequenceQueue, IMemoryCache memoryCache, RedundantArrayOfIndependentDisks raidService) : IFileSystemDatalayer
+public class FileSystemDatalayer(IMongoDataLayerContext context, IDataProtectionProvider provider, ILogger<FileSystemDatalayer> logger, ISequenceBackgroundTaskQueue sequenceQueue, IMemoryCache memoryCache, RedundantArrayOfIndependentDisks raidService) : IFileSystemDatalayer
 {
     private readonly IMongoCollection<FileInfoModel> _fileDataDb = context.MongoDatabase.GetCollection<FileInfoModel>("FileInfo");
     private readonly IMongoCollection<FileMetadataModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileMetadataModel>("FileMetaData");
+    private readonly IDataProtector _protectionProvider = provider.CreateProtector("FileSystemDatalayerProtector");
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
@@ -264,13 +266,13 @@ public class FileSystemDatalayer(IMongoDataLayerContext context, ILogger<FileSys
                 model.CreateTime = DateTime.UtcNow;
                 model.ModifiedTime = DateTime.UtcNow;
                 model.AliasCode = model.Id.GenerateAliasKey(DateTime.Now.Ticks.ToString());
+                model.AliasCode = _protectionProvider.Protect(model.AliasCode);
+                
                 await _fileDataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
                 return Result<bool>.Success(true);
             }
-            else
-            {
-                return Result<bool>.Failure(AppLang.File_is_already_exsists, ErrorType.NotFound);
-            }
+
+            return Result<bool>.Failure(AppLang.File_is_already_exsists, ErrorType.NotFound);
         }
         catch (Exception e)
         {

@@ -55,13 +55,5 @@ public class UserInfoModel
     [IgnoreMember]
     public List<Claim> Claims { get; set; } = new();
 
-    /// <summary>
-    ///     key: Ip address
-    ///     Values: signalr connection id
-    /// </summary>
-    [Key(12)]
-    [BsonElement("12")]
-    public Dictionary<string, List<string>> Connections { get; set; } = new();
-
-    [Key(13)] public string JwtAccessToken { get; set; } = string.Empty;
+    [Key(12)] public string JwtAccessToken { get; set; } = string.Empty;
 }
