@@ -20,13 +20,14 @@
 
 <div class="grid-container">
     
-    <SensorSignal SensorId="A00"/>
-
     @for (int i = 0; i < 100; i++)
     {
         var index = i;
+        string sensorIndex = $"A{index}";
+        <SensorSignal SensorId="@sensorIndex" @key="sensorIndex"/>
         <ServerTime @key="index"/>
     }
+    
 </div>
 
 <ApexChart TItem="MyData" @ref="ChartRef" Options="ChartOption"
