@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace WebApp.Client.Components.IoT;
 
-public partial class SensorSignal(Logger<SensorSignal> logger) : ComponentBase, IAsyncDisposable
+public partial class SensorSignal(ILogger<SensorSignal> logger) : ComponentBase, IAsyncDisposable
 {
     [Parameter] public string SensorId { get; set; } = string.Empty;
     private HubConnection? HubConnection { get; set; }
