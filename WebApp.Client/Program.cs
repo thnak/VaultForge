@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Components.WebAssembly.Services;
 using Microsoft.JSInterop;
-using MudBlazor.Services;
 using WebApp.Client.Authenticate;
 using WebApp.Client.Services;
 using WebApp.Client.Services.Http;

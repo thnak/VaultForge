@@ -1,13 +1,17 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using ApexCharts;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using WebApp.Client.Utils;
 
 namespace WebApp.Client.Pages;
 
-public partial class Home : ComponentBase, IDisposable
+public partial class Home(ILogger<Home> logger) : ComponentBase, IDisposable
 {
     public void Dispose()
     {
         ProtectedLocalStorageService.KeyHandler -= GetKey;
+        CustomStateContainer.OnChangedAsync -= UpdateChart;
+        ChartRef?.Dispose();
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -15,9 +19,23 @@ public partial class Home : ComponentBase, IDisposable
         if (firstRender)
         {
             ProtectedLocalStorageService.KeyHandler += GetKey;
+            CustomStateContainer.OnChangedAsync += UpdateChart;
         }
 
         base.OnAfterRender(firstRender);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateChart();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task UpdateChart()
+    {
+        var mode = CustomStateContainer.IsDarkMode ? Mode.Dark : Mode.Light;
+        ChartOption.Theme.Mode = mode;
+        await ChartRef.UpdateOptionsSafetyAsync();
     }
 
     private async Task Crypting(MouseEventArgs obj)
@@ -33,7 +51,7 @@ public partial class Home : ComponentBase, IDisposable
     private async Task DeCrypting(MouseEventArgs obj)
     {
         var data = await ProtectedLocalStorageService.GetAsync("exampleKey");
-        Console.WriteLine(data);
+        logger.LogInformation(data);
     }
 
     private async Task GetWeather(MouseEventArgs obj)
@@ -42,7 +60,10 @@ public partial class Home : ComponentBase, IDisposable
         if (response.IsSuccessStatusCode)
         {
             var data = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(data.Length);
+            logger.LogInformation(data.Length.ToString());
         }
     }
+
+    private ApexChart<MyData>? ChartRef { get; set; }
+    public ApexChartOptions<MyData> ChartOption { get; set; } = ApexChartExtension.InitChartOptions<MyData>();
 }
