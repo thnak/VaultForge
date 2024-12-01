@@ -34,21 +34,33 @@ public static class ClientSignalRHubExtensions
     public static MessagePackSerializerOptions GetMessagePackSerializerOptions()
     {
         return MessagePackSerializerOptions.Standard
-            .WithResolver(CompositeResolver.Create(StandardResolver.Instance,
-                NativeDecimalResolver.Instance,
-                NativeGuidResolver.Instance,
-                NativeDateTimeResolver.Instance,
-                MongoObjectIdResolver.Instance))
+            .WithResolver(CompositeResolver.Create(GetMessagePackFormatterResolvers()))
             .WithSecurity(MessagePackSecurity.UntrustedData);
     }
 
-    public static void RegisterResolvers()
+    public static IFormatterResolver[] GetMessagePackFormatterResolvers()
     {
-        StaticCompositeResolver.Instance.Register(
+        return
+        [
+            BuiltinResolver.Instance,
+            AttributeFormatterResolver.Instance,
+            // replace enum resolver
+            DynamicEnumAsStringResolver.Instance,
+            DynamicGenericResolver.Instance,
+            DynamicUnionResolver.Instance,
+            DynamicObjectResolver.Instance,
+
+            PrimitiveObjectResolver.Instance,
             StandardResolver.Instance,
             NativeDecimalResolver.Instance,
             NativeGuidResolver.Instance,
             NativeDateTimeResolver.Instance,
-            MongoObjectIdResolver.Instance);
+            MongoObjectIdResolver.Instance
+        ];
+    }
+
+    public static void RegisterResolvers()
+    {
+        StaticCompositeResolver.Instance.Register(GetMessagePackFormatterResolvers());
     }
 }

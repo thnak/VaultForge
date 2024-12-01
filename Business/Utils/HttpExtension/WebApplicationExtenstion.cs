@@ -20,7 +20,7 @@ public static class WebApplicationExtenstion
     public static void AddSignalRService(this IServiceCollection services)
     {
         ClientSignalRHubExtensions.RegisterResolvers();
-
+        MessagePackSerializer.DefaultOptions = ClientSignalRHubExtensions.GetMessagePackSerializerOptions();
         services.AddSignalR(options =>
             {
                 options.EnableDetailedErrors = true;

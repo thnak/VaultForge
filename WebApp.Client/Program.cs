@@ -2,6 +2,7 @@ using System.Globalization;
 using BlazorWorker.Core;
 using BusinessModels.Resources;
 using BusinessModels.Utils;
+using MessagePack;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Components.WebAssembly.Services;
@@ -22,6 +23,7 @@ internal class Program
         builder.Services.AddFrontEndSingletonService();
         builder.Services.AddWorkerFactory();
         ClientSignalRHubExtensions.RegisterResolvers();
+        MessagePackSerializer.DefaultOptions = ClientSignalRHubExtensions.GetMessagePackSerializerOptions();
 
         #region Authorize
 
