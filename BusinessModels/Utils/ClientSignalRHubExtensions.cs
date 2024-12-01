@@ -34,7 +34,7 @@ public static class ClientSignalRHubExtensions
     public static MessagePackSerializerOptions GetMessagePackSerializerOptions()
     {
         return MessagePackSerializerOptions.Standard
-            // .WithResolver(CompositeResolver.Create(GetMessagePackFormatterResolvers()))
+            .WithResolver(CompositeResolver.Create(GetMessagePackFormatterResolvers()))
             .WithSecurity(MessagePackSecurity.UntrustedData);
     }
 

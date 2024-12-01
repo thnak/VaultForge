@@ -28,7 +28,7 @@ public class UserInfoModel
         Avatar = user.Avatar;
     }
 
-    [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(0)]
     [BsonElement("0")]
     public DateTime LastLogin { get; set; }
@@ -41,7 +41,7 @@ public class UserInfoModel
     [BsonElement("6")] [Key(6)] public List<string> Roles { get; set; } = new();
     [BsonElement("7")] [Key(7)] public List<string> RoleGroups { get; set; } = new();
 
-    [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(8)]
     [BsonElement("8")]
     public DateTime LastConnect { get; set; }
