@@ -12,5 +12,6 @@ public enum IoTSensorType
     Magnetometer,
     HeartRate,
     Gps,
-    PingStatus
+    PingStatus,
+    Counter
 }

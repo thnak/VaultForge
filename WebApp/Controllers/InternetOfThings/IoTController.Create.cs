@@ -1,5 +1,4 @@
 ﻿using BusinessModels.System.InternetOfThings;
-using BusinessModels.System.InternetOfThings.type;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers.InternetOfThings;
@@ -7,18 +6,18 @@ namespace WebApp.Controllers.InternetOfThings;
 public partial class IoTController
 {
     [HttpPost("add-record")]
-    public async Task<IActionResult> AddRecord([FromForm] string deviceId, [FromForm] string sensorId, [FromForm] float value, [FromForm] IoTSensorType ioTSensorType)
+    public async Task<IActionResult> AddRecord([FromForm] string sensorId, [FromForm] float value)
     {
         var cancelToken = HttpContext.RequestAborted;
         var success = await circuitBreakerService.TryProcessRequest(async token =>
         {
             try
             {
-                IoTRecord record = new IoTRecord(deviceId, sensorId, value, ioTSensorType);
+                IoTRecord record = new IoTRecord(sensorId, value);
                 var queueResult = await requestQueueHostedService.QueueRequest(record, token);
                 if (!queueResult)
                 {
-                    logger.LogWarning($"Error while processing request {deviceId}");
+                    logger.LogWarning($"Error while processing request {sensorId}");
                 }
             }
             catch (OperationCanceledException)
@@ -34,5 +33,4 @@ public partial class IoTController
 
         return Ok();
     }
-
 }

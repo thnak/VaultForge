@@ -50,10 +50,8 @@ public class IoTDataLayer : IIoTDataLayer
             Builders<IoTRecord>.IndexKeys.Descending(x => x.Date).Descending(x => x.Hour),
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Descending(x => x.Hour),
             Builders<IoTRecord>.IndexKeys.Descending(x => x.Date).Ascending(x => x.Hour),
-            Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Hour).Ascending(x => x.IoTSensorType),
-            Builders<IoTRecord>.IndexKeys.Descending(x => x.Date).Descending(x => x.Hour).Ascending(x => x.IoTSensorType),
-            Builders<IoTRecord>.IndexKeys.Ascending(x=>x.SensorId).Ascending(x => x.Date).Ascending(x => x.Hour).Ascending(x => x.IoTSensorType),
-            Builders<IoTRecord>.IndexKeys.Ascending(x=>x.SensorId).Descending(x => x.Date).Ascending(x => x.Hour).Ascending(x => x.IoTSensorType),
+            Builders<IoTRecord>.IndexKeys.Ascending(x=>x.SensorId).Ascending(x => x.Date).Ascending(x => x.Hour),
+            Builders<IoTRecord>.IndexKeys.Ascending(x=>x.SensorId).Descending(x => x.Date).Ascending(x => x.Hour),
         ];
         
         
@@ -109,7 +107,11 @@ public class IoTDataLayer : IIoTDataLayer
 
     public IoTRecord? Get(string key)
     {
-        throw new NotImplementedException();
+        if (ObjectId.TryParse(key, out var objectId))
+        {
+            return _dataDb.Find(x=>x.Id == objectId).FirstOrDefault();
+        }
+        return null;
     }
 
     public async Task<Result<IoTRecord?>> Get(string key, params Expression<Func<IoTRecord, object>>[] fieldsToFetch)

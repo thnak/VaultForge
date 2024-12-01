@@ -70,6 +70,6 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Services\Authenticate\" />
-      <Folder Include="Services\RetrievalAugmentedGeneration\" />
+      <Folder Include="SignalRHub\ClientManager\Interfaces\" />
     </ItemGroup>
 </Project>

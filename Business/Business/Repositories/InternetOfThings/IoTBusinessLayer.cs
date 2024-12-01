@@ -1,14 +1,17 @@
 ﻿using System.Linq.Expressions;
+using BrainNet.Models.Result;
+using BrainNet.Models.Vector;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Data.Interfaces.InternetOfThings;
 using Business.Models;
 using BusinessModels.General.Results;
+using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
 using MongoDB.Driver;
 
 namespace Business.Business.Repositories.InternetOfThings;
 
-public class IoTBusinessLayer(IIoTDataLayer data) : IIoTBusinessLayer
+public class IoTBusinessLayer(IIoTDataLayer data, IIotRequestQueue iotRequestQueue) : IIoTBusinessLayer
 {
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
@@ -47,7 +50,7 @@ public class IoTBusinessLayer(IIoTDataLayer data) : IIoTBusinessLayer
 
     public IoTRecord? Get(string key)
     {
-        throw new NotImplementedException();
+        return data.Get(key);
     }
 
     public Task<Result<IoTRecord?>> Get(string key, params Expression<Func<IoTRecord, object>>[] fieldsToFetch)
@@ -101,6 +104,23 @@ public class IoTBusinessLayer(IIoTDataLayer data) : IIoTBusinessLayer
     }
 
     public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
+    {
+        var today = DateTime.UtcNow.Date;
+        var cursor = Where(x => x.Timestamp >= today, cancellationToken);
+        await foreach (var item in cursor)
+        {
+            iotRequestQueue.IncrementTotalRequests(item.SensorId);
+        }
+
+        return Result<string>.Success(AppLang.Success);
+    }
+
+    public Task<Result<List<SearchScore<VectorRecord>>?>> SearchVectorAsync(float[] vector, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

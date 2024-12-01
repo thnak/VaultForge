@@ -2,7 +2,4 @@
 
 namespace Business.Business.Interfaces.InternetOfThings;
 
-public interface IIoTBusinessLayer : IBusinessLayerRepository<IoTRecord>
-{
-    
-}
+public interface IIoTBusinessLayer : IBusinessLayerRepository<IoTRecord>, IExtendService;

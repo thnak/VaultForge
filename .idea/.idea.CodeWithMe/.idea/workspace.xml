@@ -45,37 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="introduct data protection">
-      <change afterPath="$PROJECT_DIR$/Business/Utils/Protector/DataProtectorExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/User/UserBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/User/UserBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/StorageSpace/Utils/RaidStorageExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/StorageSpace/Utils/RaidStorageExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/KeyManagement/MongoDbXmlKeyProtectorRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/KeyManagement/MongoDbXmlKeyProtectorRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/AuthenticateService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/AuthenticateService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/ProtectorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/ProtectorService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Business/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Protector/KeyProvider/RsaKeyProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Authenticate/KeyProvider/RsaKeyProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Protector/Models/DataProtectionKey.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Models/Authenticate/DataProtectionKey.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Protector/Protector.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Protector/Protector.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Protector/Tracer/FailedLoginTracker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Authenticate/Tracer/FailedLoginTracker.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Protector/Utils/AuthorizationPolicyExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Utils/Protector/AuthorizationPolicyExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Protector/Utils/KeyGenExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Utils/Protector/KeyGenExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Protector/Utils/StringExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Utils/Protector/StringExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Protector/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Protector/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Update.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Update.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/System/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/System/AccountController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/packages.lock.json" afterDir="false" />
-    </list>
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
@@ -735,15 +705,7 @@
       <workItem from="1732958562782" duration="1322000" />
       <workItem from="1732963679364" duration="1433000" />
       <workItem from="1733024031071" duration="459000" />
-      <workItem from="1733026640873" duration="18063000" />
-    </task>
-    <task id="LOCAL-00354" summary="add more service">
-      <option name="closed" value="true" />
-      <created>1730814966805</created>
-      <option name="number" value="00354" />
-      <option name="presentableId" value="LOCAL-00354" />
-      <option name="project" value="LOCAL" />
-      <updated>1730814966806</updated>
+      <workItem from="1733026640873" duration="20657000" />
     </task>
     <task id="LOCAL-00355" summary="change vector service to use inside bl">
       <option name="closed" value="true" />
@@ -1129,7 +1091,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733053977253</updated>
     </task>
-    <option name="localTasksCounter" value="403" />
+    <task id="LOCAL-00403" summary="refactor">
+      <option name="closed" value="true" />
+      <created>1733068663181</created>
+      <option name="number" value="00403" />
+      <option name="presentableId" value="LOCAL-00403" />
+      <option name="project" value="LOCAL" />
+      <updated>1733068663181</updated>
+    </task>
+    <option name="localTasksCounter" value="404" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1166,7 +1136,6 @@
     <MESSAGE value="fix VectorDb.cs key index, refactor, add 2 new AI service for face matching" />
     <MESSAGE value="fix download script, fix wrong XorParity compute" />
     <MESSAGE value="refactor solution to support docker" />
-    <MESSAGE value="refactor" />
     <MESSAGE value="update appsettings.json" />
     <MESSAGE value="fix OOM" />
     <MESSAGE value="add missing dependency, refactor" />
@@ -1185,7 +1154,8 @@
     <MESSAGE value="message pack not support dateTime with kind" />
     <MESSAGE value="use utc for backend" />
     <MESSAGE value="introduct data protection" />
-    <option name="LAST_COMMIT_MESSAGE" value="introduct data protection" />
+    <MESSAGE value="refactor" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

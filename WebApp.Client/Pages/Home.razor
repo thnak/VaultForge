@@ -1,4 +1,5 @@
 ﻿@using WebApp.Client.Components.Clock
+@using WebApp.Client.Components.IoT
 @rendermode InteractiveWebAssembly
 @attribute [Route(PageRoutes.Home.Root.Src)]
 
@@ -6,20 +7,25 @@
 
 <PageTitle>@LangDict[PageRoutes.Home.Root.Title]</PageTitle>
 <HeadContent>
-    <HeadContentContainer MetaProperty="@PageRoutes.Home.Root.MetaData" />
+    <HeadContentContainer MetaProperty="@PageRoutes.Home.Root.MetaData"/>
 </HeadContent>
 
 
-<MudButton OnClick="@Crypting" >@CultureInfo.CurrentCulture.Name</MudButton>
-<MudButton OnClick="@DeCrypting" >DeEncrypt</MudButton>
+<MudButton OnClick="@Crypting">@CultureInfo.CurrentCulture.Name</MudButton>
+<MudButton OnClick="@DeCrypting">DeEncrypt</MudButton>
 
-<MudButton Color="MudColor.Primary" OnClick="@GetWeather" Variant="Variant.Filled" >Get Weather</MudButton>
+<MudButton Color="MudColor.Primary" OnClick="@GetWeather" Variant="Variant.Filled">Get Weather</MudButton>
 
-<div class="grid-container" >
+
+
+<div class="grid-container">
+    
+    <SensorSignal SensorId="A00"/>
+
     @for (int i = 0; i < 100; i++)
     {
         var index = i;
-        <ServerTime @key="index" />
+        <ServerTime @key="index"/>
     }
 </div>
 
@@ -31,14 +37,14 @@
                      Name="Net Profit"
                      SeriesType="SeriesType.Bar"
                      XValue="e => e.Category"
-                     YValue="e=> e.NetProfit" />
+                     YValue="e=> e.NetProfit"/>
 
     <ApexPointSeries TItem="MyData"
                      Items="Data"
                      Name="Revenue"
                      SeriesType="SeriesType.Bar"
                      XValue="e => e.Category"
-                     YValue="e=> e.Revenue" />
+                     YValue="e=> e.Revenue"/>
 </ApexChart>
 
 

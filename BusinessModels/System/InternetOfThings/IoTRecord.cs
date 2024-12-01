@@ -1,5 +1,4 @@
 ﻿using BusinessModels.Base;
-using BusinessModels.System.InternetOfThings.type;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -19,21 +18,12 @@ public class IoTRecord : BaseModelEntry
     /// </summary>
     [BsonElement("sensorId")]
     public string SensorId { get; set; }
-
-    [BsonElement("deviceId")] public string DeviceId { get; set; }
-
+    
     /// <summary>
     /// Sensor data (could be temperature, humidity, etc.)
     /// </summary>
     [BsonElement("sensorData")]
     public float SensorData { get; set; }
-
-    /// <summary>
-    /// What kind of sensor this is (e.g., temperature, humidity)
-    /// </summary>
-    [BsonElement("sensorType")]
-    [BsonRepresentation(BsonType.String)]
-    public IoTSensorType IoTSensorType { get; set; }
 
 
     [BsonDateTimeOptions(DateOnly = true, Kind = DateTimeKind.Utc)]
@@ -47,14 +37,12 @@ public class IoTRecord : BaseModelEntry
     [BsonElement("metadata")]
     public DeviceMetadata? Metadata { get; set; }
 
-    public IoTRecord(string deviceId, string sensorId, float sensorData, IoTSensorType ioTSensorType, DeviceMetadata? metadata = null)
+    public IoTRecord( string sensorId, float sensorData, DeviceMetadata? metadata = null)
     {
         Id = ObjectId.GenerateNewId();
-        DeviceId = deviceId;
         Timestamp = DateTime.UtcNow; // Set to current time by default
         SensorId = sensorId;
         SensorData = sensorData;
-        IoTSensorType = ioTSensorType;
         Metadata = metadata;
         Date = Timestamp.Date;
         Hour = Timestamp.Hour;

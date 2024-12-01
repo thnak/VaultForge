@@ -15,6 +15,7 @@ public static class WebApplicationExtenstion
     {
         app.MapHub<PageCreatorHub>("/PageCreatorHub");
         app.MapHub<ClockHub>("/hubs/clock");
+        app.MapHub<IoTSensorSignalHub>("/hubs/iotSensor");
     }
 
     public static void AddSignalRService(this IServiceCollection services)

@@ -1,5 +1,6 @@
 using Business.Business.Interfaces;
 using Business.Business.Interfaces.FileSystem;
+using Business.Business.Interfaces.InternetOfThings;
 using Business.Business.Interfaces.User;
 using Business.Business.Interfaces.Wiki;
 using Business.Data.Interfaces;
@@ -48,6 +49,7 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
         await QueueInitializationExtendServiceTask<IFolderSystemBusinessLayer>(cancellationToken);
         await QueueInitializationExtendServiceTask<IFaceBusinessLayer>(cancellationToken);
         await QueueInitializationExtendServiceTask<IWikipediaBusinessLayer>(cancellationToken);
+        await QueueInitializationExtendServiceTask<IIoTBusinessLayer>(cancellationToken);
     }
 
     private async Task QueueInitializationExtendServiceTask<TDataLayer>(CancellationToken cancellationToken) where TDataLayer : IExtendService
