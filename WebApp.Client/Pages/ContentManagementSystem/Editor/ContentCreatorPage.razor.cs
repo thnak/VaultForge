@@ -72,7 +72,7 @@ public partial class ContentCreatorPage : ComponentBase, IDisposable, IAsyncDisp
 
     private async Task InitHub()
     {
-        HubConnection = Navigation.ToAbsoluteUri("/PageCreatorHub").InitHub();
+        HubConnection = Navigation.ToAbsoluteUri("/PageCreatorHub").InitConnection();
         await JsRuntime.AddScriptResource();
         HubConnection.On<ArticleModel>("ReceiveMessage", ReceiveArticleData);
         HubConnection.Reconnected += HubConnectionOnReconnected;

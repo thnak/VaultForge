@@ -55,7 +55,7 @@ public partial class ManagementPage : ComponentBase, IAsyncDisposable, IDisposab
     {
         if (firstRender)
         {
-            Hub = Navigation.ToAbsoluteUri("/PageCreatorHub").InitHub(true);
+            Hub = Navigation.ToAbsoluteUri("/PageCreatorHub").InitConnection(true);
             Hub.Reconnected += HubOnReconnected;
             Hub.Reconnecting += HubOnReconnecting;
             await Hub.StartAsync();

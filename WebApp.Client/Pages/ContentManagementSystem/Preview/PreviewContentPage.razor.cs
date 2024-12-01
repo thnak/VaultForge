@@ -68,7 +68,7 @@ public partial class PreviewContentPage : ComponentBase, IDisposable, IAsyncDisp
     {
         if (firstRender)
         {
-            HubConnection = Navigation.ToAbsoluteUri("/PageCreatorHub").InitHub();
+            HubConnection = Navigation.ToAbsoluteUri("/PageCreatorHub").InitConnection();
             HubConnection.On<ArticleModel>("ReceiveMessage", ReceiveArticleData);
             HubConnection.Reconnected += HubConnectionOnReconnected;
             HubConnection.Reconnecting += HubConnectionOnReconnecting;

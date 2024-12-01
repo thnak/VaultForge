@@ -9,7 +9,7 @@ namespace BusinessModels.Utils;
 
 public static class ClientSignalRHubExtensions
 {
-    public static HubConnection InitHub(this Uri uri, bool useMessagePack = true)
+    public static HubConnection InitConnection(this Uri uri, bool useMessagePack = true)
     {
         var hubConnectionBuilder = new HubConnectionBuilder()
             .WithUrl(uri)
@@ -17,30 +17,28 @@ public static class ClientSignalRHubExtensions
 
         if (useMessagePack)
         {
-            hubConnectionBuilder.AddMessagePackProtocol(options =>
-            {
-                options.SerializerOptions = MessagePackSerializerOptions.Standard
-                    .WithResolver(StaticCompositeResolver.Instance)
-                    .WithSecurity(MessagePackSecurity.UntrustedData);
-            });
+            hubConnectionBuilder.AddMessagePackProtocol(options => { options.SerializerOptions = GetMessagePackSerializerOptions(); });
         }
 
         return hubConnectionBuilder.Build();
     }
 
-    public static HubConnection InitConnection(this HubConnectionBuilder builder,[StringSyntax(StringSyntaxAttribute.Uri)] string uri)
+    public static HubConnection InitConnection(this HubConnectionBuilder builder, [StringSyntax(StringSyntaxAttribute.Uri)] string uri)
     {
         return builder.WithUrl(uri)
-            .AddMessagePackProtocol(options =>
-            {
-                options.SerializerOptions =
-                    MessagePackSerializerOptions.Standard.WithResolver(CompositeResolver.Create(StandardResolver.Instance,
-                        NativeDecimalResolver.Instance,
-                        NativeGuidResolver.Instance,
-                        NativeDateTimeResolver.Instance,
-                        MongoObjectIdResolver.Instance));
-            })
+            .AddMessagePackProtocol(options => { options.SerializerOptions = GetMessagePackSerializerOptions(); })
             .WithAutomaticReconnect()
             .Build();
+    }
+
+    public static MessagePackSerializerOptions GetMessagePackSerializerOptions()
+    {
+        return MessagePackSerializerOptions.Standard
+            .WithResolver(CompositeResolver.Create(StandardResolver.Instance,
+                NativeDecimalResolver.Instance,
+                NativeGuidResolver.Instance,
+                NativeDateTimeResolver.Instance,
+                MongoObjectIdResolver.Instance))
+            .WithSecurity(MessagePackSecurity.UntrustedData);
     }
 }

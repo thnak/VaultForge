@@ -103,7 +103,7 @@ public partial class ContentCreatorDialog : ComponentBase, IDisposable, IAsyncDi
     protected override async Task OnParametersSetAsync()
     {
         _article = Article != null ? Article.Copy() : _article;
-        Hub = Navigation.ToAbsoluteUri("/PageCreatorHub").InitHub();
+        Hub = Navigation.ToAbsoluteUri("/PageCreatorHub").InitConnection();
 
         await Hub.StartAsync();
         _fluentValidator = new OrderModelFluentValidator(Hub);

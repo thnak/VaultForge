@@ -1,6 +1,7 @@
 ﻿using Business.SignalRHub.System.Implement;
 using Business.SocketHubs;
 using BusinessModels.Converter;
+using BusinessModels.Utils;
 using MessagePack;
 using MessagePack.Resolvers;
 using Microsoft.AspNetCore.Builder;
@@ -31,11 +32,6 @@ public static class WebApplicationExtenstion
                 options.MaximumReceiveMessageSize = int.MaxValue;
                 options.MaximumParallelInvocationsPerClient = 100;
             }).AddJsonProtocol(options => { options.PayloadSerializerOptions.Converters.Add(new ObjectIdConverter()); })
-            .AddMessagePackProtocol(options =>
-            {
-                options.SerializerOptions = MessagePackSerializerOptions.Standard
-                    .WithResolver(StaticCompositeResolver.Instance)
-                    .WithSecurity(MessagePackSecurity.UntrustedData);
-            });
+            .AddMessagePackProtocol(options => { options.SerializerOptions = ClientSignalRHubExtensions.GetMessagePackSerializerOptions(); });
     }
 }
