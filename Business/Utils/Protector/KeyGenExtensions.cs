@@ -2,7 +2,7 @@
 using System.Text;
 using MongoDB.Bson;
 
-namespace Protector.Utils;
+namespace Business.Utils.Protector;
 
 public static class KeyGenExtensions
 {

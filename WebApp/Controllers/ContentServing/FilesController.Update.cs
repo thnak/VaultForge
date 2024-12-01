@@ -1,9 +1,9 @@
 ﻿using Business.Models;
+using Business.Utils.Protector;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Protector.Utils;
 
 namespace WebApp.Controllers.ContentServing;
 

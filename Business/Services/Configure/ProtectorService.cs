@@ -51,6 +51,7 @@ public static class ProtectorService
                     EncryptionAlgorithm = EncryptionAlgorithm.AES_256_GCM,
                     ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
                 };
+                
                 options.AutoGenerateKeys = true;
                 options.XmlRepository = new MongoDbXmlKeyProtectorRepository(factory);
             });

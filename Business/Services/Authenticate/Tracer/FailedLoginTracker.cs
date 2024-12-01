@@ -1,4 +1,4 @@
-namespace Protector.Tracer;
+namespace Business.Services.Authenticate.Tracer;
 
 public class FailedLoginTracker
 {

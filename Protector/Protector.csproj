@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
         <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="9.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="9.0.0" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
@@ -25,6 +26,11 @@
 
     <ItemGroup>
         <ProjectReference Include="..\BusinessModels\BusinessModels.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models\" />
+      <Folder Include="Utils\" />
     </ItemGroup>
 
 </Project>

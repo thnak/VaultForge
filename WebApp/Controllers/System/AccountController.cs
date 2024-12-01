@@ -3,6 +3,7 @@ using System.Net.Mime;
 using System.Security.Claims;
 using Business.Authenticate.TokenProvider;
 using Business.Business.Interfaces.User;
+using Business.Utils.Protector;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using BusinessModels.Secure;
@@ -14,7 +15,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using Protector;
-using Protector.Utils;
 
 namespace WebApp.Controllers.System;
 

@@ -45,10 +45,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="use utc for backend">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="introduct data protection">
+      <change afterPath="$PROJECT_DIR$/Business/Utils/Protector/DataProtectorExtensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/User/UserBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/User/UserBusinessLayer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/People/UserInfoModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/People/UserInfoModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/StorageSpace/Utils/RaidStorageExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/StorageSpace/Utils/RaidStorageExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/KeyManagement/MongoDbXmlKeyProtectorRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/KeyManagement/MongoDbXmlKeyProtectorRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/AuthenticateService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/AuthenticateService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/ProtectorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/ProtectorService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Business/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Protector/KeyProvider/RsaKeyProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Authenticate/KeyProvider/RsaKeyProvider.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Protector/Models/DataProtectionKey.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Models/Authenticate/DataProtectionKey.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Protector/Protector.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Protector/Protector.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Protector/Tracer/FailedLoginTracker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Authenticate/Tracer/FailedLoginTracker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Protector/Utils/AuthorizationPolicyExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Utils/Protector/AuthorizationPolicyExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Protector/Utils/KeyGenExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Utils/Protector/KeyGenExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Protector/Utils/StringExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Utils/Protector/StringExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Protector/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Protector/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Update.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Update.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/System/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/System/AccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/packages.lock.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -115,6 +141,7 @@
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Security.Cryptography/src/System/Security/Cryptography/X509Certificates/CertificatePal.Windows.Import.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Text.Json/src/System/Text/Json/Serialization/JsonConverterOfT.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0fb7a5f343ed4578a15c716986a3f17950c00/7a/d308585c/NativeDateTimeResolver.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f144f137e8c44478ad03d647d3e83e8771910/68/2e705602/EncryptionAlgorithm.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2565b9d99fdde488bc7801b84387b2cc864959cfb63212e1ff576fc9c6bb7e/CancellationToken.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2854ce6d56c18d0d837d3a3ef9c4f2c7c77691fa3528c8394986ac7ce7719/StackFrameIterator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5eecc2d22de68b16cb5f68b3e333591fc6c5f58cfc4185587e5dfe96213947/IMongoIndexManager.cs" root0="FORCE_HIGHLIGHTING" />
@@ -125,7 +152,9 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d4eb219188a145d3671fd144557c775d74713258e0be5fe65cf37ba781c324e/ExclusiveConnectionPool.Helpers.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d5f17ec831d849c96437c5a6d46c374f745c4aabb107eb92969a3508898ed21/SemaphoreSlimSignalable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d6602ff1ddf35b711bc3b983d596213d7dcb8daab122c98f3e6db39b5daca137/DropIndexOperation.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/People/UserInfoModel.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/Utils/ClientSignalRHubExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/Utils/ClientSignalRHubExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
@@ -706,15 +735,7 @@
       <workItem from="1732958562782" duration="1322000" />
       <workItem from="1732963679364" duration="1433000" />
       <workItem from="1733024031071" duration="459000" />
-      <workItem from="1733026640873" duration="14338000" />
-    </task>
-    <task id="LOCAL-00353" summary=".">
-      <option name="closed" value="true" />
-      <created>1730649822356</created>
-      <option name="number" value="00353" />
-      <option name="presentableId" value="LOCAL-00353" />
-      <option name="project" value="LOCAL" />
-      <updated>1730649822356</updated>
+      <workItem from="1733026640873" duration="18063000" />
     </task>
     <task id="LOCAL-00354" summary="add more service">
       <option name="closed" value="true" />
@@ -1100,7 +1121,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733052301828</updated>
     </task>
-    <option name="localTasksCounter" value="402" />
+    <task id="LOCAL-00402" summary="introduct data protection">
+      <option name="closed" value="true" />
+      <created>1733053977253</created>
+      <option name="number" value="00402" />
+      <option name="presentableId" value="LOCAL-00402" />
+      <option name="project" value="LOCAL" />
+      <updated>1733053977253</updated>
+    </task>
+    <option name="localTasksCounter" value="403" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1131,7 +1160,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="update branch" />
     <MESSAGE value="fix index" />
     <MESSAGE value="fix base uri" />
     <MESSAGE value="update BrainNet.csproj" />
@@ -1156,7 +1184,8 @@
     <MESSAGE value="update" />
     <MESSAGE value="message pack not support dateTime with kind" />
     <MESSAGE value="use utc for backend" />
-    <option name="LAST_COMMIT_MESSAGE" value="use utc for backend" />
+    <MESSAGE value="introduct data protection" />
+    <option name="LAST_COMMIT_MESSAGE" value="introduct data protection" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

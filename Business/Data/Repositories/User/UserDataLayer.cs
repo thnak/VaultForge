@@ -4,13 +4,13 @@ using Business.Data.Interfaces;
 using Business.Data.Interfaces.User;
 using Business.Models;
 using Business.Utils;
+using Business.Utils.Protector;
 using BusinessModels.General.Results;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Protector.Utils;
 
 namespace Business.Data.Repositories.User;
 

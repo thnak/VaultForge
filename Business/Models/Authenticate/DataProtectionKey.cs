@@ -1,6 +1,6 @@
 using MongoDB.Bson;
 
-namespace Protector.Models;
+namespace Business.Models.Authenticate;
 
 public class DataProtectionKey
 {

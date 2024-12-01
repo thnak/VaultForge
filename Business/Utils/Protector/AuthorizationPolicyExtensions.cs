@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 
-namespace Protector.Utils;
+namespace Business.Utils.Protector;
 
 public static class AuthorizationPolicyExtensions
 {

@@ -116,6 +116,11 @@
           "System.Threading.Tasks.Extensions": "4.5.4"
         }
       },
+      "BCrypt.Net-Next": {
+        "type": "Transitive",
+        "resolved": "4.0.3",
+        "contentHash": "W+U9WvmZQgi5cX6FS5GDtDoPzUCV4LkBLkywq/kRZhuDwcbavOzcDAr3LXJFqHUi952Yj3LEYoWW0jbEUQChsA=="
+      },
       "Blazor-ApexCharts": {
         "type": "Transitive",
         "resolved": "4.0.1",
@@ -2387,6 +2392,7 @@
       "protector": {
         "type": "Project",
         "dependencies": {
+          "BCrypt.Net-Next": "[4.0.3, )",
           "BusinessModels": "[1.0.0, )",
           "Microsoft.AspNetCore.Authorization": "[9.0.0, )",
           "Microsoft.AspNetCore.DataProtection": "[9.0.0, )",

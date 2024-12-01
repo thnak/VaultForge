@@ -14,6 +14,8 @@ public class AppSettings
     public IoTCircuitBreaker IoTCircuitBreaker { get; set; } = new();
     public IoTRequestQueueConfig IoTRequestQueueConfig { get; set; } = new();
     public AppCertificate AppCertificate { get; set; } = new();
+    
+    public Authenticate Authenticate { get; set; } = new();
 }
 
 public class BackgroundQueue
@@ -77,6 +79,11 @@ public class AppCertificate
 {
     public string FilePath { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
+}
+
+public class Authenticate()
+{
+    public string Pepper { get; set; } = string.Empty;
 }
 
 public static class AppSettingsConverter

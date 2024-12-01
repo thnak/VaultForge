@@ -4,13 +4,13 @@ using System.Security.Claims;
 using Business.Business.Interfaces.User;
 using Business.Data.Interfaces.User;
 using Business.Models;
+using Business.Utils.Protector;
 using BusinessModels.General.Results;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using BusinessModels.Secure;
 using BusinessModels.Utils;
 using MongoDB.Driver;
-using Protector.Utils;
 
 namespace Business.Business.Repositories.User;
 

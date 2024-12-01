@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using Business.Data.StorageSpace;
+using Business.Utils.Protector;
 using BusinessModels.General.EnumModel;
 using BusinessModels.People;
 using BusinessModels.Resources;
@@ -12,7 +13,6 @@ using BusinessModels.WebContent;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
-using Protector.Utils;
 
 namespace WebApp.Controllers.ContentServing;
 

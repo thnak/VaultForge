@@ -25,9 +25,16 @@ public class ApplicationConfiguration
 
         InitCertificateConfig(appSettings);
 
+        InitAuthenticateConfig(appSettings);
+
         InitVideoEncodeConfig(appSettings);
 
         DisplayGroupedConfigurations(InitLogoAsciiArt(), Configs.ConvertToDictionary());
+    }
+
+    private void InitAuthenticateConfig(IOptions<AppSettings> appSettings)
+    {
+        Configs.Authenticate.Pepper = GetEnvironmentVariable("AuthenticatePepper", appSettings.Value.Authenticate.Pepper);
     }
 
     private void InitVideoEncodeConfig(IOptions<AppSettings> appSettings)

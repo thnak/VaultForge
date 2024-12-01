@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace Protector.KeyProvider;
+namespace Business.Authenticate.KeyProvider;
 
 /// <summary>
 ///     Cung cấp khóa công khai

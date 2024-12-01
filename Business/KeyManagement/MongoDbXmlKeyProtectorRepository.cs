@@ -1,9 +1,9 @@
 using System.Xml.Linq;
 using Business.Data.Interfaces;
+using Business.Models.Authenticate;
 using Microsoft.AspNetCore.DataProtection.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
-using Protector.Models;
 
 namespace Business.KeyManagement;
 

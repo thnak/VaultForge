@@ -7,6 +7,7 @@ using Business.Models;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.Utils;
 using Business.Utils.ExpressionExtensions;
+using Business.Utils.Protector;
 using Business.Utils.StringExtensions;
 using BusinessModels.General.Results;
 using BusinessModels.Resources;
@@ -16,7 +17,6 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Protector.Utils;
 
 namespace Business.Data.Repositories.FileSystem;
 
