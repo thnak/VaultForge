@@ -34,6 +34,7 @@
 @inject IDialogService DialogService
 @inject IStringLocalizer<AppLang> LangDict
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Services
 
 @inject IHttpContextAccessor HttpContextAccessor
 
@@ -42,3 +43,6 @@
 @inject IUserBusinessLayer UserService
 @inject IFileSystemBusinessLayer FileSystemService
 @inject IFolderSystemBusinessLayer FolderSystemService
+
+@inject IBrowserViewportService BrowserViewportService
+@inject LazyAssemblyLoader AssemblyLoader;

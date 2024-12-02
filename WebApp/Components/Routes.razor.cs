@@ -8,7 +8,7 @@ using MudBlazor.Services;
 using WebApp.Client.Components.ConfirmDialog;
 using WebApp.Client.Models;
 
-namespace WebApp.Client;
+namespace WebApp.Components;
 
 public partial class Routes(ILogger<Routes> logger) : ComponentBase, IDisposable
 {
