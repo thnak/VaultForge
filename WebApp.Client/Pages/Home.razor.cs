@@ -1,6 +1,7 @@
 ﻿using ApexCharts;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using MudBlazor;
 using WebApp.Client.Utils;
 
 namespace WebApp.Client.Pages;

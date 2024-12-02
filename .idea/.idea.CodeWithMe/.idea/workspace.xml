@@ -45,10 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="wrong time">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/WebApp.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/WebApp.Client.csproj" afterDir="false" />
-    </list>
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
@@ -710,15 +707,7 @@
       <workItem from="1733026640873" duration="20657000" />
       <workItem from="1733070819184" duration="9104000" />
       <workItem from="1733101676869" duration="6632000" />
-      <workItem from="1733114626732" duration="6283000" />
-    </task>
-    <task id="LOCAL-00370" summary="fix base uri">
-      <option name="closed" value="true" />
-      <created>1731167075517</created>
-      <option name="number" value="00370" />
-      <option name="presentableId" value="LOCAL-00370" />
-      <option name="project" value="LOCAL" />
-      <updated>1731167075517</updated>
+      <workItem from="1733114626732" duration="6344000" />
     </task>
     <task id="LOCAL-00371" summary="update BrainNet.csproj">
       <option name="closed" value="true" />
@@ -1104,7 +1093,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733120947932</updated>
     </task>
-    <option name="localTasksCounter" value="419" />
+    <task id="LOCAL-00419" summary="aot">
+      <option name="closed" value="true" />
+      <created>1733121504922</created>
+      <option name="number" value="00419" />
+      <option name="presentableId" value="LOCAL-00419" />
+      <option name="project" value="LOCAL" />
+      <updated>1733121504922</updated>
+    </task>
+    <option name="localTasksCounter" value="420" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1135,7 +1132,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="small update" />
     <MESSAGE value="update alias" />
     <MESSAGE value="update model" />
     <MESSAGE value="update config" />
@@ -1160,7 +1156,8 @@
     <MESSAGE value="disable AOT" />
     <MESSAGE value="roll back to client side, simplify project" />
     <MESSAGE value="wrong time" />
-    <option name="LAST_COMMIT_MESSAGE" value="wrong time" />
+    <MESSAGE value="aot" />
+    <option name="LAST_COMMIT_MESSAGE" value="aot" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
