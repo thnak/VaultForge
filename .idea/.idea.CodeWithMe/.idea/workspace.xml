@@ -45,17 +45,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update service">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IoTRequestQueueHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Utils/BusinessExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Utils/BusinessExtension.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Business/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp1/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Protector/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Protector/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IotRequestQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IotRequestQueue.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Utils/ClientSignalRHubExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/ClientSignalRHubExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -716,23 +710,7 @@
       <workItem from="1733024031071" duration="459000" />
       <workItem from="1733026640873" duration="20657000" />
       <workItem from="1733070819184" duration="9104000" />
-      <workItem from="1733101676869" duration="2600000" />
-    </task>
-    <task id="LOCAL-00361" summary="add polly, iot batch insert">
-      <option name="closed" value="true" />
-      <created>1731036860361</created>
-      <option name="number" value="00361" />
-      <option name="presentableId" value="LOCAL-00361" />
-      <option name="project" value="LOCAL" />
-      <updated>1731036860361</updated>
-    </task>
-    <task id="LOCAL-00362" summary="update iot queue service">
-      <option name="closed" value="true" />
-      <created>1731043701748</created>
-      <option name="number" value="00362" />
-      <option name="presentableId" value="LOCAL-00362" />
-      <option name="project" value="LOCAL" />
-      <updated>1731043701748</updated>
+      <workItem from="1733101676869" duration="5761000" />
     </task>
     <task id="LOCAL-00363" summary="roll back code">
       <option name="closed" value="true" />
@@ -1110,7 +1088,23 @@
       <option name="project" value="LOCAL" />
       <updated>1733103596561</updated>
     </task>
-    <option name="localTasksCounter" value="410" />
+    <task id="LOCAL-00410" summary="fix wrong url">
+      <option name="closed" value="true" />
+      <created>1733104557251</created>
+      <option name="number" value="00410" />
+      <option name="presentableId" value="LOCAL-00410" />
+      <option name="project" value="LOCAL" />
+      <updated>1733104557251</updated>
+    </task>
+    <task id="LOCAL-00411" summary="update">
+      <option name="closed" value="true" />
+      <created>1733104704097</created>
+      <option name="number" value="00411" />
+      <option name="presentableId" value="LOCAL-00411" />
+      <option name="project" value="LOCAL" />
+      <updated>1733104704097</updated>
+    </task>
+    <option name="localTasksCounter" value="412" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1141,7 +1135,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="refactor solution to support docker" />
     <MESSAGE value="update appsettings.json" />
     <MESSAGE value="fix OOM" />
     <MESSAGE value="add missing dependency, refactor" />
@@ -1155,7 +1148,6 @@
     <MESSAGE value="show" />
     <MESSAGE value="shit" />
     <MESSAGE value="restyle" />
-    <MESSAGE value="update" />
     <MESSAGE value="message pack not support dateTime with kind" />
     <MESSAGE value="use utc for backend" />
     <MESSAGE value="introduct data protection" />
@@ -1166,7 +1158,9 @@
     <MESSAGE value="remove anti facet" />
     <MESSAGE value="update page" />
     <MESSAGE value="update service" />
-    <option name="LAST_COMMIT_MESSAGE" value="update service" />
+    <MESSAGE value="fix wrong url" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

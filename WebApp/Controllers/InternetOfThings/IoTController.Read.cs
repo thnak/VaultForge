@@ -13,6 +13,13 @@ public partial class IoTController
         var total = requestQueueHostedService.GetTotalRequests(device);
         return Ok(total);
     }
+    
+    [HttpGet("api/v1/get-last-record/{device}")]
+    public IActionResult GetLastRecord([FromQuery] string device)
+    {
+        var total = requestQueueHostedService.GetLastRecord(device);
+        return Ok(total);
+    }
 
     [HttpPost("compute-record")]
     public async Task<IActionResult> SummaryRecord([FromForm] DateTime startDate, [FromForm] DateTime endDate)

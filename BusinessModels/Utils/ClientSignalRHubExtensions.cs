@@ -9,6 +9,8 @@ namespace BusinessModels.Utils;
 
 public static class ClientSignalRHubExtensions
 {
+    public static int[] ReconnectPeriod = [10, 10, 10, 10, 30, 30, 60, 60, 60, 60, 60, 60];
+
     public static HubConnection InitConnection(this Uri uri, bool useMessagePack = true)
     {
         var hubConnectionBuilder = new HubConnectionBuilder()
@@ -25,10 +27,12 @@ public static class ClientSignalRHubExtensions
 
     public static HubConnection InitConnection(this HubConnectionBuilder builder, [StringSyntax(StringSyntaxAttribute.Uri)] string uri)
     {
-        return builder.WithUrl(uri)
+        var hub = builder.WithUrl(uri)
             .AddMessagePackProtocol(options => { options.SerializerOptions = GetMessagePackSerializerOptions(); })
-            .WithAutomaticReconnect()
+            .WithAutomaticReconnect(ReconnectPeriod.Select(x => TimeSpan.FromSeconds(x)).ToArray())
             .Build();
+
+        return hub;
     }
 
     public static MessagePackSerializerOptions GetMessagePackSerializerOptions()

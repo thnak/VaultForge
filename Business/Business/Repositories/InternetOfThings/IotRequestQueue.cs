@@ -15,8 +15,13 @@ public class IotRequestQueue : IIotRequestQueue
 {
     private readonly Channel<IoTRecord> _channel;
     private long _dailyRequestCount; // Total requests for the day
-    private readonly ConcurrentDictionary<string, ulong> _sensorRequestCounts; // Per-sensor request counts
-    private DateTime _currentDay; // Tracks the current day
+
+    /// <summary>
+    /// Per-sensor request counts
+    /// </summary>
+    private readonly ConcurrentDictionary<string, ulong> _sensorRequestCounts;
+
+    private readonly ConcurrentDictionary<string, float> _sensorLastValues;
     private readonly Lock _counterLock = new(); // Lock for resetting daily counter
     private readonly IHubContext<IoTSensorSignalHub, IIoTSensorSignal> _hub;
     private readonly IParallelBackgroundTaskQueue _backgroundTaskQueue;
@@ -29,6 +34,7 @@ public class IotRequestQueue : IIotRequestQueue
             FullMode = BoundedChannelFullMode.DropOldest,
         };
         _sensorRequestCounts = [];
+        _sensorLastValues = [];
         _channel = Channel.CreateBounded<IoTRecord>(boundedChannelOptions);
         _hub = hubContext;
         _backgroundTaskQueue = backgroundTaskQueue;
@@ -41,6 +47,7 @@ public class IotRequestQueue : IIotRequestQueue
             var result = await _channel.Writer.WaitToWriteAsync(cancellationToken) && _channel.Writer.TryWrite(data);
             IncrementDailyRequestCount();
             await IncrementSensorRequestCount(data.SensorId, cancellationToken);
+            await UpdateSensorLastValue(data.SensorId, data.SensorData, cancellationToken);
             return result;
         }
         catch (OperationCanceledException)
@@ -82,6 +89,12 @@ public class IotRequestQueue : IIotRequestQueue
         return count;
     }
 
+    public float GetLastRecord(string deviceId)
+    {
+        _sensorLastValues.TryGetValue(deviceId, out var value);
+        return value;
+    }
+
     public void SetTotalRequests(string deviceId, ulong totalRequests)
     {
         _sensorRequestCounts.AddOrUpdate(deviceId, totalRequests, (_, _) => totalRequests);
@@ -114,6 +127,16 @@ public class IotRequestQueue : IIotRequestQueue
         {
             if (_sensorRequestCounts.TryGetValue(sensorId, out var count))
                 await _hub.Clients.Groups(sensorId).ReceiveCount(count);
+        }, cancellationToken);
+    }
+
+    private async Task UpdateSensorLastValue(string sensorId, float value, CancellationToken cancellationToken = default)
+    {
+        _sensorLastValues.AddOrUpdate(sensorId, value, (_, _) => value);
+        await _backgroundTaskQueue.QueueBackgroundWorkItemAsync(async _ =>
+        {
+            if (_sensorLastValues.TryGetValue(sensorId, out var count))
+                await _hub.Clients.Groups(sensorId).ReceiveValue(count);
         }, cancellationToken);
     }
 }

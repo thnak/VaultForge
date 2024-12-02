@@ -9,6 +9,7 @@ public partial class SensorSignal(ILogger<SensorSignal> logger) : ComponentBase,
     [Parameter] public string SensorId { get; set; } = string.Empty;
     private HubConnection? HubConnection { get; set; }
     private ulong CountValue { get; set; }
+    private float Value { get; set; }
     private string ElementId { get; set; } = Guid.NewGuid().ToString();
     private CancellationTokenSource CancellationTokenSource { get; set; } = new();
 
@@ -22,12 +23,37 @@ public partial class SensorSignal(ILogger<SensorSignal> logger) : ComponentBase,
                 CountValue = value.Data;
             HubConnection = new HubConnectionBuilder().InitConnection(Navigation.BaseUri + "hubs/iotSensor");
             HubConnection.On<ulong>("ReceiveCount", ShowValue);
+            HubConnection.On<float>("ReceiveValue", ReceiveValue);
             HubConnection.On<string>("ReceiveMessage", ReceiveMessage);
             await HubConnection.StartAsync(cancellationToken);
+            EventListener.PageHideEventAsync += PageHideEvent;
+            EventListener.PageShowEventAsync += PageShowEvent;
             await HubConnection.InvokeAsync("JoinSensorGroup", SensorId, cancellationToken: cancellationToken);
         }
 
         await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private Task ReceiveValue(float arg)
+    {
+        Value = arg;
+        return InvokeAsync(StateHasChanged);
+    }
+
+    private async Task PageShowEvent()
+    {
+        if (HubConnection != null)
+        {
+            await HubConnection.StartAsync();
+        }
+    }
+
+    private async Task PageHideEvent()
+    {
+        if (HubConnection != null)
+        {
+            await HubConnection.StopAsync();
+        }
     }
 
     private Task ReceiveMessage(string arg)
@@ -51,6 +77,8 @@ public partial class SensorSignal(ILogger<SensorSignal> logger) : ComponentBase,
             await HubConnection.DisposeAsync();
         }
 
+        EventListener.PageHideEventAsync -= PageHideEvent;
+        EventListener.PageShowEventAsync -= PageShowEvent;
 
         await CancellationTokenSource.CancelAsync();
         CancellationTokenSource.Dispose();

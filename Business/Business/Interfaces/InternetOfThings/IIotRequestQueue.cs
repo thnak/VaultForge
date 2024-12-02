@@ -11,6 +11,7 @@ public interface IIotRequestQueue
     bool TryRead([MaybeNullWhen(false)] out IoTRecord item);
     long GetTotalRequests();
     ulong GetTotalRequests(string deviceId);
+    float GetLastRecord(string deviceId);
     void SetTotalRequests(string deviceId, ulong totalRequests);
     void IncrementTotalRequests(string deviceId);
 }
