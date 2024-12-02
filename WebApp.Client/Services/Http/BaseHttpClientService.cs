@@ -1,8 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
+using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using BusinessModels.Utils;
-using BusinessModels.WebContent;
 using Microsoft.AspNetCore.Components;
 
 namespace WebApp.Client.Services.Http;
@@ -33,9 +33,9 @@ public class BaseHttpClientService
         return HttpClient?.BaseAddress?.ToString() ?? string.Empty;
     }
 
-    public async Task<ResponseData<T>> PostAsync<T>([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, HttpContent? content = default, CancellationToken cancellationToken = default, bool forceRedirect = true)
+    public async Task<ResponseDataResult<T>> PostAsync<T>([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, HttpContent? content = default, CancellationToken cancellationToken = default, bool forceRedirect = true)
     {
-        var responseData = new ResponseData<T>();
+        var responseData = new ResponseDataResult<T>();
 
         try
         {
@@ -71,9 +71,9 @@ public class BaseHttpClientService
         return responseData;
     }
 
-    public async Task<ResponseData<T>> PutAsync<T>([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, HttpContent? content = default, CancellationToken cancellationToken = default, bool forceRedirect = true)
+    public async Task<ResponseDataResult<T>> PutAsync<T>([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, HttpContent? content = default, CancellationToken cancellationToken = default, bool forceRedirect = true)
     {
-        var responseData = new ResponseData<T>();
+        var responseData = new ResponseDataResult<T>();
 
         try
         {
@@ -108,9 +108,9 @@ public class BaseHttpClientService
         return responseData;
     }
 
-    public async Task<ResponseData<T>> GetAsync<T>([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, CancellationToken cancellationToken = default, bool forceRedirect = true)
+    public async Task<ResponseDataResult<T>> GetAsync<T>([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, CancellationToken cancellationToken = default, bool forceRedirect = true)
     {
-        var responseData = new ResponseData<T>();
+        var responseData = new ResponseDataResult<T>();
 
         try
         {
@@ -145,9 +145,9 @@ public class BaseHttpClientService
         return responseData;
     }
 
-    public async Task<ResponseData<T>> DeleteAsync<T>([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, CancellationToken cancellationToken = default, bool forceRedirect = true)
+    public async Task<ResponseDataResult<T>> DeleteAsync<T>([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, CancellationToken cancellationToken = default, bool forceRedirect = true)
     {
-        var responseData = new ResponseData<T>();
+        var responseData = new ResponseDataResult<T>();
 
         try
         {
