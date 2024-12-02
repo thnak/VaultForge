@@ -17,7 +17,11 @@ public class IoTSensorSignalHub : Hub<IIoTSensorSignal>
         await Clients.Groups(sensorId).ReceiveMessage($"Left group {sensorId}");
     }
 
-    // Example: Broadcast data to all clients in a specific sensor group
+    /// <summary>
+    /// Broadcast data to all clients in a specific sensor group
+    /// </summary>
+    /// <param name="sensorId"></param>
+    /// <param name="message"></param>
     public async Task SendMessageToGroup(string sensorId, string message)
     {
         await Clients.Group(sensorId).ReceiveMessage(message);

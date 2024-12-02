@@ -7,6 +7,13 @@ namespace WebApp.Controllers.InternetOfThings;
 
 public partial class IoTController
 {
+    [HttpGet("api/v1/get-count/{device}")]
+    public IActionResult GetCount([FromQuery] string device)
+    {
+        var total = requestQueueHostedService.GetTotalRequests(device);
+        return Ok(total);
+    }
+
     [HttpPost("compute-record")]
     public async Task<IActionResult> SummaryRecord([FromForm] DateTime startDate, [FromForm] DateTime endDate)
     {

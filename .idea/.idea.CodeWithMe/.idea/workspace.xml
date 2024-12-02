@@ -45,7 +45,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/SignalRHub/System/Implement/IoTSensorSignalHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/SignalRHub/System/Implement/IoTSensorSignalHub.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Business/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConsoleApp1/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Protector/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Protector/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/IoTController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/IoTController.Read.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/packages.lock.json" afterDir="false" />
+    </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
@@ -122,13 +133,9 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d4eb219188a145d3671fd144557c775d74713258e0be5fe65cf37ba781c324e/ExclusiveConnectionPool.Helpers.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d5f17ec831d849c96437c5a6d46c374f745c4aabb107eb92969a3508898ed21/SemaphoreSlimSignalable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d6602ff1ddf35b711bc3b983d596213d7dcb8daab122c98f3e6db39b5daca137/DropIndexOperation.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/People/UserInfoModel.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/Utils/ClientSignalRHubExtensions.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/Utils/ClientSignalRHubExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Components/Clock/ServerTime.razor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -136,7 +143,7 @@
 }</component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="SWEA" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -224,7 +231,7 @@
       <window_info anchor="right" id="Maven" order="4" weight="0.25" />
     </layout>
   </component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: no-browser">
+  <component name="RunManager" selected="Publish to folder.Unnamed">
     <configuration name="ResApi" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/ResApi/bin/Release/net9.0/linux-x64/publish" target_framework="net9.0" uuid_high="5905353364384007298" uuid_low="-8333852158807631372" />
       <method v="2" />
@@ -706,38 +713,8 @@
       <workItem from="1732963679364" duration="1433000" />
       <workItem from="1733024031071" duration="459000" />
       <workItem from="1733026640873" duration="20657000" />
-    </task>
-    <task id="LOCAL-00355" summary="change vector service to use inside bl">
-      <option name="closed" value="true" />
-      <created>1730855343643</created>
-      <option name="number" value="00355" />
-      <option name="presentableId" value="LOCAL-00355" />
-      <option name="project" value="LOCAL" />
-      <updated>1730855343643</updated>
-    </task>
-    <task id="LOCAL-00356" summary="refactor service">
-      <option name="closed" value="true" />
-      <created>1730871648721</created>
-      <option name="number" value="00356" />
-      <option name="presentableId" value="LOCAL-00356" />
-      <option name="project" value="LOCAL" />
-      <updated>1730871648721</updated>
-    </task>
-    <task id="LOCAL-00357" summary="add init data for vector data">
-      <option name="closed" value="true" />
-      <created>1730887063372</created>
-      <option name="number" value="00357" />
-      <option name="presentableId" value="LOCAL-00357" />
-      <option name="project" value="LOCAL" />
-      <updated>1730887063372</updated>
-    </task>
-    <task id="LOCAL-00358" summary="fix some issue with init VectorDb.cs">
-      <option name="closed" value="true" />
-      <created>1730909452529</created>
-      <option name="number" value="00358" />
-      <option name="presentableId" value="LOCAL-00358" />
-      <option name="project" value="LOCAL" />
-      <updated>1730909452530</updated>
+      <workItem from="1733070819184" duration="9104000" />
+      <workItem from="1733101676869" duration="811000" />
     </task>
     <task id="LOCAL-00359" summary="small update for stack queue service">
       <option name="closed" value="true" />
@@ -1099,7 +1076,39 @@
       <option name="project" value="LOCAL" />
       <updated>1733068663181</updated>
     </task>
-    <option name="localTasksCounter" value="404" />
+    <task id="LOCAL-00404" summary="update SignalrClientManager.cs, IoTSensorSignalHub.cs">
+      <option name="closed" value="true" />
+      <created>1733076324620</created>
+      <option name="number" value="00404" />
+      <option name="presentableId" value="LOCAL-00404" />
+      <option name="project" value="LOCAL" />
+      <updated>1733076324620</updated>
+    </task>
+    <task id="LOCAL-00405" summary="add more element">
+      <option name="closed" value="true" />
+      <created>1733076680845</created>
+      <option name="number" value="00405" />
+      <option name="presentableId" value="LOCAL-00405" />
+      <option name="project" value="LOCAL" />
+      <updated>1733076680845</updated>
+    </task>
+    <task id="LOCAL-00406" summary="fix wrong dependency injection">
+      <option name="closed" value="true" />
+      <created>1733077504950</created>
+      <option name="number" value="00406" />
+      <option name="presentableId" value="LOCAL-00406" />
+      <option name="project" value="LOCAL" />
+      <updated>1733077504950</updated>
+    </task>
+    <task id="LOCAL-00407" summary="remove anti facet">
+      <option name="closed" value="true" />
+      <created>1733078927878</created>
+      <option name="number" value="00407" />
+      <option name="presentableId" value="LOCAL-00407" />
+      <option name="project" value="LOCAL" />
+      <updated>1733078927879</updated>
+    </task>
+    <option name="localTasksCounter" value="408" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1130,10 +1139,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fix index" />
-    <MESSAGE value="fix base uri" />
-    <MESSAGE value="update BrainNet.csproj" />
-    <MESSAGE value="fix VectorDb.cs key index, refactor, add 2 new AI service for face matching" />
     <MESSAGE value="fix download script, fix wrong XorParity compute" />
     <MESSAGE value="refactor solution to support docker" />
     <MESSAGE value="update appsettings.json" />
@@ -1155,7 +1160,11 @@
     <MESSAGE value="use utc for backend" />
     <MESSAGE value="introduct data protection" />
     <MESSAGE value="refactor" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor" />
+    <MESSAGE value="update SignalrClientManager.cs, IoTSensorSignalHub.cs" />
+    <MESSAGE value="add more element" />
+    <MESSAGE value="fix wrong dependency injection" />
+    <MESSAGE value="remove anti facet" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove anti facet" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
