@@ -45,22 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="disable AOT">
-      <change beforePath="$PROJECT_DIR$/Business/Authenticate/Cookie/CustomCookieAuthenticationOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Authenticate/Cookie/CustomCookieAuthenticationOptions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Authenticate/TokenProvider/JsonWebTokenCertificateProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Authenticate/TokenProvider/JsonWebTokenCertificateProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/AuthenticateService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/AuthenticateService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/ProtectorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/ProtectorService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Protector/Protector.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Protector/ProtectorTime.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Constants/Protector/ProtectorTime.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Protector/packages.lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/System/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/System/AccountController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/packages.lock.json" afterDir="false" />
-    </list>
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="roll back to client side, simplify project" />
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
@@ -721,15 +706,7 @@
       <workItem from="1733026640873" duration="20657000" />
       <workItem from="1733070819184" duration="9104000" />
       <workItem from="1733101676869" duration="6632000" />
-      <workItem from="1733114626732" duration="4928000" />
-    </task>
-    <task id="LOCAL-00368" summary="update branch">
-      <option name="closed" value="true" />
-      <created>1731145723459</created>
-      <option name="number" value="00368" />
-      <option name="presentableId" value="LOCAL-00368" />
-      <option name="project" value="LOCAL" />
-      <updated>1731145723460</updated>
+      <workItem from="1733114626732" duration="5410000" />
     </task>
     <task id="LOCAL-00369" summary="fix index">
       <option name="closed" value="true" />
@@ -1115,7 +1092,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733119687835</updated>
     </task>
-    <option name="localTasksCounter" value="417" />
+    <task id="LOCAL-00417" summary="roll back to client side, simplify project">
+      <option name="closed" value="true" />
+      <created>1733120181540</created>
+      <option name="number" value="00417" />
+      <option name="presentableId" value="LOCAL-00417" />
+      <option name="project" value="LOCAL" />
+      <updated>1733120181540</updated>
+    </task>
+    <option name="localTasksCounter" value="418" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1146,7 +1131,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="remove unused pack" />
     <MESSAGE value="limit extremely stream read issue" />
     <MESSAGE value="small update" />
     <MESSAGE value="update alias" />
@@ -1171,7 +1155,8 @@
     <MESSAGE value="update" />
     <MESSAGE value="move to auto mode" />
     <MESSAGE value="disable AOT" />
-    <option name="LAST_COMMIT_MESSAGE" value="disable AOT" />
+    <MESSAGE value="roll back to client side, simplify project" />
+    <option name="LAST_COMMIT_MESSAGE" value="roll back to client side, simplify project" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
