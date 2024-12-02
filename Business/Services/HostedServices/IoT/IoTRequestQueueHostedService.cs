@@ -6,7 +6,7 @@ using BusinessModels.System.InternetOfThings;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Business.Business.Repositories.InternetOfThings;
+namespace Business.Services.HostedServices.IoT;
 
 public class IoTRequestQueueHostedService(
     ApplicationConfiguration options,

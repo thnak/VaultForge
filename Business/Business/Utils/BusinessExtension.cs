@@ -4,6 +4,7 @@ using BrainNet.Models.Result;
 using BrainNet.Models.Vector;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Business.Repositories.InternetOfThings;
+using Business.Services.HostedServices.IoT;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Business.Utils;

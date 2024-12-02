@@ -17,7 +17,7 @@ public partial class SensorSignal(ILogger<SensorSignal> logger) : ComponentBase,
         if (firstRender)
         {
             var cancellationToken = CancellationTokenSource.Token;
-            var value = await ApiService.GetAsync<ulong>($"api/v1/get-count/{SensorId}", cancellationToken);
+            var value = await ApiService.GetAsync<ulong>($"/api/v1/get-count/{SensorId}", cancellationToken);
             if (value.IsSuccessStatusCode)
                 CountValue = value.Data;
             HubConnection = new HubConnectionBuilder().InitConnection(Navigation.BaseUri + "hubs/iotSensor");
