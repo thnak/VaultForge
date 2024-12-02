@@ -26,8 +26,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
-		<RunAOTCompilation>true</RunAOTCompilation>
-		<WasmStripILAfterAOT>true</WasmStripILAfterAOT>
+		<RunAOTCompilation>false</RunAOTCompilation>
+		<WasmStripILAfterAOT>false</WasmStripILAfterAOT>
 		<WasmEnableExceptionHandling>true</WasmEnableExceptionHandling>
 		<BlazorEnableCompression>true</BlazorEnableCompression>
 	</PropertyGroup>

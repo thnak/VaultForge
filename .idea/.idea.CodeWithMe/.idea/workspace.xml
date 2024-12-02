@@ -45,8 +45,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="move to auto mode">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Account/SignInPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Account/SignInPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/ContentManagementSystem/ContentManagement/ManagementPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/ContentManagementSystem/ContentManagement/ManagementPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/ContentManagementSystem/Editor/ContentCreatorPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/ContentManagementSystem/Editor/ContentCreatorPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/ContentManagementSystem/Preview/PreviewContentPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/ContentManagementSystem/Preview/PreviewContentPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Counter.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Counter.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Weather.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Weather.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/WebApp.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/WebApp.Client.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Components/Routes.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Routes.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Components/Routes.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Routes.razor.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -708,30 +719,7 @@
       <workItem from="1733026640873" duration="20657000" />
       <workItem from="1733070819184" duration="9104000" />
       <workItem from="1733101676869" duration="6632000" />
-    </task>
-    <task id="LOCAL-00364" summary="change iot queue to hosted service">
-      <option name="closed" value="true" />
-      <created>1731045802255</created>
-      <option name="number" value="00364" />
-      <option name="presentableId" value="LOCAL-00364" />
-      <option name="project" value="LOCAL" />
-      <updated>1731045802256</updated>
-    </task>
-    <task id="LOCAL-00365" summary="refactor, fix frozen service">
-      <option name="closed" value="true" />
-      <created>1731060394165</created>
-      <option name="number" value="00365" />
-      <option name="presentableId" value="LOCAL-00365" />
-      <option name="project" value="LOCAL" />
-      <updated>1731060394165</updated>
-    </task>
-    <task id="LOCAL-00366" summary="fix service issue">
-      <option name="closed" value="true" />
-      <created>1731072842369</created>
-      <option name="number" value="00366" />
-      <option name="presentableId" value="LOCAL-00366" />
-      <option name="project" value="LOCAL" />
-      <updated>1731072842370</updated>
+      <workItem from="1733114626732" duration="4522000" />
     </task>
     <task id="LOCAL-00367" summary="remove lock, update appsettings.json">
       <option name="closed" value="true" />
@@ -1101,7 +1089,31 @@
       <option name="project" value="LOCAL" />
       <updated>1733110656909</updated>
     </task>
-    <option name="localTasksCounter" value="413" />
+    <task id="LOCAL-00413" summary="drop support for static server side rendering">
+      <option name="closed" value="true" />
+      <created>1733115986380</created>
+      <option name="number" value="00413" />
+      <option name="presentableId" value="LOCAL-00413" />
+      <option name="project" value="LOCAL" />
+      <updated>1733115986380</updated>
+    </task>
+    <task id="LOCAL-00414" summary="update">
+      <option name="closed" value="true" />
+      <created>1733117294160</created>
+      <option name="number" value="00414" />
+      <option name="presentableId" value="LOCAL-00414" />
+      <option name="project" value="LOCAL" />
+      <updated>1733117294160</updated>
+    </task>
+    <task id="LOCAL-00415" summary="move to auto mode">
+      <option name="closed" value="true" />
+      <created>1733118703119</created>
+      <option name="number" value="00415" />
+      <option name="presentableId" value="LOCAL-00415" />
+      <option name="project" value="LOCAL" />
+      <updated>1733118703119</updated>
+    </task>
+    <option name="localTasksCounter" value="416" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1132,8 +1144,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fix OOM" />
-    <MESSAGE value="add missing dependency, refactor" />
     <MESSAGE value="remove non scene identifier, fix Raid5Stream.cs to support un-limit disk number" />
     <MESSAGE value="remove unused pack" />
     <MESSAGE value="limit extremely stream read issue" />
@@ -1155,9 +1165,11 @@
     <MESSAGE value="update page" />
     <MESSAGE value="update service" />
     <MESSAGE value="fix wrong url" />
-    <MESSAGE value="update" />
     <MESSAGE value="update client" />
-    <option name="LAST_COMMIT_MESSAGE" value="update client" />
+    <MESSAGE value="drop support for static server side rendering" />
+    <MESSAGE value="update" />
+    <MESSAGE value="move to auto mode" />
+    <option name="LAST_COMMIT_MESSAGE" value="move to auto mode" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
