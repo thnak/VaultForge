@@ -1,4 +1,4 @@
-﻿namespace Protector;
+﻿namespace Business.Constants.Protector;
 
 public static class ProtectorTime
 {

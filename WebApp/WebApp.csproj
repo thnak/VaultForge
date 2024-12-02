@@ -52,7 +52,7 @@
     <ItemGroup>
       <ProjectReference Include="..\BrainNet\BrainNet.csproj" />
       <ProjectReference Include="..\Business\Business.csproj" />
-      <ProjectReference Include="..\Protector\Protector.csproj" />
+      
       <ProjectReference Include="..\WebApp.Client\WebApp.Client.csproj" />
     </ItemGroup>
 

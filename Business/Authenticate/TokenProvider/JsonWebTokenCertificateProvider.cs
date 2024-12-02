@@ -1,13 +1,13 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
+using Business.Constants.Protector;
 using Business.Data.Interfaces;
 using Business.Services.Configure;
 using BusinessModels.Secure;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Protector;
 
 namespace Business.Authenticate.TokenProvider;
 

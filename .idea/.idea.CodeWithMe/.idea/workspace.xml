@@ -45,19 +45,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="move to auto mode">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Account/SignInPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Account/SignInPage.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/ContentManagementSystem/ContentManagement/ManagementPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/ContentManagementSystem/ContentManagement/ManagementPage.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/ContentManagementSystem/Editor/ContentCreatorPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/ContentManagementSystem/Editor/ContentCreatorPage.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/ContentManagementSystem/Preview/PreviewContentPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/ContentManagementSystem/Preview/PreviewContentPage.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Counter.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Counter.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Weather.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Weather.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/WebApp.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/WebApp.Client.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Components/Routes.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Routes.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Components/Routes.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Routes.razor.cs" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="disable AOT">
+      <change beforePath="$PROJECT_DIR$/Business/Authenticate/Cookie/CustomCookieAuthenticationOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Authenticate/Cookie/CustomCookieAuthenticationOptions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Authenticate/TokenProvider/JsonWebTokenCertificateProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Authenticate/TokenProvider/JsonWebTokenCertificateProvider.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/AuthenticateService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/AuthenticateService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/ProtectorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/ProtectorService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Protector/Protector.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Protector/ProtectorTime.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Constants/Protector/ProtectorTime.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Protector/packages.lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/System/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/System/AccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/packages.lock.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -719,15 +721,7 @@
       <workItem from="1733026640873" duration="20657000" />
       <workItem from="1733070819184" duration="9104000" />
       <workItem from="1733101676869" duration="6632000" />
-      <workItem from="1733114626732" duration="4522000" />
-    </task>
-    <task id="LOCAL-00367" summary="remove lock, update appsettings.json">
-      <option name="closed" value="true" />
-      <created>1731076205537</created>
-      <option name="number" value="00367" />
-      <option name="presentableId" value="LOCAL-00367" />
-      <option name="project" value="LOCAL" />
-      <updated>1731076205537</updated>
+      <workItem from="1733114626732" duration="4928000" />
     </task>
     <task id="LOCAL-00368" summary="update branch">
       <option name="closed" value="true" />
@@ -1113,7 +1107,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733118703119</updated>
     </task>
-    <option name="localTasksCounter" value="416" />
+    <task id="LOCAL-00416" summary="disable AOT">
+      <option name="closed" value="true" />
+      <created>1733119687835</created>
+      <option name="number" value="00416" />
+      <option name="presentableId" value="LOCAL-00416" />
+      <option name="project" value="LOCAL" />
+      <updated>1733119687835</updated>
+    </task>
+    <option name="localTasksCounter" value="417" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1144,7 +1146,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="remove non scene identifier, fix Raid5Stream.cs to support un-limit disk number" />
     <MESSAGE value="remove unused pack" />
     <MESSAGE value="limit extremely stream read issue" />
     <MESSAGE value="small update" />
@@ -1169,7 +1170,8 @@
     <MESSAGE value="drop support for static server side rendering" />
     <MESSAGE value="update" />
     <MESSAGE value="move to auto mode" />
-    <option name="LAST_COMMIT_MESSAGE" value="move to auto mode" />
+    <MESSAGE value="disable AOT" />
+    <option name="LAST_COMMIT_MESSAGE" value="disable AOT" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

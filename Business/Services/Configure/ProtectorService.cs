@@ -1,4 +1,5 @@
-﻿using Business.KeyManagement;
+﻿using Business.Constants.Protector;
+using Business.KeyManagement;
 using BusinessModels.Resources;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
@@ -10,7 +11,6 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Protector;
 
 namespace Business.Services.Configure;
 

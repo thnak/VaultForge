@@ -116,11 +116,6 @@
           "System.Threading.Tasks.Extensions": "4.5.4"
         }
       },
-      "BCrypt.Net-Next": {
-        "type": "Transitive",
-        "resolved": "4.0.3",
-        "contentHash": "W+U9WvmZQgi5cX6FS5GDtDoPzUCV4LkBLkywq/kRZhuDwcbavOzcDAr3LXJFqHUi952Yj3LEYoWW0jbEUQChsA=="
-      },
       "Blazor-ApexCharts": {
         "type": "Transitive",
         "resolved": "4.0.1",
@@ -2359,7 +2354,6 @@
           "Newtonsoft.Json": "[13.0.3, )",
           "Ollama": "[1.13.0, )",
           "Polly": "[8.5.0, )",
-          "Protector": "[1.0.0, )",
           "SixLabors.ImageSharp": "[3.1.6, )",
           "System.IdentityModel.Tokens.Jwt": "[8.2.1, )",
           "System.Net.Http": "[4.3.4, )",
@@ -2387,19 +2381,6 @@
           "Microsoft.AspNetCore.SignalR.Protocols.MessagePack": "[9.0.0, )",
           "MongoDB.Bson": "[3.0.0, )",
           "MudBlazor": "[7.15.0, )"
-        }
-      },
-      "protector": {
-        "type": "Project",
-        "dependencies": {
-          "BCrypt.Net-Next": "[4.0.3, )",
-          "BusinessModels": "[1.0.0, )",
-          "Microsoft.AspNetCore.Authorization": "[9.0.0, )",
-          "Microsoft.AspNetCore.DataProtection": "[9.0.0, )",
-          "Microsoft.Extensions.Options": "[9.0.0, )",
-          "Microsoft.IdentityModel.Tokens": "[8.2.1, )",
-          "MongoDB.Bson": "[3.0.0, )",
-          "MongoDB.Driver": "[3.0.0, )"
         }
       },
       "webapp.client": {

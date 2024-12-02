@@ -3,6 +3,7 @@ using Business.Authenticate.AuthorizationRequirement;
 using Business.Authenticate.KeyProvider;
 using Business.Authenticate.TokenProvider;
 using Business.Business.Interfaces.User;
+using Business.Constants.Protector;
 using Business.Services.Authenticate.Tracer;
 using BusinessModels.Resources;
 using Microsoft.AspNetCore.Authentication;
@@ -11,7 +12,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Protector;
 
 namespace Business.Services.Configure;
 

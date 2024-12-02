@@ -1,11 +1,11 @@
 ﻿using System.Security.Claims;
 using Business.Authenticate.TokenProvider;
 using Business.Business.Interfaces.User;
+using Business.Constants.Protector;
 using BusinessModels.Resources;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Protector;
 
 namespace Business.Authenticate.Cookie;
 

@@ -7,6 +7,7 @@ using Business.Authenticate.KeyProvider;
 using Business.Authenticate.TokenProvider;
 using Business.Business.Interfaces.User;
 using Business.Business.Utils;
+using Business.Constants.Protector;
 using Business.Exceptions;
 using Business.KeyManagement;
 using Business.Models;
@@ -32,7 +33,6 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Protector;
 using ResApi.Middleware;
 
 namespace ResApi;
