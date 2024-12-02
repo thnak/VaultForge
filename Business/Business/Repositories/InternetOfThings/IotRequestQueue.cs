@@ -54,6 +54,15 @@ public class IotRequestQueue : IIotRequestQueue
         return await _channel.Reader.WaitToReadAsync(cancellationToken);
     }
 
+    public void Reset()
+    {
+        _sensorRequestCounts.Clear();
+        lock (_counterLock)
+        {
+            _dailyRequestCount = 0;
+        }
+    }
+
     public bool TryRead([MaybeNullWhen(false)] out IoTRecord item)
     {
         return _channel.Reader.TryRead(out item);
@@ -88,15 +97,6 @@ public class IotRequestQueue : IIotRequestQueue
     {
         lock (_counterLock)
         {
-            var today = DateTime.UtcNow.Date;
-
-            // Reset the counter if the day has changed
-            if (_currentDay != today)
-            {
-                _currentDay = today;
-                _dailyRequestCount = 0;
-            }
-
             // Increment the counter
             _dailyRequestCount++;
         }
@@ -109,14 +109,6 @@ public class IotRequestQueue : IIotRequestQueue
     /// <param name="cancellationToken"></param>
     private async Task IncrementSensorRequestCount(string sensorId, CancellationToken cancellationToken = default)
     {
-        var today = DateTime.UtcNow.Date;
-
-        // Reset the counter if the day has changed
-        if (_currentDay != today)
-        {
-            _sensorRequestCounts.Clear();
-        }
-
         _sensorRequestCounts.AddOrUpdate(sensorId, 1, (_, oldValue) => oldValue + 1);
         await _backgroundTaskQueue.QueueBackgroundWorkItemAsync(async _ =>
         {
