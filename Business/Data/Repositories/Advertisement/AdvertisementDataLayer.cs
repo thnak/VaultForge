@@ -16,7 +16,11 @@ namespace Business.Data.Repositories.Advertisement;
 public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<AdvertisementDataLayer> logger) : IAdvertisementDataLayer
 {
     private readonly IMongoCollection<ArticleModel> _dataDb = context.MongoDatabase.GetCollection<ArticleModel>("Article");
-    
+
+
+    public event Func<string, Task>? Added;
+    public event Func<string, Task>? Deleted;
+    public event Func<string, Task>? Updated;
 
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
@@ -101,13 +105,10 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
 
     public async IAsyncEnumerable<ArticleModel?> GetAsync(List<string> keys, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        
         foreach (var key in keys.TakeWhile(_ => cancellationToken.IsCancellationRequested == false))
         {
             yield return Get(key);
         }
-
-        
     }
 
     public async Task<(ArticleModel[], long)> GetAllAsync(int page, int size, CancellationToken cancellationToken = default)
@@ -129,8 +130,6 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
 
     public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<ArticleModel> updates, CancellationToken cancellationToken = default)
     {
-        
-
         try
         {
             if (!ObjectId.TryParse(key, out var id))
@@ -167,12 +166,10 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
             logger.LogInformation("[Update] Operation cancelled");
             return (false, string.Empty);
         }
-
     }
 
     public async Task<Result<bool>> CreateAsync(ArticleModel model, CancellationToken cancellationToken = default)
     {
-        
         try
         {
             var filter = Builders<ArticleModel>.Filter.Where(x => x.Title == model.Title && x.Language == model.Language);
@@ -189,7 +186,6 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         {
             return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
-
     }
 
 
@@ -200,7 +196,6 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
 
     public async Task<(bool, string)> ReplaceAsync(ArticleModel model, CancellationToken cancellationToken = default)
     {
-        
         try
         {
             var file = Get(model.Id.ToString());
@@ -225,7 +220,6 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         {
             return (false, e.Message);
         }
-
     }
 
 

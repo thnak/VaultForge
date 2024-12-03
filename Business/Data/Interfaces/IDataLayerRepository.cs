@@ -7,6 +7,10 @@ namespace Business.Data.Interfaces;
 
 public interface IDataLayerRepository<T> where T : class
 {
+    event Func<string, Task> Added;
+    event Func<string, Task> Deleted;
+    event Func<string, Task> Updated;
+
     /// <summary>
     /// Lấy số lượng document
     /// </summary>

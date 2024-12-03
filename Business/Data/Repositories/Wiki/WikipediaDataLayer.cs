@@ -31,6 +31,10 @@ public class WikipediaDataLayer(IMongoDataLayerContext context, ILogger<Wikipedi
         return (true, string.Empty);
     }
 
+    public event Func<string, Task>? Added;
+    public event Func<string, Task>? Deleted;
+    public event Func<string, Task>? Updated;
+
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
         return _dataDb.EstimatedDocumentCountAsync(cancellationToken: cancellationToken);

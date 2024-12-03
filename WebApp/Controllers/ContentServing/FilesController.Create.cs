@@ -41,13 +41,18 @@ public partial class FilesController
         await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async (token) =>
         {
             var folder = folderServe.Get(folderCode);
-            if (folder == null) return;
+            if (folder == null)
+            {
+                logger.LogInformation($"Folder {folderCode} not found");
+                return;
+            }
 
-            var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync(url, token);
-
+            using var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync(url,  HttpCompletionOption.ResponseHeadersRead, token);
+            response.EnsureSuccessStatusCode();
+            
             string fileName = response.Content.Headers.GetFileNameFromHeaders() ?? url.GetFileNameFromUrl();
-
+            logger.LogInformation($"File {fileName} has been added to download queue");
             var file = new FileInfoModel()
             {
                 RootFolder = folder.Id.ToString(),

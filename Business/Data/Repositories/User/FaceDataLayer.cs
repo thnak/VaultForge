@@ -36,6 +36,10 @@ public class FaceDataLayer(IMongoDataLayerContext context, ILogger<FaceDataLayer
         return (true, string.Empty);
     }
 
+    public event Func<string, Task>? Added;
+    public event Func<string, Task>? Deleted;
+    public event Func<string, Task>? Updated;
+
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();

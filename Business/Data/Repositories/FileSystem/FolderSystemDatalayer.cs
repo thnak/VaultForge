@@ -140,6 +140,10 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         return _dataDb.Find(filter).FirstOrDefault();
     }
 
+    public event Func<string, Task>? Added;
+    public event Func<string, Task>? Deleted;
+    public event Func<string, Task>? Updated;
+
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
         return _dataDb.CountDocumentsAsync(filter: Builders<FolderInfoModel>.Filter.Empty, cancellationToken: cancellationToken);
