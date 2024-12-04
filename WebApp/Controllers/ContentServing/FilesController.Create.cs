@@ -62,8 +62,8 @@ public partial class FilesController
             };
             await folderServe.CreateFileAsync(folder.OwnerUsername, file, token);
             var stream = await response.Content.ReadAsStreamAsync(token);
-            await raidService.WriteDataAsync(stream, file.AbsolutePath, token);
-            await fileServe.CreateAsync(file, token);
+            var saveResult = await raidService.WriteDataAsync(stream, file.AbsolutePath, token);
+            await UpdateFileProperties(file, saveResult, file.ContentType, fileName);
             sw.Stop();
             logger.LogInformation($"File {fileName} has been downloaded in {sw.Elapsed:G} ms");
         });

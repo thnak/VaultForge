@@ -45,15 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.Designer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.en-US.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.en-US.resx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.resx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp1/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" afterDir="false" />
-    </list>
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
@@ -720,31 +712,7 @@
       <workItem from="1733186981173" duration="7739000" />
       <workItem from="1733232670053" duration="3779000" />
       <workItem from="1733280324887" duration="2572000" />
-      <workItem from="1733304160594" duration="2280000" />
-    </task>
-    <task id="LOCAL-00375" summary="refactor">
-      <option name="closed" value="true" />
-      <created>1731511350248</created>
-      <option name="number" value="00375" />
-      <option name="presentableId" value="LOCAL-00375" />
-      <option name="project" value="LOCAL" />
-      <updated>1731511350248</updated>
-    </task>
-    <task id="LOCAL-00376" summary="update appsettings.json">
-      <option name="closed" value="true" />
-      <created>1731511594726</created>
-      <option name="number" value="00376" />
-      <option name="presentableId" value="LOCAL-00376" />
-      <option name="project" value="LOCAL" />
-      <updated>1731511594726</updated>
-    </task>
-    <task id="LOCAL-00377" summary="fix OOM">
-      <option name="closed" value="true" />
-      <created>1731516681207</created>
-      <option name="number" value="00377" />
-      <option name="presentableId" value="LOCAL-00377" />
-      <option name="project" value="LOCAL" />
-      <updated>1731516681207</updated>
+      <workItem from="1733304160594" duration="3737000" />
     </task>
     <task id="LOCAL-00378" summary="add missing dependency, refactor">
       <option name="closed" value="true" />
@@ -1114,7 +1082,31 @@
       <option name="project" value="LOCAL" />
       <updated>1733280342733</updated>
     </task>
-    <option name="localTasksCounter" value="424" />
+    <task id="LOCAL-00424" summary="fix integer overflow">
+      <option name="closed" value="true" />
+      <created>1733312822123</created>
+      <option name="number" value="00424" />
+      <option name="presentableId" value="LOCAL-00424" />
+      <option name="project" value="LOCAL" />
+      <updated>1733312822123</updated>
+    </task>
+    <task id="LOCAL-00425" summary="only image can request index">
+      <option name="closed" value="true" />
+      <created>1733313055004</created>
+      <option name="number" value="00425" />
+      <option name="presentableId" value="LOCAL-00425" />
+      <option name="project" value="LOCAL" />
+      <updated>1733313055004</updated>
+    </task>
+    <task id="LOCAL-00426" summary="limit size">
+      <option name="closed" value="true" />
+      <created>1733313439408</created>
+      <option name="number" value="00426" />
+      <option name="presentableId" value="LOCAL-00426" />
+      <option name="project" value="LOCAL" />
+      <updated>1733313439408</updated>
+    </task>
+    <option name="localTasksCounter" value="427" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1145,9 +1137,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="update config" />
-    <MESSAGE value="show" />
-    <MESSAGE value="shit" />
     <MESSAGE value="restyle" />
     <MESSAGE value="message pack not support dateTime with kind" />
     <MESSAGE value="use utc for backend" />
@@ -1170,7 +1159,10 @@
     <MESSAGE value="auto rejoin the group when possible" />
     <MESSAGE value="update, fix background download" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="fix integer overflow" />
+    <MESSAGE value="only image can request index" />
+    <MESSAGE value="limit size" />
+    <option name="LAST_COMMIT_MESSAGE" value="limit size" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
