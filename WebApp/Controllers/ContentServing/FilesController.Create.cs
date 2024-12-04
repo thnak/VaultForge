@@ -1,4 +1,5 @@
-﻿using Business.Data.StorageSpace;
+﻿using System.Diagnostics;
+using Business.Data.StorageSpace;
 using Business.Models;
 using Business.Utils.Helper;
 using BusinessModels.General.EnumModel;
@@ -48,9 +49,9 @@ public partial class FilesController
             }
 
             using var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync(url,  HttpCompletionOption.ResponseHeadersRead, token);
+            var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, token);
             response.EnsureSuccessStatusCode();
-            
+            Stopwatch sw = Stopwatch.StartNew();
             string fileName = response.Content.Headers.GetFileNameFromHeaders() ?? url.GetFileNameFromUrl();
             logger.LogInformation($"File {fileName} has been added to download queue");
             var file = new FileInfoModel()
@@ -63,6 +64,8 @@ public partial class FilesController
             var stream = await response.Content.ReadAsStreamAsync(token);
             await raidService.WriteDataAsync(stream, file.AbsolutePath, token);
             await fileServe.CreateAsync(file, token);
+            sw.Stop();
+            logger.LogInformation($"File {fileName} has been downloaded in {sw.Elapsed:G} ms");
         });
 
         return Ok();
