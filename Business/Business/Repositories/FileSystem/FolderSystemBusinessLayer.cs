@@ -23,6 +23,7 @@ using BusinessModels.General.Results;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
+using BusinessModels.Utils;
 using BusinessModels.Validator.Folder;
 using BusinessModels.WebContent.Drive;
 using Microsoft.Extensions.Caching.Memory;
@@ -666,12 +667,15 @@ internal class FolderSystemBusinessLayer(
         var file = fileSystemService.Get(key);
         if (file != null)
         {
-            var folder = Get(file.RootFolder);
-            if (folder != null)
+            if(file.ContentType.IsImageFile())
             {
-                if (!file.Vector.Any())
+                var folder = Get(file.RootFolder);
+                if (folder != null)
                 {
-                    await sequenceBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken => { await Request(folder.OwnerUsername, file, serverToken); }, cancellationToken);
+                    if (!file.Vector.Any())
+                    {
+                        await sequenceBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken => { await Request(folder.OwnerUsername, file, serverToken); }, cancellationToken);
+                    }
                 }
             }
         }
