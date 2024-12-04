@@ -56,11 +56,10 @@ public partial class FilesController
             logger.LogInformation($"File {fileName} has been added to download queue");
             var file = new FileInfoModel()
             {
-                RootFolder = folder.Id.ToString(),
                 FileName = fileName,
                 ContentType = response.Content.Headers.ContentType?.MediaType ?? string.Empty,
             };
-            await folderServe.CreateFileAsync(folder.OwnerUsername, file, token);
+            await folderServe.CreateFileAsync(folder, file, token);
             var stream = await response.Content.ReadAsStreamAsync(token);
             var saveResult = await raidService.WriteDataAsync(stream, file.AbsolutePath, token);
             await UpdateFileProperties(file, saveResult, file.ContentType, fileName);
