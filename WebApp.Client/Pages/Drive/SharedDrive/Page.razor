@@ -60,6 +60,7 @@ else
 
 <SectionContent SectionId="@AppBar.TopBarSection2" >
     <MudMenu AnchorOrigin="Origin.BottomLeft" Dense EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="MudColor.Secondary" Label="@AppLang.New" Class="rounded-lg" StartIcon="fa-plus fa-solid" TransformOrigin="Origin.TopLeft" >
+        <MudMenuItem Icon="@Icons.Material.Filled.Link" OnClick="@OpenAddPopUp" >@AppLang.Link</MudMenuItem>
         <MudMenuItem Icon="@Icons.Material.Filled.AttachFile" OnClick="@OpenAddPopUp" >@AppLang.File</MudMenuItem>
         <MudMenuItem Icon="@Icons.Material.Filled.Folder" OnClick="@OpenAddNewFolder" >@AppLang.Folder</MudMenuItem>
     </MudMenu>

@@ -47,20 +47,12 @@
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Interfaces/IDataLayerRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Interfaces/IDataLayerRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Advertisement/AdvertisementDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Advertisement/AdvertisementDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Chat/ChatWithLlmDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Chat/ChatWithLlmDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IoTDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IoTDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/User/FaceDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/User/FaceDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Wiki/WikipediaDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Wiki/WikipediaDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.Designer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.en-US.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.en-US.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.resx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Layout/AppBar.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Layout/AppBar.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/AddNewFolderDialog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/AddNewFolderDialog.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConsoleApp1/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -130,6 +122,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f144f137e8c44478ad03d647d3e83e8771910/68/2e705602/EncryptionAlgorithm.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2565b9d99fdde488bc7801b84387b2cc864959cfb63212e1ff576fc9c6bb7e/CancellationToken.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2854ce6d56c18d0d837d3a3ef9c4f2c7c77691fa3528c8394986ac7ce7719/StackFrameIterator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3c13bcf2472e33fbd9b71675dd1d838142686d7a4f62aafb458d93deb4794/AbstractValidator.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4d6b99bacfc12eaebf321ec7f41797ea958521c92bdfac8e98fea119acc4f2/Filled.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5eecc2d22de68b16cb5f68b3e333591fc6c5f58cfc4185587e5dfe96213947/IMongoIndexManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/948394a61fad115d827d4d89402087c31bc6fb51eaf74a396884f5708d153f/ExclusiveConnectionPool.cs" root0="FORCE_HIGHLIGHTING" />
@@ -140,9 +133,6 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d4eb219188a145d3671fd144557c775d74713258e0be5fe65cf37ba781c324e/ExclusiveConnectionPool.Helpers.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d5f17ec831d849c96437c5a6d46c374f745c4aabb107eb92969a3508898ed21/SemaphoreSlimSignalable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d6602ff1ddf35b711bc3b983d596213d7dcb8daab122c98f3e6db39b5daca137/DropIndexOperation.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/Interfaces/IDataLayerRepository.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/Interfaces/IDataLayerRepository.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/Interfaces/IDataLayerRepository.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
@@ -167,40 +157,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.ResApi.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.Web: https.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.WebApp no browser.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.WebApp: IIS Express.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.WebApp: https.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.WebApp: no-browser.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Project.ConsoleApp1.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Project.WebApp.Client.executor&quot;: &quot;Debug&quot;,
-    &quot;Docker.WebApp/Dockerfile (1).executor&quot;: &quot;Run&quot;,
-    &quot;Publish to folder.ResApi.executor&quot;: &quot;Run&quot;,
-    &quot;Publish to folder.Unnamed.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.26168224&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/thanh/Downloads&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propDebugger&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.ResApi.executor": "Debug",
+    ".NET Launch Settings Profile.Web: https.executor": "Debug",
+    ".NET Launch Settings Profile.WebApp no browser.executor": "Debug",
+    ".NET Launch Settings Profile.WebApp: IIS Express.executor": "Debug",
+    ".NET Launch Settings Profile.WebApp: https.executor": "Debug",
+    ".NET Launch Settings Profile.WebApp: no-browser.executor": "Debug",
+    ".NET Project.ConsoleApp1.executor": "Debug",
+    ".NET Project.WebApp.Client.executor": "Debug",
+    "Docker.WebApp/Dockerfile (1).executor": "Run",
+    "Publish to folder.ResApi.executor": "Run",
+    "Publish to folder.Unnamed.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "XThreadsFramesViewSplitterKey": "0.26168224",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/thanh/Downloads",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "project.propDebugger",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
-      &quot;Shell Script&quot;
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "Shell Script"
     ]
   }
-}</component>
+}]]></component>
   <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
     <layout>
       <window_info id="Bookmarks" show_stripe_button="false" side_tool="true" />
@@ -241,7 +231,7 @@
       <window_info anchor="right" id="Maven" order="4" weight="0.25" />
     </layout>
   </component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: no-browser">
+  <component name="RunManager" selected=".NET Project.ConsoleApp1">
     <configuration name="ResApi" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/ResApi/bin/Release/net9.0/linux-x64/publish" target_framework="net9.0" uuid_high="5905353364384007298" uuid_low="-8333852158807631372" />
       <method v="2" />
@@ -728,23 +718,9 @@
       <workItem from="1733114626732" duration="6344000" />
       <workItem from="1733125769268" duration="3249000" />
       <workItem from="1733186981173" duration="7739000" />
-      <workItem from="1733232670053" duration="2024000" />
-    </task>
-    <task id="LOCAL-00373" summary="fix download script, fix wrong XorParity compute">
-      <option name="closed" value="true" />
-      <created>1731371914576</created>
-      <option name="number" value="00373" />
-      <option name="presentableId" value="LOCAL-00373" />
-      <option name="project" value="LOCAL" />
-      <updated>1731371914576</updated>
-    </task>
-    <task id="LOCAL-00374" summary="refactor solution to support docker">
-      <option name="closed" value="true" />
-      <created>1731509753624</created>
-      <option name="number" value="00374" />
-      <option name="presentableId" value="LOCAL-00374" />
-      <option name="project" value="LOCAL" />
-      <updated>1731509753624</updated>
+      <workItem from="1733232670053" duration="3779000" />
+      <workItem from="1733280324887" duration="2572000" />
+      <workItem from="1733304160594" duration="2280000" />
     </task>
     <task id="LOCAL-00375" summary="refactor">
       <option name="closed" value="true" />
@@ -1122,7 +1098,23 @@
       <option name="project" value="LOCAL" />
       <updated>1733131276490</updated>
     </task>
-    <option name="localTasksCounter" value="422" />
+    <task id="LOCAL-00422" summary="update, fix background download">
+      <option name="closed" value="true" />
+      <created>1733240591468</created>
+      <option name="number" value="00422" />
+      <option name="presentableId" value="LOCAL-00422" />
+      <option name="project" value="LOCAL" />
+      <updated>1733240591469</updated>
+    </task>
+    <task id="LOCAL-00423" summary="update">
+      <option name="closed" value="true" />
+      <created>1733280342733</created>
+      <option name="number" value="00423" />
+      <option name="presentableId" value="LOCAL-00423" />
+      <option name="project" value="LOCAL" />
+      <updated>1733280342733</updated>
+    </task>
+    <option name="localTasksCounter" value="424" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1153,7 +1145,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="update model" />
     <MESSAGE value="update config" />
     <MESSAGE value="show" />
     <MESSAGE value="shit" />
@@ -1176,9 +1167,10 @@
     <MESSAGE value="roll back to client side, simplify project" />
     <MESSAGE value="wrong time" />
     <MESSAGE value="aot" />
-    <MESSAGE value="update" />
     <MESSAGE value="auto rejoin the group when possible" />
-    <option name="LAST_COMMIT_MESSAGE" value="auto rejoin the group when possible" />
+    <MESSAGE value="update, fix background download" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

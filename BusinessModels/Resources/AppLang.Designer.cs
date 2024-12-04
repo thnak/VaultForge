@@ -663,6 +663,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Đường dẫn.
+        /// </summary>
+        public static string Link {
+            get {
+                return ResourceManager.GetString("Link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Đang tải.
         /// </summary>
         public static string Loading {
