@@ -692,6 +692,12 @@ internal class FolderSystemBusinessLayer(
     [Experimental("SKEXP0020")]
     private async Task Request(string userName, FileInfoModel file, CancellationToken cancellationToken = default)
     {
+        long limit = 2147483648;
+        if (file.FileSize > limit)
+        {
+            logger.LogWarning($"{file.Id} File is too large to be processed. Skipping.");
+            return;
+        }
         using MemoryStream stream = new();
         await raidService.ReadGetDataAsync(stream, file.AbsolutePath, cancellationToken);
         stream.Seek(0, SeekOrigin.Begin);
