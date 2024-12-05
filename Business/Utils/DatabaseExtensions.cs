@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using Business.Models;
 using BusinessModels.Base;
 using BusinessModels.General.Results;
+using BusinessModels.Resources;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -88,7 +89,7 @@ public static class DatabaseExtensions
                 var combinedUpdate = updateDefinitionBuilder.Combine(updateDefinitions);
 
                 await collection.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
-                return Result<bool>.Success("");
+                return Result<bool>.SuccessWithMessage(true, AppLang.Success);
             }
         }
 

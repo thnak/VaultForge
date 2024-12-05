@@ -22,17 +22,34 @@ public class VectorDb : IVectorDb
     private bool _disposed;
     private string ConnectionString { get; }
     private string Image2TextModelName { get; }
-    private double SearchThresholds { get; }
 
     public VectorDb(VectorDbConfig config, ILogger logger)
     {
         Logger = logger;
-        var vectorStore = new InMemoryVectorStore();
         ConnectionString = config.OllamaConnectionString;
         Image2TextModelName = config.OllamaImage2TextModelName;
-        SearchThresholds = config.SearchThresholds;
 
-        Collection = vectorStore.GetCollection<Guid, VectorRecord>(config.Name);
+        var productDefinition = new VectorStoreRecordDefinition
+        {
+            Properties = new List<VectorStoreRecordProperty>
+            {
+                new VectorStoreRecordKeyProperty(nameof(VectorRecord.Index), typeof(Guid)),
+                new VectorStoreRecordDataProperty(nameof(VectorRecord.Key), typeof(string)) { IsFilterable = true, IsFullTextSearchable = true },
+                new VectorStoreRecordDataProperty(nameof(VectorRecord.Description), typeof(string)) { IsFullTextSearchable = true },
+                new VectorStoreRecordDataProperty(nameof(VectorRecord.Title), typeof(string)),
+                new VectorStoreRecordVectorProperty(nameof(VectorRecord.Vector), typeof(ReadOnlyMemory<float>))
+                {
+                    Dimensions = config.VectorSize,
+                    DistanceFunction = config.DistantFunc,
+                    IndexKind = IndexKind.Dynamic
+                }
+            }
+        };
+
+        Collection = new InMemoryVectorStoreRecordCollection<Guid, VectorRecord>(config.Name, new InMemoryVectorStoreRecordCollectionOptions<Guid, VectorRecord>()
+        {
+            VectorStoreRecordDefinition = productDefinition
+        });
         Generator = new OllamaEmbeddingGenerator(new Uri(ConnectionString), config.OllamaTextEmbeddingModelName);
     }
 
@@ -105,9 +122,6 @@ public class VectorDb : IVectorDb
 
         await foreach (var result in cursor.Results.WithCancellation(cancellationToken))
         {
-            var score = result.Score ?? 0;
-            if (score < SearchThresholds) continue;
-
             yield return new SearchScore<VectorRecord>(result.Record, result.Score ?? 0);
         }
     }

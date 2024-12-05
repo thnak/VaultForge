@@ -78,7 +78,8 @@ public class FaceEmbedding : IFaceEmbedding
     {
         var sessionOptions = new SessionOptions();
         sessionOptions.InitSessionOption();
-        sessionOptions.InitExecutionProviderOptions(Options.Value.FaceEmbeddingSetting.DeviceIndex);
+        var provider = sessionOptions.InitExecutionProviderOptions(Options.Value.FaceEmbeddingSetting.DeviceIndex);
+        Console.WriteLine($"[Face embedding setting] Using provider options: {provider}]");
         return sessionOptions;
     }
 

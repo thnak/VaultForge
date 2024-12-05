@@ -13,7 +13,7 @@ public static class SessionOptionExtension
         sessionOptions.ExecutionMode = ExecutionMode.ORT_PARALLEL;
     }
 
-    public static void InitExecutionProviderOptions(this SessionOptions options, int deviceId)
+    public static string InitExecutionProviderOptions(this SessionOptions options, int deviceId)
     {
         var providers = OrtEnv.Instance().GetAvailableProviders();
         var availableProvider = providers[0];
@@ -76,6 +76,7 @@ public static class SessionOptionExtension
                 break;
             }
         }
+        return availableProvider;
     }
 
     public static string[] GetInputNames(this InferenceSession session)

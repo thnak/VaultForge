@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using BusinessModels.Resources;
 
 namespace BusinessModels.General.Results;
 
@@ -14,7 +13,7 @@ public class Result<T>
 
     public ErrorType ErrorType { get; }
 
-    private Result([MaybeNull] T value, bool isSuccess, string message, ErrorType errorType)
+    private Result(T? value, bool isSuccess, string message, ErrorType errorType)
     {
         Value = value;
         IsSuccess = isSuccess;
@@ -22,9 +21,13 @@ public class Result<T>
         ErrorType = errorType;
     }
 
-    public static Result<T> Success(T value) => new(value, true, AppLang.Success, ErrorType.None);
+    // Success method with a generic value
+    public static Result<T> Success(T value) => new(value, true, string.Empty, ErrorType.None);
 
-    public static Result<bool> Success(string message) => new(true, true, message, ErrorType.None);
+    // Success method with a message (optional use case)
+    public static Result<T> SuccessWithMessage(T value, string message) => new(value, true, message, ErrorType.None);
+    public static Result<T> SuccessWithMessage(T value, string message, ErrorType status) => new(value, true, message, status);
 
-    public static Result<T?> Failure(string message, ErrorType errorType) => new(default, false, message, errorType);
+    // Failure method with a message and error type
+    public static Result<T> Failure(string message, ErrorType errorType) => new(default, false, message, errorType);
 }

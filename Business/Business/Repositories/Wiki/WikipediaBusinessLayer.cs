@@ -21,7 +21,6 @@ public class WikipediaBusinessLayer(IWikipediaDataLayer dataLayer, ILogger<Wikip
     [Experimental("SKEXP0020")] private readonly IVectorDb _vectorDb = new VectorDb(new VectorDbConfig()
     {
         Name = "WikipediaText",
-        SearchThresholds = 0.5
     }, logger);
 
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
@@ -139,7 +138,7 @@ public class WikipediaBusinessLayer(IWikipediaDataLayer dataLayer, ILogger<Wikip
             await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken => await RequestIndex(item, true, serverToken), cancellationToken);
         }
 
-        return Result<bool>.Success("");
+        return Result<bool>.Success(true);
     }
 
     [Experimental("SKEXP0020")]

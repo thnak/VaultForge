@@ -11,6 +11,7 @@ using Business.Models.RetrievalAugmentedGeneration.Vector;
 using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.VectorData;
 using MongoDB.Driver;
 
 namespace Business.Business.Repositories.User;
@@ -20,7 +21,8 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, ILogger<FaceBusinessLay
     [Experimental("SKEXP0020")] private readonly IVectorDb _vectorDb = new VectorDb(new VectorDbConfig()
     {
         Name = "FaceEmbedding",
-        SearchThresholds = 0.5
+        DistantFunc = DistanceFunction.EuclideanDistance,
+        VectorSize = 512
     }, logger);
 
 
@@ -141,25 +143,32 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, ILogger<FaceBusinessLay
             }, cancellationToken);
         }
 
-        return Result<bool>.Success(AppLang.Success);
+        return Result<bool>.SuccessWithMessage(true, AppLang.Success);
     }
 
     [Experimental("SKEXP0020")]
-    public async Task<Result<List<SearchScore<VectorRecord>>?>> SearchVectorAsync(float[] vector, CancellationToken cancellationToken = default)
+    public async Task<Result<List<SearchScore<VectorRecord>>>> SearchVectorAsync(float[] vector, CancellationToken cancellationToken = default)
     {
-        List<SearchScore<VectorRecord>> result = [];
-        var cursor = _vectorDb.Search(new ReadOnlyMemory<float>(vector), 10, cancellationToken);
-        await foreach (var search in cursor)
+        try
         {
-            result.Add(search);
-        }
+            List<SearchScore<VectorRecord>> result = [];
+            var cursor = _vectorDb.Search(new ReadOnlyMemory<float>(vector), 10, cancellationToken);
+            await foreach (var search in cursor)
+            {
+                result.Add(search);
+            }
 
-        if (result.Any())
+            if (result.Any())
+            {
+                return Result<List<SearchScore<VectorRecord>>>.Success(result);
+            }
+
+            return Result<List<SearchScore<VectorRecord>>>.SuccessWithMessage([], "", ErrorType.NotFound);
+        }
+        catch (OperationCanceledException e)
         {
-            return Result<List<SearchScore<VectorRecord>>?>.Success(result);
+            return Result<List<SearchScore<VectorRecord>>>.SuccessWithMessage([], e.Message, ErrorType.Cancelled);
         }
-
-        return Result<List<SearchScore<VectorRecord>>>.Failure("", ErrorType.NotFound);
     }
 
     [Experimental("SKEXP0020")]

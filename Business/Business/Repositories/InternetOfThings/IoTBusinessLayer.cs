@@ -117,7 +117,7 @@ public class IoTBusinessLayer(IIoTDataLayer data, IIotRequestQueue iotRequestQue
             iotRequestQueue.IncrementTotalRequests(item.SensorId);
         }
 
-        return Result<string>.Success(AppLang.Success);
+        return Result<bool>.SuccessWithMessage(true,AppLang.Success);
     }
 
     public Task<Result<List<SearchScore<VectorRecord>>?>> SearchVectorAsync(float[] vector, CancellationToken cancellationToken = default)

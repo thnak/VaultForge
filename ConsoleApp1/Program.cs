@@ -129,14 +129,30 @@
 //     }
 // }
 //
-DateTime MinDate = new DateTime(1970, 1, 1, 0, 0, 0);
+// DateTime MinDate = new DateTime(1970, 1, 1, 0, 0, 0);
+//
+// DateOnly GetDateOnlyFromUnixDay(int day)
+// {
+//     var dateOnly = DateOnly.FromDateTime(MinDate);
+//     return dateOnly.AddDays(day);
+// }
+//
+//
+// var date = GetDateOnlyFromUnixDay(20061);
+// Console.WriteLine();
 
-DateOnly GetDateOnlyFromUnixDay(int day)
+using BrainNet.Service.FaceEmbedding.Implements;
+
+using var faceEmbedding = new FaceEmbedding("C:/Users/thanh/Downloads/Facenet512.onnx");
+string[] allowedExtensions = { ".jpg", ".jpeg", ".png", ".bmp", ".gif" };
+string folderPath = "C:/Users/thanh/Downloads/archive/Faces/Faces";
+
+var imageFiles = new List<string>();
+foreach (var fileImage in Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories).Where(file => allowedExtensions.Contains(Path.GetExtension(file).ToLower())))
 {
-    var dateOnly = DateOnly.FromDateTime(MinDate);
-    return dateOnly.AddDays(day);
+    imageFiles.Add(fileImage);
 }
 
 
-var date = GetDateOnlyFromUnixDay(20061);
-Console.WriteLine();
+var fileGroupByName = imageFiles.GroupBy(image => Path.GetFileNameWithoutExtension(image).Split("_").First());
+

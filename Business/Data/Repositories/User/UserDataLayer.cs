@@ -241,7 +241,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
             if (query) return Result<bool>.Failure(AppLang.User_is_already_exists, ErrorType.NotFound);
 
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
-            return Result<bool>.Success(AppLang.Create_successfully);
+            return Result<bool>.SuccessWithMessage(true, AppLang.Create_successfully);
         }
         catch (OperationCanceledException)
         {

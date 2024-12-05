@@ -57,7 +57,7 @@ internal class FolderSystemBusinessLayer(
                 await GetOrInitCollection(user.UserName);
             }
 
-            return Result<string>.Success(AppLang.Success);
+            return Result<bool>.SuccessWithMessage(true, AppLang.Success);
         }
         catch (OperationCanceledException e)
         {
@@ -667,7 +667,7 @@ internal class FolderSystemBusinessLayer(
         var file = fileSystemService.Get(key);
         if (file != null)
         {
-            if(file.ContentType.IsImageFile())
+            if (file.ContentType.IsImageFile())
             {
                 var folder = Get(file.RootFolder);
                 if (folder != null)
@@ -698,6 +698,7 @@ internal class FolderSystemBusinessLayer(
             logger.LogWarning($"{file.Id} File is too large to be processed. Skipping.");
             return;
         }
+
         using MemoryStream stream = new();
         await raidService.ReadGetDataAsync(stream, file.AbsolutePath, cancellationToken);
         stream.Seek(0, SeekOrigin.Begin);

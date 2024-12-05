@@ -77,12 +77,19 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
 
     public ArticleModel? Get(string key)
     {
-        if (ObjectId.TryParse(key, out ObjectId objectId))
+        try
         {
-            return _dataDb.Find(x => x.Id == objectId).FirstOrDefault();
-        }
+            if (ObjectId.TryParse(key, out ObjectId objectId))
+            {
+                return _dataDb.Find(x => x.Id == objectId).FirstOrDefault();
+            }
 
-        return _dataDb.Find(x => x.Title == key).FirstOrDefault();
+            return _dataDb.Find(x => x.Title == key).FirstOrDefault();
+        }
+        catch (OperationCanceledException)
+        {
+            return null;
+        }
     }
 
     public async Task<Result<ArticleModel?>> Get(string key, params Expression<Func<ArticleModel, object>>[] fieldsToFetch)
@@ -235,7 +242,14 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
 
     public ArticleModel? Get(string title, string lang)
     {
-        return _dataDb.Find(x => x.Title == title && x.Language == lang).FirstOrDefault();
+        try
+        {
+            return _dataDb.Find(x => x.Title == title && x.Language == lang).FirstOrDefault();
+        }
+        catch (OperationCanceledException)
+        {
+            return null;
+        }
     }
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)

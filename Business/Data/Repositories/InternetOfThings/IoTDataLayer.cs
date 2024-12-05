@@ -42,20 +42,21 @@ public class IoTDataLayer : IIoTDataLayer
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
     {
-        IndexKeysDefinition<IoTRecord>[] indexKeysDefinitions = [
-            Builders<IoTRecord>.IndexKeys.Descending(x=>x.SensorId).Descending(x => x.Timestamp),
+        IndexKeysDefinition<IoTRecord>[] indexKeysDefinitions =
+        [
+            Builders<IoTRecord>.IndexKeys.Descending(x => x.SensorId).Descending(x => x.Timestamp),
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date),
             Builders<IoTRecord>.IndexKeys.Descending(x => x.Date),
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Hour),
             Builders<IoTRecord>.IndexKeys.Descending(x => x.Date).Descending(x => x.Hour),
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Descending(x => x.Hour),
             Builders<IoTRecord>.IndexKeys.Descending(x => x.Date).Ascending(x => x.Hour),
-            Builders<IoTRecord>.IndexKeys.Ascending(x=>x.SensorId).Ascending(x => x.Date).Ascending(x => x.Hour),
-            Builders<IoTRecord>.IndexKeys.Ascending(x=>x.SensorId).Descending(x => x.Date).Ascending(x => x.Hour),
+            Builders<IoTRecord>.IndexKeys.Ascending(x => x.SensorId).Ascending(x => x.Date).Ascending(x => x.Hour),
+            Builders<IoTRecord>.IndexKeys.Ascending(x => x.SensorId).Descending(x => x.Date).Ascending(x => x.Hour),
         ];
-        
-        
-        var indexModels = indexKeysDefinitions.Select(x=> new CreateIndexModel<IoTRecord>(x));
+
+
+        var indexModels = indexKeysDefinitions.Select(x => new CreateIndexModel<IoTRecord>(x));
         await _dataDb.Indexes.CreateManyAsync(indexModels, cancellationToken);
 
         return await Task.FromResult((true, string.Empty));
@@ -113,8 +114,9 @@ public class IoTDataLayer : IIoTDataLayer
     {
         if (ObjectId.TryParse(key, out var objectId))
         {
-            return _dataDb.Find(x=>x.Id == objectId).FirstOrDefault();
+            return _dataDb.Find(x => x.Id == objectId).FirstOrDefault();
         }
+
         return null;
     }
 
@@ -152,7 +154,7 @@ public class IoTDataLayer : IIoTDataLayer
         try
         {
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
-            return Result<bool>.Success(AppLang.Create_successfully);
+            return Result<bool>.SuccessWithMessage(true, AppLang.Create_successfully);
         }
         catch (OperationCanceledException e)
         {
@@ -170,7 +172,7 @@ public class IoTDataLayer : IIoTDataLayer
         try
         {
             await _dataDb.InsertManyAsync(models, cancellationToken: cancellationToken);
-            return Result<bool>.Success(AppLang.Create_successfully);
+            return Result<bool>.SuccessWithMessage(true, AppLang.Create_successfully);
         }
         catch (OperationCanceledException e)
         {
