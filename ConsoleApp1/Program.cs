@@ -155,4 +155,12 @@ foreach (var fileImage in Directory.GetFiles(folderPath, "*.*", SearchOption.All
 
 
 var fileGroupByName = imageFiles.GroupBy(image => Path.GetFileNameWithoutExtension(image).Split("_").First());
+foreach (var fileGroup in fileGroupByName)
+{
+    foreach (var file in fileGroup)
+    {
+        faceEmbedding.GetEmbeddingArray(file);
+
+    }
+}
 

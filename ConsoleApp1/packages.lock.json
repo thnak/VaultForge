@@ -169,14 +169,6 @@
         "resolved": "9.0.0-preview.1.24523.1",
         "contentHash": "5TUbyFZN8v2eWQXwF7WyAAHCW+OMdsmEVEWw1N1J7L5xA25UD0BtUXxO1kc8Nzkc6c1YGN/NwarySgiY84ALlg=="
       },
-      "Microsoft.ML.OnnxRuntime": {
-        "type": "Transitive",
-        "resolved": "1.20.1",
-        "contentHash": "NzUD79BC6R7TKROLyB3XCzXTpbNZ1YfOdVbult7hoFvd/xyRecOMiRO5HTzkPXvaFlcvZ91+WNCiroAPzUE7Dw==",
-        "dependencies": {
-          "Microsoft.ML.OnnxRuntime.Managed": "1.20.1"
-        }
-      },
       "Microsoft.ML.OnnxRuntime.DirectML": {
         "type": "Transitive",
         "resolved": "1.20.1",
@@ -333,7 +325,6 @@
           "Microsoft.Extensions.AI.Ollama": "[9.0.1-preview.1.24570.5, )",
           "Microsoft.Extensions.Options": "[9.0.0, )",
           "Microsoft.Extensions.VectorData.Abstractions": "[9.0.0-preview.1.24523.1, )",
-          "Microsoft.ML.OnnxRuntime": "[1.20.1, )",
           "Microsoft.ML.OnnxRuntime.DirectML": "[1.20.1, )",
           "Microsoft.SemanticKernel.Connectors.InMemory": "[1.31.0-preview, )",
           "Microsoft.SemanticKernel.Connectors.Ollama": "[1.31.0-alpha, )",

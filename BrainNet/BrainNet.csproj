@@ -12,7 +12,6 @@
       <PackageReference Include="Microsoft.Extensions.AI.Ollama" Version="9.0.1-preview.1.24570.5" />
       <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
       <PackageReference Include="Microsoft.Extensions.VectorData.Abstractions" Version="9.0.0-preview.1.24523.1" />
-      <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.20.1" />
       <PackageReference Include="Microsoft.SemanticKernel.Connectors.InMemory" Version="1.31.0-preview" />
       <PackageReference Include="Microsoft.SemanticKernel.Connectors.Ollama" Version="1.31.0-alpha" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

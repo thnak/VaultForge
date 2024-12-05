@@ -381,11 +381,6 @@
           "System.Text.Encoding.CodePages": "4.5.0"
         }
       },
-      "BCrypt.Net-Next": {
-        "type": "Transitive",
-        "resolved": "4.0.3",
-        "contentHash": "W+U9WvmZQgi5cX6FS5GDtDoPzUCV4LkBLkywq/kRZhuDwcbavOzcDAr3LXJFqHUi952Yj3LEYoWW0jbEUQChsA=="
-      },
       "CSharpToJsonSchema": {
         "type": "Transitive",
         "resolved": "3.10.1",
@@ -428,12 +423,12 @@
       },
       "Microsoft.AspNetCore.Authorization": {
         "type": "Transitive",
-        "resolved": "9.0.0",
-        "contentHash": "qDJlBC5pUQ/3o6/C6Vuo9CGKtV5TAe5AdKeHvDR2bgmw8vwPxsAy3KG5eU0i1C+iAUNbmq+iDTbiKt16f9pRiA==",
+        "resolved": "8.0.8",
+        "contentHash": "e+ehkJTx0bqUb9zzM9ohV830LhoK3fy5lfVGPWAozbq6I2rJpyq7L0OUgEGNEQLMTzawkDjpNlJ4WU1ck/TDjw==",
         "dependencies": {
-          "Microsoft.AspNetCore.Metadata": "9.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "9.0.0",
-          "Microsoft.Extensions.Options": "9.0.0"
+          "Microsoft.AspNetCore.Metadata": "8.0.8",
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.1",
+          "Microsoft.Extensions.Options": "8.0.2"
         }
       },
       "Microsoft.AspNetCore.Components": {
@@ -510,8 +505,8 @@
       },
       "Microsoft.AspNetCore.Metadata": {
         "type": "Transitive",
-        "resolved": "9.0.0",
-        "contentHash": "X81C891nMuWgzNHyZ0C3s+blSDxRHzQHDFYQoOKtFvFuxGq3BbkLbc5CfiCqIzA/sWIfz6u8sGBgwntQwBJWBw=="
+        "resolved": "8.0.8",
+        "contentHash": "4WSCv7ddawjabLZ7hj0Ai7hTzFYLw5PsvHVKrJkuBgrv+blELbIDMVj7b5q7PZs7Xvz0W0ViKY/rcVkqD0D5yQ=="
       },
       "Microsoft.AspNetCore.SignalR.Client": {
         "type": "Transitive",
@@ -767,14 +762,6 @@
         "type": "Transitive",
         "resolved": "8.0.8",
         "contentHash": "vJhGdkYKvytLIMi5J2vpsyfjPKzSm7dnCfdGwjt4skvJcomlJyKDTA3wAwxIMuMbiWcOi1HuiQ6R+85C+qFJrw=="
-      },
-      "Microsoft.ML.OnnxRuntime": {
-        "type": "Transitive",
-        "resolved": "1.20.1",
-        "contentHash": "NzUD79BC6R7TKROLyB3XCzXTpbNZ1YfOdVbult7hoFvd/xyRecOMiRO5HTzkPXvaFlcvZ91+WNCiroAPzUE7Dw==",
-        "dependencies": {
-          "Microsoft.ML.OnnxRuntime.Managed": "1.20.1"
-        }
       },
       "Microsoft.ML.OnnxRuntime.DirectML": {
         "type": "Transitive",
@@ -1849,7 +1836,6 @@
           "Microsoft.Extensions.AI.Ollama": "[9.0.1-preview.1.24570.5, )",
           "Microsoft.Extensions.Options": "[9.0.0, )",
           "Microsoft.Extensions.VectorData.Abstractions": "[9.0.0-preview.1.24523.1, )",
-          "Microsoft.ML.OnnxRuntime": "[1.20.1, )",
           "Microsoft.ML.OnnxRuntime.DirectML": "[1.20.1, )",
           "Microsoft.SemanticKernel.Connectors.InMemory": "[1.31.0-preview, )",
           "Microsoft.SemanticKernel.Connectors.Ollama": "[1.31.0-alpha, )",
@@ -1869,19 +1855,6 @@
           "Microsoft.AspNetCore.SignalR.Protocols.MessagePack": "[9.0.0, )",
           "MongoDB.Bson": "[3.0.0, )",
           "MudBlazor": "[7.15.0, )"
-        }
-      },
-      "protector": {
-        "type": "Project",
-        "dependencies": {
-          "BCrypt.Net-Next": "[4.0.3, )",
-          "BusinessModels": "[1.0.0, )",
-          "Microsoft.AspNetCore.Authorization": "[9.0.0, )",
-          "Microsoft.AspNetCore.DataProtection": "[9.0.0, )",
-          "Microsoft.Extensions.Options": "[9.0.0, )",
-          "Microsoft.IdentityModel.Tokens": "[8.2.1, )",
-          "MongoDB.Bson": "[3.0.0, )",
-          "MongoDB.Driver": "[3.0.0, )"
         }
       }
     }

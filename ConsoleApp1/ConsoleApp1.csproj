@@ -19,7 +19,7 @@
     <ItemGroup>
       <ProjectReference Include="..\BrainNet\BrainNet.csproj" />
     </ItemGroup>
-
+	
     <ItemGroup>
       <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     </ItemGroup>

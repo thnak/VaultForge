@@ -47,25 +47,7 @@
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Database/VectorDb.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Database/VectorDb.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Models/Setting/VectorDbConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Models/Setting/VectorDbConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Models/Vector/VectorRecord.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Models/Vector/VectorRecord.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Interfaces/IExtendService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Interfaces/IExtendService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IoTBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IoTBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/Wiki/WikipediaBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/Wiki/WikipediaBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Advertisement/AdvertisementDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Advertisement/AdvertisementDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IoTDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IoTDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Utils/DatabaseExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Utils/DatabaseExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/General/Results/Result.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/General/Results/Result.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp1/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Test/TestController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/Test/TestController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/appsettings.Development.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Utils/SessionOptionExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Utils/SessionOptionExtension.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -178,40 +160,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.ResApi.executor": "Debug",
-    ".NET Launch Settings Profile.Web: https.executor": "Debug",
-    ".NET Launch Settings Profile.WebApp no browser.executor": "Debug",
-    ".NET Launch Settings Profile.WebApp: IIS Express.executor": "Debug",
-    ".NET Launch Settings Profile.WebApp: https.executor": "Debug",
-    ".NET Launch Settings Profile.WebApp: no-browser.executor": "Debug",
-    ".NET Project.ConsoleApp1.executor": "Debug",
-    ".NET Project.WebApp.Client.executor": "Debug",
-    "Docker.WebApp/Dockerfile (1).executor": "Run",
-    "Publish to folder.ResApi.executor": "Run",
-    "Publish to folder.Unnamed.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "XThreadsFramesViewSplitterKey": "0.26168224",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/thanh/Downloads",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "project.propDebugger",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.ResApi.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.Web: https.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.WebApp no browser.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.WebApp: IIS Express.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.WebApp: https.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.WebApp: no-browser.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Project.ConsoleApp1.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Project.WebApp.Client.executor&quot;: &quot;Debug&quot;,
+    &quot;Docker.WebApp/Dockerfile (1).executor&quot;: &quot;Run&quot;,
+    &quot;Publish to folder.ResApi.executor&quot;: &quot;Run&quot;,
+    &quot;Publish to folder.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.26168224&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/thanh/Downloads&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propDebugger&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "Shell Script"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;Shell Script&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
     <layout>
       <window_info id="Bookmarks" show_stripe_button="false" side_tool="true" />
@@ -745,15 +727,8 @@
       <workItem from="1733323619919" duration="3440000" />
       <workItem from="1733363589494" duration="1004000" />
       <workItem from="1733364882144" duration="4278000" />
-      <workItem from="1733389309642" duration="6861000" />
-    </task>
-    <task id="LOCAL-00380" summary="remove non scene identifier, fix Raid5Stream.cs to support un-limit disk number">
-      <option name="closed" value="true" />
-      <created>1732467762884</created>
-      <option name="number" value="00380" />
-      <option name="presentableId" value="LOCAL-00380" />
-      <option name="project" value="LOCAL" />
-      <updated>1732467762885</updated>
+      <workItem from="1733389309642" duration="7043000" />
+      <workItem from="1733417962266" duration="114000" />
     </task>
     <task id="LOCAL-00381" summary="remove unused pack">
       <option name="closed" value="true" />
@@ -1139,7 +1114,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733324980594</updated>
     </task>
-    <option name="localTasksCounter" value="429" />
+    <task id="LOCAL-00429" summary="update">
+      <option name="closed" value="true" />
+      <created>1733401407296</created>
+      <option name="number" value="00429" />
+      <option name="presentableId" value="LOCAL-00429" />
+      <option name="project" value="LOCAL" />
+      <updated>1733401407296</updated>
+    </task>
+    <option name="localTasksCounter" value="430" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1189,13 +1172,13 @@
     <MESSAGE value="aot" />
     <MESSAGE value="auto rejoin the group when possible" />
     <MESSAGE value="update, fix background download" />
-    <MESSAGE value="update" />
     <MESSAGE value="fix integer overflow" />
     <MESSAGE value="only image can request index" />
     <MESSAGE value="limit size" />
     <MESSAGE value="fix losing data info after update" />
     <MESSAGE value="fix wrong folder position" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix wrong folder position" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1221,13 +1204,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/BrainNet/Utils/SessionOptionExtension.cs</url>
-          <line>18</line>
+          <line>21</line>
           <properties documentPath="C:\Users\thanh\Git\VaultForge\BrainNet\Utils\SessionOptionExtension.cs" containingFunctionPresentation="Method 'InitExecutionProviderOptions'">
             <startOffsets>
-              <option value="673" />
+              <option value="837" />
             </startOffsets>
             <endOffsets>
-              <option value="710" />
+              <option value="874" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="96" />

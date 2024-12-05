@@ -33,7 +33,7 @@ public class FaceEmbedding : IFaceEmbedding
             FaceEmbeddingSetting = new FaceEmbeddingSettingModel
             {
                 FaceEmbeddingPath = modelPath,
-                DeviceIndex = 0,
+                DeviceIndex = 1,
             }
         };
         Options = new OptionsWrapper<BrainNetSettingModel>(settings);
