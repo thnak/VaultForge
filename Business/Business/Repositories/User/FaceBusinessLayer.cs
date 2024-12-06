@@ -22,7 +22,7 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, ILogger<FaceBusinessLay
     {
         Name = "FaceEmbedding",
         DistantFunc = DistanceFunction.EuclideanDistance,
-        VectorSize = 512
+        VectorSize = 4096
     }, logger);
 
 

@@ -3,6 +3,7 @@ using System.Text;
 using BrainNet.Service.FaceEmbedding.Implements;
 using BrainNet.Service.ObjectDetection.Implements;
 using BrainNet.Service.ObjectDetection.Model.Feeder;
+using BrainNet.Utils;
 using Business.Business.Interfaces.User;
 using Business.Models.RetrievalAugmentedGeneration.Vector;
 using Microsoft.AspNetCore.Authorization;
@@ -90,7 +91,7 @@ public class TestController(ILogger<TestController> logger, IFaceBusinessLayer f
     [HttpGet("test2")]
     public async Task<IActionResult> Index2()
     {
-        using var faceEmbedding = new FaceEmbedding("C:/Users/thanh/Downloads/Facenet512.onnx");
+        using var faceEmbedding = new FaceEmbedding("C:/Users/thanh/Downloads/VGGFace.onnx");
 
         string[] allowedExtensions = { ".jpg", ".jpeg", ".png", ".bmp", ".gif" };
         string folderPath = "C:/Users/thanh/Downloads/archive/Faces/Faces";
@@ -117,8 +118,21 @@ public class TestController(ILogger<TestController> logger, IFaceBusinessLayer f
                     if(faceStorage.Value.Any())
                     {
                         var face = faceStorage.Value.First();
+                        if(face.Score == 0)
+                            continue;
 
-                        logger.LogInformation($"Found vector {face.Value.Key} for {fileGroup.Key} {face.Score:P1}");
+                        var isMatch = faceStorage.Value.IsMatchingMostSearchedValue(fileGroup.Key!);
+                        if(isMatch)
+                            logger.LogInformation($"Found vector {face.Value.Key} for {fileGroup.Key} {face.Score:P1}");
+                        await faceBusinessLayer.CreateAsync(new FaceVectorStorageModel()
+                        {
+                            Vector = vector,
+                            Owner = fileGroup.Key ?? string.Empty,
+                        });
+                    }
+                    else
+                    {
+                        logger.LogWarning("Failed to find vector");
                         await faceBusinessLayer.CreateAsync(new FaceVectorStorageModel()
                         {
                             Vector = vector,
@@ -126,15 +140,7 @@ public class TestController(ILogger<TestController> logger, IFaceBusinessLayer f
                         });
                     }
                 }
-                else
-                {
-                    logger.LogWarning("Failed to find vector");
-                    await faceBusinessLayer.CreateAsync(new FaceVectorStorageModel()
-                    {
-                        Vector = vector,
-                        Owner = fileGroup.Key ?? string.Empty,
-                    });
-                }
+               
             }
         }
 

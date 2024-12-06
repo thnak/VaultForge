@@ -11,6 +11,7 @@ using BusinessModels.Resources;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using OperationCanceledException = System.OperationCanceledException;
 
 namespace Business.Data.Repositories.User;
 
@@ -172,6 +173,10 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
             filter |= Builders<UserModel>.Filter.Eq(x => x.UserName, key);
             var result = _dataDb.Find(filter).Limit(1).FirstOrDefault();
             return result;
+        }
+        catch (OperationCanceledException)
+        {
+            return default;
         }
         catch (MongoException)
         {

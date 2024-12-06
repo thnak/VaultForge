@@ -1,4 +1,5 @@
-﻿using Microsoft.ML.OnnxRuntime;
+﻿using System.Diagnostics;
+using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;

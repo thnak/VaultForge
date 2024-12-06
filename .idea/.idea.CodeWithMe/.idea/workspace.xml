@@ -46,8 +46,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/BrainNet/Utils/EnumerableExtensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Utils/SessionOptionExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Utils/SessionOptionExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/FaceEmbedding/Utils/ImageExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/FaceEmbedding/Utils/ImageExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Test/TestController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/Test/TestController.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -234,7 +238,7 @@
       <window_info anchor="right" id="Maven" order="4" weight="0.25" />
     </layout>
   </component>
-  <component name="RunManager" selected=".NET Project.ConsoleApp1">
+  <component name="RunManager" selected=".NET Launch Settings Profile.ResApi">
     <configuration name="ResApi" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/ResApi/bin/Release/net9.0/linux-x64/publish" target_framework="net9.0" uuid_high="5905353364384007298" uuid_low="-8333852158807631372" />
       <method v="2" />
@@ -729,14 +733,9 @@
       <workItem from="1733364882144" duration="4278000" />
       <workItem from="1733389309642" duration="7043000" />
       <workItem from="1733417962266" duration="114000" />
-    </task>
-    <task id="LOCAL-00381" summary="remove unused pack">
-      <option name="closed" value="true" />
-      <created>1732468964174</created>
-      <option name="number" value="00381" />
-      <option name="presentableId" value="LOCAL-00381" />
-      <option name="project" value="LOCAL" />
-      <updated>1732468964174</updated>
+      <workItem from="1733419548620" duration="51000" />
+      <workItem from="1733461823122" duration="82000" />
+      <workItem from="1733462267830" duration="2904000" />
     </task>
     <task id="LOCAL-00382" summary="limit extremely stream read issue">
       <option name="closed" value="true" />
@@ -1122,7 +1121,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733401407296</updated>
     </task>
-    <option name="localTasksCounter" value="430" />
+    <task id="LOCAL-00430" summary="update">
+      <option name="closed" value="true" />
+      <created>1733419569709</created>
+      <option name="number" value="00430" />
+      <option name="presentableId" value="LOCAL-00430" />
+      <option name="project" value="LOCAL" />
+      <updated>1733419569710</updated>
+    </task>
+    <option name="localTasksCounter" value="431" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1188,32 +1195,6 @@
           <line>51</line>
           <properties documentPath="C:\Users\thanh\AppData\Roaming\JetBrains\Rider2024.3\resharper-host\SourcesCache\30cbb3994b59af56741aa3ee40719e511f42d9a2920f2a6f5ae81f8d1e78ee3\FunctionCallContentBuilder.cs" containingFunctionPresentation="Method 'Append'" />
           <option name="timeStamp" value="54" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/ResApi/Controllers/Test/TestController.cs</url>
-          <line>120</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\ResApi\Controllers\Test\TestController.cs" containingFunctionPresentation="Method 'Index2'">
-            <startOffsets>
-              <option value="4990" />
-            </startOffsets>
-            <endOffsets>
-              <option value="5082" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="94" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/BrainNet/Utils/SessionOptionExtension.cs</url>
-          <line>21</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\BrainNet\Utils\SessionOptionExtension.cs" containingFunctionPresentation="Method 'InitExecutionProviderOptions'">
-            <startOffsets>
-              <option value="837" />
-            </startOffsets>
-            <endOffsets>
-              <option value="874" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="96" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ConsoleApp1/Program.cs</url>
