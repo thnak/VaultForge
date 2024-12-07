@@ -45,22 +45,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/BrainNet.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/BrainNet.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloDetection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloDetection.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Utils/EnumerableExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Utils/EnumerableExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Business/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/General/SettingModels/AppSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/General/SettingModels/AppSettings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp1/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp1/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Test/TestController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/Test/TestController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Routes.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Routes.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Components/App.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Components/App.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Components/App.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Components/App.razor.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -249,7 +240,7 @@
       <window_info anchor="right" id="Maven" order="4" weight="0.25" />
     </layout>
   </component>
-  <component name="RunManager" selected=".NET Project.ConsoleApp1">
+  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: no-browser">
     <configuration name="ResApi" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/ResApi/bin/Release/net9.0/linux-x64/publish" target_framework="net9.0" uuid_high="5905353364384007298" uuid_low="-8333852158807631372" />
       <method v="2" />
@@ -748,14 +739,7 @@
       <workItem from="1733461823122" duration="82000" />
       <workItem from="1733462267830" duration="3530000" />
       <workItem from="1733479981681" duration="8962000" />
-    </task>
-    <task id="LOCAL-00383" summary="small update">
-      <option name="closed" value="true" />
-      <created>1732549712860</created>
-      <option name="number" value="00383" />
-      <option name="presentableId" value="LOCAL-00383" />
-      <option name="project" value="LOCAL" />
-      <updated>1732549712861</updated>
+      <workItem from="1733539105363" duration="6089000" />
     </task>
     <task id="LOCAL-00384" summary="update">
       <option name="closed" value="true" />
@@ -1141,7 +1125,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733466711809</updated>
     </task>
-    <option name="localTasksCounter" value="432" />
+    <task id="LOCAL-00432" summary="update">
+      <option name="closed" value="true" />
+      <created>1733540687142</created>
+      <option name="number" value="00432" />
+      <option name="presentableId" value="LOCAL-00432" />
+      <option name="project" value="LOCAL" />
+      <updated>1733540687142</updated>
+    </task>
+    <option name="localTasksCounter" value="433" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

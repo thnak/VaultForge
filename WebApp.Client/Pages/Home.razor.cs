@@ -67,4 +67,16 @@ public partial class Home(ILogger<Home> logger) : ComponentBase, IDisposable
 
     private ApexChart<MyData>? ChartRef { get; set; }
     public ApexChartOptions<MyData> ChartOption { get; set; } = ApexChartExtension.InitChartOptions<MyData>();
+
+    private Task GridContainerMouseDown(MouseEventArgs arg)
+    {
+        logger.LogInformation(arg.ClientX + ", " + arg.ClientY);
+        return Task.CompletedTask;
+    }
+
+    private Task GridContainerMouseMove(MouseEventArgs arg)
+    {
+        logger.LogInformation(arg.ClientX + ", " + arg.ClientY);
+        return Task.CompletedTask;
+    }
 }

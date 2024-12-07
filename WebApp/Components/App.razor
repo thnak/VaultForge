@@ -35,10 +35,9 @@
     <img alt="reload" src="@Assets["images/200w.gif"]">
 </div>
 
-@if(OperatingSystem.IsBrowser())
+@if(IsWasm)
 {
     <div class="progress-wrapper" id="progress-wrapper">
-        <span>@Constant.AppLogoText</span>
         <div class="progress-bar">
             <div class="progress"></div>
         </div>

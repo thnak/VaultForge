@@ -18,7 +18,7 @@
 
 
 
-<div class="grid-container">
+<div class="grid-container" @onmousedown="GridContainerMouseDown" @onmousemove="GridContainerMouseMove">
     
     @for (int i = 0; i < 100; i++)
     {
