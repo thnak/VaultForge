@@ -1,4 +1,5 @@
-﻿using BusinessModels.General.SettingModels;
+﻿using BusinessModels;
+using BusinessModels.General.SettingModels;
 using Microsoft.Extensions.Options;
 
 namespace Business.Services.Configure;
@@ -10,6 +11,8 @@ public class ApplicationConfiguration
     public ApplicationConfiguration(IOptions<AppSettings> appSettings)
     {
         InitOllamaConfig(appSettings);
+
+        OnnxConfig(appSettings);
 
         InitStorageConfig(appSettings);
 
@@ -100,7 +103,18 @@ public class ApplicationConfiguration
         Configs.OllamaConfig.TextGeneratorModel = GetEnvironmentVariable("OllamaConfigTextGeneratorModel", appSettings.Value.OllamaConfig.TextGeneratorModel);
     }
 
+    private void OnnxConfig(IOptions<AppSettings> appSettings)
+    {
+        Configs.OnnxConfig.FaceDetectionPath = GetEnvironmentVariable("OnnxConfigFaceDetectionPath", appSettings.Value.OnnxConfig.FaceDetectionPath);
+        Configs.OnnxConfig.FaceEmbeddingModel.ModelPath = GetEnvironmentVariable("OnnxConfigFaceEmbeddingModelModelPath", appSettings.Value.OnnxConfig.FaceEmbeddingModel.ModelPath);
+        Configs.OnnxConfig.FaceEmbeddingModel.VectorSize = GetIntEnvironmentVariable("OnnxConfigFaceEmbeddingModelVectorSize", appSettings.Value.OnnxConfig.FaceEmbeddingModel.VectorSize);
+        Configs.OnnxConfig.FaceEmbeddingModel.DistantFunc = GetEnvironmentVariable("OnnxConfigFaceEmbeddingModelDistantFunc", appSettings.Value.OnnxConfig.FaceEmbeddingModel.DistantFunc);
+    }
+
     public OllamaConfig GetOllamaConfig => Configs.OllamaConfig;
+
+    public OnnxConfig GetOnnxConfig => Configs.OnnxConfig;
+
     public Storage GetStorage => Configs.Storage;
     public IoTRequestQueueConfig GetIoTRequestQueueConfig => Configs.IoTRequestQueueConfig;
     public IoTCircuitBreaker GetIoTCircuitBreaker => Configs.IoTCircuitBreaker;
@@ -159,20 +173,7 @@ public class ApplicationConfiguration
 
     private string InitLogoAsciiArt()
     {
-        return @"
-__| |__________________________________________________________________________________| |__
-__   __________________________________________________________________________________   __
-  | |                                                                                  | |  
-  | |██╗   ██╗ █████╗ ██╗   ██╗██╗  ████████╗███████╗ ██████╗ ██████╗  ██████╗ ███████╗| |  
-  | |██║   ██║██╔══██╗██║   ██║██║  ╚══██╔══╝██╔════╝██╔═══██╗██╔══██╗██╔════╝ ██╔════╝| |  
-  | |██║   ██║███████║██║   ██║██║     ██║   █████╗  ██║   ██║██████╔╝██║  ███╗█████╗  | |  
-  | |╚██╗ ██╔╝██╔══██║██║   ██║██║     ██║   ██╔══╝  ██║   ██║██╔══██╗██║   ██║██╔══╝  | |  
-  | | ╚████╔╝ ██║  ██║╚██████╔╝███████╗██║   ██║     ╚██████╔╝██║  ██║╚██████╔╝███████╗| |  
-  | |  ╚═══╝  ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝   ╚═╝      ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝| |  
-__| |__________________________________________________________________________________| |__
-__   __________________________________________________________________________________   __
-  | |                                                                                  | |  
-        ";
+        return Constant.AppLogoText;
     }
 
     public static void DisplayGroupedConfigurations(string appNameAscii, Dictionary<string, Dictionary<string, string>> groupedConfigurations)

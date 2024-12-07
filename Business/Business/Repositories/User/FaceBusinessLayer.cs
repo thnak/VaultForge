@@ -8,6 +8,7 @@ using Business.Business.Interfaces.User;
 using Business.Data.Interfaces.User;
 using Business.Models;
 using Business.Models.RetrievalAugmentedGeneration.Vector;
+using Business.Services.Configure;
 using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using Microsoft.Extensions.Logging;
@@ -16,13 +17,13 @@ using MongoDB.Driver;
 
 namespace Business.Business.Repositories.User;
 
-public class FaceBusinessLayer(IFaceDataLayer dataLayer, ILogger<FaceBusinessLayer> logger) : IFaceBusinessLayer
+public class FaceBusinessLayer(IFaceDataLayer dataLayer, ILogger<FaceBusinessLayer> logger, ApplicationConfiguration applicationConfiguration) : IFaceBusinessLayer
 {
     [Experimental("SKEXP0020")] private readonly IVectorDb _vectorDb = new VectorDb(new VectorDbConfig()
     {
         Name = "FaceEmbedding",
-        DistantFunc = DistanceFunction.EuclideanDistance,
-        VectorSize = 4096
+        DistantFunc = applicationConfiguration.GetOnnxConfig.FaceEmbeddingModel.DistantFunc,
+        VectorSize = applicationConfiguration.GetOnnxConfig.FaceEmbeddingModel.VectorSize
     }, logger);
 
 

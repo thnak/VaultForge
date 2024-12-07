@@ -115,14 +115,14 @@ public class TestController(ILogger<TestController> logger, IFaceBusinessLayer f
                 var faceStorage = await faceBusinessLayer.SearchVectorAsync(vector);
                 if (faceStorage.IsSuccess)
                 {
-                    if(faceStorage.Value.Any())
+                    if (faceStorage.Value.Any())
                     {
                         var face = faceStorage.Value.First();
-                        if(face.Score == 0)
+                        if (face.Score == 0)
                             continue;
 
                         var isMatch = faceStorage.Value.IsMatchingMostSearchedValue(fileGroup.Key!);
-                        if(isMatch)
+                        if (isMatch)
                             logger.LogInformation($"Found vector {face.Value.Key} for {fileGroup.Key} {face.Score:P1}");
                         await faceBusinessLayer.CreateAsync(new FaceVectorStorageModel()
                         {
@@ -140,7 +140,6 @@ public class TestController(ILogger<TestController> logger, IFaceBusinessLayer f
                         });
                     }
                 }
-               
             }
         }
 
@@ -152,8 +151,8 @@ public class TestController(ILogger<TestController> logger, IFaceBusinessLayer f
     [IgnoreAntiforgeryToken]
     public async Task<IActionResult> Search([FromForm] IFormFile file)
     {
-        using var faceEmbedding = new FaceEmbedding("C:/Users/thanh/Git/CodeWithMe/ConsoleApp1/just_reshape.onnx");
-        using var facedetection = new YoloDetection("C:/Users/thanh/Git/CodeWithMe/ConsoleApp1/best.onnx");
+        using var faceEmbedding = new FaceEmbedding("C:/Users/thanh/source/VGGFace.onnx");
+        using var facedetection = new YoloDetection("C:/Users/thanh/source/best.onnx");
         var tensorFeed = new YoloFeeder(facedetection.InputDimensions[2..], facedetection.Stride);
         using MemoryStream memoryStream = new MemoryStream();
         await file.CopyToAsync(memoryStream);
@@ -178,10 +177,9 @@ public class TestController(ILogger<TestController> logger, IFaceBusinessLayer f
             var result = await faceBusinessLayer.SearchVectorAsync(vector);
             if (result.IsSuccess)
             {
-                foreach (var score in result.Value)
-                {
-                    stringBuilder.AppendLine($"{score.Value.Key}: {score.Score:P1}");
-                }
+                var v = result.Value.Select(x => x).ToList();
+                var key = v.GetMostFrequentlySearchedKey();
+                stringBuilder.AppendLine($"Found vector {key} in box {box.X}x{box.Y}");
             }
         }
 

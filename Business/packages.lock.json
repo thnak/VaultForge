@@ -818,6 +818,15 @@
           "System.Text.Json": "8.0.5"
         }
       },
+      "Microsoft.SemanticKernel.Connectors.Google": {
+        "type": "Transitive",
+        "resolved": "1.31.0-alpha",
+        "contentHash": "leUglyPBuTu9tJNUertwZ9vXdpdg9QeQXeEaxhkpcwZweiF9w/WWjpPh3NFJEvtJxypnJ6/Vz9v/gzJ2a1Mf1A==",
+        "dependencies": {
+          "Microsoft.SemanticKernel.Abstractions": "1.31.0",
+          "Microsoft.SemanticKernel.Core": "1.31.0"
+        }
+      },
       "Microsoft.SemanticKernel.Connectors.InMemory": {
         "type": "Transitive",
         "resolved": "1.31.0-preview",
@@ -1837,6 +1846,7 @@
           "Microsoft.Extensions.Options": "[9.0.0, )",
           "Microsoft.Extensions.VectorData.Abstractions": "[9.0.0-preview.1.24523.1, )",
           "Microsoft.ML.OnnxRuntime.DirectML": "[1.20.1, )",
+          "Microsoft.SemanticKernel.Connectors.Google": "[1.31.0-alpha, )",
           "Microsoft.SemanticKernel.Connectors.InMemory": "[1.31.0-preview, )",
           "Microsoft.SemanticKernel.Connectors.Ollama": "[1.31.0-alpha, )",
           "Newtonsoft.Json": "[13.0.3, )",

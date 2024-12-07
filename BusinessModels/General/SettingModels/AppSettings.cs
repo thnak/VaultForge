@@ -11,10 +11,11 @@ public class AppSettings
     public Storage Storage { get; set; } = new();
     public VideoTransCode VideoTransCode { get; set; } = new();
     public OllamaConfig OllamaConfig { get; set; } = new();
+    public OnnxConfig OnnxConfig { get; set; } = new();
     public IoTCircuitBreaker IoTCircuitBreaker { get; set; } = new();
     public IoTRequestQueueConfig IoTRequestQueueConfig { get; set; } = new();
     public AppCertificate AppCertificate { get; set; } = new();
-    
+
     public Authenticate Authenticate { get; set; } = new();
 }
 
@@ -57,10 +58,24 @@ public class DbSettingModel
 
 public class OllamaConfig
 {
-    public string ConnectionString { get; set; } = "http://localhost:11434/";
+    public string ConnectionString { get; set; } = "http:thnakdevserver.ddns.net:11434/";
     public string TextEmbeddingModel { get; set; } = "nomic-embed-text";
     public string TextGeneratorModel { get; set; } = "llama3.2";
     public string Image2TextModel { get; set; } = "minicpm-v";
+}
+
+public class OnnxConfig
+{
+    public string FaceDetectionPath { get; set; } = string.Empty;
+
+    public FaceEmbeddingModel FaceEmbeddingModel { get; set; } = new();
+}
+
+public class FaceEmbeddingModel
+{
+    public string ModelPath { get; set; } = string.Empty;
+    public int VectorSize { get; set; } = 4096;
+    public string DistantFunc { get; set; } = "EuclideanDistance";
 }
 
 public class IoTCircuitBreaker

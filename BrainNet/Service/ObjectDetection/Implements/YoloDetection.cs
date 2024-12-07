@@ -49,7 +49,7 @@ public class YoloDetection : IYoloDetection
     private SessionOptions InitSessionOption()
     {
         var sessionOptions = new SessionOptions();
-        sessionOptions.RegisterOrtExtensions();
+        // sessionOptions.RegisterOrtExtensions();
         sessionOptions.InitSessionOption();
         sessionOptions.InitExecutionProviderOptions(Options.Value.FaceEmbeddingSetting.DeviceIndex);
         return sessionOptions;

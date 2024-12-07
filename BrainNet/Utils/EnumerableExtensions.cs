@@ -34,4 +34,18 @@ public static class EnumerableExtensions
         // Check if the given key matches the most searched value
         return mostSearched != null && mostSearched.Equals(key, StringComparison.OrdinalIgnoreCase);
     }
+
+    public static string GetMostFrequentlySearchedKey(this List<SearchScore<VectorRecord>> searchScores)
+    {
+        if (searchScores.Count == 0)
+            return string.Empty; // Return empty if the list is null or empty.
+
+        // Group by the Value property and count occurrences
+        var mostSearched = searchScores
+            .GroupBy(ss => ss.Value.Key)
+            .OrderByDescending(g => g.Count())
+            .FirstOrDefault()?.Key;
+
+        return mostSearched ?? string.Empty; // Return empty if no key is found.
+    }
 }

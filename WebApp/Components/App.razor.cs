@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Reflection;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Net.Http.Headers;
@@ -35,12 +36,6 @@ public partial class App(ILogger<App> logger)
         IsWasm = false;
         var mode = HttpContext.GetEndpoint()?.Metadata.GetMetadata<RenderModeAttribute>()?.Mode;
         if (mode == null) return new InteractiveServerRenderMode();
-        //
-        // if (mode == InteractiveWebAssembly)
-        // {
-        //     IsWasm = true;
-        //     return new InteractiveWebAssemblyRenderMode(true);
-        // }
 
         return mode;
     }
