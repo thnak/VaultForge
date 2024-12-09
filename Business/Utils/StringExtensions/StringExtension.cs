@@ -30,7 +30,7 @@ public static class StringExtension
         var chunks = new List<string>();
         int position = 0;
 
-        while (position < text.Length)
+        while (position < text.Length && position >= 0)
         {
             // Calculate the end position for the current chunk
             int end = Math.Min(position + chunkSize, text.Length);

@@ -45,28 +45,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update message pack to v3">
-      <change afterPath="$PROJECT_DIR$/Business/Data/Interfaces/VectorDb/IVectorDataLayer.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Business/Data/Repositories/VectorDb/VectorDataLayer.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Business/Models/Vector/VectorRecord.cs" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Database/IVectorDb.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Database/IInMemoryVectorDb.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Database/VectorDb.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Database/InMemoryIInMemoryVectorDb.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Models/Setting/VectorDbConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Models/Setting/VectorDbConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Models/Vector/VectorRecord.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Models/Vector/VectorRecord.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/Wiki/WikipediaBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/Wiki/WikipediaBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Utils/BusinessExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Utils/BusinessExtension.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Wiki/WikipediaDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Wiki/WikipediaDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/DataService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/DataService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/HostedServices/Base/HostApplicationLifetimeEventsHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostedServices/Base/HostApplicationLifetimeEventsHostedService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Business/Utils/StringExtensions/StringExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Utils/StringExtensions/StringExtension.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/General/SettingModels/AppSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/General/SettingModels/AppSettings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Wiki/WikipediaDatasetModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Wiki/WikipediaDatasetModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Properties/launchSettings.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -258,7 +239,7 @@
       <window_info anchor="right" id="Maven" order="4" weight="0.25" />
     </layout>
   </component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.ResApi">
+  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: no-browser">
     <configuration name="ResApi" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/ResApi/bin/Release/net9.0/linux-x64/publish" target_framework="net9.0" uuid_high="5905353364384007298" uuid_low="-8333852158807631372" />
       <method v="2" />
@@ -760,15 +741,7 @@
       <workItem from="1733539105363" duration="10031000" />
       <workItem from="1733709937628" duration="3919000" />
       <workItem from="1733714145605" duration="1938000" />
-      <workItem from="1733739708534" duration="6286000" />
-    </task>
-    <task id="LOCAL-00388" summary="update">
-      <option name="closed" value="true" />
-      <created>1732932431906</created>
-      <option name="number" value="00388" />
-      <option name="presentableId" value="LOCAL-00388" />
-      <option name="project" value="LOCAL" />
-      <updated>1732932431906</updated>
+      <workItem from="1733739708534" duration="9633000" />
     </task>
     <task id="LOCAL-00389" summary="update">
       <option name="closed" value="true" />
@@ -1154,7 +1127,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733740450589</updated>
     </task>
-    <option name="localTasksCounter" value="437" />
+    <task id="LOCAL-00437" summary="update">
+      <option name="closed" value="true" />
+      <created>1733754739021</created>
+      <option name="number" value="00437" />
+      <option name="presentableId" value="LOCAL-00437" />
+      <option name="project" value="LOCAL" />
+      <updated>1733754739021</updated>
+    </task>
+    <option name="localTasksCounter" value="438" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1208,9 +1189,9 @@
     <MESSAGE value="fix wrong folder position" />
     <MESSAGE value="test" />
     <MESSAGE value="add some simd compute function" />
-    <MESSAGE value="update" />
     <MESSAGE value="update message pack to v3" />
-    <option name="LAST_COMMIT_MESSAGE" value="update message pack to v3" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

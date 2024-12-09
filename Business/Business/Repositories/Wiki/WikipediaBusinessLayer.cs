@@ -141,23 +141,11 @@ public class WikipediaBusinessLayer(
         Expression<Func<WikipediaDatasetModel, object>>[] expression =
         [
             model => model.Id,
-            model => model.Title,
         ];
         var cursor = dataLayer.GetAllAsync(expression, cancellationToken);
         await foreach (var item in cursor)
         {
-            await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken => await RequestIndex(item, serverToken), cancellationToken);
-        }
-
-        return Result<bool>.Success(true);
-    }
-
-    [Experimental("SKEXP0020")]
-    private async Task RequestIndex(WikipediaDatasetModel item, CancellationToken cancellationToken = default)
-    {
-        var key = item.Id.ToString();
-        if (vectorDataLayer.Exists("WikipediaText", key))
-        {
+            var key = item.Id.ToString();
             await foreach (var record in vectorDataLayer.GetAsyncEnumerator("WikipediaText", key, cancellationToken))
             {
                 await _iInMemoryVectorDb.AddNewRecordAsync(new VectorRecord()
@@ -167,8 +155,15 @@ public class WikipediaBusinessLayer(
                     Title = item.Title,
                 }, cancellationToken);
             }
-            return;
         }
+
+        return Result<bool>.Success(true);
+    }
+
+    [Experimental("SKEXP0020")]
+    private async Task RequestIndex(WikipediaDatasetModel item, CancellationToken cancellationToken = default)
+    {
+        var key = item.Id.ToString();
         
         foreach (var chunk in item.Text.ChunkText(12_000, 1_200))
         {
