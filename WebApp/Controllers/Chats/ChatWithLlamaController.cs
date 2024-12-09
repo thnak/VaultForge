@@ -13,8 +13,13 @@ namespace WebApp.Controllers.Chats;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithLlamaController> logger, IFileSystemBusinessLayer fileBl, IFolderSystemBusinessLayer folderBl,
-    IServiceProvider serviceProvider, ApplicationConfiguration options) : ControllerBase
+public class ChatWithLlamaController(
+    IMemoryCache memoryCache,
+    ILogger<ChatWithLlamaController> logger,
+    IFileSystemBusinessLayer fileBl,
+    IFolderSystemBusinessLayer folderBl,
+    IServiceProvider serviceProvider,
+    ApplicationConfiguration options) : ControllerBase
 {
     [HttpPost("chat")]
     [AllowAnonymous]
@@ -70,7 +75,7 @@ public class ChatWithLlamaController(IMemoryCache memoryCache, ILogger<ChatWithL
         foreach (var searchScore in result)
         {
             var fileResult = await fileBl.Get(searchScore.Value.Key, model => model.Id, model => model.Description);
-            if(!fileResult.IsSuccess) continue;
+            if (!fileResult.IsSuccess) continue;
             var file = fileResult.Value;
             stringBuilder.AppendLine($"[{searchScore.Score:N2}] {file!.Id}:\nDescription: {file.Description}\n");
         }

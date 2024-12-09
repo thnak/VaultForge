@@ -1,4 +1,5 @@
-﻿using System.Net.Mime;
+﻿using System.Diagnostics;
+using System.Net.Mime;
 using System.Text;
 using BrainNet.Service.FaceEmbedding.Implements;
 using BrainNet.Service.ObjectDetection.Implements;
@@ -6,6 +7,7 @@ using BrainNet.Service.ObjectDetection.Model.Feeder;
 using BrainNet.Utils;
 using Business.Business.Interfaces.User;
 using Business.Models.RetrievalAugmentedGeneration.Vector;
+using Business.Utils.Enumerable;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SixLabors.ImageSharp;
@@ -86,6 +88,29 @@ public class TestController(ILogger<TestController> logger, IFaceBusinessLayer f
         }
 
         return Ok();
+    }
+
+    [HttpGet("test3")]
+    public IActionResult Index3()
+    {
+        Stopwatch sw = Stopwatch.StartNew();
+        GenerateLargeData(int.MaxValue).Mean();
+        sw.Stop();
+        Console.WriteLine($"Mean: {sw.ElapsedMilliseconds} ms");
+        sw.Reset();
+        sw.Restart();
+        var total = GenerateLargeData(int.MaxValue).Sum();
+        sw.Stop();
+        Console.WriteLine($"Total: {sw.ElapsedMilliseconds} ms");
+        return Ok();
+    }
+
+    static IEnumerable<float> GenerateLargeData(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            yield return i * 0.1f;
+        }
     }
 
     [HttpGet("test2")]

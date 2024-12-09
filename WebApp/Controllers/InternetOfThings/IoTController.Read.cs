@@ -8,14 +8,14 @@ namespace WebApp.Controllers.InternetOfThings;
 public partial class IoTController
 {
     [HttpGet("v1/get-count/{device}")]
-    public IActionResult GetCount( string device)
+    public IActionResult GetCount(string device)
     {
         var total = requestQueueHostedService.GetTotalRequests(device);
         return Ok(total);
     }
-    
+
     [HttpGet("v1/get-last-record/{device}")]
-    public IActionResult GetLastRecord( string device)
+    public IActionResult GetLastRecord(string device)
     {
         var total = requestQueueHostedService.GetLastRecord(device);
         return Ok(total);

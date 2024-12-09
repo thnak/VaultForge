@@ -10,10 +10,10 @@ namespace WebApp.Controllers.Streaming;
 public class SpeedTestController : ControllerBase
 {
     private const long MemoryStreamSize = 1024 * 1024 * 1024;
+
     [HttpGet("stream")]
     public async Task<IActionResult> StreamVideo()
     {
-        
         var stopwatch = new Stopwatch();
 
         try
@@ -34,10 +34,10 @@ public class SpeedTestController : ControllerBase
             // Calculate the download speed in Mbps
             double downloadTimeInSeconds = stopwatch.Elapsed.TotalSeconds;
             double downloadSpeedMbps = MemoryStreamSize * 8 / (downloadTimeInSeconds * 1024 * 1024); // bits per second to Mbps
-        
+
             Response.RegisterForDisposeAsync(memoryStream);
 
-            
+
             // Return the result as a JSON object
 
             var result = new
@@ -45,7 +45,7 @@ public class SpeedTestController : ControllerBase
                 DownloadSpeedMbps = downloadSpeedMbps,
                 DownloadTimeSeconds = downloadTimeInSeconds
             };
-            
+
             return Content(result.ToJson(), MimeTypeNames.Application.Json);
         }
         catch (Exception ex)

@@ -45,13 +45,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Business/Utils/Enumerable/EnumerableSimd.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Routes.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Routes.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Components/App.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Components/App.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Components/App.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Components/App.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Test/TestController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/Test/TestController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/Chats/ChatWithLlamaController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/Chats/ChatWithLlamaController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/IoTController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/IoTController.Read.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/Streaming/SpeedTestController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/Streaming/SpeedTestController.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -240,7 +241,7 @@
       <window_info anchor="right" id="Maven" order="4" weight="0.25" />
     </layout>
   </component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: no-browser">
+  <component name="RunManager" selected=".NET Launch Settings Profile.ResApi">
     <configuration name="ResApi" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/ResApi/bin/Release/net9.0/linux-x64/publish" target_framework="net9.0" uuid_high="5905353364384007298" uuid_low="-8333852158807631372" />
       <method v="2" />
@@ -739,15 +740,8 @@
       <workItem from="1733461823122" duration="82000" />
       <workItem from="1733462267830" duration="3530000" />
       <workItem from="1733479981681" duration="8962000" />
-      <workItem from="1733539105363" duration="6089000" />
-    </task>
-    <task id="LOCAL-00384" summary="update">
-      <option name="closed" value="true" />
-      <created>1732636486877</created>
-      <option name="number" value="00384" />
-      <option name="presentableId" value="LOCAL-00384" />
-      <option name="project" value="LOCAL" />
-      <updated>1732636486877</updated>
+      <workItem from="1733539105363" duration="10031000" />
+      <workItem from="1733709937628" duration="2132000" />
     </task>
     <task id="LOCAL-00385" summary="update alias">
       <option name="closed" value="true" />
@@ -1133,7 +1127,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733540687142</updated>
     </task>
-    <option name="localTasksCounter" value="433" />
+    <task id="LOCAL-00433" summary="test">
+      <option name="closed" value="true" />
+      <created>1733545783957</created>
+      <option name="number" value="00433" />
+      <option name="presentableId" value="LOCAL-00433" />
+      <option name="project" value="LOCAL" />
+      <updated>1733545783957</updated>
+    </task>
+    <option name="localTasksCounter" value="434" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1164,7 +1166,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="use utc for backend" />
     <MESSAGE value="introduct data protection" />
     <MESSAGE value="refactor" />
     <MESSAGE value="update SignalrClientManager.cs, IoTSensorSignalHub.cs" />
@@ -1189,7 +1190,8 @@
     <MESSAGE value="fix losing data info after update" />
     <MESSAGE value="fix wrong folder position" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="test" />
+    <option name="LAST_COMMIT_MESSAGE" value="test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

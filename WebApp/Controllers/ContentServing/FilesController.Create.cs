@@ -70,8 +70,7 @@ public partial class FilesController
         return Ok();
     }
 
-    
-    
+
     [HttpPost("upload-physical/{folderCodes}")]
     [DisableFormValueModelBinding]
     [AllowAnonymous]
