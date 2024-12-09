@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using BrainNet.Utils;
 using Business.Business.Interfaces.Wiki;
 using BusinessModels.Wiki;
 using Microsoft.AspNetCore.Authorization;
@@ -31,7 +32,7 @@ public class WikiController(IWikipediaBusinessLayer wikipediaBusinessLayer) : Co
         var token = HttpContext.RequestAborted;
         var result = await wikipediaBusinessLayer.SearchRag(query, 10, token);
         StringBuilder sb = new();
-        foreach (var searchScore in result)
+        foreach (var searchScore in result.GroupBySearchScore())
         {
             var wiki = wikipediaBusinessLayer.Get(searchScore.Value.Key);
             if (wiki != null)

@@ -47,7 +47,9 @@
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Utils/StringExtensions/StringExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Utils/StringExtensions/StringExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Utils/EnumerableExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Utils/EnumerableExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConsoleApp1/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/Wiki/WikiController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/Wiki/WikiController.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -144,6 +146,7 @@
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/appsettings.json" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -239,7 +242,7 @@
       <window_info anchor="right" id="Maven" order="4" weight="0.25" />
     </layout>
   </component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: no-browser">
+  <component name="RunManager" selected=".NET Project.ConsoleApp1">
     <configuration name="ResApi" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/ResApi/bin/Release/net9.0/linux-x64/publish" target_framework="net9.0" uuid_high="5905353364384007298" uuid_low="-8333852158807631372" />
       <method v="2" />
@@ -741,15 +744,7 @@
       <workItem from="1733539105363" duration="10031000" />
       <workItem from="1733709937628" duration="3919000" />
       <workItem from="1733714145605" duration="1938000" />
-      <workItem from="1733739708534" duration="9633000" />
-    </task>
-    <task id="LOCAL-00389" summary="update">
-      <option name="closed" value="true" />
-      <created>1732959131431</created>
-      <option name="number" value="00389" />
-      <option name="presentableId" value="LOCAL-00389" />
-      <option name="project" value="LOCAL" />
-      <updated>1732959131432</updated>
+      <workItem from="1733739708534" duration="11718000" />
     </task>
     <task id="LOCAL-00390" summary="update">
       <option name="closed" value="true" />
@@ -1135,7 +1130,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733754739021</updated>
     </task>
-    <option name="localTasksCounter" value="438" />
+    <task id="LOCAL-00438" summary="update">
+      <option name="closed" value="true" />
+      <created>1733758884749</created>
+      <option name="number" value="00438" />
+      <option name="presentableId" value="LOCAL-00438" />
+      <option name="project" value="LOCAL" />
+      <updated>1733758884749</updated>
+    </task>
+    <option name="localTasksCounter" value="439" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1204,16 +1207,29 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/ConsoleApp1/Program.cs</url>
-          <line>157</line>
+          <line>180</line>
           <properties documentPath="C:\Users\thanh\Git\VaultForge\ConsoleApp1\Program.cs" containingFunctionPresentation="">
             <startOffsets>
-              <option value="5934" />
+              <option value="6870" />
             </startOffsets>
             <endOffsets>
-              <option value="6044" />
+              <option value="6980" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="97" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/ConsoleApp1/Program.cs</url>
+          <line>152</line>
+          <properties documentPath="C:\Users\thanh\Git\VaultForge\ConsoleApp1\Program.cs" containingFunctionPresentation="">
+            <startOffsets>
+              <option value="5995" />
+            </startOffsets>
+            <endOffsets>
+              <option value="6019" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="100" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">

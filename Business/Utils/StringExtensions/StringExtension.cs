@@ -27,30 +27,18 @@ public static class StringExtension
 
     public static List<string> ChunkText(this string text, int chunkSize = 500, int overlap = 100)
     {
-        var chunks = new List<string>();
-        int position = 0;
+        List<string> chunks = new List<string>();
+        int startIndex = 0;
 
-        while (position < text.Length && position >= 0)
+        while (startIndex < text.Length)
         {
-            // Calculate the end position for the current chunk
-            int end = Math.Min(position + chunkSize, text.Length);
+            int endIndex = Math.Min(startIndex + chunkSize, text.Length);
+            string chunk = text.Substring(startIndex, endIndex - startIndex);
 
-            // Adjust the end position to avoid splitting words (if possible)
-            if (end < text.Length && !char.IsWhiteSpace(text[end]))
-            {
-                int lastSpace = text.LastIndexOf(' ', end);
-                if (lastSpace > position)
-                {
-                    end = lastSpace;
-                }
-            }
-
-            // Extract the chunk and add it to the list
-            string chunk = text.Substring(position, end - position).Trim();
             chunks.Add(chunk);
 
-            // Move the position forward, considering the overlap
-            position = end - overlap;
+            // Calculate the next start index, considering the overlap
+            startIndex += chunkSize - overlap;
         }
 
         return chunks;
