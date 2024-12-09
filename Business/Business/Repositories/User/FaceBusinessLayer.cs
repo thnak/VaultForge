@@ -19,7 +19,7 @@ namespace Business.Business.Repositories.User;
 
 public class FaceBusinessLayer(IFaceDataLayer dataLayer, ILogger<FaceBusinessLayer> logger, ApplicationConfiguration applicationConfiguration) : IFaceBusinessLayer
 {
-    [Experimental("SKEXP0020")] private readonly IVectorDb _vectorDb = new VectorDb(new VectorDbConfig()
+    [Experimental("SKEXP0020")] private readonly IInMemoryVectorDb _iInMemoryVectorDb = new InMemoryIInMemoryVectorDb(new VectorDbConfig()
     {
         Name = "FaceEmbedding",
         DistantFunc = applicationConfiguration.GetOnnxConfig.FaceEmbeddingModel.DistantFunc,
@@ -95,7 +95,7 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, ILogger<FaceBusinessLay
     [Experimental("SKEXP0020")]
     public async Task<Result<bool>> CreateAsync(FaceVectorStorageModel model, CancellationToken cancellationToken = default)
     {
-        await _vectorDb.AddNewRecordAsync(new VectorRecord()
+        await _iInMemoryVectorDb.AddNewRecordAsync(new VectorRecord()
         {
             Vector = model.Vector,
             Key = model.Owner
@@ -133,11 +133,11 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, ILogger<FaceBusinessLay
     [Experimental("SKEXP0020")]
     public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
-        await _vectorDb.Init();
+        await _iInMemoryVectorDb.Init();
         var cursor = GetAllAsync([], cancellationToken);
         await foreach (var item in cursor)
         {
-            await _vectorDb.AddNewRecordAsync(new VectorRecord()
+            await _iInMemoryVectorDb.AddNewRecordAsync(new VectorRecord()
             {
                 Vector = item.Vector,
                 Key = item.Owner
@@ -153,7 +153,7 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, ILogger<FaceBusinessLay
         try
         {
             List<SearchScore<VectorRecord>> result = [];
-            var cursor = _vectorDb.Search(new ReadOnlyMemory<float>(vector), 10, cancellationToken);
+            var cursor = _iInMemoryVectorDb.Search(new ReadOnlyMemory<float>(vector), 10, cancellationToken);
             await foreach (var search in cursor)
             {
                 result.Add(search);
@@ -175,12 +175,12 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, ILogger<FaceBusinessLay
     [Experimental("SKEXP0020")]
     public void Dispose()
     {
-        _vectorDb.Dispose();
+        _iInMemoryVectorDb.Dispose();
     }
 
     [Experimental("SKEXP0020")]
     public ValueTask DisposeAsync()
     {
-        return _vectorDb.DisposeAsync();
+        return _iInMemoryVectorDb.DisposeAsync();
     }
 }

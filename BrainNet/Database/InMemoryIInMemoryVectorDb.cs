@@ -12,7 +12,7 @@ using Microsoft.SemanticKernel.Connectors.InMemory;
 namespace BrainNet.Database;
 
 [Experimental("SKEXP0020")]
-public class VectorDb : IVectorDb
+public class InMemoryIInMemoryVectorDb : IInMemoryVectorDb
 {
     private IVectorStoreRecordCollection<Guid, VectorRecord> Collection { get; }
 
@@ -23,7 +23,7 @@ public class VectorDb : IVectorDb
     private string ConnectionString { get; }
     private string Image2TextModelName { get; }
 
-    public VectorDb(VectorDbConfig config, ILogger logger)
+    public InMemoryIInMemoryVectorDb(VectorDbConfig config, ILogger logger)
     {
         Logger = logger;
         ConnectionString = config.OllamaConnectionString;
@@ -41,7 +41,7 @@ public class VectorDb : IVectorDb
                 {
                     Dimensions = config.VectorSize,
                     DistanceFunction = config.DistantFunc,
-                    IndexKind = IndexKind.Dynamic
+                    IndexKind = config.IndexKind,
                 }
             }
         };

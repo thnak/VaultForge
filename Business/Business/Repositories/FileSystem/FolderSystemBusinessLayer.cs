@@ -45,7 +45,7 @@ internal class FolderSystemBusinessLayer(
     : IFolderSystemBusinessLayer
 {
     private readonly CacheKeyManager _cacheKeyManager = new(memoryCache, nameof(FolderSystemBusinessLayer));
-    private readonly ConcurrentDictionary<string, IVectorDb> _vectorDbs = new();
+    private readonly ConcurrentDictionary<string, IInMemoryVectorDb> _vectorDbs = new();
 
     [Experimental("SKEXP0020")]
     public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
@@ -75,10 +75,10 @@ internal class FolderSystemBusinessLayer(
     }
 
     [Experimental("SKEXP0020")]
-    private async Task<IVectorDb> GetOrInitCollection(string userName)
+    private async Task<IInMemoryVectorDb> GetOrInitCollection(string userName)
     {
         var collectionName = userName.GetVectorName(nameof(FolderSystemBusinessLayer));
-        var success = _vectorDbs.TryAdd(collectionName, new VectorDb(new VectorDbConfig()
+        var success = _vectorDbs.TryAdd(collectionName, new InMemoryIInMemoryVectorDb(new VectorDbConfig()
         {
             Name = collectionName,
             OllamaConnectionString = options.GetOllamaConfig.ConnectionString,

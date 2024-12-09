@@ -45,10 +45,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update message pack to v3">
+      <change afterPath="$PROJECT_DIR$/Business/Data/Interfaces/VectorDb/IVectorDataLayer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Business/Data/Repositories/VectorDb/VectorDataLayer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Business/Models/Vector/VectorRecord.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/status/IoTDeviceGroupStatus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/status/IoTDeviceGroupStatus.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/status/IoTSensorStatus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/status/IoTSensorStatus.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Database/IVectorDb.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Database/IInMemoryVectorDb.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Database/VectorDb.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Database/InMemoryIInMemoryVectorDb.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Models/Setting/VectorDbConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Models/Setting/VectorDbConfig.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Models/Vector/VectorRecord.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Models/Vector/VectorRecord.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/Wiki/WikipediaBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/Wiki/WikipediaBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Utils/BusinessExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Utils/BusinessExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Wiki/WikipediaDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Wiki/WikipediaDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/DataService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/DataService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/HostedServices/Base/HostApplicationLifetimeEventsHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostedServices/Base/HostApplicationLifetimeEventsHostedService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Utils/StringExtensions/StringExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Utils/StringExtensions/StringExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/General/SettingModels/AppSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/General/SettingModels/AppSettings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Wiki/WikipediaDatasetModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Wiki/WikipediaDatasetModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ResApi/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Properties/launchSettings.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
@@ -116,6 +133,7 @@
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Security.Cryptography/src/System/Security/Cryptography/X509Certificates/CertificatePal.Windows.Import.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Text.Json/src/System/Text/Json/Serialization/JsonConverterOfT.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0fb7a5f343ed4578a15c716986a3f17950c00/7a/d308585c/NativeDateTimeResolver.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/838402d166304061809e45e127735cb925920/11/d508170c/ILogger`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f144f137e8c44478ad03d647d3e83e8771910/68/2e705602/EncryptionAlgorithm.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1059a9b9258b3670df5a4c449544237362d49ae9599d8964fde76c16fc50b6/VectorStoreRecordProperty.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2565b9d99fdde488bc7801b84387b2cc864959cfb63212e1ff576fc9c6bb7e/CancellationToken.cs" root0="FORCE_HIGHLIGHTING" />
@@ -125,6 +143,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4f5ca8a0b4696ee177cb72bbae4ff2c856ae748de567464543668dfb1fff/DistanceFunction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5eecc2d22de68b16cb5f68b3e333591fc6c5f58cfc4185587e5dfe96213947/IMongoIndexManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6354a7b35d7821629924d3676acd7e67a6f7f94343e0e66ec439aa2bd6ed5/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6a44d1618475c554cdb454d3d6746789df652e379e2a5e5e67b916046b0e0d2/IndexKind.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/74e4c72cd3922ed61496931f33baf4a9b5950edddb6b78bc296241285f25c3/TaskAwaiter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8a8a7c52b4b5e4ee92c9fed29affe5d381cc817f69216bef50b2c6e5c37f1e60/VectorStoreRecordKeyProperty.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/948394a61fad115d827d4d89402087c31bc6fb51eaf74a396884f5708d153f/ExclusiveConnectionPool.cs" root0="FORCE_HIGHLIGHTING" />
@@ -741,14 +760,7 @@
       <workItem from="1733539105363" duration="10031000" />
       <workItem from="1733709937628" duration="3919000" />
       <workItem from="1733714145605" duration="1938000" />
-    </task>
-    <task id="LOCAL-00387" summary="update">
-      <option name="closed" value="true" />
-      <created>1732876959997</created>
-      <option name="number" value="00387" />
-      <option name="presentableId" value="LOCAL-00387" />
-      <option name="project" value="LOCAL" />
-      <updated>1732876959997</updated>
+      <workItem from="1733739708534" duration="6286000" />
     </task>
     <task id="LOCAL-00388" summary="update">
       <option name="closed" value="true" />
@@ -1134,7 +1146,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733713864997</updated>
     </task>
-    <option name="localTasksCounter" value="436" />
+    <task id="LOCAL-00436" summary="update message pack to v3">
+      <option name="closed" value="true" />
+      <created>1733740450589</created>
+      <option name="number" value="00436" />
+      <option name="presentableId" value="LOCAL-00436" />
+      <option name="project" value="LOCAL" />
+      <updated>1733740450589</updated>
+    </task>
+    <option name="localTasksCounter" value="437" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1165,7 +1185,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="refactor" />
     <MESSAGE value="update SignalrClientManager.cs, IoTSensorSignalHub.cs" />
     <MESSAGE value="add more element" />
     <MESSAGE value="fix wrong dependency injection" />
@@ -1190,7 +1209,8 @@
     <MESSAGE value="test" />
     <MESSAGE value="add some simd compute function" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="update message pack to v3" />
+    <option name="LAST_COMMIT_MESSAGE" value="update message pack to v3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

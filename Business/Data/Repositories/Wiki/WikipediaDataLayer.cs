@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Business.Data.Interfaces;
+using Business.Data.Interfaces.VectorDb;
 using Business.Data.Interfaces.Wiki;
 using Business.Models;
 using Business.Utils;

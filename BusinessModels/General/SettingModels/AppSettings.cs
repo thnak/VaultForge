@@ -60,6 +60,7 @@ public class OllamaConfig
 {
     public string ConnectionString { get; set; } = "http:thnakdevserver.ddns.net:11434/";
     public string TextEmbeddingModel { get; set; } = "nomic-embed-text";
+    public int WikiVectorSize { get; set; } = 512;
     public string TextGeneratorModel { get; set; } = "llama3.2";
     public string Image2TextModel { get; set; } = "minicpm-v";
 }
@@ -67,7 +68,6 @@ public class OllamaConfig
 public class OnnxConfig
 {
     public string FaceDetectionPath { get; set; } = string.Empty;
-
     public FaceEmbeddingModel FaceEmbeddingModel { get; set; } = new();
 }
 

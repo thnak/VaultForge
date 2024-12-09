@@ -8,6 +8,7 @@ using Business.Data.Interfaces.Advertisement;
 using Business.Data.Interfaces.Chat;
 using Business.Data.Interfaces.FileSystem;
 using Business.Data.Interfaces.User;
+using Business.Data.Interfaces.VectorDb;
 using Business.Data.Interfaces.Wiki;
 using Business.Data.StorageSpace;
 using Business.Services.TaskQueueServices.Base.Interfaces;
@@ -17,8 +18,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Business.Services.HostedServices.Base;
 
-public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime hostApplicationLifetime,
-    IParallelBackgroundTaskQueue queue, IServiceScopeFactory serviceScopeFactory,
+public class HostApplicationLifetimeEventsHostedService(
+    IHostApplicationLifetime hostApplicationLifetime,
+    IParallelBackgroundTaskQueue queue,
+    IServiceScopeFactory serviceScopeFactory,
     ILogger<HostApplicationLifetimeEventsHostedService> logger) : IHostedService
 {
     public async Task StartAsync(CancellationToken cancellationToken)
@@ -37,6 +40,7 @@ public class HostApplicationLifetimeEventsHostedService(IHostApplicationLifetime
     private async Task OnStarted(CancellationToken cancellationToken)
     {
         logger.LogInformation("Application started");
+        await QueueInitializationTask<IVectorDataLayer>(cancellationToken);
         await QueueInitializationTask<IUserDataLayer>(cancellationToken);
         await QueueInitializationTask<IFileSystemDatalayer>(cancellationToken);
         await QueueInitializationTask<IFolderSystemDatalayer>(cancellationToken);

@@ -12,6 +12,5 @@ public class VectorRecord
 
     public string Description { get; set; } = string.Empty;
 
-    [VectorStoreRecordVector(512, DistanceFunction.CosineSimilarity, IndexKind.Dynamic)]
     public ReadOnlyMemory<float> Vector { get; set; }
 }

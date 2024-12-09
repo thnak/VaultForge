@@ -16,6 +16,7 @@ using Business.Data.Interfaces.Chat;
 using Business.Data.Interfaces.FileSystem;
 using Business.Data.Interfaces.InternetOfThings;
 using Business.Data.Interfaces.User;
+using Business.Data.Interfaces.VectorDb;
 using Business.Data.Interfaces.Wiki;
 using Business.Data.Repositories;
 using Business.Data.Repositories.Advertisement;
@@ -23,6 +24,7 @@ using Business.Data.Repositories.Chat;
 using Business.Data.Repositories.FileSystem;
 using Business.Data.Repositories.InternetOfThings;
 using Business.Data.Repositories.User;
+using Business.Data.Repositories.VectorDb;
 using Business.Data.Repositories.Wiki;
 using Business.Data.StorageSpace;
 using Business.Services.BackgroundServices.Base;
@@ -48,6 +50,8 @@ public static class DataService
 
         service.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
 
+        service.AddSingleton<IVectorDataLayer, VectorDataLayer>();
+        
         service.AddSingleton<RedundantArrayOfIndependentDisks>();
 
         service.AddSingleton<IUserDataLayer, UserDataLayer>();

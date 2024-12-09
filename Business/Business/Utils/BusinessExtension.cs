@@ -17,7 +17,7 @@ public static class BusinessExtension
         serviceCollection.AddHostedService<IoTRequestQueueHostedService>();
     }
 
-    public static async Task<List<SearchScore<VectorRecord>>> RagSearch(this ConcurrentDictionary<string, IVectorDb> vectorDictionary, string query, int count, CancellationToken cancellationToken = default)
+    public static async Task<List<SearchScore<VectorRecord>>> RagSearch(this ConcurrentDictionary<string, IInMemoryVectorDb> vectorDictionary, string query, int count, CancellationToken cancellationToken = default)
     {
         List<SearchScore<VectorRecord>> result = [];
         foreach (var collectionPair in vectorDictionary)
@@ -34,11 +34,11 @@ public static class BusinessExtension
         return result;
     }
 
-    public static async Task<List<SearchScore<VectorRecord>>> RagSearch(this IVectorDb vectorDb, string query, int count, CancellationToken cancellationToken = default)
+    public static async Task<List<SearchScore<VectorRecord>>> RagSearch(this IInMemoryVectorDb iInMemoryVectorDb, string query, int count, CancellationToken cancellationToken = default)
     {
         List<SearchScore<VectorRecord>> result = [];
-        var vectorSearch = await vectorDb.GenerateVectorsFromDescription(query, cancellationToken);
-        await foreach (var co in vectorDb.Search(vectorSearch, count, cancellationToken))
+        var vectorSearch = await iInMemoryVectorDb.GenerateVectorsFromDescription(query, cancellationToken);
+        await foreach (var co in iInMemoryVectorDb.Search(vectorSearch, count, cancellationToken))
         {
             result.Add(co);
         }

@@ -33,6 +33,7 @@
         "OllamaConfigConnectionString": "",
         "OllamaConfigImage2TextModel": "",
         "OllamaConfigTextEmbeddingModel": "",
+        "OllamaConfigWikiVectorSize": "512",
         "OnnxConfigFaceDetectionPath": "",
         "OnnxConfigFaceEmbeddingModelModelPath": "",
         "OnnxConfigFaceEmbeddingModelVectorSize": "",

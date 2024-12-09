@@ -101,6 +101,7 @@ public class ApplicationConfiguration
         Configs.OllamaConfig.Image2TextModel = GetEnvironmentVariable("OllamaConfigImage2TextModel", appSettings.Value.OllamaConfig.Image2TextModel);
         Configs.OllamaConfig.TextEmbeddingModel = GetEnvironmentVariable("OllamaConfigTextEmbeddingModel", appSettings.Value.OllamaConfig.TextEmbeddingModel);
         Configs.OllamaConfig.TextGeneratorModel = GetEnvironmentVariable("OllamaConfigTextGeneratorModel", appSettings.Value.OllamaConfig.TextGeneratorModel);
+        Configs.OllamaConfig.WikiVectorSize = GetIntEnvironmentVariable("OllamaConfigWikiVectorSize", appSettings.Value.OllamaConfig.WikiVectorSize);
     }
 
     private void OnnxConfig(IOptions<AppSettings> appSettings)
