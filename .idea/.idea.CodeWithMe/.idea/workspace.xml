@@ -45,15 +45,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add some simd compute function">
-      <change afterPath="$PROJECT_DIR$/Business/Utils/Enumerable/EnumerableSimd.Max.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Business/Utils/Enumerable/EnumerableSimd.Min.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Business/Utils/Enumerable/EnumerableSimd.Multiply.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Business/Utils/Enumerable/EnumerableSimd.Sum.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Business/Utils/Enumerable/VectorHelper.cs" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Utils/Enumerable/EnumerableSimd.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Utils/Enumerable/EnumerableSimd.Add.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/status/IoTDeviceGroupStatus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/status/IoTDeviceGroupStatus.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/status/IoTSensorStatus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/status/IoTSensorStatus.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Properties/launchSettings.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -743,15 +739,8 @@
       <workItem from="1733462267830" duration="3530000" />
       <workItem from="1733479981681" duration="8962000" />
       <workItem from="1733539105363" duration="10031000" />
-      <workItem from="1733709937628" duration="3881000" />
-    </task>
-    <task id="LOCAL-00386" summary="update model">
-      <option name="closed" value="true" />
-      <created>1732852264849</created>
-      <option name="number" value="00386" />
-      <option name="presentableId" value="LOCAL-00386" />
-      <option name="project" value="LOCAL" />
-      <updated>1732852264849</updated>
+      <workItem from="1733709937628" duration="3919000" />
+      <workItem from="1733714145605" duration="1938000" />
     </task>
     <task id="LOCAL-00387" summary="update">
       <option name="closed" value="true" />
@@ -1137,7 +1126,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733712102625</updated>
     </task>
-    <option name="localTasksCounter" value="435" />
+    <task id="LOCAL-00435" summary="update">
+      <option name="closed" value="true" />
+      <created>1733713864997</created>
+      <option name="number" value="00435" />
+      <option name="presentableId" value="LOCAL-00435" />
+      <option name="project" value="LOCAL" />
+      <updated>1733713864997</updated>
+    </task>
+    <option name="localTasksCounter" value="436" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1190,10 +1187,10 @@
     <MESSAGE value="limit size" />
     <MESSAGE value="fix losing data info after update" />
     <MESSAGE value="fix wrong folder position" />
-    <MESSAGE value="update" />
     <MESSAGE value="test" />
     <MESSAGE value="add some simd compute function" />
-    <option name="LAST_COMMIT_MESSAGE" value="add some simd compute function" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

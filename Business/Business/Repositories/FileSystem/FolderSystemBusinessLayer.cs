@@ -604,7 +604,7 @@ internal class FolderSystemBusinessLayer(
 #if DEBUG
             logger.LogWarning($"File {path} is in an invalid format");
 #endif
-            return Result<FolderInfoModel>.Failure("File is in an invalid format", ErrorType.Validation);
+            return Result<FolderInfoModel?>.Failure("File is in an invalid format", ErrorType.Validation);
         }
 
         var workDir = path.Replace(Path.GetFileName(path), "");
@@ -614,7 +614,7 @@ internal class FolderSystemBusinessLayer(
         if (!Directory.Exists(outputDir))
         {
             logger.LogInformation($"Output directory doesn't exist: {outputDir}");
-            return Result<FolderInfoModel>.Failure("File is in an invalid format", ErrorType.Validation);
+            return Result<FolderInfoModel?>.Failure("File is in an invalid format", ErrorType.Validation);
         }
 
         var m3U8Files = Directory.GetFiles(outputDir, "playlist.m3u8", SearchOption.AllDirectories).ToArray();
@@ -624,7 +624,7 @@ internal class FolderSystemBusinessLayer(
         if (rootVideoFolder == null)
         {
             logger.LogError($"Root video folder was not found. Skipping {path}.");
-            return Result<FolderInfoModel>.Failure("File is in an invalid format", ErrorType.Validation);
+            return Result<FolderInfoModel?>.Failure("File is in an invalid format", ErrorType.Validation);
         }
 
         var storageFolder = new FolderInfoModel()

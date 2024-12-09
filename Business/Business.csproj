@@ -22,7 +22,7 @@
         <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
         <PackageReference Include="Microsoft.Extensions.VectorData.Abstractions" Version="9.0.0-preview.1.24523.1" />
         <PackageReference Include="MongoDB.Analyzer" Version="1.5.0" />
-        <PackageReference Include="MongoDB.Driver" Version="3.0.0" />
+        <PackageReference Include="MongoDB.Driver" Version="3.1.0" />
         <PackageReference Include="MongoDB.EntityFrameworkCore" Version="8.2.0" />
         <PackageReference Include="NAudio" Version="2.2.1" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -31,7 +31,7 @@
         <PackageReference Include="Polly" Version="8.5.0" />
         <PackageReference Include="runtime.native.System.Net.Http" Version="4.3.1" />
         <PackageReference Include="SixLabors.ImageSharp" Version="3.1.6" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.1" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.0" />
         <PackageReference Include="System.Net.Http" Version="4.3.4" />
         <PackageReference Include="System.Private.Uri" Version="4.3.2" />
         <PackageReference Include="System.Reflection.TypeExtensions" Version="4.7.0" />

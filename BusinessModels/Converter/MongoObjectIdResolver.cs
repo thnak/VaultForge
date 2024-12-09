@@ -1,4 +1,3 @@
-using BusinessModels.Formater;
 using MessagePack;
 using MessagePack.Formatters;
 using MessagePack.Resolvers;
@@ -16,10 +15,10 @@ public class MongoObjectIdResolver : IFormatterResolver
     {
         if (typeof(T) == typeof(ObjectId))
         {
-            return (IMessagePackFormatter<T>?)new MongoObjectIdFormatter();
+            return (IMessagePackFormatter<T>?)new ObjectIdFormatter();
         }
 
-        if (typeof(T).IsArray && typeof(T).GetElementType() == typeof(MongoObjectIdFormatter))
+        if (typeof(T).IsArray && typeof(T).GetElementType() == typeof(ObjectIdFormatter))
         {
             Type? elementType = typeof(T).GetElementType();
             if (elementType != null)

@@ -8,5 +8,6 @@ public enum IoTSensorStatus
     /// <summary>
     /// For sensors with detected issues
     /// </summary>
-    Faulty
+    Faulty,
+    Decommissioned
 }

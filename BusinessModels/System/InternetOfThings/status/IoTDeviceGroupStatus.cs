@@ -5,5 +5,6 @@ public enum IoTDeviceGroupStatus
     Active,
     Inactive,
     Maintenance,
-    Offline
+    Offline,
+    Decommissioned
 }

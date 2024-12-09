@@ -45,7 +45,7 @@ public class IoTCircuitBreakerService(ApplicationConfiguration options, ILogger<
         if (_circuitBreaker.CircuitState == CircuitState.Open)
         {
             logger.LogWarning("Circuit is open, rejecting request.");
-            return Result<T>.Failure("Circuit is open, rejecting request.", ErrorType.Validation);
+            return Result<T?>.Failure("Circuit is open, rejecting request.", ErrorType.Validation);
         }
 
         try
