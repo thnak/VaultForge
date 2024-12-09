@@ -16,14 +16,16 @@ public class WikiController(IWikipediaBusinessLayer wikipediaBusinessLayer) : Co
     [HttpPost("insert")]
     public async Task<IActionResult> InsertNew([FromForm] string title, [FromForm] string content, [FromForm] string url, [FromForm] string? lang)
     {
-        await wikipediaBusinessLayer.CreateAsync(new WikipediaDatasetModel()
+        var result = await wikipediaBusinessLayer.CreateAsync(new WikipediaDatasetModel()
         {
             Title = title,
             Text = content,
             Url = url,
             Language = lang ?? "en-US"
         });
-        return Ok();
+        if(result.IsSuccess)
+            return Ok();
+        return BadRequest(result.Message);
     }
 
     [HttpPost("search")]

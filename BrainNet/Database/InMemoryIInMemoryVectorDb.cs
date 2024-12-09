@@ -140,8 +140,10 @@ public class InMemoryIInMemoryVectorDb : IInMemoryVectorDb
 
     public async Task Init()
     {
-        Logger.LogInformation($"[VectorDB][{Collection.CollectionName}] Initializing...");
+        var text = $"[VectorDB][{Collection.CollectionName}] Initializing...";
+        Logger.LogInformation(text);
         await Collection.CreateCollectionIfNotExistsAsync();
+        await GenerateVectorsFromDescription(text);
     }
 
     public void Dispose()
