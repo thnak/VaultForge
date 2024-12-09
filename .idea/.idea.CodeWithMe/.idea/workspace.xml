@@ -45,14 +45,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Business/Utils/Enumerable/EnumerableSimd.cs" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add some simd compute function">
+      <change afterPath="$PROJECT_DIR$/Business/Utils/Enumerable/EnumerableSimd.Max.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Business/Utils/Enumerable/EnumerableSimd.Min.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Business/Utils/Enumerable/EnumerableSimd.Multiply.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Business/Utils/Enumerable/EnumerableSimd.Sum.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Business/Utils/Enumerable/VectorHelper.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Test/TestController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/Test/TestController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/Chats/ChatWithLlamaController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/Chats/ChatWithLlamaController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/IoTController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/IoTController.Read.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/Streaming/SpeedTestController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/Streaming/SpeedTestController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Utils/Enumerable/EnumerableSimd.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Utils/Enumerable/EnumerableSimd.Add.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -142,6 +143,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d6602ff1ddf35b711bc3b983d596213d7dcb8daab122c98f3e6db39b5daca137/DropIndexOperation.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/dbd7444fd4f86415d17ca812139be60bfb5e6d4c191da070cd6afeb7fcbcd0/NativeApiStatus.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e8aee3972f4f46ef190c2b4224be16d75e671b3496b06c7b50b6cbe2418e38/EndPointHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f08263c1b162536d21bcac5d3d5599c6108a7df0503ecd6facc435edad3ead4/INumber.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fe3b1716bf2f8f83ac793e7e3faa60f88a7868347653f77591f74b86d0d97675/Server.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
@@ -741,15 +743,7 @@
       <workItem from="1733462267830" duration="3530000" />
       <workItem from="1733479981681" duration="8962000" />
       <workItem from="1733539105363" duration="10031000" />
-      <workItem from="1733709937628" duration="2132000" />
-    </task>
-    <task id="LOCAL-00385" summary="update alias">
-      <option name="closed" value="true" />
-      <created>1732718080313</created>
-      <option name="number" value="00385" />
-      <option name="presentableId" value="LOCAL-00385" />
-      <option name="project" value="LOCAL" />
-      <updated>1732718080313</updated>
+      <workItem from="1733709937628" duration="3881000" />
     </task>
     <task id="LOCAL-00386" summary="update model">
       <option name="closed" value="true" />
@@ -1135,7 +1129,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733545783957</updated>
     </task>
-    <option name="localTasksCounter" value="434" />
+    <task id="LOCAL-00434" summary="add some simd compute function">
+      <option name="closed" value="true" />
+      <created>1733712102625</created>
+      <option name="number" value="00434" />
+      <option name="presentableId" value="LOCAL-00434" />
+      <option name="project" value="LOCAL" />
+      <updated>1733712102625</updated>
+    </task>
+    <option name="localTasksCounter" value="435" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1166,7 +1168,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="introduct data protection" />
     <MESSAGE value="refactor" />
     <MESSAGE value="update SignalrClientManager.cs, IoTSensorSignalHub.cs" />
     <MESSAGE value="add more element" />
@@ -1191,7 +1192,8 @@
     <MESSAGE value="fix wrong folder position" />
     <MESSAGE value="update" />
     <MESSAGE value="test" />
-    <option name="LAST_COMMIT_MESSAGE" value="test" />
+    <MESSAGE value="add some simd compute function" />
+    <option name="LAST_COMMIT_MESSAGE" value="add some simd compute function" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
