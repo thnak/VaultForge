@@ -10,6 +10,7 @@ using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.User;
 using Business.Business.Utils;
 using Business.Data.Interfaces.FileSystem;
+using Business.Data.Interfaces.VectorDb;
 using Business.Data.StorageSpace;
 using Business.Models;
 using Business.Services;
@@ -41,6 +42,7 @@ internal class FolderSystemBusinessLayer(
     RedundantArrayOfIndependentDisks raidService,
     IParallelBackgroundTaskQueue parallelBackgroundTaskQueue,
     ISequenceBackgroundTaskQueue sequenceBackgroundTaskQueue,
+    IVectorDataLayer vectorDataLayer,
     ApplicationConfiguration options)
     : IFolderSystemBusinessLayer
 {

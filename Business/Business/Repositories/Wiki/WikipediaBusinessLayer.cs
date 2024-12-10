@@ -32,7 +32,10 @@ public class WikipediaBusinessLayer(
         Name = "WikipediaText",
         VectorSize = applicationConfiguration.GetOllamaConfig.WikiVectorSize,
         DistantFunc = DistanceFunction.CosineSimilarity,
-        IndexKind = IndexKind.Dynamic
+        IndexKind = IndexKind.Dynamic,
+        OllamaTextEmbeddingModelName = applicationConfiguration.GetOllamaConfig.TextEmbeddingModel,
+        OllamaConnectionString = applicationConfiguration.GetOllamaConfig.ConnectionString,
+        OllamaImage2TextModelName = applicationConfiguration.GetOllamaConfig.Image2TextModel,
     }, logger);
 
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
@@ -164,7 +167,7 @@ public class WikipediaBusinessLayer(
     private async Task RequestIndex(WikipediaDatasetModel item, CancellationToken cancellationToken = default)
     {
         var key = item.Id.ToString();
-        
+
         foreach (var chunk in item.Text.ChunkText(12_000, 1_200))
         {
             var vector = await _iInMemoryVectorDb.GenerateVectorsFromDescription(chunk, cancellationToken);
