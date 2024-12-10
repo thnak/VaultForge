@@ -30,6 +30,8 @@ using BusinessModels.WebContent.Drive;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
+using System.IO.Compression;
+using Business.Services.Interfaces;
 
 namespace Business.Business.Repositories.FileSystem;
 
@@ -43,6 +45,7 @@ internal class FolderSystemBusinessLayer(
     IParallelBackgroundTaskQueue parallelBackgroundTaskQueue,
     ISequenceBackgroundTaskQueue sequenceBackgroundTaskQueue,
     IVectorDataLayer vectorDataLayer,
+    IThumbnailService thumbnailService,
     ApplicationConfiguration options)
     : IFolderSystemBusinessLayer
 {
@@ -688,6 +691,52 @@ internal class FolderSystemBusinessLayer(
         return _vectorDbs.RagSearch(query, count, cancellationToken);
     }
 
+    public async Task<Result<string>> Decompress(string fileId)
+    {
+        var file = fileSystemService.Get(fileId);
+        if (file == null) return Result<string>.Failure("File not found", ErrorType.NotFound);
+
+        var raidPath = await raidService.GetDataBlockPaths(file.AbsolutePath);
+        if (raidPath == null) return Result<string>.Failure("File not found", ErrorType.NotFound);
+
+        var rootFolder = Get(file.RootFolder)!;
+
+        await using Raid5Stream raid5Stream = new Raid5Stream(raidPath.Files, file.FileSize, raidPath.StripeSize, FileMode.Open, FileAccess.Read, FileShare.Read);
+        using var archive = new ZipArchive(raid5Stream, ZipArchiveMode.Read, leaveOpen: true);
+        foreach (var entry in archive.Entries)
+        {
+            string destinationPath = Path.Combine(rootFolder.AbsolutePath, entry.FullName);
+
+            // Ensure the directory exists for this entry
+            string directoryPath = Path.GetDirectoryName(destinationPath) ?? string.Empty;
+            // if (!Directory.Exists(directoryPath))
+            // {
+            //     Directory.CreateDirectory(directoryPath);
+            // }
+            // // Skip directories
+            // if (string.IsNullOrEmpty(entry.Name))
+            // {
+            //     continue;
+            // }
+
+            logger.LogInformation($"Extracting: {entry.FullName}");
+
+            // Open the entry as a stream
+            await using var entryStream = entry.Open();
+            var fileCreateResult = await CreateFileAsync(rootFolder, new FileInfoModel()
+            {
+                FileName = entry.Name,
+                RootFolder = rootFolder.Id.ToString()
+            });
+            if (fileCreateResult.Item1)
+            {
+                var writeResult = await raidService.WriteDataAsync(entryStream, file.AbsolutePath);
+                await UpdateFilePropertiesAfterUpload(file, writeResult, "", entry.Name);
+            }
+        }
+        return Result<string>.SuccessWithMessage("Successfully extracted file", "");
+    }
+
 
     #region Private Mothods
 
@@ -857,6 +906,39 @@ internal class FolderSystemBusinessLayer(
             TotalFilePages = (int)totalFilePages,
             BloodLines = GetFolderBloodLine(folderId).ToArray()
         };
+    }
+
+    public async Task UpdateFilePropertiesAfterUpload(FileInfoModel file, RedundantArrayOfIndependentDisks.WriteDataResult saveResult, string contentType, string trustedFileNameForDisplay)
+    {
+        file.FileSize = saveResult.TotalByteWritten;
+        file.ContentType = saveResult.ContentType;
+        file.Checksum = saveResult.CheckSum;
+
+        if (string.IsNullOrEmpty(file.ContentType))
+        {
+            file.ContentType = contentType;
+        }
+        else if (file.ContentType == "application/octet-stream")
+        {
+            file.ContentType = Path.GetExtension(trustedFileNameForDisplay).GetMimeTypeFromExtension();
+        }
+
+        var updateResult = await fileSystemService.UpdateAsync(file.Id.ToString(), GetFileFieldUpdates(file));
+        await thumbnailService.AddThumbnailRequest(file.Id.ToString());
+
+        if (!updateResult.Item1)
+        {
+            logger.LogError(updateResult.Item2);
+        }
+        static FieldUpdate<FileInfoModel> GetFileFieldUpdates(FileInfoModel file)
+        {
+            return new FieldUpdate<FileInfoModel>
+            {
+                { x => x.FileSize, file.FileSize },
+                { x => x.ContentType, file.ContentType },
+                { x => x.Checksum, file.Checksum }
+            };
+        }
     }
 
     /// <summary>

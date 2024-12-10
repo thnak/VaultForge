@@ -576,8 +576,8 @@
       },
       "Microsoft.SemanticKernel.Abstractions": {
         "type": "Transitive",
-        "resolved": "1.31.0",
-        "contentHash": "PgrpG7Tzek2hQ02ry1zuRKMfmZrpjdK58OhPF+tZmyjGx2kMVvjGRAr4sbR2xmCXfF7X7cup1C+qIkoOPMjTAQ==",
+        "resolved": "1.32.0",
+        "contentHash": "RkowDH+bZhahO+1pcSoqyYpZD0cS22uqIPoWA1NRVxcJlY1qrg+gU+yx0ysAgX6doCQ1sXpPfRn9e3Yxgtqtsw==",
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "8.0.0",
           "Microsoft.Bcl.HashCode": "1.1.1",
@@ -591,40 +591,40 @@
       },
       "Microsoft.SemanticKernel.Connectors.Google": {
         "type": "Transitive",
-        "resolved": "1.31.0-alpha",
-        "contentHash": "leUglyPBuTu9tJNUertwZ9vXdpdg9QeQXeEaxhkpcwZweiF9w/WWjpPh3NFJEvtJxypnJ6/Vz9v/gzJ2a1Mf1A==",
+        "resolved": "1.32.0-alpha",
+        "contentHash": "9Km69itECJscIIGK8Mq89Usqdae9z+djdFoeSgew/iqp7U6uApO4++RqQJNUFCrXD0FInfTtahXp6pqJJvbnDQ==",
         "dependencies": {
-          "Microsoft.SemanticKernel.Abstractions": "1.31.0",
-          "Microsoft.SemanticKernel.Core": "1.31.0"
+          "Microsoft.SemanticKernel.Abstractions": "1.32.0",
+          "Microsoft.SemanticKernel.Core": "1.32.0"
         }
       },
       "Microsoft.SemanticKernel.Connectors.InMemory": {
         "type": "Transitive",
-        "resolved": "1.31.0-preview",
-        "contentHash": "/rGWS4jEZpjQu4B3D9Zr7yP3K13QhnPz0SU6Fi8ES8OXzYBIX8LetEbEbEY6iEMMfoz+SQFjyYMTr1LvKG38rQ==",
+        "resolved": "1.32.0-preview",
+        "contentHash": "lvVM/F3Wl9lyN+42XzGGkcGvmhtV1EsHDMt0BBaVcuG9LTsJzHgns1Yi/ZBhmt+7DDjUBPkwFPcPm/1WbRsUew==",
         "dependencies": {
-          "Microsoft.SemanticKernel.Abstractions": "1.31.0",
+          "Microsoft.SemanticKernel.Abstractions": "1.32.0",
           "System.Numerics.Tensors": "8.0.0"
         }
       },
       "Microsoft.SemanticKernel.Connectors.Ollama": {
         "type": "Transitive",
-        "resolved": "1.31.0-alpha",
-        "contentHash": "5WgVYTAL5NFKULTVmnE0N8qVzZL/8/WLCAwsKRqDHJB/7sCanMUGlVL2vMTWginnMC5TsKCckN4NdP4NCxiJTg==",
+        "resolved": "1.32.0-alpha",
+        "contentHash": "IS1CFSB0J5U63wbtVZgXtCuxnKQziDsaSBymN2U2ihJN5d4lz+sOF5mjgbQ3aTAh9kbhRtS85HpHqfz99g7qWQ==",
         "dependencies": {
           "Microsoft.Extensions.AI": "9.0.1-preview.1.24570.5",
-          "Microsoft.SemanticKernel.Abstractions": "1.31.0",
-          "Microsoft.SemanticKernel.Core": "1.31.0",
+          "Microsoft.SemanticKernel.Abstractions": "1.32.0",
+          "Microsoft.SemanticKernel.Core": "1.32.0",
           "OllamaSharp": "4.0.8"
         }
       },
       "Microsoft.SemanticKernel.Core": {
         "type": "Transitive",
-        "resolved": "1.31.0",
-        "contentHash": "FV4+hbJvr6XBwRLsPkPbK5xCCK4k3xrQV981P9/USEvOr8S2Vt6dx07JmPrbaqOzy4xnsgXGPqjlFGf6GzTg+A==",
+        "resolved": "1.32.0",
+        "contentHash": "rwhDywnFTYoCVPvlAiOvFb8NQKrjBofbrNHqROsBNwIJicSwJz9k7Zc852O5MzQEGRvCzkJlA/oUEG+U++AT2Q==",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": "8.0.1",
-          "Microsoft.SemanticKernel.Abstractions": "1.31.0",
+          "Microsoft.SemanticKernel.Abstractions": "1.32.0",
           "System.Numerics.Tensors": "8.0.0",
           "System.Text.Json": "8.0.5"
         }
@@ -1830,9 +1830,9 @@
           "Microsoft.Extensions.Options": "[9.0.0, )",
           "Microsoft.Extensions.VectorData.Abstractions": "[9.0.0-preview.1.24523.1, )",
           "Microsoft.ML.OnnxRuntime.DirectML": "[1.20.1, )",
-          "Microsoft.SemanticKernel.Connectors.Google": "[1.31.0-alpha, )",
-          "Microsoft.SemanticKernel.Connectors.InMemory": "[1.31.0-preview, )",
-          "Microsoft.SemanticKernel.Connectors.Ollama": "[1.31.0-alpha, )",
+          "Microsoft.SemanticKernel.Connectors.Google": "[1.32.0-alpha, )",
+          "Microsoft.SemanticKernel.Connectors.InMemory": "[1.32.0-preview, )",
+          "Microsoft.SemanticKernel.Connectors.Ollama": "[1.32.0-alpha, )",
           "Newtonsoft.Json": "[13.0.3, )",
           "SixLabors.ImageSharp": "[3.1.6, )",
           "System.Numerics.Tensors": "[9.0.0, )"

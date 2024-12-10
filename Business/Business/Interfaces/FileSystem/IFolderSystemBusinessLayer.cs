@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using BrainNet.Models.Result;
 using BrainNet.Models.Vector;
+using Business.Data.StorageSpace;
 using BusinessModels.General.Results;
 using BusinessModels.People;
 using BusinessModels.System.FileSystem;
@@ -10,6 +11,7 @@ namespace Business.Business.Interfaces.FileSystem;
 
 public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInfoModel>, IExtendService, IDisposable, IAsyncDisposable
 {
+    Task UpdateFilePropertiesAfterUpload(FileInfoModel file, RedundantArrayOfIndependentDisks.WriteDataResult saveResult, string contentType, string trustedFileNameForDisplay);
     /// <summary>
     /// Lấy người dùng theo tên hoặc lấy mặc định Anonymous
     /// </summary>
@@ -57,5 +59,11 @@ public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInf
     public Task RequestIndexAsync(string key, CancellationToken cancellationToken = default);
     public Task<List<SearchScore<VectorRecord>>> SearchRagFromAllDb(string query, int count, CancellationToken cancellationToken = default);
     #endregion
-    
+
+    /// <summary>
+    /// decompress file to the same folder
+    /// </summary>
+    /// <param name="fileId"></param>
+    /// <returns></returns>
+    public Task<Result<string>> Decompress(string fileId);
 }

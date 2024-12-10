@@ -153,6 +153,7 @@ public partial class FilesController
         ms.Seek(0, SeekOrigin.Begin);
 
         Response.RegisterForDispose(ms);
+        Response.RegisterForDisposeAsync(raid5Stream);
 
         using SHA256 sha256 = SHA256.Create();
 

@@ -13,7 +13,8 @@ using SixLabors.ImageSharp.Processing;
 
 namespace Business.Services.FileSystem;
 
-public class ThumbnailService(IParallelBackgroundTaskQueue queue, ApplicationConfiguration options, IFileSystemBusinessLayer fileService, RedundantArrayOfIndependentDisks raidService, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
+public class ThumbnailService(IParallelBackgroundTaskQueue queue, ApplicationConfiguration options, IFileSystemBusinessLayer fileService,
+    RedundantArrayOfIndependentDisks raidService, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
 {
     public Task AddThumbnailRequest(string imageId)
     {

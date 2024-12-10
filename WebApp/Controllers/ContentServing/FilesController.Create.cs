@@ -23,6 +23,13 @@ public partial class FilesController
         return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
     }
 
+    [HttpGet("decompress")]
+    public async Task<IActionResult> DecompressFile(string id)
+    {
+        await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async _ => { await folderServe.Decompress(id); });
+        return Ok();
+    }
+
     [HttpPost("insert-media")]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
@@ -62,7 +69,7 @@ public partial class FilesController
             await folderServe.CreateFileAsync(folder, file, token);
             var stream = await response.Content.ReadAsStreamAsync(token);
             var saveResult = await raidService.WriteDataAsync(stream, file.AbsolutePath, token);
-            await UpdateFileProperties(file, saveResult, file.ContentType, fileName);
+            await UpdateFilePropertiesAfterUpload(file, saveResult, file.ContentType, fileName);
             sw.Stop();
             logger.LogInformation($"File {fileName} has been downloaded in {sw.Elapsed:G} ms");
         });
@@ -186,7 +193,7 @@ public partial class FilesController
         {
             var saveResult = await raidService.WriteDataAsync(section.Body, file.AbsolutePath, cancellationToken);
 
-            await UpdateFileProperties(file, saveResult, string.IsNullOrEmpty(section.ContentType) ? saveResult.ContentType : section.ContentType, trustedFileNameForDisplay);
+            await UpdateFilePropertiesAfterUpload(file, saveResult, string.IsNullOrEmpty(section.ContentType) ? saveResult.ContentType : section.ContentType, trustedFileNameForDisplay);
             if (file.FileSize <= 0)
             {
                 await DeleteFileAsync(file.Id.ToString());
@@ -200,7 +207,7 @@ public partial class FilesController
         }
     }
 
-    private async Task UpdateFileProperties(FileInfoModel file, RedundantArrayOfIndependentDisks.WriteDataResult saveResult, string contentType, string trustedFileNameForDisplay)
+    private async Task UpdateFilePropertiesAfterUpload(FileInfoModel file, RedundantArrayOfIndependentDisks.WriteDataResult saveResult, string contentType, string trustedFileNameForDisplay)
     {
         file.FileSize = saveResult.TotalByteWritten;
         file.ContentType = saveResult.ContentType;
