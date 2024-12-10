@@ -47,9 +47,10 @@
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Utils/EnumerableExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Utils/EnumerableExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp1/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/Wiki/WikiController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/Wiki/WikiController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Interfaces/User/IFaceBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Interfaces/User/IFaceBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Models/RetrievalAugmentedGeneration/Vector/FaceVectorStorageModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Models/RetrievalAugmentedGeneration/Vector/FaceVectorStorageModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Test/TestController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/Test/TestController.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -134,6 +135,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a387f56e0a254d6432b1c7dad82cf164131bf4cae191042f96133f70bfc2/SessionOptions.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bd1d5c50194fea68ff3559c160230b0ab50f5acf4ce3061bffd6d62958e2182/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c43c2f47f2c2e8f49b63133e24df3f437cdaf69f6ce4364bbfc18a3a55e2d4/Timer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c4b095b650c2e655fc77354b7fb11b527436bb75f1f6b2d1bd6ebef68ba031/IVectorStoreRecordCollection.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c7102cd0ffb8973777e61b1942c3fffac7e14016a511d055c3adf73ff91748/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d3a8ba7c70f69747f44151e17c654d11935565c9f23a3c8931ab4d29356/VectorStoreRecordDataProperty.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d4eb219188a145d3671fd144557c775d74713258e0be5fe65cf37ba781c324e/ExclusiveConnectionPool.Helpers.cs" root0="FORCE_HIGHLIGHTING" />
@@ -143,9 +145,14 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e8aee3972f4f46ef190c2b4224be16d75e671b3496b06c7b50b6cbe2418e38/EndPointHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f08263c1b162536d21bcac5d3d5599c6108a7df0503ecd6facc435edad3ead4/INumber.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fe3b1716bf2f8f83ac793e7e3faa60f88a7868347653f77591f74b86d0d97675/Server.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Database/InMemoryIInMemoryVectorDb.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Utils/EnumerableExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/Controllers/Wiki/WikiController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/appsettings.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/appsettings.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/appsettings.json" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -242,7 +249,7 @@
       <window_info anchor="right" id="Maven" order="4" weight="0.25" />
     </layout>
   </component>
-  <component name="RunManager" selected=".NET Project.ConsoleApp1">
+  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: no-browser">
     <configuration name="ResApi" type="DotNetFolderPublish" factoryName="Publish to folder">
       <riderPublish configuration="Release" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/ResApi/bin/Release/net9.0/linux-x64/publish" target_framework="net9.0" uuid_high="5905353364384007298" uuid_low="-8333852158807631372" />
       <method v="2" />
@@ -744,23 +751,8 @@
       <workItem from="1733539105363" duration="10031000" />
       <workItem from="1733709937628" duration="3919000" />
       <workItem from="1733714145605" duration="1938000" />
-      <workItem from="1733739708534" duration="11718000" />
-    </task>
-    <task id="LOCAL-00390" summary="update">
-      <option name="closed" value="true" />
-      <created>1732965073019</created>
-      <option name="number" value="00390" />
-      <option name="presentableId" value="LOCAL-00390" />
-      <option name="project" value="LOCAL" />
-      <updated>1732965073019</updated>
-    </task>
-    <task id="LOCAL-00391" summary="update">
-      <option name="closed" value="true" />
-      <created>1733028764643</created>
-      <option name="number" value="00391" />
-      <option name="presentableId" value="LOCAL-00391" />
-      <option name="project" value="LOCAL" />
-      <updated>1733028764643</updated>
+      <workItem from="1733739708534" duration="13877000" />
+      <workItem from="1733793198979" duration="1521000" />
     </task>
     <task id="LOCAL-00392" summary="update page">
       <option name="closed" value="true" />
@@ -1138,7 +1130,23 @@
       <option name="project" value="LOCAL" />
       <updated>1733758884749</updated>
     </task>
-    <option name="localTasksCounter" value="439" />
+    <task id="LOCAL-00439" summary="fix overflow text">
+      <option name="closed" value="true" />
+      <created>1733760749621</created>
+      <option name="number" value="00439" />
+      <option name="presentableId" value="LOCAL-00439" />
+      <option name="project" value="LOCAL" />
+      <updated>1733760749621</updated>
+    </task>
+    <task id="LOCAL-00440" summary="update">
+      <option name="closed" value="true" />
+      <created>1733763886678</created>
+      <option name="number" value="00440" />
+      <option name="presentableId" value="LOCAL-00440" />
+      <option name="project" value="LOCAL" />
+      <updated>1733763886678</updated>
+    </task>
+    <option name="localTasksCounter" value="441" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1169,7 +1177,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="update SignalrClientManager.cs, IoTSensorSignalHub.cs" />
     <MESSAGE value="add more element" />
     <MESSAGE value="fix wrong dependency injection" />
     <MESSAGE value="remove anti facet" />
@@ -1193,6 +1200,7 @@
     <MESSAGE value="test" />
     <MESSAGE value="add some simd compute function" />
     <MESSAGE value="update message pack to v3" />
+    <MESSAGE value="fix overflow text" />
     <MESSAGE value="update" />
     <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
@@ -1204,32 +1212,6 @@
           <line>51</line>
           <properties documentPath="C:\Users\thanh\AppData\Roaming\JetBrains\Rider2024.3\resharper-host\SourcesCache\30cbb3994b59af56741aa3ee40719e511f42d9a2920f2a6f5ae81f8d1e78ee3\FunctionCallContentBuilder.cs" containingFunctionPresentation="Method 'Append'" />
           <option name="timeStamp" value="54" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/ConsoleApp1/Program.cs</url>
-          <line>180</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\ConsoleApp1\Program.cs" containingFunctionPresentation="">
-            <startOffsets>
-              <option value="6870" />
-            </startOffsets>
-            <endOffsets>
-              <option value="6980" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="97" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/ConsoleApp1/Program.cs</url>
-          <line>152</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\ConsoleApp1\Program.cs" containingFunctionPresentation="">
-            <startOffsets>
-              <option value="5995" />
-            </startOffsets>
-            <endOffsets>
-              <option value="6019" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="100" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">

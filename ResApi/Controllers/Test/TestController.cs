@@ -69,9 +69,8 @@ public class TestController(ILogger<TestController> logger, IFaceBusinessLayer f
                             logger.LogInformation($"Found vector {face.Value.Key} for {fileGroup.Key} {face.Score:P1}");
                             await faceBusinessLayer.CreateAsync(new FaceVectorStorageModel()
                             {
-                                Vector = vector,
                                 Owner = fileGroup.Key ?? string.Empty,
-                            });
+                            }, vector);
                         }
                     }
                     else
@@ -79,9 +78,8 @@ public class TestController(ILogger<TestController> logger, IFaceBusinessLayer f
                         logger.LogWarning("Failed to find vector");
                         await faceBusinessLayer.CreateAsync(new FaceVectorStorageModel()
                         {
-                            Vector = vector,
                             Owner = fileGroup.Key ?? string.Empty,
-                        });
+                        }, vector);
                     }
                 }
             }
@@ -151,18 +149,16 @@ public class TestController(ILogger<TestController> logger, IFaceBusinessLayer f
                             logger.LogInformation($"Found vector {face.Value.Key} for {fileGroup.Key} {face.Score:P1}");
                         await faceBusinessLayer.CreateAsync(new FaceVectorStorageModel()
                         {
-                            Vector = vector,
                             Owner = fileGroup.Key ?? string.Empty,
-                        });
+                        }, vector);
                     }
                     else
                     {
                         logger.LogWarning("Failed to find vector");
                         await faceBusinessLayer.CreateAsync(new FaceVectorStorageModel()
                         {
-                            Vector = vector,
                             Owner = fileGroup.Key ?? string.Empty,
-                        });
+                        }, vector);
                     }
                 }
             }

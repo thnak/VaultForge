@@ -6,19 +6,21 @@ using BrainNet.Models.Setting;
 using BrainNet.Models.Vector;
 using Business.Business.Interfaces.User;
 using Business.Data.Interfaces.User;
+using Business.Data.Interfaces.VectorDb;
 using Business.Models;
 using Business.Models.RetrievalAugmentedGeneration.Vector;
 using Business.Services.Configure;
 using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.VectorData;
 using MongoDB.Driver;
 
 namespace Business.Business.Repositories.User;
 
-public class FaceBusinessLayer(IFaceDataLayer dataLayer, ILogger<FaceBusinessLayer> logger, ApplicationConfiguration applicationConfiguration) : IFaceBusinessLayer
+public class FaceBusinessLayer(IFaceDataLayer dataLayer, IVectorDataLayer vectorDataLayer, ILogger<FaceBusinessLayer> logger, ApplicationConfiguration applicationConfiguration) : IFaceBusinessLayer
 {
+    private const string VectorCollectionName = "FaceVectors";
+
     [Experimental("SKEXP0020")] private readonly IInMemoryVectorDb _iInMemoryVectorDb = new InMemoryIInMemoryVectorDb(new VectorDbConfig()
     {
         Name = "FaceEmbedding",
@@ -97,7 +99,6 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, ILogger<FaceBusinessLay
     {
         await _iInMemoryVectorDb.AddNewRecordAsync(new VectorRecord()
         {
-            Vector = model.Vector,
             Key = model.Owner
         }, cancellationToken);
         return await dataLayer.CreateAsync(model, cancellationToken);
@@ -134,14 +135,18 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, ILogger<FaceBusinessLay
     public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
         await _iInMemoryVectorDb.Init();
-        var cursor = GetAllAsync([], cancellationToken);
-        await foreach (var item in cursor)
+        var faceCursor = GetAllAsync([], cancellationToken);
+        await foreach (var faceIdentity in faceCursor)
         {
-            await _iInMemoryVectorDb.AddNewRecordAsync(new VectorRecord()
+            var vectorCursor = vectorDataLayer.GetAsyncEnumerator(VectorCollectionName, faceIdentity.Owner, cancellationToken);
+            await foreach (var vectorIdentity in vectorCursor)
             {
-                Vector = item.Vector,
-                Key = item.Owner
-            }, cancellationToken);
+                await _iInMemoryVectorDb.AddNewRecordAsync(new VectorRecord()
+                {
+                    Vector = vectorIdentity.Vector,
+                    Key = faceIdentity.Owner
+                }, cancellationToken);
+            }
         }
 
         return Result<bool>.SuccessWithMessage(true, AppLang.Success);
@@ -182,5 +187,36 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, ILogger<FaceBusinessLay
     public ValueTask DisposeAsync()
     {
         return _iInMemoryVectorDb.DisposeAsync();
+    }
+
+    [Experimental("SKEXP0020")]
+    public async Task<Result<bool>> CreateAsync(FaceVectorStorageModel model, float[] vector, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var createResult = await dataLayer.CreateAsync(model, cancellationToken);
+            if (createResult.IsSuccess)
+            {
+                await vectorDataLayer.CreateAsync(new Models.Vector.VectorRecord()
+                {
+                    Collection = VectorCollectionName,
+                    Key = model.Owner,
+                    Vector = vector
+                }, cancellationToken);
+                await _iInMemoryVectorDb.AddNewRecordAsync(new VectorRecord()
+                {
+                    Key = model.Owner,
+                    Vector = vector
+                }, cancellationToken);
+                return Result<bool>.SuccessWithMessage(true, AppLang.Success);
+            }
+
+
+            return Result<bool>.SuccessWithMessage(false, AppLang.Create_failed);
+        }
+        catch (OperationCanceledException e)
+        {
+            return Result<bool>.Failure(e.Message, ErrorType.Cancelled);
+        }
     }
 }
