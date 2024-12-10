@@ -23,18 +23,18 @@ public class WikiController(IWikipediaBusinessLayer wikipediaBusinessLayer) : Co
             Url = url,
             Language = lang ?? "en-US"
         });
-        if(result.IsSuccess)
+        if (result.IsSuccess)
             return Ok();
         return BadRequest(result.Message);
     }
 
     [HttpPost("search")]
-    public async Task<IActionResult> GetWikipedias([FromForm] string query)
+    public async Task<IActionResult> GetWikipedias([FromForm] string query, [FromForm] int limit = 10)
     {
         var token = HttpContext.RequestAborted;
-        var result = await wikipediaBusinessLayer.SearchRag(query, 10, token);
+        var result = await wikipediaBusinessLayer.SearchRag(query, limit, token);
         StringBuilder sb = new();
-        foreach (var searchScore in result.GroupBySearchScore())
+        foreach (var searchScore in result)
         {
             var wiki = wikipediaBusinessLayer.Get(searchScore.Value.Key);
             if (wiki != null)

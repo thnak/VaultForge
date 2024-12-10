@@ -4,6 +4,7 @@ using BrainNet.Database;
 using BrainNet.Models.Result;
 using BrainNet.Models.Setting;
 using BrainNet.Models.Vector;
+using BrainNet.Utils;
 using Business.Business.Interfaces.Wiki;
 using Business.Business.Utils;
 using Business.Data.Interfaces.VectorDb;
@@ -27,9 +28,13 @@ public class WikipediaBusinessLayer(
     IParallelBackgroundTaskQueue parallelBackgroundTaskQueue,
     ApplicationConfiguration applicationConfiguration) : IWikipediaBusinessLayer
 {
+    private const string WikipediaCollectionName = "Wikipedia";
+    private const int TextChunkSize = 12_000;
+    private const int TextOverlap = 1200;
+
     [Experimental("SKEXP0020")] private readonly IInMemoryVectorDb _iInMemoryVectorDb = new InMemoryIInMemoryVectorDb(new VectorDbConfig()
     {
-        Name = "WikipediaText",
+        Name = WikipediaCollectionName,
         VectorSize = applicationConfiguration.GetOllamaConfig.WikiVectorSize,
         DistantFunc = DistanceFunction.CosineSimilarity,
         IndexKind = IndexKind.Dynamic,
@@ -149,7 +154,7 @@ public class WikipediaBusinessLayer(
         await foreach (var item in cursor)
         {
             var key = item.Id.ToString();
-            await foreach (var record in vectorDataLayer.GetAsyncEnumerator("WikipediaText", key, cancellationToken))
+            await foreach (var record in vectorDataLayer.GetAsyncEnumerator(WikipediaCollectionName, key, cancellationToken))
             {
                 await _iInMemoryVectorDb.AddNewRecordAsync(new VectorRecord()
                 {
@@ -168,12 +173,12 @@ public class WikipediaBusinessLayer(
     {
         var key = item.Id.ToString();
 
-        foreach (var chunk in item.Text.ChunkText(12_000, 1_200))
+        foreach (var chunk in item.Text.ChunkText(TextChunkSize, TextOverlap))
         {
             var vector = await _iInMemoryVectorDb.GenerateVectorsFromDescription(chunk, cancellationToken);
             await vectorDataLayer.CreateAsync(new Models.Vector.VectorRecord()
             {
-                Collection = "WikipediaText",
+                Collection = WikipediaCollectionName,
                 Key = key,
                 Vector = vector,
             }, cancellationToken);
@@ -208,8 +213,15 @@ public class WikipediaBusinessLayer(
     }
 
     [Experimental("SKEXP0020")]
-    public Task<List<SearchScore<VectorRecord>>> SearchRag(string query, int count, CancellationToken cancellationToken = default)
+    public async Task<List<SearchScore<VectorRecord>>> SearchRag(string query, int count, CancellationToken cancellationToken = default)
     {
-        return _iInMemoryVectorDb.RagSearch(query, count, cancellationToken);
+        List<SearchScore<VectorRecord>> list = new List<SearchScore<VectorRecord>>();
+        foreach (var text in query.ChunkText(TextChunkSize, TextOverlap))
+        {
+            var searchResult = await _iInMemoryVectorDb.RagSearch(query, count, cancellationToken);
+            list.AddRange(searchResult);
+        }
+
+        return list.GroupBySearchScore();
     }
 }

@@ -45,9 +45,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add missing config">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/projectSettingsUpdater.xml" afterDir="false" />
@@ -749,15 +748,7 @@
       <workItem from="1733709937628" duration="3919000" />
       <workItem from="1733714145605" duration="1938000" />
       <workItem from="1733739708534" duration="13877000" />
-      <workItem from="1733793198979" duration="4730000" />
-    </task>
-    <task id="LOCAL-00393" summary="update config">
-      <option name="closed" value="true" />
-      <created>1733032576692</created>
-      <option name="number" value="00393" />
-      <option name="presentableId" value="LOCAL-00393" />
-      <option name="project" value="LOCAL" />
-      <updated>1733032576692</updated>
+      <workItem from="1733793198979" duration="6974000" />
     </task>
     <task id="LOCAL-00394" summary="update">
       <option name="closed" value="true" />
@@ -1143,7 +1134,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733795011453</updated>
     </task>
-    <option name="localTasksCounter" value="442" />
+    <task id="LOCAL-00442" summary="add missing config">
+      <option name="closed" value="true" />
+      <created>1733799183198</created>
+      <option name="number" value="00442" />
+      <option name="presentableId" value="LOCAL-00442" />
+      <option name="project" value="LOCAL" />
+      <updated>1733799183198</updated>
+    </task>
+    <option name="localTasksCounter" value="443" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1174,7 +1173,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="add more element" />
     <MESSAGE value="fix wrong dependency injection" />
     <MESSAGE value="remove anti facet" />
     <MESSAGE value="update page" />
@@ -1199,7 +1197,8 @@
     <MESSAGE value="update message pack to v3" />
     <MESSAGE value="fix overflow text" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="add missing config" />
+    <option name="LAST_COMMIT_MESSAGE" value="add missing config" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
