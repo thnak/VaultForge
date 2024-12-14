@@ -5,8 +5,8 @@
 @rendermode InteractiveWebAssembly
 
 
-<div style="height:500px;overflow-y:scroll">
-    <Virtualize TItem="List<VirtualRowImage.VirtualImage>" ItemSize="300" ItemsProvider="ItemsProvider">
+<div style="height:calc(100vh - var(--mud-appbar-height));overflow-y:scroll">
+    <Virtualize TItem="List<VirtualRowImage.VirtualImage>" ItemSize="300" MaxItemCount="10" ItemsProvider="ItemsProvider">
         <ItemContent>
             <VirtualRowImage Images="context" WindowsHeight="300"></VirtualRowImage>
         </ItemContent>
