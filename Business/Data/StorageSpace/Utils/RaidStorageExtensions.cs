@@ -1,8 +1,8 @@
 ﻿using System.Security.Cryptography;
 using Business.Utils.Protector;
-using Business.Utils.StringExtensions;
 using BusinessModels.General.Results;
 using BusinessModels.System.FileSystem;
+using BusinessModels.Utils;
 using MongoDB.Bson;
 
 namespace Business.Data.StorageSpace.Utils;
