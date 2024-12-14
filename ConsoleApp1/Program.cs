@@ -71,7 +71,7 @@
 //     FunctionChoiceBehavior = null
 // };
 //
-// ChatHistory chatHistory = [];
+// ChatHistory chatHistory = [];    
 // chatHistory.AddSystemMessage("code assistant");
 // while (true)
 // {
@@ -130,27 +130,11 @@
 //     }
 // }
 
- List<string> ChunkText(string text, int chunkSize = 500, int overlap = 100)
-{
-    List<string> chunks = new List<string>();
-    int startIndex = 0;
+using System.Text.RegularExpressions;
 
-    while (startIndex < text.Length)
-    {
-        int endIndex = Math.Min(startIndex + chunkSize, text.Length);
-        string chunk = text.Substring(startIndex, endIndex - startIndex);
-
-        chunks.Add(chunk);
-
-        // Calculate the next start index, considering the overlap
-        startIndex += chunkSize - overlap;
-    }
-
-    return chunks;
-}
-
-var text = ChunkText("Your long input text goes here. This function will split the text into manageable chunks. Each chunk will be of specified size", 100, 10);
-Console.WriteLine(text);
+var code = "";
+var match = Regex.Matches(code, "^(\\d{5})\\s-\\s(.*)\\s-\\s(.*)$");
+Console.WriteLine();
 
 //
 // DateTime MinDate = new DateTime(1970, 1, 1, 0, 0, 0);

@@ -6,6 +6,7 @@ using Business.Business.Interfaces.Wiki;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.Advertisement;
 using Business.Data.Interfaces.Chat;
+using Business.Data.Interfaces.ComputeVision;
 using Business.Data.Interfaces.FileSystem;
 using Business.Data.Interfaces.User;
 using Business.Data.Interfaces.VectorDb;
@@ -49,6 +50,8 @@ public class HostApplicationLifetimeEventsHostedService(
         await QueueInitializationTask<IFaceDataLayer>(cancellationToken);
         await QueueInitializationTask<IWikipediaDataLayer>(cancellationToken);
         await QueueInitializationTask<RedundantArrayOfIndependentDisks>(cancellationToken);
+        await QueueInitializationTask<IYoloLabelDataLayer>(cancellationToken);
+
 
         await QueueInitializationExtendServiceTask<IFolderSystemBusinessLayer>(cancellationToken);
         await QueueInitializationExtendServiceTask<IFaceBusinessLayer>(cancellationToken);

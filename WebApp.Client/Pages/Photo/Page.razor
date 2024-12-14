@@ -1,0 +1,17 @@
+﻿@using WebApp.Client.Components.Photo
+
+
+@attribute [Route("/photo")]
+
+<div style="height:500px;overflow-y:scroll">
+    <Virtualize TItem="List<VirtualRowImage.VirtualImage>" ItemSize="300" ItemsProvider="ItemsProvider">
+        <ItemContent>
+            <VirtualRowImage Images="context" WindowsHeight="300"></VirtualRowImage>
+        </ItemContent>
+        <Placeholder>
+            <p>
+                Loading&hellip;
+            </p>
+        </Placeholder>
+    </Virtualize>
+</div>
