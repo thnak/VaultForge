@@ -27,6 +27,6 @@ public partial class Page : ComponentBase
         }
 
 
-        return new ItemsProviderResult<List<VirtualRowImage.VirtualImage>>(im, 1);
+        return new ItemsProviderResult<List<VirtualRowImage.VirtualImage>>(im, 100);
     }
 }

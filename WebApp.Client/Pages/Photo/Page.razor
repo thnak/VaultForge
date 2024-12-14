@@ -8,7 +8,7 @@
 <div style="height:calc(100vh - var(--mud-appbar-height));overflow-y:scroll">
     <Virtualize TItem="List<VirtualRowImage.VirtualImage>" ItemSize="300" MaxItemCount="10" ItemsProvider="ItemsProvider">
         <ItemContent>
-            <VirtualRowImage Images="context" WindowsHeight="300"></VirtualRowImage>
+            <VirtualRowImage Class="d-flex flex-row flex-wrap gap-0" Images="context" WindowsHeight="300"></VirtualRowImage>
         </ItemContent>
         <Placeholder>
             

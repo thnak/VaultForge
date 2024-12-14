@@ -72,7 +72,7 @@ public partial class VirtualRowImage : ComponentBase, IDisposable
             builder.OpenElement(0, "div");
             builder.AddAttribute(1, "id", _guidKey);
             builder.AddAttribute(2, "class", Class);
-            builder.AddAttribute(3, "style", $"height:{imageHeight}px");
+            builder.AddAttribute(3, "style", $"height:{WindowsHeight}px");
 
             foreach (var image in packElementsIntoContainers.SelectMany(x => x))
             {
