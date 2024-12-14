@@ -13,6 +13,7 @@ using Business.Business.Repositories.Wiki;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.Advertisement;
 using Business.Data.Interfaces.Chat;
+using Business.Data.Interfaces.ComputeVision;
 using Business.Data.Interfaces.FileSystem;
 using Business.Data.Interfaces.InternetOfThings;
 using Business.Data.Interfaces.User;
@@ -21,6 +22,7 @@ using Business.Data.Interfaces.Wiki;
 using Business.Data.Repositories;
 using Business.Data.Repositories.Advertisement;
 using Business.Data.Repositories.Chat;
+using Business.Data.Repositories.ComputeVision;
 using Business.Data.Repositories.FileSystem;
 using Business.Data.Repositories.InternetOfThings;
 using Business.Data.Repositories.User;
@@ -78,6 +80,8 @@ public static class DataService
         service.AddSingleton<IWikipediaDataLayer, WikipediaDataLayer>();
         service.AddSingleton<IWikipediaBusinessLayer, WikipediaBusinessLayer>();
 
+        service.AddSingleton<IYoloLabelDataLayer, YoloLabelDataLayer>();
+        
         service.AddHostedService<HostApplicationLifetimeEventsHostedService>();
 
         service.AddAdvancedServiceCollection();

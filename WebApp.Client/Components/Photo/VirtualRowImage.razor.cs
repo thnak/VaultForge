@@ -37,17 +37,21 @@ public partial class VirtualRowImage : ComponentBase, IDisposable
         base.OnAfterRender(firstRender);
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await PrepareGrid();
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
     private Task BrowserChange(BrowserViewportEventArgs _)
     {
         return PrepareGrid();
     }
 
-    protected override async Task OnParametersSetAsync()
-    {
-        await PrepareGrid();
-        await base.OnParametersSetAsync();
-    }
-
+    
     private async Task PrepareGrid()
     {
         var windowSize = await BrowserViewportService.GetCurrentBrowserWindowSizeAsync();
@@ -60,7 +64,7 @@ public partial class VirtualRowImage : ComponentBase, IDisposable
             image.Shuffle();
         }
 
-        var imageHeight = windowSize.Height / packElementsIntoContainers.Count;
+        var imageHeight = WindowsHeight / packElementsIntoContainers.Count;
 
         _imageRenderer = builder =>
         {
@@ -68,6 +72,7 @@ public partial class VirtualRowImage : ComponentBase, IDisposable
             builder.OpenElement(0, "div");
             builder.AddAttribute(1, "id", _guidKey);
             builder.AddAttribute(2, "class", Class);
+            builder.AddAttribute(3, "style", $"height:{imageHeight}px");
 
             foreach (var image in packElementsIntoContainers.SelectMany(x => x))
             {
