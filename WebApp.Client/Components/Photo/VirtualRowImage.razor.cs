@@ -51,6 +51,8 @@ public partial class VirtualRowImage : ComponentBase, IDisposable
     private async Task PrepareGrid()
     {
         var windowSize = await BrowserViewportService.GetCurrentBrowserWindowSizeAsync();
+        if(Images.Count == 0) return;
+        
         var packElementsIntoContainers = Images.PackElementsIntoContainers(windowSize.Width, image => image.Width);
         packElementsIntoContainers.Shuffle();
         foreach (var image in packElementsIntoContainers)
