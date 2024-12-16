@@ -4,7 +4,7 @@ using MudBlazor;
 
 namespace WebApp.Client.Components.Photo;
 
-public partial class VirtualRowImage : ComponentBase, IDisposable
+public partial class VirtualRowImage(ILogger<VirtualRowImage> logger) : ComponentBase, IDisposable
 {
     [Parameter] public List<VirtualImage> Images { get; set; } = new();
     [Category("Common")] [Parameter] public string Class { get; set; } = string.Empty;
@@ -46,16 +46,19 @@ public partial class VirtualRowImage : ComponentBase, IDisposable
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private Task BrowserChange(BrowserViewportEventArgs _)
+    private async Task BrowserChange(BrowserViewportEventArgs _)
     {
-        return PrepareGrid();
+        await PrepareGrid();
+        await InvokeAsync(StateHasChanged);
     }
 
     
     private async Task PrepareGrid()
     {
         var windowSize = await BrowserViewportService.GetCurrentBrowserWindowSizeAsync();
-        if(Images.Count == 0) return;
+        if(Images.Count == 0) {
+            logger.LogInformation("Empty");
+            return; }
         
         var packElementsIntoContainers = Images.PackElementsIntoContainers(windowSize.Width, image => image.Width);
         packElementsIntoContainers.Shuffle();
@@ -65,7 +68,9 @@ public partial class VirtualRowImage : ComponentBase, IDisposable
         }
 
         var imageHeight = WindowsHeight / packElementsIntoContainers.Count;
-
+        
+        logger.LogInformation($"{_guidKey} with {packElementsIntoContainers.Sum(x=>x.Count)} images");
+        
         _imageRenderer = builder =>
         {
             int index = 1;
@@ -89,6 +94,7 @@ public partial class VirtualRowImage : ComponentBase, IDisposable
 
             builder.CloseElement();
         };
+        await InvokeAsync(StateHasChanged);
     }
 
     public void Dispose()

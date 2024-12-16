@@ -7,17 +7,23 @@
 
 <div style="height:calc(100vh - var(--mud-appbar-height));overflow-y:scroll">
     <Virtualize TItem="List<VirtualRowImage.VirtualImage>" ItemSize="300" MaxItemCount="10" ItemsProvider="ItemsProvider">
-        <ItemContent>
+
+        @*  *@
+
+        <div style="height: 300px">
             <VirtualRowImage Class="d-flex flex-row flex-wrap gap-0" Images="context" WindowsHeight="300"></VirtualRowImage>
-        </ItemContent>
-        <Placeholder>
-            
-            <div style="height: 300px">
-                <p>
-                    Loading&hellip;
-                </p>
-            </div>
-            
-        </Placeholder>
+        </div>
+        
+        @* <ItemContent> *@
+        @* </ItemContent> *@
+        @* <Placeholder> *@
+        @* *@
+        @*     <div style="height: 300px"> *@
+        @*         <p> *@
+        @*             Loading&hellip; *@
+        @*         </p> *@
+        @*     </div> *@
+        @* *@
+        @* </Placeholder> *@
     </Virtualize>
 </div>
