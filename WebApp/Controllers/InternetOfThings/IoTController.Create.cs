@@ -68,6 +68,7 @@ public partial class IoTController
         var queueResult = await requestQueueHostedService.QueueRequest(record, cancelToken);
         if (!queueResult)
         {
+            await fileSystemServe.DeleteAsync(fileInfo.Id.ToString(), cancelToken);
             logger.LogWarning($"Error while processing request {sensorId}");
         }
 
