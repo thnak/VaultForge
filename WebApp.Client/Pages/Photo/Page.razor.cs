@@ -12,7 +12,7 @@ public partial class Page : ComponentBase
         List<List<VirtualRowImage.VirtualImage>> im = [];
         Random random = new();
 
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < request.Count; i++)
         {
             List<VirtualRowImage.VirtualImage> items = new();
 
