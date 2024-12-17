@@ -6,9 +6,18 @@ namespace WebApp.Client.Pages.Photo;
 
 public partial class Page : ComponentBase
 {
+    private bool FirstTime { get; set; } = true;
+
     private async ValueTask<ItemsProviderResult<List<VirtualRowImage.VirtualImage>>> ItemsProvider(ItemsProviderRequest request)
     {
-        await Task.Delay(500);
+#if DEBUG
+        if (FirstTime)
+            await Task.Delay(50);
+        else
+            await Task.Delay(50000);
+        FirstTime = false;
+#endif
+    
         List<List<VirtualRowImage.VirtualImage>> im = [];
         Random random = new();
 
@@ -29,6 +38,6 @@ public partial class Page : ComponentBase
         }
 
 
-        return new ItemsProviderResult<List<VirtualRowImage.VirtualImage>>(im, 100);
+        return new ItemsProviderResult<List<VirtualRowImage.VirtualImage>>(im, 10000);
     }
 }
