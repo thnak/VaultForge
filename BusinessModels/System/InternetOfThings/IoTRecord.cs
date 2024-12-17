@@ -18,7 +18,7 @@ public class IoTRecord : BaseModelEntry
     /// </summary>
     [BsonElement("sensorId")]
     public string SensorId { get; set; }
-    
+
     /// <summary>
     /// Sensor data (could be temperature, humidity, etc.)
     /// </summary>
@@ -35,9 +35,9 @@ public class IoTRecord : BaseModelEntry
     /// Optional metadata
     /// </summary>
     [BsonElement("metadata")]
-    public DeviceMetadata? Metadata { get; set; }
+    public RecordMetadata? Metadata { get; set; }
 
-    public IoTRecord( string sensorId, float sensorData, DeviceMetadata? metadata = null)
+    public IoTRecord(string sensorId, float sensorData, RecordMetadata? metadata = null)
     {
         Id = ObjectId.GenerateNewId();
         Timestamp = DateTime.UtcNow; // Set to current time by default
@@ -49,7 +49,7 @@ public class IoTRecord : BaseModelEntry
     }
 }
 
-public class DeviceMetadata
+public class RecordMetadata
 {
     /// <summary>
     /// Represented as a percentage (0-100)
@@ -63,27 +63,5 @@ public class DeviceMetadata
     [BsonElement("batteryLevel")]
     public int BatteryLevel { get; set; }
 
-    /// <summary>
-    /// Optional, where the device is located
-    /// </summary>
-    [BsonElement("location")]
-    public string Location { get; set; } = string.Empty;
-
-    public string Manufacturer { get; set; } = string.Empty;
-
-
-    public DateTimeOffset LastCalibration { get; set; }
-
-    /// <summary>
-    /// Optional, current firmware version
-    /// </summary>
-    [BsonElement("firmwareVersion")]
-    public string FirmwareVersion { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Optional, when the device was last serviced or maintained
-    /// </summary>
-    [BsonElement("lastServiceDate")]
-    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
-    public DateTime LastServiceDate { get; set; }
+    [BsonElement("image")] public string ImagePath { get; set; } = string.Empty;
 }

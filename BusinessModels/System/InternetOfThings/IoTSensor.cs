@@ -27,5 +27,7 @@ public class IoTSensor : BaseModelEntry
 
     [BsonElement("isActive")] public bool IsActive { get; set; } = true;
 
+    [BsonElement("status")]
+    [BsonRepresentation(BsonType.String)]
     public IoTSensorStatus Status { get; set; }
 }

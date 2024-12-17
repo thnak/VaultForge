@@ -19,7 +19,7 @@ public class IoTDeviceGroup : BaseModelEntry
 
     [BsonElement("deploymentDate")]
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
-    public DateTime DeploymentDate { get; set; }
+    public DateTime DeploymentDate { get; set; }= DateTime.UtcNow;
 
     [BsonElement("deployedBy")] public string DeployedBy { get; set; } = string.Empty; // e.g., "John Doe"
 

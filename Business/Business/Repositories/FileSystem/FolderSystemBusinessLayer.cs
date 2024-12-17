@@ -44,7 +44,6 @@ internal class FolderSystemBusinessLayer(
     RedundantArrayOfIndependentDisks raidService,
     IParallelBackgroundTaskQueue parallelBackgroundTaskQueue,
     ISequenceBackgroundTaskQueue sequenceBackgroundTaskQueue,
-    IVectorDataLayer vectorDataLayer,
     IThumbnailService thumbnailService,
     ApplicationConfiguration options)
     : IFolderSystemBusinessLayer
@@ -734,6 +733,7 @@ internal class FolderSystemBusinessLayer(
                 await UpdateFilePropertiesAfterUpload(file, writeResult, "", entry.Name);
             }
         }
+
         return Result<string>.SuccessWithMessage("Successfully extracted file", "");
     }
 
@@ -930,6 +930,7 @@ internal class FolderSystemBusinessLayer(
         {
             logger.LogError(updateResult.Item2);
         }
+
         static FieldUpdate<FileInfoModel> GetFileFieldUpdates(FileInfoModel file)
         {
             return new FieldUpdate<FileInfoModel>

@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.FileSystem;
+using Business.Data.Interfaces.User;
 using Business.Models;
 using Business.Utils;
 using Business.Utils.ExpressionExtensions;
@@ -18,7 +19,7 @@ using MongoDB.Driver;
 
 namespace Business.Data.Repositories.FileSystem;
 
-public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<FolderSystemDatalayer> logger, IMemoryCache memoryCache) : IFolderSystemDatalayer
+public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<FolderSystemDatalayer> logger, IUserDataLayer userDataLayer, IMemoryCache memoryCache) : IFolderSystemDatalayer
 {
     private readonly IMongoCollection<FolderInfoModel> _dataDb = context.MongoDatabase.GetCollection<FolderInfoModel>("FolderInfo");
 
@@ -51,70 +52,16 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
             await _dataDb.Indexes.DropAllAsync(cancellationToken);
             await _dataDb.Indexes.CreateManyAsync(indexModels, cancellationToken: cancellationToken);
-
-            var anonymousUser = "Anonymous".ComputeSha256Hash();
-            var anonymousFolder = Get(anonymousUser, "/root");
-            if (anonymousFolder == default)
+            
+            await InitDefaultFolderForUser("", "/iotImage", cancellationToken);
+            
+            var userCtx = userDataLayer.GetAllAsync([], cancellationToken);
+            await foreach (var user in userCtx)
             {
-                anonymousFolder = new FolderInfoModel()
-                {
-                    OwnerUsername = anonymousUser,
-                    RelativePath = "/root",
-                    AbsolutePath = "/root",
-                    FolderName = "Home",
-                    Type = FolderContentType.SystemFolder
-                };
-                var result = await CreateAsync(anonymousFolder, cancellationToken);
-                logger.LogInformation($"[Init][Anonymous] {result}");
-            }
-
-            var wallPaperFolder = Get(anonymousUser, "/root/wallpaper");
-            if (wallPaperFolder == default)
-            {
-                wallPaperFolder = new FolderInfoModel()
-                {
-                    OwnerUsername = anonymousUser,
-                    RootFolder = anonymousFolder.Id.ToString(),
-                    FolderName = "WallPaper",
-                    AbsolutePath = anonymousFolder.AbsolutePath + "/wallpaper",
-                    RelativePath = anonymousFolder.AbsolutePath + "/WallPaper",
-                    Type = FolderContentType.SystemFolder
-                };
-                var result = await CreateAsync(wallPaperFolder, cancellationToken);
-                logger.LogInformation($"[Init][WallPaper] {result.Message}");
-            }
-
-            var videoFolder = Get(anonymousUser, "/root/Videos");
-            if (videoFolder == default)
-            {
-                videoFolder = new FolderInfoModel()
-                {
-                    OwnerUsername = anonymousUser,
-                    RootFolder = anonymousFolder.Id.ToString(),
-                    FolderName = "Videos",
-                    AbsolutePath = anonymousFolder.AbsolutePath + "/Videos",
-                    RelativePath = anonymousFolder.AbsolutePath + "/Videos",
-                    Type = FolderContentType.SystemFolder
-                };
-                var result = await CreateAsync(videoFolder, cancellationToken);
-                logger.LogInformation($"[Init][Videos] {result.Message}");
-            }
-
-
-            var resourceFolder = Get(anonymousUser, "/root/wallpaper");
-            if (resourceFolder == default)
-            {
-                resourceFolder = new FolderInfoModel()
-                {
-                    OwnerUsername = anonymousUser,
-                    RootFolder = anonymousFolder.Id.ToString(),
-                    FolderName = "resource",
-                    AbsolutePath = anonymousFolder.AbsolutePath + "/resource",
-                    RelativePath = anonymousFolder.AbsolutePath + "/resource",
-                    Type = FolderContentType.SystemFolder
-                };
-                var result = await CreateAsync(resourceFolder, cancellationToken);
-                logger.LogInformation($"[Init][resource] {result.Message}");
+                await InitDefaultFolderForUser(user.UserName, "/root", cancellationToken);
+                await InitDefaultFolderForUser(user.UserName, "/root/wallpaper", cancellationToken);
+                await InitDefaultFolderForUser(user.UserName, "/root/videos", cancellationToken);
+                await InitDefaultFolderForUser(user.UserName, "/root/resource", cancellationToken);
             }
 
 
@@ -129,6 +76,24 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         {
             logger.LogError(ex, null);
             return (false, ex.Message);
+        }
+    }
+
+    private async Task InitDefaultFolderForUser(string userName, string path, CancellationToken cancellationToken = default)
+    {
+        var anonymousFolder = Get(userName, path);
+        if (anonymousFolder == null)
+        {
+            anonymousFolder = new FolderInfoModel()
+            {
+                OwnerUsername = userName,
+                RelativePath = path,
+                AbsolutePath = path,
+                FolderName = path.Split('/').Last(),
+                Type = FolderContentType.SystemFolder
+            };
+            var result = await CreateAsync(anonymousFolder, cancellationToken);
+            logger.LogInformation($"[Init][{userName}] {result}");
         }
     }
 

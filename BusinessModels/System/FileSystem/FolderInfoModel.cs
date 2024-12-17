@@ -105,7 +105,7 @@ public class FolderInfoModel : BaseModelEntry
 
     public override bool Equals(object? o)
     {
-        var other = o as FileInfoModel;
+        var other = o as FolderInfoModel;
         return other?.Id == Id;
     }
 

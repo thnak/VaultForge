@@ -21,5 +21,6 @@ public enum FileClassify
     /// </summary>
     ThumbnailWebpFile,
     M3U8File,
-    M3U8FileSegment
+    M3U8FileSegment,
+    IotImageFile
 }
