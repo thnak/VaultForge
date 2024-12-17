@@ -97,9 +97,8 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         }
     }
 
-    public FolderInfoModel? Get(string username, string absolute, bool hashed = true)
+    public FolderInfoModel? Get(string username, string absolute)
     {
-        username = hashed ? username : username.ComputeSha256Hash();
         var filter = Builders<FolderInfoModel>.Filter.Where(x => x.AbsolutePath == absolute && x.OwnerUsername == username);
         filter |= Builders<FolderInfoModel>.Filter.Where(x => x.RelativePath == absolute && x.OwnerUsername == username);
         return _dataDb.Find(filter).FirstOrDefault();

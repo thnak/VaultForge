@@ -294,8 +294,7 @@ internal class FolderSystemBusinessLayer(
 
     public FolderInfoModel? Get(string username, string absoblutePath)
     {
-        var user = GetUser(username);
-        return folderSystemService.Get(user?.UserName ?? string.Empty, absoblutePath);
+        return folderSystemService.Get(username, absoblutePath);
     }
 
     public List<FolderInfoModel> GetFolderBloodLine(string folderId)
