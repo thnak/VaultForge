@@ -300,4 +300,22 @@
     <data name="This resource requires X0 years old" xml:space="preserve">
     <value>.</value>
   </data>
+    <data name="DeviceManagement" xml:space="preserve">
+      <value>장치 관리</value>
+    </data>
+    <data name="Device not found" xml:space="preserve">
+      <value>장치를 찾을 수 없습니다</value>
+    </data>
+    <data name="Add" xml:space="preserve">
+      <value>추가</value>
+    </data>
+    <data name="Add new device" xml:space="preserve">
+      <value>새 장치 추가</value>
+    </data>
+    <data name="MAC address is not valid" xml:space="preserve">
+      <value>MAC 주소가 유효하지 않습니다</value>
+    </data>
+    <data name="IP address is not valid" xml:space="preserve">
+      <value>IP 주소가 유효하지 않습니다</value>
+    </data>
 </root>

@@ -300,4 +300,22 @@
     <data name="Folder moved successfully" xml:space="preserve">
     <value>Folder moved successfully</value>
   </data>
+    <data name="DeviceManagement" xml:space="preserve">
+      <value>Geräteverwaltung</value>
+    </data>
+    <data name="Device not found" xml:space="preserve">
+      <value>Gerät nicht gefunden</value>
+    </data>
+    <data name="Add" xml:space="preserve">
+      <value>Hinzufügen</value>
+    </data>
+    <data name="Add new device" xml:space="preserve">
+      <value>Neues Gerät hinzufügen</value>
+    </data>
+    <data name="MAC address is not valid" xml:space="preserve">
+      <value>Die MAC-Adresse ist ungültig</value>
+    </data>
+    <data name="IP address is not valid" xml:space="preserve">
+      <value>Die IP-Adresse ist ungültig</value>
+    </data>
 </root>

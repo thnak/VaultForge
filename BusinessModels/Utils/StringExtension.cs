@@ -193,19 +193,22 @@ public static class StringExtension
         return imageContentTypes.Contains(contentType);
     }
 
+    private static readonly Regex MacAddressRegex = new Regex(
+        @"^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$|^([0-9A-Fa-f]{4}\.){2}[0-9A-Fa-f]{4}$",
+        RegexOptions.Compiled);
+
+    public static bool IsValidMacAddress(this string input)
+    {
+        return MacAddressRegex.IsMatch(input);
+    }
+
     public static bool IsVideoFile(this string contenType)
     {
         string[] videoContentTypes = ["video/mp4"];
         return videoContentTypes.Contains(contenType);
     }
 
-    public static bool IsValidMacAddress(string macAddress)
-    {
-        var regex = new Regex("^([0-9A-Fa-f]{2}:){5}([0-9A-Fa-f]{2})$");
-        return regex.IsMatch(macAddress);
-    }
-
-    public static bool IsValidIpAddress(string ipAddress)
+    public static bool IsValidIpAddress(this string ipAddress)
     {
         return IPAddress.TryParse(ipAddress, out _);
     }

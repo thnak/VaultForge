@@ -532,4 +532,22 @@ ClientY: {1}</value>
     <data name="The document already exists" xml:space="preserve">
       <value>Tài liệu đã tồn tại</value>
     </data>
+    <data name="DeviceManagement" xml:space="preserve">
+      <value>Quản lý thiết bị</value>
+    </data>
+    <data name="Device not found" xml:space="preserve">
+      <value>Không tìm thấy thiết bị</value>
+    </data>
+    <data name="Add" xml:space="preserve">
+      <value>Thêm</value>
+    </data>
+    <data name="Add new device" xml:space="preserve">
+      <value>Thêm thiết bị mới</value>
+    </data>
+    <data name="MAC address is not valid" xml:space="preserve">
+      <value>Địa chỉ MAC không hợp lệ</value>
+    </data>
+    <data name="IP address is not valid" xml:space="preserve">
+      <value>Địa chỉ IP không hợp lệ</value>
+    </data>
 </root>

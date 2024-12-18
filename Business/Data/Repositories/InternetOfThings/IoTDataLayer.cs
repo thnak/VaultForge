@@ -190,9 +190,48 @@ public class IoTDataLayer : IIoTDataLayer
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<IoTRecord> updates, CancellationToken cancellationToken = default)
+    public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<IoTRecord> updates, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        try
+        {
+            if (ObjectId.TryParse(key, out var id))
+            {
+                var filter = Builders<IoTRecord>.Filter.Eq(f => f.Id, id);
+
+                var isExist = await _dataDb.Find(filter).AnyAsync(cancellationToken: cancellationToken);
+                if (!isExist)
+                    return (false, AppLang.File_could_not_be_found);
+
+                // Build the update definition by combining multiple updates
+                var updateDefinitionBuilder = Builders<IoTRecord>.Update;
+                var updateDefinitions = new List<UpdateDefinition<IoTRecord>>();
+
+                if (updates.Any())
+                {
+                    foreach (var update in updates)
+                    {
+                        var fieldName = update.Key;
+                        var fieldValue = update.Value;
+
+                        // Add the field-specific update to the list
+                        updateDefinitions.Add(updateDefinitionBuilder.Set(fieldName, fieldValue));
+                    }
+
+                    // Combine all update definitions into one
+                    var combinedUpdate = updateDefinitionBuilder.Combine(updateDefinitions);
+
+                    await _dataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
+                }
+
+                return (true, AppLang.Update_successfully);
+            }
+
+            return (false, AppLang.Invalid_key);
+        }
+        catch (OperationCanceledException)
+        {
+            return (false, string.Empty);
+        }
     }
 
     public IAsyncEnumerable<(bool, string, string)> ReplaceAsync(IEnumerable<IoTRecord> models, CancellationToken cancellationToken = default)

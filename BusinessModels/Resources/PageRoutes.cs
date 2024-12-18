@@ -73,44 +73,23 @@ public static class PageRoutes
         {
             public const string Src = Name + "/shared";
             public const string Title = "Shared drive";
-
-            public static readonly List<Dictionary<string, string>> MetaData =
-            [
-                new()
-                {
-                    { "name", "description" },
-                    {
-                        "content", "Share drive to community"
-                    }
-                },
-                new()
-                {
-                    { "name", "robots" },
-                    {
-                        "content", "max-image-preview:large, index"
-                    }
-                },
-            ];
         }
 
         public static class Trash
         {
             public const string Src = Name + "/trash";
             public const string Title = "trash";
-
-            public static readonly List<Dictionary<string, string>> MetaData =
-            [
-                new()
-                {
-                    { "name", "description" },
-                    {
-                        "content", "deleted resources"
-                    }
-                }
-            ];
         }
     }
 
+    public static class InternetOfThings
+    {
+        public const string Name = "/internet-of-things";
+        public const string DeviceManagement = Name + "/device-management";
+        public const string DeviceGroupManagement = Name + "/device-group-management";
+        public const string SensorManagement = Name + "/sensor-management";
+    }
+    
     public static class Account
     {
         public const string Name = "/Account";

@@ -539,4 +539,22 @@ ClientY: {1}</value>
     <data name="Link" xml:space="preserve">
       <value>Link</value>
     </data>
+    <data name="DeviceManagement" xml:space="preserve">
+      <value>Device Management</value>
+    </data>
+    <data name="Device not found" xml:space="preserve">
+      <value>Device not found</value>
+    </data>
+    <data name="Add" xml:space="preserve">
+      <value>Add</value>
+    </data>
+    <data name="Add new device" xml:space="preserve">
+      <value>Add new device</value>
+    </data>
+    <data name="MAC address is not valid" xml:space="preserve">
+      <value>MAC address is not valid</value>
+    </data>
+    <data name="IP address is not valid" xml:space="preserve">
+      <value>IP address is not valid</value>
+    </data>
 </root>

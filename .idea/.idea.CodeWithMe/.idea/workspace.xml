@@ -45,16 +45,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/General/EnumModel/FileStatus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/General/EnumModel/FileStatus.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FolderInfoModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FolderInfoModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.Designer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.de-DE.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.de-DE.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.en-US.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.en-US.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.es-ES.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.es-ES.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.ja-JP.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.ja-JP.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.ko-KR.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.ko-KR.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.vi-VN.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.vi-VN.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/PageRoutes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/PageRoutes.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDeviceGroup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDeviceGroup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTRecord.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTRecord.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTSensor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTSensor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Utils/StringExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/StringExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ResApi/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/IoTController.Create.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/IoTController.Create.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/WebApp.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/WebApp.Client.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/wwwroot/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/wwwroot/css/app.css" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -118,6 +132,7 @@
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Text.Json/src/System/Text/Json/Serialization/JsonConverterOfT.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0fb7a5f343ed4578a15c716986a3f17950c00/7a/d308585c/NativeDateTimeResolver.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4992fbaf8fdc4e35afbc4135b809fa7329e30/e6/d3d3ecbc/OllamaEmbeddingGenerator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5de964a0ff014d78b9bbaee58138798511938/40/098169e4/IFormFile.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/838402d166304061809e45e127735cb925920/11/d508170c/ILogger`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b19b48a658d34783924b2956c870b2ee39420/0f/e20d4436/AdditionalPropertiesDictionary.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b19b48a658d34783924b2956c870b2ee39420/29/330bd635/EmbeddingGenerationOptions.cs" root0="FORCE_HIGHLIGHTING" />
@@ -133,10 +148,12 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6354a7b35d7821629924d3676acd7e67a6f7f94343e0e66ec439aa2bd6ed5/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6a44d1618475c554cdb454d3d6746789df652e379e2a5e5e67b916046b0e0d2/IndexKind.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/74e4c72cd3922ed61496931f33baf4a9b5950edddb6b78bc296241285f25c3/TaskAwaiter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7c8ad03b50ccbf3ec7daba64f8ffc229c843a4bc37369f5fbdc6f33edf2b4c/IFilterDefinition.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8a8a7c52b4b5e4ee92c9fed29affe5d381cc817f69216bef50b2c6e5c37f1e60/VectorStoreRecordKeyProperty.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/948394a61fad115d827d4d89402087c31bc6fb51eaf74a396884f5708d153f/ExclusiveConnectionPool.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9769f0874b89d9a174c39e6c977aef6d979daefa49c7f3c239ef268493ea12/SemaphoreSlim.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a387f56e0a254d6432b1c7dad82cf164131bf4cae191042f96133f70bfc2/SessionOptions.shared.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b27e716cf9d53122a9e9a2da043a0702f3bb0e2ca1e2a5fc750e2a443586cf/GridState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bd1d5c50194fea68ff3559c160230b0ab50f5acf4ce3061bffd6d62958e2182/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c43c2f47f2c2e8f49b63133e24df3f437cdaf69f6ce4364bbfc18a3a55e2d4/Timer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c4b095b650c2e655fc77354b7fb11b527436bb75f1f6b2d1bd6ebef68ba031/IVectorStoreRecordCollection.cs" root0="SKIP_HIGHLIGHTING" />
@@ -154,11 +171,6 @@
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Pages/Photo/Page.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Pages/Photo/Page.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Pages/Photo/Page.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Pages/Photo/Page.razor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Pages/Photo/Page.razor.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -935,31 +947,9 @@
       <workItem from="1734312422551" duration="1809000" />
       <workItem from="1734343943469" duration="449000" />
       <workItem from="1734357419161" duration="2071000" />
-      <workItem from="1734398662667" duration="7145000" />
-    </task>
-    <task id="LOCAL-00406" summary="fix wrong dependency injection">
-      <option name="closed" value="true" />
-      <created>1733077504950</created>
-      <option name="number" value="00406" />
-      <option name="presentableId" value="LOCAL-00406" />
-      <option name="project" value="LOCAL" />
-      <updated>1733077504950</updated>
-    </task>
-    <task id="LOCAL-00407" summary="remove anti facet">
-      <option name="closed" value="true" />
-      <created>1733078927878</created>
-      <option name="number" value="00407" />
-      <option name="presentableId" value="LOCAL-00407" />
-      <option name="project" value="LOCAL" />
-      <updated>1733078927879</updated>
-    </task>
-    <task id="LOCAL-00408" summary="update page">
-      <option name="closed" value="true" />
-      <created>1733102664057</created>
-      <option name="number" value="00408" />
-      <option name="presentableId" value="LOCAL-00408" />
-      <option name="project" value="LOCAL" />
-      <updated>1733102664057</updated>
+      <workItem from="1734398662667" duration="14203000" />
+      <workItem from="1734445982284" duration="1954000" />
+      <workItem from="1734482897238" duration="10720000" />
     </task>
     <task id="LOCAL-00409" summary="update service">
       <option name="closed" value="true" />
@@ -1329,7 +1319,31 @@
       <option name="project" value="LOCAL" />
       <updated>1734403246898</updated>
     </task>
-    <option name="localTasksCounter" value="455" />
+    <task id="LOCAL-00455" summary="update api">
+      <option name="closed" value="true" />
+      <created>1734424189108</created>
+      <option name="number" value="00455" />
+      <option name="presentableId" value="LOCAL-00455" />
+      <option name="project" value="LOCAL" />
+      <updated>1734424189108</updated>
+    </task>
+    <task id="LOCAL-00456" summary="small update">
+      <option name="closed" value="true" />
+      <created>1734446212791</created>
+      <option name="number" value="00456" />
+      <option name="presentableId" value="LOCAL-00456" />
+      <option name="project" value="LOCAL" />
+      <updated>1734446212792</updated>
+    </task>
+    <task id="LOCAL-00457" summary="REMOVE hash logic">
+      <option name="closed" value="true" />
+      <created>1734447320784</created>
+      <option name="number" value="00457" />
+      <option name="presentableId" value="LOCAL-00457" />
+      <option name="project" value="LOCAL" />
+      <updated>1734447320784</updated>
+    </task>
+    <option name="localTasksCounter" value="458" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1360,9 +1374,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="drop support for static server side rendering" />
-    <MESSAGE value="move to auto mode" />
-    <MESSAGE value="disable AOT" />
     <MESSAGE value="roll back to client side, simplify project" />
     <MESSAGE value="wrong time" />
     <MESSAGE value="aot" />
@@ -1385,7 +1396,10 @@
     <MESSAGE value="add place-holder" />
     <MESSAGE value="add attribute to debug" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="update api" />
+    <MESSAGE value="small update" />
+    <MESSAGE value="REMOVE hash logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="REMOVE hash logic" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -95,7 +95,7 @@ public class IoTBusinessLayer(IIoTDataLayer data, IIotRequestQueue iotRequestQue
 
     public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<IoTRecord> updates, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return data.UpdateAsync(key, updates, cancellationToken);
     }
 
     public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<IoTRecord> models, CancellationToken cancellationToken = default)
@@ -117,11 +117,21 @@ public class IoTBusinessLayer(IIoTDataLayer data, IIotRequestQueue iotRequestQue
             iotRequestQueue.IncrementTotalRequests(item.SensorId);
         }
 
-        return Result<bool>.SuccessWithMessage(true,AppLang.Success);
+        return Result<bool>.SuccessWithMessage(true, AppLang.Success);
     }
 
-    public Task<Result<List<SearchScore<VectorRecord>>?>> SearchVectorAsync(float[] vector, CancellationToken cancellationToken = default)
+    public Task<Result<List<SearchScore<VectorRecord>>>> SearchVectorAsync(float[] vector, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<Result<bool>> UpdateIotValue(string key, float value, CancellationToken cancellationToken = default)
+    {
+        var result = await UpdateAsync(key, new FieldUpdate<IoTRecord>()
+        {
+            { x => x.SensorData, value }
+        }, cancellationToken);
+        if (result.Item1) return Result<bool>.SuccessWithMessage(true, AppLang.Success);
+        return Result<bool>.Failure(result.Item2, ErrorType.Unknown);
     }
 }

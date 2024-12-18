@@ -17,5 +17,6 @@ public partial class IoTController(
     IIotRequestQueue requestQueueHostedService,
     IFolderSystemBusinessLayer folderServe,
     IFileSystemBusinessLayer fileSystemServe,
+    IIoTBusinessLayer ioTBusinessService,
     RedundantArrayOfIndependentDisks raidService,
     ILogger<IoTController> logger) : ControllerBase;

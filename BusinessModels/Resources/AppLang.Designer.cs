@@ -60,6 +60,24 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thêm.
+        /// </summary>
+        public static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thêm thiết bị mới.
+        /// </summary>
+        public static string Add_new_device {
+            get {
+                return ResourceManager.GetString("Add new device", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thêm thẻ.
         /// </summary>
         public static string Add_tags {
@@ -366,6 +384,24 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Không tìm thấy thiết bị.
+        /// </summary>
+        public static string Device_not_found {
+            get {
+                return ResourceManager.GetString("Device not found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quản lý thiết bị.
+        /// </summary>
+        public static string DeviceManagement {
+            get {
+                return ResourceManager.GetString("DeviceManagement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Đã ngắt kết nối.
         /// </summary>
         public static string Disconnected {
@@ -645,6 +681,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Địa chỉ IP không hợp lệ.
+        /// </summary>
+        public static string IP_address_is_not_valid {
+            get {
+                return ResourceManager.GetString("IP address is not valid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ngôn ngữ.
         /// </summary>
         public static string Language {
@@ -722,6 +767,15 @@ namespace BusinessModels.Resources {
         public static string Logout_successful {
             get {
                 return ResourceManager.GetString("Logout successful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Địa chỉ MAC không hợp lệ.
+        /// </summary>
+        public static string MAC_address_is_not_valid {
+            get {
+                return ResourceManager.GetString("MAC address is not valid", resourceCulture);
             }
         }
         
