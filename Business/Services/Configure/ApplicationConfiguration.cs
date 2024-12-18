@@ -110,6 +110,7 @@ public class ApplicationConfiguration
         Configs.OnnxConfig.FaceEmbeddingModel.ModelPath = GetEnvironmentVariable("OnnxConfigFaceEmbeddingModelModelPath", appSettings.Value.OnnxConfig.FaceEmbeddingModel.ModelPath);
         Configs.OnnxConfig.FaceEmbeddingModel.VectorSize = GetIntEnvironmentVariable("OnnxConfigFaceEmbeddingModelVectorSize", appSettings.Value.OnnxConfig.FaceEmbeddingModel.VectorSize);
         Configs.OnnxConfig.FaceEmbeddingModel.DistantFunc = GetEnvironmentVariable("OnnxConfigFaceEmbeddingModelDistantFunc", appSettings.Value.OnnxConfig.FaceEmbeddingModel.DistantFunc);
+        Configs.OnnxConfig.WaterMeterWeightPath = GetEnvironmentVariable("OnnxConfigWaterMeterPath", appSettings.Value.OnnxConfig.WaterMeterWeightPath);
     }
 
     public OllamaConfig GetOllamaConfig => Configs.OllamaConfig;

@@ -5,6 +5,7 @@ using BrainNet.Models.Vector;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Business.Repositories.InternetOfThings;
 using Business.Services.HostedServices.IoT;
+using Business.Services.OnnxService.WaterMeter;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Business.Utils;
@@ -14,6 +15,7 @@ public static class BusinessExtension
     public static void AddIotQueueService(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddSingleton<IIotRequestQueue, IotRequestQueue>();
+        serviceCollection.AddSingleton<IWaterMeterReaderQueue, WaterMeterReaderQueue>();
         serviceCollection.AddHostedService<IoTRequestQueueHostedService>();
     }
 

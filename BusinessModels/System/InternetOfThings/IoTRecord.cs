@@ -13,19 +13,6 @@ public class IoTRecord : BaseModelEntry
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime Timestamp { get; set; }
 
-    /// <summary>
-    /// Sensor or device identifier
-    /// </summary>
-    [BsonElement("sensorId")]
-    public string SensorId { get; set; }
-
-    /// <summary>
-    /// Sensor data (could be temperature, humidity, etc.)
-    /// </summary>
-    [BsonElement("sensorData")]
-    public float SensorData { get; set; }
-
-
     [BsonDateTimeOptions(DateOnly = true, Kind = DateTimeKind.Utc)]
     public DateTime Date { get; set; }
 
@@ -35,14 +22,12 @@ public class IoTRecord : BaseModelEntry
     /// Optional metadata
     /// </summary>
     [BsonElement("metadata")]
-    public RecordMetadata? Metadata { get; set; }
+    public RecordMetadata Metadata { get; set; }
 
-    public IoTRecord(string sensorId, float sensorData, RecordMetadata? metadata = null)
+    public IoTRecord(RecordMetadata metadata)
     {
         Id = ObjectId.GenerateNewId();
         Timestamp = DateTime.UtcNow; // Set to current time by default
-        SensorId = sensorId;
-        SensorData = sensorData;
         Metadata = metadata;
         Date = Timestamp.Date;
         Hour = Timestamp.Hour;
@@ -51,6 +36,18 @@ public class IoTRecord : BaseModelEntry
 
 public class RecordMetadata
 {
+    /// <summary>
+    /// Sensor or device identifier
+    /// </summary>
+    [BsonElement("sensorId")]
+    public string SensorId { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Sensor data (could be temperature, humidity, etc.)
+    /// </summary>
+    [BsonElement("sensorData")]
+    public float SensorData { get; set; }
+
     /// <summary>
     /// Represented as a percentage (0-100)
     /// </summary>

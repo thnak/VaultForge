@@ -5,7 +5,7 @@ using Business.Services.Http.CircuitBreakers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApp.Controllers.InternetOfThings;
+namespace WebApp.Controllers.InternetOfThings.Record;
 
 [AllowAnonymous]
 [IgnoreAntiforgeryToken]

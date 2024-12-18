@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading.Channels;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Services.Configure;
+using Business.Services.OnnxService.WaterMeter;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.SignalRHub.System.Implement;
 using Business.SignalRHub.System.Interfaces;
@@ -25,8 +26,9 @@ public class IotRequestQueue : IIotRequestQueue
     private readonly Lock _counterLock = new(); // Lock for resetting daily counter
     private readonly IHubContext<IoTSensorSignalHub, IIoTSensorSignal> _hub;
     private readonly IParallelBackgroundTaskQueue _backgroundTaskQueue;
+    private readonly IWaterMeterReaderQueue _waterMeterReaderQueue;
 
-    public IotRequestQueue(ApplicationConfiguration options, IHubContext<IoTSensorSignalHub, IIoTSensorSignal> hubContext, IParallelBackgroundTaskQueue backgroundTaskQueue)
+    public IotRequestQueue(ApplicationConfiguration options, IHubContext<IoTSensorSignalHub, IIoTSensorSignal> hubContext, IParallelBackgroundTaskQueue backgroundTaskQueue, IWaterMeterReaderQueue waterMeterReaderQueue)
     {
         var maxQueueSize = options.GetIoTRequestQueueConfig.MaxQueueSize;
         BoundedChannelOptions boundedChannelOptions = new(maxQueueSize)
@@ -38,17 +40,27 @@ public class IotRequestQueue : IIotRequestQueue
         _channel = Channel.CreateBounded<IoTRecord>(boundedChannelOptions);
         _hub = hubContext;
         _backgroundTaskQueue = backgroundTaskQueue;
+        _waterMeterReaderQueue = waterMeterReaderQueue;
     }
 
     public async Task<bool> QueueRequest(IoTRecord data, CancellationToken cancellationToken = default)
     {
         try
         {
-            var result = await _channel.Writer.WaitToWriteAsync(cancellationToken) && _channel.Writer.TryWrite(data);
-            IncrementDailyRequestCount();
-            await IncrementSensorRequestCount(data.SensorId, cancellationToken);
-            await UpdateSensorLastValue(data.SensorId, data.SensorData, cancellationToken);
-            return result;
+            await _backgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken =>
+            {
+                if (!string.IsNullOrEmpty(data.Metadata.ImagePath))
+                {
+                    var value = await _waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, serverToken);
+                    data.Metadata.SensorData = value;
+                }
+
+                await _channel.Writer.WriteAsync(data, serverToken);
+                IncrementDailyRequestCount();
+                await IncrementSensorRequestCount(data.Metadata.SensorId, serverToken);
+                await UpdateSensorLastValue(data.Metadata.SensorId, data.Metadata.SensorData, serverToken);
+            }, cancellationToken);
+            return true;
         }
         catch (OperationCanceledException)
         {

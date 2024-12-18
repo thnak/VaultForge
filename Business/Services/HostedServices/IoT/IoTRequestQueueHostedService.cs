@@ -13,6 +13,7 @@ public class IoTRequestQueueHostedService(
     IIotRequestQueue iotRequestQueue,
     IParallelBackgroundTaskQueue queue,
     IIoTBusinessLayer iotBusinessLayer,
+    
     ILogger<IoTRequestQueueHostedService> logger) : BackgroundService
 {
     private Timer? BatchTimer { get; set; }
@@ -39,6 +40,7 @@ public class IoTRequestQueueHostedService(
 
             if (batch.Count == 0)
                 return;
+            
             await InsertBatchIntoDatabase(batch, serverToken);
         });
     }

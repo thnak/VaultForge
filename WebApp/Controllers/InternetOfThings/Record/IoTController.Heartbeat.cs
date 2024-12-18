@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace WebApp.Controllers.InternetOfThings;
+namespace WebApp.Controllers.InternetOfThings.Record;
 
 public partial class IoTController
 {

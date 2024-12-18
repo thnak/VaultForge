@@ -2,7 +2,7 @@
 
 namespace Business.Data.Interfaces.InternetOfThings;
 
-public interface IIoTDataLayer : IMongoDataInitializer, IDataLayerRepository<IoTRecord>
+public interface ISensorDataLayer: IMongoDataInitializer, IDataLayerRepository<IoTSensor>
 {
     
 }

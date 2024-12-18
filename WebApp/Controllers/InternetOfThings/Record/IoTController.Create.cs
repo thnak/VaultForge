@@ -2,7 +2,7 @@
 using BusinessModels.System.InternetOfThings;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApp.Controllers.InternetOfThings;
+namespace WebApp.Controllers.InternetOfThings.Record;
 
 public partial class IoTController
 {
@@ -14,8 +14,10 @@ public partial class IoTController
         {
             try
             {
-                IoTRecord record = new IoTRecord(sensorId, value, new RecordMetadata()
+                IoTRecord record = new IoTRecord(new RecordMetadata()
                 {
+                    SensorId = sensorId,
+                    SensorData = value,
                     SignalStrength = signalStrength ?? 0,
                     BatteryLevel = battery ?? 0,
                 });
@@ -59,8 +61,10 @@ public partial class IoTController
 
         await raidService.WriteDataAsync(fileData, fileInfo.AbsolutePath, cancelToken);
 
-        IoTRecord record = new IoTRecord(sensorId, 0, new RecordMetadata()
+        IoTRecord record = new IoTRecord(new RecordMetadata()
         {
+            SensorId = sensorId,
+            SensorData = 0,
             SignalStrength = signalStrength ?? 0,
             BatteryLevel = battery ?? 0,
             ImagePath = fileInfo.Id.ToString(),

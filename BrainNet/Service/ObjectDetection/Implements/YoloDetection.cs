@@ -5,7 +5,6 @@ using BrainNet.Service.ObjectDetection.Model.Result;
 using BrainNet.Utils;
 using Microsoft.Extensions.Options;
 using Microsoft.ML.OnnxRuntime;
-using Microsoft.ML.OnnxRuntime.Tensors;
 using Newtonsoft.Json;
 
 namespace BrainNet.Service.ObjectDetection.Implements;
@@ -17,7 +16,7 @@ public class YoloDetection : IYoloDetection
     private string[] InputNames { get; set; } = null!;
     private string[] OutputNames { get; set; } = null!;
     public int[] InputDimensions { get; set; } = [];
-    public int[] OutputDimensions { get; set; } = [];
+    public long[] OutputDimensions { get; set; } = [];
     public IReadOnlyCollection<string> CategoryReadOnlyCollection { get; set; } = [];
     public int Stride { get; set; }
 
@@ -43,7 +42,7 @@ public class YoloDetection : IYoloDetection
         InputNames = Session.GetInputNames();
         OutputNames = Session.GetOutputNames();
         InputDimensions = Session.InputMetadata.First().Value.Dimensions;
-        OutputDimensions = Session.OutputMetadata.First().Value.Dimensions;
+        OutputDimensions = [..Session.OutputMetadata.First().Value.Dimensions];
     }
 
     private SessionOptions InitSessionOption()
@@ -93,10 +92,10 @@ public class YoloDetection : IYoloDetection
 
         if (customMetadata.TryGetValue("stride", out var strideString))
         {
-            List<float>? Strides = JsonConvert.DeserializeObject<List<float>>(strideString);
-            if (Strides != null)
+            List<float>? strides = JsonConvert.DeserializeObject<List<float>>(strideString);
+            if (strides != null)
             {
-                Stride = Strides.Any() ? (int)Strides.Max() : 32;
+                Stride = strides.Any() ? (int)strides.Max() : 32;
             }
         }
     }
@@ -106,19 +105,24 @@ public class YoloDetection : IYoloDetection
         Session.Dispose();
     }
 
+    public int[] GetInputDimensions()
+    {
+        return InputDimensions;
+    }
+
+    public int GetStride() => Stride;
+
     public List<YoloBoundingBox> Predict(YoloFeeder tensorFeed)
     {
         var feed = tensorFeed.GetBatchTensor();
         var tensor = feed.tensor;
         long[] newDim = [tensor.Dimensions[0], tensor.Dimensions[1], tensor.Dimensions[2], tensor.Dimensions[3]];
-        long[] outDim = [..OutputDimensions];
-        outDim[0] = newDim[0];
+        OutputDimensions[0] = newDim[0];
         using var inputOrtValue = OrtValue.CreateTensorValueFromMemory(OrtMemoryInfo.DefaultInstance, tensor.Buffer, newDim);
         var inputs = new Dictionary<string, OrtValue> { { InputNames.First(), inputOrtValue } };
         using var fromResult = Session.Run(new RunOptions(), inputs, OutputNames);
 
         float[] resultArrays = fromResult[0].Value.GetTensorDataAsSpan<float>().ToArray();
-
 
         YoloPrediction predictions = new YoloPrediction(resultArrays, CategoryReadOnlyCollection.ToArray(), feed.dwdhs, feed.ratios, feed.imageShape);
         return predictions.GetDetect();

@@ -68,6 +68,7 @@ public class OllamaConfig
 public class OnnxConfig
 {
     public string FaceDetectionPath { get; set; } = string.Empty;
+    public string WaterMeterWeightPath { get; set; } = string.Empty;
     public FaceEmbeddingModel FaceEmbeddingModel { get; set; } = new();
 }
 

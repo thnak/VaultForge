@@ -22,7 +22,7 @@ public class IoTDataLayer : IIoTDataLayer
         {
             var options = new CreateCollectionOptions
             {
-                TimeSeriesOptions = new TimeSeriesOptions("timestamp", "deviceId", TimeSeriesGranularity.Seconds)
+                TimeSeriesOptions = new TimeSeriesOptions("timestamp", "metadata", TimeSeriesGranularity.Seconds)
             };
             context.MongoDatabase.CreateCollection("IotDB", options);
         }
@@ -44,17 +44,9 @@ public class IoTDataLayer : IIoTDataLayer
     {
         IndexKeysDefinition<IoTRecord>[] indexKeysDefinitions =
         [
-            Builders<IoTRecord>.IndexKeys.Descending(x => x.SensorId).Descending(x => x.Timestamp),
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date),
-            Builders<IoTRecord>.IndexKeys.Descending(x => x.Date),
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Hour),
-            Builders<IoTRecord>.IndexKeys.Descending(x => x.Date).Descending(x => x.Hour),
-            Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Descending(x => x.Hour),
-            Builders<IoTRecord>.IndexKeys.Descending(x => x.Date).Ascending(x => x.Hour),
-            Builders<IoTRecord>.IndexKeys.Ascending(x => x.SensorId).Ascending(x => x.Date).Ascending(x => x.Hour),
-            Builders<IoTRecord>.IndexKeys.Ascending(x => x.SensorId).Descending(x => x.Date).Ascending(x => x.Hour),
         ];
-
 
         var indexModels = indexKeysDefinitions.Select(x => new CreateIndexModel<IoTRecord>(x));
         await _dataDb.Indexes.CreateManyAsync(indexModels, cancellationToken);

@@ -114,7 +114,7 @@ public class IoTBusinessLayer(IIoTDataLayer data, IIotRequestQueue iotRequestQue
         var cursor = Where(x => x.Timestamp >= today, cancellationToken);
         await foreach (var item in cursor)
         {
-            iotRequestQueue.IncrementTotalRequests(item.SensorId);
+            iotRequestQueue.IncrementTotalRequests(item.Metadata.SensorId);
         }
 
         return Result<bool>.SuccessWithMessage(true, AppLang.Success);
@@ -129,7 +129,7 @@ public class IoTBusinessLayer(IIoTDataLayer data, IIotRequestQueue iotRequestQue
     {
         var result = await UpdateAsync(key, new FieldUpdate<IoTRecord>()
         {
-            { x => x.SensorData, value }
+            { x => x.Metadata.SensorData, value }
         }, cancellationToken);
         if (result.Item1) return Result<bool>.SuccessWithMessage(true, AppLang.Success);
         return Result<bool>.Failure(result.Item2, ErrorType.Unknown);
