@@ -220,7 +220,7 @@ public class IoTDataLayer : IIoTDataLayer
                     // Combine all update definitions into one
                     var combinedUpdate = updateDefinitionBuilder.Combine(updateDefinitions);
 
-                    await _dataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
+                    await _dataDb.UpdateManyAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
                 }
 
                 return (true, AppLang.Update_successfully);
