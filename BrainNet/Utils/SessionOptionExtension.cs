@@ -38,9 +38,7 @@ public static class SessionOptionExtension
                 {
                     ["cudnn_conv_use_max_workspace"] = "1",
                     ["device_id"] = $"{deviceId}",
-                    ["ORT_TENSORRT_FP16_ENABLE"] = "true",
-                    ["ORT_TENSORRT_LAYER_NORM_FP32_FALLBACK"] = "1",
-                    ["ORT_TENSORRT_ENGINE_CACHE_ENABLE"] = "1",
+                    ["ORT_TENSORRT_FP16_ENABLE"] = "true"
                 };
                 provider.UpdateOptions(providerOptionsDict);
                 options.AppendExecutionProvider_Tensorrt(provider);
