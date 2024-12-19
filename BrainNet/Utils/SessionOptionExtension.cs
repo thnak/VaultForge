@@ -34,13 +34,11 @@ public static class SessionOptionExtension
             case "TensorrtExecutionProvider":
             {
                 OrtTensorRTProviderOptions provider = new OrtTensorRTProviderOptions();
-                var providerOptionsDict = new Dictionary<string, string>
-                {
-                    ["cudnn_conv_use_max_workspace"] = "1",
-                    ["device_id"] = $"{deviceId}",
-                    ["ORT_TENSORRT_FP16_ENABLE"] = "true"
-                };
-                provider.UpdateOptions(providerOptionsDict);
+                // var providerOptionsDict = new Dictionary<string, string>
+                // {
+                //     ["device_id"] = $"{deviceId}",
+                // };
+                // provider.UpdateOptions(providerOptionsDict);
                 options.AppendExecutionProvider_Tensorrt(provider);
                 break;
             }
