@@ -25,7 +25,7 @@ public class WaterMeterReaderQueue(ApplicationConfiguration configuration, ILogg
         try
         {
             await _semaphore.WaitAsync(cancellationToken);
-
+            logger.LogInformation("Getting water meter reading count");
             var file = fileSystemBusinessLayer.Get(record.Metadata.ImagePath);
             if (file is null)
             {
@@ -37,12 +37,16 @@ public class WaterMeterReaderQueue(ApplicationConfiguration configuration, ILogg
             await disks.ReadGetDataAsync(_memoryStream, file.AbsolutePath, cancellationToken);
             _memoryStream.Seek(0, SeekOrigin.Begin);
             var result = _waterMeterReader.PredictWaterMeter(new YoloFeeder(_waterMeterReader.GetInputDimensions()[2..], _waterMeterReader.GetStride()));
-            _semaphore.Release();
+
             return result;
         }
         catch (OperationCanceledException)
         {
             return 0;
+        }
+        finally
+        {
+            _semaphore.Release();
         }
     }
 
