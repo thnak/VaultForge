@@ -9,6 +9,7 @@ using Business.SignalRHub.System.Implement;
 using Business.SignalRHub.System.Interfaces;
 using BusinessModels.System.InternetOfThings;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 
 namespace Business.Business.Repositories.InternetOfThings;
 
@@ -27,8 +28,8 @@ public class IotRequestQueue : IIotRequestQueue
     private readonly IHubContext<IoTSensorSignalHub, IIoTSensorSignal> _hub;
     private readonly IParallelBackgroundTaskQueue _backgroundTaskQueue;
     private readonly IWaterMeterReaderQueue _waterMeterReaderQueue;
-
-    public IotRequestQueue(ApplicationConfiguration options, IHubContext<IoTSensorSignalHub, IIoTSensorSignal> hubContext, IParallelBackgroundTaskQueue backgroundTaskQueue, IWaterMeterReaderQueue waterMeterReaderQueue)
+    private readonly ILogger<IIotRequestQueue> _logger;
+    public IotRequestQueue(ApplicationConfiguration options, IHubContext<IoTSensorSignalHub, IIoTSensorSignal> hubContext, IParallelBackgroundTaskQueue backgroundTaskQueue, IWaterMeterReaderQueue waterMeterReaderQueue, ILogger<IIotRequestQueue> logger)
     {
         var maxQueueSize = options.GetIoTRequestQueueConfig.MaxQueueSize;
         BoundedChannelOptions boundedChannelOptions = new(maxQueueSize)
@@ -41,6 +42,7 @@ public class IotRequestQueue : IIotRequestQueue
         _hub = hubContext;
         _backgroundTaskQueue = backgroundTaskQueue;
         _waterMeterReaderQueue = waterMeterReaderQueue;
+        _logger = logger;
     }
 
     public async Task<bool> QueueRequest(IoTRecord data, CancellationToken cancellationToken = default)
@@ -49,12 +51,13 @@ public class IotRequestQueue : IIotRequestQueue
         {
             await _backgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken =>
             {
+                _logger.LogInformation("Starting IotRequestQueue with water meter reading");
                 if (!string.IsNullOrEmpty(data.Metadata.ImagePath))
                 {
                     var value = await _waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, serverToken);
                     data.Metadata.SensorData = value;
                 }
-
+                _logger.LogInformation("Successfully queued IotRequestQueue with water meter reading");
                 await _channel.Writer.WriteAsync(data, serverToken);
                 IncrementDailyRequestCount();
                 await IncrementSensorRequestCount(data.Metadata.SensorId, serverToken);
