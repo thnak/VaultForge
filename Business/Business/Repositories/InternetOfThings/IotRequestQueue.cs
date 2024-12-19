@@ -51,13 +51,11 @@ public class IotRequestQueue : IIotRequestQueue
         {
             await _backgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken =>
             {
-                _logger.LogInformation("Starting IotRequestQueue with water meter reading");
                 if (!string.IsNullOrEmpty(data.Metadata.ImagePath))
                 {
                     var value = await _waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, serverToken);
                     data.Metadata.SensorData = value;
                 }
-                _logger.LogInformation("Successfully queued IotRequestQueue with water meter reading");
                 await _channel.Writer.WriteAsync(data, serverToken);
                 IncrementDailyRequestCount();
                 await IncrementSensorRequestCount(data.Metadata.SensorId, serverToken);

@@ -27,7 +27,6 @@ public class WaterMeterReaderQueue(ApplicationConfiguration configuration, ILogg
         try
         {
             await _semaphore.WaitAsync(cancellationToken);
-            logger.LogInformation("Getting water meter reading count");
             var file = fileSystemBusinessLayer.Get(record.Metadata.ImagePath);
             if (file is null)
             {
