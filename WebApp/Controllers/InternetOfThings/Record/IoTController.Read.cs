@@ -31,13 +31,13 @@ public partial class IoTController
 
         try
         {
-            var cursors = businessLayer.Where(x => x.Timestamp >= startDate && x.Timestamp <= endDate, cancelToken, model => model.SensorData);
+            var cursors = businessLayer.Where(x => x.Timestamp >= startDate && x.Timestamp <= endDate, cancelToken, model => model.Metadata.SensorData);
             await foreach (var record in cursors)
             {
                 reorderRecords.Add(record);
             }
 
-            var totalValue = reorderRecords.Sum(x => x.SensorData);
+            var totalValue = reorderRecords.Sum(x => x.Metadata.SensorData);
             var totalRecords = reorderRecords.Count;
             stopwatch.Stop();
             string result = $"Total Records: {totalRecords:N0} with value {totalValue:N0} in {stopwatch.ElapsedMilliseconds:N0} ms.";
