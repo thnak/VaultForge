@@ -33,13 +33,14 @@ public static class SessionOptionExtension
             }
             case "TensorrtExecutionProvider":
             {
-                OrtTensorRTProviderOptions provider = new OrtTensorRTProviderOptions();
+                // OrtTensorRTProviderOptions provider = new OrtTensorRTProviderOptions();
                 // var providerOptionsDict = new Dictionary<string, string>
                 // {
                 //     ["device_id"] = $"{deviceId}",
                 // };
                 // provider.UpdateOptions(providerOptionsDict);
-                options.AppendExecutionProvider_Tensorrt(provider);
+                options.AppendExecutionProvider_CUDA();
+                // options.AppendExecutionProvider_Tensorrt(provider);
                 break;
             }
             case "DNNLExecutionProvider":
