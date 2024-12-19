@@ -52,13 +52,13 @@ public static class SessionOptionExtension
             {
                 break;
             }
-            case "DmlExecutionProvider":
-            {
-                options.EnableMemoryPattern = false;
-                options.ExecutionMode = ExecutionMode.ORT_SEQUENTIAL;
-                options.AppendExecutionProvider_DML(deviceId);
-                break;
-            }
+            // case "DmlExecutionProvider":
+            // {
+            //     options.EnableMemoryPattern = false;
+            //     options.ExecutionMode = ExecutionMode.ORT_SEQUENTIAL;
+            //     options.AppendExecutionProvider_DML(deviceId);
+            //     break;
+            // }
             case "ROCMExecutionProvider":
             {
                 OrtROCMProviderOptions provider = new();

@@ -6,6 +6,8 @@ using Business.Data.StorageSpace;
 using Business.Services.Configure;
 using BusinessModels.System.InternetOfThings;
 using Microsoft.Extensions.Logging;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace Business.Services.OnnxService.WaterMeter;
 
@@ -36,7 +38,10 @@ public class WaterMeterReaderQueue(ApplicationConfiguration configuration, ILogg
             _memoryStream.SetLength(0);
             await disks.ReadGetDataAsync(_memoryStream, file.AbsolutePath, cancellationToken);
             _memoryStream.Seek(0, SeekOrigin.Begin);
-            var result = _waterMeterReader.PredictWaterMeter(new YoloFeeder(_waterMeterReader.GetInputDimensions()[2..], _waterMeterReader.GetStride()));
+            var feed = new YoloFeeder(_waterMeterReader.GetInputDimensions()[2..], _waterMeterReader.GetStride());
+            var image = await Image.LoadAsync<Rgb24>(_memoryStream, cancellationToken);
+            feed.SetTensor(image);
+            var result = _waterMeterReader.PredictWaterMeter(feed);
 
             return result;
         }
