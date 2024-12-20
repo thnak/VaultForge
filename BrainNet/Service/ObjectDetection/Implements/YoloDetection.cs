@@ -5,6 +5,7 @@ using BrainNet.Service.ObjectDetection.Model.Result;
 using BrainNet.Utils;
 using Microsoft.Extensions.Options;
 using Microsoft.ML.OnnxRuntime;
+using Microsoft.ML.OnnxRuntime.Tensors;
 using Newtonsoft.Json;
 
 namespace BrainNet.Service.ObjectDetection.Implements;
@@ -19,6 +20,7 @@ public class YoloDetection : IYoloDetection
     public long[] OutputDimensions { get; set; } = [];
     public IReadOnlyCollection<string> CategoryReadOnlyCollection { get; set; } = [];
     public int Stride { get; set; }
+    private OrtIoBinding OrtIoBinding { get; set; }
 
     public YoloDetection(string modelPath)
     {
@@ -43,6 +45,7 @@ public class YoloDetection : IYoloDetection
         OutputNames = Session.GetOutputNames();
         InputDimensions = Session.InputMetadata.First().Value.Dimensions;
         OutputDimensions = [..Session.OutputMetadata.First().Value.Dimensions];
+        OrtIoBinding = Session.CreateIoBinding();
     }
 
     private SessionOptions InitSessionOption()
@@ -111,6 +114,15 @@ public class YoloDetection : IYoloDetection
     }
 
     public int GetStride() => Stride;
+
+    public void WarmUp()
+    {
+        // using var inputOrtValue = OrtValue.CreateAllocatedTensorValue(OrtAllocator.DefaultInstance, TensorElementType.Float, InputDimensions.Select(x => (long)x).ToArray());
+        // var inputs = new Dictionary<string, OrtValue> { { InputNames.First(), inputOrtValue } };
+        Session.RunWithBinding(new RunOptions(), OrtIoBinding);
+        // using var fromResult = Session.Run(new RunOptions(), inputs, OutputNames);
+    }
+
 
     public List<YoloBoundingBox> Predict(YoloFeeder tensorFeed)
     {

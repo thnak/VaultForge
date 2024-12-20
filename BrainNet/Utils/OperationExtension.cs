@@ -1,5 +1,4 @@
-﻿using Microsoft.ML.OnnxRuntime;
-using Microsoft.ML.OnnxRuntime.Tensors;
+﻿using Microsoft.ML.OnnxRuntime.Tensors;
 
 namespace BrainNet.Utils;
 
@@ -7,10 +6,9 @@ public static class OperationExtension
 {
     public static DenseTensor<float> Div(this DenseTensor<float> tensor1, float maxPixelValue)
     {
-        int[] dim = tensor1.Dimensions.ToArray();
-        Parallel.For(0, dim[1], x =>
+        Parallel.For(0, tensor1.Dimensions[1], x =>
         {
-            for (int y = 0; y < dim[2]; y++)
+            for (int y = 0; y < tensor1.Dimensions[2]; y++)
             {
                 tensor1[0, x, y] /= maxPixelValue;
                 tensor1[1, x, y] /= maxPixelValue;

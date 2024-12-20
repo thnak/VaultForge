@@ -21,6 +21,14 @@ public class YoloFeeder
         Stride = stride;
     }
 
+    public void Clear()
+    {
+        FeedQueue.Clear();
+        ImageShape.Clear();
+        Ratios.Clear();
+        Dwdhs.Clear(); 
+    }
+    
     public void SetTensor(DenseTensor<float> tensor)
     {
         var imageShape = tensor.Dimensions[1..].ToArray();

@@ -9,79 +9,6 @@ namespace BrainNet.Service.ObjectDetection;
 
 public static class ImageExtension
 {
-    public static void PreprocessImage(this Image<Rgb24> image, DenseTensor<float> target)
-    {
-        var width = image.Width;
-        var height = image.Height;
-
-        var strideBatchR = target.Strides[0];
-        var strideBatchG = target.Strides[0] + target.Strides[1] * 1;
-        var strideBatchB = target.Strides[0] + target.Strides[1] * 2;
-
-        var tensorSpan = target.Buffer;
-
-        if (image.DangerousTryGetSinglePixelMemory(out var memory))
-        {
-            Parallel.For(0, width * height, index =>
-            {
-                var pixel = memory.Span[index];
-                WritePixel(tensorSpan.Span, index, pixel);
-            });
-        }
-        else
-        {
-            Parallel.For(0, height, y =>
-            {
-                var rowSpan = image.DangerousGetPixelRowMemory(y).Span;
-                for (int x = 0; x < width; x++)
-                {
-                    var pixel = rowSpan[x];
-                    WritePixel(tensorSpan.Span, x, pixel);
-                }
-            });
-        }
-    }
-
-    public static void PreprocessImage(this Image<Rgb24> image, DenseTensor<Float16> target)
-    {
-        var width = image.Width;
-        var height = image.Height;
-
-        var tensorSpan = target.Buffer;
-
-        if (image.DangerousTryGetSinglePixelMemory(out var memory))
-        {
-            Parallel.For(0, width * height, index =>
-            {
-                var pixel = memory.Span[index];
-                WritePixel(tensorSpan.Span, index, pixel);
-            });
-        }
-        else
-        {
-            Parallel.For(0, height, y =>
-            {
-                var rowSpan = image.DangerousGetPixelRowMemory(y).Span;
-                for (int x = 0; x < width; x++)
-                {
-                    var pixel = rowSpan[x];
-                    WritePixel(tensorSpan.Span, x, pixel);
-                }
-            });
-        }
-    }
-
-    private static void WritePixel(Span<float> tensorSpan, int tensorIndex, Rgb24 pixel)
-    {
-        tensorSpan[tensorIndex] = pixel.R;
-    }
-
-    private static void WritePixel(Span<Float16> tensorSpan, int tensorIndex, Rgb24 pixel)
-    {
-        tensorSpan[tensorIndex] = (Float16)pixel.R;
-    }
-
-
     public static void Image2DenseTensor(this Image<Rgb24> image, DenseTensor<float> target)
     {
         var width = image.Width;
@@ -106,12 +33,6 @@ public static class ImageExtension
 
     public static void ProcessToTensor(this Image<Rgb24> image, Size modelSize, bool originalAspectRatio, DenseTensor<float> target, int batch)
     {
-        var options = new ResizeOptions()
-        {
-            Size = modelSize,
-            Mode = originalAspectRatio ? ResizeMode.Max : ResizeMode.Stretch,
-        };
-
         var xPadding = (modelSize.Width - image.Width) / 2;
         var yPadding = (modelSize.Height - image.Height) / 2;
 
@@ -119,7 +40,7 @@ public static class ImageExtension
         var height = image.Height;
 
         // Pre-calculate strides for performance
-        var strideBatchR = target.Strides[0] * batch + target.Strides[1] * 0;
+        var strideBatchR = target.Strides[0] * batch;
         var strideBatchG = target.Strides[0] * batch + target.Strides[1] * 1;
         var strideBatchB = target.Strides[0] * batch + target.Strides[1] * 2;
         var strideY = target.Strides[2];

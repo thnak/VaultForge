@@ -15,8 +15,8 @@ public static class SessionOptionExtension
 
     public static string InitExecutionProviderOptions(this SessionOptions options, int deviceId)
     {
-        var providers = OrtEnv.Instance().GetAvailableProviders();
-        var availableProvider = providers[0];
+        var providers = OrtEnv.Instance().GetAvailableProviders().Where(x => x != "TensorrtExecutionProvider");
+        var availableProvider = providers.First();
         switch (availableProvider)
         {
             case "CUDAExecutionProvider":
@@ -25,7 +25,8 @@ public static class SessionOptionExtension
                 var providerOptionsDict = new Dictionary<string, string>
                 {
                     ["cudnn_conv_use_max_workspace"] = "1",
-                    ["device_id"] = $"{deviceId}"
+                    ["device_id"] = $"{deviceId}",
+                    ["cudnn_conv_algo_search"] = "DEFAULT"
                 };
                 providerOptions.UpdateOptions(providerOptionsDict);
                 options.AppendExecutionProvider_CUDA(providerOptions);
@@ -73,6 +74,7 @@ public static class SessionOptionExtension
                 break;
             }
         }
+
         return availableProvider;
     }
 

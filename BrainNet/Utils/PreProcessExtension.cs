@@ -6,8 +6,8 @@ public static class PreProcessExtension
 {
     public static (DenseTensor<float>, float[], float[]) LetterBox(this DenseTensor<float> image, bool auto, bool scaleFill, bool scaleUp, int stride, int[] shapes)
     {
-        var oriShape = image.Dimensions[1..]; //HW
-        int[] newShape = new[] { 3, shapes[0], shapes[1] };
+        var oriShape = image.Dimensions[1..]; // HW
+        int[] newShape = [3, shapes[0], shapes[1]];
 
         DenseTensor<float> feed = new DenseTensor<float>(dimensions: newShape);
         feed.Fill(114);
@@ -18,102 +18,92 @@ public static class PreProcessExtension
             r = Math.Min(r, 1.0f);
         }
 
-        float[] ratio = new[] { r, r };
-        int[] newUnPad = new[] { (int)Math.Round(oriShape[0] * r), (int)Math.Round(oriShape[1] * r) };
-        float[] dhdw = new[] { shapes[0] - newUnPad[0], (float)(shapes[1] - newUnPad[1]) };
+        float[] ratio = [r, r];
+        int newHeight = (int)Math.Round(oriShape[0] * r);
+        int newWidth = (int)Math.Round(oriShape[1] * r);
+        float dw = (shapes[1] - newWidth) / 2f;
+        float dh = (shapes[0] - newHeight) / 2f;
 
         if (auto)
         {
-            dhdw = new[] { dhdw[0] % stride, dhdw[1] % stride };
+            dw %= stride;
+            dh %= stride;
         }
         else if (scaleFill)
         {
-            dhdw = new[] { 0f, 0f };
-            newUnPad = new[] { shapes[0], shapes[1] };
-            ratio = new[] { (float)shapes[0] / oriShape[0], (float)shapes[1] / oriShape[1] };
+            dw = 0f;
+            dh = 0f;
+            newHeight = shapes[0];
+            newWidth = shapes[1];
+            ratio = [(float)shapes[0] / oriShape[0], (float)shapes[1] / oriShape[1]];
         }
 
-        dhdw[0] /= 2;
-        dhdw[1] /= 2;
-
-        if (oriShape != newUnPad)
+        if (newHeight != oriShape[0] || newWidth != oriShape[1])
         {
-            image = ResizeLinear(image, newUnPad);
+            image = ResizeLinear(image, [newHeight, newWidth]);
         }
 
-        int left = (int)Math.Round(dhdw[1] - 0.1);
-        int top = (int)Math.Round(dhdw[0] - 0.1);
+        int left = (int)Math.Round(dw - 0.1);
+        int top = (int)Math.Round(dh - 0.1);
 
-        // implement of opencv copyMakeBorder
+        // Parallelize the copying process
         Parallel.For(0, image.Dimensions[1], x =>
         {
-            Parallel.For(0, image.Dimensions[2], y =>
+            for (int y = 0; y < image.Dimensions[2]; y++)
             {
                 feed[0, x + top, y + left] = image[0, x, y];
                 feed[1, x + top, y + left] = image[1, x, y];
                 feed[2, x + top, y + left] = image[2, x, y];
-            });
+            }
         });
 
-        return (feed, ratio, dhdw);
+        return (feed, ratio, [dh, dw]);
     }
-
+    
     public static DenseTensor<float> ResizeLinear(this DenseTensor<float> imageMatrix, int[] shape)
     {
-        int[] newShape = new[] { 3, shape[0], shape[1] };
+        int[] newShape = [3, shape[0], shape[1]];
         DenseTensor<float> outputImage = new DenseTensor<float>(newShape);
 
-        var dim = imageMatrix.Dimensions.ToArray();
+        int originalHeight = imageMatrix.Dimensions[1];
+        int originalWidth = imageMatrix.Dimensions[2];
 
-        var originalHeight = (float)dim[1]; //height
-        var originalWidth = (float)dim[2]; //width
-
-        var invScaleFactorY = originalHeight / shape[0];
-        var invScaleFactorX = originalWidth / shape[1];
+        float invScaleFactorY = (float)originalHeight / shape[0];
+        float invScaleFactorX = (float)originalWidth / shape[1];
 
         Parallel.For(0, shape[0], y =>
         {
-            Parallel.For(0, shape[1], x =>
+            float oldY = y * invScaleFactorY;
+            int yFloor = (int)Math.Floor(oldY);
+            int yCeil = Math.Min(originalHeight - 1, (int)Math.Ceiling(oldY));
+            float yFraction = oldY - yFloor;
+
+            for (int x = 0; x < shape[1]; x++)
             {
-                var oldX = x * invScaleFactorX;
-                var oldY = y * invScaleFactorY;
-                var xFraction = oldX - (float)Math.Floor(oldX);
-                var yFraction = oldY - (float)Math.Floor(oldY);
-                // Sample four neighboring pixels:
+                float oldX = x * invScaleFactorX;
+                int xFloor = (int)Math.Floor(oldX);
+                int xCeil = Math.Min(originalWidth - 1, (int)Math.Ceiling(oldX));
+                float xFraction = oldX - xFloor;
 
-                var leftUpperR = imageMatrix[0, (int)Math.Floor(oldY), (int)Math.Floor(oldX)];
-                var leftUpperG = imageMatrix[1, (int)Math.Floor(oldY), (int)Math.Floor(oldX)];
-                var leftUpperB = imageMatrix[2, (int)Math.Floor(oldY), (int)Math.Floor(oldX)];
+                for (int c = 0; c < 3; c++)
+                {
+                    // Sample four neighboring pixels
+                    float topLeft = imageMatrix[c, yFloor, xFloor];
+                    float topRight = imageMatrix[c, yFloor, xCeil];
+                    float bottomLeft = imageMatrix[c, yCeil, xFloor];
+                    float bottomRight = imageMatrix[c, yCeil, xCeil];
 
-                var rightUpperR = imageMatrix[0, (int)Math.Floor(oldY), (int)Math.Min(dim[2] - 1, Math.Ceiling(oldX))];
-                var rightUpperG = imageMatrix[1, (int)Math.Floor(oldY), (int)Math.Min(dim[2] - 1, Math.Ceiling(oldX))];
-                var rightUpperB = imageMatrix[2, (int)Math.Floor(oldY), (int)Math.Min(dim[2] - 1, Math.Ceiling(oldX))];
+                    // Interpolate between the four neighboring pixels
+                    float topBlend = topLeft + xFraction * (topRight - topLeft);
+                    float bottomBlend = bottomLeft + xFraction * (bottomRight - bottomLeft);
+                    float finalBlend = topBlend + yFraction * (bottomBlend - topBlend);
 
-                var leftLowerR = imageMatrix[0, (int)Math.Min(dim[1] - 1, Math.Ceiling(oldY)), (int)Math.Floor(oldX)];
-                var leftLowerG = imageMatrix[1, (int)Math.Min(dim[1] - 1, Math.Ceiling(oldY)), (int)Math.Floor(oldX)];
-                var leftLowerB = imageMatrix[2, (int)Math.Min(dim[1] - 1, Math.Ceiling(oldY)), (int)Math.Floor(oldX)];
-
-                var rightLowerR = imageMatrix[0, (int)Math.Min(dim[1] - 1, Math.Ceiling(oldY)), (int)Math.Min(dim[2] - 1, Math.Ceiling(oldX))];
-                var rightLowerG = imageMatrix[1, (int)Math.Min(dim[1] - 1, Math.Ceiling(oldY)), (int)Math.Min(dim[2] - 1, Math.Ceiling(oldX))];
-                var rightLowerB = imageMatrix[2, (int)Math.Min(dim[1] - 1, Math.Ceiling(oldY)), (int)Math.Min(dim[2] - 1, Math.Ceiling(oldX))];
-
-                var blendTopR = (float)(rightUpperR * xFraction + leftUpperR * (1.0 - xFraction));
-                var blendTopG = (float)(rightUpperG * xFraction + leftUpperG * (1.0 - xFraction));
-                var blendTopB = (float)(rightUpperB * xFraction + leftUpperB * (1.0 - xFraction));
-
-                var blendBottomR = (float)(rightLowerR * xFraction + leftLowerR * (1.0 - xFraction));
-                var blendBottomG = (float)(rightLowerG * xFraction + leftLowerG * (1.0 - xFraction));
-                var blendBottomB = (float)(rightLowerB * xFraction + leftLowerB * (1.0 - xFraction));
-
-                var finalBlendR = (float)(blendTopR * yFraction + blendBottomR * (1.0 - yFraction));
-                var finalBlendG = (float)(blendTopG * yFraction + blendBottomG * (1.0 - yFraction));
-                var finalBlendB = (float)(blendTopB * yFraction + blendBottomB * (1.0 - yFraction));
-
-                outputImage[0, y, x] = finalBlendR;
-                outputImage[1, y, x] = finalBlendG;
-                outputImage[2, y, x] = finalBlendB;
-            });
+                    // Assign the interpolated value to the output image
+                    outputImage[c, y, x] = finalBlend;
+                }
+            }
         });
+
         return outputImage;
     }
     

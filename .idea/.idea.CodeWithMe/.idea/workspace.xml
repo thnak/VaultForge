@@ -46,29 +46,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.Designer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.de-DE.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.de-DE.resx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.en-US.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.en-US.resx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.es-ES.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.es-ES.resx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.ja-JP.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.ja-JP.resx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.ko-KR.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.ko-KR.resx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.resx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.vi-VN.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.vi-VN.resx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/PageRoutes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/PageRoutes.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Utils/StringExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/StringExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloDetection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloDetection.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Feeder/YoloFeeder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Feeder/YoloFeeder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/WaterMeter/Implements/IWaterMeterReader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/WaterMeter/Implements/IWaterMeterReader.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/WaterMeter/Interfaces/WaterMeterReader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/WaterMeter/Interfaces/WaterMeterReader.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Utils/OperationExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Utils/OperationExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ResApi/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/WebApp.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/WebApp.Client.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/wwwroot/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/wwwroot/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -140,11 +127,13 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1059a9b9258b3670df5a4c449544237362d49ae9599d8964fde76c16fc50b6/VectorStoreRecordProperty.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2565b9d99fdde488bc7801b84387b2cc864959cfb63212e1ff576fc9c6bb7e/CancellationToken.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2854ce6d56c18d0d837d3a3ef9c4f2c7c77691fa3528c8394986ac7ce7719/StackFrameIterator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2b54a8d6295726a4b8041791a5f6b2992ffd98228be84a32877624da44cf018/InferenceSession.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3c13bcf2472e33fbd9b71675dd1d838142686d7a4f62aafb458d93deb4794/AbstractValidator.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4d6b99bacfc12eaebf321ec7f41797ea958521c92bdfac8e98fea119acc4f2/Filled.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4f5ca8a0b4696ee177cb72bbae4ff2c856ae748de567464543668dfb1fff/DistanceFunction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5a21f73be9e2671c3cf5a490cac2d792fa4d215ab83d8de89af7916f8d08179/ComponentBase.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5eecc2d22de68b16cb5f68b3e333591fc6c5f58cfc4185587e5dfe96213947/IMongoIndexManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/611eff977ba21ad25be53ce7d7387c4517e0e8a27abce4d6a91998e8b538135/ProviderOptions.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6354a7b35d7821629924d3676acd7e67a6f7f94343e0e66ec439aa2bd6ed5/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6a44d1618475c554cdb454d3d6746789df652e379e2a5e5e67b916046b0e0d2/IndexKind.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/74e4c72cd3922ed61496931f33baf4a9b5950edddb6b78bc296241285f25c3/TaskAwaiter.cs" root0="FORCE_HIGHLIGHTING" />
@@ -166,11 +155,25 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e78a3461bb868758dc383a38ac7d247ff1acf779756a18c8be9515c32c9/Breakpoint.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e8aee3972f4f46ef190c2b4224be16d75e671b3496b06c7b50b6cbe2418e38/EndPointHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f08263c1b162536d21bcac5d3d5599c6108a7df0503ecd6facc435edad3ead4/INumber.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fd5df964a94a255455f7b077e863af646a024518fa7703879230fff599b192/OrtIoBinding.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fe3b1716bf2f8f83ac793e7e3faa60f88a7868347653f77591f74b86d0d97675/Server.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Utils/SessionOptionExtension.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Utils/SessionOptionExtension.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Utils/SessionOptionExtension.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Utils/SessionOptionExtension.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Utils/SessionOptionExtension.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Business/Repositories/InternetOfThings/IotRequestQueue.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Business/Repositories/InternetOfThings/IotRequestQueue.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -950,102 +953,8 @@
       <workItem from="1734398662667" duration="14203000" />
       <workItem from="1734445982284" duration="1954000" />
       <workItem from="1734482897238" duration="10720000" />
-    </task>
-    <task id="LOCAL-00409" summary="update service">
-      <option name="closed" value="true" />
-      <created>1733103596561</created>
-      <option name="number" value="00409" />
-      <option name="presentableId" value="LOCAL-00409" />
-      <option name="project" value="LOCAL" />
-      <updated>1733103596561</updated>
-    </task>
-    <task id="LOCAL-00410" summary="fix wrong url">
-      <option name="closed" value="true" />
-      <created>1733104557251</created>
-      <option name="number" value="00410" />
-      <option name="presentableId" value="LOCAL-00410" />
-      <option name="project" value="LOCAL" />
-      <updated>1733104557251</updated>
-    </task>
-    <task id="LOCAL-00411" summary="update">
-      <option name="closed" value="true" />
-      <created>1733104704097</created>
-      <option name="number" value="00411" />
-      <option name="presentableId" value="LOCAL-00411" />
-      <option name="project" value="LOCAL" />
-      <updated>1733104704097</updated>
-    </task>
-    <task id="LOCAL-00412" summary="update client">
-      <option name="closed" value="true" />
-      <created>1733110656909</created>
-      <option name="number" value="00412" />
-      <option name="presentableId" value="LOCAL-00412" />
-      <option name="project" value="LOCAL" />
-      <updated>1733110656909</updated>
-    </task>
-    <task id="LOCAL-00413" summary="drop support for static server side rendering">
-      <option name="closed" value="true" />
-      <created>1733115986380</created>
-      <option name="number" value="00413" />
-      <option name="presentableId" value="LOCAL-00413" />
-      <option name="project" value="LOCAL" />
-      <updated>1733115986380</updated>
-    </task>
-    <task id="LOCAL-00414" summary="update">
-      <option name="closed" value="true" />
-      <created>1733117294160</created>
-      <option name="number" value="00414" />
-      <option name="presentableId" value="LOCAL-00414" />
-      <option name="project" value="LOCAL" />
-      <updated>1733117294160</updated>
-    </task>
-    <task id="LOCAL-00415" summary="move to auto mode">
-      <option name="closed" value="true" />
-      <created>1733118703119</created>
-      <option name="number" value="00415" />
-      <option name="presentableId" value="LOCAL-00415" />
-      <option name="project" value="LOCAL" />
-      <updated>1733118703119</updated>
-    </task>
-    <task id="LOCAL-00416" summary="disable AOT">
-      <option name="closed" value="true" />
-      <created>1733119687835</created>
-      <option name="number" value="00416" />
-      <option name="presentableId" value="LOCAL-00416" />
-      <option name="project" value="LOCAL" />
-      <updated>1733119687835</updated>
-    </task>
-    <task id="LOCAL-00417" summary="roll back to client side, simplify project">
-      <option name="closed" value="true" />
-      <created>1733120181540</created>
-      <option name="number" value="00417" />
-      <option name="presentableId" value="LOCAL-00417" />
-      <option name="project" value="LOCAL" />
-      <updated>1733120181540</updated>
-    </task>
-    <task id="LOCAL-00418" summary="wrong time">
-      <option name="closed" value="true" />
-      <created>1733120947932</created>
-      <option name="number" value="00418" />
-      <option name="presentableId" value="LOCAL-00418" />
-      <option name="project" value="LOCAL" />
-      <updated>1733120947932</updated>
-    </task>
-    <task id="LOCAL-00419" summary="aot">
-      <option name="closed" value="true" />
-      <created>1733121504922</created>
-      <option name="number" value="00419" />
-      <option name="presentableId" value="LOCAL-00419" />
-      <option name="project" value="LOCAL" />
-      <updated>1733121504922</updated>
-    </task>
-    <task id="LOCAL-00420" summary="update">
-      <option name="closed" value="true" />
-      <created>1733125782763</created>
-      <option name="number" value="00420" />
-      <option name="presentableId" value="LOCAL-00420" />
-      <option name="project" value="LOCAL" />
-      <updated>1733125782763</updated>
+      <workItem from="1734527523127" duration="8183000" />
+      <workItem from="1734567293156" duration="16397000" />
     </task>
     <task id="LOCAL-00421" summary="auto rejoin the group when possible">
       <option name="closed" value="true" />
@@ -1343,7 +1252,103 @@
       <option name="project" value="LOCAL" />
       <updated>1734447320784</updated>
     </task>
-    <option name="localTasksCounter" value="458" />
+    <task id="LOCAL-00458" summary="update">
+      <option name="closed" value="true" />
+      <created>1734528299376</created>
+      <option name="number" value="00458" />
+      <option name="presentableId" value="LOCAL-00458" />
+      <option name="project" value="LOCAL" />
+      <updated>1734528299377</updated>
+    </task>
+    <task id="LOCAL-00459" summary=".">
+      <option name="closed" value="true" />
+      <created>1734529987498</created>
+      <option name="number" value="00459" />
+      <option name="presentableId" value="LOCAL-00459" />
+      <option name="project" value="LOCAL" />
+      <updated>1734529987498</updated>
+    </task>
+    <task id="LOCAL-00460" summary="update service">
+      <option name="closed" value="true" />
+      <created>1734539442331</created>
+      <option name="number" value="00460" />
+      <option name="presentableId" value="LOCAL-00460" />
+      <option name="project" value="LOCAL" />
+      <updated>1734539442331</updated>
+    </task>
+    <task id="LOCAL-00461" summary="update">
+      <option name="closed" value="true" />
+      <created>1734567477443</created>
+      <option name="number" value="00461" />
+      <option name="presentableId" value="LOCAL-00461" />
+      <option name="project" value="LOCAL" />
+      <updated>1734567477444</updated>
+    </task>
+    <task id="LOCAL-00462" summary="fix wrong ort option">
+      <option name="closed" value="true" />
+      <created>1734570494081</created>
+      <option name="number" value="00462" />
+      <option name="presentableId" value="LOCAL-00462" />
+      <option name="project" value="LOCAL" />
+      <updated>1734570494081</updated>
+    </task>
+    <task id="LOCAL-00463" summary="remove unknown option">
+      <option name="closed" value="true" />
+      <created>1734571719910</created>
+      <option name="number" value="00463" />
+      <option name="presentableId" value="LOCAL-00463" />
+      <option name="project" value="LOCAL" />
+      <updated>1734571719910</updated>
+    </task>
+    <task id="LOCAL-00464" summary="remove all provider option">
+      <option name="closed" value="true" />
+      <created>1734572685636</created>
+      <option name="number" value="00464" />
+      <option name="presentableId" value="LOCAL-00464" />
+      <option name="project" value="LOCAL" />
+      <updated>1734572685636</updated>
+    </task>
+    <task id="LOCAL-00465" summary="update">
+      <option name="closed" value="true" />
+      <created>1734575783316</created>
+      <option name="number" value="00465" />
+      <option name="presentableId" value="LOCAL-00465" />
+      <option name="project" value="LOCAL" />
+      <updated>1734575783316</updated>
+    </task>
+    <task id="LOCAL-00466" summary="update">
+      <option name="closed" value="true" />
+      <created>1734576941545</created>
+      <option name="number" value="00466" />
+      <option name="presentableId" value="LOCAL-00466" />
+      <option name="project" value="LOCAL" />
+      <updated>1734576941546</updated>
+    </task>
+    <task id="LOCAL-00467" summary="fix missing data">
+      <option name="closed" value="true" />
+      <created>1734579155084</created>
+      <option name="number" value="00467" />
+      <option name="presentableId" value="LOCAL-00467" />
+      <option name="project" value="LOCAL" />
+      <updated>1734579155084</updated>
+    </task>
+    <task id="LOCAL-00468" summary="remove log">
+      <option name="closed" value="true" />
+      <created>1734580564116</created>
+      <option name="number" value="00468" />
+      <option name="presentableId" value="LOCAL-00468" />
+      <option name="project" value="LOCAL" />
+      <updated>1734580564116</updated>
+    </task>
+    <task id="LOCAL-00469" summary="cuda only">
+      <option name="closed" value="true" />
+      <created>1734582141911</created>
+      <option name="number" value="00469" />
+      <option name="presentableId" value="LOCAL-00469" />
+      <option name="project" value="LOCAL" />
+      <updated>1734582141911</updated>
+    </task>
+    <option name="localTasksCounter" value="470" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1374,14 +1379,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="roll back to client side, simplify project" />
-    <MESSAGE value="wrong time" />
-    <MESSAGE value="aot" />
-    <MESSAGE value="auto rejoin the group when possible" />
-    <MESSAGE value="update, fix background download" />
-    <MESSAGE value="fix integer overflow" />
-    <MESSAGE value="only image can request index" />
-    <MESSAGE value="limit size" />
     <MESSAGE value="fix losing data info after update" />
     <MESSAGE value="fix wrong folder position" />
     <MESSAGE value="test" />
@@ -1395,11 +1392,19 @@
     <MESSAGE value="check 0" />
     <MESSAGE value="add place-holder" />
     <MESSAGE value="add attribute to debug" />
-    <MESSAGE value="update" />
     <MESSAGE value="update api" />
     <MESSAGE value="small update" />
     <MESSAGE value="REMOVE hash logic" />
-    <option name="LAST_COMMIT_MESSAGE" value="REMOVE hash logic" />
+    <MESSAGE value="." />
+    <MESSAGE value="update service" />
+    <MESSAGE value="fix wrong ort option" />
+    <MESSAGE value="remove unknown option" />
+    <MESSAGE value="remove all provider option" />
+    <MESSAGE value="update" />
+    <MESSAGE value="fix missing data" />
+    <MESSAGE value="remove log" />
+    <MESSAGE value="cuda only" />
+    <option name="LAST_COMMIT_MESSAGE" value="cuda only" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

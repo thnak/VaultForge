@@ -23,7 +23,8 @@
     "no-browser": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "OnnxConfigWaterMeterPath": "C:/Users/thanh/source/water-meter.onnx"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7158;http://localhost:5269"

@@ -23,12 +23,18 @@ public class WaterMeterReader(string waterMeterWeightPath) : IWaterMeterReader
         return _yoloDetection.Predict(feeder);
     }
 
-    public int PredictWaterMeter(YoloFeeder feeder)
+    public List<int> PredictWaterMeter(YoloFeeder feeder)
     {
-        var pred = _yoloDetection.Predict(feeder).OrderBy(x => x.X).Select(x => x.ClassIdx);
-        var valueText = string.Join("", pred);
-        int.TryParse(valueText, out int value);
-        return value;
+        var pred = _yoloDetection.Predict(feeder).OrderBy(x => x.BatchId).ThenBy(x => x.X).GroupBy(x => x.BatchId).ToList().Select(x => x.Select(box => box.ClassIdx).ToList());
+        List<int> result = new();
+        foreach (var box in pred)
+        {
+            var valueText = string.Join("", box);
+            int.TryParse(valueText, out int value);
+            result.Add(value);
+        }
+
+        return result;
     }
 
     public void Dispose()
