@@ -26,9 +26,8 @@ public static class SessionOptionExtension
                 OrtCUDAProviderOptions providerOptions = new OrtCUDAProviderOptions();
                 var providerOptionsDict = new Dictionary<string, string>
                 {
-                    ["cudnn_conv_use_max_workspace"] = "1",
-                    ["device_id"] = $"{deviceId}",
-                    ["cudnn_conv_algo_search"] = "DEFAULT"
+                    ["device_id"] = $"0",
+                    ["cudnn_conv_algo_search"] = "EXHAUSTIVE"
                 };
                 options.ExecutionMode = ExecutionMode.ORT_SEQUENTIAL;
                 providerOptions.UpdateOptions(providerOptionsDict);

@@ -45,11 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Utils/SessionOptionExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Utils/SessionOptionExtension.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/appsettings.json" afterDir="false" />
-    </list>
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,11 +150,10 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f08263c1b162536d21bcac5d3d5599c6108a7df0503ecd6facc435edad3ead4/INumber.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fd5df964a94a255455f7b077e863af646a024518fa7703879230fff599b192/OrtIoBinding.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fe3b1716bf2f8f83ac793e7e3faa60f88a7868347653f77591f74b86d0d97675/Server.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Service/WaterMeter/Interfaces/WaterMeterReader.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Service/WaterMeter/Interfaces/WaterMeterReader.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/ResApi/appsettings.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/ResApi/appsettings.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/ResApi/appsettings.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -943,22 +938,7 @@
       <workItem from="1734527523127" duration="8183000" />
       <workItem from="1734567293156" duration="16397000" />
       <workItem from="1734656095733" duration="8344000" />
-    </task>
-    <task id="LOCAL-00423" summary="update">
-      <option name="closed" value="true" />
-      <created>1733280342733</created>
-      <option name="number" value="00423" />
-      <option name="presentableId" value="LOCAL-00423" />
-      <option name="project" value="LOCAL" />
-      <updated>1733280342733</updated>
-    </task>
-    <task id="LOCAL-00424" summary="fix integer overflow">
-      <option name="closed" value="true" />
-      <created>1733312822123</created>
-      <option name="number" value="00424" />
-      <option name="presentableId" value="LOCAL-00424" />
-      <option name="project" value="LOCAL" />
-      <updated>1733312822123</updated>
+      <workItem from="1734681024655" duration="5369000" />
     </task>
     <task id="LOCAL-00425" summary="only image can request index">
       <option name="closed" value="true" />
@@ -1336,7 +1316,23 @@
       <option name="project" value="LOCAL" />
       <updated>1734665371480</updated>
     </task>
-    <option name="localTasksCounter" value="472" />
+    <task id="LOCAL-00472" summary="add try catch inside queue">
+      <option name="closed" value="true" />
+      <created>1734681158594</created>
+      <option name="number" value="00472" />
+      <option name="presentableId" value="LOCAL-00472" />
+      <option name="project" value="LOCAL" />
+      <updated>1734681158594</updated>
+    </task>
+    <task id="LOCAL-00473" summary="remove debug">
+      <option name="closed" value="true" />
+      <created>1734691961283</created>
+      <option name="number" value="00473" />
+      <option name="presentableId" value="LOCAL-00473" />
+      <option name="project" value="LOCAL" />
+      <updated>1734691961283</updated>
+    </task>
+    <option name="localTasksCounter" value="474" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1367,8 +1363,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="test" />
-    <MESSAGE value="add some simd compute function" />
     <MESSAGE value="update message pack to v3" />
     <MESSAGE value="fix overflow text" />
     <MESSAGE value="add missing config" />
@@ -1392,7 +1386,9 @@
     <MESSAGE value="cuda only" />
     <MESSAGE value="small update to optimize code" />
     <MESSAGE value="add log" />
-    <option name="LAST_COMMIT_MESSAGE" value="add log" />
+    <MESSAGE value="add try catch inside queue" />
+    <MESSAGE value="remove debug" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove debug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -45,6 +45,7 @@ public class YoloDetection : IYoloDetection
     {
         var sessionOption = InitSessionOption();
         Session = new InferenceSession(modelPath, sessionOption);
+        
         InputNames = Session.GetInputNames();
         OutputNames = Session.GetOutputNames();
         InputDimensions = Session.InputMetadata.First().Value.Dimensions;

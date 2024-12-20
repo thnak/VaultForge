@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\thanh\Git\VaultForge\WebApp\bin\ReleaseX64\net9.0\publish\</_PublishTargetUrl>
-    <History>False|2024-11-23T09:38:48.8806413Z||;False|2024-11-23T16:35:57.9062887+07:00||;True|2024-11-23T13:35:51.1831232+07:00||;</History>
+    <History>True|2024-12-20T16:13:54.2193794Z||;False|2024-11-23T16:38:48.8806413+07:00||;False|2024-11-23T16:35:57.9062887+07:00||;True|2024-11-23T13:35:51.1831232+07:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>
