@@ -29,6 +29,7 @@ public class IotRequestQueue : IIotRequestQueue
     private readonly IParallelBackgroundTaskQueue _backgroundTaskQueue;
     private readonly IWaterMeterReaderQueue _waterMeterReaderQueue;
     private readonly ILogger<IIotRequestQueue> _logger;
+
     public IotRequestQueue(ApplicationConfiguration options, IHubContext<IoTSensorSignalHub, IIoTSensorSignal> hubContext, IParallelBackgroundTaskQueue backgroundTaskQueue, IWaterMeterReaderQueue waterMeterReaderQueue, ILogger<IIotRequestQueue> logger)
     {
         var maxQueueSize = options.GetIoTRequestQueueConfig.MaxQueueSize;
@@ -51,15 +52,23 @@ public class IotRequestQueue : IIotRequestQueue
         {
             await _backgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken =>
             {
-                if (!string.IsNullOrEmpty(data.Metadata.ImagePath))
+                try
                 {
-                    var value = await _waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, serverToken);
-                    data.Metadata.SensorData = value;
+                    if (!string.IsNullOrEmpty(data.Metadata.ImagePath))
+                    {
+                        var value = await _waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, serverToken);
+                        data.Metadata.SensorData = value;
+                    }
+
+                    await _channel.Writer.WriteAsync(data, serverToken);
+                    IncrementDailyRequestCount();
+                    await IncrementSensorRequestCount(data.Metadata.SensorId, serverToken);
+                    await UpdateSensorLastValue(data.Metadata.SensorId, data.Metadata.SensorData, serverToken);
                 }
-                await _channel.Writer.WriteAsync(data, serverToken);
-                IncrementDailyRequestCount();
-                await IncrementSensorRequestCount(data.Metadata.SensorId, serverToken);
-                await UpdateSensorLastValue(data.Metadata.SensorId, data.Metadata.SensorData, serverToken);
+                catch (Exception e)
+                {
+                    _logger.LogError(e, e.Message);
+                }
             }, cancellationToken);
             return true;
         }
