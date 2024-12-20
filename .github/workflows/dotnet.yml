@@ -33,6 +33,6 @@ jobs:
     # - name: Clean
     #   run: sudo rm -r /home/thnak/Web/Server/*
     - name: Publish
-      run: dotnet publish /home/thnak/git-actions/CodeWithMe-root/_work/VaultForge/VaultForge/WebApp/WebApp.csproj --runtime linux-x64 --self-contained true -o /home/thnak/Web/Server/
+      run: dotnet publish /home/thnak/git-actions/CodeWithMe-root/_work/VaultForge/VaultForge/WebApp/WebApp.csproj -c ReleaseX64  --runtime linux-x64 --self-contained true -o /home/thnak/Web/Server/
     - name: Restart
       run: systemctl restart myblazorapp.service
