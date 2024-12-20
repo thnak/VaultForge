@@ -25,6 +25,12 @@ public class WaterMeterReader(string waterMeterWeightPath) : IWaterMeterReader
 
     public List<int> PredictWaterMeter(YoloFeeder feeder)
     {
+        _yoloDetection.SetInput();
+        for (int i = 0; i < 100000; i++)
+        {
+            _yoloDetection.WarmUp();
+        }
+
         var pred = _yoloDetection.Predict(feeder).OrderBy(x => x.BatchId).ThenBy(x => x.X).GroupBy(x => x.BatchId).ToList().Select(x => x.Select(box => box.ClassIdx).ToList());
         List<int> result = new();
         foreach (var box in pred)

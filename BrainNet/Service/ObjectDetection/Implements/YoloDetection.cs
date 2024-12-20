@@ -21,6 +21,7 @@ public class YoloDetection : IYoloDetection
     public IReadOnlyCollection<string> CategoryReadOnlyCollection { get; set; } = [];
     public int Stride { get; set; }
     private OrtIoBinding OrtIoBinding { get; set; }
+    private RunOptions runOptions { get; set; }
     private DenseTensor<float> InputTensor { get; set; }
     private DenseTensor<float> OutputTensor { get; set; }
 
@@ -37,6 +38,7 @@ public class YoloDetection : IYoloDetection
         Options = new OptionsWrapper<BrainNetSettingModel>(settings);
         InitializeSession(modelPath);
         InitCategory();
+        runOptions = new();
     }
 
     private void InitializeSession(string modelPath)
@@ -123,8 +125,8 @@ public class YoloDetection : IYoloDetection
     {
         // using var inputOrtValue = OrtValue.CreateAllocatedTensorValue(OrtAllocator.DefaultInstance, TensorElementType.Float, InputDimensions.Select(x => (long)x).ToArray());
         // var inputs = new Dictionary<string, OrtValue> { { InputNames.First(), inputOrtValue } };
-        Session.RunWithBinding(new RunOptions(), OrtIoBinding);
-        // using var fromResult = Session.Run(new RunOptions(), inputs, OutputNames);
+        Session.RunWithBinding(runOptions, OrtIoBinding);
+        // using var fromResult = Session.Run(runOptions, inputs, OutputNames);
     }
 
     public void SetInput()
@@ -147,7 +149,7 @@ public class YoloDetection : IYoloDetection
         OutputDimensions[0] = newDim[0];
         using var inputOrtValue = OrtValue.CreateTensorValueFromMemory(OrtMemoryInfo.DefaultInstance, tensor.Buffer, newDim);
         var inputs = new Dictionary<string, OrtValue> { { InputNames.First(), inputOrtValue } };
-        using var fromResult = Session.Run(new RunOptions(), inputs, OutputNames);
+        using var fromResult = Session.Run(runOptions, inputs, OutputNames);
 
         float[] resultArrays = fromResult[0].Value.GetTensorDataAsSpan<float>().ToArray();
 

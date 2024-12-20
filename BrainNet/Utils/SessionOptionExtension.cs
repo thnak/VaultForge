@@ -37,14 +37,13 @@ public static class SessionOptionExtension
             }
             case "TensorrtExecutionProvider":
             {
-                // OrtTensorRTProviderOptions provider = new OrtTensorRTProviderOptions();
-                // var providerOptionsDict = new Dictionary<string, string>
-                // {
-                //     ["device_id"] = $"{deviceId}",
-                // };
-                // provider.UpdateOptions(providerOptionsDict);
-                options.AppendExecutionProvider_CUDA();
-                // options.AppendExecutionProvider_Tensorrt(provider);
+                OrtTensorRTProviderOptions provider = new OrtTensorRTProviderOptions();
+                var providerOptionsDict = new Dictionary<string, string>
+                {
+                    ["device_id"] = $"{deviceId}",
+                };
+                provider.UpdateOptions(providerOptionsDict);
+                options.AppendExecutionProvider_Tensorrt(provider);
                 break;
             }
             case "DNNLExecutionProvider":
@@ -57,13 +56,14 @@ public static class SessionOptionExtension
             {
                 break;
             }
-            // case "DmlExecutionProvider":
-            // {
-            //     options.EnableMemoryPattern = false;
-            //     options.ExecutionMode = ExecutionMode.ORT_SEQUENTIAL;
-            //     options.AppendExecutionProvider_DML(deviceId);
-            //     break;
-            // }
+            case "DmlExecutionProvider":
+            {
+                options.EnableMemoryPattern = false;
+                options.EnableCpuMemArena = false;
+                options.ExecutionMode = ExecutionMode.ORT_SEQUENTIAL;
+                options.AppendExecutionProvider_DML(deviceId);
+                break;
+            }
             case "ROCMExecutionProvider":
             {
                 OrtROCMProviderOptions provider = new();

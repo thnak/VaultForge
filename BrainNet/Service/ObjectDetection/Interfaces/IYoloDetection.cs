@@ -8,4 +8,7 @@ public interface IYoloDetection : IDisposable
     int GetStride();
     int[] GetInputDimensions();
     public List<YoloBoundingBox> Predict(YoloFeeder feeder);
+    public void WarmUp();
+    public void SetInput();
+    public void SetOutput();
 }

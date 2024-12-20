@@ -45,13 +45,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update to optimize code">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloDetection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloDetection.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Result/YoloBoundingBox.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Result/YoloBoundingBox.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Utils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Utils.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BrainNet/Utils/SessionOptionExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Utils/SessionOptionExtension.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ResApi/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/appsettings.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
@@ -160,6 +156,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fe3b1716bf2f8f83ac793e7e3faa60f88a7868347653f77591f74b86d0d97675/Server.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/ResApi/appsettings.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/ResApi/appsettings.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/ResApi/appsettings.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
@@ -945,15 +942,7 @@
       <workItem from="1734482897238" duration="10720000" />
       <workItem from="1734527523127" duration="8183000" />
       <workItem from="1734567293156" duration="16397000" />
-      <workItem from="1734656095733" duration="5512000" />
-    </task>
-    <task id="LOCAL-00422" summary="update, fix background download">
-      <option name="closed" value="true" />
-      <created>1733240591468</created>
-      <option name="number" value="00422" />
-      <option name="presentableId" value="LOCAL-00422" />
-      <option name="project" value="LOCAL" />
-      <updated>1733240591469</updated>
+      <workItem from="1734656095733" duration="8344000" />
     </task>
     <task id="LOCAL-00423" summary="update">
       <option name="closed" value="true" />
@@ -1339,7 +1328,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734658601712</updated>
     </task>
-    <option name="localTasksCounter" value="471" />
+    <task id="LOCAL-00471" summary="add log">
+      <option name="closed" value="true" />
+      <created>1734665371480</created>
+      <option name="number" value="00471" />
+      <option name="presentableId" value="LOCAL-00471" />
+      <option name="project" value="LOCAL" />
+      <updated>1734665371480</updated>
+    </task>
+    <option name="localTasksCounter" value="472" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1370,7 +1367,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fix wrong folder position" />
     <MESSAGE value="test" />
     <MESSAGE value="add some simd compute function" />
     <MESSAGE value="update message pack to v3" />
@@ -1395,7 +1391,8 @@
     <MESSAGE value="remove log" />
     <MESSAGE value="cuda only" />
     <MESSAGE value="small update to optimize code" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update to optimize code" />
+    <MESSAGE value="add log" />
+    <option name="LAST_COMMIT_MESSAGE" value="add log" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
