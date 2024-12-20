@@ -1,5 +1,4 @@
-﻿using Microsoft.ML.OnnxRuntime;
-
+﻿
 namespace BrainNet.Service.ObjectDetection.Model.Result;
 
 public class YoloBoundingBox

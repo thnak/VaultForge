@@ -21,6 +21,8 @@ public class YoloDetection : IYoloDetection
     public IReadOnlyCollection<string> CategoryReadOnlyCollection { get; set; } = [];
     public int Stride { get; set; }
     private OrtIoBinding OrtIoBinding { get; set; }
+    private DenseTensor<float> InputTensor { get; set; }
+    private DenseTensor<float> OutputTensor { get; set; }
 
     public YoloDetection(string modelPath)
     {
@@ -46,6 +48,8 @@ public class YoloDetection : IYoloDetection
         InputDimensions = Session.InputMetadata.First().Value.Dimensions;
         OutputDimensions = [..Session.OutputMetadata.First().Value.Dimensions];
         OrtIoBinding = Session.CreateIoBinding();
+        InputTensor = new DenseTensor<float>(InputDimensions);
+        OutputTensor = new DenseTensor<float>(InputDimensions);
     }
 
     private SessionOptions InitSessionOption()
@@ -123,6 +127,17 @@ public class YoloDetection : IYoloDetection
         // using var fromResult = Session.Run(new RunOptions(), inputs, OutputNames);
     }
 
+    public void SetInput()
+    {
+        var shape = InputDimensions.Select(x => (long)x).ToArray();
+        OrtIoBinding.BindInput(InputNames[0], OrtValue.CreateTensorValueFromMemory(OrtMemoryInfo.DefaultInstance, InputTensor.Buffer, shape));
+    }
+
+    public void SetOutput()
+    {
+        var shape = OutputDimensions.Select(x => (long)x).ToArray();
+        OrtIoBinding.BindOutput(OutputNames[0], OrtValue.CreateTensorValueFromMemory(OrtMemoryInfo.DefaultInstance, OutputTensor.Buffer, shape));
+    }
 
     public List<YoloBoundingBox> Predict(YoloFeeder tensorFeed)
     {

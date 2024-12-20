@@ -11,6 +11,8 @@ public static class SessionOptionExtension
         sessionOptions.EnableProfiling = false;
         sessionOptions.GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_ALL;
         sessionOptions.ExecutionMode = ExecutionMode.ORT_PARALLEL;
+        sessionOptions.LogSeverityLevel = OrtLoggingLevel.ORT_LOGGING_LEVEL_VERBOSE;
+        sessionOptions.OptimizedModelFilePath = "optimized_model.onnx";
     }
 
     public static string InitExecutionProviderOptions(this SessionOptions options, int deviceId)
@@ -28,6 +30,7 @@ public static class SessionOptionExtension
                     ["device_id"] = $"{deviceId}",
                     ["cudnn_conv_algo_search"] = "DEFAULT"
                 };
+                options.ExecutionMode = ExecutionMode.ORT_SEQUENTIAL;
                 providerOptions.UpdateOptions(providerOptionsDict);
                 options.AppendExecutionProvider_CUDA(providerOptions);
                 break;
