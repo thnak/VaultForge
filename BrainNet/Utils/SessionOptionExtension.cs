@@ -15,6 +15,18 @@ public static class SessionOptionExtension
         sessionOptions.OptimizedModelFilePath = "optimized_model.onnx";
     }
 
+    public static SessionOptions MakeSessionOption()
+    {
+        var providers = OrtEnv.Instance().GetAvailableProviders().Where(x => x != "TensorrtExecutionProvider");
+        var availableProvider = providers.First();
+        switch (availableProvider)
+        {
+            case "CUDAExecutionProvider":
+                return SessionOptions.MakeSessionOptionWithCudaProvider();
+        }
+        return new SessionOptions();
+    }
+
     public static string InitExecutionProviderOptions(this SessionOptions options, int deviceId)
     {
         var providers = OrtEnv.Instance().GetAvailableProviders().Where(x => x != "TensorrtExecutionProvider");
