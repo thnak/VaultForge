@@ -318,4 +318,16 @@
     <data name="IP address is not valid" xml:space="preserve">
       <value>IP 주소가 유효하지 않습니다</value>
     </data>
+    <data name="DeviceGroupManagement" xml:space="preserve">
+      <value>장치 그룹 관리</value>
+    </data>
+    <data name="Sensors" xml:space="preserve">
+      <value>센서</value>
+    </data>
+    <data name="DeleteSensor" xml:space="preserve">
+      <value>센서 삭제</value>
+    </data>
+    <data name="Image" xml:space="preserve">
+      <value>이미지</value>
+    </data>
 </root>

@@ -124,12 +124,11 @@ public partial class ManagementPage : ComponentBase, IAsyncDisposable, IDisposab
                 x => x.DataModel, new DialogConfirmDataModel()
                 {
                     Icon = Icons.Material.Filled.Delete,
-                    Title = AppLang.Warning,
                     Message = $"{AppLang.Delete} {contextItem.Title} ({contextItem.Language})",
                 }
             }
         };
-        var dialog = await DialogService.ShowAsync<ConfirmDialog>("", param);
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>(AppLang.Warning, param);
         var dialogResult = await dialog.Result;
         if (dialogResult is { Canceled: false })
         {

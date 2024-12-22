@@ -4,6 +4,7 @@ using Business.Data.Interfaces.Advertisement;
 using Business.Models;
 using BusinessModels.Advertisement;
 using BusinessModels.General.Results;
+using BusinessModels.General.Update;
 using MongoDB.Driver;
 
 namespace Business.Business.Repositories.Advertisement;

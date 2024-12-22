@@ -1,7 +1,9 @@
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using Business.Models;
 using BusinessModels.Base;
 using BusinessModels.General.Results;
+using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -25,6 +27,41 @@ public static class DatabaseExtensions
         }
 
         throw new InvalidOperationException("Invalid expression");
+    }
+
+    public static async IAsyncEnumerable<T> FindProjectAsync<T>(this IMongoCollection<T> collection, Expression<Func<T, bool>> predicate, int? limit = 10, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] fieldsToFetch) where T : BaseModelEntry
+    {
+        // Build projection
+        ProjectionDefinition<T> projection = fieldsToFetch.ProjectionBuilder();
+
+        // Fetch the documents from the database
+        var options = new FindOptions<T, T>
+        {
+            Projection = projection,
+            Limit = limit
+        };
+
+        using var cursor = await collection.FindAsync(predicate, options, cancellationToken);
+        while (await cursor.MoveNextAsync(cancellationToken))
+        {
+            foreach (var document in cursor.Current)
+            {
+                yield return document;
+            }
+        }
+    }
+
+    public static async IAsyncEnumerable<T> WhereAsync<T>(this IMongoCollection<T> collection, Expression<Func<T, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] fieldsToFetch) where T : BaseModelEntry
+    {
+        var options = fieldsToFetch.Any() ? new FindOptions<T, T> { Projection = fieldsToFetch.ProjectionBuilder() } : null;
+        using var cursor = await collection.FindAsync(predicate, options: options, cancellationToken: cancellationToken);
+        while (await cursor.MoveNextAsync(cancellationToken))
+        {
+            foreach (var model in cursor.Current)
+            {
+                yield return model;
+            }
+        }
     }
 
     public static string GetFieldName<TModel, TProperty>(this Expression<Func<TModel, TProperty>> expression)

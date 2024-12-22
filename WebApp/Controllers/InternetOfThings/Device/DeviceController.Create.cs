@@ -7,7 +7,7 @@ namespace WebApp.Controllers.InternetOfThings.Device;
 public partial class DeviceController
 {
     [HttpPost("add-new-device")]
-    public async Task<IActionResult> CreateDeviceAsync([FromForm] RequestToCreate requestDevice)
+    public async Task<IActionResult> CreateDeviceAsync([FromBody] RequestToCreate requestDevice)
     {
         var cancelToken = HttpContext.RequestAborted;
 
@@ -25,8 +25,8 @@ public partial class DeviceController
         return BadRequest(deviceCreateResult.Message);
     }
 
-    [HttpPost("add-new-sensor")]
-    public async Task<IActionResult> CreateSensorAsync([FromForm] string deviceId, [FromForm] IoTSensor sensor)
+    [HttpPost("add-new-sensor/{deviceId}")]
+    public async Task<IActionResult> CreateSensorAsync(string deviceId, [FromBody] IoTSensor sensor)
     {
         var cancelToken = HttpContext.RequestAborted;
 

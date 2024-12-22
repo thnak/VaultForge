@@ -2,9 +2,10 @@
 using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.InternetOfThings;
-using Business.Models;
+using Business.Utils;
 using Business.Utils.Protector;
 using BusinessModels.General.Results;
+using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
 using Microsoft.AspNetCore.DataProtection;
@@ -72,17 +73,17 @@ public class IotSensorDataLayer(IMongoDataLayerContext context, ILogger<IIotSens
 
     public IAsyncEnumerable<IoTSensor> FindAsync(string keyWord, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return _data.FindProjectAsync(f => f.SensorId == keyWord, null, cancellationToken);
     }
 
     public IAsyncEnumerable<IoTSensor> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default, params Expression<Func<IoTSensor, object>>[] fieldsToFetch)
     {
-        throw new NotImplementedException();
+        return _data.FindProjectAsync(f => f.SensorId == keyWord, limit, cancellationToken, fieldsToFetch);
     }
 
     public IAsyncEnumerable<IoTSensor> WhereAsync(Expression<Func<IoTSensor, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<IoTSensor, object>>[] fieldsToFetch)
     {
-        throw new NotImplementedException();
+        return _data.WhereAsync(predicate, cancellationToken, fieldsToFetch);
     }
 
     public IoTSensor? Get(string key)

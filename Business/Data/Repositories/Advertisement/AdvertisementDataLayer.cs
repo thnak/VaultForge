@@ -5,6 +5,7 @@ using Business.Data.Interfaces.Advertisement;
 using Business.Models;
 using Business.Utils;
 using BusinessModels.General.Results;
+using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;

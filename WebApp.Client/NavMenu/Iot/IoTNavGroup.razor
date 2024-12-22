@@ -1,5 +1,9 @@
-﻿<h3>IoTNavGroup</h3>
+﻿@using Color = MudBlazor.Color
+<MudNavGroup Title="IoT" IconColor="Color.Secondary" Icon="fa-solid fa-circle-nodes" Expanded>
 
-@code {
-    
-}
+    <MudNavLink Icon="fa-solid fa-tachograph-digital" Href="@PageRoutes.InternetOfThings.DeviceManagement">@AppLang.DeviceManagement</MudNavLink>
+    <MudNavLink Icon="fa-regular fa-object-group" Href="@PageRoutes.InternetOfThings.DeviceGroupManagement">@AppLang.DeviceGroupManagement</MudNavLink>
+    <MudNavLink Icon="fa-solid fa-microchip" Href="@PageRoutes.InternetOfThings.SensorManagement">@AppLang.Sensors</MudNavLink>
+    <MudNavLink Icon="fa-solid fa-table" Href="@PageRoutes.InternetOfThings.IotRecord">IoT records</MudNavLink>
+
+</MudNavGroup>

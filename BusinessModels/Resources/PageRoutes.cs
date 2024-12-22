@@ -88,6 +88,8 @@ public static class PageRoutes
         public const string DeviceManagement = Name + "/device-management";
         public const string DeviceGroupManagement = Name + "/device-group-management";
         public const string SensorManagement = Name + "/sensor-management";
+        
+        public const string IotRecord = Name + "/iot-record";
     }
     
     public static class Account

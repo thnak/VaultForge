@@ -5,6 +5,7 @@ using Business.Data.Interfaces.VectorDb;
 using Business.Models;
 using Business.Models.Vector;
 using BusinessModels.General.Results;
+using BusinessModels.General.Update;
 using MongoDB.Bson;
 using MongoDB.Driver;
 

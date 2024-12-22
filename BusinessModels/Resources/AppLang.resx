@@ -559,4 +559,22 @@ ClientY: {1}</value>
     <data name="IP address is not valid" xml:space="preserve">
       <value>Địa chỉ IP không hợp lệ</value>
     </data>
+    <data name="Update" xml:space="preserve">
+      <value>Cập nhật</value>
+    </data>
+    <data name="AddSensor" xml:space="preserve">
+      <value>Thêm cảm biến</value>
+    </data>
+    <data name="DeviceGroupManagement" xml:space="preserve">
+      <value>Quản lý nhóm thiết bị</value>
+    </data>
+    <data name="Sensors" xml:space="preserve">
+      <value>Cảm biến</value>
+    </data>
+    <data name="DeleteSensor" xml:space="preserve">
+      <value>Xóa cảm biến</value>
+    </data>
+    <data name="Image" xml:space="preserve">
+      <value>Hình ảnh</value>
+    </data>
 </root>

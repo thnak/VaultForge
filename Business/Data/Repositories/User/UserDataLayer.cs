@@ -6,6 +6,7 @@ using Business.Models;
 using Business.Utils;
 using Business.Utils.Protector;
 using BusinessModels.General.Results;
+using BusinessModels.General.Update;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using Microsoft.Extensions.Logging;

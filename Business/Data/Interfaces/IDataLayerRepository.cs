@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Business.Models;
 using BusinessModels.General.Results;
+using BusinessModels.General.Update;
 using MongoDB.Driver;
 
 namespace Business.Data.Interfaces;

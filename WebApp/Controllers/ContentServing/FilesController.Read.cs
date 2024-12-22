@@ -145,51 +145,19 @@ public partial class FilesController
             ReadDate = now
         };
 
-        MemoryStream ms = new MemoryStream();
         var pathArray = await raidService.GetDataBlockPaths(file.AbsolutePath, cancelToken);
-        if (pathArray == default) return NotFound();
+        if (pathArray == null) return NotFound();
         Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files, pathArray.FileSize, pathArray.StripeSize, FileMode.Open, FileAccess.Read, FileShare.Read);
-        await raid5Stream.CopyToAsync(ms, cancelToken);
-        ms.Seek(0, SeekOrigin.Begin);
-
-        Response.RegisterForDispose(ms);
+        
         Response.RegisterForDisposeAsync(raid5Stream);
-
-        using SHA256 sha256 = SHA256.Create();
-
-        int bytesRead1;
-        byte[] buffer = new byte[1024];
-        while ((bytesRead1 = await ms.ReadAsync(buffer, 0, 1024, cancelToken)) > 0)
-        {
-            sha256.TransformBlock(buffer, 0, bytesRead1, null, 0);
-        }
-
-        ms.Seek(0, SeekOrigin.Begin);
-
-        sha256.TransformFinalBlock([], 0, 0);
-        StringBuilder checksum = new StringBuilder();
-        if (sha256.Hash != null)
-        {
-            foreach (byte b in sha256.Hash)
-            {
-                checksum.Append(b.ToString("x2"));
-            }
-        }
-
-        if (file.Checksum == checksum.ToString())
-        {
-            logger.LogError("file check error");
-        }
-
+        
         Response.Headers.Append("Content-Disposition", cd.ToString());
-        // Response.ContentType = file.ContentType;
-        // Response.Headers.ContentType = file.ContentType;
-        // Response.StatusCode = 200;
-        return new FileStreamResult(ms, file.ContentType)
+        
+        return new FileStreamResult(raid5Stream, file.ContentType)
         {
             FileDownloadName = file.FileName,
             LastModified = file.ModifiedTime,
-            EnableRangeProcessing = false
+            EnableRangeProcessing = true
         };
     }
 

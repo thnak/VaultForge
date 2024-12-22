@@ -3,13 +3,13 @@ using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.FileSystem;
 using Business.Data.StorageSpace;
-using Business.Models;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.Utils;
 using Business.Utils.ExpressionExtensions;
 using Business.Utils.Protector;
 using Business.Utils.StringExtensions;
 using BusinessModels.General.Results;
+using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using Microsoft.AspNetCore.DataProtection;
@@ -136,7 +136,7 @@ public class FileSystemDatalayer(
 
     public IAsyncEnumerable<FileInfoModel> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return _fileDataDb.FindProjectAsync(f => f.FileName.Contains(queryString), null, cancellationToken);
     }
 
     public IAsyncEnumerable<FileInfoModel> FindAsync(FilterDefinition<FileInfoModel> filter, CancellationToken cancellationToken = default)
@@ -146,42 +146,17 @@ public class FileSystemDatalayer(
 
     public IAsyncEnumerable<FileInfoModel> FindAsync(string keyWord, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return _fileDataDb.FindProjectAsync(f => f.FileName.Contains(keyWord), null, cancellationToken);
     }
 
-    public async IAsyncEnumerable<FileInfoModel> FindProjectAsync(string keyWord, int limit = 10, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
+    public IAsyncEnumerable<FileInfoModel> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
     {
-        var filter = Builders<FileInfoModel>.Filter.Where(f => f.FileName.Contains(keyWord));
-        // Build projection
-        ProjectionDefinition<FileInfoModel> projection = fieldsToFetch.ProjectionBuilder();
-
-        // Fetch the documents from the database
-        var options = new FindOptions<FileInfoModel, FileInfoModel>
-        {
-            Projection = projection
-        };
-
-        using var cursor = await _fileDataDb.FindAsync(filter, options, cancellationToken);
-        while (await cursor.MoveNextAsync(cancellationToken))
-        {
-            foreach (var document in cursor.Current)
-            {
-                yield return document;
-            }
-        }
+        return _fileDataDb.FindProjectAsync(f => f.FileName.Contains(keyWord), limit, cancellationToken, fieldsToFetch);
     }
 
-    public async IAsyncEnumerable<FileInfoModel> WhereAsync(Expression<Func<FileInfoModel, bool>> predicate, [EnumeratorCancellation] CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
+    public IAsyncEnumerable<FileInfoModel> WhereAsync(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
     {
-        var options = fieldsToFetch.Any() ? new FindOptions<FileInfoModel, FileInfoModel> { Projection = fieldsToFetch.ProjectionBuilder() } : null;
-        using var cursor = await _fileDataDb.FindAsync(predicate, options: options, cancellationToken: cancellationToken);
-        while (await cursor.MoveNextAsync(cancellationToken))
-        {
-            foreach (var model in cursor.Current)
-            {
-                yield return model;
-            }
-        }
+        return _fileDataDb.WhereAsync(predicate, cancellationToken, fieldsToFetch);
     }
 
     public FileInfoModel? Get(string key)

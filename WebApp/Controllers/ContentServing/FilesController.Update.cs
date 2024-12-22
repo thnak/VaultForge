@@ -1,5 +1,6 @@
 ﻿using Business.Models;
 using Business.Utils.Protector;
+using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using Microsoft.AspNetCore.Authorization;

@@ -1,0 +1,66 @@
+﻿@using Color = MudBlazor.Color
+@using Size = MudBlazor.Size
+@rendermode InteractiveWebAssembly
+@attribute [Route(PageRoutes.InternetOfThings.DeviceGroupManagement)]
+@attribute [Authorize]
+@layout MainLayout
+
+<PageTitle>@AppLang.DeviceGroupManagement</PageTitle>
+
+<div class="page-content-container">
+
+    <MudDataGrid T="PageModel" Filterable="false" Dense="true" Bordered="true" Culture="CultureInfo.CurrentCulture"
+                 Height="calc(100vh - var(--mud-appbar-height) - 115px)" Items="Items"
+                 Hover="true" Striped="true">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">@AppLang.DeviceGroupManagement</MudText>
+            <MudSpacer/>
+
+            <div class="d-flex flex-row gap-3">
+                <div class="page-content-container-search-field-width">
+                    <MudAutocomplete T="string" Placeholder="Search"
+                                     Adornment="Adornment.Start" Margin="Margin.Dense" Variant="Variant.Outlined"
+                                     AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0">
+                        <ProgressIndicatorTemplate>
+                            <MudProgressLinear Size="Size.Small" Indeterminate="true" Color="Color.Success"/>
+                        </ProgressIndicatorTemplate>
+                    </MudAutocomplete>
+                </div>
+
+                <MudButton StartIcon="@Icons.Material.Filled.Add">@AppLang.Add</MudButton>
+            </div>
+            
+           
+        </ToolBarContent>
+        <Columns>
+            <PropertyColumn Property="x => x.Device.GroupId" Title="Id"/>
+            <PropertyColumn Property="x => x.Device.GroupName" Title="Name"/>
+            <PropertyColumn Property="x => x.Device.Location" Title="Location"/>
+            <PropertyColumn Property="x => x.Device.OnlineDevices" Title="Online devices"/>
+            <PropertyColumn Property="x => x.Device.Status" Title="status"/>
+            <TemplateColumn Title="Action">
+                <CellTemplate>
+
+                    <div class="d-flex flex-row gap-3">
+                        <MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="Edit">
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled"
+                                           OnClick="@context.Item.UpdateBtn.Action" Disabled="@context.Item.UpdateBtn.Disabled"
+                                           Color="Color.Primary"/>
+                        </MudTooltip>
+
+                        <MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="Delete">
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled"
+                                           OnClick="@context.Item.DeleteBtn.Action" Disabled="@context.Item.DeleteBtn.Disabled"
+                                           Color="Color.Primary"/>
+                        </MudTooltip>
+                    </div>
+
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+        <PagerContent>
+            <MudDataGridPager T="PageModel"/>
+        </PagerContent>
+    </MudDataGrid>
+
+</div>

@@ -2,10 +2,11 @@
 using BrainNet.Service.WaterMeter.Implements;
 using BrainNet.Service.WaterMeter.Interfaces;
 using Business.Business.Interfaces.FileSystem;
-using Business.Business.Repositories.InternetOfThings;
+using Business.Business.Interfaces.InternetOfThings;
 using Business.Data.StorageSpace;
 using Business.Services.Configure;
 using BusinessModels.System.InternetOfThings;
+using BusinessModels.System.InternetOfThings.type;
 using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -67,7 +68,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
 
             var result = _waterMeterReader.PredictWaterMeter(_feeder);
             _feeder.Clear();
-            await _recordBusinessLayer.UpdateIotValue(record.Id.ToString(), result[0], cancellationToken);
+            await _recordBusinessLayer.UpdateIotValue(record.Id.ToString(), result[0], ProcessStatus.Completed, cancellationToken);
             return result[0];
         }
         catch (OperationCanceledException)

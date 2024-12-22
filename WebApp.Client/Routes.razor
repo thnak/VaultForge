@@ -1,6 +1,7 @@
 ﻿@using WebApp.Client.NavMenu.Drive
 @using NavigationContext = Microsoft.AspNetCore.Components.Routing.NavigationContext
 @using WebApp.Client.NavMenu.ContentManagement
+@using WebApp.Client.NavMenu.Iot
 
 @code {
     private RenderFragment? NavBar { get; set; }
@@ -9,22 +10,31 @@
     {
         if (arg.Path.StartsWith(PageRoutes.Drive.Name[1..]))
         {
-            NavBar = @<DriveNavMenu />;
+            NavBar = @<DriveNavMenu/>;
+            return Task.CompletedTask;
         }
 
-        if (arg.Path.StartsWith(PageRoutes.ContentCreator.Index.Src))
+        if (arg.Path.StartsWith(PageRoutes.ContentCreator.Name[1..]))
         {
-            NavBar = @<ContentManagementNavMenu />;
+            NavBar = @<ContentManagementNavMenu/>;
+            return Task.CompletedTask;
+        }
+
+        if (arg.Path.StartsWith(PageRoutes.InternetOfThings.Name[1..]))
+        {
+            NavBar = @<IoTNavGroup/>;
+            return Task.CompletedTask;
         }
 
         return Task.CompletedTask;
     }
+
 }
 
-<MudDialogProvider MaxWidth="MaxWidth.False" Position="DialogPosition.Center" />
-<MudSnackbarProvider Class="toast-move-right-2-left" />
-<ThemeProvider />
-<MudPopoverProvider />
+<MudDialogProvider MaxWidth="MaxWidth.False" Position="DialogPosition.Center"/>
+<MudSnackbarProvider Class="toast-move-right-2-left"/>
+<ThemeProvider/>
+<MudPopoverProvider/>
 <BlazoredToasts ErrorIcon="fa-solid fa-bug"
                 IconType="IconType.FontAwesome"
                 InfoIcon="fa-solid fa-info"
@@ -34,40 +44,40 @@
                 ShowCloseButton="true"
                 ShowProgressBar="true"
                 SuccessIcon="fa-regular fa-circle-check" Timeout="10"
-                WarningIcon="fa-solid fa-triangle-exclamation" />
+                WarningIcon="fa-solid fa-triangle-exclamation"/>
 
 
 <MudBreakpointProvider>
-    <Router AppAssembly="@typeof(Program).Assembly" OnNavigateAsync="Navigating" >
-        <Found Context="routeData" >
+    <Router AppAssembly="@typeof(Program).Assembly" OnNavigateAsync="Navigating">
+        <Found Context="routeData">
             <ErrorBoundary>
                 <ChildContent>
 
-                    <AuthorizeRouteView DefaultLayout="@typeof(MainLayout)" RouteData="@routeData" >
+                    <AuthorizeRouteView DefaultLayout="@typeof(MainLayout)" RouteData="@routeData">
                         <NotAuthorized>
-                            <AccessDenied />
+                            <AccessDenied/>
                         </NotAuthorized>
                         <Authorizing>
-                            <Loading />
+                            <Loading/>
                         </Authorizing>
                     </AuthorizeRouteView>
 
                 </ChildContent>
-                <ErrorContent Context="ex" >
-                    <ErrorHanding ErrorMessage="@EncodeException(ex)" />
+                <ErrorContent Context="ex">
+                    <ErrorHanding ErrorMessage="@EncodeException(ex)"/>
                 </ErrorContent>
             </ErrorBoundary>
         </Found>
         <NotFound>
-            <NotFoundComponent />
+            <NotFoundComponent/>
         </NotFound>
         <Navigating>
-            <Loading />
+            <Loading/>
         </Navigating>
     </Router>
 </MudBreakpointProvider>
 
-<SectionContent SectionId="@MainLayout.NavMenu" >
+<SectionContent SectionId="@MainLayout.NavMenu">
     @NavBar
 </SectionContent>
 
@@ -77,5 +87,6 @@
         if (progressWrapper)
             progressWrapper.classList.add('closed');
     }
+
     closeLoading();
 </script>

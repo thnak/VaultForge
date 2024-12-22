@@ -1,0 +1,97 @@
+﻿@using BusinessModels.System.InternetOfThings
+@using BusinessModels.System.InternetOfThings.type
+@using Color = MudBlazor.Color
+@using Size = MudBlazor.Size
+@rendermode InteractiveWebAssembly
+@attribute [Route(PageRoutes.InternetOfThings.IotRecord)]
+@attribute [Authorize]
+@layout MainLayout
+
+<PageTitle>IoT records</PageTitle>
+
+<div class="page-content-container">
+
+    <MudDataGrid @ref="_dataGrid" T="PageModel" ServerData="ServerReload" Height="calc(100vh - var(--mud-appbar-height) - 115px)"
+                 Filterable="false" Dense="true" Bordered="true" Culture="CultureInfo.CurrentCulture" Hover="true" Striped="true">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">IoT records</MudText>
+            <MudSpacer/>
+
+            <div class="d-flex flex-row gap-3">
+                <div class="page-content-container-search-field-width">
+                    <MudAutocomplete T="string" @bind-Value="DeviceSearchString" SearchFunc="SearchDevice" Placeholder="Search"
+                                     Adornment="Adornment.Start" Margin="Margin.Dense" Variant="Variant.Outlined"
+                                     AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0">
+                        <ProgressIndicatorTemplate>
+                            <MudProgressLinear Size="Size.Small" Indeterminate="true" Color="Color.Success"/>
+                        </ProgressIndicatorTemplate>
+                    </MudAutocomplete>
+                </div>
+
+                <MudButton StartIcon="@Icons.Material.Filled.FilterAlt" OnClick="OpenFilter">Filer</MudButton>
+
+
+            </div>
+
+        </ToolBarContent>
+        <Columns>
+            <PropertyColumn Property="x => x.Device.Timestamp" Title="Timestamp" Format="dd/MM/yy HH:mm:ss"/>
+            <PropertyColumn Property="x => x.Device.Metadata.SensorId" Title="Sensor ID"/>
+            <PropertyColumn Property="x => x.Device.Metadata.ImagePath" Title="Image">
+                <CellTemplate>
+                    <MudButton OnClick="@context.Item.OpenImageBtn.Action" Disabled="@context.Item.OpenImageBtn.Disabled">@AppLang.Image</MudButton>
+                </CellTemplate>
+            </PropertyColumn>
+            <PropertyColumn Property="x => x.Device.Metadata.SensorData" Title="Value"/>
+            <PropertyColumn Property="x => x.Device.Metadata.SignalStrength" Title="Signal strength"/>
+            <PropertyColumn T="PageModel" TProperty="ProcessStatus" Property="x => x.Device.Metadata.ProcessStatus" Title="Process status" CellStyleFunc="ProcessStatusStyle"/>
+
+        </Columns>
+        <PagerContent>
+            <MudDataGridPager T="PageModel"/>
+        </PagerContent>
+    </MudDataGrid>
+
+</div>
+
+<MudDrawer @bind-Open="@OpenFilterState" Width="min(500px,80vw)" Elevation="0" Overlay="true" Variant="@DrawerVariant.Temporary" Anchor="Anchor.End" Color="Color.Primary">
+    <MudDrawerHeader>
+        <MudText Typo="Typo.h6">Filter</MudText>
+    </MudDrawerHeader>
+
+    <MudForm Model="_filterPage">
+        <MudCardContent>
+
+            <MudDateRangePicker Label="Date" Variant="Variant.Outlined" @bind-DateRange="_filterPage.DateRange"></MudDateRangePicker>
+
+            @* <MudAutocomplete T="IoTDevice" Value="_filterPage.SelectedDevice"  Label="Device" Variant="Variant.Outlined"></MudAutocomplete> *@
+
+            <MudSelect T="IoTDevice" Variant="Variant.Outlined" Label="Device" @bind-SelectedValues="_filterPage.SelectedDevices">
+
+                @foreach (var device in DevicesList)
+                {
+                    <MudSelectItem Value="device">@device.DeviceName</MudSelectItem>
+                }
+
+            </MudSelect>
+            <MudSelect T="IoTSensor" Variant="Variant.Outlined" Label="Sensor" @bind-SelectedValues="_filterPage.Sensors">
+
+                @foreach (var sensor in SensorList)
+                {
+                    <MudSelectItem Value="sensor">@sensor.SensorName</MudSelectItem>
+                }
+
+            </MudSelect>
+
+            <div class="d-flex flex flex-row">
+
+                <MudSpacer/>
+                <MudButton Variant="Variant.Outlined" Color="Color.Error" OnClick="CancelFilter">@AppLang.Cancel</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="SubmitFilter">@AppLang.Submit</MudButton>
+
+            </div>
+
+        </MudCardContent>
+    </MudForm>
+
+</MudDrawer>

@@ -318,4 +318,16 @@
     <data name="IP address is not valid" xml:space="preserve">
       <value>La dirección IP no es válida</value>
     </data>
+    <data name="DeviceGroupManagement" xml:space="preserve">
+      <value>Gestión de grupos de dispositivos</value>
+    </data>
+    <data name="Sensors" xml:space="preserve">
+      <value>Sensores</value>
+    </data>
+    <data name="DeleteSensor" xml:space="preserve">
+      <value>Eliminar sensor</value>
+    </data>
+    <data name="Image" xml:space="preserve">
+      <value>Imagen</value>
+    </data>
 </root>

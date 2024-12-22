@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Net.Mime;
+using BusinessModels.System;
 using BusinessModels.System.InternetOfThings;
+using BusinessModels.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers.InternetOfThings.Record;
@@ -19,6 +21,28 @@ public partial class IoTController
     {
         var total = requestQueueHostedService.GetLastRecord(device);
         return Ok(total);
+    }
+
+    [HttpPost("get-record")]
+    public async Task<IActionResult> SummaryRecord([FromForm] string sensorId, [FromForm] int page, [FromForm] int pageSize, [FromForm] double startDate, [FromForm] double endDate)
+    {
+        var startDateTime = startDate.UnixDate2DateDateTime();
+        var endDateTime = endDate.UnixDate2DateDateTime();
+
+        var data = businessLayer.Where(x => x.Timestamp >= startDateTime && x.Timestamp <= endDateTime && x.Metadata.SensorId == sensorId);
+        List<IoTRecord> records = new List<IoTRecord>();
+        await foreach (var record in data)
+        {
+            records.Add(record);
+        }
+
+        SignalRResultValue<IoTRecord> result = new()
+        {
+            Data = records.Skip(page * pageSize).Take(pageSize).ToArray(),
+            Total = records.Count(),
+        };
+        var json = result.ToJson();
+        return Content(json, "application/json");
     }
 
     [HttpPost("compute-record")]

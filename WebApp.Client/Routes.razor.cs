@@ -60,7 +60,6 @@ public partial class Routes(ILogger<Routes> logger) : ComponentBase, IDisposable
         {
             Icon = "fa-solid fa-rotate-right",
             Color = Color.Secondary,
-            Title = AppLang.Reload,
             Fragment = builder =>
             {
                 builder.OpenElement(0, "span");
@@ -72,7 +71,7 @@ public partial class Routes(ILogger<Routes> logger) : ComponentBase, IDisposable
         {
             { x => x.DataModel, dataModel }
         };
-        var dialog = await DialogService.ShowAsync<ConfirmDialog>("", param, option);
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>(AppLang.Reload, param, option);
         var dialogResult = await dialog.Result;
         if (dialogResult is { Canceled: false })
         {

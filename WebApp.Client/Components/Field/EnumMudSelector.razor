@@ -1,0 +1,12 @@
+﻿@typeparam T where T : struct, Enum
+
+<MudSelect T="T" Value="_selectedValue" For="@For" ValueChanged="@_selectedValueChanged"
+           SelectedValues="_selectedValues" SelectedValuesChanged="@CreateInferredCallback"
+           MultiSelection="@MultiSelection" SelectAll="@SelectAll" SelectAllText="@SelectAllText"
+           Variant="@ElementVariant" Label="@LabelString" Margin="@ElementMargin"
+           >
+    @foreach (var en in Enum.GetValues<T>())
+    {
+        <MudSelectItem Value="@en">@en</MudSelectItem>
+    }
+</MudSelect>

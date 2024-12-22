@@ -318,4 +318,16 @@
     <data name="IP address is not valid" xml:space="preserve">
       <value>IPアドレスが無効です</value>
     </data>
+    <data name="DeviceGroupManagement" xml:space="preserve">
+      <value>デバイスグループ</value>
+    </data>
+    <data name="Sensors" xml:space="preserve">
+      <value>センサ</value>
+    </data>
+    <data name="DeleteSensor" xml:space="preserve">
+      <value>センサーを削除</value>
+    </data>
+    <data name="Image" xml:space="preserve">
+      <value>画像</value>
+    </data>
 </root>

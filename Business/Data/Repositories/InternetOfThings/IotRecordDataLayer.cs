@@ -5,6 +5,7 @@ using Business.Data.Interfaces.InternetOfThings;
 using Business.Models;
 using Business.Utils;
 using BusinessModels.General.Results;
+using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
 using Microsoft.Extensions.Logging;

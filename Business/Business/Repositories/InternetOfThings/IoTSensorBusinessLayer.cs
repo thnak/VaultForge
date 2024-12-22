@@ -3,6 +3,7 @@ using Business.Business.Interfaces.InternetOfThings;
 using Business.Data.Interfaces.InternetOfThings;
 using Business.Models;
 using BusinessModels.General.Results;
+using BusinessModels.General.Update;
 using BusinessModels.System.InternetOfThings;
 using MongoDB.Driver;
 
@@ -62,7 +63,7 @@ public class IoTSensorBusinessLayer(IIotSensorDataLayer iIotSensorDataLayer) : I
 
     public Task<(IoTSensor[], long)> GetAllAsync(int page, int size, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return iIotSensorDataLayer.GetAllAsync(page, size, cancellationToken);
     }
 
     public IAsyncEnumerable<IoTSensor> GetAllAsync(Expression<Func<IoTSensor, object>>[] field2Fetch, CancellationToken cancellationToken)

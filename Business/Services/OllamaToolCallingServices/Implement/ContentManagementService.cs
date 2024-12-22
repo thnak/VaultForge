@@ -3,6 +3,7 @@ using Business.Business.Interfaces.Advertisement;
 using Business.Models;
 using Business.Services.OllamaToolCallingServices.Interfaces;
 using BusinessModels.Advertisement;
+using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.Utils;
 

@@ -87,6 +87,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thêm cảm biến.
+        /// </summary>
+        public static string AddSensor {
+            get {
+                return ResourceManager.GetString("AddSensor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bài viết đã tồn tại.
         /// </summary>
         public static string Article_already_exists {
@@ -375,6 +384,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Xóa cảm biến.
+        /// </summary>
+        public static string DeleteSensor {
+            get {
+                return ResourceManager.GetString("DeleteSensor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mô tả.
         /// </summary>
         public static string Description {
@@ -389,6 +407,15 @@ namespace BusinessModels.Resources {
         public static string Device_not_found {
             get {
                 return ResourceManager.GetString("Device not found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quản lý nhóm thiết bị.
+        /// </summary>
+        public static string DeviceGroupManagement {
+            get {
+                return ResourceManager.GetString("DeviceGroupManagement", resourceCulture);
             }
         }
         
@@ -623,6 +650,15 @@ namespace BusinessModels.Resources {
         public static string Home_page {
             get {
                 return ResourceManager.GetString("Home page", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hình ảnh.
+        /// </summary>
+        public static string Image {
+            get {
+                return ResourceManager.GetString("Image", resourceCulture);
             }
         }
         
@@ -1051,6 +1087,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cảm biến.
+        /// </summary>
+        public static string Sensors {
+            get {
+                return ResourceManager.GetString("Sensors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chia sẻ.
         /// </summary>
         public static string Share {
@@ -1246,6 +1291,15 @@ namespace BusinessModels.Resources {
         public static string To_keep_connected_with_us_please_login_with_your_personal_info {
             get {
                 return ResourceManager.GetString("To keep connected with us please login with your personal info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cập nhật.
+        /// </summary>
+        public static string Update {
+            get {
+                return ResourceManager.GetString("Update", resourceCulture);
             }
         }
         

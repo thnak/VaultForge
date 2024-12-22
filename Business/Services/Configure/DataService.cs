@@ -41,7 +41,6 @@ using BusinessModels.General.SettingModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using IIotRecordBusinessLayer = Business.Business.Repositories.InternetOfThings.IIotRecordBusinessLayer;
 
 namespace Business.Services.Configure;
 
@@ -73,7 +72,7 @@ public static class DataService
         service.AddSingleton<IChatWithLlmBusinessLayer, ChatWithLlmBusinessLayer>();
 
         service.AddSingleton<IIotRecordDataLayer, IotRecordDataLayer>();
-        service.AddSingleton<IIotRecordBusinessLayer, IIotRecordBusinessLayer>();
+        service.AddSingleton<IIotRecordBusinessLayer, IotRecordBusinessLayer>();
 
         service.AddSingleton<IIotDeviceDataLayer, IotDeviceDataLayer>();
         service.AddSingleton<IIotDeviceBusinessLayer, IotDeviceBusinessLayer>();

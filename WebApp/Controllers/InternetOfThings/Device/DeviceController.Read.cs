@@ -25,7 +25,7 @@ public partial class DeviceController
     public IActionResult GetDeviceByIdAsync(string deviceId)
     {
         var device = deviceBusinessLayer.Get(deviceId);
-        return device == null ? NotFound() : Ok(device.ToJson());
+        return device == null ? NotFound() : Content(device.ToJson(), "application/json");
     }
 
     [HttpGet("search-device")]
@@ -60,12 +60,25 @@ public partial class DeviceController
     }
     
     [HttpGet("get-sensor-by-id")]
-    public IActionResult GetDeviceAsync(string deviceId)
+    public IActionResult GetSensorByIdAsync(string id)
     {
-        var device = sensorBusinessLayer.Get(deviceId);
-        return device == null ? NotFound() : Ok(device.ToJson());
+        var device = sensorBusinessLayer.Get(id);
+        return device == null ? NotFound() : Content(device.ToJson(), "application/json");
     }
 
+    [HttpGet("get-sensor-by-device-id")]
+    public async Task<IActionResult> GetDeviceByDeviceIdAsync(string deviceId)
+    {
+        var device = sensorBusinessLayer.Where(x=>x.DeviceId == deviceId);
+        List<IoTSensor> result = [];
+        await foreach (var d in device)
+        {
+            result.Add(d);
+        }
+        
+        return Content(result.ToJson(), "application/json");
+    }
+    
     [HttpGet("search-sensor")]
     public async Task<IActionResult> SearchSensorAsync(string searchString)
     {

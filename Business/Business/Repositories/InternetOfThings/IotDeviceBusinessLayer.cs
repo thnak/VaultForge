@@ -3,6 +3,7 @@ using Business.Business.Interfaces.InternetOfThings;
 using Business.Data.Interfaces.InternetOfThings;
 using Business.Models;
 using BusinessModels.General.Results;
+using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
 using MongoDB.Driver;
@@ -105,7 +106,8 @@ public class IotDeviceBusinessLayer(IIotDeviceDataLayer dataLayer, IIotSensorDat
         var result = await dataLayer.DeleteAsync(key, cancelToken).ConfigureAwait(false);
         if (result.Item1)
         {
-            var sensors = iIotSensorDataLayer.WhereAsync(x => x.DeviceId == device.Id, cancelToken);
+            var deviceId = device.Id.ToString(); 
+            var sensors = iIotSensorDataLayer.WhereAsync(x => x.DeviceId == deviceId, cancelToken);
             await foreach (var sensor in sensors)
             {
                 await iIotSensorDataLayer.DeleteAsync(sensor.Id.ToString(), cancelToken);

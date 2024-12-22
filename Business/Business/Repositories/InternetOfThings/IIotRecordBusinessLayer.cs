@@ -5,13 +5,15 @@ using Business.Business.Interfaces.InternetOfThings;
 using Business.Data.Interfaces.InternetOfThings;
 using Business.Models;
 using BusinessModels.General.Results;
+using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
+using BusinessModels.System.InternetOfThings.type;
 using MongoDB.Driver;
 
 namespace Business.Business.Repositories.InternetOfThings;
 
-public class IIotRecordBusinessLayer(IIotRecordDataLayer data, IIotRequestQueue iotRequestQueue) : IIotRecordBusinessLayer
+public class IotRecordBusinessLayer(IIotRecordDataLayer data, IIotRequestQueue iotRequestQueue) : IIotRecordBusinessLayer
 {
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
@@ -125,11 +127,12 @@ public class IIotRecordBusinessLayer(IIotRecordDataLayer data, IIotRequestQueue 
         throw new NotImplementedException();
     }
 
-    public async Task<Result<bool>> UpdateIotValue(string key, float value, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> UpdateIotValue(string key, float value, ProcessStatus processStatus, CancellationToken cancellationToken = default)
     {
         var result = await UpdateAsync(key, new FieldUpdate<IoTRecord>()
         {
-            { x => x.Metadata.SensorData, value }
+            { x => x.Metadata.SensorData, value },
+            { x => x.Metadata.ProcessStatus, processStatus }
         }, cancellationToken);
         if (result.Item1) return Result<bool>.SuccessWithMessage(true, AppLang.Success);
         return Result<bool>.Failure(result.Item2, ErrorType.Unknown);

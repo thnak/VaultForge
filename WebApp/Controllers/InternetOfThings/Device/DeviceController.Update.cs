@@ -1,4 +1,4 @@
-﻿using Business.Models;
+﻿using BusinessModels.General.Update;
 using BusinessModels.System.InternetOfThings;
 using Microsoft.AspNetCore.Mvc;
 

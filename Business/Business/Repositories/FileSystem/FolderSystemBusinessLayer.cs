@@ -30,6 +30,7 @@ using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using System.IO.Compression;
 using Business.Services.Interfaces;
+using BusinessModels.General.Update;
 
 namespace Business.Business.Repositories.FileSystem;
 

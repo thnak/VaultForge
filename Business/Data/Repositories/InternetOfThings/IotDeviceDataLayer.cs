@@ -3,8 +3,10 @@ using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.InternetOfThings;
 using Business.Models;
+using Business.Utils;
 using Business.Utils.Protector;
 using BusinessModels.General.Results;
+using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
 using Microsoft.AspNetCore.DataProtection;
@@ -74,17 +76,17 @@ public class IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDevi
 
     public IAsyncEnumerable<IoTDevice> FindAsync(string keyWord, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return _data.FindProjectAsync(f => f.DeviceId == keyWord, null, cancellationToken);
     }
 
     public IAsyncEnumerable<IoTDevice> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default, params Expression<Func<IoTDevice, object>>[] fieldsToFetch)
     {
-        throw new NotImplementedException();
+        return _data.FindProjectAsync(f => f.DeviceId == keyWord, limit, cancellationToken, fieldsToFetch);
     }
 
     public IAsyncEnumerable<IoTDevice> WhereAsync(Expression<Func<IoTDevice, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<IoTDevice, object>>[] fieldsToFetch)
     {
-        throw new NotImplementedException();
+        return _data.WhereAsync(predicate, cancellationToken, fieldsToFetch);
     }
 
     public IoTDevice? Get(string key)
@@ -122,7 +124,7 @@ public class IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDevi
             Skip = page * size,
             Limit = size
         }, cancellationToken);
-        
+
         List<IoTDevice> devices = await result.ToListAsync(cancellationToken);
         return (devices.ToArray(), total);
     }

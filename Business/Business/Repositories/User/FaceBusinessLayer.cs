@@ -11,6 +11,7 @@ using Business.Models;
 using Business.Models.RetrievalAugmentedGeneration.Vector;
 using Business.Services.Configure;
 using BusinessModels.General.Results;
+using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;

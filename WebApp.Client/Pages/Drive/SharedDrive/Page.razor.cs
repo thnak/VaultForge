@@ -725,7 +725,6 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 builder.AddContent(1, file.Status == FileStatus.DeletedFile ? AppLang.Delete_forever : AppLang.Move_to_recycle_bin);
                 builder.CloseElement();
             },
-            Title = AppLang.Warning,
             Icon = "fa-solid fa-triangle-exclamation",
             Color = Color.Error
         };
@@ -739,7 +738,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             { x => x.DataModel, data }
         };
 
-        var dialog = await DialogService.ShowAsync<ConfirmDialog>("", parameter, option);
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>(AppLang.Warning, parameter, option);
         var dialogResult = await dialog.Result;
         if (dialogResult is { Canceled: false })
         {
@@ -768,7 +767,6 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 builder.AddContent(1, folder.Type == FolderContentType.DeletedFolder ? AppLang.Delete_forever : AppLang.Move_to_recycle_bin);
                 builder.CloseElement();
             },
-            Title = AppLang.Warning,
             Icon = "fa-solid fa-triangle-exclamation",
             Color = Color.Error
         };
@@ -782,7 +780,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             { x => x.DataModel, data }
         };
 
-        var dialog = await DialogService.ShowAsync<ConfirmDialog>("", parameter, option);
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>(AppLang.Warning, parameter, option);
         var dialogResult = await dialog.Result;
         if (dialogResult is { Canceled: false })
         {

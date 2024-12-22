@@ -500,6 +500,10 @@ html, body {
     padding: 8px;
 }
 
+.page-content-container-search-field-width{
+    max-width: 300px;
+}
+
 .blur-3 {
     backdrop-filter: blur(8px);
 }

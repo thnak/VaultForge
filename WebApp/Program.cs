@@ -153,7 +153,7 @@ public class Program
 
         if (app.Environment.IsDevelopment())
         {
-            // app.UseWebAssemblyDebugging();
+            app.UseWebAssemblyDebugging();
         }
         else
         {

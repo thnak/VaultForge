@@ -49,7 +49,7 @@ public class IoTRequestQueueHostedService(
     private async Task InsertBatchIntoDatabase(IReadOnlyCollection<IoTRecord> batch, CancellationToken cancellationToken = default)
     {
         var result = await iotBusinessLayer.CreateAsync(batch, cancellationToken);
-        if (!result.IsSuccess)
+        if (result.IsSuccess)
         {
             foreach (var data in batch)
             {
@@ -58,7 +58,9 @@ public class IoTRequestQueueHostedService(
                     await waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, cancellationToken);
                 }
             }
-
+        }
+        else
+        {
             logger.LogWarning(result.Message);
         }
     }

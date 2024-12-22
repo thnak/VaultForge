@@ -1,0 +1,54 @@
+﻿@using BusinessModels.System.InternetOfThings.status
+@using BusinessModels.System.InternetOfThings.type
+@using Size = MudBlazor.Size
+@using Color = MudBlazor.Color
+@using WebApp.Client.Components.Field
+<MudDialog>
+    <TitleContent>
+        <div class="d-flex flex-row gap-3 align-center">
+            <MudIcon Icon="@DialogIcon" Color="Color.Primary"></MudIcon>
+            <MudText>@ConfirmButtonText</MudText>
+            <MudSpacer/>
+        </div>
+    </TitleContent>
+    <DialogContent>
+
+        <MudForm @ref="Form" Model="SensorToEdit" Validation="@(_orderValidator.ValidateValueAsync)" @bind-Errors="@ErrorMess" ValidationDelay="0">
+
+            <MudCardContent>
+
+                <MudTextField T="string" Label="Device ID" For="@(() => SensorToEdit.DeviceId)" Immediate="true" Disabled="DisableDeviceIdField" Required @bind-Value="SensorToEdit.DeviceId"></MudTextField>
+                <MudTextField T="string" Label="Sensor ID" For="@(() => SensorToEdit.SensorId)" Immediate="true" Disabled="IsEditing" Required @bind-Value="SensorToEdit.SensorId"></MudTextField>
+                <MudTextField T="string" Label="Sensor name" For="@(() => SensorToEdit.SensorName)" Immediate="true" @bind-Value="SensorToEdit.SensorName"></MudTextField>
+
+                <EnumMudSelector T="IoTSensorType" For="@(() => SensorToEdit.IoTSensorType)" LabelString="Type" @bind-SelectedValue="SensorToEdit.IoTSensorType"/>
+                <EnumMudSelector T="IoTSensorStatus" For="@(() => SensorToEdit.Status)" LabelString="Status" @bind-SelectedValue="SensorToEdit.Status"/>
+
+                <MudTextField T="string" Label="Unit of measurement" For="@(() => SensorToEdit.UnitOfMeasurement)" Immediate="true" @bind-Value="SensorToEdit.UnitOfMeasurement"></MudTextField>
+                <MudNumericField T="float" Label="Rotate" For="@(() => SensorToEdit.Rotate)" Immediate="true" @bind-Value="SensorToEdit.Rotate"></MudNumericField>
+
+                <MudNumericField T="float" Label="Accuracy" For="@(() => SensorToEdit.Accuracy)" Immediate="true" @bind-Value="SensorToEdit.Accuracy"></MudNumericField>
+                <MudDatePicker Label="Calibration time" Date="CalibrationTime" DateChanged="CalibrationTimeChanged"></MudDatePicker>
+
+            </MudCardContent>
+
+        </MudForm>
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="CancelForm" Variant="Variant.Outlined" Color="Color.Error">@AppLang.Cancel</MudButton>
+        <MudButton OnClick="SubmitForm" Disabled="Processing" Variant="Variant.Filled" Color="Color.Success">
+            @if (Processing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                <MudText Class="ms-2">@AppLang.Processing</MudText>
+            }
+            else
+            {
+                <MudText>
+                    @ConfirmButtonText
+                </MudText>
+            }
+        </MudButton>
+    </DialogActions>
+</MudDialog>

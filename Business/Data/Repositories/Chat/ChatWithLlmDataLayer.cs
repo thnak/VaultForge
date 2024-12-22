@@ -5,6 +5,7 @@ using Business.Data.Interfaces.Chat;
 using Business.Models;
 using Business.Utils;
 using BusinessModels.General.Results;
+using BusinessModels.General.Update;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using Microsoft.Extensions.Logging;

@@ -3,6 +3,7 @@ using Business.Business.Interfaces.Chat;
 using Business.Data.Interfaces.Chat;
 using Business.Models;
 using BusinessModels.General.Results;
+using BusinessModels.General.Update;
 using BusinessModels.People;
 using MongoDB.Driver;
 

@@ -3,7 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading.Channels;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Services.Configure;
-using Business.Services.OnnxService.WaterMeter;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.SignalRHub.System.Implement;
 using Business.SignalRHub.System.Interfaces;
@@ -29,7 +28,8 @@ public class IotRequestQueue : IIotRequestQueue
     private readonly IParallelBackgroundTaskQueue _backgroundTaskQueue;
     private readonly ILogger<IIotRequestQueue> _logger;
 
-    public IotRequestQueue(ApplicationConfiguration options, IHubContext<IoTSensorSignalHub, IIoTSensorSignal> hubContext, IParallelBackgroundTaskQueue backgroundTaskQueue, IWaterMeterReaderQueue waterMeterReaderQueue, ILogger<IIotRequestQueue> logger)
+    public IotRequestQueue(ApplicationConfiguration options, IHubContext<IoTSensorSignalHub, IIoTSensorSignal> hubContext, 
+        IParallelBackgroundTaskQueue backgroundTaskQueue, ILogger<IIotRequestQueue> logger)
     {
         var maxQueueSize = options.GetIoTRequestQueueConfig.MaxQueueSize;
         BoundedChannelOptions boundedChannelOptions = new(maxQueueSize)
@@ -41,7 +41,6 @@ public class IotRequestQueue : IIotRequestQueue
         _channel = Channel.CreateBounded<IoTRecord>(boundedChannelOptions);
         _hub = hubContext;
         _backgroundTaskQueue = backgroundTaskQueue;
-        _waterMeterReaderQueue = waterMeterReaderQueue;
         _logger = logger;
     }
 

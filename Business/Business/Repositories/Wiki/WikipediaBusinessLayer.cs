@@ -14,6 +14,7 @@ using Business.Services.Configure;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.Utils.StringExtensions;
 using BusinessModels.General.Results;
+using BusinessModels.General.Update;
 using BusinessModels.Wiki;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.VectorData;

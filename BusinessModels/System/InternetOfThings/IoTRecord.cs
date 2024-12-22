@@ -1,4 +1,5 @@
 ﻿using BusinessModels.Base;
+using BusinessModels.System.InternetOfThings.type;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -54,6 +55,8 @@ public class RecordMetadata
     [BsonElement("signalStrength")]
     public int SignalStrength { get; set; }
 
+    public ProcessStatus ProcessStatus { get; set; }
+    
     /// <summary>
     /// Represented as a percentage (0-100)
     /// </summary>

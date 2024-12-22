@@ -1,17 +1,92 @@
-﻿@using Color = MudBlazor.Color
+﻿@using BusinessModels.System.InternetOfThings
+@using BusinessModels.System.InternetOfThings.status
+@using BusinessModels.System.InternetOfThings.type
+@using Size = MudBlazor.Size
+@using Color = MudBlazor.Color
+@using WebApp.Client.Components.Field
+
+
 <MudDialog>
     <TitleContent>
-        <div class="d-flex flex-row gap-3">
-            <MudIcon Icon="@Icons.Material.Filled.Add" Color="Color.Primary"></MudIcon>
-            <MudText>@AppLang.Add</MudText>
+        <div class="d-flex flex-row gap-3 align-center">
+            <MudIcon Icon="@DialogIcon" Color="Color.Primary"></MudIcon>
+            <MudText>@ConfirmButtonText</MudText>
             <MudSpacer/>
         </div>
     </TitleContent>
     <DialogContent>
-        
-        <MudForm>
-            
-        </MudForm>
-        
+
+        <MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary" KeepPanelsAlive="true" @bind-ActivePanelIndex="ActivateIndex">
+            <MudTabPanel Text="@AppLang.Add_new_device">
+                <MudForm Model="DeviceToEdit" @ref="_form" Validation="@(_orderValidator.ValidateValueAsync)" ValidationDelay="0">
+
+                    <MudCardContent>
+                        <MudTextField T="string" Label="ID" For="@(() => DeviceToEdit.DeviceId)" Immediate="true" Disabled="IsEditing" Required @bind-Value="DeviceToEdit.DeviceId"></MudTextField>
+                        <MudTextField T="string" Label="Name" For="@(() => DeviceToEdit.DeviceName)" Immediate="true" Required @bind-Value="DeviceToEdit.DeviceName"></MudTextField>
+                        <MudTextField T="string" Label="Device Group" For="@(() => DeviceToEdit.DeviceGroupId)" Immediate="true" @bind-Value="DeviceToEdit.DeviceGroupId"></MudTextField>
+                        <MudTextField T="string" Label="Manufacturer" For="@(() => DeviceToEdit.Manufacturer)" Immediate="true" @bind-Value="DeviceToEdit.Manufacturer"></MudTextField>
+                        <MudTextField T="string" Label="Location" For="@(() => DeviceToEdit.Location)" Immediate="true" @bind-Value="DeviceToEdit.Location"></MudTextField>
+                        <MudTextField T="string" Label="Firmware Version" For="@(() => DeviceToEdit.FirmwareVersion)" Immediate="true" @bind-Value="DeviceToEdit.FirmwareVersion"></MudTextField>
+
+                        <MudTextField T="string" Label="Mac Address" For="@(() => DeviceToEdit.MacAddress)" Required="true" Immediate="true" @bind-Value="DeviceToEdit.MacAddress"></MudTextField>
+                        <MudTextField T="string" Label="Ip Address" For="@(() => DeviceToEdit.IpAddress)" Required="true" Immediate="true" @bind-Value="DeviceToEdit.IpAddress"></MudTextField>
+
+                        <EnumMudSelector T="IoTDeviceType" For="@(() => DeviceToEdit.IoTDeviceType)" LabelString="Type" @bind-SelectedValue="DeviceToEdit.IoTDeviceType"/>
+                        <EnumMudSelector T="IoTDeviceStatus" For="@(() => DeviceToEdit.Status)" LabelString="Status" @bind-SelectedValue="DeviceToEdit.Status"/>
+
+
+                        <MudDatePicker Label="Installation Date" Date="InstallationDate" DateChanged="InstallationDateChanged"></MudDatePicker>
+
+                    </MudCardContent>
+
+                </MudForm>
+            </MudTabPanel>
+            <MudTabPanel Text="Sensors" Disabled="IsAddingDevice">
+
+                <MudDataGrid T="IoTSensor" Items="Sensors" Filterable="false" Dense="true" Bordered="true" Culture="CultureInfo.CurrentCulture" Hover="true" Striped="true">
+                    <ToolBarContent>
+                        <MudText Typo="Typo.h6">Sensors</MudText>
+                        <MudSpacer/>
+                        <MudButton StartIcon="@Icons.Material.Filled.Add" Disabled="IsAddingDevice" OnClick="OpenAddDialog">@AppLang.AddSensor</MudButton>
+                    </ToolBarContent>
+                    <Columns>
+                        <PropertyColumn Property="x => x.SensorId" Title="Id"/>
+                        <PropertyColumn Property="x => x.SensorName" Title="Name"/>
+                        <PropertyColumn Property="x => x.IoTSensorType" Title="Type"/>
+                        <PropertyColumn Property="x => x.Status" Title="Status"/>
+                        <PropertyColumn Property="x => x.Rotate" Title="Rotate"/>
+                        <PropertyColumn Property="x => x.CalibrationTime" Title="Calibration Time"/>
+
+                    </Columns>
+                    <PagerContent>
+                        <MudDataGridPager T="IoTSensor"/>
+                    </PagerContent>
+                </MudDataGrid>
+
+            </MudTabPanel>
+        </MudTabs>
+
+
     </DialogContent>
+
+    <DialogActions>
+
+        <MudButton OnClick="CancelForm" Variant="Variant.Outlined" Color="Color.Error">@AppLang.Cancel</MudButton>
+        <MudButton OnClick="SubmitForm" Variant="Variant.Filled" Color="Color.Success" Disabled="Processing">
+            @if (Processing)
+            {
+                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                <MudText Class="ms-2">@AppLang.Processing</MudText>
+            }
+            else
+            {
+                <MudText>
+                    @ConfirmButtonText
+                </MudText>
+            }
+        </MudButton>
+
+
+    </DialogActions>
+
 </MudDialog>

@@ -78,7 +78,6 @@ public partial class SignInPage(HttpClient httpClient, AntiforgeryStateProvider 
                 await InvokeAsync(StateHasChanged);
 
                 var antiforgery = antiforgeryStateProvider.GetAntiforgeryToken();
-                Console.WriteLine(antiforgery);
                 using var content = new MultipartFormDataContent();
                 content.Add(new StringContent(CurrentRequestModel.UserName), "userName");
                 if (antiforgery != null)

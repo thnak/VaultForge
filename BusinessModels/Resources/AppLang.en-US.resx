@@ -557,4 +557,22 @@ ClientY: {1}</value>
     <data name="IP address is not valid" xml:space="preserve">
       <value>IP address is not valid</value>
     </data>
+    <data name="Update" xml:space="preserve">
+      <value>Update</value>
+    </data>
+    <data name="AddSensor" xml:space="preserve">
+      <value>Add sensor</value>
+    </data>
+    <data name="DeviceGroupManagement" xml:space="preserve">
+      <value>Device Group Management</value>
+    </data>
+    <data name="Sensors" xml:space="preserve">
+      <value>Sensors</value>
+    </data>
+    <data name="DeleteSensor" xml:space="preserve">
+      <value>Delete sensor</value>
+    </data>
+    <data name="Image" xml:space="preserve">
+      <value>Image</value>
+    </data>
 </root>

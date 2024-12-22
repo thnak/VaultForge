@@ -2,6 +2,7 @@
 using Business.Models;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.Advertisement;
+using BusinessModels.General.Update;
 using BusinessModels.System;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;

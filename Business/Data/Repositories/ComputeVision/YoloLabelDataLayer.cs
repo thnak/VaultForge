@@ -4,6 +4,7 @@ using Business.Data.Interfaces;
 using Business.Data.Interfaces.ComputeVision;
 using Business.Models;
 using BusinessModels.General.Results;
+using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.ComputeVision;
 using MongoDB.Bson;
