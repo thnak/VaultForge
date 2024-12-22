@@ -51,15 +51,32 @@ public static class PreProcessExtension
         {
             for (int y = 0; y < image.Dimensions[2]; y++)
             {
-                feed[0, x + top, y + left] = image[0, x, y];
-                feed[1, x + top, y + left] = image[1, x, y];
-                feed[2, x + top, y + left] = image[2, x, y];
+                var xAxis = x + top;
+                var yAxis = y + left;
+                feed[0, xAxis, yAxis] = image[0, x, y];
+                feed[1, xAxis, yAxis] = image[1, x, y];
+                feed[2, xAxis, yAxis] = image[2, x, y];
             }
         });
 
         return (feed, ratio, [dh, dw]);
     }
-    
+
+    public static void FillTensorA2B(this DenseTensor<float> feed, DenseTensor<float> image, int offsetLeft, int offsetTop)
+    {
+        Parallel.For(0, image.Dimensions[1], x =>
+        {
+            for (int y = 0; y < image.Dimensions[2]; y++)
+            {
+                var xAxis = x + offsetTop;
+                var yAxis = y + offsetLeft;
+                feed[0, xAxis, yAxis] = image[0, x, y];
+                feed[1, xAxis, yAxis] = image[1, x, y];
+                feed[2, xAxis, yAxis] = image[2, x, y];
+            }
+        });
+    }
+
     public static DenseTensor<float> ResizeLinear(this DenseTensor<float> imageMatrix, int[] shape)
     {
         int[] newShape = [3, shape[0], shape[1]];
@@ -106,7 +123,7 @@ public static class PreProcessExtension
 
         return outputImage;
     }
-    
+
     public static List<string> ChunkTextByDelimiter(string text, char delimiter)
     {
         if (string.IsNullOrWhiteSpace(text))

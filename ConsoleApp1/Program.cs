@@ -130,11 +130,99 @@
 //     }
 // }
 
-using System.Text.RegularExpressions;
+using System.Numerics;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Columns;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Loggers;
+using BenchmarkDotNet.Running;
+using BenchmarkDotNet.Validators;
+using BrainNet.Utils;
+using Microsoft.ML.OnnxRuntime.Tensors;
 
-var code = "";
-var match = Regex.Matches(code, "^(\\d{5})\\s-\\s(.*)\\s-\\s(.*)$");
-Console.WriteLine();
+[Benchmark]
+DenseTensor<float> ResizeLinear(DenseTensor<float> imageMatrix, int[] shape)
+{
+    int[] newShape = [3, shape[0], shape[1]];
+    DenseTensor<float> outputImage = new DenseTensor<float>(newShape);
+
+    int originalHeight = imageMatrix.Dimensions[1];
+    int originalWidth = imageMatrix.Dimensions[2];
+
+    float invScaleFactorY = (float)originalHeight / shape[0];
+    float invScaleFactorX = (float)originalWidth / shape[1];
+
+    Parallel.For(0, shape[0], y =>
+    {
+        float oldY = y * invScaleFactorY;
+        int yFloor = (int)Math.Floor(oldY);
+        int yCeil = Math.Min(originalHeight - 1, (int)Math.Ceiling(oldY));
+        float yFraction = oldY - yFloor;
+
+        for (int x = 0; x < shape[1]; x++)
+        {
+            float oldX = x * invScaleFactorX;
+            int xFloor = (int)Math.Floor(oldX);
+            int xCeil = Math.Min(originalWidth - 1, (int)Math.Ceiling(oldX));
+            float xFraction = oldX - xFloor;
+
+            for (int c = 0; c < 3; c++)
+            {
+                // Sample four neighboring pixels
+                float topLeft = imageMatrix[c, yFloor, xFloor];
+                float topRight = imageMatrix[c, yFloor, xCeil];
+                float bottomLeft = imageMatrix[c, yCeil, xFloor];
+                float bottomRight = imageMatrix[c, yCeil, xCeil];
+
+                // Interpolate between the four neighboring pixels
+                float topBlend = topLeft + xFraction * (topRight - topLeft);
+                float bottomBlend = bottomLeft + xFraction * (bottomRight - bottomLeft);
+                float finalBlend = topBlend + yFraction * (bottomBlend - topBlend);
+
+                // Assign the interpolated value to the output image
+                outputImage[c, y, x] = finalBlend;
+            }
+        }
+    });
+
+    return outputImage;
+}
+
+var config  = new ManualConfig()
+    .WithOptions(ConfigOptions.DisableOptimizationsValidator)
+    .AddValidator(JitOptimizationsValidator.DontFailOnError)
+    .AddLogger(ConsoleLogger.Default)
+    .AddColumnProvider(DefaultColumnProviders.Instance);
+
+BenchmarkRunner.Run<FunctionBenchmark>(config);
+
+
+// DenseTensor<float> _tensor1280 = new([3, 1280, 1280]);
+// _tensor1280.ResizeLinear([3, 640, 640]);
+
+public class FunctionBenchmark()
+{
+    readonly DenseTensor<float> _tensor1280 = new([3, 1280, 1280]);
+    readonly DenseTensor<float> _tensor640 = new([3, 640, 640]);
+
+    // [Benchmark]
+    // public void RunResizeLinear()
+    // {
+    //     _tensor1280.ResizeLinear([3, 640, 640]);
+    // }
+
+    // [Benchmark]
+    // public void RunFill()
+    // {
+    //     _tensor640.Fill(114);
+    // }
+    //
+    [Benchmark]
+    public void RunLetterBox()
+    {
+        _tensor1280.LetterBox(false, false, true, 32, [640, 640]);
+    }
+}
 
 //
 // DateTime MinDate = new DateTime(1970, 1, 1, 0, 0, 0);

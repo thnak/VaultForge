@@ -23,6 +23,7 @@ public static class SessionOptionExtension
         {
             case "CUDAExecutionProvider":
                 return SessionOptions.MakeSessionOptionWithCudaProvider();
+            
         }
         return new SessionOptions();
     }

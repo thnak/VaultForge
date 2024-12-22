@@ -60,7 +60,7 @@ public partial class IoTController
             return BadRequest(createFileResult.Item2);
 
         await raidService.WriteDataAsync(fileData, fileInfo.AbsolutePath, cancelToken);
-
+        await thumbnailService.AddThumbnailRequest(fileInfo.Id.ToString());
         IoTRecord record = new IoTRecord(new RecordMetadata()
         {
             SensorId = sensorId,

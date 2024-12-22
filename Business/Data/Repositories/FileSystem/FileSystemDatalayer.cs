@@ -20,10 +20,12 @@ using MongoDB.Driver;
 
 namespace Business.Data.Repositories.FileSystem;
 
-public class FileSystemDatalayer(IMongoDataLayerContext context, 
-    IDataProtectionProvider provider, ILogger<FileSystemDatalayer> logger, 
-    ISequenceBackgroundTaskQueue sequenceQueue, 
-    IMemoryCache memoryCache, 
+public class FileSystemDatalayer(
+    IMongoDataLayerContext context,
+    IDataProtectionProvider provider,
+    ILogger<FileSystemDatalayer> logger,
+    ISequenceBackgroundTaskQueue sequenceQueue,
+    IMemoryCache memoryCache,
     RedundantArrayOfIndependentDisks raidService) : IFileSystemDatalayer
 {
     private readonly IMongoCollection<FileInfoModel> _fileDataDb = context.MongoDatabase.GetCollection<FileInfoModel>("FileInfo");
@@ -184,7 +186,17 @@ public class FileSystemDatalayer(IMongoDataLayerContext context,
 
     public FileInfoModel? Get(string key)
     {
-        FilterDefinition<FileInfoModel> filter = ObjectId.TryParse(key, out var id) ? Builders<FileInfoModel>.Filter.Eq(x => x.Id, id) : Builders<FileInfoModel>.Filter.Eq(x => x.AbsolutePath, key);
+        FilterDefinition<FileInfoModel> filter;
+        if (ObjectId.TryParse(key, out var id))
+        {
+            filter = Builders<FileInfoModel>.Filter.Eq(x => x.Id, id);
+        }
+        else
+        {
+            filter = Builders<FileInfoModel>.Filter.Eq(x => x.AbsolutePath, key);
+            filter |= Builders<FileInfoModel>.Filter.Eq(x => x.AliasCode, key);
+        }
+
         return _fileDataDb.Find(filter).Limit(1).FirstOrDefault();
     }
 
@@ -275,7 +287,7 @@ public class FileSystemDatalayer(IMongoDataLayerContext context,
                 model.ModifiedTime = DateTime.UtcNow;
                 model.AliasCode = model.Id.GenerateAliasKey(DateTime.Now.Ticks.ToString());
                 model.AliasCode = _protectionProvider.Protect(model.AliasCode);
-                
+
                 await _fileDataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
                 return Result<bool>.Success(true);
             }

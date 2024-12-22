@@ -2,6 +2,7 @@
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Data.StorageSpace;
 using Business.Services.Http.CircuitBreakers;
+using Business.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,4 +20,5 @@ public partial class IoTController(
     IFileSystemBusinessLayer fileSystemServe,
     IIoTBusinessLayer ioTBusinessService,
     RedundantArrayOfIndependentDisks raidService,
+    IThumbnailService thumbnailService,
     ILogger<IoTController> logger) : ControllerBase;

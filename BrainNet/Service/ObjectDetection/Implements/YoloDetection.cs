@@ -57,7 +57,10 @@ public class YoloDetection : IYoloDetection
 
     private SessionOptions InitSessionOption()
     {
-        var sessionOptions = SessionOptionExtension.MakeSessionOption();
+        var sessionOptions = new SessionOptions();
+        // sessionOptions.RegisterOrtExtensions();
+        sessionOptions.InitSessionOption();
+        sessionOptions.InitExecutionProviderOptions(Options.Value.FaceEmbeddingSetting.DeviceIndex);
         return sessionOptions;
     }
 
@@ -150,7 +153,7 @@ public class YoloDetection : IYoloDetection
         using var fromResult = Session.Run(runOptions, inputs, OutputNames);
 
         float[] resultArrays = fromResult[0].Value.GetTensorDataAsSpan<float>().ToArray();
-
+        
         YoloPrediction predictions = new YoloPrediction(resultArrays, CategoryReadOnlyCollection.ToArray(), feed.dwdhs, feed.ratios, feed.imageShape);
         return predictions.GetDetect();
     }

@@ -45,7 +45,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="cuda only">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloDetection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloDetection.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Utils/PreProcessExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Utils/PreProcessExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Utils/SessionOptionExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Utils/SessionOptionExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConsoleApp1/ConsoleApp1.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/ConsoleApp1.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConsoleApp1/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConsoleApp1/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/packages.lock.json" afterDir="false" />
+    </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,6 +123,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b19b48a658d34783924b2956c870b2ee39420/29/330bd635/EmbeddingGenerationOptions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f144f137e8c44478ad03d647d3e83e8771910/68/2e705602/EncryptionAlgorithm.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1059a9b9258b3670df5a4c449544237362d49ae9599d8964fde76c16fc50b6/VectorStoreRecordProperty.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1e9051104f7894b9ba7e669e1d0bb793b9aa7e74273a7cc1cf79a91e248ca97/Tensor.shared.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2565b9d99fdde488bc7801b84387b2cc864959cfb63212e1ff576fc9c6bb7e/CancellationToken.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2854ce6d56c18d0d837d3a3ef9c4f2c7c77691fa3528c8394986ac7ce7719/StackFrameIterator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2b54a8d6295726a4b8041791a5f6b2992ffd98228be84a32877624da44cf018/InferenceSession.shared.cs" root0="FORCE_HIGHLIGHTING" />
@@ -150,8 +160,8 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f08263c1b162536d21bcac5d3d5599c6108a7df0503ecd6facc435edad3ead4/INumber.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fd5df964a94a255455f7b077e863af646a024518fa7703879230fff599b192/OrtIoBinding.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fe3b1716bf2f8f83ac793e7e3faa60f88a7868347653f77591f74b86d0d97675/Server.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Service/WaterMeter/Interfaces/WaterMeterReader.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Service/WaterMeter/Interfaces/WaterMeterReader.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Service/ObjectDetection/Implements/YoloDetection.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Utils/SessionOptionExtension.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
@@ -185,7 +195,7 @@
     &quot;.NET Launch Settings Profile.WebApp: IIS Express.executor&quot;: &quot;Debug&quot;,
     &quot;.NET Launch Settings Profile.WebApp: https.executor&quot;: &quot;Debug&quot;,
     &quot;.NET Launch Settings Profile.WebApp: no-browser.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Project.ConsoleApp1.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Project.ConsoleApp1.executor&quot;: &quot;Run&quot;,
     &quot;.NET Project.WebApp.Client.executor&quot;: &quot;Debug&quot;,
     &quot;Docker.WebApp/Dockerfile (1).executor&quot;: &quot;Run&quot;,
     &quot;Publish to folder.ResApi.executor&quot;: &quot;Run&quot;,
@@ -251,7 +261,7 @@
       <window_info anchor="right" id="Maven" order="4" weight="0.25" />
     </layout>
   </component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: no-browser">
+  <component name="RunManager" selected=".NET Project.ConsoleApp1">
     <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
       <deployment type="docker-compose.yml">
         <settings />
@@ -939,22 +949,8 @@
       <workItem from="1734567293156" duration="16397000" />
       <workItem from="1734656095733" duration="8344000" />
       <workItem from="1734681024655" duration="5369000" />
-    </task>
-    <task id="LOCAL-00425" summary="only image can request index">
-      <option name="closed" value="true" />
-      <created>1733313055004</created>
-      <option name="number" value="00425" />
-      <option name="presentableId" value="LOCAL-00425" />
-      <option name="project" value="LOCAL" />
-      <updated>1733313055004</updated>
-    </task>
-    <task id="LOCAL-00426" summary="limit size">
-      <option name="closed" value="true" />
-      <created>1733313439408</created>
-      <option name="number" value="00426" />
-      <option name="presentableId" value="LOCAL-00426" />
-      <option name="project" value="LOCAL" />
-      <updated>1733313439408</updated>
+      <workItem from="1734713354182" duration="2151000" />
+      <workItem from="1734741697628" duration="12763000" />
     </task>
     <task id="LOCAL-00427" summary="fix losing data info after update">
       <option name="closed" value="true" />
@@ -1332,7 +1328,23 @@
       <option name="project" value="LOCAL" />
       <updated>1734691961283</updated>
     </task>
-    <option name="localTasksCounter" value="474" />
+    <task id="LOCAL-00474" summary="update algo">
+      <option name="closed" value="true" />
+      <created>1734716780652</created>
+      <option name="number" value="00474" />
+      <option name="presentableId" value="LOCAL-00474" />
+      <option name="project" value="LOCAL" />
+      <updated>1734716780652</updated>
+    </task>
+    <task id="LOCAL-00475" summary="cuda only">
+      <option name="closed" value="true" />
+      <created>1734741920844</created>
+      <option name="number" value="00475" />
+      <option name="presentableId" value="LOCAL-00475" />
+      <option name="project" value="LOCAL" />
+      <updated>1734741920845</updated>
+    </task>
+    <option name="localTasksCounter" value="476" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1363,7 +1375,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="update message pack to v3" />
     <MESSAGE value="fix overflow text" />
     <MESSAGE value="add missing config" />
     <MESSAGE value="add virtual sample page" />
@@ -1383,12 +1394,13 @@
     <MESSAGE value="update" />
     <MESSAGE value="fix missing data" />
     <MESSAGE value="remove log" />
-    <MESSAGE value="cuda only" />
     <MESSAGE value="small update to optimize code" />
     <MESSAGE value="add log" />
     <MESSAGE value="add try catch inside queue" />
     <MESSAGE value="remove debug" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove debug" />
+    <MESSAGE value="update algo" />
+    <MESSAGE value="cuda only" />
+    <option name="LAST_COMMIT_MESSAGE" value="cuda only" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1398,19 +1410,6 @@
           <line>51</line>
           <properties documentPath="C:\Users\thanh\AppData\Roaming\JetBrains\Rider2024.3\resharper-host\SourcesCache\30cbb3994b59af56741aa3ee40719e511f42d9a2920f2a6f5ae81f8d1e78ee3\FunctionCallContentBuilder.cs" containingFunctionPresentation="Method 'Append'" />
           <option name="timeStamp" value="54" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/ConsoleApp1/Program.cs</url>
-          <line>136</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\ConsoleApp1\Program.cs" containingFunctionPresentation="">
-            <startOffsets>
-              <option value="5456" />
-            </startOffsets>
-            <endOffsets>
-              <option value="5476" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="86" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">
