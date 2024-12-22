@@ -56,7 +56,7 @@ public class HostApplicationLifetimeEventsHostedService(
         await QueueInitializationExtendServiceTask<IFolderSystemBusinessLayer>(cancellationToken);
         await QueueInitializationExtendServiceTask<IFaceBusinessLayer>(cancellationToken);
         await QueueInitializationExtendServiceTask<IWikipediaBusinessLayer>(cancellationToken);
-        await QueueInitializationExtendServiceTask<IIoTBusinessLayer>(cancellationToken);
+        await QueueInitializationExtendServiceTask<IIotRecordBusinessLayer>(cancellationToken);
     }
 
     private async Task QueueInitializationExtendServiceTask<TDataLayer>(CancellationToken cancellationToken) where TDataLayer : IExtendService

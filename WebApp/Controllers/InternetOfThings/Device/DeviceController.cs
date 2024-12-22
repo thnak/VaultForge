@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Business.Business.Interfaces.InternetOfThings;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers.InternetOfThings.Device;
@@ -7,4 +8,4 @@ namespace WebApp.Controllers.InternetOfThings.Device;
 [IgnoreAntiforgeryToken]
 [Route("api/[controller]")]
 [ApiController]
-public class DeviceController : ControllerBase;
+public partial class DeviceController(IIotDeviceBusinessLayer deviceBusinessLayer, IIoTSensorBusinessLayer sensorBusinessLayer) : ControllerBase;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
+using BusinessModels.Utils;
 
 namespace Business.Models;
 
@@ -38,11 +39,21 @@ public class FieldUpdate<T> : FieldUpdate
 
         return TryGet<TParam>(memberExpression.Member.Name);
     }
+
+    public string GetJson()
+    {
+        return Parameters.ToJson();
+    }
+
+    public void SetFromJson(string json)
+    {
+        Parameters = json.DeSerialize<Dictionary<string, object?>>() ?? [];
+    }
 }
 
 public class FieldUpdate : IEnumerable<KeyValuePair<string, object>>
 {
-    internal Dictionary<string, object?> Parameters { get; set; } = [];
+    public Dictionary<string, object?> Parameters { get; set; } = [];
 
 
     public void Add(string parameterName, object? value)

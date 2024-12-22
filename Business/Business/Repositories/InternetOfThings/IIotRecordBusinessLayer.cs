@@ -11,7 +11,7 @@ using MongoDB.Driver;
 
 namespace Business.Business.Repositories.InternetOfThings;
 
-public class IoTBusinessLayer(IIoTDataLayer data, IIotRequestQueue iotRequestQueue) : IIoTBusinessLayer
+public class IIotRecordBusinessLayer(IIotRecordDataLayer data, IIotRequestQueue iotRequestQueue) : IIotRecordBusinessLayer
 {
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {

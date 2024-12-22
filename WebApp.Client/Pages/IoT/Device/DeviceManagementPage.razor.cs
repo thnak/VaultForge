@@ -1,4 +1,5 @@
 ﻿using BusinessModels.Resources;
+using BusinessModels.System;
 using BusinessModels.System.InternetOfThings;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -8,15 +9,16 @@ namespace WebApp.Client.Pages.IoT.Device;
 public partial class DeviceManagementPage : ComponentBase, IDisposable
 {
     #region --- page models ---
-    
+
     private class PageModel(IoTDevice device)
     {
         public IoTDevice Device { get; set; } = device;
     }
-    
+
     #endregion
+
     MudDataGrid<PageModel>? dataGrid;
-    
+
     private List<PageModel> Devices { get; set; } = new();
     private string DeviceSearchString { get; set; } = string.Empty;
 
@@ -26,25 +28,21 @@ public partial class DeviceManagementPage : ComponentBase, IDisposable
         dataGrid?.Dispose();
     }
 
-    private Task<GridData<PageModel>> ServerReload(GridState<PageModel> arg)
+    private async Task<GridData<PageModel>> ServerReload(GridState<PageModel> arg)
     {
-        var sortDefinition = arg.SortDefinitions.FirstOrDefault();
-        // if (sortDefinition != null)
-        // {
-        //     switch (sortDefinition.SortBy)
-        //     {
-        //         case nameof(PageModel.Device)
-        //     }
-        // }
-        
-
-        throw new NotImplementedException();
+        var result = await ApiService.GetAsync<SignalRResultValue<IoTDevice>>("api/device/get-device");
+        return new GridData<PageModel>
+        {
+            Items = result.Data?.Data.Select(x => new PageModel(x)) ?? [],
+            TotalItems = (int)(result.Data?.Total ?? 0)
+        };
     }
 
 
-    private Task<IEnumerable<string>> SearchDevice(string arg1, CancellationToken arg2)
+    private async Task<IEnumerable<string>> SearchDevice(string arg1, CancellationToken arg2)
     {
-        throw new NotImplementedException();
+        var result = await ApiService.GetAsync<List<IoTDevice>>("api/device/search-device", arg2);
+        return result.Data?.Select(x => x.DeviceId) ?? [];
     }
 
     private Task OpenAddDialog()

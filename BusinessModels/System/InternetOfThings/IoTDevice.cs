@@ -27,13 +27,16 @@ public class IoTDevice : BaseModelEntry
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime InstallationDate { get; set; }
 
+    [BsonElement("lastServiceDate")]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    public DateTime? LastServiceDate { get; set; }
+
+ 
+
     [BsonElement("location")] public string Location { get; set; } = string.Empty;
 
     [BsonElement("firmwareVersion")] public string FirmwareVersion { get; set; } = string.Empty;
 
-    [BsonElement("lastServiceDate")]
-    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
-    public DateTime? LastServiceDate { get; set; }
 
     [BsonElement("status")]
     [BsonRepresentation(BsonType.String)]

@@ -1,77 +1,63 @@
 ﻿using System.Linq.Expressions;
-using Business.Data.Interfaces;
+using Business.Business.Interfaces.InternetOfThings;
 using Business.Data.Interfaces.InternetOfThings;
 using Business.Models;
 using BusinessModels.General.Results;
 using BusinessModels.System.InternetOfThings;
 using MongoDB.Driver;
 
-namespace Business.Data.Repositories.InternetOfThings;
+namespace Business.Business.Repositories.InternetOfThings;
 
-public class SensorDataLayer(IMongoDataLayerContext context) : ISensorDataLayer
+public class IoTSensorBusinessLayer(IIotSensorDataLayer iIotSensorDataLayer) : IIoTSensorBusinessLayer
 {
-    public void Dispose()
-    {
-        //
-    }
-
-    public Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public event Func<string, Task>? Added;
-    public event Func<string, Task>? Deleted;
-    public event Func<string, Task>? Updated;
-
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return iIotSensorDataLayer.GetDocumentSizeAsync(cancellationToken);
     }
 
     public Task<long> GetDocumentSizeAsync(Expression<Func<IoTSensor, bool>> predicate, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return iIotSensorDataLayer.GetDocumentSizeAsync(predicate, cancellationToken);
     }
 
     public IAsyncEnumerable<IoTSensor> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return iIotSensorDataLayer.Search(queryString, limit, cancellationToken);
     }
 
     public IAsyncEnumerable<IoTSensor> FindAsync(FilterDefinition<IoTSensor> filter, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return iIotSensorDataLayer.FindAsync(filter, cancellationToken);
     }
 
     public IAsyncEnumerable<IoTSensor> FindAsync(string keyWord, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return iIotSensorDataLayer.FindAsync(keyWord, cancellationToken);
     }
 
     public IAsyncEnumerable<IoTSensor> FindProjectAsync(string keyWord, int limit = 10, CancellationToken cancellationToken = default, params Expression<Func<IoTSensor, object>>[] fieldsToFetch)
     {
-        throw new NotImplementedException();
+        return iIotSensorDataLayer.FindProjectAsync(keyWord, limit, cancellationToken, fieldsToFetch);
     }
 
-    public IAsyncEnumerable<IoTSensor> WhereAsync(Expression<Func<IoTSensor, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<IoTSensor, object>>[] fieldsToFetch)
+    public IAsyncEnumerable<IoTSensor> Where(Expression<Func<IoTSensor, bool>> predicate, CancellationToken cancellationToken = default, params Expression<Func<IoTSensor, object>>[] fieldsToFetch)
     {
-        throw new NotImplementedException();
+        return iIotSensorDataLayer.WhereAsync(predicate, cancellationToken, fieldsToFetch);
     }
 
     public IoTSensor? Get(string key)
     {
-        throw new NotImplementedException();
+        return iIotSensorDataLayer.Get(key);
     }
 
     public Task<Result<IoTSensor?>> Get(string key, params Expression<Func<IoTSensor, object>>[] fieldsToFetch)
     {
-        throw new NotImplementedException();
+        return iIotSensorDataLayer.Get(key, fieldsToFetch);
     }
 
     public IAsyncEnumerable<IoTSensor?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return iIotSensorDataLayer.GetAsync(keys, cancellationToken);
     }
 
     public Task<(IoTSensor[], long)> GetAllAsync(int page, int size, CancellationToken cancellationToken = default)
@@ -81,36 +67,36 @@ public class SensorDataLayer(IMongoDataLayerContext context) : ISensorDataLayer
 
     public IAsyncEnumerable<IoTSensor> GetAllAsync(Expression<Func<IoTSensor, object>>[] field2Fetch, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return iIotSensorDataLayer.GetAllAsync(field2Fetch, cancellationToken);
     }
 
     public Task<Result<bool>> CreateAsync(IoTSensor model, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return iIotSensorDataLayer.CreateAsync(model, cancellationToken);
     }
 
     public Task<Result<bool>> CreateAsync(IReadOnlyCollection<IoTSensor> models, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return iIotSensorDataLayer.CreateAsync(models, cancellationToken);
     }
 
-    public Task<(bool, string)> ReplaceAsync(IoTSensor model, CancellationToken cancellationToken = default)
+    public Task<(bool, string)> UpdateAsync(IoTSensor model, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
     public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<IoTSensor> updates, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return iIotSensorDataLayer.UpdateAsync(key, updates, cancellationToken);
     }
 
-    public IAsyncEnumerable<(bool, string, string)> ReplaceAsync(IEnumerable<IoTSensor> models, CancellationToken cancellationToken = default)
+    public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<IoTSensor> models, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
     public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
-        throw new NotImplementedException();
+        return iIotSensorDataLayer.DeleteAsync(key, cancelToken);
     }
 }

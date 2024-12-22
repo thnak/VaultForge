@@ -14,9 +14,9 @@ using WriteConcern = MongoDB.Driver.WriteConcern;
 
 namespace Business.Data.Repositories.InternetOfThings;
 
-public class IoTDataLayer : IIoTDataLayer
+public class IotRecordDataLayer : IIotRecordDataLayer
 {
-    public IoTDataLayer(IMongoDataLayerContext context, ILogger<IoTDataLayer> logger)
+    public IotRecordDataLayer(IMongoDataLayerContext context, ILogger<IotRecordDataLayer> logger)
     {
         try
         {
@@ -37,7 +37,7 @@ public class IoTDataLayer : IIoTDataLayer
     }
 
     private readonly IMongoCollection<IoTRecord> _dataDb;
-    private readonly ILogger<IoTDataLayer> _logger;
+    private readonly ILogger<IotRecordDataLayer> _logger;
 
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)

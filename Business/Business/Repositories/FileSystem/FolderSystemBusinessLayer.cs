@@ -10,7 +10,6 @@ using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.User;
 using Business.Business.Utils;
 using Business.Data.Interfaces.FileSystem;
-using Business.Data.Interfaces.VectorDb;
 using Business.Data.StorageSpace;
 using Business.Models;
 using Business.Services;
@@ -24,7 +23,6 @@ using BusinessModels.General.Results;
 using BusinessModels.People;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
-using BusinessModels.Utils;
 using BusinessModels.Validator.Folder;
 using BusinessModels.WebContent.Drive;
 using Microsoft.Extensions.Caching.Memory;
@@ -655,7 +653,7 @@ internal class FolderSystemBusinessLayer(
                 ContentType = "video/mp4",
                 RootFolder = requestNewFolder.RootId,
                 ModifiedTime = DateTime.UtcNow,
-                CreatedDate = DateTime.Today
+                CreatedDate = DateOnly.FromDateTime(DateTime.UtcNow)
             };
             await CreateFileAsync(storageFolder, fileInfo, cancellationToken);
             logger.LogInformation($"Add {fileInfo.Id}");
@@ -665,23 +663,9 @@ internal class FolderSystemBusinessLayer(
     }
 
     [Experimental("SKEXP0020")]
-    public async Task RequestIndexAsync(string key, CancellationToken cancellationToken = default)
+    public  Task RequestIndexAsync(string key, CancellationToken cancellationToken = default)
     {
-        var file = fileSystemService.Get(key);
-        if (file != null)
-        {
-            if (file.ContentType.IsImageFile())
-            {
-                var folder = Get(file.RootFolder);
-                if (folder != null)
-                {
-                    if (!file.Vector.Any())
-                    {
-                        await sequenceBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken => { await Request(folder.OwnerUsername, file, serverToken); }, cancellationToken);
-                    }
-                }
-            }
-        }
+        return Task.CompletedTask;
     }
 
     public Task<List<SearchScore<VectorRecord>>> SearchRagFromAllDb(string query, int count, CancellationToken cancellationToken = default)
@@ -706,7 +690,6 @@ internal class FolderSystemBusinessLayer(
             string destinationPath = Path.Combine(rootFolder.AbsolutePath, entry.FullName);
 
             // Ensure the directory exists for this entry
-            string directoryPath = Path.GetDirectoryName(destinationPath) ?? string.Empty;
             // if (!Directory.Exists(directoryPath))
             // {
             //     Directory.CreateDirectory(directoryPath);
@@ -771,7 +754,6 @@ internal class FolderSystemBusinessLayer(
         await fileSystemService.UpdateAsync(file.Id.ToString(), new FieldUpdate<FileInfoModel>()
         {
             { x => x.Description, description },
-            { x => x.Vector, vector }
         }, cancellationToken);
     }
 

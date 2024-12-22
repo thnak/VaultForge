@@ -13,8 +13,12 @@ using SixLabors.ImageSharp.Processing;
 
 namespace Business.Services.FileSystem;
 
-public class ThumbnailService(IParallelBackgroundTaskQueue queue, ApplicationConfiguration options, IFileSystemBusinessLayer fileService,
-    RedundantArrayOfIndependentDisks raidService, ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
+public class ThumbnailService(
+    IParallelBackgroundTaskQueue queue,
+    ApplicationConfiguration options,
+    IFileSystemBusinessLayer fileService,
+    RedundantArrayOfIndependentDisks raidService,
+    ILogger<ThumbnailService> logger) : IThumbnailService, IDisposable
 {
     public Task AddThumbnailRequest(string imageId)
     {
@@ -112,8 +116,8 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, ApplicationCon
                     AbsolutePath = thumbnailPath,
                     FileSize = thumbnailSize,
                     Classify = FileClassify.ThumbnailFile,
-                    CreatedDate = DateTime.Now,
-                    ModifiedTime = DateTime.Now,
+                    CreatedDate = DateOnly.FromDateTime(DateTime.UtcNow),
+                    ModifiedTime = DateTime.UtcNow,
                     ContentType = "image/webp",
                     RootFolder = fileInfo.RootFolder,
                     ParentResource = fileSourceId
@@ -125,8 +129,8 @@ public class ThumbnailService(IParallelBackgroundTaskQueue queue, ApplicationCon
                     AbsolutePath = extendImagePath,
                     FileSize = extendedImageSize,
                     Classify = FileClassify.ThumbnailWebpFile,
-                    CreatedDate = DateTime.Now,
-                    ModifiedTime = DateTime.Now,
+                    CreatedDate = DateOnly.FromDateTime(DateTime.UtcNow),
+                    ModifiedTime = DateTime.UtcNow,
                     ContentType = "image/webp",
                     RootFolder = fileInfo.RootFolder,
                     ParentResource = fileSourceId

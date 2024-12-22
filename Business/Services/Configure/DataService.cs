@@ -41,6 +41,7 @@ using BusinessModels.General.SettingModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using IIotRecordBusinessLayer = Business.Business.Repositories.InternetOfThings.IIotRecordBusinessLayer;
 
 namespace Business.Services.Configure;
 
@@ -53,7 +54,7 @@ public static class DataService
         service.AddSingleton<IMongoDataLayerContext, MongoDataLayerContext>();
 
         service.AddSingleton<IVectorDataLayer, VectorDataLayer>();
-        
+
         service.AddSingleton<RedundantArrayOfIndependentDisks>();
 
         service.AddSingleton<IUserDataLayer, UserDataLayer>();
@@ -71,8 +72,14 @@ public static class DataService
         service.AddSingleton<IChatWithLlmDataLayer, ChatWithLlmDataLayer>();
         service.AddSingleton<IChatWithLlmBusinessLayer, ChatWithLlmBusinessLayer>();
 
-        service.AddSingleton<IIoTDataLayer, IoTDataLayer>();
-        service.AddSingleton<IIoTBusinessLayer, IoTBusinessLayer>();
+        service.AddSingleton<IIotRecordDataLayer, IotRecordDataLayer>();
+        service.AddSingleton<IIotRecordBusinessLayer, IIotRecordBusinessLayer>();
+
+        service.AddSingleton<IIotDeviceDataLayer, IotDeviceDataLayer>();
+        service.AddSingleton<IIotDeviceBusinessLayer, IotDeviceBusinessLayer>();
+
+        service.AddSingleton<IIotSensorDataLayer, IotSensorDataLayer>();
+        service.AddSingleton<IIoTSensorBusinessLayer, IoTSensorBusinessLayer>();
 
         service.AddSingleton<IFaceDataLayer, FaceDataLayer>();
         service.AddSingleton<IFaceBusinessLayer, FaceBusinessLayer>();
@@ -81,7 +88,7 @@ public static class DataService
         service.AddSingleton<IWikipediaBusinessLayer, WikipediaBusinessLayer>();
 
         service.AddSingleton<IYoloLabelDataLayer, YoloLabelDataLayer>();
-        
+
         service.AddHostedService<HostApplicationLifetimeEventsHostedService>();
 
         service.AddAdvancedServiceCollection();
@@ -114,6 +121,7 @@ public static class DataService
     {
         service.AddSingleton<IThumbnailService, ThumbnailService>();
         service.AddHostedService<FileCheckSumHostedService>();
+
         service.AddHostedService<FileSystemWatcherHostedService>();
     }
 }

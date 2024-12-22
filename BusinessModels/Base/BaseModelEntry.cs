@@ -15,4 +15,14 @@ public class BaseModelEntry
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [JsonConverter(typeof(ObjectIdConverter))]
     public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
+
+    [BsonElement("createTime")]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    [Key(1)]
+    public DateTime CreateTime { get; set; }
+
+    [BsonElement("modifiedTime")]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    [Key(2)]
+    public DateTime ModifiedTime { get; set; }
 }

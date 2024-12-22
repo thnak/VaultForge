@@ -113,7 +113,7 @@ public class FileSystemDatalayer(
     {
         try
         {
-            return _fileDataDb.CountDocumentsAsync(FilterDefinition<FileInfoModel>.Empty, cancellationToken: cancellationToken);
+            return _fileDataDb.GetDocumentSizeAsync(cancellationToken: cancellationToken);
         }
         catch (OperationCanceledException)
         {
@@ -125,7 +125,7 @@ public class FileSystemDatalayer(
     {
         try
         {
-            return _fileDataDb.CountDocumentsAsync(predicate, cancellationToken: cancellationToken);
+            return _fileDataDb.GetDocumentSizeAsync(predicate, cancellationToken: cancellationToken);
         }
         catch (OperationCanceledException)
         {
@@ -200,18 +200,9 @@ public class FileSystemDatalayer(
         return _fileDataDb.Find(filter).Limit(1).FirstOrDefault();
     }
 
-    public async Task<Result<FileInfoModel?>> Get(string key, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
+    public Task<Result<FileInfoModel?>> Get(string key, params Expression<Func<FileInfoModel, object>>[] fieldsToFetch)
     {
-        if (ObjectId.TryParse(key, out ObjectId objectId))
-        {
-            var findOptions = fieldsToFetch.Any() ? new FindOptions<FileInfoModel, FileInfoModel>() { Projection = fieldsToFetch.ProjectionBuilder(), Limit = 1 } : null;
-            using var cursor = await _fileDataDb.FindAsync(x => x.Id == objectId, findOptions);
-            var fileModel = cursor.FirstOrDefault();
-            if (fileModel != null) return Result<FileInfoModel?>.Success(fileModel);
-            return Result<FileInfoModel?>.Failure(AppLang.Article_does_not_exist, ErrorType.NotFound);
-        }
-
-        return Result<FileInfoModel?>.Failure(AppLang.Invalid_key, ErrorType.Validation);
+        return _fileDataDb.Get(key, fieldsToFetch);
     }
 
     public IAsyncEnumerable<FileInfoModel?> GetAsync(List<string> keys, CancellationToken cancellationToken = default)
@@ -231,48 +222,8 @@ public class FileSystemDatalayer(
 
     public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<FileInfoModel> updates, CancellationToken cancellationToken = default)
     {
-        try
-        {
-            if (ObjectId.TryParse(key, out var id))
-            {
-                var filter = Builders<FileInfoModel>.Filter.Eq(f => f.Id, id);
-
-                var isExist = await _fileDataDb.Find(filter).AnyAsync(cancellationToken: cancellationToken);
-                if (!isExist)
-                    return (false, AppLang.File_could_not_be_found);
-
-                // Build the update definition by combining multiple updates
-                var updateDefinitionBuilder = Builders<FileInfoModel>.Update;
-                var updateDefinitions = new List<UpdateDefinition<FileInfoModel>>();
-
-                if (updates.Any())
-                {
-                    updates.Add(x => x.ModifiedTime, DateTime.UtcNow);
-                    foreach (var update in updates)
-                    {
-                        var fieldName = update.Key;
-                        var fieldValue = update.Value;
-
-                        // Add the field-specific update to the list
-                        updateDefinitions.Add(updateDefinitionBuilder.Set(fieldName, fieldValue));
-                    }
-
-                    // Combine all update definitions into one
-                    var combinedUpdate = updateDefinitionBuilder.Combine(updateDefinitions);
-
-                    await _fileDataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
-                }
-
-                return (true, AppLang.Update_successfully);
-            }
-
-            return (false, AppLang.Invalid_key);
-        }
-        catch (OperationCanceledException)
-        {
-            logger.LogInformation("[Update] Operation cancelled");
-            return (false, string.Empty);
-        }
+        var updateResult = await _fileDataDb.UpdateAsync(key, updates, cancellationToken);
+        return (updateResult.IsSuccess, updateResult.Message);
     }
 
     public async Task<Result<bool>> CreateAsync(FileInfoModel model, CancellationToken cancellationToken = default)
@@ -285,8 +236,11 @@ public class FileSystemDatalayer(
             {
                 model.CreateTime = DateTime.UtcNow;
                 model.ModifiedTime = DateTime.UtcNow;
-                model.AliasCode = model.Id.GenerateAliasKey(DateTime.Now.Ticks.ToString());
-                model.AliasCode = _protectionProvider.Protect(model.AliasCode);
+                if (string.IsNullOrEmpty(model.AliasCode))
+                {
+                    model.AliasCode = model.Id.GenerateAliasKey(DateTime.Now.Ticks.ToString());
+                    model.AliasCode = _protectionProvider.Protect(model.AliasCode);
+                }
 
                 await _fileDataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
                 return Result<bool>.Success(true);
@@ -296,7 +250,7 @@ public class FileSystemDatalayer(
         }
         catch (Exception e)
         {
-            logger.LogError(e, null);
+            logger.LogError(e, e.Message);
             return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
     }

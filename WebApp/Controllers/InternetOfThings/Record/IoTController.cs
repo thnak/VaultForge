@@ -14,11 +14,11 @@ namespace WebApp.Controllers.InternetOfThings.Record;
 [ApiController]
 public partial class IoTController(
     IoTCircuitBreakerService circuitBreakerService,
-    IIoTBusinessLayer businessLayer,
+    IIotRecordBusinessLayer businessLayer,
     IIotRequestQueue requestQueueHostedService,
     IFolderSystemBusinessLayer folderServe,
     IFileSystemBusinessLayer fileSystemServe,
-    IIoTBusinessLayer ioTBusinessService,
+    IIotRecordBusinessLayer iIotRecordBusinessService,
     RedundantArrayOfIndependentDisks raidService,
     IThumbnailService thumbnailService,
     ILogger<IoTController> logger) : ControllerBase;

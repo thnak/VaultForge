@@ -1,62 +1,50 @@
 ﻿using System.Text.Json;
-using System.Text.Json.Serialization;
 using BusinessModels.Attribute;
-using BusinessModels.Converter;
+using BusinessModels.Base;
 using MessagePack;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace BusinessModels.Advertisement;
 
 [MessagePackObject]
-public class ArticleModel
+public class ArticleModel : BaseModelEntry
 {
-    [Key(0)]
-    [BsonId]
-    [JsonConverter(typeof(ObjectIdConverter))]
-    [JsonDescription("article id")]
-    public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
+    [JsonDescription("title")] [Key(3)] public string Title { get; set; } = string.Empty;
 
-    [Key(1)] [JsonDescription("title")] public string Title { get; set; } = string.Empty;
-
-    [Key(2)]
     [JsonDescription("iso language code")]
+    [Key(4)]
     public string Language { get; set; } = string.Empty;
 
-    [Key(3)]
     [JsonDescription("html sheet")]
+    [Key(5)]
     public string HtmlSheet { get; set; } = string.Empty;
 
-    [Key(4)]
     [JsonDescription("css style sheet")]
+    [Key(6)]
     public string StyleSheet { get; set; } = string.Empty;
 
-    [Key(5)]
     [JsonDescription("javascript sheet")]
+    [Key(7)]
     public string JavaScriptSheet { get; set; } = string.Empty;
 
-    [Key(6)] [JsonDescription("author")] public string Author { get; set; } = string.Empty;
+    [JsonDescription("author")] [Key(8)] public string Author { get; set; } = string.Empty;
 
-    [Key(7)]
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [JsonDescription("published date")]
+    [Key(9)]
     public DateTime PublishDate { get; set; }
 
-    [Key(8)]
-    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
-    [JsonDescription("modified date")]
-    public DateTime ModifiedTime { get; set; }
 
-    [Key(9)]
     [JsonDescription("content summary")]
+    [Key(10)]
     public string Summary { get; set; } = string.Empty;
 
-    [Key(10)]
     [JsonDescription("image thumbnail link")]
+    [Key(11)]
     public string Image { get; set; } = string.Empty;
 
-    [Key(11)]
     [JsonDescription("SEO keywords")]
+    [Key(12)]
     public List<string> Keywords { get; set; } = [];
 
     #region Methods

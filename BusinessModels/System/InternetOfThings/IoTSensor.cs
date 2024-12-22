@@ -25,6 +25,8 @@ public class IoTSensor : BaseModelEntry
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime? CalibrationTime { get; set; }
 
+    public float Rotate { get; set; }
+    
     [BsonElement("isActive")] public bool IsActive { get; set; } = true;
 
     [BsonElement("status")]

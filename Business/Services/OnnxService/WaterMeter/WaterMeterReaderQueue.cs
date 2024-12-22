@@ -2,6 +2,7 @@
 using BrainNet.Service.WaterMeter.Implements;
 using BrainNet.Service.WaterMeter.Interfaces;
 using Business.Business.Interfaces.FileSystem;
+using Business.Business.Repositories.InternetOfThings;
 using Business.Data.StorageSpace;
 using Business.Services.Configure;
 using BusinessModels.System.InternetOfThings;
@@ -25,15 +26,18 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
     private readonly ILogger<IWaterMeterReaderQueue> _logger;
     private readonly RedundantArrayOfIndependentDisks _redundantArrayOfIndependentDisks;
     private readonly IFileSystemBusinessLayer _fileSystemBusinessLayer;
+    private readonly IIotRecordBusinessLayer _recordBusinessLayer;
     private int Count { get; set; }
 
-    public WaterMeterReaderQueue(ApplicationConfiguration configuration, ILogger<IWaterMeterReaderQueue> logger, RedundantArrayOfIndependentDisks disks, IFileSystemBusinessLayer fileSystemBusinessLayer)
+    public WaterMeterReaderQueue(ApplicationConfiguration configuration, ILogger<IWaterMeterReaderQueue> logger,
+        RedundantArrayOfIndependentDisks disks, IFileSystemBusinessLayer fileSystemBusinessLayer, IIotRecordBusinessLayer recordBusinessLayer)
     {
         _waterMeterReader = new WaterMeterReader(configuration.GetOnnxConfig.WaterMeterWeightPath);
         _feeder = new YoloFeeder(_waterMeterReader.GetInputDimensions()[2..], _waterMeterReader.GetStride());
         _logger = logger;
         _redundantArrayOfIndependentDisks = disks;
         _fileSystemBusinessLayer = fileSystemBusinessLayer;
+        _recordBusinessLayer = recordBusinessLayer;
     }
 
 
@@ -54,6 +58,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
                 _logger.LogWarning($"image size is too big: {record.Metadata.ImagePath}");
                 return 0;
             }
+
             _memoryStream.SetLength(0);
             await _redundantArrayOfIndependentDisks.ReadGetDataAsync(_memoryStream, file.AbsolutePath, cancellationToken);
             var image = await Image.LoadAsync<Rgb24>(_memoryStream, cancellationToken);
@@ -62,10 +67,16 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
 
             var result = _waterMeterReader.PredictWaterMeter(_feeder);
             _feeder.Clear();
+            await _recordBusinessLayer.UpdateIotValue(record.Id.ToString(), result[0], cancellationToken);
             return result[0];
         }
         catch (OperationCanceledException)
         {
+            return 0;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, e.Message);
             return 0;
         }
 
