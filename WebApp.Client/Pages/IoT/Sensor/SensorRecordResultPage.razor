@@ -54,7 +54,8 @@
 
 </div>
 
-<MudDrawer @bind-Open="@OpenFilterState" Width="min(500px,80vw)" Elevation="0" Overlay="true" Variant="@DrawerVariant.Temporary" Anchor="Anchor.End" Color="Color.Primary">
+<MudDrawer @bind-Open="@OpenFilterState" Width="min(500px,80vw)" Elevation="0" Overlay="true" Variant="@DrawerVariant.Temporary"
+           Anchor="Anchor.End">
     <MudDrawerHeader>
         <MudText Typo="Typo.h6">Filter</MudText>
     </MudDrawerHeader>
@@ -83,7 +84,7 @@
 
             </MudSelect>
 
-            <div class="d-flex flex flex-row">
+            <div class="d-flex flex flex-row gap-3">
 
                 <MudSpacer/>
                 <MudButton Variant="Variant.Outlined" Color="Color.Error" OnClick="CancelFilter">@AppLang.Cancel</MudButton>
