@@ -406,6 +406,7 @@ html, body {
     opacity: 0;
     animation: smooth-appear-left 0.2s ease forwards !important;
     left: 120%;
+    z-index: 9999;
 }
 
 @keyframes smooth-appear-left {

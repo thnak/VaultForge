@@ -18,7 +18,7 @@
 
         <MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary" KeepPanelsAlive="true" @bind-ActivePanelIndex="ActivateIndex">
             <MudTabPanel Text="@AppLang.Add_new_device">
-                <MudForm Model="DeviceToEdit" @ref="_form" Validation="@(_orderValidator.ValidateValueAsync)" ValidationDelay="0">
+                <MudForm Model="DeviceToEdit" @ref="_form" Disabled="Processing" Validation="@(_orderValidator.ValidateValueAsync)" ValidationDelay="0">
 
                     <MudCardContent>
                         <MudTextField T="string" Label="ID" For="@(() => DeviceToEdit.DeviceId)" Immediate="true" Disabled="IsEditing" Required @bind-Value="DeviceToEdit.DeviceId"></MudTextField>
@@ -56,7 +56,7 @@
                         <PropertyColumn Property="x => x.Status" Title="Status"/>
                         <PropertyColumn Property="x => x.Rotate" Title="Rotate"/>
                         <PropertyColumn Property="x => x.CalibrationTime" Title="Calibration Time"/>
-
+                        
                     </Columns>
                     <PagerContent>
                         <MudDataGridPager T="IoTSensor"/>

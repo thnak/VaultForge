@@ -62,7 +62,7 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
 
     private async Task GetSensors()
     {
-        var fetch = await ApiService.GetAsync<List<IoTSensor>>($"/api/device/get-sensor-by-device-id?deviceId={DeviceToEdit.DeviceId}");
+        var fetch = await ApiService.GetAsync<List<IoTSensor>>($"/api/device/get-sensor-by-device-id?deviceId={HttpUtility.UrlEncode(DeviceToEdit.DeviceId)}");
         Sensors = fetch.Data ?? [];
     }
 
@@ -164,6 +164,7 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
             if (status)
             {
                 await GetSensors();
+                await InvokeAsync(StateHasChanged);
             }
         }
     }

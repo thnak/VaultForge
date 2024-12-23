@@ -13,7 +13,7 @@
     </TitleContent>
     <DialogContent>
 
-        <MudForm @ref="Form" Model="SensorToEdit" Validation="@(_orderValidator.ValidateValueAsync)" @bind-Errors="@ErrorMess" ValidationDelay="0">
+        <MudForm @ref="Form" Model="SensorToEdit" Validation="@(_orderValidator.ValidateValueAsync)" Disabled="Processing" @bind-Errors="@ErrorMess" ValidationDelay="0">
 
             <MudCardContent>
 
