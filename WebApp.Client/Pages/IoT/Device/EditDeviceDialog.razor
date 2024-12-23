@@ -57,6 +57,24 @@
                         <PropertyColumn Property="x => x.Rotate" Title="Rotate"/>
                         <PropertyColumn Property="x => x.CalibrationTime" Title="Calibration Time"/>
 
+                        <TemplateColumn Title="Action">
+                            <CellTemplate>
+
+                                <div class="d-flex flex-row gap-3">
+                                    <MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="Edit">
+                                        <MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled"
+                                                       Color="Color.Primary"/>
+                                    </MudTooltip>
+
+                                    <MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="Delete">
+                                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled"
+                                                       Color="Color.Primary"/>
+                                    </MudTooltip>
+                                </div>
+
+                            </CellTemplate>
+                        </TemplateColumn>
+                        
                     </Columns>
                     <PagerContent>
                         <MudDataGridPager T="IoTSensor"/>

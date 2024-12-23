@@ -16,7 +16,7 @@ public class WeatherService(string baseUri) : IWeatherService
         if (response.IsSuccessStatusCode)
         {
             var weather = textPlan.DeSerialize<WeatherModel>();
-            if (weather != default)
+            if (weather != null)
             {
                 string json = weather.ToJson<WeatherModel>();
                 return json;
@@ -34,7 +34,7 @@ public class WeatherService(string baseUri) : IWeatherService
         if (response.IsSuccessStatusCode)
         {
             var weather = textPlan.DeSerialize<WeatherForecastModel>();
-            if (weather != default)
+            if (weather != null)
             {
                 string json = weather.ToJson<WeatherForecastModel>();
                 return json;
@@ -52,7 +52,7 @@ public class WeatherService(string baseUri) : IWeatherService
         if (response.IsSuccessStatusCode)
         {
             var weather = textPlan.DeSerialize<LocationModel>();
-            if (weather != default)
+            if (weather != null)
             {
                 string json = weather.ToJson<LocationModel>();
                 return json;
