@@ -135,6 +135,8 @@ public class Raid5Stream : Stream
         while (hasMoreData)
         {
             await source.ReadStreamWithLimitAsync(writeBuffer, _readPooledArrays[0]);
+            // seek to allow next step can work
+            writeBuffer.Seek(0, SeekOrigin.Begin);
             hasMoreData = writeBuffer.Length > 0;
 
             while ((bytesRead[0] = await writeBuffer.ReadAsync(_readPooledArrays[0], 0, _stripeSize, cancellationToken)) > 0)
