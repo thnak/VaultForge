@@ -45,11 +45,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/BusinessModels/General/Results/Result.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/General/Results/Result.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor.cs" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="fix">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -165,6 +162,7 @@
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -953,30 +951,7 @@
       <workItem from="1734838334077" duration="10719000" />
       <workItem from="1734851365654" duration="29560000" />
       <workItem from="1734914341933" duration="4383000" />
-    </task>
-    <task id="LOCAL-00432" summary="update">
-      <option name="closed" value="true" />
-      <created>1733540687142</created>
-      <option name="number" value="00432" />
-      <option name="presentableId" value="LOCAL-00432" />
-      <option name="project" value="LOCAL" />
-      <updated>1733540687142</updated>
-    </task>
-    <task id="LOCAL-00433" summary="test">
-      <option name="closed" value="true" />
-      <created>1733545783957</created>
-      <option name="number" value="00433" />
-      <option name="presentableId" value="LOCAL-00433" />
-      <option name="project" value="LOCAL" />
-      <updated>1733545783957</updated>
-    </task>
-    <task id="LOCAL-00434" summary="add some simd compute function">
-      <option name="closed" value="true" />
-      <created>1733712102625</created>
-      <option name="number" value="00434" />
-      <option name="presentableId" value="LOCAL-00434" />
-      <option name="project" value="LOCAL" />
-      <updated>1733712102625</updated>
+      <workItem from="1734923185447" duration="7688000" />
     </task>
     <task id="LOCAL-00435" summary="update">
       <option name="closed" value="true" />
@@ -1346,7 +1321,31 @@
       <option name="project" value="LOCAL" />
       <updated>1734916908674</updated>
     </task>
-    <option name="localTasksCounter" value="481" />
+    <task id="LOCAL-00481" summary="update style">
+      <option name="closed" value="true" />
+      <created>1734925937652</created>
+      <option name="number" value="00481" />
+      <option name="presentableId" value="LOCAL-00481" />
+      <option name="project" value="LOCAL" />
+      <updated>1734925937652</updated>
+    </task>
+    <task id="LOCAL-00482" summary="small update">
+      <option name="closed" value="true" />
+      <created>1734936005490</created>
+      <option name="number" value="00482" />
+      <option name="presentableId" value="LOCAL-00482" />
+      <option name="project" value="LOCAL" />
+      <updated>1734936005490</updated>
+    </task>
+    <task id="LOCAL-00483" summary="fix">
+      <option name="closed" value="true" />
+      <created>1734939649579</created>
+      <option name="number" value="00483" />
+      <option name="presentableId" value="LOCAL-00483" />
+      <option name="project" value="LOCAL" />
+      <updated>1734939649579</updated>
+    </task>
+    <option name="localTasksCounter" value="484" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1377,11 +1376,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="check 0" />
-    <MESSAGE value="add place-holder" />
     <MESSAGE value="add attribute to debug" />
     <MESSAGE value="update api" />
-    <MESSAGE value="small update" />
     <MESSAGE value="REMOVE hash logic" />
     <MESSAGE value="." />
     <MESSAGE value="update service" />
@@ -1402,7 +1398,10 @@
     <MESSAGE value="[BIG UPDATE] add new page, refactor, ..." />
     <MESSAGE value="optimize code" />
     <MESSAGE value="fix too many char" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix too many char" />
+    <MESSAGE value="update style" />
+    <MESSAGE value="small update" />
+    <MESSAGE value="fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

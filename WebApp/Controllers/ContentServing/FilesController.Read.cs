@@ -152,7 +152,8 @@ public partial class FilesController
         Response.RegisterForDisposeAsync(raid5Stream);
         
         Response.Headers.Append("Content-Disposition", cd.ToString());
-        
+        Response.Headers.Append("Content-Length", file.FileSize.ToString());
+
         return new FileStreamResult(raid5Stream, file.ContentType)
         {
             FileDownloadName = file.FileName,
