@@ -10,6 +10,7 @@ using BusinessModels.System.InternetOfThings.type;
 using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 namespace Business.Services.OnnxService.WaterMeter;
 
@@ -28,10 +29,12 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
     private readonly RedundantArrayOfIndependentDisks _redundantArrayOfIndependentDisks;
     private readonly IFileSystemBusinessLayer _fileSystemBusinessLayer;
     private readonly IIotRecordBusinessLayer _recordBusinessLayer;
+    private readonly IIoTSensorBusinessLayer _iotSensorBusinessLayer;
     private int Count { get; set; }
 
     public WaterMeterReaderQueue(ApplicationConfiguration configuration, ILogger<IWaterMeterReaderQueue> logger,
-        RedundantArrayOfIndependentDisks disks, IFileSystemBusinessLayer fileSystemBusinessLayer, IIotRecordBusinessLayer recordBusinessLayer)
+        RedundantArrayOfIndependentDisks disks, IFileSystemBusinessLayer fileSystemBusinessLayer, IIotRecordBusinessLayer recordBusinessLayer, 
+        IIoTSensorBusinessLayer iotSensorBusinessLayer)
     {
         _waterMeterReader = new WaterMeterReader(configuration.GetOnnxConfig.WaterMeterWeightPath);
         _feeder = new YoloFeeder(_waterMeterReader.GetInputDimensions()[2..], _waterMeterReader.GetStride());
@@ -39,6 +42,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
         _redundantArrayOfIndependentDisks = disks;
         _fileSystemBusinessLayer = fileSystemBusinessLayer;
         _recordBusinessLayer = recordBusinessLayer;
+        _iotSensorBusinessLayer = iotSensorBusinessLayer;
     }
 
 
@@ -60,9 +64,16 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
                 return 0;
             }
 
+            var sensor = _iotSensorBusinessLayer.Get(record.Metadata.SensorId);
+
+
             _memoryStream.SetLength(0);
             await _redundantArrayOfIndependentDisks.ReadGetDataAsync(_memoryStream, file.AbsolutePath, cancellationToken);
-            var image = await Image.LoadAsync<Rgb24>(_memoryStream, cancellationToken);
+            using var image = await Image.LoadAsync<Rgb24>(_memoryStream, cancellationToken);
+
+            if (sensor is { Rotate: > 0 })
+                image.Mutate(i => i.Rotate(sensor.Rotate));
+
             _feeder.SetTensor(image);
             Count++;
 
