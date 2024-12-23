@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.InternetOfThings;
-using Business.Models;
 using Business.Utils;
 using BusinessModels.General.Results;
 using BusinessModels.General.Update;
@@ -47,7 +46,10 @@ public class IotRecordDataLayer : IIotRecordDataLayer
         [
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date),
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Hour),
+            Builders<IoTRecord>.IndexKeys.Ascending(x => x.Timestamp).Ascending(x => x.Metadata.SensorId),
         ];
+
+        await _dataDb.Indexes.DropAllAsync(cancellationToken);
 
         var indexModels = indexKeysDefinitions.Select(x => new CreateIndexModel<IoTRecord>(x));
         await _dataDb.Indexes.CreateManyAsync(indexModels, cancellationToken);

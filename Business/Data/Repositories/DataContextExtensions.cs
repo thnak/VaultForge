@@ -73,7 +73,7 @@ public static class DataContextExtensions
         return result;
     }
 
-    public static async Task<Result<string>> UpdateAsync<T>(this IMongoCollection<T> dataDb, string key, FieldUpdate<T> updates, CancellationToken cancellationToken = default) where T : BaseModelEntry
+    public static async Task<Result<string>> UpdateAsync<T>(this IMongoCollection<T> dataDb, string key, FieldUpdate<T> updates, CancellationToken cancellationToken = default, bool performUpdateModifiedTime = true) where T : BaseModelEntry
     {
         try
         {
@@ -88,7 +88,8 @@ public static class DataContextExtensions
 
             if (updates.Any())
             {
-                updates.Add(x => x.ModifiedTime, DateTime.UtcNow);
+                if(performUpdateModifiedTime)
+                    updates.Add(x => x.ModifiedTime, DateTime.UtcNow);
                 foreach (var update in updates)
                 {
                     var fieldName = update.Key;

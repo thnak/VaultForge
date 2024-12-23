@@ -175,7 +175,7 @@ public class IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDevi
 
     public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<IoTDevice> updates, CancellationToken cancellationToken = default)
     {
-        var updateResult = await _data.UpdateAsync(key, updates, cancellationToken);
+        var updateResult = await _data.UpdateAsync(key, updates, cancellationToken, false);
         return (updateResult.IsSuccess, updateResult.Message);
     }
 
