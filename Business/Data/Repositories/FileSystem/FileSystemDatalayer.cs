@@ -214,7 +214,6 @@ public class FileSystemDatalayer(
                 if (string.IsNullOrEmpty(model.AliasCode))
                 {
                     model.AliasCode = model.Id.GenerateAliasKey(DateTime.Now.Ticks.ToString());
-                    model.AliasCode = _protectionProvider.Protect(model.AliasCode).Substring(model.AliasCode.Length - 12, 12);
                 }
 
                 await _fileDataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
