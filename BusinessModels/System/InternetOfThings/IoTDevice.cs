@@ -70,7 +70,7 @@ public class IoTDeviceFluentValidator : ExtendFluentValidator<IoTDevice>
         if (CheckDeviceExists != null)
         {
             var result = await CheckDeviceExists.Invoke(arg1, arg2);
-            return result;
+            return !result;
         }
 
         return true;

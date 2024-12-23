@@ -36,7 +36,7 @@
 
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="CancelForm" Variant="Variant.Outlined" Color="Color.Error">@AppLang.Cancel</MudButton>
+        <MudButton OnClick="CancelForm" Disabled="Processing" Variant="Variant.Outlined" Color="Color.Error">@AppLang.Cancel</MudButton>
         <MudButton OnClick="SubmitForm" Disabled="Processing" Variant="Variant.Filled" Color="Color.Success">
             @if (Processing)
             {

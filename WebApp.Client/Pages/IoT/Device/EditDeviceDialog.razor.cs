@@ -57,7 +57,7 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
     {
         arg1 = HttpUtility.UrlEncode(arg1);
         var result = await ApiService.GetAsync<IoTDevice>($"/api/device/get-device-by-id?deviceId={arg1}", arg2);
-        return result.Data == null;
+        return result.Data != null;
     }
 
     private async Task GetSensors()

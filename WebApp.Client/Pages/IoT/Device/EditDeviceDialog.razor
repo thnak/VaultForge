@@ -56,7 +56,7 @@
                         <PropertyColumn Property="x => x.Status" Title="Status"/>
                         <PropertyColumn Property="x => x.Rotate" Title="Rotate"/>
                         <PropertyColumn Property="x => x.CalibrationTime" Title="Calibration Time"/>
-                        
+
                     </Columns>
                     <PagerContent>
                         <MudDataGridPager T="IoTSensor"/>
@@ -71,21 +71,23 @@
 
     <DialogActions>
 
-        <MudButton OnClick="CancelForm" Variant="Variant.Outlined" Color="Color.Error">@AppLang.Cancel</MudButton>
-        <MudButton OnClick="SubmitForm" Variant="Variant.Filled" Color="Color.Success" Disabled="Processing">
-            @if (Processing)
-            {
-                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                <MudText Class="ms-2">@AppLang.Processing</MudText>
-            }
-            else
-            {
-                <MudText>
-                    @ConfirmButtonText
-                </MudText>
-            }
-        </MudButton>
-
+        @if (ActivateIndex == 1)
+        {
+            <MudButton OnClick="CancelForm" Variant="Variant.Outlined" Color="Color.Error" Disabled="Processing">@AppLang.Cancel</MudButton>
+            <MudButton OnClick="SubmitForm" Variant="Variant.Filled" Color="Color.Success" Disabled="Processing">
+                @if (Processing)
+                {
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                    <MudText Class="ms-2">@AppLang.Processing</MudText>
+                }
+                else
+                {
+                    <MudText>
+                        @ConfirmButtonText
+                    </MudText>
+                }
+            </MudButton>
+        }
 
     </DialogActions>
 

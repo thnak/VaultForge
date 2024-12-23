@@ -45,7 +45,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/BusinessModels/General/Results/Result.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/General/Results/Result.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor.cs" afterDir="false" />
+    </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -947,22 +952,7 @@
       <workItem from="1734741697628" duration="12763000" />
       <workItem from="1734838334077" duration="10719000" />
       <workItem from="1734851365654" duration="29560000" />
-    </task>
-    <task id="LOCAL-00430" summary="update">
-      <option name="closed" value="true" />
-      <created>1733419569709</created>
-      <option name="number" value="00430" />
-      <option name="presentableId" value="LOCAL-00430" />
-      <option name="project" value="LOCAL" />
-      <updated>1733419569710</updated>
-    </task>
-    <task id="LOCAL-00431" summary="update">
-      <option name="closed" value="true" />
-      <created>1733466711809</created>
-      <option name="number" value="00431" />
-      <option name="presentableId" value="LOCAL-00431" />
-      <option name="project" value="LOCAL" />
-      <updated>1733466711809</updated>
+      <workItem from="1734914341933" duration="4383000" />
     </task>
     <task id="LOCAL-00432" summary="update">
       <option name="closed" value="true" />
@@ -1340,7 +1330,23 @@
       <option name="project" value="LOCAL" />
       <updated>1734888494916</updated>
     </task>
-    <option name="localTasksCounter" value="479" />
+    <task id="LOCAL-00479" summary="optimize code">
+      <option name="closed" value="true" />
+      <created>1734915785310</created>
+      <option name="number" value="00479" />
+      <option name="presentableId" value="LOCAL-00479" />
+      <option name="project" value="LOCAL" />
+      <updated>1734915785311</updated>
+    </task>
+    <task id="LOCAL-00480" summary="fix too many char">
+      <option name="closed" value="true" />
+      <created>1734916908674</created>
+      <option name="number" value="00480" />
+      <option name="presentableId" value="LOCAL-00480" />
+      <option name="project" value="LOCAL" />
+      <updated>1734916908674</updated>
+    </task>
+    <option name="localTasksCounter" value="481" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1371,8 +1377,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="add missing property" />
-    <MESSAGE value="add missing f" />
     <MESSAGE value="check 0" />
     <MESSAGE value="add place-holder" />
     <MESSAGE value="add attribute to debug" />
@@ -1396,7 +1400,9 @@
     <MESSAGE value="allow thumbnail file for iot image" />
     <MESSAGE value="big update" />
     <MESSAGE value="[BIG UPDATE] add new page, refactor, ..." />
-    <option name="LAST_COMMIT_MESSAGE" value="[BIG UPDATE] add new page, refactor, ..." />
+    <MESSAGE value="optimize code" />
+    <MESSAGE value="fix too many char" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix too many char" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1409,42 +1415,16 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs</url>
-          <line>148</line>
+          <line>153</line>
           <properties documentPath="C:\Users\thanh\Git\VaultForge\WebApp.Client\Pages\IoT\Sensor\SensorRecordResultPage.razor.cs" containingFunctionPresentation="Method 'SubmitFilter'">
             <startOffsets>
-              <option value="5080" />
+              <option value="5159" />
             </startOffsets>
             <endOffsets>
-              <option value="5101" />
+              <option value="5180" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="91" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs</url>
-          <line>70</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\Business\Services\OnnxService\WaterMeter\WaterMeterReaderQueue.cs" containingFunctionPresentation="Method 'GetWaterMeterReadingCountAsync'">
-            <startOffsets>
-              <option value="3121" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3240" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="97" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs</url>
-          <line>85</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\Business\Services\OnnxService\WaterMeter\WaterMeterReaderQueue.cs" containingFunctionPresentation="Method 'GetWaterMeterReadingCountAsync'">
-            <startOffsets>
-              <option value="3519" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3540" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="102" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using BusinessModels.Resources;
 
 namespace BusinessModels.General.Results;
 
@@ -22,7 +23,7 @@ public class Result<T>
     }
 
     // Success method with a generic value
-    public static Result<T> Success(T value) => new(value, true, string.Empty, ErrorType.None);
+    public static Result<T> Success(T value) => new(value, true, AppLang.Success, ErrorType.None);
 
     // Success method with a message (optional use case)
     public static Result<T> SuccessWithMessage(T value, string message) => new(value, true, message, ErrorType.None);
