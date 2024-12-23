@@ -17,7 +17,7 @@
 
             <MudCardContent>
 
-                <MudTextField T="string" Label="Device ID" For="@(() => SensorToEdit.DeviceId)" Immediate="true" Disabled="DisableDeviceIdField" Required @bind-Value="SensorToEdit.DeviceId"></MudTextField>
+                <MudTextField T="string" Label="Device ID" For="@(() => SensorToEdit.DeviceId)" Immediate="true" Disabled Required @bind-Value="SensorToEdit.DeviceId"></MudTextField>
                 <MudTextField T="string" Label="Sensor ID" For="@(() => SensorToEdit.SensorId)" Immediate="true" Disabled="IsEditing" Required @bind-Value="SensorToEdit.SensorId"></MudTextField>
                 <MudTextField T="string" Label="Sensor name" For="@(() => SensorToEdit.SensorName)" Immediate="true" @bind-Value="SensorToEdit.SensorName"></MudTextField>
 

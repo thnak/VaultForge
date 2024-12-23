@@ -17,10 +17,9 @@ public partial class EditSensorDialog(ILogger<EditSensorDialog> logger) : Compon
 
     [Parameter] public IoTSensor? Sensor { get; set; }
 
-    [Parameter] public string? DeviceId { get; set; }
+    [Parameter] public required string DeviceId { get; set; }
 
     private bool IsEditing => Sensor != null;
-    private bool DisableDeviceIdField => DeviceId != null;
     private string DialogIcon => IsEditing ? Icons.Material.Filled.Edit : Icons.Material.Filled.Add;
     private string ConfirmButtonText => Sensor == null ? AppLang.Create_new : AppLang.Update;
 
@@ -38,7 +37,7 @@ public partial class EditSensorDialog(ILogger<EditSensorDialog> logger) : Compon
     protected override Task OnParametersSetAsync()
     {
         SensorToEdit = Sensor ?? new IoTSensor();
-        SensorToEdit.DeviceId = (string.IsNullOrEmpty(SensorToEdit.DeviceId) ? DeviceId : SensorToEdit.DeviceId) ?? string.Empty;
+        SensorToEdit.DeviceId = string.IsNullOrEmpty(SensorToEdit.DeviceId) ? DeviceId : SensorToEdit.DeviceId;
         CalibrationTime = SensorToEdit.CalibrationTime ?? CalibrationTime;
         _orderValidator.ValidateForCreate = Sensor == null;
         _orderValidator.CheckDeviceExists = CheckDeviceExists;
@@ -76,7 +75,7 @@ public partial class EditSensorDialog(ILogger<EditSensorDialog> logger) : Compon
                 if (Sensor == null)
                 {
                     var textPlant = new StringContent(SensorToEdit.ToJson(), Encoding.UTF8, MediaTypeNames.Application.Json);
-                    var result = await ApiService.PostAsync<string>($"/api/device/add-new-sensor/{HttpUtility.UrlEncode(DeviceId)}", textPlant);
+                    var result = await ApiService.PostAsync<string>($"/api/device/add-new-sensor/{Uri.EscapeDataString(DeviceId)}", textPlant);
                     if (result.IsSuccessStatusCode)
                     {
                         ToastService.ShowSuccess(result.Message, TypeClassList.ToastDefaultSetting);

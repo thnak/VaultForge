@@ -1,9 +1,8 @@
-﻿
-/*
+﻿/*
  Progress loading
  */
 
-*{
+* {
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
@@ -18,7 +17,9 @@ html, body {
 }
 
 
-.monaco-editor { position: absolute !important; }
+.monaco-editor {
+    position: absolute !important;
+}
 
 
 /*noinspection ALL*/
@@ -402,6 +403,11 @@ html, body {
 }
 
 /*Toast move*/
+
+.blazored-toast-container {
+    z-index: 9999 !important;
+}
+
 .toast-move-right-2-left {
     opacity: 0;
     animation: smooth-appear-left 0.2s ease forwards !important;
@@ -497,11 +503,11 @@ html, body {
     max-height: 100%;
 }
 
-.page-content-container{
+.page-content-container {
     padding: 8px;
 }
 
-.page-content-container-search-field-width{
+.page-content-container-search-field-width {
     max-width: 300px;
 }
 
