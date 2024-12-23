@@ -18,8 +18,6 @@ public partial class SensorRecordResultPage : ComponentBase
     {
         public IoTRecord Device { get; set; } = device;
         public ButtonAction OpenImageBtn { get; set; } = new();
-        public ButtonAction DeleteBtn { get; set; } = new();
-        public ButtonAction UpdateBtn { get; set; } = new();
     }
 
     private class FilterPageModel
@@ -40,8 +38,8 @@ public partial class SensorRecordResultPage : ComponentBase
 
     private string DeviceSearchString { get; set; } = string.Empty;
 
-    private List<IoTDevice> DevicesList { get; set; } = new List<IoTDevice>();
-    private List<IoTSensor> SensorList { get; set; } = new List<IoTSensor>();
+    private List<IoTDevice> DevicesList { get; set; } = new();
+    private List<IoTSensor> SensorList { get; set; } = new();
     private bool OpenFilterState { get; set; } = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -113,15 +111,23 @@ public partial class SensorRecordResultPage : ComponentBase
         return new GridData<PageModel>()
         {
             TotalItems = (int)total,
-            Items = records.OrderByDescending(x => x.Metadata.RecordedAt).Select(x => new PageModel(x)).ToArray()
+            Items = records.OrderByDescending(x => x.Metadata.RecordedAt).Select(x => new PageModel(x)
+            {
+                OpenImageBtn = new ButtonAction() { Action = () => OpenImage(x.Metadata.ImagePath).ConfigureAwait(false) }
+            }).ToArray()
         };
     }
 
-    private static async Task OpenImage(string code)
+    private async Task OpenImage(string code)
     {
-        
+        var uri = Navigation.GetUriWithQueryParameters(Navigation.BaseUri + "api/files/get-file", new Dictionary<string, object?>()
+        {
+            { "id", code },
+            { "type", "ThumbnailWebpFile" }
+        });
+        await JsRuntime.OpenToNewWindow(uri);
     }
-    
+
     private string ProcessStatusStyle(PageModel arg)
     {
         switch (arg.Device.Metadata.ProcessStatus)

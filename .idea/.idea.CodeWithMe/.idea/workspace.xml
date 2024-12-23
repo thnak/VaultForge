@@ -45,9 +45,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="allow to rotate, dispose resource">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/wwwroot/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/wwwroot/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Utils/JsRuntimeExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Utils/JsRuntimeExtension.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -956,15 +958,7 @@
       <workItem from="1734851365654" duration="29560000" />
       <workItem from="1734914341933" duration="4383000" />
       <workItem from="1734923185447" duration="15130000" />
-      <workItem from="1734966903941" duration="2205000" />
-    </task>
-    <task id="LOCAL-00441" summary="update">
-      <option name="closed" value="true" />
-      <created>1733795011453</created>
-      <option name="number" value="00441" />
-      <option name="presentableId" value="LOCAL-00441" />
-      <option name="project" value="LOCAL" />
-      <updated>1733795011453</updated>
+      <workItem from="1734966903941" duration="4223000" />
     </task>
     <task id="LOCAL-00442" summary="add missing config">
       <option name="closed" value="true" />
@@ -1350,7 +1344,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734968384798</updated>
     </task>
-    <option name="localTasksCounter" value="490" />
+    <task id="LOCAL-00490" summary="small update">
+      <option name="closed" value="true" />
+      <created>1734969295814</created>
+      <option name="number" value="00490" />
+      <option name="presentableId" value="LOCAL-00490" />
+      <option name="project" value="LOCAL" />
+      <updated>1734969295814</updated>
+    </task>
+    <option name="localTasksCounter" value="491" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1398,7 +1400,6 @@
     <MESSAGE value="optimize code" />
     <MESSAGE value="fix too many char" />
     <MESSAGE value="update style" />
-    <MESSAGE value="small update" />
     <MESSAGE value="fix" />
     <MESSAGE value="fix missing length" />
     <MESSAGE value="fix stream issue" />
@@ -1406,7 +1407,8 @@
     <MESSAGE value="update" />
     <MESSAGE value="fix wrong logic" />
     <MESSAGE value="allow to rotate, dispose resource" />
-    <option name="LAST_COMMIT_MESSAGE" value="allow to rotate, dispose resource" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1416,19 +1418,6 @@
           <line>51</line>
           <properties documentPath="C:\Users\thanh\AppData\Roaming\JetBrains\Rider2024.3\resharper-host\SourcesCache\30cbb3994b59af56741aa3ee40719e511f42d9a2920f2a6f5ae81f8d1e78ee3\FunctionCallContentBuilder.cs" containingFunctionPresentation="Method 'Append'" />
           <option name="timeStamp" value="54" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs</url>
-          <line>153</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\WebApp.Client\Pages\IoT\Sensor\SensorRecordResultPage.razor.cs" containingFunctionPresentation="Method 'SubmitFilter'">
-            <startOffsets>
-              <option value="5169" />
-            </startOffsets>
-            <endOffsets>
-              <option value="5190" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="91" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">

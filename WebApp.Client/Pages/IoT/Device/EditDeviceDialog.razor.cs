@@ -7,6 +7,7 @@ using BusinessModels.System.InternetOfThings;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using WebApp.Client.Models;
 using WebApp.Client.Utils;
 
 namespace WebApp.Client.Pages.IoT.Device;
@@ -16,6 +17,18 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
     [CascadingParameter] private MudDialogInstance Dialog { get; set; } = default!;
 
     [Parameter] public IoTDevice? Device { get; set; }
+
+
+    #region -- models --
+
+    private class SensorPageM(IoTSensor sensor)
+    {
+        public IoTSensor IoTSensor { get; set; } = sensor;
+        public ButtonAction EditButtonAction { get; set; } = new();
+        public ButtonAction DeleteButtonAction { get; set; } = new();
+    }
+
+    #endregion
 
 
     private bool IsEditing => Device != null;
@@ -31,7 +44,7 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
     private int ActivateIndex { get; set; }
     private bool Processing { get; set; }
     private MudForm? _form;
-    private List<IoTSensor> Sensors { get; set; } = [];
+    private List<SensorPageM> Sensors { get; set; } = [];
 
 
     protected override void OnParametersSet()
@@ -63,7 +76,11 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
     private async Task GetSensors()
     {
         var fetch = await ApiService.GetAsync<List<IoTSensor>>($"/api/device/get-sensor-by-device-id?deviceId={HttpUtility.UrlEncode(DeviceToEdit.DeviceId)}");
-        Sensors = fetch.Data ?? [];
+        Sensors = (fetch.Data ?? []).Select(x => new SensorPageM(x)
+        {
+            EditButtonAction = new() { Action = () => OpenEditSensorDialog(x).ConfigureAwait(false) },
+            DeleteButtonAction = new() { Disabled = true }
+        }).ToList();
     }
 
     private Task InstallationDateChanged(DateTime? arg)
@@ -91,7 +108,7 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
                     RequestToCreate requestToCreate = new RequestToCreate()
                     {
                         Device = DeviceToEdit,
-                        Sensors = Sensors
+                        Sensors = Sensors.Select(x => x.IoTSensor).ToList()
                     };
                     var textPlant = new StringContent(StringExtension.ToJson(requestToCreate), Encoding.UTF8, MediaTypeNames.Application.Json);
                     var result = await ApiService.PostAsync<string>("/api/device/add-new-device", textPlant);
@@ -127,7 +144,7 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
                     if (result.IsSuccessStatusCode)
                     {
                         ToastService.ShowSuccess(result.Message, TypeClassList.ToastDefaultSetting);
-                        Dialog.Close();
+                        Dialog.Close(DialogResult.Ok(true));
                     }
                     else
                     {
@@ -148,13 +165,18 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
 
     private async Task OpenAddDialog()
     {
+        await OpenEditSensorDialog(null);
+    }
+
+    private async Task OpenEditSensorDialog(IoTSensor? sensor)
+    {
         var option = new DialogOptions()
         {
             BackgroundClass = "blur-3"
         };
         var param = new DialogParameters<EditSensorDialog>()
         {
-            { x => x.Sensor, null },
+            { x => x.Sensor, sensor },
             { x => x.DeviceId, DeviceToEdit.DeviceId }
         };
         var dialog = await DialogService.ShowAsync<EditSensorDialog>("Add new sensor", param, option);

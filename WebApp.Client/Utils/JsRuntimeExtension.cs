@@ -24,6 +24,11 @@ public static class JsRuntimeExtension
         return jsRuntime.InvokeVoidAsync("navigator.clipboard.writeText", message);
     }
 
+    public static ValueTask OpenToNewWindow(this IJSRuntime jsRuntime, [StringSyntax(StringSyntaxAttribute.Uri)] string uri)
+    {
+        return jsRuntime.InvokeVoidAsync("window.open", uri);
+    }
+
     #region Download
 
     public static ValueTask Download(this IJSRuntime jsRuntime, [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri)
@@ -55,9 +60,9 @@ public static class JsRuntimeExtension
     {
         var textPlan = await jsRuntime.InvokeAsync<string?>("localStorage.getItem", key);
         if (string.IsNullOrEmpty(textPlan)) return default;
-        if(typeof(T) == typeof(string))
+        if (typeof(T) == typeof(string))
             return (T)(object)textPlan;
-        
+
         return JsonSerializer.Deserialize<T?>(textPlan);
     }
 
