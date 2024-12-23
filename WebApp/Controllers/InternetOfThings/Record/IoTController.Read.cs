@@ -29,7 +29,7 @@ public partial class IoTController
         var startDateTime = startDate.UnixDate2DateDateTime();
         var endDateTime = endDate.UnixDate2DateDateTime();
 
-        var data = businessLayer.Where(x => x.Timestamp >= startDateTime && x.Timestamp <= endDateTime && x.Metadata.SensorId == sensorId);
+        var data = businessLayer.Where(x => x.Metadata.RecordedAt >= startDateTime && x.Metadata.RecordedAt <= endDateTime && x.Metadata.SensorId == sensorId);
         List<IoTRecord> records = new List<IoTRecord>();
         await foreach (var record in data)
         {
@@ -55,7 +55,7 @@ public partial class IoTController
 
         try
         {
-            var cursors = businessLayer.Where(x => x.Timestamp >= startDate && x.Timestamp <= endDate, cancelToken, model => model.Metadata.SensorData);
+            var cursors = businessLayer.Where(x => x.Metadata.RecordedAt >= startDate && x.Metadata.RecordedAt <= endDate, cancelToken, model => model.Metadata.SensorData);
             await foreach (var record in cursors)
             {
                 reorderRecords.Add(record);

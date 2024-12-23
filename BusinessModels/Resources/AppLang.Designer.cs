@@ -888,6 +888,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Không tìm thấy.
+        /// </summary>
+        public static string NotFound {
+            get {
+                return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vui lòng đợi một lát.
         /// </summary>
         public static string One_moment_please {

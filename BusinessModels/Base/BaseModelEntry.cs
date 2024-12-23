@@ -16,13 +16,11 @@ public class BaseModelEntry
     [JsonConverter(typeof(ObjectIdConverter))]
     public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
 
-    [BsonElement("createTime")]
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(1)]
-    public DateTime CreateTime { get; set; }
+    public DateTime CreateTime { get; set; } = DateTime.UtcNow;
 
-    [BsonElement("modifiedTime")]
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(2)]
-    public DateTime ModifiedTime { get; set; }
+    public DateTime ModifiedTime { get; set; } = DateTime.UtcNow;
 }

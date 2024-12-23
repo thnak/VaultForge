@@ -330,4 +330,7 @@
     <data name="Image" xml:space="preserve">
       <value>이미지</value>
     </data>
+    <data name="NotFound" xml:space="preserve">
+      <value>찾을 수 없음</value>
+    </data>
 </root>

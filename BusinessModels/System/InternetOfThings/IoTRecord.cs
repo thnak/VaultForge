@@ -7,13 +7,6 @@ namespace BusinessModels.System.InternetOfThings;
 
 public class IoTRecord : BaseModelEntry
 {
-    /// <summary>
-    /// The timestamp for when the data was recorded
-    /// </summary>
-    [BsonElement("timestamp")]
-    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
-    public DateTime Timestamp { get; set; }
-
     [BsonDateTimeOptions(DateOnly = true, Kind = DateTimeKind.Utc)]
     public DateTime Date { get; set; }
 
@@ -22,16 +15,15 @@ public class IoTRecord : BaseModelEntry
     /// <summary>
     /// Optional metadata
     /// </summary>
-    [BsonElement("metadata")]
     public RecordMetadata Metadata { get; set; }
 
     public IoTRecord(RecordMetadata metadata)
     {
         Id = ObjectId.GenerateNewId();
-        Timestamp = DateTime.UtcNow; // Set to current time by default
+        CreateTime = DateTime.UtcNow; // Set to current time by default
         Metadata = metadata;
-        Date = Timestamp.Date;
-        Hour = Timestamp.Hour;
+        Date = CreateTime.Date;
+        Hour = CreateTime.Hour;
     }
 }
 
@@ -40,28 +32,27 @@ public class RecordMetadata
     /// <summary>
     /// Sensor or device identifier
     /// </summary>
-    [BsonElement("sensorId")]
     public string SensorId { get; set; } = string.Empty;
 
     /// <summary>
     /// Sensor data (could be temperature, humidity, etc.)
     /// </summary>
-    [BsonElement("sensorData")]
     public float SensorData { get; set; }
-
-    /// <summary>
-    /// Represented as a percentage (0-100)
-    /// </summary>
-    [BsonElement("signalStrength")]
-    public int SignalStrength { get; set; }
-
-    public ProcessStatus ProcessStatus { get; set; }
+    
+    [BsonDateTimeOptions( Kind = DateTimeKind.Utc)]
+    public DateTime RecordedAt { get; set; } = DateTime.UtcNow; // Copy of Timestamp
     
     /// <summary>
     /// Represented as a percentage (0-100)
     /// </summary>
-    [BsonElement("batteryLevel")]
+    public int SignalStrength { get; set; }
+
+    public ProcessStatus ProcessStatus { get; set; }
+
+    /// <summary>
+    /// Represented as a percentage (0-100)
+    /// </summary>
     public int BatteryLevel { get; set; }
 
-    [BsonElement("image")] public string ImagePath { get; set; } = string.Empty;
+    public string ImagePath { get; set; } = string.Empty;
 }

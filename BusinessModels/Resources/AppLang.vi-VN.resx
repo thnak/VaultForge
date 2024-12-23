@@ -565,4 +565,7 @@ ClientY: {1}</value>
     <data name="Image" xml:space="preserve">
       <value>Hình ảnh</value>
     </data>
+    <data name="NotFound" xml:space="preserve">
+      <value>Không tìm thấy</value>
+    </data>
 </root>

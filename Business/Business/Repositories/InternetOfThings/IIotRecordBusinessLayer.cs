@@ -3,7 +3,6 @@ using BrainNet.Models.Result;
 using BrainNet.Models.Vector;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Data.Interfaces.InternetOfThings;
-using Business.Models;
 using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
@@ -113,7 +112,7 @@ public class IotRecordBusinessLayer(IIotRecordDataLayer data, IIotRequestQueue i
     public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
         var today = DateTime.UtcNow.Date;
-        var cursor = Where(x => x.Timestamp >= today, cancellationToken);
+        var cursor = Where(x => x.CreateTime >= today, cancellationToken);
         await foreach (var item in cursor)
         {
             iotRequestQueue.IncrementTotalRequests(item.Metadata.SensorId);
@@ -127,14 +126,8 @@ public class IotRecordBusinessLayer(IIotRecordDataLayer data, IIotRequestQueue i
         throw new NotImplementedException();
     }
 
-    public async Task<Result<bool>> UpdateIotValue(string key, float value, ProcessStatus processStatus, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateIotValue(string key, float value, ProcessStatus processStatus, CancellationToken cancellationToken = default)
     {
-        var result = await UpdateAsync(key, new FieldUpdate<IoTRecord>()
-        {
-            { x => x.Metadata.SensorData, value },
-            { x => x.Metadata.ProcessStatus, processStatus }
-        }, cancellationToken);
-        if (result.Item1) return Result<bool>.SuccessWithMessage(true, AppLang.Success);
-        return Result<bool>.Failure(result.Item2, ErrorType.Unknown);
+        return data.UpdateIotValue(key, value, processStatus, cancellationToken);
     }
 }

@@ -330,4 +330,7 @@
     <data name="Image" xml:space="preserve">
       <value>画像</value>
     </data>
+    <data name="NotFound" xml:space="preserve">
+      <value>見つかりません</value>
+    </data>
 </root>

@@ -45,11 +45,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="fix stream issue">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="do not update other field for time series">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/DataContextExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/DataContextExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IIotRecordBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IIotRecordBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Interfaces/InternetOfThings/IIotRecordDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Interfaces/InternetOfThings/IIotRecordDataLayer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Base/BaseModelEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Base/BaseModelEntry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.Designer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.de-DE.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.de-DE.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.en-US.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.en-US.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.es-ES.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.es-ES.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.ja-JP.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.ja-JP.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.ko-KR.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.ko-KR.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.vi-VN.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.vi-VN.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTRecord.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTRecord.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -161,6 +175,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f77be22079eb1bdddcd5dbcd5df7fecbed559688b86a491da2be84d9f269191/StringValues.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fd5df964a94a255455f7b077e863af646a024518fa7703879230fff599b192/OrtIoBinding.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fe3b1716bf2f8f83ac793e7e3faa60f88a7868347653f77591f74b86d0d97675/Server.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/Repositories/DataContextExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/StorageSpace/Raid5Stream.cs" root0="SKIP_HIGHLIGHTING" />
@@ -956,15 +971,7 @@
       <workItem from="1734838334077" duration="10719000" />
       <workItem from="1734851365654" duration="29560000" />
       <workItem from="1734914341933" duration="4383000" />
-      <workItem from="1734923185447" duration="10470000" />
-    </task>
-    <task id="LOCAL-00437" summary="update">
-      <option name="closed" value="true" />
-      <created>1733754739021</created>
-      <option name="number" value="00437" />
-      <option name="presentableId" value="LOCAL-00437" />
-      <option name="project" value="LOCAL" />
-      <updated>1733754739021</updated>
+      <workItem from="1734923185447" duration="15064000" />
     </task>
     <task id="LOCAL-00438" summary="update">
       <option name="closed" value="true" />
@@ -1350,7 +1357,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734944382052</updated>
     </task>
-    <option name="localTasksCounter" value="486" />
+    <task id="LOCAL-00486" summary="do not update other field for time series">
+      <option name="closed" value="true" />
+      <created>1734945751288</created>
+      <option name="number" value="00486" />
+      <option name="presentableId" value="LOCAL-00486" />
+      <option name="project" value="LOCAL" />
+      <updated>1734945751288</updated>
+    </task>
+    <option name="localTasksCounter" value="487" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1381,7 +1396,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="REMOVE hash logic" />
     <MESSAGE value="." />
     <MESSAGE value="update service" />
     <MESSAGE value="fix wrong ort option" />
@@ -1406,7 +1420,8 @@
     <MESSAGE value="fix" />
     <MESSAGE value="fix missing length" />
     <MESSAGE value="fix stream issue" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix stream issue" />
+    <MESSAGE value="do not update other field for time series" />
+    <option name="LAST_COMMIT_MESSAGE" value="do not update other field for time series" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1422,10 +1437,10 @@
           <line>153</line>
           <properties documentPath="C:\Users\thanh\Git\VaultForge\WebApp.Client\Pages\IoT\Sensor\SensorRecordResultPage.razor.cs" containingFunctionPresentation="Method 'SubmitFilter'">
             <startOffsets>
-              <option value="5159" />
+              <option value="5169" />
             </startOffsets>
             <endOffsets>
-              <option value="5180" />
+              <option value="5190" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="91" />

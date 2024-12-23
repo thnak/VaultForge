@@ -7,6 +7,7 @@ using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
+using BusinessModels.System.InternetOfThings.type;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -22,7 +23,7 @@ public class IotRecordDataLayer : IIotRecordDataLayer
         {
             var options = new CreateCollectionOptions
             {
-                TimeSeriesOptions = new TimeSeriesOptions("timestamp", "metadata", TimeSeriesGranularity.Seconds)
+                TimeSeriesOptions = new TimeSeriesOptions(nameof(IoTRecord.CreateTime), nameof(IoTRecord.Metadata), TimeSeriesGranularity.Seconds)
             };
             context.MongoDatabase.CreateCollection("IotDB", options);
         }
@@ -46,13 +47,21 @@ public class IotRecordDataLayer : IIotRecordDataLayer
         [
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date),
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Hour),
-            Builders<IoTRecord>.IndexKeys.Ascending(x => x.Timestamp).Ascending(x => x.Metadata.SensorId),
+            Builders<IoTRecord>.IndexKeys.Ascending(x => x.CreateTime).Ascending(x => x.Metadata.SensorId),
         ];
+
+        IndexKeysDefinition<IoTRecord>[] uniqueIndexKeysDefinitions =
+        [
+            Builders<IoTRecord>.IndexKeys.Ascending(x => x.Id),
+        ];
+
 
         await _dataDb.Indexes.DropAllAsync(cancellationToken);
 
         var indexModels = indexKeysDefinitions.Select(x => new CreateIndexModel<IoTRecord>(x));
+        var uniqueIndexModels = uniqueIndexKeysDefinitions.Select(x => new CreateIndexModel<IoTRecord>(x, new CreateIndexOptions { Unique = true }));
         await _dataDb.Indexes.CreateManyAsync(indexModels, cancellationToken);
+        await _dataDb.Indexes.CreateManyAsync(uniqueIndexModels, cancellationToken);
 
         return await Task.FromResult((true, string.Empty));
     }
@@ -195,7 +204,7 @@ public class IotRecordDataLayer : IIotRecordDataLayer
 
                 var isExist = await _dataDb.Find(filter).AnyAsync(cancellationToken: cancellationToken);
                 if (!isExist)
-                    return (false, AppLang.File_could_not_be_found);
+                    return (false, AppLang.NotFound);
 
                 // Build the update definition by combining multiple updates
                 var updateDefinitionBuilder = Builders<IoTRecord>.Update;
@@ -237,6 +246,34 @@ public class IotRecordDataLayer : IIotRecordDataLayer
     public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<Result<bool>> UpdateIotValue(string key, float value, ProcessStatus processStatus, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var oldValue = Get(key);
+            if (oldValue == null)
+                return Result<bool>.Failure(AppLang.NotFound, ErrorType.NotFound);
+
+            var filter = Builders<IoTRecord>.Filter.Eq(record => record.Metadata.SensorId, oldValue.Metadata.SensorId);
+            filter &= Builders<IoTRecord>.Filter.Eq(record => record.Metadata.RecordedAt, oldValue.Metadata.RecordedAt);
+
+            var update = Builders<IoTRecord>.Update
+                .Set(record => record.Metadata.ProcessStatus, processStatus)
+                .Set(record => record.Metadata.SensorData, value);
+
+            var result = await _dataDb.UpdateManyAsync(filter, update, cancellationToken: cancellationToken);
+
+            if (result.MatchedCount == 0)
+                return Result<bool>.Failure(AppLang.NotFound, ErrorType.NotFound);
+
+            return Result<bool>.SuccessWithMessage(true, AppLang.Update_successfully);
+        }
+        catch (Exception e)
+        {
+            return Result<bool>.Failure(e.Message, ErrorType.Unknown);
+        }
     }
 
     public void Dispose()

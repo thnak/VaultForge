@@ -147,7 +147,6 @@ public class IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDevi
                 if (string.IsNullOrEmpty(model.DeviceId))
                 {
                     model.DeviceId = model.Id.GenerateAliasKey(DateTime.Now.Ticks.ToString());
-                    model.DeviceId = _protectionProvider.Protect(model.DeviceId);
                 }
 
                 await _data.InsertOneAsync(model, cancellationToken: cancellationToken);
@@ -175,7 +174,7 @@ public class IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDevi
 
     public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<IoTDevice> updates, CancellationToken cancellationToken = default)
     {
-        var updateResult = await _data.UpdateAsync(key, updates, cancellationToken, false);
+        var updateResult = await _data.UpdateAsync(key, updates, cancellationToken);
         return (updateResult.IsSuccess, updateResult.Message);
     }
 

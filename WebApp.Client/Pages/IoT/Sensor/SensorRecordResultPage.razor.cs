@@ -113,7 +113,7 @@ public partial class SensorRecordResultPage : ComponentBase
         return new GridData<PageModel>()
         {
             TotalItems = (int)total,
-            Items = records.OrderByDescending(x => x.Timestamp).Select(x => new PageModel(x)).ToArray()
+            Items = records.OrderByDescending(x => x.Metadata.RecordedAt).Select(x => new PageModel(x)).ToArray()
         };
     }
 
