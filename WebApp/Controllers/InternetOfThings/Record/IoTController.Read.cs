@@ -36,7 +36,7 @@ public partial class IoTController
             records.Add(record);
         }
 
-        SignalRResultValue<IoTRecord> result = new()
+        SignalrResultValue<IoTRecord> result = new()
         {
             Data = records.Skip(page * pageSize).Take(pageSize).ToArray(),
             Total = records.Count(),

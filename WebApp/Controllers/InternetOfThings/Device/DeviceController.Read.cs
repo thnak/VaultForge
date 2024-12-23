@@ -12,7 +12,7 @@ public partial class DeviceController
     {
         var cancelToken = HttpContext.RequestAborted;
         var deviceCreateResult = await deviceBusinessLayer.GetAllAsync(page, pageSize, cancelToken);
-        SignalRResultValue<IoTDevice> result = new()
+        SignalrResultValue<IoTDevice> result = new()
         {
             Data = deviceCreateResult.Item1,
             Total = deviceCreateResult.Item2
@@ -50,7 +50,7 @@ public partial class DeviceController
     {
         var cancelToken = HttpContext.RequestAborted;
         var deviceCreateResult = await sensorBusinessLayer.GetAllAsync(page, pageSize, cancelToken);
-        SignalRResultValue<IoTSensor> result = new()
+        SignalrResultValue<IoTSensor> result = new()
         {
             Data = deviceCreateResult.Item1,
             Total = deviceCreateResult.Item2

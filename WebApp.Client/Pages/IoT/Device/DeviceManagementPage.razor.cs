@@ -35,7 +35,7 @@ public partial class DeviceManagementPage : ComponentBase, IDisposable
 
     private async Task<GridData<PageModel>> ServerReload(GridState<PageModel> arg)
     {
-        var result = await ApiService.GetAsync<SignalRResultValue<IoTDevice>>("api/device/get-device");
+        var result = await ApiService.GetAsync<SignalrResultValue<IoTDevice>>("api/device/get-device");
         return new GridData<PageModel>
         {
             Items = result.Data?.Data.Select(x => new PageModel(x)

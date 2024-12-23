@@ -12,4 +12,9 @@ public class ResponseDataResult<T>
     public bool IsSuccessStatusCode { get; set; }
 
     public T? Data { get; set; }
+
+    public override string ToString()
+    {
+        return Message;
+    }
 }

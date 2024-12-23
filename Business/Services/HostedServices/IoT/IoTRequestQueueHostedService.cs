@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using Business.Business.Interfaces.InternetOfThings;
+﻿using Business.Business.Interfaces.InternetOfThings;
 using Business.Services.Configure;
 using Business.Services.OnnxService.WaterMeter;
 using Business.Services.TaskQueueServices.Base.Interfaces;
@@ -33,7 +32,7 @@ public class IoTRequestQueueHostedService(
 
         queue.QueueBackgroundWorkItemAsync(async serverToken =>
         {
-            ConcurrentBag<IoTRecord> batch = [];
+            List<IoTRecord> batch = [];
             while (iotRequestQueue.TryRead(out var data))
             {
                 batch.Add(data);

@@ -30,4 +30,11 @@ public class Result<T>
 
     // Failure method with a message and error type
     public static Result<T> Failure(string message, ErrorType errorType) => new(default, false, message, errorType);
+    public static Result<T> Canceled(string message) => new(default, false, message, ErrorType.Cancelled);
+
+
+    public override string ToString()
+    {
+        return Message;
+    }
 }

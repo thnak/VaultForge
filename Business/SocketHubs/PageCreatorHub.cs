@@ -61,10 +61,10 @@ public class PageCreatorHub(IMemoryCache memoryCache, IAdvertisementBusinessLaye
         return false;
     }
 
-    public async Task<SignalRResultValue<ArticleModel>> GetAllArticleModel(int pageSize, int currentPage)
+    public async Task<SignalrResultValue<ArticleModel>> GetAllArticleModel(int pageSize, int currentPage)
     {
         var re = await businessLayer.GetAllAsync(currentPage, pageSize, CancellationTokenSource.Token);
-        return new SignalRResultValue<ArticleModel>()
+        return new SignalrResultValue<ArticleModel>()
         {
             Data = re.Item1,
             Total = re.Item2,
@@ -93,13 +93,13 @@ public class PageCreatorHub(IMemoryCache memoryCache, IAdvertisementBusinessLaye
         await Clients.Caller.SendAsync("ReceiveMessage", data, CancellationTokenSource.Token);
     }
 
-    public async Task<SignalRResult> DeleteAdvertisement(string articleId)
+    public async Task<SignalrResult> DeleteAdvertisement(string articleId)
     {
         var result = await businessLayer.DeleteAsync(articleId);
         memoryCache.Remove($"{nameof(PageCreatorHub)}{nameof(ArticleModel)}{articleId}");
         var listener = GetListeners(articleId);
         await Clients.Clients(listener).SendAsync("ReceiveMessage", new ArticleModel(), CancellationTokenSource.Token);
-        return new SignalRResult() { Message = result.Item2, Success = result.Item1 };
+        return new SignalrResult() { Message = result.Item2, Success = result.Item1 };
     }
 
     private string[] GetListeners(string articleId)

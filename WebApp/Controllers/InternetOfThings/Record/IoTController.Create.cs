@@ -67,7 +67,7 @@ public partial class IoTController
             SensorData = 0,
             SignalStrength = signalStrength ?? 0,
             BatteryLevel = battery ?? 0,
-            ImagePath = fileInfo.Id.ToString(),
+            ImagePath = fileInfo.AliasCode,
         });
         var queueResult = await requestQueueHostedService.QueueRequest(record, cancelToken);
         if (!queueResult)

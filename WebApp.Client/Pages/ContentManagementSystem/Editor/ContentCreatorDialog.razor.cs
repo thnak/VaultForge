@@ -123,7 +123,7 @@ public partial class ContentCreatorDialog : ComponentBase, IDisposable, IAsyncDi
             await _form.Validate();
             if (_form.IsValid)
             {
-                var result = await Hub!.InvokeAsync<SignalRResult>("CreateAdvertisement", _article, _cts.Token);
+                var result = await Hub!.InvokeAsync<SignalrResult>("CreateAdvertisement", _article, _cts.Token);
                 if (result.Success)
                 {
                     ToastService.ShowSuccess(result.Message);

@@ -86,7 +86,7 @@ public partial class ManagementPage : ComponentBase, IAsyncDisposable, IDisposab
         {
             if (Hub != null)
             {
-                SignalRResultValue<ArticleModel> resultValue = await Hub.InvokeAsync<SignalRResultValue<ArticleModel>>("GetAllArticleModel", arg.PageSize, arg.Page, cancellationToken: TokenSource.Token);
+                SignalrResultValue<ArticleModel> resultValue = await Hub.InvokeAsync<SignalrResultValue<ArticleModel>>("GetAllArticleModel", arg.PageSize, arg.Page, cancellationToken: TokenSource.Token);
 
                 return new GridData<ArticleModel>
                 {
@@ -134,7 +134,7 @@ public partial class ManagementPage : ComponentBase, IAsyncDisposable, IDisposab
         {
             if (Hub != null)
             {
-                var result = await Hub.InvokeAsync<SignalRResult>("DeleteAdvertisement", contextItem.Id.ToString());
+                var result = await Hub.InvokeAsync<SignalrResult>("DeleteAdvertisement", contextItem.Id.ToString());
                 if (result is { Success: true })
                 {
                     await DataGrid.ReloadServerData();

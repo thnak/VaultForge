@@ -24,9 +24,6 @@ public static class FileStreamExtension
             await bufferStream.WriteAsync(buffer, 0, bytesRead);
             remainingSize -= bytesRead;
         }
-
-        // Optionally, reset the memory stream's position to the beginning if you plan to read from it later
-        bufferStream.Seek(0, SeekOrigin.Begin);
     }
 
 
