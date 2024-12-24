@@ -45,11 +45,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Utils/JsRuntimeExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Utils/JsRuntimeExtension.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -958,15 +956,8 @@
       <workItem from="1734851365654" duration="29560000" />
       <workItem from="1734914341933" duration="4383000" />
       <workItem from="1734923185447" duration="15130000" />
-      <workItem from="1734966903941" duration="4223000" />
-    </task>
-    <task id="LOCAL-00442" summary="add missing config">
-      <option name="closed" value="true" />
-      <created>1733799183198</created>
-      <option name="number" value="00442" />
-      <option name="presentableId" value="LOCAL-00442" />
-      <option name="project" value="LOCAL" />
-      <updated>1733799183198</updated>
+      <workItem from="1734966903941" duration="4763000" />
+      <workItem from="1734973366608" duration="404000" />
     </task>
     <task id="LOCAL-00443" summary="update">
       <option name="closed" value="true" />
@@ -1352,7 +1343,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734969295814</updated>
     </task>
-    <option name="localTasksCounter" value="491" />
+    <task id="LOCAL-00491" summary="add open image">
+      <option name="closed" value="true" />
+      <created>1734971673663</created>
+      <option name="number" value="00491" />
+      <option name="presentableId" value="LOCAL-00491" />
+      <option name="project" value="LOCAL" />
+      <updated>1734971673663</updated>
+    </task>
+    <option name="localTasksCounter" value="492" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1383,7 +1382,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fix wrong ort option" />
     <MESSAGE value="remove unknown option" />
     <MESSAGE value="remove all provider option" />
     <MESSAGE value="fix missing data" />
@@ -1408,7 +1406,8 @@
     <MESSAGE value="fix wrong logic" />
     <MESSAGE value="allow to rotate, dispose resource" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="add open image" />
+    <option name="LAST_COMMIT_MESSAGE" value="add open image" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

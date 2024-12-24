@@ -280,6 +280,7 @@
         "resolved": "9.0.0",
         "contentHash": "hzACdIf1C+4Dqos5ijV404b94+LqfIC8nfS3mNpCDFWowb1N3PNfJPopneq32ahWlDeyaPZJqjBk76YFR69Rpg=="
       }
-    }
+    },
+    "net9.0/linux-x64": {}
   }
 }

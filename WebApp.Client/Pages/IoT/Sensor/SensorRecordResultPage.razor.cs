@@ -14,10 +14,17 @@ public partial class SensorRecordResultPage : ComponentBase
 {
     #region --- page models ---
 
-    private class PageModel(IoTRecord device)
+    private class PageModel
     {
-        public IoTRecord Device { get; set; } = device;
+        public IoTRecord Device { get; set; }
         public ButtonAction OpenImageBtn { get; set; } = new();
+
+        public PageModel(IoTRecord device)
+        {
+            device.CreateTime = device.CreateTime.ToLocalTime();
+            device.Metadata.RecordedAt = device.Metadata.RecordedAt.ToLocalTime();
+            Device = device;
+        }
     }
 
     private class FilterPageModel

@@ -38,7 +38,7 @@ public partial class IoTController
 
         SignalrResultValue<IoTRecord> result = new()
         {
-            Data = records.Skip(page * pageSize).Take(pageSize).ToArray(),
+            Data = records.Skip(page * pageSize).Take(pageSize).OrderByDescending(x => x.Metadata.RecordedAt).ToArray(),
             Total = records.Count(),
         };
         var json = result.ToJson();

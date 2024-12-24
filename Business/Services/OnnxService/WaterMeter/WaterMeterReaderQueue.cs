@@ -33,7 +33,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
     private int Count { get; set; }
 
     public WaterMeterReaderQueue(ApplicationConfiguration configuration, ILogger<IWaterMeterReaderQueue> logger,
-        RedundantArrayOfIndependentDisks disks, IFileSystemBusinessLayer fileSystemBusinessLayer, IIotRecordBusinessLayer recordBusinessLayer, 
+        RedundantArrayOfIndependentDisks disks, IFileSystemBusinessLayer fileSystemBusinessLayer, IIotRecordBusinessLayer recordBusinessLayer,
         IIoTSensorBusinessLayer iotSensorBusinessLayer)
     {
         _waterMeterReader = new WaterMeterReader(configuration.GetOnnxConfig.WaterMeterWeightPath);
@@ -79,8 +79,13 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
 
             var result = _waterMeterReader.PredictWaterMeter(_feeder);
             _feeder.Clear();
-            await _recordBusinessLayer.UpdateIotValue(record.Id.ToString(), result[0], ProcessStatus.Completed, cancellationToken);
-            return result[0];
+            if (result.Any())
+            {
+                await _recordBusinessLayer.UpdateIotValue(record.Id.ToString(), result[0], ProcessStatus.Completed, cancellationToken);
+                return result[0];
+            }
+
+            return 0;
         }
         catch (OperationCanceledException)
         {
