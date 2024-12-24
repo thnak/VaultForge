@@ -75,7 +75,7 @@ public partial class FilesController
         }
 
         var cancelToken = HttpContext.RequestAborted;
-        id = id.Split(".").First();
+        // id = id.Split(".").First();
         var fileList = await fileServe.GetSubFileByClassifyAsync(id, cancelToken, [fileClassify]);
         if (fileList.Count == 0) return NotFound();
         var file = fileList.First();
@@ -146,7 +146,11 @@ public partial class FilesController
         };
 
         var pathArray = await raidService.GetDataBlockPaths(file.AbsolutePath, cancelToken);
-        if (pathArray == null) return NotFound();
+        if (pathArray == null)
+        {
+            logger.LogError("File exists but raid not found. can't download file.");
+            return NotFound();
+        }
         Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files, pathArray.FileSize, pathArray.StripeSize, FileMode.Open, FileAccess.Read, FileShare.Read);
         
         Response.RegisterForDisposeAsync(raid5Stream);
@@ -170,7 +174,7 @@ public partial class FilesController
         if (file == null) return NotFound(AppLang.File_not_found_);
 
         var pathArray = await raidService.GetDataBlockPaths(file.AbsolutePath, cancelToken);
-        if (pathArray == default) return NotFound();
+        if (pathArray == null) return NotFound();
 
         // Check if Range request header exists
         if (Request.Headers.ContainsKey("Range"))
