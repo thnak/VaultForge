@@ -31,7 +31,7 @@ public class IotSensorDataLayer(IMongoDataLayerContext context, ILogger<IIotSens
         {
             IndexKeysDefinition<IoTSensor>[] uniqueIndexesDefinitions =
             [
-                Builders<IoTSensor>.IndexKeys.Ascending(x => x.SensorId),
+                Builders<IoTSensor>.IndexKeys.Ascending(x=>x.DeviceId).Ascending(x => x.SensorId),
             ];
             var uniqueIndexes = uniqueIndexesDefinitions.Select(x => new CreateIndexModel<IoTSensor>(x, new CreateIndexOptions { Unique = true }));
             await _data.Indexes.DropAllAsync(cancellationToken);
