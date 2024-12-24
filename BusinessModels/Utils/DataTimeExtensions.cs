@@ -43,17 +43,13 @@ public static class DataTimeExtensions
 
     public static double ToUnixSecond(this DateTime self)
     {
-        var dateTimeOffset = new DateTimeOffset(self);
-        var min = new DateTimeOffset(UnixEpoch);
-        var span = dateTimeOffset - min;
+        var span = self.ToUniversalTime() - UnixEpoch;
         return span.TotalSeconds;
     }
     
     public static double ToUnixDate(this DateTime self)
     {
-        var dateTimeOffset = new DateTimeOffset(self);
-        var min = new DateTimeOffset(UnixEpoch);
-        var span = dateTimeOffset - min;
+        var span = self.ToUniversalTime() - UnixEpoch;
         return span.TotalDays;
     }
 }
