@@ -79,13 +79,13 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
 
             var result = _waterMeterReader.PredictWaterMeter(_feeder);
             _feeder.Clear();
-            if (result.Any())
+            if (!result.Any())
             {
-                await _recordBusinessLayer.UpdateIotValue(record.Id.ToString(), result[0], ProcessStatus.Completed, cancellationToken);
-                return result[0];
+                result.Add(0);
             }
 
-            return 0;
+            await _recordBusinessLayer.UpdateIotValue(record.Id.ToString(), result[0], ProcessStatus.Completed, cancellationToken);
+            return result[0];
         }
         catch (OperationCanceledException)
         {
