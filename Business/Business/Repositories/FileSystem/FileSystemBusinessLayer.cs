@@ -164,6 +164,9 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da, IMemoryCache memor
     public async Task<List<FileInfoModel>> GetSubFileByClassifyAsync(string fileId, CancellationToken cancellationToken = default, params IEnumerable<FileClassify> classify)
     {
         List<FileInfoModel> filesList = new List<FileInfoModel>();
+        var fileSrc = Get(fileId);
+        if (fileSrc == null) return [];
+        fileId = fileSrc.Id.ToString();
         foreach (var ctx in classify)
         {
             var files = Where(x => x.ParentResource == fileId && x.Classify == ctx, cancellationToken);

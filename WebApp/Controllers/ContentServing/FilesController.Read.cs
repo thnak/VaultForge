@@ -75,7 +75,6 @@ public partial class FilesController
         }
 
         var cancelToken = HttpContext.RequestAborted;
-        // id = id.Split(".").First();
         var fileList = await fileServe.GetSubFileByClassifyAsync(id, cancelToken, [fileClassify]);
         if (fileList.Count == 0)
         {
