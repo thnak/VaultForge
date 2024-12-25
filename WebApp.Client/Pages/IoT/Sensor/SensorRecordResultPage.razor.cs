@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using BusinessModels.System;
-using BusinessModels.System.InternetOfThings;
+﻿using BusinessModels.System.InternetOfThings;
 using BusinessModels.System.InternetOfThings.type;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
@@ -62,8 +60,7 @@ public partial class SensorRecordResultPage : ComponentBase
 
     private async Task GetDevices()
     {
-        int pageSize = int.MaxValue;
-        var result = await ApiService.GetAsync<SignalrResultValue<IoTDevice>>($"api/device/get-device?page=0&pageSize={pageSize}");
+        var result = await ApiService.GetAllDevicesAsync();
         if (!result.IsSuccessStatusCode)
         {
             ToastService.ShowError(result.Message, TypeClassList.ToastDefaultSetting);
@@ -75,8 +72,7 @@ public partial class SensorRecordResultPage : ComponentBase
 
     private async Task GetSensors()
     {
-        int pageSize = int.MaxValue;
-        var result = await ApiService.GetAsync<SignalrResultValue<IoTSensor>>($"api/device/get-sensor?page=0&pageSize={pageSize}");
+        var result = await ApiService.GetAllIotSensorsAsync();
         if (!result.IsSuccessStatusCode)
         {
             ToastService.ShowError(result.Message, TypeClassList.ToastDefaultSetting);
@@ -97,13 +93,7 @@ public partial class SensorRecordResultPage : ComponentBase
         long total = 0;
         foreach (var sensor in _filterPage.Sensors)
         {
-            MultipartFormDataContent form = new();
-            form.Add(new StringContent(sensor.SensorId), "sensorId");
-            form.Add(new StringContent(arg.Page.ToString()), "page");
-            form.Add(new StringContent(arg.PageSize.ToString()), "pageSize");
-            form.Add(new StringContent(_filterPage.DateRange.Start.GetValueOrDefault(DateTime.Now).ToUnixDate().Round(0).ToString(CultureInfo.InvariantCulture)), "startDate");
-            form.Add(new StringContent(_filterPage.DateRange.End.GetValueOrDefault(DateTime.Now).ToUnixDate().Round(0).ToString(CultureInfo.InvariantCulture)), "endDate");
-            var data = await ApiService.PostAsync<SignalrResultValue<IoTRecord>>("/api/iot/get-record", form);
+            var data = await ApiService.GetIotRecordsAsync(sensor.SensorId, arg.Page, arg.PageSize, _filterPage.DateRange.Start.GetValueOrDefault(DateTime.Now).ToUnixDate().Round(0), _filterPage.DateRange.Start.GetValueOrDefault(DateTime.Now).ToUnixDate().Round(0));
             if (data.IsSuccessStatusCode)
             {
                 total = data.Data.Total;

@@ -77,7 +77,11 @@ public partial class FilesController
         var cancelToken = HttpContext.RequestAborted;
         // id = id.Split(".").First();
         var fileList = await fileServe.GetSubFileByClassifyAsync(id, cancelToken, [fileClassify]);
-        if (fileList.Count == 0) return NotFound();
+        if (fileList.Count == 0)
+        {
+            return NotFound("Not found sub file");
+        }
+
         var file = fileList.First();
 
         var now = DateTime.UtcNow;
@@ -95,17 +99,23 @@ public partial class FilesController
         Response.StatusCode = 200;
         Response.ContentLength = file.FileSize;
 
-        MemoryStream ms = new MemoryStream();
-        Response.RegisterForDispose(ms);
+        var pathArray = await raidService.GetDataBlockPaths(file.AbsolutePath, cancelToken);
+        if (pathArray == null)
+        {
+            logger.LogError("File exists but raid not found. can't download file.");
+            return NotFound();
+        }
 
-        await raidService.ReadGetDataAsync(ms, file.AbsolutePath, cancelToken);
+        Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files, pathArray.FileSize, pathArray.StripeSize, FileMode.Open, FileAccess.Read, FileShare.Read);
+        Response.RegisterForDispose(raid5Stream);
+
 
         if (file is { Classify: FileClassify.M3U8File })
         {
-            var streamReader = new StreamReader(ms);
+            var streamReader = new StreamReader(raid5Stream);
             Response.RegisterForDispose(streamReader);
             string[] lines = (await streamReader.ReadToEndAsync(cancelToken)).Split("\n");
-            ms.Seek(0, SeekOrigin.Begin);
+            raid5Stream.Seek(0, SeekOrigin.Begin);
             for (var i = 0; i < lines.Length; i++)
             {
                 var line = lines[i];
@@ -120,7 +130,7 @@ public partial class FilesController
             return Content(stringContent, file.ContentType);
         }
 
-        return new FileStreamResult(ms, file.ContentType)
+        return new FileStreamResult(raid5Stream, file.ContentType)
         {
             FileDownloadName = file.FileName,
             LastModified = file.ModifiedTime,
@@ -151,10 +161,11 @@ public partial class FilesController
             logger.LogError("File exists but raid not found. can't download file.");
             return NotFound();
         }
+
         Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files, pathArray.FileSize, pathArray.StripeSize, FileMode.Open, FileAccess.Read, FileShare.Read);
-        
+
         Response.RegisterForDisposeAsync(raid5Stream);
-        
+
         Response.Headers.Append("Content-Disposition", cd.ToString());
         Response.Headers.Append("Content-Length", file.FileSize.ToString());
 

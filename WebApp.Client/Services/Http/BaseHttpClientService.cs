@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace WebApp.Client.Services.Http;
 
-public class BaseHttpClientService
+public partial class BaseHttpClientService
 {
     public HttpClient? HttpClient { get; set; }
     public NavigationManager? Navigation { get; set; }
