@@ -27,9 +27,9 @@ public partial class IoTController
     public async Task<IActionResult> SummaryRecord([FromForm] string sensorId, [FromForm] int page, [FromForm] int pageSize, [FromForm] double startDate, [FromForm] double endDate)
     {
         var startDateTime = startDate.UnixDate2DateDateTime();
-        var endDateTime = endDate.UnixDate2DateDateTime();
+        var endDateTime = endDate.UnixDate2DateDateTime().AddDays(1);
 
-        var data = businessLayer.Where(x => x.Metadata.RecordedAt >= startDateTime && x.Metadata.RecordedAt <= endDateTime && x.Metadata.SensorId == sensorId);
+        var data = businessLayer.Where(x => x.Metadata.RecordedAt >= startDateTime && x.Metadata.RecordedAt < endDateTime && x.Metadata.SensorId == sensorId);
         List<IoTRecord> records = new List<IoTRecord>();
         await foreach (var record in data)
         {
