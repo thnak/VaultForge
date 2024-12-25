@@ -49,6 +49,8 @@ public class RecordMetadata
 
     public ProcessStatus ProcessStatus { get; set; }
 
+    public float OnChipTemperature { get; set; }
+    
     /// <summary>
     /// Represented as a percentage (0-100)
     /// </summary>

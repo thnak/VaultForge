@@ -42,7 +42,7 @@ public partial class IoTController
     }
 
     [HttpPost("add-image")]
-    public async Task<IActionResult> AddImage([FromForm] string sensorId, [FromForm] IFormFile file, [FromForm] int? signalStrength, [FromForm] int? battery)
+    public async Task<IActionResult> AddImage([FromForm] string sensorId, [FromForm] IFormFile file, [FromForm] int? signalStrength, [FromForm] int? battery, [FromForm] int? chipTemp)
     {
         var cancelToken = HttpContext.RequestAborted;
         var fileData = file.OpenReadStream();
@@ -67,6 +67,7 @@ public partial class IoTController
             SensorData = 0,
             SignalStrength = signalStrength ?? 0,
             BatteryLevel = battery ?? 0,
+            OnChipTemperature = chipTemp ?? 0,
             ImagePath = fileInfo.AliasCode,
         });
         var queueResult = await requestQueueHostedService.QueueRequest(record, cancelToken);

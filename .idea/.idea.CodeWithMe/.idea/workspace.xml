@@ -45,17 +45,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.Device.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.IotRecord.Read.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.IotRecord.cs" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update filter to get correct time">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Business/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/packages.lock.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -167,13 +159,14 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f77be22079eb1bdddcd5dbcd5df7fecbed559688b86a491da2be84d9f269191/StringValues.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fd5df964a94a255455f7b077e863af646a024518fa7703879230fff599b192/OrtIoBinding.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fe3b1716bf2f8f83ac793e7e3faa60f88a7868347653f77591f74b86d0d97675/Server.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Business/Repositories/FileSystem/FileSystemBusinessLayer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/Repositories/InternetOfThings/IIotSensorDataLayer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/Utils/DataTimeExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/Controllers/ContentServing/FilesController.Read.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -966,31 +959,7 @@
       <workItem from="1734966903941" duration="4763000" />
       <workItem from="1734973366608" duration="404000" />
       <workItem from="1734999757813" duration="7839000" />
-      <workItem from="1735085697917" duration="1620000" />
-    </task>
-    <task id="LOCAL-00449" summary="update">
-      <option name="closed" value="true" />
-      <created>1734157907625</created>
-      <option name="number" value="00449" />
-      <option name="presentableId" value="LOCAL-00449" />
-      <option name="project" value="LOCAL" />
-      <updated>1734157907625</updated>
-    </task>
-    <task id="LOCAL-00450" summary="update">
-      <option name="closed" value="true" />
-      <created>1734166919128</created>
-      <option name="number" value="00450" />
-      <option name="presentableId" value="LOCAL-00450" />
-      <option name="project" value="LOCAL" />
-      <updated>1734166919129</updated>
-    </task>
-    <task id="LOCAL-00451" summary="update">
-      <option name="closed" value="true" />
-      <created>1734167299675</created>
-      <option name="number" value="00451" />
-      <option name="presentableId" value="LOCAL-00451" />
-      <option name="project" value="LOCAL" />
-      <updated>1734167299676</updated>
+      <workItem from="1735085697917" duration="5484000" />
     </task>
     <task id="LOCAL-00452" summary="add place-holder">
       <option name="closed" value="true" />
@@ -1360,7 +1329,31 @@
       <option name="project" value="LOCAL" />
       <updated>1735035579777</updated>
     </task>
-    <option name="localTasksCounter" value="498" />
+    <task id="LOCAL-00498" summary="small update">
+      <option name="closed" value="true" />
+      <created>1735087491739</created>
+      <option name="number" value="00498" />
+      <option name="presentableId" value="LOCAL-00498" />
+      <option name="project" value="LOCAL" />
+      <updated>1735087491739</updated>
+    </task>
+    <task id="LOCAL-00499" summary="fix not found sub file resource">
+      <option name="closed" value="true" />
+      <created>1735088141149</created>
+      <option name="number" value="00499" />
+      <option name="presentableId" value="LOCAL-00499" />
+      <option name="project" value="LOCAL" />
+      <updated>1735088141149</updated>
+    </task>
+    <task id="LOCAL-00500" summary="update filter to get correct time">
+      <option name="closed" value="true" />
+      <created>1735088229431</created>
+      <option name="number" value="00500" />
+      <option name="presentableId" value="LOCAL-00500" />
+      <option name="project" value="LOCAL" />
+      <updated>1735088229431</updated>
+    </task>
+    <option name="localTasksCounter" value="501" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1391,8 +1384,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="add try catch inside queue" />
-    <MESSAGE value="remove debug" />
     <MESSAGE value="update algo" />
     <MESSAGE value="cuda only" />
     <MESSAGE value="allow thumbnail file for iot image" />
@@ -1408,7 +1399,6 @@
     <MESSAGE value="update" />
     <MESSAGE value="fix wrong logic" />
     <MESSAGE value="allow to rotate, dispose resource" />
-    <MESSAGE value="small update" />
     <MESSAGE value="add open image" />
     <MESSAGE value="fix out of range" />
     <MESSAGE value="fix not update field" />
@@ -1416,7 +1406,10 @@
     <MESSAGE value="fix utc issue" />
     <MESSAGE value="update order" />
     <MESSAGE value="update index for sensor" />
-    <option name="LAST_COMMIT_MESSAGE" value="update index for sensor" />
+    <MESSAGE value="small update" />
+    <MESSAGE value="fix not found sub file resource" />
+    <MESSAGE value="update filter to get correct time" />
+    <option name="LAST_COMMIT_MESSAGE" value="update filter to get correct time" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

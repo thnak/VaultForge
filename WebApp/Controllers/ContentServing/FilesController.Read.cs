@@ -106,8 +106,7 @@ public partial class FilesController
         }
 
         Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files, pathArray.FileSize, pathArray.StripeSize, FileMode.Open, FileAccess.Read, FileShare.Read);
-        Response.RegisterForDispose(raid5Stream);
-
+        Response.RegisterForDisposeAsync(raid5Stream);
 
         if (file is { Classify: FileClassify.M3U8File })
         {
