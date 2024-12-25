@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Business.Authenticate.AuthorizationRequirement;
 using Business.Authenticate.KeyProvider;
 using Business.Authenticate.TokenProvider;
@@ -8,10 +9,12 @@ using Business.Services.Authenticate.Tracer;
 using BusinessModels.Resources;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Business.Services.Configure;
 
@@ -69,6 +72,11 @@ public static class AuthenticateService
 
     private static void ConfigureAuthentication(IServiceCollection service)
     {
+        service.AddAuthentication(options =>
+        {
+            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        });
         service.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
@@ -92,6 +100,55 @@ public static class AuthenticateService
                 {
                     OnValidatePrincipal = ValidateAsync
                 };
+            })
+            .AddJwtBearer(options =>
+            {
+                // Access the provider
+                var provider = service.BuildServiceProvider().GetRequiredService<IJsonWebTokenCertificateProvider>();
+
+                // Set TokenValidationParameters
+                options.TokenValidationParameters = provider.GetTokenValidationParameters();
+
+                // Customize events
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+                        return Task.CompletedTask;
+                    },
+                    OnTokenValidated = async context =>
+                    {
+                        try
+                        {
+                            var token = context.SecurityToken as JwtSecurityToken;
+
+                            if (token == null)
+                            {
+                                throw new SecurityTokenException("Invalid token format");
+                            }
+
+                            // Validate the token using JsonWebTokenCertificateProvider
+                            var validatedPrincipal = provider.ValidateToken(token.RawData, out _);
+
+                            if (validatedPrincipal == null)
+                            {
+                                throw new SecurityTokenException("Token validation failed");
+                            }
+
+                            // Optional: Add custom claims or additional logic
+                            Console.WriteLine("Token validated successfully with JsonWebTokenCertificateProvider.");
+                        }
+                        catch (Exception ex)
+                        {
+                            // Log or handle token validation errors
+                            Console.WriteLine($"Token validation error: {ex.Message}");
+                            context.Fail("Token validation failed");
+                        }
+
+                        await Task.CompletedTask;
+                    }
+                };
             });
     }
 
@@ -108,19 +165,6 @@ public static class AuthenticateService
         if (authenticationType == CookieNames.AuthenticationType)
         {
             var userManager = context.HttpContext.RequestServices.GetRequiredService<IUserBusinessLayer>();
-            var jswProvider = context.HttpContext.RequestServices.GetRequiredService<IJsonWebTokenCertificateProvider>();
-
-            var jwt = userPrincipal.FindFirst(ClaimTypes.UserData)?.Value;
-            if (!string.IsNullOrEmpty(jwt))
-            {
-                var claimsPrincipal = jswProvider.GetClaimsFromToken(jwt);
-                if (claimsPrincipal == null)
-                {
-                    await RejectAsync(context);
-                    return;
-                }
-            }
-
             var userId = userPrincipal.FindFirst(ClaimTypes.Name)?.Value;
             var user = userId == null ? null : userManager.Get(userId);
             if (user == null) await RejectAsync(context);

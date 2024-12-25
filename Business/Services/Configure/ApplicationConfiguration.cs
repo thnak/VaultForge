@@ -126,6 +126,8 @@ public class ApplicationConfiguration
     public AppCertificate GetAppCertificate => Configs.AppCertificate;
     public VideoTransCode GetVideoTransCode => Configs.VideoTransCode;
 
+    public BusinessModels.General.SettingModels.Authenticate GetAuthenticate => Configs.Authenticate;
+    
     private string GetEnvironmentVariable(string key, string defaultValue)
     {
         var envValue = Environment.GetEnvironmentVariable(key);

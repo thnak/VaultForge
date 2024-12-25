@@ -45,9 +45,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update filter to get correct time">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Authenticate/TokenProvider/JsonWebTokenCertificateProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Authenticate/TokenProvider/JsonWebTokenCertificateProvider.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/AuthenticateService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/AuthenticateService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConsoleApp1/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Create.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Create.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -111,6 +116,7 @@
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Text.Json/src/System/Text/Json/Serialization/JsonConverterOfT.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0fb7a5f343ed4578a15c716986a3f17950c00/7a/d308585c/NativeDateTimeResolver.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4992fbaf8fdc4e35afbc4135b809fa7329e30/e6/d3d3ecbc/OllamaEmbeddingGenerator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4f1fdec7cbfe4433a7ec3a6d1bd0e54223918/cd/d84d2cb7/ServiceCollectionServiceExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5de964a0ff014d78b9bbaee58138798511938/40/098169e4/IFormFile.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/838402d166304061809e45e127735cb925920/11/d508170c/ILogger`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b19b48a658d34783924b2956c870b2ee39420/0f/e20d4436/AdditionalPropertiesDictionary.cs" root0="FORCE_HIGHLIGHTING" />
@@ -165,6 +171,8 @@
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/Controllers/ContentServing/FilesController.Read.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/Controllers/ContentServing/FilesController.Read.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -188,40 +196,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.ResApi.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.Web: https.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.WebApp no browser.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.WebApp: IIS Express.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.WebApp: https.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.WebApp: no-browser.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Project.ConsoleApp1.executor&quot;: &quot;Run&quot;,
-    &quot;.NET Project.WebApp.Client.executor&quot;: &quot;Debug&quot;,
-    &quot;Docker.WebApp/Dockerfile (1).executor&quot;: &quot;Run&quot;,
-    &quot;Publish to folder.ResApi.executor&quot;: &quot;Run&quot;,
-    &quot;Publish to folder.Unnamed.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.26168224&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/thanh/Downloads&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propDebugger&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.ResApi.executor": "Debug",
+    ".NET Launch Settings Profile.Web: https.executor": "Debug",
+    ".NET Launch Settings Profile.WebApp no browser.executor": "Debug",
+    ".NET Launch Settings Profile.WebApp: IIS Express.executor": "Debug",
+    ".NET Launch Settings Profile.WebApp: https.executor": "Debug",
+    ".NET Launch Settings Profile.WebApp: no-browser.executor": "Debug",
+    ".NET Project.ConsoleApp1.executor": "Debug",
+    ".NET Project.WebApp.Client.executor": "Debug",
+    "Docker.WebApp/Dockerfile (1).executor": "Run",
+    "Publish to folder.ResApi.executor": "Run",
+    "Publish to folder.Unnamed.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "XThreadsFramesViewSplitterKey": "0.26168224",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/thanh/Downloads",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "project.propDebugger",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
-      &quot;Shell Script&quot;
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "Shell Script"
     ]
   }
-}</component>
+}]]></component>
   <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
     <layout>
       <window_info id="Bookmarks" show_stripe_button="false" side_tool="true" />
@@ -262,7 +270,7 @@
       <window_info anchor="right" id="Maven" order="4" weight="0.25" />
     </layout>
   </component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: https">
+  <component name="RunManager" selected=".NET Project.ConsoleApp1">
     <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
       <deployment type="docker-compose.yml">
         <settings />
@@ -959,15 +967,7 @@
       <workItem from="1734966903941" duration="4763000" />
       <workItem from="1734973366608" duration="404000" />
       <workItem from="1734999757813" duration="7839000" />
-      <workItem from="1735085697917" duration="5484000" />
-    </task>
-    <task id="LOCAL-00452" summary="add place-holder">
-      <option name="closed" value="true" />
-      <created>1734398737249</created>
-      <option name="number" value="00452" />
-      <option name="presentableId" value="LOCAL-00452" />
-      <option name="project" value="LOCAL" />
-      <updated>1734398737249</updated>
+      <workItem from="1735085697917" duration="10225000" />
     </task>
     <task id="LOCAL-00453" summary="add attribute to debug">
       <option name="closed" value="true" />
@@ -1353,7 +1353,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735088229431</updated>
     </task>
-    <option name="localTasksCounter" value="501" />
+    <task id="LOCAL-00501" summary="add field">
+      <option name="closed" value="true" />
+      <created>1735097069346</created>
+      <option name="number" value="00501" />
+      <option name="presentableId" value="LOCAL-00501" />
+      <option name="project" value="LOCAL" />
+      <updated>1735097069347</updated>
+    </task>
+    <option name="localTasksCounter" value="502" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1384,7 +1392,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="update algo" />
     <MESSAGE value="cuda only" />
     <MESSAGE value="allow thumbnail file for iot image" />
     <MESSAGE value="big update" />
@@ -1409,7 +1416,8 @@
     <MESSAGE value="small update" />
     <MESSAGE value="fix not found sub file resource" />
     <MESSAGE value="update filter to get correct time" />
-    <option name="LAST_COMMIT_MESSAGE" value="update filter to get correct time" />
+    <MESSAGE value="add field" />
+    <option name="LAST_COMMIT_MESSAGE" value="add field" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -100,6 +100,8 @@ public class AppCertificate
 public class Authenticate()
 {
     public string Pepper { get; set; } = string.Empty;
+    public string Issuer { get; set; } = string.Empty;
+    public string Audience { get; set; } = string.Empty;
 }
 
 public static class AppSettingsConverter
