@@ -37,7 +37,7 @@ public class JsonWebTokenCertificateProvider : IJsonWebTokenCertificateProvider
     private readonly ApplicationConfiguration _applicationConfiguration;
     private readonly SecurityKey _signingKey;
 
-    public JsonWebTokenCertificateProvider(ApplicationConfiguration settings, IMongoDataLayerContext context, IDataProtectionProvider dataProtectionProvider, ApplicationConfiguration applicationConfiguration)
+    public JsonWebTokenCertificateProvider(IMongoDataLayerContext context, IDataProtectionProvider dataProtectionProvider, ApplicationConfiguration applicationConfiguration)
     {
         _dataProtectionProvider = dataProtectionProvider;
         _applicationConfiguration = applicationConfiguration;

@@ -46,7 +46,7 @@ public partial class IoTController
     public async Task<IActionResult> AddImage([FromForm] string sensorId, [FromForm] IFormFile file, [FromForm] int? signalStrength, [FromForm] int? battery, [FromForm] int? chipTemp)
     {
         var cancelToken = HttpContext.RequestAborted;
-        var fileData = file.OpenReadStream();
+        await using var fileData = file.OpenReadStream();
 
         var folder = folderServe.Get("", "/iotImage");
 

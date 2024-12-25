@@ -46,13 +46,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Business/Authenticate/TokenProvider/JsonWebTokenCertificateProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Authenticate/TokenProvider/JsonWebTokenCertificateProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/AuthenticateService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/AuthenticateService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp1/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Create.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Create.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -967,15 +961,7 @@
       <workItem from="1734966903941" duration="4763000" />
       <workItem from="1734973366608" duration="404000" />
       <workItem from="1734999757813" duration="7839000" />
-      <workItem from="1735085697917" duration="10225000" />
-    </task>
-    <task id="LOCAL-00453" summary="add attribute to debug">
-      <option name="closed" value="true" />
-      <created>1734400031454</created>
-      <option name="number" value="00453" />
-      <option name="presentableId" value="LOCAL-00453" />
-      <option name="project" value="LOCAL" />
-      <updated>1734400031454</updated>
+      <workItem from="1735085697917" duration="12294000" />
     </task>
     <task id="LOCAL-00454" summary="update">
       <option name="closed" value="true" />
@@ -1361,7 +1347,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735097069347</updated>
     </task>
-    <option name="localTasksCounter" value="502" />
+    <task id="LOCAL-00502" summary="update service">
+      <option name="closed" value="true" />
+      <created>1735121402521</created>
+      <option name="number" value="00502" />
+      <option name="presentableId" value="LOCAL-00502" />
+      <option name="project" value="LOCAL" />
+      <updated>1735121402522</updated>
+    </task>
+    <option name="localTasksCounter" value="503" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1392,7 +1386,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="cuda only" />
     <MESSAGE value="allow thumbnail file for iot image" />
     <MESSAGE value="big update" />
     <MESSAGE value="[BIG UPDATE] add new page, refactor, ..." />
@@ -1417,7 +1410,8 @@
     <MESSAGE value="fix not found sub file resource" />
     <MESSAGE value="update filter to get correct time" />
     <MESSAGE value="add field" />
-    <option name="LAST_COMMIT_MESSAGE" value="add field" />
+    <MESSAGE value="update service" />
+    <option name="LAST_COMMIT_MESSAGE" value="update service" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
