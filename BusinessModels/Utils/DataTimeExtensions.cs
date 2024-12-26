@@ -29,7 +29,7 @@ public static class DataTimeExtensions
     {
         return UnixEpoch.AddDays(date);
     }
-    
+
     public static DateTime UnixDate2DateDateTime(this int date)
     {
         return UnixEpoch.AddDays(date);
@@ -46,10 +46,32 @@ public static class DataTimeExtensions
         var span = self.ToUniversalTime() - UnixEpoch;
         return span.TotalSeconds;
     }
-    
-    public static double ToUnixDate(this DateTime self)
+
+    /// <summary>
+    /// Converts a DateTime to a Unix date (number of seconds since January 1, 1970).
+    /// The time part is stripped, and the calculation is based on the date only.
+    /// </summary>
+    /// <param name="dateTime">The DateTime to convert.</param>
+    /// <returns>The Unix date as an integer.</returns>
+    public static long ToUnixDate(this DateTime dateTime)
     {
-        var span = self.ToUniversalTime() - UnixEpoch;
-        return span.TotalDays;
+        // Strip the time part by creating a DateOnly and then converting it back to DateTime.
+        var dateOnly = DateOnly.FromDateTime(dateTime);
+        var strippedDateTime = dateOnly.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
+
+
+        // Calculate the total seconds since the Unix epoch.
+        return (long)(strippedDateTime - UnixEpoch).TotalSeconds;
+    }
+
+    /// <summary>
+    /// Converts a Unix date (seconds since January 1, 1970) back to a DateTime.
+    /// </summary>
+    /// <param name="unixDate">The Unix date to convert.</param>
+    /// <returns>The corresponding DateTime.</returns>
+    public static DateTime FromUnixDate(long unixDate)
+    {
+        // Add the Unix date as seconds to the epoch and return the result.
+        return UnixEpoch.AddSeconds(unixDate);
     }
 }

@@ -93,7 +93,9 @@ public partial class SensorRecordResultPage : ComponentBase
         long total = 0;
         foreach (var sensor in _filterPage.Sensors)
         {
-            var data = await ApiService.GetIotRecordsAsync(sensor.SensorId, arg.Page, arg.PageSize, _filterPage.DateRange.Start.GetValueOrDefault(DateTime.Now).ToUnixDate().Round(0), _filterPage.DateRange.Start.GetValueOrDefault(DateTime.Now).ToUnixDate().Round(0));
+            var data = await ApiService.GetIotRecordsAsync(sensor.SensorId, arg.Page, arg.PageSize,
+                _filterPage.DateRange.Start.GetValueOrDefault(DateTime.Now).ToUnixDate(), 
+                _filterPage.DateRange.Start.GetValueOrDefault(DateTime.Now).ToUnixDate());
             if (data.IsSuccessStatusCode)
             {
                 total = data.Data.Total;
