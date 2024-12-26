@@ -58,10 +58,9 @@ public static class DataTimeExtensions
         // Strip the time part by creating a DateOnly and then converting it back to DateTime.
         var dateOnly = DateOnly.FromDateTime(dateTime);
         var strippedDateTime = dateOnly.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
-
-
+        
         // Calculate the total seconds since the Unix epoch.
-        return (long)(strippedDateTime - UnixEpoch).TotalSeconds;
+        return (long)(strippedDateTime - UnixEpoch).TotalDays;
     }
 
     /// <summary>
@@ -72,6 +71,6 @@ public static class DataTimeExtensions
     public static DateTime FromUnixDate(long unixDate)
     {
         // Add the Unix date as seconds to the epoch and return the result.
-        return UnixEpoch.AddSeconds(unixDate);
+        return UnixEpoch.AddDays(unixDate);
     }
 }
