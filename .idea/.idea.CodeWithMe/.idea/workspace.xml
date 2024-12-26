@@ -45,9 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Business/Authenticate/TokenProvider/JsonWebTokenCertificateProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Authenticate/TokenProvider/JsonWebTokenCertificateProvider.cs" afterDir="false" />
-    </list>
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -190,40 +188,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.ResApi.executor": "Debug",
-    ".NET Launch Settings Profile.Web: https.executor": "Debug",
-    ".NET Launch Settings Profile.WebApp no browser.executor": "Debug",
-    ".NET Launch Settings Profile.WebApp: IIS Express.executor": "Debug",
-    ".NET Launch Settings Profile.WebApp: https.executor": "Debug",
-    ".NET Launch Settings Profile.WebApp: no-browser.executor": "Debug",
-    ".NET Project.ConsoleApp1.executor": "Debug",
-    ".NET Project.WebApp.Client.executor": "Debug",
-    "Docker.WebApp/Dockerfile (1).executor": "Run",
-    "Publish to folder.ResApi.executor": "Run",
-    "Publish to folder.Unnamed.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "XThreadsFramesViewSplitterKey": "0.26168224",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/thanh/Downloads",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "project.propDebugger",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.ResApi.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.Web: https.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.WebApp no browser.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.WebApp: IIS Express.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.WebApp: https.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.WebApp: no-browser.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Project.ConsoleApp1.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Project.WebApp.Client.executor&quot;: &quot;Debug&quot;,
+    &quot;Docker.WebApp/Dockerfile (1).executor&quot;: &quot;Run&quot;,
+    &quot;Publish to folder.ResApi.executor&quot;: &quot;Run&quot;,
+    &quot;Publish to folder.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.26168224&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/thanh/Downloads&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propDebugger&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "Shell Script"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;Shell Script&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
     <layout>
       <window_info id="Bookmarks" show_stripe_button="false" side_tool="true" />
@@ -962,14 +960,7 @@
       <workItem from="1734973366608" duration="404000" />
       <workItem from="1734999757813" duration="7839000" />
       <workItem from="1735085697917" duration="12294000" />
-    </task>
-    <task id="LOCAL-00454" summary="update">
-      <option name="closed" value="true" />
-      <created>1734403246898</created>
-      <option name="number" value="00454" />
-      <option name="presentableId" value="LOCAL-00454" />
-      <option name="project" value="LOCAL" />
-      <updated>1734403246898</updated>
+      <workItem from="1735146288231" duration="205000" />
     </task>
     <task id="LOCAL-00455" summary="update api">
       <option name="closed" value="true" />
@@ -1355,7 +1346,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735121402522</updated>
     </task>
-    <option name="localTasksCounter" value="503" />
+    <task id="LOCAL-00503" summary="dispose shit">
+      <option name="closed" value="true" />
+      <created>1735146381432</created>
+      <option name="number" value="00503" />
+      <option name="presentableId" value="LOCAL-00503" />
+      <option name="project" value="LOCAL" />
+      <updated>1735146381432</updated>
+    </task>
+    <option name="localTasksCounter" value="504" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1386,7 +1385,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="allow thumbnail file for iot image" />
     <MESSAGE value="big update" />
     <MESSAGE value="[BIG UPDATE] add new page, refactor, ..." />
     <MESSAGE value="optimize code" />
@@ -1411,7 +1409,8 @@
     <MESSAGE value="update filter to get correct time" />
     <MESSAGE value="add field" />
     <MESSAGE value="update service" />
-    <option name="LAST_COMMIT_MESSAGE" value="update service" />
+    <MESSAGE value="dispose shit" />
+    <option name="LAST_COMMIT_MESSAGE" value="dispose shit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
