@@ -10,12 +10,12 @@ public static class DataTimeExtensions
         return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, hour, second, 0, dateTime.Kind);
     }
 
-    public static DateTime UnixTimeStampToDateTime(this double unixTimeStamp)
+    public static DateTime UnixSecondToDateTime(this double unixTimeStamp)
     {
         return UnixEpoch.AddSeconds(unixTimeStamp);
     }
 
-    public static DateTime UnixTimeStampToDateTime(this int unixTimeStamp)
+    public static DateTime UnixSecondToDateTime(this int unixTimeStamp)
     {
         return UnixEpoch.AddSeconds(unixTimeStamp);
     }

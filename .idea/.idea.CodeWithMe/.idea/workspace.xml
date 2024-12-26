@@ -45,7 +45,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Implement/TimeService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Implement/TimeService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Interfaces/ITimeService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Interfaces/ITimeService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Utils/DataTimeExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/DataTimeExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" afterDir="false" />
+    </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,16 +164,13 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f77be22079eb1bdddcd5dbcd5df7fecbed559688b86a491da2be84d9f269191/StringValues.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fd5df964a94a255455f7b077e863af646a024518fa7703879230fff599b192/OrtIoBinding.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fe3b1716bf2f8f83ac793e7e3faa60f88a7868347653f77591f74b86d0d97675/Server.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Business/Repositories/FileSystem/FileSystemBusinessLayer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/Utils/DataTimeExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/Controllers/ContentServing/FilesController.Read.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/Controllers/ContentServing/FilesController.Read.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Routes.razor.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -262,7 +266,7 @@
       <window_info anchor="right" id="Maven" order="4" weight="0.25" />
     </layout>
   </component>
-  <component name="RunManager" selected=".NET Project.ConsoleApp1">
+  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: no-browser">
     <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
       <deployment type="docker-compose.yml">
         <settings />
@@ -961,38 +965,7 @@
       <workItem from="1734999757813" duration="7839000" />
       <workItem from="1735085697917" duration="12294000" />
       <workItem from="1735146288231" duration="205000" />
-    </task>
-    <task id="LOCAL-00455" summary="update api">
-      <option name="closed" value="true" />
-      <created>1734424189108</created>
-      <option name="number" value="00455" />
-      <option name="presentableId" value="LOCAL-00455" />
-      <option name="project" value="LOCAL" />
-      <updated>1734424189108</updated>
-    </task>
-    <task id="LOCAL-00456" summary="small update">
-      <option name="closed" value="true" />
-      <created>1734446212791</created>
-      <option name="number" value="00456" />
-      <option name="presentableId" value="LOCAL-00456" />
-      <option name="project" value="LOCAL" />
-      <updated>1734446212792</updated>
-    </task>
-    <task id="LOCAL-00457" summary="REMOVE hash logic">
-      <option name="closed" value="true" />
-      <created>1734447320784</created>
-      <option name="number" value="00457" />
-      <option name="presentableId" value="LOCAL-00457" />
-      <option name="project" value="LOCAL" />
-      <updated>1734447320784</updated>
-    </task>
-    <task id="LOCAL-00458" summary="update">
-      <option name="closed" value="true" />
-      <created>1734528299376</created>
-      <option name="number" value="00458" />
-      <option name="presentableId" value="LOCAL-00458" />
-      <option name="project" value="LOCAL" />
-      <updated>1734528299377</updated>
+      <workItem from="1735176631957" duration="6217000" />
     </task>
     <task id="LOCAL-00459" summary=".">
       <option name="closed" value="true" />
@@ -1354,7 +1327,39 @@
       <option name="project" value="LOCAL" />
       <updated>1735146381432</updated>
     </task>
-    <option name="localTasksCounter" value="504" />
+    <task id="LOCAL-00504" summary="un">
+      <option name="closed" value="true" />
+      <created>1735176688157</created>
+      <option name="number" value="00504" />
+      <option name="presentableId" value="LOCAL-00504" />
+      <option name="project" value="LOCAL" />
+      <updated>1735176688157</updated>
+    </task>
+    <task id="LOCAL-00505" summary="update filter">
+      <option name="closed" value="true" />
+      <created>1735187423331</created>
+      <option name="number" value="00505" />
+      <option name="presentableId" value="LOCAL-00505" />
+      <option name="project" value="LOCAL" />
+      <updated>1735187423331</updated>
+    </task>
+    <task id="LOCAL-00506" summary="fix wrong implement">
+      <option name="closed" value="true" />
+      <created>1735188962863</created>
+      <option name="number" value="00506" />
+      <option name="presentableId" value="LOCAL-00506" />
+      <option name="project" value="LOCAL" />
+      <updated>1735188962864</updated>
+    </task>
+    <task id="LOCAL-00507" summary="show error">
+      <option name="closed" value="true" />
+      <created>1735189122404</created>
+      <option name="number" value="00507" />
+      <option name="presentableId" value="LOCAL-00507" />
+      <option name="project" value="LOCAL" />
+      <updated>1735189122404</updated>
+    </task>
+    <option name="localTasksCounter" value="508" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1385,10 +1390,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="big update" />
-    <MESSAGE value="[BIG UPDATE] add new page, refactor, ..." />
-    <MESSAGE value="optimize code" />
-    <MESSAGE value="fix too many char" />
     <MESSAGE value="update style" />
     <MESSAGE value="fix" />
     <MESSAGE value="fix missing length" />
@@ -1410,7 +1411,11 @@
     <MESSAGE value="add field" />
     <MESSAGE value="update service" />
     <MESSAGE value="dispose shit" />
-    <option name="LAST_COMMIT_MESSAGE" value="dispose shit" />
+    <MESSAGE value="un" />
+    <MESSAGE value="update filter" />
+    <MESSAGE value="fix wrong implement" />
+    <MESSAGE value="show error" />
+    <option name="LAST_COMMIT_MESSAGE" value="show error" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

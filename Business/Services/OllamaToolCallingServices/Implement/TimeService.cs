@@ -6,7 +6,7 @@ namespace Business.Services.OllamaToolCallingServices.Implement;
 
 public class TimeService : ITimeService
 {
-    public string UnixTimeStampToDateTime(string unixTimeStamp, CancellationToken cancellationToken = default)
+    public string UnixSecondToDateTime(string unixTimeStamp, CancellationToken cancellationToken = default)
     {
         if (int.TryParse(unixTimeStamp, NumberStyles.Integer, CultureInfo.InvariantCulture, out int unixTimeStampInt))
         {

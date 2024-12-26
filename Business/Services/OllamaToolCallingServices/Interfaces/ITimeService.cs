@@ -8,7 +8,7 @@ public interface ITimeService
 {
     
     [Description("get time stamp from unix second")]
-    public string UnixTimeStampToDateTime(string unixTimeStamp, CancellationToken cancellationToken = default);
+    public string UnixSecondToDateTime(string unixTimeStamp, CancellationToken cancellationToken = default);
 
  //   [Description("get current timestamp in dd-MM-yyyy HH:mm:ss format")]
   //  public Task<string> GetCurrentTimeStamp([Description("set true to get current timestamp in UTC when user requested. otherwise set false to get GMT+7")] string useUtc, CancellationToken cancellationToken = default);
