@@ -120,6 +120,7 @@ public partial class Routes(ILogger<Routes> logger) : ComponentBase, IDisposable
     private string EncodeException(Exception e)
     {
         ErrorRecordModel model = new(e);
+        logger.LogError(e, e.Message);
         return model.Encode2Base64String();
     }
 }
