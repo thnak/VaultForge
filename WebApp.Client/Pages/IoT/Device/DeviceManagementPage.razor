@@ -35,22 +35,22 @@
         </ToolBarContent>
         <Columns>
             <PropertyColumn Property="x => x.Device.DeviceId" Title="Id"/>
-            <PropertyColumn Property="x => x.Device.DeviceName" Title="Name"/>
-            <PropertyColumn Property="x => x.Device.Location" Title="Location"/>
-            <PropertyColumn Property="x => x.Device.IpAddress" Title="Ip address"/>
-            <PropertyColumn Property="x => x.Device.MacAddress" Title="Mac address"/>
-            <PropertyColumn Property="x => x.Device.Status" Title="status"/>
-            <TemplateColumn Title="Action">
+            <PropertyColumn Property="x => x.Device.DeviceName" Title="@AppLang.Device_name"/>
+            <PropertyColumn Property="x => x.Device.Location" Title="@AppLang.Location"/>
+            <PropertyColumn Property="x => x.Device.IpAddress" Title="@AppLang.IP_address"/>
+            <PropertyColumn Property="x => x.Device.MacAddress" Title="@AppLang.MAC_address"/>
+            <PropertyColumn Property="x => x.Device.Status" Title="@AppLang.Status"/>
+            <TemplateColumn Title="@AppLang.Action">
                 <CellTemplate>
                     
                     <div class="d-flex flex-row gap-3">
-                        <MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="Edit">
+                        <MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="@AppLang.Edit">
                             <MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled" 
                                            OnClick="@context.Item.UpdateBtn.Action" Disabled="@context.Item.UpdateBtn.Disabled" 
                                            Color="Color.Primary"/>
                         </MudTooltip>
                         
-                        <MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="Delete">
+                        <MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="@AppLang.Delete">
                             <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" 
                                            OnClick="@context.Item.DeleteBtn.Action" Disabled="@context.Item.DeleteBtn.Disabled" 
                                            Color="Color.Primary"/>

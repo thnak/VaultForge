@@ -21,14 +21,14 @@
 
                     <MudCardContent>
                         <MudTextField T="string" Label="ID" For="@(() => DeviceToEdit.DeviceId)" Immediate="true" Disabled="IsEditing" Required @bind-Value="DeviceToEdit.DeviceId"></MudTextField>
-                        <MudTextField T="string" Label="Name" For="@(() => DeviceToEdit.DeviceName)" Immediate="true" Required @bind-Value="DeviceToEdit.DeviceName"></MudTextField>
-                        <MudTextField T="string" Label="Device Group" For="@(() => DeviceToEdit.DeviceGroupId)" Immediate="true" @bind-Value="DeviceToEdit.DeviceGroupId"></MudTextField>
-                        <MudTextField T="string" Label="Manufacturer" For="@(() => DeviceToEdit.Manufacturer)" Immediate="true" @bind-Value="DeviceToEdit.Manufacturer"></MudTextField>
-                        <MudTextField T="string" Label="Location" For="@(() => DeviceToEdit.Location)" Immediate="true" @bind-Value="DeviceToEdit.Location"></MudTextField>
-                        <MudTextField T="string" Label="Firmware Version" For="@(() => DeviceToEdit.FirmwareVersion)" Immediate="true" @bind-Value="DeviceToEdit.FirmwareVersion"></MudTextField>
+                        <MudTextField T="string" Label="@AppLang.Device_name" For="@(() => DeviceToEdit.DeviceName)" Immediate="true" Required @bind-Value="DeviceToEdit.DeviceName"></MudTextField>
+                        <MudTextField T="string" Label="@AppLang.Device_group" For="@(() => DeviceToEdit.DeviceGroupId)" Immediate="true" @bind-Value="DeviceToEdit.DeviceGroupId"></MudTextField>
+                        <MudTextField T="string" Label="@AppLang.Manufacturer" For="@(() => DeviceToEdit.Manufacturer)" Immediate="true" @bind-Value="DeviceToEdit.Manufacturer"></MudTextField>
+                        <MudTextField T="string" Label="@AppLang.Location" For="@(() => DeviceToEdit.Location)" Immediate="true" @bind-Value="DeviceToEdit.Location"></MudTextField>
+                        <MudTextField T="string" Label="@AppLang.Firmware_version" For="@(() => DeviceToEdit.FirmwareVersion)" Immediate="true" @bind-Value="DeviceToEdit.FirmwareVersion"></MudTextField>
 
-                        <MudTextField T="string" Label="Mac Address" For="@(() => DeviceToEdit.MacAddress)" Required="true" Immediate="true" @bind-Value="DeviceToEdit.MacAddress"></MudTextField>
-                        <MudTextField T="string" Label="Ip Address" For="@(() => DeviceToEdit.IpAddress)" Required="true" Immediate="true" @bind-Value="DeviceToEdit.IpAddress"></MudTextField>
+                        <MudTextField T="string" Label="@AppLang.MAC_address" For="@(() => DeviceToEdit.MacAddress)" Required="true" Immediate="true" @bind-Value="DeviceToEdit.MacAddress"></MudTextField>
+                        <MudTextField T="string" Label="@AppLang.IP_address" For="@(() => DeviceToEdit.IpAddress)" Required="true" Immediate="true" @bind-Value="DeviceToEdit.IpAddress"></MudTextField>
 
                         <EnumMudSelector T="IoTDeviceType" For="@(() => DeviceToEdit.IoTDeviceType)" LabelString="Type" @bind-SelectedValue="DeviceToEdit.IoTDeviceType"/>
                         <EnumMudSelector T="IoTDeviceStatus" For="@(() => DeviceToEdit.Status)" LabelString="Status" @bind-SelectedValue="DeviceToEdit.Status"/>
@@ -50,23 +50,23 @@
                     </ToolBarContent>
                     <Columns>
                         <PropertyColumn Property="x => x.IoTSensor.SensorId" Title="Id"/>
-                        <PropertyColumn Property="x => x.IoTSensor.SensorName" Title="Name"/>
-                        <PropertyColumn Property="x => x.IoTSensor.IoTSensorType" Title="Type"/>
-                        <PropertyColumn Property="x => x.IoTSensor.Status" Title="Status"/>
+                        <PropertyColumn Property="x => x.IoTSensor.SensorName" Title="@AppLang.Name"/>
+                        <PropertyColumn Property="x => x.IoTSensor.IoTSensorType" Title="@AppLang.Type"/>
+                        <PropertyColumn Property="x => x.IoTSensor.Status" Title="@AppLang.Status"/>
                         <PropertyColumn Property="x => x.IoTSensor.Rotate" Title="Rotate"/>
-                        <PropertyColumn Property="x => x.IoTSensor.CalibrationTime" Title="Calibration Time"/>
+                        <PropertyColumn Property="x => x.IoTSensor.CalibrationTime" Title="@AppLang.Calibration_time"/>
 
-                        <TemplateColumn Title="Action">
+                        <TemplateColumn Title="@AppLang.Action">
                             <CellTemplate>
 
                                 <div class="d-flex flex-row gap-3">
-                                    <MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="Edit">
+                                    <MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="@AppLang.Edit">
                                         <MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled"
                                                        OnClick="@context.Item.EditButtonAction.Action" Disabled="@context.Item.EditButtonAction.Disabled"
                                                        Color="Color.Primary"/>
                                     </MudTooltip>
 
-                                    <MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="Delete">
+                                    <MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="@AppLang.Delete">
                                         <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled"
                                                        OnClick="@context.Item.DeleteButtonAction.Action" Disabled="@context.Item.DeleteButtonAction.Disabled"
                                                        Color="Color.Primary"/>

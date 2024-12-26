@@ -202,8 +202,8 @@
     <value>Đăng xuất</value>
   </data>
     <data name="Username" xml:space="preserve">
-    <value>Tài khoản</value>
-  </data>
+      <value>Tên người dùng</value>
+    </data>
     <data name="Password" xml:space="preserve">
     <value>Mật khẩu</value>
   </data>
@@ -220,8 +220,8 @@
     <value>Đăng nhập</value>
   </data>
     <data name="Processing" xml:space="preserve">
-    <value>Đang xử lý</value>
-  </data>
+      <value>Đang xử lý</value>
+    </data>
     <data name="Next" xml:space="preserve">
     <value>Tiếp theo</value>
   </data>
@@ -383,7 +383,7 @@ ClientY: {1}</value>
       <value>Di chuyển {0}</value>
     </data>
     <data name="Current location" xml:space="preserve">
-      <value>Vị trí hiện tại</value>
+      <value>Địa điểm hiện tại</value>
     </data>
     <data name="Search" xml:space="preserve">
       <value>Tìm kiếm</value>
@@ -515,7 +515,7 @@ ClientY: {1}</value>
       <value>Không thể xóa thư mục hệ thống</value>
     </data>
     <data name="Disconnected" xml:space="preserve">
-      <value>Đã ngắt kết nối</value>
+      <value>Đã cắt kết nối</value>
     </data>
     <data name="Connected" xml:space="preserve">
       <value>Đã kết nối</value>
@@ -567,5 +567,185 @@ ClientY: {1}</value>
     </data>
     <data name="NotFound" xml:space="preserve">
       <value>Không tìm thấy</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+      <value>Tên</value>
+    </data>
+    <data name="Device name" xml:space="preserve">
+      <value>Tên thiết bị</value>
+    </data>
+    <data name="Type" xml:space="preserve">
+      <value>Loại</value>
+    </data>
+    <data name="Status" xml:space="preserve">
+      <value>Trạng thái</value>
+    </data>
+    <data name="Calibration time" xml:space="preserve">
+      <value>Thời gian hiệu chuẩn</value>
+    </data>
+    <data name="Action" xml:space="preserve">
+      <value>Hành động</value>
+    </data>
+    <data name="Device group" xml:space="preserve">
+      <value>장비 그룹</value>
+    </data>
+    <data name="Manufacturer" xml:space="preserve">
+      <value>Nhà sản xuất</value>
+    </data>
+    <data name="Location" xml:space="preserve">
+      <value>Địa điểm</value>
+    </data>
+    <data name="Firmware version" xml:space="preserve">
+      <value>Version phần mềm thiết bị</value>
+    </data>
+    <data name="MAC address" xml:space="preserve">
+      <value>Địa chỉ MAC</value>
+    </data>
+    <data name="MAC address already used" xml:space="preserve">
+      <value>Địa chi MAC đã được sử dụng</value>
+    </data>
+    <data name="IP address" xml:space="preserve">
+      <value>Địa chỉ IP</value>
+    </data>
+    <data name="Add new device successfully" xml:space="preserve">
+      <value>Thêm thiết bị mới thành công</value>
+    </data>
+    <data name="Delete device successfully" xml:space="preserve">
+      <value>Xóa thiết bị thành công</value>
+    </data>
+    <data name="Delete device" xml:space="preserve">
+      <value>Xóa thiết bị</value>
+    </data>
+    <data name="Delete sensor" xml:space="preserve">
+      <value>Xóa cảm biến</value>
+    </data>
+    <data name="Update device" xml:space="preserve">
+      <value>Cập nhật thiết bị</value>
+    </data>
+    <data name="Update sensor" xml:space="preserve">
+      <value>Cập nhật cảm biến</value>
+    </data>
+    <data name="Add new record" xml:space="preserve">
+      <value>Thêm mới bản ghi</value>
+    </data>
+    <data name="Refresh data" xml:space="preserve">
+      <value>Làm mới dữ liệu</value>
+    </data>
+    <data name="Date" xml:space="preserve">
+      <value>Ngày</value>
+    </data>
+    <data name="Hour" xml:space="preserve">
+      <value>Giờ</value>
+    </data>
+    <data name="Minute" xml:space="preserve">
+      <value>Phút</value>
+    </data>
+    <data name="Second" xml:space="preserve">
+      <value>Giây</value>
+    </data>
+    <data name="Device ID" xml:space="preserve">
+      <value>ID thiết bị</value>
+    </data>
+    <data name="Sensor ID" xml:space="preserve">
+      <value>ID cảm biến</value>
+    </data>
+    <data name="Unit of measurement" xml:space="preserve">
+      <value>Đơn vị đo</value>
+    </data>
+    <data name="Accuracy" xml:space="preserve">
+      <value>Độ chính xác</value>
+    </data>
+    <data name="Select time" xml:space="preserve">
+      <value>Chọn thời gian</value>
+    </data>
+    <data name="Select device" xml:space="preserve">
+      <value>Chọn thiết bị</value>
+    </data>
+    <data name="This field is required" xml:space="preserve">
+      <value>Đây là trường bắt buộc</value>
+    </data>
+    <data name="Required field" xml:space="preserve">
+      <value>Trường bắt buộc</value>
+    </data>
+    <data name="Select sensor" xml:space="preserve">
+      <value>Chọn cảm biến</value>
+    </data>
+    <data name="Online devices" xml:space="preserve">
+      <value>Thiết bị trực tuyến</value>
+    </data>
+    <data name="Already existing" xml:space="preserve">
+      <value>Đã tồn tại</value>
+    </data>
+    <data name="Sensor not found" xml:space="preserve">
+      <value>Cảm biến không tìm thấy</value>
+    </data>
+    <data name="Completed" xml:space="preserve">
+      <value>Hoàn thành</value>
+    </data>
+    <data name="Requesting" xml:space="preserve">
+      <value>Yêu cầu</value>
+    </data>
+    <data name="Requested" xml:space="preserve">
+      <value>Đã yêu cầu</value>
+    </data>
+    <data name="Connecting" xml:space="preserve">
+      <value>Đang kết nối</value>
+    </data>
+    <data name="An exception has been found" xml:space="preserve">
+      <value>Lỗi đã được phát hiện</value>
+    </data>
+    <data name="Search device" xml:space="preserve">
+      <value>Tìm thiết bị</value>
+    </data>
+    <data name="Modified time" xml:space="preserve">
+      <value>Thời gian chỉnh sửa</value>
+    </data>
+    <data name="Rows per page" xml:space="preserve">
+      <value>Số dòng/trang</value>
+    </data>
+    <data name="Page" xml:space="preserve">
+      <value>Trang</value>
+    </data>
+    <data name="Page number" xml:space="preserve">
+      <value>Số trang</value>
+    </data>
+    <data name="Page size" xml:space="preserve">
+      <value>Kích thước trang</value>
+    </data>
+    <data name="Process status" xml:space="preserve">
+      <value>Trạng thái xử lý</value>
+    </data>
+    <data name="Classify" xml:space="preserve">
+      <value>Phân loại</value>
+    </data>
+    <data name="History" xml:space="preserve">
+      <value>Lịch sử</value>
+    </data>
+    <data name="Delete history" xml:space="preserve">
+      <value>Xóa lịch sử</value>
+    </data>
+    <data name="Searching" xml:space="preserve">
+      <value>Đang tìm kiếm</value>
+    </data>
+    <data name="Filter" xml:space="preserve">
+      <value>Lọc</value>
+    </data>
+    <data name="Value" xml:space="preserve">
+      <value>Giá trị</value>
+    </data>
+    <data name="Signal strength" xml:space="preserve">
+      <value>Độ mạnh tín hiệu</value>
+    </data>
+    <data name="Timestamp" xml:space="preserve">
+      <value>Thời gian stamp</value>
+    </data>
+    <data name="Chip temperature" xml:space="preserve">
+      <value> Nhiệt độ chip</value>
+    </data>
+    <data name="Device" xml:space="preserve">
+      <value>Thiết bị</value>
+    </data>
+    <data name="Sensor" xml:space="preserve">
+      <value>Cảm biến</value>
     </data>
 </root>

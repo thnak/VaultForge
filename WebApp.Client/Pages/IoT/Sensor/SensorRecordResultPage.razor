@@ -19,7 +19,7 @@
 
             <div class="d-flex flex-row gap-3">
                 <div class="page-content-container-search-field-width">
-                    <MudAutocomplete T="string" @bind-Value="DeviceSearchString" SearchFunc="SearchDevice" Placeholder="Search"
+                    <MudAutocomplete T="string" @bind-Value="DeviceSearchString" SearchFunc="SearchDevice" Placeholder="@AppLang.Search"
                                      Adornment="Adornment.Start" Margin="Margin.Dense" Variant="Variant.Outlined"
                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0">
                         <ProgressIndicatorTemplate>
@@ -28,28 +28,28 @@
                     </MudAutocomplete>
                 </div>
 
-                <MudButton StartIcon="@Icons.Material.Filled.FilterAlt" OnClick="OpenFilter">Filer</MudButton>
+                <MudButton StartIcon="@Icons.Material.Filled.FilterAlt" OnClick="OpenFilter">@AppLang.Filter</MudButton>
 
 
             </div>
 
         </ToolBarContent>
         <Columns>
-            <PropertyColumn Property="x => x.Device.Metadata.RecordedAt" Title="Timestamp" Format="dd/MM/yy HH:mm:ss"/>
-            <PropertyColumn Property="x => x.Device.Metadata.SensorId" Title="Sensor ID"/>
-            <PropertyColumn Property="x => x.Device.Metadata.ImagePath" Title="Image">
+            <PropertyColumn Property="x => x.Device.Metadata.RecordedAt" Title="@AppLang.Timestamp" Format="dd/MM/yy HH:mm:ss"/>
+            <PropertyColumn Property="x => x.Device.Metadata.SensorId" Title="@AppLang.Sensor"/>
+            <PropertyColumn Property="x => x.Device.Metadata.ImagePath" Title="@AppLang.Image">
                 <CellTemplate>
                     <MudButton OnClick="@context.Item.OpenImageBtn.Action" Disabled="@context.Item.OpenImageBtn.Disabled">@AppLang.Image</MudButton>
                 </CellTemplate>
             </PropertyColumn>
-            <PropertyColumn Property="x => x.Device.Metadata.SensorData" Title="Value"/>
-            <PropertyColumn Property="x => x.Device.Metadata.SignalStrength" Title="Signal strength"/>
-            <PropertyColumn Property="x => x.Device.Metadata.OnChipTemperature" Title="Chip temperature"/>
-            <PropertyColumn T="PageModel" TProperty="ProcessStatus" Property="x => x.Device.Metadata.ProcessStatus" Title="Process status" CellStyleFunc="ProcessStatusStyle"/>
+            <PropertyColumn Property="x => x.Device.Metadata.SensorData" Title="@AppLang.Value"/>
+            <PropertyColumn Property="x => x.Device.Metadata.SignalStrength" Title="@AppLang.Signal_strength"/>
+            <PropertyColumn Property="x => x.Device.Metadata.OnChipTemperature" Title="@AppLang.Chip_temperature"/>
+            <PropertyColumn T="PageModel" TProperty="ProcessStatus" Property="x => x.Device.Metadata.ProcessStatus" Title="@AppLang.Process_status" CellStyleFunc="ProcessStatusStyle"/>
 
         </Columns>
         <PagerContent>
-            <MudDataGridPager T="PageModel"/>
+            <MudDataGridPager RowsPerPageString="@AppLang.Rows_per_page" T="PageModel"/>
         </PagerContent>
     </MudDataGrid>
 
@@ -58,17 +58,17 @@
 <MudDrawer @bind-Open="@OpenFilterState" Width="min(500px,80vw)" Elevation="0" Overlay="true" Variant="@DrawerVariant.Temporary"
            Anchor="Anchor.End">
     <MudDrawerHeader>
-        <MudText Typo="Typo.h6">Filter</MudText>
+        <MudText Typo="Typo.h6">@AppLang.Filter</MudText>
     </MudDrawerHeader>
 
     <MudForm Model="_filterPage">
         <MudCardContent>
 
-            <MudDateRangePicker Label="Date" Variant="Variant.Outlined" @bind-DateRange="_filterPage.DateRange"></MudDateRangePicker>
+            <MudDateRangePicker Label="@AppLang.Date" Variant="Variant.Outlined" @bind-DateRange="_filterPage.DateRange"></MudDateRangePicker>
 
             @* <MudAutocomplete T="IoTDevice" Value="_filterPage.SelectedDevice"  Label="Device" Variant="Variant.Outlined"></MudAutocomplete> *@
 
-            <MudSelect T="IoTDevice" Variant="Variant.Outlined" Label="Device" @bind-SelectedValues="_filterPage.SelectedDevices">
+            <MudSelect T="IoTDevice" Variant="Variant.Outlined" Label="@AppLang.Device" @bind-SelectedValues="_filterPage.SelectedDevices">
 
                 @foreach (var device in DevicesList)
                 {
@@ -76,7 +76,7 @@
                 }
 
             </MudSelect>
-            <MudSelect T="IoTSensor" Variant="Variant.Outlined" Label="Sensor" @bind-SelectedValues="_filterPage.Sensors">
+            <MudSelect T="IoTSensor" Variant="Variant.Outlined" Label="@AppLang.Sensor" @bind-SelectedValues="_filterPage.Sensors">
 
                 @foreach (var sensor in SensorList)
                 {

@@ -45,13 +45,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add new rule for sensor node">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Implement/TimeService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Implement/TimeService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Interfaces/ITimeService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Interfaces/ITimeService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Utils/DataTimeExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/DataTimeExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.Designer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.de-DE.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.de-DE.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.en-US.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.en-US.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.es-ES.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.es-ES.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.ja-JP.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.ja-JP.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.ko-KR.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.ko-KR.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.vi-VN.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.vi-VN.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/DeviceGroup/DeviceGroupManagementPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/DeviceGroup/DeviceGroupManagementPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorManagementPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorManagementPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -966,30 +974,7 @@
       <workItem from="1735085697917" duration="12294000" />
       <workItem from="1735146288231" duration="205000" />
       <workItem from="1735176631957" duration="6217000" />
-    </task>
-    <task id="LOCAL-00459" summary=".">
-      <option name="closed" value="true" />
-      <created>1734529987498</created>
-      <option name="number" value="00459" />
-      <option name="presentableId" value="LOCAL-00459" />
-      <option name="project" value="LOCAL" />
-      <updated>1734529987498</updated>
-    </task>
-    <task id="LOCAL-00460" summary="update service">
-      <option name="closed" value="true" />
-      <created>1734539442331</created>
-      <option name="number" value="00460" />
-      <option name="presentableId" value="LOCAL-00460" />
-      <option name="project" value="LOCAL" />
-      <updated>1734539442331</updated>
-    </task>
-    <task id="LOCAL-00461" summary="update">
-      <option name="closed" value="true" />
-      <created>1734567477443</created>
-      <option name="number" value="00461" />
-      <option name="presentableId" value="LOCAL-00461" />
-      <option name="project" value="LOCAL" />
-      <updated>1734567477444</updated>
+      <workItem from="1735224000087" duration="6046000" />
     </task>
     <task id="LOCAL-00462" summary="fix wrong ort option">
       <option name="closed" value="true" />
@@ -1359,7 +1344,31 @@
       <option name="project" value="LOCAL" />
       <updated>1735189122404</updated>
     </task>
-    <option name="localTasksCounter" value="508" />
+    <task id="LOCAL-00508" summary="change to unix sec">
+      <option name="closed" value="true" />
+      <created>1735224056060</created>
+      <option name="number" value="00508" />
+      <option name="presentableId" value="LOCAL-00508" />
+      <option name="project" value="LOCAL" />
+      <updated>1735224056060</updated>
+    </task>
+    <task id="LOCAL-00509" summary="fix missing type">
+      <option name="closed" value="true" />
+      <created>1735224307291</created>
+      <option name="number" value="00509" />
+      <option name="presentableId" value="LOCAL-00509" />
+      <option name="project" value="LOCAL" />
+      <updated>1735224307291</updated>
+    </task>
+    <task id="LOCAL-00510" summary="add new rule for sensor node">
+      <option name="closed" value="true" />
+      <created>1735224378237</created>
+      <option name="number" value="00510" />
+      <option name="presentableId" value="LOCAL-00510" />
+      <option name="project" value="LOCAL" />
+      <updated>1735224378237</updated>
+    </task>
+    <option name="localTasksCounter" value="511" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1390,9 +1399,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="update style" />
-    <MESSAGE value="fix" />
-    <MESSAGE value="fix missing length" />
     <MESSAGE value="fix stream issue" />
     <MESSAGE value="do not update other field for time series" />
     <MESSAGE value="update" />
@@ -1415,7 +1421,10 @@
     <MESSAGE value="update filter" />
     <MESSAGE value="fix wrong implement" />
     <MESSAGE value="show error" />
-    <option name="LAST_COMMIT_MESSAGE" value="show error" />
+    <MESSAGE value="change to unix sec" />
+    <MESSAGE value="fix missing type" />
+    <MESSAGE value="add new rule for sensor node" />
+    <option name="LAST_COMMIT_MESSAGE" value="add new rule for sensor node" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

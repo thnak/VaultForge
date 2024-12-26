@@ -202,8 +202,8 @@
     <value>Desconectar</value>
   </data>
     <data name="Username" xml:space="preserve">
-    <value>..</value>
-  </data>
+      <value>Nombre de usuario</value>
+    </data>
     <data name="Password" xml:space="preserve">
     <value>Contraseña</value>
   </data>
@@ -220,8 +220,8 @@
     <value>Iniciar sesión</value>
   </data>
     <data name="Processing" xml:space="preserve">
-    <value>Procesando</value>
-  </data>
+      <value>Procesando</value>
+    </data>
     <data name="Next" xml:space="preserve">
     <value>Siguiente</value>
   </data>
@@ -289,8 +289,8 @@
     <value>.</value>
   </data>
     <data name="ReName" xml:space="preserve">
-    <value>.</value>
-  </data>
+      <value>Renombrar</value>
+    </data>
     <data name="ThisFieldIsRequired" xml:space="preserve">
     <value>.</value>
   </data>
@@ -332,5 +332,194 @@
     </data>
     <data name="NotFound" xml:space="preserve">
       <value>No encontrado</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+      <value>Nombre</value>
+    </data>
+    <data name="Device name" xml:space="preserve">
+      <value>Nombre del dispositivo</value>
+    </data>
+    <data name="Type" xml:space="preserve">
+      <value>Tipo</value>
+    </data>
+    <data name="Status" xml:space="preserve">
+      <value>Estado</value>
+    </data>
+    <data name="Calibration time" xml:space="preserve">
+      <value>Tiempo de calibración</value>
+    </data>
+    <data name="Action" xml:space="preserve">
+      <value>Acción</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+      <value>Editar</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+      <value>Eliminar</value>
+    </data>
+    <data name="Device group" xml:space="preserve">
+      <value>Grupo de dispositivos</value>
+    </data>
+    <data name="Manufacturer" xml:space="preserve">
+      <value>Fabricante</value>
+    </data>
+    <data name="Location" xml:space="preserve">
+      <value>Localización</value>
+    </data>
+    <data name="Current location" xml:space="preserve">
+      <value>Ubicación actual</value>
+    </data>
+    <data name="Firmware version" xml:space="preserve">
+      <value>Versión del firmware</value>
+    </data>
+    <data name="MAC address" xml:space="preserve">
+      <value>Dirección MAC</value>
+    </data>
+    <data name="MAC address already used" xml:space="preserve">
+      <value>Dirección MAC ya utilizada</value>
+    </data>
+    <data name="IP address" xml:space="preserve">
+      <value>Dirección IP</value>
+    </data>
+    <data name="Add new device successfully" xml:space="preserve">
+      <value>Agregado nuevo dispositivo con éxito</value>
+    </data>
+    <data name="Delete device successfully" xml:space="preserve">
+      <value>Dispositivo eliminado con éxito</value>
+    </data>
+    <data name="Delete device" xml:space="preserve">
+      <value>Borrar dispositivo</value>
+    </data>
+    <data name="Delete sensor" xml:space="preserve">
+      <value>Borrar sensor</value>
+    </data>
+    <data name="Update device" xml:space="preserve">
+      <value>Actualizar dispositivo</value>
+    </data>
+    <data name="Update sensor" xml:space="preserve">
+      <value>Actualizar sensor</value>
+    </data>
+    <data name="Add new record" xml:space="preserve">
+      <value>Añadir nuevo registro</value>
+    </data>
+    <data name="Refresh data" xml:space="preserve">
+      <value>Actualizar datos</value>
+    </data>
+    <data name="Date" xml:space="preserve">
+      <value>Fecha</value>
+    </data>
+    <data name="Hour" xml:space="preserve">
+      <value>Hora</value>
+    </data>
+    <data name="Minute" xml:space="preserve">
+      <value>Minuto</value>
+    </data>
+    <data name="Second" xml:space="preserve">
+      <value>Segundo</value>
+    </data>
+    <data name="Device ID" xml:space="preserve">
+      <value>ID del dispositivo</value>
+    </data>
+    <data name="Sensor ID" xml:space="preserve">
+      <value>ID del sensor</value>
+    </data>
+    <data name="Unit of measurement" xml:space="preserve">
+      <value>Unidad de medida</value>
+    </data>
+    <data name="Accuracy" xml:space="preserve">
+      <value>Precisión</value>
+    </data>
+    <data name="Select time" xml:space="preserve">
+      <value>Seleccionar hora</value>
+    </data>
+    <data name="Select device" xml:space="preserve">
+      <value>Seleccionar dispositivo</value>
+    </data>
+    <data name="This field is required" xml:space="preserve">
+      <value>Este campo es requerido</value>
+    </data>
+    <data name="Required field" xml:space="preserve">
+      <value>Campo requerido</value>
+    </data>
+    <data name="Select sensor" xml:space="preserve">
+      <value>Seleccionar sensor</value>
+    </data>
+    <data name="Online devices" xml:space="preserve">
+      <value>Dispositivos en línea</value>
+    </data>
+    <data name="Already existing" xml:space="preserve">
+      <value>Ya existe</value>
+    </data>
+    <data name="Sensor not found" xml:space="preserve">
+      <value>Sensor no encontrado</value>
+    </data>
+    <data name="Completed" xml:space="preserve">
+      <value>Completo</value>
+    </data>
+    <data name="Requesting" xml:space="preserve">
+      <value>Solicitando</value>
+    </data>
+    <data name="Requested" xml:space="preserve">
+      <value>Solicitado</value>
+    </data>
+    <data name="Connecting" xml:space="preserve">
+      <value>Conectando</value>
+    </data>
+    <data name="Disconnected" xml:space="preserve">
+      <value>Desconectado</value>
+    </data>
+    <data name="An exception has been found" xml:space="preserve">
+      <value>Excepción encontrada</value>
+    </data>
+    <data name="Search device" xml:space="preserve">
+      <value>Buscar dispositivo</value>
+    </data>
+    <data name="Modified time" xml:space="preserve">
+      <value>Tiempo modificado</value>
+    </data>
+    <data name="Rows per page" xml:space="preserve">
+      <value>Filas por página</value>
+    </data>
+    <data name="Page" xml:space="preserve">
+      <value>Página</value>
+    </data>
+    <data name="Page number" xml:space="preserve">
+      <value>Número de página</value>
+    </data>
+    <data name="Page size" xml:space="preserve">
+      <value>Tamaño de página</value>
+    </data>
+    <data name="Process status" xml:space="preserve">
+      <value>Estado del proceso</value>
+    </data>
+    <data name="Classify" xml:space="preserve">
+      <value>Clasificar</value>
+    </data>
+    <data name="History" xml:space="preserve">
+      <value>Historia</value>
+    </data>
+    <data name="Delete history" xml:space="preserve">
+      <value>Borrar historia</value>
+    </data>
+    <data name="Searching" xml:space="preserve">
+      <value>Buscando</value>
+    </data>
+    <data name="Filter" xml:space="preserve">
+      <value>Filtrar</value>
+    </data>
+    <data name="Value" xml:space="preserve">
+      <value>Valor</value>
+    </data>
+    <data name="Timestamp" xml:space="preserve">
+      <value>Firmaje</value>
+    </data>
+    <data name="Chip temperature" xml:space="preserve">
+      <value>Temperatura del chip</value>
+    </data>
+    <data name="Device" xml:space="preserve">
+      <value>Dispositivo</value>
+    </data>
+    <data name="Sensor" xml:space="preserve">
+      <value>Sensor</value>
     </data>
 </root>

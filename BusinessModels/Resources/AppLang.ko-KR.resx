@@ -202,8 +202,8 @@
     <value>로그아웃</value>
   </data>
     <data name="Username" xml:space="preserve">
-    <value>.</value>
-  </data>
+      <value>사용자 이름</value>
+    </data>
     <data name="Password" xml:space="preserve">
     <value>비밀번호</value>
   </data>
@@ -220,8 +220,8 @@
     <value>로그인</value>
   </data>
     <data name="Processing" xml:space="preserve">
-    <value>처리</value>
-  </data>
+      <value>_processing</value>
+    </data>
     <data name="Next" xml:space="preserve">
     <value>다음</value>
   </data>
@@ -289,8 +289,8 @@
     <value>.</value>
   </data>
     <data name="ReName" xml:space="preserve">
-    <value>.</value>
-  </data>
+      <value>이름 변경</value>
+    </data>
     <data name="ThisFieldIsRequired" xml:space="preserve">
     <value>.</value>
   </data>
@@ -332,5 +332,197 @@
     </data>
     <data name="NotFound" xml:space="preserve">
       <value>찾을 수 없음</value>
+    </data>
+    <data name="Name" xml:space="preserve">
+      <value>이름</value>
+    </data>
+    <data name="Device name" xml:space="preserve">
+      <value>장치 이름</value>
+    </data>
+    <data name="Type" xml:space="preserve">
+      <value>유형</value>
+    </data>
+    <data name="Status" xml:space="preserve">
+      <value>상태</value>
+    </data>
+    <data name="Calibration time" xml:space="preserve">
+      <value>보정 시간</value>
+    </data>
+    <data name="Action" xml:space="preserve">
+      <value>작업</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+      <value>편집</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+      <value>삭제</value>
+    </data>
+    <data name="Device group" xml:space="preserve">
+      <value>장비 그룹</value>
+    </data>
+    <data name="Manufacturer" xml:space="preserve">
+      <value>제조사</value>
+    </data>
+    <data name="Location" xml:space="preserve">
+      <value>위치</value>
+    </data>
+    <data name="Current location" xml:space="preserve">
+      <value>현재 위치</value>
+    </data>
+    <data name="Firmware version" xml:space="preserve">
+      <value>펌웨어 버전</value>
+    </data>
+    <data name="MAC address" xml:space="preserve">
+      <value>MAC 주소</value>
+    </data>
+    <data name="MAC address already used" xml:space="preserve">
+      <value> 이미 사용된 MAC 주소</value>
+    </data>
+    <data name="IP address" xml:space="preserve">
+      <value>IP 주소</value>
+    </data>
+    <data name="Add new device successfully" xml:space="preserve">
+      <value>새로운 장치를 성공적으로 추가했습니다</value>
+    </data>
+    <data name="Delete device successfully" xml:space="preserve">
+      <value>데바이스를 성공적으로 삭제했습니다</value>
+    </data>
+    <data name="Delete device" xml:space="preserve">
+      <value>삭제하기</value>
+    </data>
+    <data name="Delete sensor" xml:space="preserve">
+      <value>센서 삭제하기</value>
+    </data>
+    <data name="Update device" xml:space="preserve">
+      <value>업데이트 하기</value>
+    </data>
+    <data name="Update sensor" xml:space="preserve">
+      <value>센서 업데이트 하기</value>
+    </data>
+    <data name="Add new record" xml:space="preserve">
+      <value>새로운 기록 추가하기</value>
+    </data>
+    <data name="Refresh data" xml:space="preserve">
+      <value>데이터 갱신하기</value>
+    </data>
+    <data name="Date" xml:space="preserve">
+      <value>일시</value>
+    </data>
+    <data name="Hour" xml:space="preserve">
+      <value>시간</value>
+    </data>
+    <data name="Minute" xml:space="preserve">
+      <value>분</value>
+    </data>
+    <data name="Second" xml:space="preserve">
+      <value>초</value>
+    </data>
+    <data name="Device ID" xml:space="preserve">
+      <value>장치 ID</value>
+    </data>
+    <data name="Sensor ID" xml:space="preserve">
+      <value>센서 ID</value>
+    </data>
+    <data name="Unit of measurement" xml:space="preserve">
+      <value>위치</value>
+    </data>
+    <data name="Accuracy" xml:space="preserve">
+      <value>정확도</value>
+    </data>
+    <data name="Select time" xml:space="preserve">
+      <value>선택 시간</value>
+    </data>
+    <data name="Select device" xml:space="preserve">
+      <value>선택 장치</value>
+    </data>
+    <data name="This field is required" xml:space="preserve">
+      <value> 이것은 필수 항목입니다</value>
+    </data>
+    <data name="Required field" xml:space="preserve">
+      <value>필수 항목</value>
+    </data>
+    <data name="Select sensor" xml:space="preserve">
+      <value>센서 선택하기</value>
+    </data>
+    <data name="Online devices" xml:space="preserve">
+      <value>온라인 장치</value>
+    </data>
+    <data name="Already existing" xml:space="preserve">
+      <value> 이미 존재합니다</value>
+    </data>
+    <data name="Sensor not found" xml:space="preserve">
+      <value>센서를 찾을 수 없습니다</value>
+    </data>
+    <data name="Completed" xml:space="preserve">
+      <value>완료</value>
+    </data>
+    <data name="Requesting" xml:space="preserve">
+      <value>요청 중</value>
+    </data>
+    <data name="Requested" xml:space="preserve">
+      <value>요청 완료</value>
+    </data>
+    <data name="Connecting" xml:space="preserve">
+      <value>접속 중</value>
+    </data>
+    <data name="Disconnected" xml:space="preserve">
+      <value>切断 연결</value>
+    </data>
+    <data name="An exception has been found" xml:space="preserve">
+      <value>예외가 발생했습니다</value>
+    </data>
+    <data name="Search device" xml:space="preserve">
+      <value>검색 장치</value>
+    </data>
+    <data name="Modified time" xml:space="preserve">
+      <value>마지막 수정 시간</value>
+    </data>
+    <data name="Rows per page" xml:space="preserve">
+      <value>행 수/페이지</value>
+    </data>
+    <data name="Page" xml:space="preserve">
+      <value>페이지</value>
+    </data>
+    <data name="Page number" xml:space="preserve">
+      <value>페이지 번호</value>
+    </data>
+    <data name="Page size" xml:space="preserve">
+      <value>페이지 크기</value>
+    </data>
+    <data name="Process status" xml:space="preserve">
+      <value>진행 상태</value>
+    </data>
+    <data name="Classify" xml:space="preserve">
+      <value>분류</value>
+    </data>
+    <data name="History" xml:space="preserve">
+      <value>히스토리</value>
+    </data>
+    <data name="Delete history" xml:space="preserve">
+      <value>히스토리를 삭제하기</value>
+    </data>
+    <data name="Searching" xml:space="preserve">
+      <value>검색 중</value>
+    </data>
+    <data name="Filter" xml:space="preserve">
+      <value>필터</value>
+    </data>
+    <data name="Value" xml:space="preserve">
+      <value>값</value>
+    </data>
+    <data name="Signal strength" xml:space="preserve">
+      <value>신호 강도</value>
+    </data>
+    <data name="Timestamp" xml:space="preserve">
+      <value>시간스탬프</value>
+    </data>
+    <data name="Chip temperature" xml:space="preserve">
+      <value>칩 온도</value>
+    </data>
+    <data name="Device" xml:space="preserve">
+      <value>装置</value>
+    </data>
+    <data name="Sensor" xml:space="preserve">
+      <value>센서</value>
     </data>
 </root>

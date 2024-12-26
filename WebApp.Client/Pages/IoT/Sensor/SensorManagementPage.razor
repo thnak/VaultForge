@@ -5,7 +5,7 @@
 @* @attribute [Authorize] *@
 @layout MainLayout
 
-<PageTitle>Sensors</PageTitle>
+<PageTitle>@AppLang.Sensors</PageTitle>
 
 <PageTitle>@AppLang.Sensors</PageTitle>
 
@@ -20,7 +20,7 @@
 
             <div class="d-flex flex-row gap-3">
                 <div class="page-content-container-search-field-width">
-                    <MudAutocomplete T="string" Placeholder="Search" Variant="Variant.Outlined"
+                    <MudAutocomplete T="string" Placeholder="@AppLang.Search" Variant="Variant.Outlined"
                                      Adornment="Adornment.Start" Margin="Margin.Dense"
                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0">
                         <ProgressIndicatorTemplate>
@@ -35,23 +35,23 @@
 
         </ToolBarContent>
         <Columns>
-            <PropertyColumn Property="x => x.Device.SensorId" Title="Id"/>
-            <PropertyColumn Property="x => x.Device.SensorName" Title="Name"/>
-            <PropertyColumn Property="x => x.Device.DeviceId" Title="Location"/>
-            <PropertyColumn Property="x => x.Device.Status" Title="Ip address"/>
+            <PropertyColumn Property="x => x.Device.SensorId" Title="ID"/>
+            <PropertyColumn Property="x => x.Device.SensorName" Title="@AppLang.Name"/>
+            <PropertyColumn Property="x => x.Device.DeviceId" Title="@AppLang.Location"/>
+            <PropertyColumn Property="x => x.Device.Status" Title="@AppLang.IP_address"/>
             <PropertyColumn Property="x => x.Device.ModifiedTime" Title="Modified time" Format="dd/MM/yy HH:mm:ss"/>
-            <PropertyColumn Property="x => x.Device.Status" Title="status"/>
-            <TemplateColumn Title="Action">
+            <PropertyColumn Property="x => x.Device.Status" Title="@AppLang.Status"/>
+            <TemplateColumn Title="@AppLang.Action">
                 <CellTemplate>
 
                     <div class="d-flex flex-row gap-3">
-                        <MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="Edit">
+                        <MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="@AppLang.Edit">
                             <MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled"
                                            OnClick="@context.Item.UpdateBtn.Action" Disabled="@context.Item.UpdateBtn.Disabled"
                                            Color="Color.Primary"/>
                         </MudTooltip>
 
-                        <MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="Delete">
+                        <MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="@AppLang.Delete">
                             <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled"
                                            OnClick="@context.Item.DeleteBtn.Action" Disabled="@context.Item.DeleteBtn.Disabled"
                                            Color="Color.Primary"/>
@@ -62,7 +62,7 @@
             </TemplateColumn>
         </Columns>
         <PagerContent>
-            <MudDataGridPager T="PageModel"/>
+            <MudDataGridPager RowsPerPageString="" T="PageModel"/>
         </PagerContent>
     </MudDataGrid>
 
