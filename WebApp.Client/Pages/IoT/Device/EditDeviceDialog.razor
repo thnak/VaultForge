@@ -20,7 +20,7 @@
                 <MudForm Model="DeviceToEdit" @ref="_form" Disabled="Processing" Validation="@(_orderValidator.ValidateValueAsync)" ValidationDelay="0">
 
                     <MudCardContent>
-                        <MudTextField T="string" Label="ID" For="@(() => DeviceToEdit.DeviceId)" Immediate="true" Disabled="IsEditing" Required @bind-Value="DeviceToEdit.DeviceId"></MudTextField>
+                        <MudTextField T="string" Label="ID" For="@(() => DeviceToEdit.DeviceId)" Immediate="true" RequiredError="@AppLang.This_field_is_required" Disabled="IsEditing" Required @bind-Value="DeviceToEdit.DeviceId"></MudTextField>
                         <MudTextField T="string" Label="@AppLang.Device_name" For="@(() => DeviceToEdit.DeviceName)" Immediate="true" Required @bind-Value="DeviceToEdit.DeviceName"></MudTextField>
                         <MudTextField T="string" Label="@AppLang.Device_group" For="@(() => DeviceToEdit.DeviceGroupId)" Immediate="true" @bind-Value="DeviceToEdit.DeviceGroupId"></MudTextField>
                         <MudTextField T="string" Label="@AppLang.Manufacturer" For="@(() => DeviceToEdit.Manufacturer)" Immediate="true" @bind-Value="DeviceToEdit.Manufacturer"></MudTextField>
@@ -30,8 +30,8 @@
                         <MudTextField T="string" Label="@AppLang.MAC_address" For="@(() => DeviceToEdit.MacAddress)" Required="true" Immediate="true" @bind-Value="DeviceToEdit.MacAddress"></MudTextField>
                         <MudTextField T="string" Label="@AppLang.IP_address" For="@(() => DeviceToEdit.IpAddress)" Required="true" Immediate="true" @bind-Value="DeviceToEdit.IpAddress"></MudTextField>
 
-                        <EnumMudSelector T="IoTDeviceType" For="@(() => DeviceToEdit.IoTDeviceType)" LabelString="Type" @bind-SelectedValue="DeviceToEdit.IoTDeviceType"/>
-                        <EnumMudSelector T="IoTDeviceStatus" For="@(() => DeviceToEdit.Status)" LabelString="Status" @bind-SelectedValue="DeviceToEdit.Status"/>
+                        <EnumMudSelector T="IoTDeviceType" For="@(() => DeviceToEdit.IoTDeviceType)" LabelString="@AppLang.Type" @bind-SelectedValue="DeviceToEdit.IoTDeviceType"/>
+                        <EnumMudSelector T="IoTDeviceStatus" For="@(() => DeviceToEdit.Status)" LabelString="@AppLang.Status" @bind-SelectedValue="DeviceToEdit.Status"/>
 
 
                         <MudDatePicker Label="Installation Date" Date="InstallationDate" DateChanged="InstallationDateChanged"></MudDatePicker>
@@ -40,7 +40,7 @@
 
                 </MudForm>
             </MudTabPanel>
-            <MudTabPanel Text="Sensors" Disabled="IsAddingDevice">
+            <MudTabPanel Text="@AppLang.Sensors" Disabled="IsAddingDevice">
 
                 <MudDataGrid T="SensorPageM" Items="Sensors" Filterable="false" Dense="true" Bordered="true" Culture="CultureInfo.CurrentCulture" Hover="true" Striped="true">
                     <ToolBarContent>
@@ -49,7 +49,7 @@
                         <MudButton StartIcon="@Icons.Material.Filled.Add" Disabled="IsAddingDevice" OnClick="OpenAddDialog">@AppLang.AddSensor</MudButton>
                     </ToolBarContent>
                     <Columns>
-                        <PropertyColumn Property="x => x.IoTSensor.SensorId" Title="Id"/>
+                        <PropertyColumn Property="x => x.IoTSensor.SensorId" Title="ID"/>
                         <PropertyColumn Property="x => x.IoTSensor.SensorName" Title="@AppLang.Name"/>
                         <PropertyColumn Property="x => x.IoTSensor.IoTSensorType" Title="@AppLang.Type"/>
                         <PropertyColumn Property="x => x.IoTSensor.Status" Title="@AppLang.Status"/>
@@ -78,7 +78,7 @@
                         
                     </Columns>
                     <PagerContent>
-                        <MudDataGridPager T="SensorPageM"/>
+                        <MudDataGridPager RowsPerPageString="@AppLang.Rows_per_page" T="SensorPageM"/>
                     </PagerContent>
                 </MudDataGrid>
 

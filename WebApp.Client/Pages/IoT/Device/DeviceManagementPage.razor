@@ -18,7 +18,7 @@
             <div class="d-flex flex-row gap-3">
                 
                 <div class="page-content-container-search-field-width">
-                    <MudAutocomplete T="string" @bind-Value="DeviceSearchString" SearchFunc="SearchDevice" Placeholder="Search"
+                    <MudAutocomplete T="string" @bind-Value="DeviceSearchString" SearchFunc="SearchDevice" Placeholder="@AppLang.Search"
                                      Adornment="Adornment.Start" Margin="Margin.Dense" Variant="Variant.Outlined"
                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0">
                         <ProgressIndicatorTemplate>
@@ -34,7 +34,7 @@
             
         </ToolBarContent>
         <Columns>
-            <PropertyColumn Property="x => x.Device.DeviceId" Title="Id"/>
+            <PropertyColumn Property="x => x.Device.DeviceId" Title="ID"/>
             <PropertyColumn Property="x => x.Device.DeviceName" Title="@AppLang.Device_name"/>
             <PropertyColumn Property="x => x.Device.Location" Title="@AppLang.Location"/>
             <PropertyColumn Property="x => x.Device.IpAddress" Title="@AppLang.IP_address"/>
@@ -61,7 +61,7 @@
             </TemplateColumn>
         </Columns>
         <PagerContent>
-            <MudDataGridPager T="PageModel"/>
+            <MudDataGridPager RowsPerPageString="@AppLang.Rows_per_page" T="PageModel"/>
         </PagerContent>
     </MudDataGrid>
 

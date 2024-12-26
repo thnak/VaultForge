@@ -39,7 +39,7 @@
             <PropertyColumn Property="x => x.Device.SensorName" Title="@AppLang.Name"/>
             <PropertyColumn Property="x => x.Device.DeviceId" Title="@AppLang.Location"/>
             <PropertyColumn Property="x => x.Device.Status" Title="@AppLang.IP_address"/>
-            <PropertyColumn Property="x => x.Device.ModifiedTime" Title="Modified time" Format="dd/MM/yy HH:mm:ss"/>
+            <PropertyColumn Property="x => x.Device.ModifiedTime" Title="@AppLang.Modified_time" Format="dd/MM/yy HH:mm:ss"/>
             <PropertyColumn Property="x => x.Device.Status" Title="@AppLang.Status"/>
             <TemplateColumn Title="@AppLang.Action">
                 <CellTemplate>
@@ -62,7 +62,7 @@
             </TemplateColumn>
         </Columns>
         <PagerContent>
-            <MudDataGridPager RowsPerPageString="" T="PageModel"/>
+            <MudDataGridPager RowsPerPageString="@AppLang.Rows_per_page" T="PageModel"/>
         </PagerContent>
     </MudDataGrid>
 
