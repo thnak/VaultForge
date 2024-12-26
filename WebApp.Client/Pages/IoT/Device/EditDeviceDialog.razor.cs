@@ -115,7 +115,7 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
                     if (result.IsSuccessStatusCode)
                     {
                         ToastService.ShowSuccess(result.Message, TypeClassList.ToastDefaultSetting);
-                        Dialog.Close();
+                        Dialog.Close(DialogResult.Ok(true));
                     }
                     else
                     {

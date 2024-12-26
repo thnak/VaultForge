@@ -6,6 +6,7 @@ public enum IoTSensorType
     Humidity,
     Pressure,
     Light,
+    Camera,
     Proximity,
     Accelerometer,
     Gyroscope,

@@ -79,7 +79,7 @@ public partial class EditSensorDialog(ILogger<EditSensorDialog> logger) : Compon
                     if (result.IsSuccessStatusCode)
                     {
                         ToastService.ShowSuccess(result.Message, TypeClassList.ToastDefaultSetting);
-                        DialogInstance.Close();
+                        DialogInstance.Close(DialogResult.Ok(true));
                     }
                     else
                     {
