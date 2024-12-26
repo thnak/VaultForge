@@ -4,6 +4,7 @@ using System.Web;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
+using BusinessModels.System.InternetOfThings.type;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -32,7 +33,7 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
 
 
     private bool IsEditing => Device != null;
-    private bool IsAddingDevice => Device == null;
+    private bool IsAddingDevice => Device == null || Device is { IoTDeviceType: IoTDeviceType.SensorNode } && Sensors.Any();
     private string DialogIcon => IsEditing ? Icons.Material.Filled.Edit : Icons.Material.Filled.Add;
     private string ConfirmButtonText => Device == null ? AppLang.Create_new : AppLang.Update;
 
