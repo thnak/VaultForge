@@ -95,7 +95,7 @@ public partial class SensorRecordResultPage : ComponentBase
         {
             var data = await ApiService.GetIotRecordsAsync(sensor.SensorId, arg.Page, arg.PageSize,
                 _filterPage.DateRange.Start.GetValueOrDefault(DateTime.Now).Date, 
-                _filterPage.DateRange.Start.GetValueOrDefault(DateTime.Now).Date);
+                _filterPage.DateRange.End.GetValueOrDefault(DateTime.Now).Date);
             if (data.IsSuccessStatusCode)
             {
                 total = data.Data.Total;
