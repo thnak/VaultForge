@@ -1465,6 +1465,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Số dòng/trang {first_item}-{last_item} / {all_items}.
+        /// </summary>
+        public static string Rows_per_page_data_grid {
+            get {
+                return ResourceManager.GetString("Rows per page_data_grid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tìm kiếm.
         /// </summary>
         public static string Search {

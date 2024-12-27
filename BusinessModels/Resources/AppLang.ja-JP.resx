@@ -525,4 +525,7 @@
     <data name="Sensor" xml:space="preserve">
       <value>センサ</value>
     </data>
+    <data name="Rows per page_data_grid" xml:space="preserve">
+      <value>行数/页 {first_item}-{last_item} / {all_items}</value>
+    </data>
 </root>

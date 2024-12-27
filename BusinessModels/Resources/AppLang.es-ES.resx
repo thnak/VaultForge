@@ -522,4 +522,7 @@
     <data name="Sensor" xml:space="preserve">
       <value>Sensor</value>
     </data>
+    <data name="Rows per page_data_grid" xml:space="preserve">
+      <value>Filas por página {first_item}-{last_item} / {all_items}</value>
+    </data>
 </root>

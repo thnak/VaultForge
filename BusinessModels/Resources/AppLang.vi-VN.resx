@@ -748,4 +748,7 @@ ClientY: {1}</value>
     <data name="Sensor" xml:space="preserve">
       <value>Cảm biến</value>
     </data>
+    <data name="Rows per page_data_grid" xml:space="preserve">
+      <value>Số dòng/trang {first_item}-{last_item} / {all_items}</value>
+    </data>
 </root>

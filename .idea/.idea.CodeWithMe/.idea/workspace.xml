@@ -45,8 +45,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="fix worng value filter">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -152,6 +153,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d63ba19741cebc605058fe0841121f3a7ef792fc3a698bd37cabe11d9b7bb/OrtValue.shared.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d6602ff1ddf35b711bc3b983d596213d7dcb8daab122c98f3e6db39b5daca137/DropIndexOperation.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/dbd7444fd4f86415d17ca812139be60bfb5e6d4c191da070cd6afeb7fcbcd0/NativeApiStatus.shared.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/dd1d106529dfdca59d731a6c474b9f2a36efeb5c9b57daa3a4954a172c1bacd/MudDataGridPager.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e78a3461bb868758dc383a38ac7d247ff1acf779756a18c8be9515c32c9/Breakpoint.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e862b2dbf388458c8b8c44c404dbc872b94e4a936e352de3d30a8f52729573c/MudSelect.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e8aee3972f4f46ef190c2b4224be16d75e671b3496b06c7b50b6cbe2418e38/EndPointHelper.cs" root0="FORCE_HIGHLIGHTING" />
@@ -161,11 +163,10 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fe3b1716bf2f8f83ac793e7e3faa60f88a7868347653f77591f74b86d0d97675/Server.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/Utils/DataTimeExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Routes.razor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -962,23 +963,7 @@
       <workItem from="1735146288231" duration="205000" />
       <workItem from="1735176631957" duration="6217000" />
       <workItem from="1735224000087" duration="7213000" />
-      <workItem from="1735260083437" duration="7118000" />
-    </task>
-    <task id="LOCAL-00465" summary="update">
-      <option name="closed" value="true" />
-      <created>1734575783316</created>
-      <option name="number" value="00465" />
-      <option name="presentableId" value="LOCAL-00465" />
-      <option name="project" value="LOCAL" />
-      <updated>1734575783316</updated>
-    </task>
-    <task id="LOCAL-00466" summary="update">
-      <option name="closed" value="true" />
-      <created>1734576941545</created>
-      <option name="number" value="00466" />
-      <option name="presentableId" value="LOCAL-00466" />
-      <option name="project" value="LOCAL" />
-      <updated>1734576941546</updated>
+      <workItem from="1735260083437" duration="8932000" />
     </task>
     <task id="LOCAL-00467" summary="fix missing data">
       <option name="closed" value="true" />
@@ -1356,7 +1341,23 @@
       <option name="project" value="LOCAL" />
       <updated>1735266804677</updated>
     </task>
-    <option name="localTasksCounter" value="514" />
+    <task id="LOCAL-00514" summary="fix wrong property">
+      <option name="closed" value="true" />
+      <created>1735270014326</created>
+      <option name="number" value="00514" />
+      <option name="presentableId" value="LOCAL-00514" />
+      <option name="project" value="LOCAL" />
+      <updated>1735270014326</updated>
+    </task>
+    <task id="LOCAL-00515" summary="fix worng value filter">
+      <option name="closed" value="true" />
+      <created>1735270045173</created>
+      <option name="number" value="00515" />
+      <option name="presentableId" value="LOCAL-00515" />
+      <option name="project" value="LOCAL" />
+      <updated>1735270045174</updated>
+    </task>
+    <option name="localTasksCounter" value="516" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1387,8 +1388,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="update" />
-    <MESSAGE value="fix wrong logic" />
     <MESSAGE value="allow to rotate, dispose resource" />
     <MESSAGE value="add open image" />
     <MESSAGE value="fix out of range" />
@@ -1412,7 +1411,9 @@
     <MESSAGE value="update language" />
     <MESSAGE value="use more text" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="fix wrong property" />
+    <MESSAGE value="fix worng value filter" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix worng value filter" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

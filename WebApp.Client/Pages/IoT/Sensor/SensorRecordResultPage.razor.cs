@@ -53,6 +53,7 @@ public partial class SensorRecordResultPage : ComponentBase
         {
             await GetDevices();
             await GetSensors();
+            await _dataGrid!.ReloadServerData().ConfigureAwait(false);
         }
 
         await base.OnAfterRenderAsync(firstRender);
@@ -94,7 +95,7 @@ public partial class SensorRecordResultPage : ComponentBase
         foreach (var sensor in _filterPage.Sensors)
         {
             var data = await ApiService.GetIotRecordsAsync(sensor.SensorId, arg.Page, arg.PageSize,
-                _filterPage.DateRange.Start.GetValueOrDefault(DateTime.Now).Date, 
+                _filterPage.DateRange.Start.GetValueOrDefault(DateTime.Now).Date,
                 _filterPage.DateRange.End.GetValueOrDefault(DateTime.Now).Date);
             if (data.IsSuccessStatusCode)
             {
