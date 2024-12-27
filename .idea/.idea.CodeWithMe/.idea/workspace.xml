@@ -45,7 +45,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update language" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/BusinessModels/General/Time/DateTimeFetching.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.IotRecord.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.IotRecord.Read.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
+    </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -259,7 +266,7 @@
       <window_info anchor="right" id="Maven" order="4" weight="0.25" />
     </layout>
   </component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: no-browser">
+  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: https">
     <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
       <deployment type="docker-compose.yml">
         <settings />
@@ -959,15 +966,8 @@
       <workItem from="1735085697917" duration="12294000" />
       <workItem from="1735146288231" duration="205000" />
       <workItem from="1735176631957" duration="6217000" />
-      <workItem from="1735224000087" duration="6774000" />
-    </task>
-    <task id="LOCAL-00463" summary="remove unknown option">
-      <option name="closed" value="true" />
-      <created>1734571719910</created>
-      <option name="number" value="00463" />
-      <option name="presentableId" value="LOCAL-00463" />
-      <option name="project" value="LOCAL" />
-      <updated>1734571719910</updated>
+      <workItem from="1735224000087" duration="7213000" />
+      <workItem from="1735260083437" duration="5295000" />
     </task>
     <task id="LOCAL-00464" summary="remove all provider option">
       <option name="closed" value="true" />
@@ -1353,7 +1353,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735230602947</updated>
     </task>
-    <option name="localTasksCounter" value="512" />
+    <task id="LOCAL-00512" summary="use more text">
+      <option name="closed" value="true" />
+      <created>1735232233913</created>
+      <option name="number" value="00512" />
+      <option name="presentableId" value="LOCAL-00512" />
+      <option name="project" value="LOCAL" />
+      <updated>1735232233913</updated>
+    </task>
+    <option name="localTasksCounter" value="513" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1384,7 +1392,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="do not update other field for time series" />
     <MESSAGE value="update" />
     <MESSAGE value="fix wrong logic" />
     <MESSAGE value="allow to rotate, dispose resource" />
@@ -1409,7 +1416,8 @@
     <MESSAGE value="fix missing type" />
     <MESSAGE value="add new rule for sensor node" />
     <MESSAGE value="update language" />
-    <option name="LAST_COMMIT_MESSAGE" value="update language" />
+    <MESSAGE value="use more text" />
+    <option name="LAST_COMMIT_MESSAGE" value="use more text" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1419,6 +1427,19 @@
           <line>51</line>
           <properties documentPath="C:\Users\thanh\AppData\Roaming\JetBrains\Rider2024.3\resharper-host\SourcesCache\30cbb3994b59af56741aa3ee40719e511f42d9a2920f2a6f5ae81f8d1e78ee3\FunctionCallContentBuilder.cs" containingFunctionPresentation="Method 'Append'" />
           <option name="timeStamp" value="54" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/BusinessModels/Utils/DataTimeExtensions.cs</url>
+          <line>45</line>
+          <properties documentPath="C:\Users\thanh\Git\VaultForge\BusinessModels\Utils\DataTimeExtensions.cs" containingFunctionPresentation="Method 'ToUnixSecond'">
+            <startOffsets>
+              <option value="1356" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1402" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="89" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">

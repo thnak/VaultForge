@@ -24,12 +24,12 @@ public partial class IoTController
     }
 
     [HttpPost("get-record")]
-    public async Task<IActionResult> SummaryRecord([FromForm] string sensorId, [FromForm] int page, [FromForm] int pageSize, [FromForm] double startUnixSecond, [FromForm] double endUnixSecond)
+    public async Task<IActionResult> SummaryRecord([FromForm] string sensorId, [FromForm] int page, [FromForm] int pageSize, [FromForm] DateTime startTime, [FromForm] DateTime endTime)
     {
-        var startDateTime = startUnixSecond.UnixSecondToDateTime();
-        var endDateTime = endUnixSecond.UnixSecondToDateTime().AddDays(1);
+        // var startDateTime = startUnixSecond.UnixSecondToDateTime();
+        // var endDateTime = endUnixSecond.UnixSecondToDateTime().AddDays(1);
 
-        var data = businessLayer.Where(x => x.Metadata.RecordedAt >= startDateTime && x.Metadata.RecordedAt < endDateTime && x.Metadata.SensorId == sensorId);
+        var data = businessLayer.Where(x => x.Metadata.RecordedAt >= startTime && x.Metadata.RecordedAt < endTime && x.Metadata.SensorId == sensorId);
         List<IoTRecord> records = new List<IoTRecord>();
         await foreach (var record in data)
         {
@@ -64,7 +64,7 @@ public partial class IoTController
             var totalValue = reorderRecords.Sum(x => x.Metadata.SensorData);
             var totalRecords = reorderRecords.Count;
             stopwatch.Stop();
-            string result = $"Total Records: {totalRecords:N0} with value {totalValue:N0} in {stopwatch.ElapsedMilliseconds:N0} ms.";
+            string result = $"Total records: {totalRecords:N0} with value {totalValue:N0} in {stopwatch.ElapsedMilliseconds:N0} ms.";
             return Content(result, MediaTypeNames.Text.Plain);
         }
         catch (OperationCanceledException)
