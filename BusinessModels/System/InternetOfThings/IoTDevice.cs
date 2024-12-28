@@ -71,7 +71,7 @@ public class IoTDeviceFluentValidator : ExtendFluentValidator<IoTDevice>
         RuleFor(x => x.DeviceId).NotEmpty().MustAsync(CheckDeviceAvailable).WithMessage("Existing");
         RuleFor(x => x.DeviceName).NotEmpty();
         RuleFor(x => x.MacAddress).Must(IsValidMacAddress).WithMessage(AppLang.MAC_address_is_not_valid).MustAsync(CheckAvailableAddress).WithMessage(AppLang.MAC_address_already_used);
-        RuleFor(x => x.IpAddress).Must(IsValidIpAddress).WithMessage(AppLang.IP_address_is_not_valid).MustAsync(CheckAvailableIpAddress).WithMessage(AppLang.ip);
+        RuleFor(x => x.IpAddress).Must(IsValidIpAddress).WithMessage(AppLang.IP_address_is_not_valid).MustAsync(CheckAvailableIpAddress).WithMessage(AppLang.IP_address_already_used);
     }
 
     private async Task<bool> CheckAvailableIpAddress(string arg1, CancellationToken arg2)

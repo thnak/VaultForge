@@ -133,11 +133,11 @@
     <value>Username or password incorrect</value>
   </data>
     <data name="User updated successfully" xml:space="preserve">
-    <value>User updated successfully</value>
-  </data>
+      <value>User updated successfully</value>
+    </data>
     <data name="User update failed" xml:space="preserve">
-    <value>User update failed</value>
-  </data>
+      <value>User update failed</value>
+    </data>
     <data name="There is nothing to show" xml:space="preserve">
     <value>There is nothing to show</value>
   </data>
@@ -308,8 +308,8 @@
     <value>Warning</value>
   </data>
     <data name="Copied" xml:space="preserve">
-    <value>Copied</value>
-  </data>
+      <value>Copied</value>
+    </data>
     <data name="Routes_PageShow_The_page_has_been_displayed" xml:space="preserve">
     <value>The page has been displayed</value>
   </data>
@@ -326,11 +326,11 @@
     <value>New</value>
   </data>
     <data name="File" xml:space="preserve">
-    <value>File</value>
-  </data>
+      <value>File</value>
+    </data>
     <data name="Folder" xml:space="preserve">
-    <value>Folder</value>
-  </data>
+      <value>Folder</value>
+    </data>
     <data name="New folder" xml:space="preserve">
     <value>New folder</value>
   </data>
@@ -347,8 +347,8 @@
     <value>File moved successfully</value>
   </data>
     <data name="Exception" xml:space="preserve">
-    <value>Exception</value>
-  </data>
+      <value>Exception</value>
+    </data>
     <data name="Page_ContextMenuClick_" xml:space="preserve">
     <value>ClientX: {0} 
 ClientY: {1}</value>
@@ -441,7 +441,7 @@ ClientY: {1}</value>
       <value>Loading</value>
     </data>
     <data name="Editor" xml:space="preserve">
-      <value>Biên tập viên</value>
+      <value>Editor</value>
     </data>
     <data name="Management" xml:space="preserve">
       <value>Management</value>
@@ -449,17 +449,11 @@ ClientY: {1}</value>
     <data name="Delete" xml:space="preserve">
       <value>Delete</value>
     </data>
-    <data name="Update successfully" xml:space="preserve">
-      <value>Update successfully</value>
-    </data>
     <data name="Content management system" xml:space="preserve">
       <value>Content management system</value>
     </data>
     <data name="Take control of your application's content and functionality with a Headless CMS" xml:space="preserve">
       <value>Take control of your application's content and functionality with a Headless CMS</value>
-    </data>
-    <data name="Add tags" xml:space="preserve">
-      <value>Add tags</value>
     </data>
     <data name="Tags" xml:space="preserve">
       <value>Tags</value>
@@ -527,12 +521,6 @@ ClientY: {1}</value>
     <data name="Invalid_key" xml:space="preserve">
       <value>Invalid key</value>
     </data>
-    <data name="Article already exists" xml:space="preserve">
-      <value>Article already exists</value>
-    </data>
-    <data name="Article does not exist" xml:space="preserve">
-      <value>Article does not exist</value>
-    </data>
     <data name="The document already exists" xml:space="preserve">
       <value>The document already exists</value>
     </data>
@@ -559,9 +547,6 @@ ClientY: {1}</value>
     </data>
     <data name="Update" xml:space="preserve">
       <value>Update</value>
-    </data>
-    <data name="AddSensor" xml:space="preserve">
-      <value>Add sensor</value>
     </data>
     <data name="DeviceGroupManagement" xml:space="preserve">
       <value>Device Group Management</value>
@@ -764,9 +749,6 @@ ClientY: {1}</value>
     <data name="Welcome" xml:space="preserve">
       <value>Hello</value>
     </data>
-    <data name="Welcome" xml:space="preserve">
-      <value>Hello</value>
-    </data>
     <data name="Total_records" xml:space="preserve">
       <value>Total Records</value>
     </data>
@@ -781,5 +763,47 @@ ClientY: {1}</value>
     </data>
     <data name="Table_row_content_format_page_per_row" xml:space="preserve">
       <value>{first_item}-{last_item} / {all_items}</value>
+    </data>
+    <data name="Update_successfully" xml:space="preserve">
+      <value>Update successfully</value>
+    </data>
+    <data name="Update_failed" xml:space="preserve">
+      <value>Update failed</value>
+    </data>
+    <data name="Rename_folder" xml:space="preserve">
+      <value>Rename folder</value>
+    </data>
+    <data name="Rename_file" xml:space="preserve">
+      <value>Rename file</value>
+    </data>
+    <data name="Rename_device" xml:space="preserve">
+      <value>Rename device</value>
+    </data>
+    <data name="Rename_sensor" xml:space="preserve">
+      <value>Rename sensor</value>
+    </data>
+    <data name="Add_tags" xml:space="preserve">
+      <value>Add tags</value>
+    </data>
+    <data name="Add_sensor" xml:space="preserve">
+      <value>Add sensor</value>
+    </data>
+    <data name="Article_already_exists" xml:space="preserve">
+      <value>Article already exists</value>
+    </data>
+    <data name="Article_does_not_exist" xml:space="preserve">
+      <value>Article does not exist</value>
+    </data>
+    <data name="Content_already_exists" xml:space="preserve">
+      <value>Content already exists</value>
+    </data>
+    <data name="Reload_page_confirmation" xml:space="preserve">
+      <value>Do you really want to reload the page?</value>
+    </data>
+    <data name="File_moved_successfully" xml:space="preserve">
+      <value>File moved successfully</value>
+    </data>
+    <data name="Update successfully" xml:space="preserve">
+      <value>Update successfully</value>
     </data>
 </root>

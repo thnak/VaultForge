@@ -133,11 +133,11 @@
     <value>Benutzername oder Passwort falsch</value>
   </data>
     <data name="User updated successfully" xml:space="preserve">
-    <value>Benutzer erfolgreich aktualisiert</value>
-  </data>
+      <value>Benutzer erfolgreich aktualisiert</value>
+    </data>
     <data name="User update failed" xml:space="preserve">
-    <value>Benutzeraktualisierung fehlgeschlagen</value>
-  </data>
+      <value>Benutzeraktualisierung fehlgeschlagen</value>
+    </data>
     <data name="There is nothing to show" xml:space="preserve">
     <value>Es gibt nichts zu zeigen</value>
   </data>
@@ -531,9 +531,6 @@
     <data name="Welcome" xml:space="preserve">
       <value>Bonjour</value>
     </data>
-    <data name="Welcome" xml:space="preserve">
-      <value>Bonjour</value>
-    </data>
     <data name="Total_records" xml:space="preserve">
       <value>Total_records</value>
     </data>
@@ -548,5 +545,80 @@
     </data>
     <data name="Table_row_content_format_page_per_row" xml:space="preserve">
       <value>{first_item}-{last_item} / {all_items}</value>
+    </data>
+    <data name="Update" xml:space="preserve">
+      <value>Aktualisieren</value>
+    </data>
+    <data name="Update_successfully" xml:space="preserve">
+      <value>Erfolgreich aktualisiert</value>
+    </data>
+    <data name="Update_failed" xml:space="preserve">
+      <value>Aktualisierung fehlgeschlagen</value>
+    </data>
+    <data name="Rename_folder" xml:space="preserve">
+      <value>Ordner umbenennen</value>
+    </data>
+    <data name="Rename_file" xml:space="preserve">
+      <value>Datei umbenennen</value>
+    </data>
+    <data name="Rename_device" xml:space="preserve">
+      <value>Gerät umbenennen</value>
+    </data>
+    <data name="Rename_sensor" xml:space="preserve">
+      <value>Sensor umbenennen</value>
+    </data>
+    <data name="Add_tags" xml:space="preserve">
+      <value>Tags hinzufügen</value>
+    </data>
+    <data name="Add_sensor" xml:space="preserve">
+      <value>Sensor hinzufügen</value>
+    </data>
+    <data name="Article_already_exists" xml:space="preserve">
+      <value>Artikel existiert bereits</value>
+    </data>
+    <data name="Article_does_not_exist" xml:space="preserve">
+      <value>Artikel existiert nicht</value>
+    </data>
+    <data name="Author" xml:space="preserve">
+      <value>Autor</value>
+    </data>
+    <data name="Content_already_exists" xml:space="preserve">
+      <value>Inhalt existiert bereits</value>
+    </data>
+    <data name="Close" xml:space="preserve">
+      <value>Schließen</value>
+    </data>
+    <data name="Community" xml:space="preserve">
+      <value>Gemeinschaft</value>
+    </data>
+    <data name="Connected" xml:space="preserve">
+      <value>Verbunden</value>
+    </data>
+    <data name="Copied" xml:space="preserve">
+      <value>Kopiert</value>
+    </data>
+    <data name="Community" xml:space="preserve">
+      <value>Gemeinschaft</value>
+    </data>
+    <data name="Reload_page_confirmation" xml:space="preserve">
+      <value>Möchten Sie die Seite wirklich neu laden?</value>
+    </data>
+    <data name="Download" xml:space="preserve">
+      <value>Herunterladen</value>
+    </data>
+    <data name="Editor" xml:space="preserve">
+      <value>Editor</value>
+    </data>
+    <data name="Exception" xml:space="preserve">
+      <value>Ausnahme</value>
+    </data>
+    <data name="File" xml:space="preserve">
+      <value>Datei</value>
+    </data>
+    <data name="Folder" xml:space="preserve">
+      <value>Ordner</value>
+    </data>
+    <data name="File_moved_successfully" xml:space="preserve">
+      <value>Datei erfolgreich verschoben</value>
     </data>
 </root>

@@ -75,7 +75,7 @@ public partial class ContentCreatorDialog : ComponentBase, IDisposable, IAsyncDi
 
         private string Existing(ArticleModel arg)
         {
-            return AppLang.Content_already_exists + $". {arg.Title} ({arg.Language})";
+            return AppLang.Already_existing + $". {arg.Title} ({arg.Language})";
         }
 
         private Task<bool> TitleCheckAsync(ArticleModel arg1, string arg2, CancellationToken arg3)

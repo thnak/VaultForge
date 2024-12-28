@@ -180,7 +180,7 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
             { x => x.Sensor, sensor },
             { x => x.DeviceId, DeviceToEdit.DeviceId }
         };
-        var dialog = await DialogService.ShowAsync<EditSensorDialog>(AppLang.AddSensor, param, option);
+        var dialog = await DialogService.ShowAsync<EditSensorDialog>(AppLang.Add_sensor, param, option);
         var dialogResult = await dialog.Result;
         if (dialogResult is { Canceled: false, Data: bool status })
         {

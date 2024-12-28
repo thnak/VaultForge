@@ -133,11 +133,11 @@
     <value>ユーザー名またはパスワードが間違っています</value>
   </data>
     <data name="User updated successfully" xml:space="preserve">
-    <value>ユーザーは正常に更新されました</value>
-  </data>
+      <value>ユーザーは正常に更新されました</value>
+    </data>
     <data name="User update failed" xml:space="preserve">
-    <value>ユーザーの更新に失敗しました</value>
-  </data>
+      <value>ユーザーの更新に失敗しました</value>
+    </data>
     <data name="There is nothing to show" xml:space="preserve">
     <value>見せるものは何もない</value>
   </data>
@@ -531,9 +531,6 @@
     <data name="Welcome" xml:space="preserve">
       <value>こんにちは</value>
     </data>
-    <data name="Welcome" xml:space="preserve">
-      <value>こんにちは</value>
-    </data>
     <data name="Total_records" xml:space="preserve">
       <value>合計レコード</value>
     </data>
@@ -548,5 +545,80 @@
     </data>
     <data name="Table_row_content_format_page_per_row" xml:space="preserve">
       <value>{first_item}-{last_item} / {all_items}</value>
+    </data>
+    <data name="Update" xml:space="preserve">
+      <value>更新</value>
+    </data>
+    <data name="Update_successfully" xml:space="preserve">
+      <value>正常に更新されました</value>
+    </data>
+    <data name="Update_failed" xml:space="preserve">
+      <value>更新に失敗しました</value>
+    </data>
+    <data name="Rename_folder" xml:space="preserve">
+      <value>フォルダー名を変更</value>
+    </data>
+    <data name="Rename_file" xml:space="preserve">
+      <value>ファイル名を変更</value>
+    </data>
+    <data name="Rename_device" xml:space="preserve">
+      <value>デバイス名を変更</value>
+    </data>
+    <data name="Rename_sensor" xml:space="preserve">
+      <value>センサー名を変更</value>
+    </data>
+    <data name="Add_tags" xml:space="preserve">
+      <value>タグを追加</value>
+    </data>
+    <data name="Add_sensor" xml:space="preserve">
+      <value>センサーを追加</value>
+    </data>
+    <data name="Article_already_exists" xml:space="preserve">
+      <value>記事は既に存在します</value>
+    </data>
+    <data name="Article_does_not_exist" xml:space="preserve">
+      <value>記事は存在しません</value>
+    </data>
+    <data name="Author" xml:space="preserve">
+      <value>著者</value>
+    </data>
+    <data name="Content_already_exists" xml:space="preserve">
+      <value>コンテンツは既に存在します</value>
+    </data>
+    <data name="Close" xml:space="preserve">
+      <value>閉じる</value>
+    </data>
+    <data name="Community" xml:space="preserve">
+      <value>コミュニティ</value>
+    </data>
+    <data name="Connected" xml:space="preserve">
+      <value>接続済み</value>
+    </data>
+    <data name="Copied" xml:space="preserve">
+      <value>コピーされました</value>
+    </data>
+    <data name="Community" xml:space="preserve">
+      <value>コミュニティ</value>
+    </data>
+    <data name="Reload_page_confirmation" xml:space="preserve">
+      <value>本当にページをリロードしますか？</value>
+    </data>
+    <data name="Download" xml:space="preserve">
+      <value>ダウンロード</value>
+    </data>
+    <data name="Editor" xml:space="preserve">
+      <value>エディター</value>
+    </data>
+    <data name="Exception" xml:space="preserve">
+      <value>例外</value>
+    </data>
+    <data name="File" xml:space="preserve">
+      <value>ファイル</value>
+    </data>
+    <data name="Folder" xml:space="preserve">
+      <value>フォルダー</value>
+    </data>
+    <data name="File_moved_successfully" xml:space="preserve">
+      <value>ファイルが正常に移動されました</value>
     </data>
 </root>
