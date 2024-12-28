@@ -43,6 +43,7 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
 
     private DateTime InstallationDate { get; set; } = DateTime.Today;
     private int ActivateIndex { get; set; }
+    private bool DisAllowDialogActionButton => ActivateIndex != 0 || Processing;
     private bool Processing { get; set; }
     private MudForm? _form;
     private List<SensorPageM> Sensors { get; set; } = [];

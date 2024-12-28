@@ -60,7 +60,7 @@ public partial class DeviceManagementPage : ComponentBase, IDisposable
             Fragment = builder =>
             {
                 builder.OpenElement(0, "span");
-                builder.AddContent(1, $"delete device {device.DeviceName}");
+                builder.AddContent(1, $"{LangDict[AppLang.Delete_device]} {device.DeviceName}");
                 builder.CloseElement();
             },
             Icon = "fa-solid fa-triangle-exclamation",
@@ -76,7 +76,7 @@ public partial class DeviceManagementPage : ComponentBase, IDisposable
             { x => x.DataModel, data }
         };
 
-        var dialog = await DialogService.ShowAsync<ConfirmDialog>(AppLang.Warning, parameter, option);
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>(LangDict[AppLang.Warning], parameter, option);
         var dialogResult = await dialog.Result;
         if (dialogResult is { Canceled: false })
         {

@@ -621,4 +621,7 @@
     <data name="File_moved_successfully" xml:space="preserve">
       <value>Datei erfolgreich verschoben</value>
     </data>
+    <data name="Root folder could not be found" xml:space="preserve">
+    <value>Thư mục gốc không được tìm thấy</value>
+  </data>
 </root>

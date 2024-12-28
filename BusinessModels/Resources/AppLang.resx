@@ -304,8 +304,8 @@
     <value>Thư mục gốc không được tìm thấy</value>
   </data>
     <data name="Warning" xml:space="preserve">
-    <value>Chú ý</value>
-  </data>
+      <value>Warning</value>
+    </data>
     <data name="Copied" xml:space="preserve">
       <value>Đã sao chép</value>
     </data>
