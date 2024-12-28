@@ -1400,12 +1400,17 @@ namespace BusinessModels.Resources {
                 return ResourceManager.GetString("Reload_page_confirmation", resourceCulture);
             }
         }
-        
+        /// <summary>
+        ///   Looks up a localized string similar to Bạn có thực sự muốn tải lại trang không?.
+        /// </summary>
         public static string File_moved_successfully {
             get {
                 return ResourceManager.GetString("File_moved_successfully", resourceCulture);
             }
         }
+        /// <summary>
+        ///   Looks up a localized string similar to Bạn có thực sự muốn tải lại trang không?.
+        /// </summary>
         public static string Update_successfully {
                      get {
                          return ResourceManager.GetString("Update_successfully", resourceCulture);
@@ -1539,7 +1544,7 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tìm kiếm.
+        ///   Looks up a localized string similar to Search.
         /// </summary>
         public static string Search {
             get {

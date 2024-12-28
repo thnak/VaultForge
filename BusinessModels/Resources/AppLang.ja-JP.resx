@@ -621,4 +621,10 @@
     <data name="File_moved_successfully" xml:space="preserve">
       <value>ファイルが正常に移動されました</value>
     </data>
+    <data name="Warning" xml:space="preserve">
+      <value>警告</value>
+    </data>
+    <data name="Search" xml:space="preserve">
+      <value>検索</value>
+    </data>
 </root>

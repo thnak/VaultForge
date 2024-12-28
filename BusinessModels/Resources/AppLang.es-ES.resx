@@ -618,4 +618,10 @@
     <data name="File_moved_successfully" xml:space="preserve">
       <value>Archivo movido con éxito</value>
     </data>
+    <data name="Warning" xml:space="preserve">
+      <value>Advertencia</value>
+    </data>
+    <data name="Search" xml:space="preserve">
+      <value>Búsqueda</value>
+    </data>
 </root>

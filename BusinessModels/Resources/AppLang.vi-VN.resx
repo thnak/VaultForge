@@ -304,8 +304,8 @@
       <value>Đã sao chép</value>
     </data>
     <data name="Warning" xml:space="preserve">
-    <value>Chú ý</value>
-  </data>
+      <value>Cảnh báo</value>
+    </data>
     <data name="Routes_Offline_Offline" xml:space="preserve">
     <value>Ngoại tuyến</value>
   </data>
@@ -793,10 +793,10 @@ ClientY: {1}</value>
     <data name="Reload_page_confirmation" xml:space="preserve">
       <value>Bạn có thực sự muốn tải lại trang không?</value>
     </data>
-    <data name="File_moved_successfully" xml:space="preserve">
-      <value>Tệp đã được di chuyển thành công</value>
-    </data>
     <data name="Update successfully" xml:space="preserve">
       <value>Cập nhật thành công</value>
+    </data>
+    <data name="File_moved_successfully" xml:space="preserve">
+      <value>Tệp đã được di chuyển thành công</value>
     </data>
 </root>

@@ -386,7 +386,7 @@ ClientY: {1}</value>
       <value>Địa điểm hiện tại</value>
     </data>
     <data name="Search" xml:space="preserve">
-      <value>Tìm kiếm</value>
+      <value>Search</value>
     </data>
     <data name="Successfully uploaded" xml:space="preserve">
       <value>Tải lên thành công</value>
@@ -802,10 +802,10 @@ ClientY: {1}</value>
     <data name="Reload_page_confirmation" xml:space="preserve">
       <value>Bạn có thực sự muốn tải lại trang không?</value>
     </data>
-    <data name="File_moved_successfully" xml:space="preserve">
-      <value>Tệp đã được di chuyển thành công</value>
-    </data>
     <data name="Update successfully" xml:space="preserve">
       <value>Cập nhật thành công</value>
+    </data>
+    <data name="File_moved_successfully" xml:space="preserve">
+      <value>Tệp đã được di chuyển thành công</value>
     </data>
 </root>

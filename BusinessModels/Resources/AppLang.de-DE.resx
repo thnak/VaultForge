@@ -618,10 +618,16 @@
     <data name="Folder" xml:space="preserve">
       <value>Ordner</value>
     </data>
-    <data name="File_moved_successfully" xml:space="preserve">
-      <value>Datei erfolgreich verschoben</value>
-    </data>
     <data name="Root folder could not be found" xml:space="preserve">
     <value>Thư mục gốc không được tìm thấy</value>
   </data>
+    <data name="File_moved_successfully" xml:space="preserve">
+      <value>Datei erfolgreich verschoben</value>
+    </data>
+    <data name="Warning" xml:space="preserve">
+      <value>Warnung</value>
+    </data>
+    <data name="Search" xml:space="preserve">
+      <value>Suche</value>
+    </data>
 </root>

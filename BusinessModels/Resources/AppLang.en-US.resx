@@ -305,8 +305,8 @@
     <value>Root folder could not be found</value>
   </data>
     <data name="Warning" xml:space="preserve">
-    <value>Warning</value>
-  </data>
+      <value>Warning</value>
+    </data>
     <data name="Copied" xml:space="preserve">
       <value>Copied</value>
     </data>
@@ -800,10 +800,10 @@ ClientY: {1}</value>
     <data name="Reload_page_confirmation" xml:space="preserve">
       <value>Do you really want to reload the page?</value>
     </data>
-    <data name="File_moved_successfully" xml:space="preserve">
-      <value>File moved successfully</value>
-    </data>
     <data name="Update successfully" xml:space="preserve">
       <value>Update successfully</value>
+    </data>
+    <data name="File_moved_successfully" xml:space="preserve">
+      <value>File moved successfully</value>
     </data>
 </root>

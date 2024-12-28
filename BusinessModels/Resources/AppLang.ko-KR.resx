@@ -621,4 +621,10 @@
     <data name="File_moved_successfully" xml:space="preserve">
       <value>파일이 성공적으로 이동되었습니다</value>
     </data>
+    <data name="Warning" xml:space="preserve">
+      <value>경고</value>
+    </data>
+    <data name="Search" xml:space="preserve">
+      <value>검색</value>
+    </data>
 </root>
