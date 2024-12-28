@@ -2053,7 +2053,7 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Chú ý.
+        ///   Looks up a localized string similar to Warning.
         /// </summary>
         public static string Warning {
             get {
