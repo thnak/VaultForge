@@ -49,7 +49,7 @@ public partial class EditSensorDialog(ILogger<EditSensorDialog> logger) : Compon
     {
         arg1 = HttpUtility.UrlEncode(arg1);
         var result = await ApiService.GetAsync<IoTDevice>($"/api/device/get-sensor-by-id?id={arg1}", arg2);
-        return result.Data == null;
+        return result.Data != null;
     }
 
     private async Task<bool> CheckDeviceExists(string arg1, CancellationToken arg2)

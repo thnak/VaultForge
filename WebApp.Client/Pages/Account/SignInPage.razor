@@ -99,18 +99,18 @@
                             <form action="/api/Account/login" id="loginForm" method="post">
                                 <AntiforgeryToken/>
                                 <div>
-                                    <label for="UserName">Username:</label>
+                                    <label for="UserName">@AppLang.Username:</label>
                                     <input id="UserName" name="username" required type="text" value="@CurrentRequestModel.UserName">
                                 </div>
                                 <div>
-                                    <label for="Password">Password:</label>
+                                    <label for="Password">@AppLang.Password:</label>
                                     <input id="Password" name="password" required type="password" value="@CurrentRequestModel.Password">
                                 </div>
                                 <div>
-                                    <label for="ReturnUrl">Password:</label>
+                                    <label for="ReturnUrl">@AppLang.Password:</label>
                                     <input id="ReturnUrl" name="ReturnUrl" type="text" value="@CurrentRequestModel.ReturnUrl">
                                 </div>
-                                <button id="login-btn" type="submit">Login</button>
+                                <button id="login-btn" type="submit">@AppLang.Login</button>
                             </form>
                         </div>
                     </div>

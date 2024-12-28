@@ -523,9 +523,30 @@
       <value>裝置</value>
     </data>
     <data name="Sensor" xml:space="preserve">
-      <value>センサ</value>
+      <value>센서</value>
     </data>
-    <data name="Rows per page_data_grid" xml:space="preserve">
-      <value>行数/页 {first_item}-{last_item} / {all_items}</value>
+    <data name="Greeting" xml:space="preserve">
+      <value>こんにちは</value>
+    </data>
+    <data name="Welcome" xml:space="preserve">
+      <value>こんにちは</value>
+    </data>
+    <data name="Welcome" xml:space="preserve">
+      <value>こんにちは</value>
+    </data>
+    <data name="Total_records" xml:space="preserve">
+      <value>合計レコード</value>
+    </data>
+    <data name="IP_address_already_used" xml:space="preserve">
+      <value>IPアドレスは既に使用されています</value>
+    </data>
+    <data name="Join_experienced_Designers" xml:space="preserve">
+      <value>このプラットフォームで経験豊富なデザイナーに参加してください</value>
+    </data>
+    <data name="Be_Verified" xml:space="preserve">
+      <value>確認される</value>
+    </data>
+    <data name="Table_row_content_format_page_per_row" xml:space="preserve">
+      <value>{first_item}-{last_item} / {all_items}</value>
     </data>
 </root>

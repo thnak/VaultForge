@@ -758,7 +758,28 @@ ClientY: {1}</value>
     <data name="Sensor" xml:space="preserve">
       <value>Sensor</value>
     </data>
-    <data name="Rows per page_data_grid" xml:space="preserve">
-      <value>Rows per page {first_item}-{last_item} / {all_items}</value>
+    <data name="Greeting" xml:space="preserve">
+      <value>Hello</value>
+    </data>
+    <data name="Welcome" xml:space="preserve">
+      <value>Hello</value>
+    </data>
+    <data name="Welcome" xml:space="preserve">
+      <value>Hello</value>
+    </data>
+    <data name="Total_records" xml:space="preserve">
+      <value>Total Records</value>
+    </data>
+    <data name="IP_address_already_used" xml:space="preserve">
+      <value>IP address already used</value>
+    </data>
+    <data name="Join_experienced_Designers" xml:space="preserve">
+      <value>Join experienced Designers on this platform</value>
+    </data>
+    <data name="Be_Verified" xml:space="preserve">
+      <value>Be Verified</value>
+    </data>
+    <data name="Table_row_content_format_page_per_row" xml:space="preserve">
+      <value>{first_item}-{last_item} / {all_items}</value>
     </data>
 </root>

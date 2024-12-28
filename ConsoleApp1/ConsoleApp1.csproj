@@ -7,6 +7,9 @@
         <TargetFramework>net9.0</TargetFramework>
         <Configurations>Debug;Release;ReleaseX64</Configurations>
         <Platforms>AnyCPU;x64</Platforms>
+        <ServerGarbageCollection>true</ServerGarbageCollection>
+        <GarbageCollectionAdaptationMode>0</GarbageCollectionAdaptationMode>
+        <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
     </PropertyGroup>
 
     <ItemGroup>

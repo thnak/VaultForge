@@ -520,9 +520,30 @@
       <value>Dispositivo</value>
     </data>
     <data name="Sensor" xml:space="preserve">
-      <value>Sensor</value>
+      <value>Sensores</value>
     </data>
-    <data name="Rows per page_data_grid" xml:space="preserve">
-      <value>Filas por página {first_item}-{last_item} / {all_items}</value>
+    <data name="Greeting" xml:space="preserve">
+      <value>HOLA</value>
+    </data>
+    <data name="Welcome" xml:space="preserve">
+      <value>HOLA</value>
+    </data>
+    <data name="Welcome" xml:space="preserve">
+      <value>HOLA</value>
+    </data>
+    <data name="Total_records" xml:space="preserve">
+      <value>Total Registros</value>
+    </data>
+    <data name="IP_address_already_used" xml:space="preserve">
+      <value>La dirección IP ya está en uso</value>
+    </data>
+    <data name="Join_experienced_Designers" xml:space="preserve">
+      <value>Únete a diseñadores experimentados en esta plataforma</value>
+    </data>
+    <data name="Be_Verified" xml:space="preserve">
+      <value>Ser verificado</value>
+    </data>
+    <data name="Table_row_content_format_page_per_row" xml:space="preserve">
+      <value>{first_item}-{last_item} / {all_items}</value>
     </data>
 </root>

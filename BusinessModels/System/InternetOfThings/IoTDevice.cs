@@ -23,8 +23,7 @@ public class IoTDevice : BaseModelEntry
 
     [BsonElement("manufacturer")] public string Manufacturer { get; set; } = string.Empty;
 
-    [BsonElement("installationDate")]
-    public DateOnly InstallationDate { get; set; }
+    [BsonElement("installationDate")] public DateOnly InstallationDate { get; set; }
 
     [BsonElement("lastServiceDate")]
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
@@ -53,14 +52,40 @@ public class IoTDevice : BaseModelEntry
 public class IoTDeviceFluentValidator : ExtendFluentValidator<IoTDevice>
 {
     public Func<string, CancellationToken, Task<bool>>? CheckDeviceExists;
+
+    /// <summary>
+    /// return true when ip address has been used
+    /// </summary>
+    public Func<string, CancellationToken, Task<bool>>? CheckUsedIpAddress;
+
+    /// <summary>
+    /// return true when mac address has been used
+    /// </summary>
+    public Func<string, CancellationToken, Task<bool>>? CheckUsedMaxAddress;
+
+
     public bool ValidateForCreate { get; set; } = true;
 
     public IoTDeviceFluentValidator()
     {
         RuleFor(x => x.DeviceId).NotEmpty().MustAsync(CheckDeviceAvailable).WithMessage("Existing");
         RuleFor(x => x.DeviceName).NotEmpty();
-        RuleFor(x => x.MacAddress).Must(IsValidMacAddress).WithMessage(AppLang.MAC_address_is_not_valid);
-        RuleFor(x => x.IpAddress).Must(IsValidIpAddress).WithMessage(AppLang.IP_address_is_not_valid);
+        RuleFor(x => x.MacAddress).Must(IsValidMacAddress).WithMessage(AppLang.MAC_address_is_not_valid).MustAsync(CheckAvailableAddress).WithMessage(AppLang.MAC_address_already_used);
+        RuleFor(x => x.IpAddress).Must(IsValidIpAddress).WithMessage(AppLang.IP_address_is_not_valid).MustAsync(CheckAvailableIpAddress).WithMessage(AppLang.ip);
+    }
+
+    private async Task<bool> CheckAvailableIpAddress(string arg1, CancellationToken arg2)
+    {
+        if (ValidateForCreate) return true;
+        if (CheckUsedMaxAddress != null) return !await CheckUsedMaxAddress.Invoke(arg1, arg2);
+        return true;
+    }
+
+    private async Task<bool> CheckAvailableAddress(string arg1, CancellationToken arg2)
+    {
+        if (ValidateForCreate) return true;
+        if (CheckUsedIpAddress != null) return !await CheckUsedIpAddress.Invoke(arg1, arg2);
+        return true;
     }
 
     private async Task<bool> CheckDeviceAvailable(string arg1, CancellationToken arg2)
@@ -70,7 +95,7 @@ public class IoTDeviceFluentValidator : ExtendFluentValidator<IoTDevice>
         if (CheckDeviceExists != null)
         {
             var result = await CheckDeviceExists.Invoke(arg1, arg2);
-            return !result;
+            return result;
         }
 
         return true;

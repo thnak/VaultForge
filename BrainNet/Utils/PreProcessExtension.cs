@@ -1,4 +1,5 @@
 ﻿using Microsoft.ML.OnnxRuntime.Tensors;
+using OpenCvSharp;
 
 namespace BrainNet.Utils;
 
@@ -10,7 +11,7 @@ public static class PreProcessExtension
         int[] newShape = [3, shapes[0], shapes[1]];
 
         DenseTensor<float> feed = new DenseTensor<float>(dimensions: newShape);
-        feed.Fill(114);
+        feed.FillTensor(114);
 
         float r = Math.Min((float)shapes[0] / oriShape[0], (float)shapes[1] / oriShape[1]);
         if (!scaleUp)
@@ -62,6 +63,73 @@ public static class PreProcessExtension
         return (feed, ratio, [dh, dw]);
     }
 
+
+    public static Mat Letterbox(
+        this Mat image,
+        Size newShape = default,
+        Scalar color = default,
+        bool auto = true,
+        bool scaleFill = false,
+        bool scaleUp = true,
+        int stride = 32)
+    {
+        if (newShape == default)
+            newShape = new Size(640, 640);
+
+        if (color == default)
+            color = new Scalar(114, 114, 114);
+
+        // Current shape
+        int originalHeight = image.Rows;
+        int originalWidth = image.Cols;
+
+        // Scale ratio (new / old)
+        double r = Math.Min(newShape.Height / (double)originalHeight, newShape.Width / (double)originalWidth);
+        if (!scaleUp)
+            r = Math.Min(r, 1.0);
+
+        // Compute padding
+        // double ratioWidth = r, ratioHeight = r;
+        int newUnpadWidth = (int)Math.Round(originalWidth * r);
+        int newUnpadHeight = (int)Math.Round(originalHeight * r);
+        double dw = newShape.Width - newUnpadWidth;
+        double dh = newShape.Height - newUnpadHeight;
+
+        if (auto)
+        {
+            dw %= stride;
+            dh %= stride;
+        }
+        else if (scaleFill)
+        {
+            dw = 0.0;
+            dh = 0.0;
+            newUnpadWidth = newShape.Width;
+            newUnpadHeight = newShape.Height;
+            // ratioWidth = newShape.Width / (double)originalWidth;
+            // ratioHeight = newShape.Height / (double)originalHeight;
+        }
+
+        dw /= 2;
+        dh /= 2;
+
+        // Resize
+        Mat resizedImage = new Mat();
+        Cv2.Resize(image, resizedImage, new Size(newUnpadWidth, newUnpadHeight), interpolation: InterpolationFlags.Linear);
+
+        // Add border
+        int top = (int)Math.Round(dh - 0.1);
+        int bottom = (int)Math.Round(dh + 0.1);
+        int left = (int)Math.Round(dw - 0.1);
+        int right = (int)Math.Round(dw + 0.1);
+
+        Mat borderedImage = new Mat();
+        Cv2.CopyMakeBorder(resizedImage, borderedImage, top, bottom, left, right, BorderTypes.Constant, color);
+
+        return borderedImage;
+    }
+
+
     public static void FillTensorA2B(this DenseTensor<float> feed, DenseTensor<float> image, int offsetLeft, int offsetTop)
     {
         Parallel.For(0, image.Dimensions[1], x =>
@@ -73,6 +141,19 @@ public static class PreProcessExtension
                 feed[0, xAxis, yAxis] = image[0, x, y];
                 feed[1, xAxis, yAxis] = image[1, x, y];
                 feed[2, xAxis, yAxis] = image[2, x, y];
+            }
+        });
+    }
+
+    public static void FillTensor(this DenseTensor<float> feed, float value)
+    {
+        Parallel.For(0, feed.Dimensions[1], x =>
+        {
+            for (int y = 0; y < feed.Dimensions[2]; y++)
+            {
+                feed[0, x, y] = value;
+                feed[1, x, y] = value;
+                feed[2, x, y] = value;
             }
         });
     }

@@ -213,6 +213,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Được xác minh.
+        /// </summary>
+        public static string Be_Verified {
+            get {
+                return ResourceManager.GetString("Be_Verified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Đánh dấu.
         /// </summary>
         public static string Bookmark {
@@ -836,6 +845,15 @@ namespace BusinessModels.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Xin chào.
         /// </summary>
+        public static string Greeting {
+            get {
+                return ResourceManager.GetString("Greeting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xin chào.
+        /// </summary>
         public static string Hello {
             get {
                 return ResourceManager.GetString("Hello", resourceCulture);
@@ -942,11 +960,29 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Địa chỉ IP đã được sử dụng.
+        /// </summary>
+        public static string IP_address_already_used {
+            get {
+                return ResourceManager.GetString("IP_address_already_used", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Địa chỉ IP không hợp lệ.
         /// </summary>
         public static string IP_address_is_not_valid {
             get {
                 return ResourceManager.GetString("IP address is not valid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tham gia các Nhà thiết kế giàu kinh nghiệm trên nền tảng này.
+        /// </summary>
+        public static string Join_experienced_Designers {
+            get {
+                return ResourceManager.GetString("Join_experienced_Designers", resourceCulture);
             }
         }
         
@@ -1465,15 +1501,6 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Số dòng/trang {first_item}-{last_item} / {all_items}.
-        /// </summary>
-        public static string Rows_per_page_data_grid {
-            get {
-                return ResourceManager.GetString("Rows per page_data_grid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Tìm kiếm.
         /// </summary>
         public static string Search {
@@ -1672,6 +1699,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {first_item}-{last_item} / {all_items}.
+        /// </summary>
+        public static string Table_row_content_format_page_per_row {
+            get {
+                return ResourceManager.GetString("Table_row_content_format_page_per_row", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thẻ.
         /// </summary>
         public static string Tags {
@@ -1804,6 +1840,15 @@ namespace BusinessModels.Resources {
         public static string To_keep_connected_with_us_please_login_with_your_personal_info {
             get {
                 return ResourceManager.GetString("To keep connected with us please login with your personal info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tổng số bản ghi.
+        /// </summary>
+        public static string Total_records {
+            get {
+                return ResourceManager.GetString("Total_records", resourceCulture);
             }
         }
         
@@ -1975,6 +2020,15 @@ namespace BusinessModels.Resources {
         public static string Warning {
             get {
                 return ResourceManager.GetString("Warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total records.
+        /// </summary>
+        public static string Welcome {
+            get {
+                return ResourceManager.GetString("Welcome", resourceCulture);
             }
         }
         

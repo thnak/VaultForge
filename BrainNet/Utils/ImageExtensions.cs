@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.ML.OnnxRuntime.Tensors;
 using Newtonsoft.Json.Linq;
+using OpenCvSharp;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -29,6 +30,23 @@ public static class ImageExtensions
         return feed;
     }
 
+    public static DenseTensor<float> MatToDenseTensor(Mat mat)
+    {
+        int height = mat.Rows;
+        int width = mat.Cols;
+        int channels = mat.Channels();
+
+        // Convert Mat to a float array
+        float[] data = new float[height * width * channels];
+        mat.GetArray(out Vec3d[] array);
+        
+        // Create a DenseTensor with NHWC format
+        DenseTensor<float> tensor = new DenseTensor<float>(data, new[] { 1, height, width, channels });
+
+        return tensor;
+    }
+
+    
     public static async Task<string> GenerateDescription(this MemoryStream stream, string connectionString, string modelName, CancellationToken cancellationToken = default)
     {
         try

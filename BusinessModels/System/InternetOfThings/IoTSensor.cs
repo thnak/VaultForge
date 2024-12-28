@@ -2,7 +2,6 @@
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings.status;
 using BusinessModels.System.InternetOfThings.type;
-using BusinessModels.Utils;
 using BusinessModels.Validator;
 using FluentValidation;
 using MongoDB.Bson;
@@ -49,7 +48,7 @@ public class IoTSensorFluentValidator : ExtendFluentValidator<IoTSensor>
 
     public IoTSensorFluentValidator()
     {
-        RuleFor(x => x.SensorId).NotEmpty().MustAsync(CheckSensorAvailable).WithMessage("Existing");
+        RuleFor(x => x.SensorId).NotEmpty().MustAsync(CheckSensorAvailable).WithMessage(AppLang.Already_existing);
         RuleFor(x => x.SensorName).NotEmpty();
         RuleFor(x => x.DeviceId).NotEmpty().MustAsync(CheckDeviceAvailable).WithMessage(AppLang.Device_not_found);
     }
@@ -75,15 +74,5 @@ public class IoTSensorFluentValidator : ExtendFluentValidator<IoTSensor>
         }
 
         return true;
-    }
-
-    private bool IsValidIpAddress(string arg)
-    {
-        return arg.IsValidIpAddress();
-    }
-
-    private bool IsValidMacAddress(string arg)
-    {
-        return arg.IsValidMacAddress();
     }
 }
