@@ -597,9 +597,6 @@
     <data name="Copied" xml:space="preserve">
       <value>복사됨</value>
     </data>
-    <data name="Community" xml:space="preserve">
-      <value>커뮤니티</value>
-    </data>
     <data name="Reload_page_confirmation" xml:space="preserve">
       <value>정말로 페이지를 새로고침하시겠습니까?</value>
     </data>

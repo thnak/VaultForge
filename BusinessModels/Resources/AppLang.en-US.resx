@@ -343,9 +343,6 @@
     <data name="Folder moved successfully" xml:space="preserve">
     <value>Folder moved successfully</value>
   </data>
-    <data name="File moved successfully" xml:space="preserve">
-    <value>File moved successfully</value>
-  </data>
     <data name="Exception" xml:space="preserve">
       <value>Exception</value>
     </data>
@@ -433,9 +430,6 @@ ClientY: {1}</value>
     </data>
     <data name="Edit" xml:space="preserve">
       <value>Edit</value>
-    </data>
-    <data name="Content already exists" xml:space="preserve">
-      <value>Content already exists</value>
     </data>
     <data name="Loading" xml:space="preserve">
       <value>Loading</value>
@@ -799,9 +793,6 @@ ClientY: {1}</value>
     </data>
     <data name="Reload_page_confirmation" xml:space="preserve">
       <value>Do you really want to reload the page?</value>
-    </data>
-    <data name="Update successfully" xml:space="preserve">
-      <value>Update successfully</value>
     </data>
     <data name="File_moved_successfully" xml:space="preserve">
       <value>File moved successfully</value>

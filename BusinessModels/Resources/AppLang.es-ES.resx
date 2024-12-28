@@ -594,9 +594,6 @@
     <data name="Copied" xml:space="preserve">
       <value>Copiado</value>
     </data>
-    <data name="Community" xml:space="preserve">
-      <value>Comunidad</value>
-    </data>
     <data name="Reload_page_confirmation" xml:space="preserve">
       <value>¿Realmente quieres recargar la página?</value>
     </data>
