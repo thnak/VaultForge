@@ -1,18 +1,25 @@
-﻿using BrainNet.Models.Setting;
+﻿using System.Buffers;
+using BrainNet.Models.Setting;
+using BrainNet.Models.Vector;
+using BrainNet.Service.Memory.Implements;
+using BrainNet.Service.Memory.Interfaces;
+using BrainNet.Service.Memory.Utils;
 using BrainNet.Service.ObjectDetection.Interfaces;
 using BrainNet.Service.ObjectDetection.Model.Feeder;
 using BrainNet.Service.ObjectDetection.Model.Result;
 using BrainNet.Utils;
 using Microsoft.Extensions.Options;
 using Microsoft.ML.OnnxRuntime;
-using Microsoft.ML.OnnxRuntime.Tensors;
 using Newtonsoft.Json;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace BrainNet.Service.ObjectDetection.Implements;
 
 public class YoloDetection : IYoloDetection
 {
-    private InferenceSession Session { get; set; } = null!;
+    private readonly IMemoryAllocatorService _memoryAllocatorService = new MemoryAllocatorService();
+    private readonly InferenceSession _session;
     private IOptions<BrainNetSettingModel> Options { get; }
     private string[] InputNames { get; set; } = null!;
     private string[] OutputNames { get; set; } = null!;
@@ -21,9 +28,10 @@ public class YoloDetection : IYoloDetection
     public IReadOnlyCollection<string> CategoryReadOnlyCollection { get; set; } = [];
     public int Stride { get; set; }
     private OrtIoBinding OrtIoBinding { get; set; }
-    private RunOptions runOptions { get; set; }
-    private DenseTensor<float> InputTensor { get; set; }
-    private DenseTensor<float> OutputTensor { get; set; }
+    private readonly RunOptions _runOptions;
+    private TensorShape _tensorShape;
+    private Size inputSize;
+    private ArrayPool<float> floatPool = ArrayPool<float>.Create();
 
     public YoloDetection(string modelPath)
     {
@@ -35,24 +43,23 @@ public class YoloDetection : IYoloDetection
                 DeviceIndex = 0,
             }
         };
+        var sessionOption = InitSessionOption();
+        _session = new InferenceSession(modelPath, sessionOption);
+        OrtIoBinding = _session.CreateIoBinding();
         Options = new OptionsWrapper<BrainNetSettingModel>(settings);
-        InitializeSession(modelPath);
+        InitializeSession();
         InitCategory();
-        runOptions = new();
+        _runOptions = new();
     }
 
-    private void InitializeSession(string modelPath)
+    private void InitializeSession()
     {
-        var sessionOption = InitSessionOption();
-        Session = new InferenceSession(modelPath, sessionOption);
-        
-        InputNames = Session.GetInputNames();
-        OutputNames = Session.GetOutputNames();
-        InputDimensions = Session.InputMetadata.First().Value.Dimensions;
-        OutputDimensions = [..Session.OutputMetadata.First().Value.Dimensions];
-        OrtIoBinding = Session.CreateIoBinding();
-        InputTensor = new DenseTensor<float>(InputDimensions);
-        OutputTensor = new DenseTensor<float>(InputDimensions);
+        InputNames = _session.GetInputNames();
+        OutputNames = _session.GetOutputNames();
+        InputDimensions = _session.InputMetadata.First().Value.Dimensions;
+        OutputDimensions = [.._session.OutputMetadata.First().Value.Dimensions];
+        _tensorShape = new TensorShape(InputDimensions);
+        inputSize = new Size(InputDimensions[^1], InputDimensions[^2]);
     }
 
     private SessionOptions InitSessionOption()
@@ -60,13 +67,13 @@ public class YoloDetection : IYoloDetection
         var sessionOptions = new SessionOptions();
         // sessionOptions.RegisterOrtExtensions();
         sessionOptions.InitSessionOption();
-        sessionOptions.InitExecutionProviderOptions(Options.Value.FaceEmbeddingSetting.DeviceIndex);
+        // sessionOptions.InitExecutionProviderOptions(Options.Value.FaceEmbeddingSetting.DeviceIndex);
         return sessionOptions;
     }
 
     private void InitCategory()
     {
-        var metadata = Session.ModelMetadata;
+        var metadata = _session.ModelMetadata;
         var customMetadata = metadata.CustomMetadataMap;
         if (customMetadata.TryGetValue("names", out var categories))
         {
@@ -112,7 +119,8 @@ public class YoloDetection : IYoloDetection
 
     public void Dispose()
     {
-        Session.Dispose();
+        _session.Dispose();
+        _memoryAllocatorService.Dispose();
     }
 
     public int[] GetInputDimensions()
@@ -122,24 +130,39 @@ public class YoloDetection : IYoloDetection
 
     public int GetStride() => Stride;
 
+    public List<YoloBoundingBox> PreprocessAndRun(Image<Rgb24> image)
+    {
+        using MemoryTensorOwner<float> memoryTensorOwner = _memoryAllocatorService.AllocateTensor<float>(_tensorShape, true);
+        var pads = floatPool.Rent(1);
+        var ratios = floatPool.Rent(1);
+        image.NormalizeInput(memoryTensorOwner.Tensor, inputSize, ratios, pads, true);
+        using var ortInput = memoryTensorOwner.Tensor.CreateOrtValue();
+
+        var inputs = new Dictionary<string, OrtValue> { { InputNames.First(), ortInput } };
+        using var fromResult = _session.Run(_runOptions, inputs, OutputNames);
+        float[] resultArrays = fromResult[0].Value.GetTensorDataAsSpan<float>().ToArray();
+
+        YoloPrediction predictions = new YoloPrediction(resultArrays, CategoryReadOnlyCollection.ToArray(),
+            [pads], [ratios], [[image.Height, image.Width]]);
+        floatPool.Return(pads);
+        floatPool.Return(ratios);
+        return predictions.GetDetect();
+    }
+
     public void WarmUp()
     {
         // using var inputOrtValue = OrtValue.CreateAllocatedTensorValue(OrtAllocator.DefaultInstance, TensorElementType.Float, InputDimensions.Select(x => (long)x).ToArray());
         // var inputs = new Dictionary<string, OrtValue> { { InputNames.First(), inputOrtValue } };
-        Session.RunWithBinding(runOptions, OrtIoBinding);
+        _session.RunWithBinding(_runOptions, OrtIoBinding);
         // using var fromResult = Session.Run(runOptions, inputs, OutputNames);
     }
 
     public void SetInput()
     {
-        var shape = InputDimensions.Select(x => (long)x).ToArray();
-        OrtIoBinding.BindInput(InputNames[0], OrtValue.CreateTensorValueFromMemory(OrtMemoryInfo.DefaultInstance, InputTensor.Buffer, shape));
     }
 
     public void SetOutput()
     {
-        var shape = OutputDimensions.Select(x => (long)x).ToArray();
-        OrtIoBinding.BindOutput(OutputNames[0], OrtValue.CreateTensorValueFromMemory(OrtMemoryInfo.DefaultInstance, OutputTensor.Buffer, shape));
     }
 
     public List<YoloBoundingBox> Predict(YoloFeeder tensorFeed)
@@ -150,10 +173,10 @@ public class YoloDetection : IYoloDetection
         OutputDimensions[0] = newDim[0];
         using var inputOrtValue = OrtValue.CreateTensorValueFromMemory(OrtMemoryInfo.DefaultInstance, tensor.Buffer, newDim);
         var inputs = new Dictionary<string, OrtValue> { { InputNames.First(), inputOrtValue } };
-        using var fromResult = Session.Run(runOptions, inputs, OutputNames);
+        using var fromResult = _session.Run(_runOptions, inputs, OutputNames);
 
         float[] resultArrays = fromResult[0].Value.GetTensorDataAsSpan<float>().ToArray();
-        
+
         YoloPrediction predictions = new YoloPrediction(resultArrays, CategoryReadOnlyCollection.ToArray(), feed.dwdhs, feed.ratios, feed.imageShape);
         return predictions.GetDetect();
     }

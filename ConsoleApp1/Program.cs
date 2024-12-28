@@ -136,9 +136,14 @@ using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Validators;
+using BrainNet.Service.ObjectDetection;
+using BrainNet.Service.ObjectDetection.Implements;
+using BrainNet.Service.ObjectDetection.Model.Feeder;
 using BrainNet.Utils;
 using Microsoft.ML.OnnxRuntime.Tensors;
 using OpenCvSharp;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 [Benchmark]
 DenseTensor<float> ResizeLinear(DenseTensor<float> imageMatrix, int[] shape)
@@ -195,15 +200,26 @@ var config = new ManualConfig()
     .AddColumnProvider(DefaultColumnProviders.Instance)
     .AddAnalyser();
 
-BenchmarkRunner.Run<FunctionBenchmark>(config);
-
+// BenchmarkRunner.Run<FunctionBenchmark>(config);
+string inputPath = "C:\\Users\\thanh\\OneDrive\\Pictures\\WallPaper\\ball-8048205.jpg";
+var yolo = new YoloDetection("C:\\Users\\thanh\\Downloads\\yolov7.onnx");
+var image = Image.Load<Rgb24>(inputPath);
+var result = yolo.PreprocessAndRun(image);
+var feed = new YoloFeeder(yolo.GetInputDimensions()[2..], yolo.GetStride());
+// feed.SetTensor(inputPath);
+// result = yolo.Predict(feed);
+var resultImage = image.PlotImage(result);
+resultImage.SaveAsJpeg("C:\\Users\\thanh\\OneDrive\\Pictures\\WallPaper\\detect\\ball-8048205.jpg");
+Console.WriteLine();
 
 public class FunctionBenchmark()
 {
     readonly DenseTensor<float> _tensor1280 = new([3, 1280, 1280]);
     readonly DenseTensor<float> _tensor640 = new([3, 640, 640]);
+    readonly Image<Rgb24> dummyImage = new Image<Rgb24>(1280, 1280);
 
-    readonly Mat dummy = new Mat(1280, 1280, MatType.CV_32FC3, Scalar.All(127.0));
+    private
+        readonly Mat dummy = new Mat(1280, 1280, MatType.CV_32FC3, Scalar.All(127.0));
     // [Benchmark]
     // public void RunResizeLinear()
     // {
@@ -228,17 +244,17 @@ public class FunctionBenchmark()
     //     _tensor640.FillTensor(114);
     // }
 
-    [Benchmark]
-    public void RunYoloLetterBox()
-    {
-        dummy.Letterbox(new Size(640, 640));
-    }
-
-    [Benchmark]
-    public void RunLetterBox()
-    {
-        _tensor1280.LetterBox(false, false, true, 32, [640, 640]);
-    }
+    // [Benchmark]
+    // public void RunYoloLetterBox()
+    // {
+    //     dummy.Letterbox(new Size(640, 640));
+    // }
+    //
+    // [Benchmark]
+    // public void RunLetterBox()
+    // {
+    //     _tensor1280.LetterBox(false, false, true, 32, [640, 640]);
+    // }
 }
 
 

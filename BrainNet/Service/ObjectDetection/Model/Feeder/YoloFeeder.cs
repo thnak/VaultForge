@@ -43,6 +43,7 @@ public class YoloFeeder
     public void SetTensor(Image<Rgb24> image)
     {
         DenseTensor<float> tensor = new DenseTensor<float>([3, image.Height, image.Width]);
+        image.AutoOrient();
         image.Image2DenseTensor(tensor);
         int[] imageShape = [image.Height, image.Width];
         var lettered = tensor.LetterBox(false, false, true, Stride, OutPutShape);

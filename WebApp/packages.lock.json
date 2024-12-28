@@ -1394,10 +1394,24 @@
         "resolved": "0.30.1",
         "contentHash": "XqD4TpfyYGa7QTPzaGlMVbcecKnXy4YmYLDWrU+JIj7IuRNl7DH2END+Ll7ekWIY8o3dAMWLFDE1xdhfIWD1nw=="
       },
+      "SixLabors.Fonts": {
+        "type": "Transitive",
+        "resolved": "2.0.4",
+        "contentHash": "4+NKz8W36injp98lmmM07ncp08HAK8c6FZz8vLoKxRPfJeEVWpBHlLYEbQa5rcqKKYqxUv/RVCrb8XcPhfMKUQ=="
+      },
       "SixLabors.ImageSharp": {
         "type": "Transitive",
         "resolved": "3.1.6",
         "contentHash": "dHQ5jugF9v+5/LCVHCWVzaaIL6WOehqJy6eju/0VFYFPEj2WtqkGPoEV9EVQP83dHsdoqYaTuWpZdwAd37UwfA=="
+      },
+      "SixLabors.ImageSharp.Drawing": {
+        "type": "Transitive",
+        "resolved": "2.1.4",
+        "contentHash": "p4VwtAABggDUhUS5zXldCZHVGfjJl76+SrBHY4biNQ8+890igFK6RL87qIv9GqvEjMcYOar1sPkf2iMQ6uq9/g==",
+        "dependencies": {
+          "SixLabors.Fonts": "2.0.4",
+          "SixLabors.ImageSharp": "3.1.5"
+        }
       },
       "Snappier": {
         "type": "Transitive",
@@ -2353,6 +2367,8 @@
           "OpenCvSharp4": "[4.10.0.20241108, )",
           "OpenCvSharp4.Windows": "[4.10.0.20241108, )",
           "SixLabors.ImageSharp": "[3.1.6, )",
+          "SixLabors.ImageSharp.Drawing": "[2.1.4, )",
+          "System.Drawing.Common": "[6.0.0, )",
           "System.Numerics.Tensors": "[9.0.0, )"
         }
       },

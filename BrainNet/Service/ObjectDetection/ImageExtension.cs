@@ -1,9 +1,20 @@
-﻿using Microsoft.ML.OnnxRuntime;
+﻿using System.Runtime.CompilerServices;
+using BrainNet.Models.Vector;
+using BrainNet.Service.ObjectDetection.Model.Result;
+using BrainNet.Utils;
 using Microsoft.ML.OnnxRuntime.Tensors;
+using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
+using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using Color = SixLabors.ImageSharp.Color;
+using PointF = SixLabors.ImageSharp.PointF;
+using Rectangle = SixLabors.ImageSharp.Rectangle;
+using RectangleF = SixLabors.ImageSharp.RectangleF;
+using Size = SixLabors.ImageSharp.Size;
+using SystemFonts = System.Drawing.SystemFonts;
 
 namespace BrainNet.Service.ObjectDetection;
 
@@ -22,6 +33,109 @@ public static class ImageExtension
                 target.WritePixelRgba(rowSpan, i, j);
             }
         });
+    }
+
+    private static void ProcessToTensorCore(Image<Rgb24> image, MemoryTensor<float> tensor, VectorPosition<int> padding)
+    {
+        var width = image.Width;
+        var height = image.Height;
+
+        // Pre-calculate strides for performance
+        var strideY = tensor.Strides[2];
+        var strideX = tensor.Strides[3];
+        var strideR = tensor.Strides[1] * 0;
+        var strideG = tensor.Strides[1] * 1;
+        var strideB = tensor.Strides[1] * 2;
+
+        // Get a span of the whole tensor for fast access
+        var tensorSpan = tensor.Span;
+
+        // Try get continuous memory block of the entire image data
+        if (image.DangerousTryGetSinglePixelMemory(out var memory))
+        {
+            var pixels = memory.Span;
+            var length = height * width;
+
+            for (var index = 0; index < length; index++)
+            {
+                var x = index % width;
+                var y = index / width;
+
+                var tensorIndex = strideR + strideY * (y + padding.Y) + strideX * (x + padding.X);
+
+                var pixel = pixels[index];
+
+                WriteSpanPixel(tensorSpan, tensorIndex, pixel, strideR, strideG, strideB);
+            }
+        }
+        else
+        {
+            for (var y = 0; y < height; y++)
+            {
+                var rowSpan = image.DangerousGetPixelRowMemory(y).Span;
+                var tensorYIndex = strideR + strideY * (y + padding.Y);
+
+                for (var x = 0; x < width; x++)
+                {
+                    var tensorIndex = tensorYIndex + strideX * (x + padding.X);
+                    var pixel = rowSpan[x];
+
+                    WriteSpanPixel(tensorSpan, tensorIndex, pixel, strideR, strideG, strideB);
+                }
+            }
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void WriteSpanPixel(Span<float> target, int index, Rgb24 pixel, int strideBatchR, int strideBatchG, int strideBatchB)
+    {
+        target[index] = pixel.R / 255f;
+        target[index + strideBatchG - strideBatchR] = pixel.G / 255f;
+        target[index + strideBatchB - strideBatchR] = pixel.B / 255f;
+    }
+
+    public static void NormalizeInput(this Image<Rgb24> image, MemoryTensor<float> target, Size imageSize, float[] ratios, float[] pads, bool keepAspectRatio = false)
+    {
+        image.AutoOrient();
+        // Resize the input image
+        using var resized = ResizeImage(image, out var padding, imageSize, keepAspectRatio);
+        ratios[0] = (float)resized.Height / image.Height;
+        ratios[1] = (float)resized.Width / image.Width;
+        pads[0] = padding.Y;
+        pads[1] = padding.X;
+        // Process the image to tensor
+        ProcessToTensorCore(resized, target, padding);
+    }
+
+    private static Image<Rgb24> ResizeImage(Image<Rgb24> image, out VectorPosition<int> padding, Size imageSize, bool keepAspectRatio = false)
+    {
+        // Get the model image input size
+        var inputSize = imageSize;
+
+        // Create resize options
+        var options = new ResizeOptions()
+        {
+            Size = inputSize,
+
+            // Select resize mode according to 'KeepAspectRatio'
+            Mode = keepAspectRatio ? ResizeMode.Max : ResizeMode.Stretch,
+
+            // Select faster resampling algorithm
+            Sampler = KnownResamplers.NearestNeighbor
+        };
+
+        // Create resized image
+        var resized = image.Clone(x => x.Resize(options));
+
+        // Calculate padding
+        padding =
+        (
+            (inputSize.Width - resized.Size.Width) / 2,
+            (inputSize.Height - resized.Size.Height) / 2
+        );
+
+        // Return the resized image
+        return resized;
     }
 
     private static void WritePixelRgba(this DenseTensor<float> tensorSpan, Span<Rgb24> pixel, int tensorIndexX, int tensorIndexY)
@@ -84,5 +198,51 @@ public static class ImageExtension
         tensorSpan[tensorIndex] = pixel.R / 255f;
         tensorSpan[tensorIndex + strideBatchG - strideBatchR] = pixel.G / 255f;
         tensorSpan[tensorIndex + strideBatchB - strideBatchR] = pixel.B / 255f;
+    }
+
+    public static Image<Rgb24> PlotImage(this Image<Rgb24> src, List<YoloBoundingBox> boundingBoxes)
+    {
+        // Define a font for text annotations.
+        FontCollection collection = new();
+        FontFamily family = collection.Add("C:/Users/thanh/Git/VaultForge/WebApp/wwwroot/fonts/roboto-v30-latin-300.woff");
+        Font font = family.CreateFont(12, FontStyle.Italic);
+        var textOption = new TextOptions(font);
+
+        var newImage = src.Clone();
+
+        foreach (var box in boundingBoxes)
+        {
+            // Extract bounding box coordinates and dimensions.
+            var x = box.X;
+            var y = box.Y;
+            var width = box.Width;
+            var height = box.Height;
+
+            // Define the color for the rectangle and text.
+            var boxColor = Color.Red;
+            var textColor = Color.White;
+
+            // Draw the bounding box.
+            newImage.Mutate(ctx =>
+            {
+                // Draw the rectangle for the bounding box.
+                ctx.Draw(boxColor, 2.0f, new RectangleF(x, y, width, height));
+
+                // Prepare the text label with category name and score.
+                var label = $"{box.ClassName} ({box.Score:P2})";
+
+                // Measure the text size to create a background rectangle for better visibility.
+                var textSize = TextMeasurer.MeasureBounds(label, textOption);
+                var backgroundRectangle = new RectangleF(x, y - textSize.Height - 4, textSize.Width + 4, textSize.Height + 4);
+
+                // Draw the background rectangle for the text.
+                ctx.Fill(Color.Black, backgroundRectangle);
+
+                // Draw the label text.
+                ctx.DrawText(label, font, textColor, new PointF(x + 2, y - textSize.Height - 2));
+            });
+        }
+
+        return newImage;
     }
 }

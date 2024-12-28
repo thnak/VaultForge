@@ -6,11 +6,24 @@ using Newtonsoft.Json.Linq;
 using OpenCvSharp;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 namespace BrainNet.Utils;
 
 public static class ImageExtensions
 {
+    public static void AutoOrient(this Image image) => image.Mutate(x => x.AutoOrient());
+
+    public static Image<TPixel> As<TPixel>(this Image image) where TPixel : unmanaged, IPixel<TPixel>
+    {
+        if (image is Image<TPixel> result)
+        {
+            return result;
+        }
+
+        return image.CloneAs<TPixel>();
+    }
+
     public static DenseTensor<float> Image2DenseTensor(Image<Rgb24> image)
     {
         int[] shape = new[] { 3, image.Height, image.Width };
@@ -39,14 +52,14 @@ public static class ImageExtensions
         // Convert Mat to a float array
         float[] data = new float[height * width * channels];
         mat.GetArray(out Vec3d[] array);
-        
+
         // Create a DenseTensor with NHWC format
         DenseTensor<float> tensor = new DenseTensor<float>(data, new[] { 1, height, width, channels });
 
         return tensor;
     }
 
-    
+
     public static async Task<string> GenerateDescription(this MemoryStream stream, string connectionString, string modelName, CancellationToken cancellationToken = default)
     {
         try
