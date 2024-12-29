@@ -7,6 +7,7 @@ using BusinessModels.System;
 using BusinessModels.System.InternetOfThings;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 
@@ -110,8 +111,8 @@ public partial class IoTController
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
-            FileName = HttpUtility.UrlEncode($"Report {startTime.ToString(CultureInfo.CurrentCulture)}-{endTime.ToString(CultureInfo.CurrentCulture)}.csv"),
-            Inline = true, // false = prompt the user for downloading;  true = browser to try to show the file inline,
+            FileName = HttpUtility.UrlEncode($"Report {startTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)}-{endTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)}.xls"),
+            Inline = false, // false = prompt the user for downloading;  true = browser to try to show the file inline,
             CreationDate = now,
             ModificationDate = now,
             ReadDate = now
@@ -121,7 +122,12 @@ public partial class IoTController
         Response.StatusCode = 200;
         Response.ContentLength = ms.Length;
 
-        return File(ms, "application/vnd.ms-excel");
+        return new FileStreamResult(ms, "application/vnd.ms-excel")
+        {
+            FileDownloadName = cd.FileName,
+            LastModified = DateTimeOffset.Now,
+            EnableRangeProcessing = true
+        };
     }
 
     private void CreateCell(IRow currentRow, int cellIndex, string value, HSSFCellStyle style, CellType type)

@@ -45,13 +45,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update api, add new api, update language pack">
-      <change afterPath="$PROJECT_DIR$/Business/Services/Configure/LoggerServiceCollectionExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/MongoDataLayerContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/MongoDataLayerContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/LogProvider/MongoDbLogger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/LogProvider/MongoDbLogger.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/LogProvider/MongoDbLoggerProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/LogProvider/MongoDbLoggerProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Program.cs" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="restore LoggerServiceCollectionExtensions.cs">
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
@@ -176,6 +171,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff56e9dabec8513a52b6f0caca4a8979301377a3ae924a82a78d3c3dfd001c/TextOptions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/LogProvider/MongoDbLoggerProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
@@ -982,15 +978,7 @@
       <workItem from="1735410229697" duration="417000" />
       <workItem from="1735441589446" duration="4101000" />
       <workItem from="1735445952880" duration="516000" />
-      <workItem from="1735446594857" duration="12065000" />
-    </task>
-    <task id="LOCAL-00478" summary="[BIG UPDATE] add new page, refactor, ...">
-      <option name="closed" value="true" />
-      <created>1734888494916</created>
-      <option name="number" value="00478" />
-      <option name="presentableId" value="LOCAL-00478" />
-      <option name="project" value="LOCAL" />
-      <updated>1734888494916</updated>
+      <workItem from="1735446594857" duration="12491000" />
     </task>
     <task id="LOCAL-00479" summary="optimize code">
       <option name="closed" value="true" />
@@ -1376,7 +1364,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735471300665</updated>
     </task>
-    <option name="localTasksCounter" value="527" />
+    <task id="LOCAL-00527" summary="restore LoggerServiceCollectionExtensions.cs">
+      <option name="closed" value="true" />
+      <created>1735473011958</created>
+      <option name="number" value="00527" />
+      <option name="presentableId" value="LOCAL-00527" />
+      <option name="project" value="LOCAL" />
+      <updated>1735473011958</updated>
+    </task>
+    <option name="localTasksCounter" value="528" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1407,7 +1403,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fix not found sub file resource" />
     <MESSAGE value="update filter to get correct time" />
     <MESSAGE value="add field" />
     <MESSAGE value="update service" />
@@ -1432,7 +1427,8 @@
     <MESSAGE value="add resource" />
     <MESSAGE value="add some bullshit service" />
     <MESSAGE value="update api, add new api, update language pack" />
-    <option name="LAST_COMMIT_MESSAGE" value="update api, add new api, update language pack" />
+    <MESSAGE value="restore LoggerServiceCollectionExtensions.cs" />
+    <option name="LAST_COMMIT_MESSAGE" value="restore LoggerServiceCollectionExtensions.cs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
