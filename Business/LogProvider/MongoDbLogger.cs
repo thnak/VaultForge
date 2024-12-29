@@ -11,9 +11,11 @@ public class MongoDbLogger : ILogger
     {
         var options = new CreateCollectionOptions
         {
-            TimeSeriesOptions = new TimeSeriesOptions("Timestamp", "LogLevel", TimeSeriesGranularity.Seconds)
+            TimeSeriesOptions = new TimeSeriesOptions("Timestamp", "LogLevel", TimeSeriesGranularity.Seconds),
+            ExpireAfter = TimeSpan.FromDays(20),
         };
-        context.MongoDatabase.CreateCollection("SystemLog", options);
+        if (context.MongoDatabase.ListCollectionNames().ToList().All(x => x != "SystemLog"))
+            context.MongoDatabase.CreateCollection("SystemLog", options);
         _logCollection = context.MongoDatabase.GetCollection<LogEntryModel>("SystemLog");
 
         var dateLogLevelIndexKeys = Builders<LogEntryModel>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.LogLevel);
@@ -29,7 +31,7 @@ public class MongoDbLogger : ILogger
     private readonly IMongoCollection<LogEntryModel> _logCollection;
     private readonly string _logCollectionName;
 
-    public IDisposable? BeginScope<TState>(TState state) where TState : notnull => default!;
+    public IDisposable BeginScope<TState>(TState state) where TState : notnull => null!;
 
     public bool IsEnabled(LogLevel logLevel) => true;
 

@@ -1,5 +1,4 @@
 ﻿using Business.Data.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Business.LogProvider;

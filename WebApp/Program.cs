@@ -119,15 +119,8 @@ public class Program
 
         #region Logging
 
-        // builder.Services.AddLogging(options =>
-        // {
-        //     // options.ClearProviders();
-        //     var serviceProvider = builder.Services.BuildServiceProvider();
-        //     options.AddProvider(new MongoDbLoggerProvider(serviceProvider.GetRequiredService<IMongoDataLayerContext>()));
-        //     options.SetMinimumLevel(LogLevel.Debug);
-        // });
-        // builder.Services.AddHttpLogging();
-        // builder.Logging.SetMinimumLevel(LogLevel.Information);
+        builder.Services.AddLogger();
+        builder.Logging.SetMinimumLevel(LogLevel.Information);
 
         #endregion
 

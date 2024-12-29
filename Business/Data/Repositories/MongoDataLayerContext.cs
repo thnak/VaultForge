@@ -1,6 +1,5 @@
 using Business.Data.Interfaces;
 using Business.Services.Configure;
-using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Configuration;
 
@@ -8,10 +7,8 @@ namespace Business.Data.Repositories;
 
 public class MongoDataLayerContext : IMongoDataLayerContext
 {
-    private readonly ILogger<MongoDataLayerContext> _logger;
-    public MongoDataLayerContext(ApplicationConfiguration settings, ILogger<MongoDataLayerContext> logger)
+    public MongoDataLayerContext(ApplicationConfiguration settings)
     {
-        _logger = logger;
         var dbName = settings.GetDbSetting.DatabaseName;
         var user = settings.GetDbSetting.UserName;
         var pass = settings.GetDbSetting.Password;
@@ -34,13 +31,10 @@ public class MongoDataLayerContext : IMongoDataLayerContext
             var dbContext = client.GetDatabase(dbName);
             MongoDatabase = dbContext ?? throw new Exception();
         }
-        catch (OperationCanceledException ex)
-        {
-            logger.LogInformation(ex.ToString());
-        }
+
         catch (Exception e)
         {
-            logger.LogError(e, e.Message);
+            Console.WriteLine(e.Message);
         }
     }
 
@@ -48,8 +42,6 @@ public class MongoDataLayerContext : IMongoDataLayerContext
 
     public void Dispose()
     {
-        _logger.LogInformation("Disposing MongoDataLayerContext");
         MongoDatabase.Client.Dispose();
-        _logger.LogInformation("Disposed MongoDataLayerContext");
     }
 }
