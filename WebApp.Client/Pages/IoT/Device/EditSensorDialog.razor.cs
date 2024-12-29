@@ -96,6 +96,8 @@ public partial class EditSensorDialog(ILogger<EditSensorDialog> logger) : Compon
                         { x => x.IoTSensorType, SensorToEdit.IoTSensorType },
                         { x => x.Accuracy, SensorToEdit.Accuracy },
                         { x => x.Rotate, SensorToEdit.Rotate },
+                        { x => x.FlipVertical, SensorToEdit.FlipVertical },
+                        { x => x.FlipHorizontal, SensorToEdit.FlipHorizontal },
                         { x => x.UnitOfMeasurement, SensorToEdit.UnitOfMeasurement },
                     };
                     using var content = new MultipartFormDataContent();

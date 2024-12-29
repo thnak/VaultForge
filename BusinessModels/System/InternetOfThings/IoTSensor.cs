@@ -1,4 +1,5 @@
-﻿using BusinessModels.Base;
+﻿using System.Text.Json.Serialization;
+using BusinessModels.Base;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings.status;
 using BusinessModels.System.InternetOfThings.type;
@@ -11,29 +12,43 @@ namespace BusinessModels.System.InternetOfThings;
 
 public class IoTSensor : BaseModelEntry
 {
-    [BsonElement("sensorId")] public string SensorId { get; set; } = string.Empty;
-    [BsonElement("sensorName")] public string SensorName { get; set; } = string.Empty;
+    [BsonElement("sensorId")]
+    [JsonPropertyName("sensorId")]
+    public string SensorId { get; set; } = string.Empty;
+
+    [BsonElement("sensorName")]
+    [JsonPropertyName("sensorName")]
+    public string SensorName { get; set; } = string.Empty;
 
     [BsonElement("sensorType")]
+    [JsonPropertyName("sensorType")]
     [BsonRepresentation(BsonType.String)]
     public IoTSensorType IoTSensorType { get; set; } // Enum for sensor types
 
-    [BsonElement("deviceId")] public string DeviceId { get; set; } = string.Empty; // Foreign key to Device
+    [BsonElement("deviceId")]
+    [JsonPropertyName("deviceId")]
+    public string DeviceId { get; set; } = string.Empty; // Foreign key to Device
 
-    [BsonElement("unitOfMeasurement")] public string UnitOfMeasurement { get; set; } = string.Empty; // e.g., °C, %, Pa
+    [BsonElement("unitOfMeasurement")]
+    [JsonPropertyName("unitOfMeasurement")]
+    public string UnitOfMeasurement { get; set; } = string.Empty; // e.g., °C, %, Pa
 
-    [BsonElement("accuracy")] public float Accuracy { get; set; }
+    [BsonElement("accuracy")]
+    [JsonPropertyName("accuracy")]
+    public float Accuracy { get; set; }
 
     [BsonElement("calibrationTime")]
+    [JsonPropertyName("calibrationTime")]
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime? CalibrationTime { get; set; }
 
     public float Rotate { get; set; }
-    
+
     public bool FlipHorizontal { get; set; }
     public bool FlipVertical { get; set; }
 
     [BsonElement("status")]
+    [JsonPropertyName("status")]
     [BsonRepresentation(BsonType.String)]
     public IoTSensorStatus Status { get; set; }
 
