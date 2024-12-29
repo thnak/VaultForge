@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Net.Mime;
 using System.Web;
+using Business.Utils.Excel;
 using BusinessModels.Resources;
 using BusinessModels.System;
 using BusinessModels.System.InternetOfThings;
@@ -65,6 +66,16 @@ public partial class IoTController
         borderedCellStyle.BorderRight = BorderStyle.Medium;
         borderedCellStyle.BorderBottom = BorderStyle.Medium;
         borderedCellStyle.VerticalAlignment = VerticalAlignment.Center;
+        
+        HSSFCellStyle dateStyle = (HSSFCellStyle)workbook.CreateCellStyle();
+        IDataFormat dataFormat = workbook.CreateDataFormat();
+        dateStyle.SetFont(myFont);
+        dateStyle.BorderLeft = BorderStyle.Medium;
+        dateStyle.BorderTop = BorderStyle.Medium;
+        dateStyle.BorderRight = BorderStyle.Medium;
+        dateStyle.BorderBottom = BorderStyle.Medium;
+        dateStyle.VerticalAlignment = VerticalAlignment.Center;
+        dateStyle.DataFormat = dataFormat.GetFormat("yyyy-MM-dd HH:mm:ss"); 
 
         ISheet sheet = workbook.CreateSheet("Report");
         //Creat The Headers of the excel
@@ -72,10 +83,11 @@ public partial class IoTController
         IRow headerRow = sheet.CreateRow(rowIndex++);
 
         //Create The Actual Cells
-        CreateCell(headerRow, 0, AppLang.Timestamp, borderedCellStyle, CellType.String);
-        CreateCell(headerRow, 1, AppLang.Value, borderedCellStyle, CellType.String);
-        CreateCell(headerRow, 2, AppLang.Signal_strength, borderedCellStyle, CellType.String);
-        CreateCell(headerRow, 3, AppLang.Image, borderedCellStyle, CellType.String);
+
+        headerRow.CreateCellWithValue(0, AppLang.Timestamp, borderedCellStyle);
+        headerRow.CreateCellWithValue(1, AppLang.Value, borderedCellStyle);
+        headerRow.CreateCellWithValue(2, AppLang.Signal_strength, borderedCellStyle);
+        headerRow.CreateCellWithValue(3, AppLang.Image, borderedCellStyle);
 
         // This Where the Data row starts from
         var data = businessLayer.Where(x => x.Metadata.RecordedAt >= startTime && x.Metadata.RecordedAt < endTime && x.Metadata.SensorId == sensorId);
@@ -89,10 +101,10 @@ public partial class IoTController
         {
             //Creating the CurrentDataRow
             IRow currentRow = sheet.CreateRow(rowIndex++);
-            CreateCell(currentRow, 0, batchErrorReport.Metadata.RecordedAt.ToString(CultureInfo.CurrentCulture), borderedCellStyle, CellType.String);
-            CreateCell(currentRow, 1, batchErrorReport.Metadata.SensorData.ToString(CultureInfo.CurrentCulture), borderedCellStyle, CellType.Numeric);
-            CreateCell(currentRow, 2, batchErrorReport.Metadata.SignalStrength.ToString(CultureInfo.CurrentCulture), borderedCellStyle, CellType.String);
-            CreateCell(currentRow, 3, batchErrorReport.Metadata.ImagePath, borderedCellStyle, CellType.String);
+            currentRow.CreateCellWithValue(0, batchErrorReport.Metadata.RecordedAt, dateStyle);
+            currentRow.CreateCellWithValue(1, batchErrorReport.Metadata.SensorData, borderedCellStyle);
+            currentRow.CreateCellWithValue(2, batchErrorReport.Metadata.SignalStrength, borderedCellStyle);
+            currentRow.CreateCellWithValue(3, batchErrorReport.Metadata.ImagePath, borderedCellStyle);
         }
 
         // Auto sized all the affected columns
@@ -128,14 +140,6 @@ public partial class IoTController
             LastModified = DateTimeOffset.Now,
             EnableRangeProcessing = true
         };
-    }
-
-    private void CreateCell(IRow currentRow, int cellIndex, string value, HSSFCellStyle style, CellType type)
-    {
-        ICell cell = currentRow.CreateCell(cellIndex);
-        cell.SetCellValue(value);
-        cell.SetCellType(type);
-        cell.CellStyle = style;
     }
 
     [HttpPost("compute-record")]

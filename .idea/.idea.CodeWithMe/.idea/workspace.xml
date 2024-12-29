@@ -45,14 +45,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update file format, update logic update">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update style, fix update sensor">
+      <change afterPath="$PROJECT_DIR$/Business/Utils/Excel/CellExtension.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IIotSensorDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IIotSensorDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Routes.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Routes.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/wwwroot/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/wwwroot/css/app.css" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -142,6 +140,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5eecc2d22de68b16cb5f68b3e333591fc6c5f58cfc4185587e5dfe96213947/IMongoIndexManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/611eff977ba21ad25be53ce7d7387c4517e0e8a27abce4d6a91998e8b538135/ProviderOptions.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6354a7b35d7821629924d3676acd7e67a6f7f94343e0e66ec439aa2bd6ed5/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/66f0292d6d8a9b716f2c022ea17708dde5be8e0a67ef1d1eadfd7bc84c2/Cell.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6a44d1618475c554cdb454d3d6746789df652e379e2a5e5e67b916046b0e0d2/IndexKind.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/74e4c72cd3922ed61496931f33baf4a9b5950edddb6b78bc296241285f25c3/TaskAwaiter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7c8ad03b50ccbf3ec7daba64f8ffc229c843a4bc37369f5fbdc6f33edf2b4c/IFilterDefinition.cs" root0="FORCE_HIGHLIGHTING" />
@@ -984,15 +983,7 @@
       <workItem from="1735410229697" duration="417000" />
       <workItem from="1735441589446" duration="4101000" />
       <workItem from="1735445952880" duration="516000" />
-      <workItem from="1735446594857" duration="14753000" />
-    </task>
-    <task id="LOCAL-00480" summary="fix too many char">
-      <option name="closed" value="true" />
-      <created>1734916908674</created>
-      <option name="number" value="00480" />
-      <option name="presentableId" value="LOCAL-00480" />
-      <option name="project" value="LOCAL" />
-      <updated>1734916908674</updated>
+      <workItem from="1735446594857" duration="16588000" />
     </task>
     <task id="LOCAL-00481" summary="update style">
       <option name="closed" value="true" />
@@ -1378,7 +1369,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735473562059</updated>
     </task>
-    <option name="localTasksCounter" value="529" />
+    <task id="LOCAL-00529" summary="update style, fix update sensor">
+      <option name="closed" value="true" />
+      <created>1735487222717</created>
+      <option name="number" value="00529" />
+      <option name="presentableId" value="LOCAL-00529" />
+      <option name="project" value="LOCAL" />
+      <updated>1735487222717</updated>
+    </task>
+    <option name="localTasksCounter" value="530" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1409,7 +1408,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="add field" />
     <MESSAGE value="update service" />
     <MESSAGE value="dispose shit" />
     <MESSAGE value="un" />
@@ -1434,7 +1432,8 @@
     <MESSAGE value="update api, add new api, update language pack" />
     <MESSAGE value="restore LoggerServiceCollectionExtensions.cs" />
     <MESSAGE value="update file format, update logic update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update file format, update logic update" />
+    <MESSAGE value="update style, fix update sensor" />
+    <option name="LAST_COMMIT_MESSAGE" value="update style, fix update sensor" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
