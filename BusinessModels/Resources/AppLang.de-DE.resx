@@ -510,9 +510,6 @@
     <data name="Value" xml:space="preserve">
       <value>Wert</value>
     </data>
-    <data name="Signal strength" xml:space="preserve">
-      <value>Signalfehlerstärke</value>
-    </data>
     <data name="Timestamp" xml:space="preserve">
       <value>Zeitstempel</value>
     </data>
@@ -662,5 +659,23 @@
     </data>
     <data name="Authentication_failed_with_reason" xml:space="preserve">
       <value>Authentifizierung fehlgeschlagen: {0}</value>
+    </data>
+    <data name="Token_validation_failed_with_reason" xml:space="preserve">
+      <value>Token-Validierung fehlgeschlagen: {0}</value>
+    </data>
+    <data name="Signal_strength" xml:space="preserve">
+      <value>Signalstärke</value>
+    </data>
+    <data name="Export" xml:space="preserve">
+      <value>Exportieren</value>
+    </data>
+    <data name="Import" xml:space="preserve">
+      <value>Importieren</value>
+    </data>
+    <data name="Error_processing_request" xml:space="preserve">
+      <value>Fehler bei der Verarbeitung der Anfrage</value>
+    </data>
+    <data name="Server_overloaded_try_again_later" xml:space="preserve">
+      <value>Server ist überlastet, versuchen Sie es später erneut.</value>
     </data>
 </root>

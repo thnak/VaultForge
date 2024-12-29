@@ -1,6 +1,6 @@
-﻿using BusinessModels.System.FileSystem;
+﻿using BusinessModels.Resources;
+using BusinessModels.System.FileSystem;
 using BusinessModels.System.InternetOfThings;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers.InternetOfThings.Record;
@@ -8,7 +8,7 @@ namespace WebApp.Controllers.InternetOfThings.Record;
 public partial class IoTController
 {
     [HttpPost("add-record")]
-    public async Task<IActionResult> AddRecord([FromForm] string sensorId, [FromForm] float value, [FromForm] int? signalStrength, [FromForm] int? battery)
+    public async Task<IActionResult> AddRecord([FromForm] string sensorId, [FromForm] float value, [FromForm] int? signalStrength, [FromForm] int? battery, [FromForm] DateTime? dateTime)
     {
         var cancelToken = HttpContext.RequestAborted;
         var success = await circuitBreakerService.TryProcessRequest(async token =>
@@ -21,11 +21,12 @@ public partial class IoTController
                     SensorData = value,
                     SignalStrength = signalStrength ?? 0,
                     BatteryLevel = battery ?? 0,
+                    RecordedAt = dateTime ?? DateTime.UtcNow,
                 });
                 var queueResult = await requestQueueHostedService.QueueRequest(record, token);
                 if (!queueResult)
                 {
-                    logger.LogWarning($"Error while processing request {sensorId}");
+                    logger.LogWarning($"{AppLang.Error_processing_request} {sensorId}");
                 }
             }
             catch (OperationCanceledException)
@@ -35,7 +36,7 @@ public partial class IoTController
         }, cancelToken);
         if (!success.IsSuccess)
         {
-            logger.LogWarning("Server is overloaded, try again later.");
+            logger.LogWarning(AppLang.Server_overloaded_try_again_later);
             return StatusCode(429, string.Empty);
         }
 
@@ -75,7 +76,7 @@ public partial class IoTController
         if (!queueResult)
         {
             await fileSystemServe.DeleteAsync(fileInfo.Id.ToString(), cancelToken);
-            logger.LogWarning($"Error while processing request {sensorId}");
+            logger.LogWarning($"{AppLang.Error_processing_request} {sensorId}");
         }
 
         return Ok();

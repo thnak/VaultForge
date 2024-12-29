@@ -43,12 +43,7 @@ internal class Program
             return httpClient;
         });
 
-        builder.Services.AddScoped(_ =>
-        {
-            var httpClient = new HttpClient(new CookieHandler());
-            httpClient.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
-            return new BaseHttpClientService(httpClient, builder.Services.BuildServiceProvider());
-        });
+        builder.Services.AddSingleton<BaseHttpClientService>();
 
         #endregion
 

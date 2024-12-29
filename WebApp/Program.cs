@@ -45,18 +45,10 @@ public class Program
         builder.Services.AddScoped(_ =>
         {
             var httpClient = new HttpClient(new CookieHandler());
-            // httpClient.BaseAddress = new Uri(builder.Environment.);
             return httpClient;
         });
 
-        builder.Services.AddScoped(_ =>
-        {
-            var httpClient = new HttpClient(new CookieHandler());
-            httpClient.BaseAddress = new Uri("https://thnakdevserver.ddns.net:5001");
-#pragma warning disable ASP0000
-            return new BaseHttpClientService(httpClient, builder.Services.BuildServiceProvider());
-#pragma warning restore ASP0000
-        });
+        builder.Services.AddScoped<BaseHttpClientService>();
 
         #endregion
 

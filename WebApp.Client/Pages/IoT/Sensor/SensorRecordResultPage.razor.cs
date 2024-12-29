@@ -1,6 +1,5 @@
 ﻿using BusinessModels.System.InternetOfThings;
 using BusinessModels.System.InternetOfThings.type;
-using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using WebApp.Client.Models;
@@ -159,5 +158,16 @@ public partial class SensorRecordResultPage : ComponentBase
     {
         await CancelFilter();
         await _dataGrid!.ReloadServerData();
+    }
+
+    private async Task DownloadExcel()
+    {
+        foreach (var sensor in _filterPage.Sensors)
+        {
+            var uri = ApiService.GenerateUrlDownloadLink(sensor.SensorId, 0, Int32.MaxValue,
+                _filterPage.DateRange.Start.GetValueOrDefault(DateTime.Now).Date,
+                _filterPage.DateRange.End.GetValueOrDefault(DateTime.Now).Date);
+            await JsRuntime.Download(uri);
+        }
     }
 }

@@ -715,9 +715,6 @@ ClientY: {1}</value>
     <data name="Value" xml:space="preserve">
       <value>Giá trị</value>
     </data>
-    <data name="Signal strength" xml:space="preserve">
-      <value>Độ mạnh tín hiệu</value>
-    </data>
     <data name="Timestamp" xml:space="preserve">
       <value>Thời gian stamp</value>
     </data>
@@ -825,5 +822,23 @@ ClientY: {1}</value>
     </data>
     <data name="Authentication_failed_with_reason" xml:space="preserve">
       <value>Xác thực thất bại: {0}</value>
+    </data>
+    <data name="Token_validation_failed_with_reason" xml:space="preserve">
+      <value>Xác thực mã thông báo thất bại: {0}</value>
+    </data>
+    <data name="Signal_strength" xml:space="preserve">
+      <value>Cường độ tín hiệu</value>
+    </data>
+    <data name="Export" xml:space="preserve">
+      <value>Xuất</value>
+    </data>
+    <data name="Import" xml:space="preserve">
+      <value>Nhập</value>
+    </data>
+    <data name="Error_processing_request" xml:space="preserve">
+      <value>Lỗi khi xử lý yêu cầu</value>
+    </data>
+    <data name="Server_overloaded_try_again_later" xml:space="preserve">
+      <value>Máy chủ quá tải, vui lòng thử lại sau.</value>
     </data>
 </root>

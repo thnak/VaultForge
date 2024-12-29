@@ -510,9 +510,6 @@
     <data name="Value" xml:space="preserve">
       <value>값</value>
     </data>
-    <data name="Signal strength" xml:space="preserve">
-      <value>신호 강도</value>
-    </data>
     <data name="Timestamp" xml:space="preserve">
       <value>시간스탬프</value>
     </data>
@@ -659,5 +656,23 @@
     </data>
     <data name="Authentication_failed_with_reason" xml:space="preserve">
       <value>인증 실패: {0}</value>
+    </data>
+    <data name="Token_validation_failed_with_reason" xml:space="preserve">
+      <value>토큰 검증 실패: {0}</value>
+    </data>
+    <data name="Signal_strength" xml:space="preserve">
+      <value>신호 강도</value>
+    </data>
+    <data name="Export" xml:space="preserve">
+      <value>내보내기</value>
+    </data>
+    <data name="Import" xml:space="preserve">
+      <value>가져오기</value>
+    </data>
+    <data name="Error_processing_request" xml:space="preserve">
+      <value>요청 처리 중 오류</value>
+    </data>
+    <data name="Server_overloaded_try_again_later" xml:space="preserve">
+      <value>서버가 과부하 상태입니다. 나중에 다시 시도하세요.</value>
     </data>
 </root>

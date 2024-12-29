@@ -708,6 +708,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lỗi khi xử lý yêu cầu.
+        /// </summary>
+        public static string Error_processing_request {
+            get {
+                return ResourceManager.GetString("Error_processing_request", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ngoại lệ.
         /// </summary>
         public static string Exception {
@@ -722,6 +731,15 @@ namespace BusinessModels.Resources {
         public static string Existing {
             get {
                 return ResourceManager.GetString("Existing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xuất.
+        /// </summary>
+        public static string Export {
+            get {
+                return ResourceManager.GetString("Export", resourceCulture);
             }
         }
         
@@ -956,6 +974,15 @@ namespace BusinessModels.Resources {
         public static string Image {
             get {
                 return ResourceManager.GetString("Image", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nhập.
+        /// </summary>
+        public static string Import {
+            get {
+                return ResourceManager.GetString("Import", resourceCulture);
             }
         }
         
@@ -1726,6 +1753,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Máy chủ quá tải, vui lòng thử lại sau..
+        /// </summary>
+        public static string Server_overloaded_try_again_later {
+            get {
+                return ResourceManager.GetString("Server_overloaded_try_again_later", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chia sẻ.
         /// </summary>
         public static string Share {
@@ -1771,11 +1807,11 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Độ mạnh tín hiệu.
+        ///   Looks up a localized string similar to Cường độ tín hiệu.
         /// </summary>
         public static string Signal_strength {
             get {
-                return ResourceManager.GetString("Signal strength", resourceCulture);
+                return ResourceManager.GetString("Signal_strength", resourceCulture);
             }
         }
         
@@ -1993,6 +2029,15 @@ namespace BusinessModels.Resources {
         public static string Token_validation_failed {
             get {
                 return ResourceManager.GetString("Token_validation_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xác thực mã thông báo thất bại: {0}.
+        /// </summary>
+        public static string Token_validation_failed_with_reason {
+            get {
+                return ResourceManager.GetString("Token_validation_failed_with_reason", resourceCulture);
             }
         }
         

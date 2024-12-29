@@ -1,4 +1,6 @@
-﻿namespace BusinessModels.WebContent;
+﻿using System.Net.Mime;
+
+namespace BusinessModels.WebContent;
 
 public static class MimeTypeNames
 {
@@ -55,6 +57,11 @@ public static class MimeTypeNames
         public const string Zip = "application/zip";
     }
 
+    public static class Office
+    {
+        public const string Csv = "text/csv";
+    }
+    
     /// <summary>Specifies the kind of font data in an email message attachment.</summary>
     public static class Font
     {

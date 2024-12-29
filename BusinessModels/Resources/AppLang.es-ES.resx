@@ -657,4 +657,22 @@
     <data name="Authentication_failed_with_reason" xml:space="preserve">
       <value>Autenticación fallida: {0}</value>
     </data>
+    <data name="Token_validation_failed_with_reason" xml:space="preserve">
+      <value>La validación del token falló: {0}</value>
+    </data>
+    <data name="Signal_strength" xml:space="preserve">
+      <value>Fuerza de la señal</value>
+    </data>
+    <data name="Export" xml:space="preserve">
+      <value>Exportar</value>
+    </data>
+    <data name="Import" xml:space="preserve">
+      <value>Importar</value>
+    </data>
+    <data name="Error_processing_request" xml:space="preserve">
+      <value>Error al procesar la solicitud</value>
+    </data>
+    <data name="Server_overloaded_try_again_later" xml:space="preserve">
+      <value>El servidor está sobrecargado, inténtalo más tarde.</value>
+    </data>
 </root>
