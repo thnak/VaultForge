@@ -89,7 +89,10 @@ public class IotDeviceBusinessLayer(IIotDeviceDataLayer dataLayer, IIotSensorDat
 
     public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<IoTDevice> updates, CancellationToken cancellationToken = default)
     {
-        return dataLayer.UpdateAsync(key, updates, cancellationToken);
+        var device = Get(key);
+        if (device == null)
+            return Task.FromResult((false, AppLang.Device_not_found));
+        return dataLayer.UpdateAsync(device.Id.ToString(), updates, cancellationToken);
     }
 
     public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<IoTDevice> models, CancellationToken cancellationToken = default)
@@ -106,7 +109,7 @@ public class IotDeviceBusinessLayer(IIotDeviceDataLayer dataLayer, IIotSensorDat
         var result = await dataLayer.DeleteAsync(key, cancelToken).ConfigureAwait(false);
         if (result.Item1)
         {
-            var deviceId = device.Id.ToString(); 
+            var deviceId = device.Id.ToString();
             var sensors = iIotSensorDataLayer.WhereAsync(x => x.DeviceId == deviceId, cancelToken);
             await foreach (var sensor in sensors)
             {
