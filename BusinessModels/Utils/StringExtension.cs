@@ -123,7 +123,7 @@ public static class StringExtension
         }
         catch (Exception)
         {
-            return default;
+            return null;
         }
     }
 
@@ -133,10 +133,16 @@ public static class StringExtension
         {
             return JsonSerializer.Deserialize<T>(self);
         }
-        catch (Exception)
+
+#if DEBUG
+        catch (Exception ex)
         {
-            return default;
+            throw;
         }
+#else
+        catch (Exception){ return default;
+                                 }
+#endif
     }
 
     public static T? DeSerialize<T>(this string self, JsonSerializerOptions options)

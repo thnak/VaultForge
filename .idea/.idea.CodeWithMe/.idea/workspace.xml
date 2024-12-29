@@ -45,8 +45,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="format cell">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/General/Results/Result.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/General/Results/Result.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Utils/StringExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/StringExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Device/DeviceController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Device/DeviceController.Read.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
@@ -176,7 +179,9 @@
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Services/Http/BaseHttpClientService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/Controllers/System/CultureController.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -980,15 +985,7 @@
       <workItem from="1735410229697" duration="417000" />
       <workItem from="1735441589446" duration="4101000" />
       <workItem from="1735445952880" duration="516000" />
-      <workItem from="1735446594857" duration="17119000" />
-    </task>
-    <task id="LOCAL-00482" summary="small update">
-      <option name="closed" value="true" />
-      <created>1734936005490</created>
-      <option name="number" value="00482" />
-      <option name="presentableId" value="LOCAL-00482" />
-      <option name="project" value="LOCAL" />
-      <updated>1734936005490</updated>
+      <workItem from="1735446594857" duration="19545000" />
     </task>
     <task id="LOCAL-00483" summary="fix">
       <option name="closed" value="true" />
@@ -1374,7 +1371,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735489119991</updated>
     </task>
-    <option name="localTasksCounter" value="531" />
+    <task id="LOCAL-00531" summary="update">
+      <option name="closed" value="true" />
+      <created>1735489742032</created>
+      <option name="number" value="00531" />
+      <option name="presentableId" value="LOCAL-00531" />
+      <option name="project" value="LOCAL" />
+      <updated>1735489742032</updated>
+    </task>
+    <option name="localTasksCounter" value="532" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1421,7 +1426,6 @@
     <MESSAGE value="update pack" />
     <MESSAGE value="update lang pack" />
     <MESSAGE value="update language pack" />
-    <MESSAGE value="update" />
     <MESSAGE value="remove duplicate resource" />
     <MESSAGE value="add resource" />
     <MESSAGE value="add some bullshit service" />
@@ -1430,7 +1434,8 @@
     <MESSAGE value="update file format, update logic update" />
     <MESSAGE value="update style, fix update sensor" />
     <MESSAGE value="format cell" />
-    <option name="LAST_COMMIT_MESSAGE" value="format cell" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1455,22 +1460,43 @@
           <option name="timeStamp" value="89" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/WebApp/Controllers/System/CultureController.cs</url>
-          <line>12</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\WebApp\Controllers\System\CultureController.cs" containingFunctionPresentation="Method 'Set'">
+          <url>file://$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs</url>
+          <line>107</line>
+          <properties documentPath="C:\Users\thanh\Git\VaultForge\BusinessModels\System\InternetOfThings\IoTDevice.cs" containingFunctionPresentation="Method 'CheckAvailableAddress'">
             <startOffsets>
-              <option value="323" />
+              <option value="3885" />
             </startOffsets>
             <endOffsets>
-              <option value="347" />
+              <option value="3947" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="96" />
+          <option name="timeStamp" value="98" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/WebApp.Client/Layout/CultureSelector.razor</url>
-          <line>68</line>
-          <option name="timeStamp" value="97" />
+          <url>file://$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs</url>
+          <line>102</line>
+          <properties documentPath="C:\Users\thanh\Git\VaultForge\BusinessModels\System\InternetOfThings\IoTDevice.cs" containingFunctionPresentation="Method 'CheckAvailableAddress'">
+            <startOffsets>
+              <option value="3708" />
+            </startOffsets>
+            <endOffsets>
+              <option value="3739" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="99" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor.cs</url>
+          <line>81</line>
+          <properties documentPath="C:\Users\thanh\Git\VaultForge\WebApp.Client\Pages\IoT\Device\EditDeviceDialog.razor.cs" containingFunctionPresentation="Method 'CheckIpAddress'">
+            <startOffsets>
+              <option value="2928" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2959" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="101" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">

@@ -1,18 +1,23 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 using BusinessModels.Resources;
 
 namespace BusinessModels.General.Results;
 
 public class Result<T>
 {
-    public T? Value { get; }
+    public T? Value { get; set; }
 
     [MemberNotNullWhen(true, nameof(Value))]
-    public bool IsSuccess { get; }
+    public bool IsSuccess { get; set; }
 
-    public string Message { get; }
+    public string Message { get; } = string.Empty;
 
-    public ErrorType ErrorType { get; }
+    public ErrorType ErrorType { get; set; }
+
+    public Result()
+    {
+    }
 
     private Result(T? value, bool isSuccess, string message, ErrorType errorType)
     {

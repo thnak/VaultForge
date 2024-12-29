@@ -29,8 +29,8 @@ public partial class DeviceController
     public async Task<IActionResult> CheckAvailableIp(string ip)
     {
         var device = await deviceBusinessLayer.Where(x => x.IpAddress == ip).FirstOrDefault();
-        var available = device != null;
-        var result = Result<bool>.SuccessWithMessage(available, available ? string.Format(AppLang.Has_been_used_by, device!.DeviceName) : AppLang.Available);
+        var available = device == null;
+        var result = Result<bool>.SuccessWithMessage(available, !available ? string.Format(AppLang.Has_been_used_by, device!.DeviceName) : AppLang.Available);
         return Content(result.ToJson(), MediaTypeNames.Application.Json);
     }
 
@@ -38,8 +38,8 @@ public partial class DeviceController
     public async Task<IActionResult> CheckAvailableMacAddress(string mac)
     {
         var device = await deviceBusinessLayer.Where(x => x.MacAddress == mac).FirstOrDefault();
-        var available = device != null;
-        var result = Result<bool>.SuccessWithMessage(available, available ? string.Format(AppLang.Has_been_used_by, device!.DeviceName) : AppLang.Available);
+        var available = device == null;
+        var result = Result<bool>.SuccessWithMessage(available, !available ? string.Format(AppLang.Has_been_used_by, device!.DeviceName) : AppLang.Available);
         return Content(result.ToJson(), MediaTypeNames.Application.Json);
     }
 
