@@ -208,7 +208,7 @@ var result = yolo.PreprocessAndRun(image);
 var feed = new YoloFeeder(yolo.GetInputDimensions()[2..], yolo.GetStride());
 // feed.SetTensor(inputPath);
 // result = yolo.Predict(feed);
-var resultImage = image.PlotImage(result);
+var resultImage = image.PlotImage(yolo.PrimaryFont, result);
 resultImage.SaveAsJpeg("C:\\Users\\thanh\\OneDrive\\Pictures\\WallPaper\\detect\\ball-8048205.jpg");
 Console.WriteLine();
 

@@ -1,8 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
+using BrainNet.Assets;
 using BrainNet.Models.Vector;
 using BrainNet.Service.ObjectDetection.Model.Result;
 using BrainNet.Utils;
 using Microsoft.ML.OnnxRuntime.Tensors;
+using OllamaSharp.Models.Chat;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
@@ -200,12 +202,9 @@ public static class ImageExtension
         tensorSpan[tensorIndex + strideBatchB - strideBatchR] = pixel.B / 255f;
     }
 
-    public static Image<Rgb24> PlotImage(this Image<Rgb24> src, List<YoloBoundingBox> boundingBoxes)
+    public static Image<Rgb24> PlotImage(this Image<Rgb24> src, SixLabors.Fonts.Font font, List<YoloBoundingBox> boundingBoxes)
     {
         // Define a font for text annotations.
-        FontCollection collection = new();
-        FontFamily family = collection.Add("C:/Users/thanh/Git/VaultForge/WebApp/wwwroot/fonts/roboto-v30-latin-300.woff");
-        Font font = family.CreateFont(12, FontStyle.Italic);
         var textOption = new TextOptions(font);
 
         var newImage = src.Clone();
