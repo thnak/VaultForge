@@ -1,6 +1,6 @@
 ﻿using System.Net.Mime;
 using System.Text;
-using System.Web;
+using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
@@ -60,7 +60,31 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
         InstallationDate = DeviceToEdit.InstallationDate.ToDateTime(TimeOnly.MinValue);
         _orderValidator.ValidateForCreate = Device is null;
         _orderValidator.CheckDeviceExists = CheckDeviceExists;
+        _orderValidator.CheckUsedIpAddress = CheckIpAddress;
+        _orderValidator.CheckUsedMacAddress = CheckMacAddress;
         base.OnParametersSet();
+    }
+
+    private async Task<Result<bool>> CheckMacAddress(string arg1, CancellationToken arg2)
+    {
+        var result = await ApiService.CheckAvailableMacAddress(arg1, arg2);
+        if (result.IsSuccessStatusCode)
+        {
+            return result.Data;
+        }
+
+        return Result<bool>.Failure(result.Message, ErrorType.Unknown);
+    }
+
+    private async Task<Result<bool>> CheckIpAddress(string arg1, CancellationToken arg2)
+    {
+        var result = await ApiService.CheckAvailableIpAddress(arg1, arg2);
+        if (result.IsSuccessStatusCode)
+        {
+            return result.Data;
+        }
+
+        return Result<bool>.Failure(result.Message, ErrorType.Unknown);
     }
 
     protected override Task OnParametersSetAsync()
@@ -70,15 +94,13 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
 
     private async Task<bool> CheckDeviceExists(string arg1, CancellationToken arg2)
     {
-        arg1 = HttpUtility.UrlEncode(arg1);
-        var result = await ApiService.GetAsync<IoTDevice>($"/api/device/get-device-by-id?deviceId={arg1}", arg2);
-        return result.Data != null;
+        return await ApiService.CheckIfDeviceExists(arg1, arg2);
     }
 
     private async Task GetSensors()
     {
-        var fetch = await ApiService.GetAsync<List<IoTSensor>>($"/api/device/get-sensor-by-device-id?deviceId={HttpUtility.UrlEncode(DeviceToEdit.DeviceId)}");
-        Sensors = (fetch.Data ?? []).Select(x => new SensorPageM(x)
+        var fetch = await ApiService.GetIoTSensorsByDeviceAsync(DeviceToEdit.DeviceId);
+        Sensors = fetch.Select(x => new SensorPageM(x)
         {
             EditButtonAction = new() { Action = () => OpenEditSensorDialog(x).ConfigureAwait(false) },
             DeleteButtonAction = new() { Disabled = true }
@@ -112,7 +134,7 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
                         Device = DeviceToEdit,
                         Sensors = Sensors.Select(x => x.IoTSensor).ToList()
                     };
-                    var textPlant = new StringContent(StringExtension.ToJson(requestToCreate), Encoding.UTF8, MediaTypeNames.Application.Json);
+                    var textPlant = new StringContent(requestToCreate.ToJson(), Encoding.UTF8, MediaTypeNames.Application.Json);
                     var result = await ApiService.PostAsync<string>("/api/device/add-new-device", textPlant);
                     if (result.IsSuccessStatusCode)
                     {

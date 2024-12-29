@@ -1,4 +1,5 @@
 ﻿using BusinessModels.Base;
+using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings.status;
 using BusinessModels.System.InternetOfThings.type;
@@ -56,35 +57,65 @@ public class IoTDeviceFluentValidator : ExtendFluentValidator<IoTDevice>
     /// <summary>
     /// return true when ip address has been used
     /// </summary>
-    public Func<string, CancellationToken, Task<bool>>? CheckUsedIpAddress;
+    public Func<string, CancellationToken, Task<Result<bool>>>? CheckUsedIpAddress;
 
     /// <summary>
     /// return true when mac address has been used
     /// </summary>
-    public Func<string, CancellationToken, Task<bool>>? CheckUsedMaxAddress;
+    public Func<string, CancellationToken, Task<Result<bool>>>? CheckUsedMacAddress;
 
 
     public bool ValidateForCreate { get; set; } = true;
 
     public IoTDeviceFluentValidator()
     {
-        RuleFor(x => x.DeviceId).NotEmpty().MustAsync(CheckDeviceAvailable).WithMessage("Existing");
+        RuleFor(x => x.DeviceId).NotEmpty().MustAsync(CheckDeviceAvailable).WithMessage(AppLang.Existing);
         RuleFor(x => x.DeviceName).NotEmpty();
-        RuleFor(x => x.MacAddress).Must(IsValidMacAddress).WithMessage(AppLang.MAC_address_is_not_valid).MustAsync(CheckAvailableAddress).WithMessage(AppLang.MAC_address_already_used);
-        RuleFor(x => x.IpAddress).Must(IsValidIpAddress).WithMessage(AppLang.IP_address_is_not_valid).MustAsync(CheckAvailableIpAddress).WithMessage(AppLang.IP_address_already_used);
+        RuleFor(x => x.MacAddress).Must(IsValidMacAddress).WithMessage(AppLang.MAC_address_is_not_valid).MustAsync(CheckAvailableAddress).WithMessage("{error}");
+        RuleFor(x => x.IpAddress).Must(IsValidIpAddress).WithMessage(AppLang.IP_address_is_not_valid).MustAsync(CheckAvailableIpAddress).WithMessage("{error}");
     }
 
-    private async Task<bool> CheckAvailableIpAddress(string arg1, CancellationToken arg2)
+    private async Task<bool> CheckAvailableIpAddress(IoTDevice arg1, string arg2, ValidationContext<IoTDevice> arg3, CancellationToken arg4)
     {
         if (ValidateForCreate) return true;
-        if (CheckUsedMaxAddress != null) return !await CheckUsedMaxAddress.Invoke(arg1, arg2);
+        if (CheckUsedMacAddress != null)
+        {
+            var result = await CheckUsedMacAddress.Invoke(arg2, arg4);
+            if (!result.IsSuccess)
+            {
+                arg3.MessageFormatter.AppendArgument("error", result.Message);
+                return false;
+            }
+
+            if (result.Value)
+            {
+                arg3.MessageFormatter.AppendArgument("error", result.Message);
+                return false;
+            }
+        }
+
         return true;
     }
 
-    private async Task<bool> CheckAvailableAddress(string arg1, CancellationToken arg2)
+    private async Task<bool> CheckAvailableAddress(IoTDevice arg1, string arg2, ValidationContext<IoTDevice> arg3, CancellationToken arg4)
     {
         if (ValidateForCreate) return true;
-        if (CheckUsedIpAddress != null) return !await CheckUsedIpAddress.Invoke(arg1, arg2);
+        if (CheckUsedIpAddress != null)
+        {
+            var result = await CheckUsedIpAddress.Invoke(arg2, arg4);
+            if (!result.IsSuccess)
+            {
+                arg3.MessageFormatter.AppendArgument("error", result.Message);
+                return false;
+            }
+
+            if (result.Value)
+            {
+                arg3.MessageFormatter.AppendArgument("error", result.Message);
+                return false;
+            }
+        }
+
         return true;
     }
 

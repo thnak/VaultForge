@@ -44,7 +44,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Business.Services.Configure;
 
-public static class DataService
+public static class DataServiceCollectionExtensions
 {
     public static void AddDataServiceCollection(this IServiceCollection service)
     {

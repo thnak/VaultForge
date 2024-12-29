@@ -168,11 +168,38 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Xác thực thất bại.
+        /// </summary>
+        public static string Authentication_failed {
+            get {
+                return ResourceManager.GetString("Authentication_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xác thực thất bại: {0}.
+        /// </summary>
+        public static string Authentication_failed_with_reason {
+            get {
+                return ResourceManager.GetString("Authentication_failed_with_reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tác giả.
         /// </summary>
         public static string Author {
             get {
                 return ResourceManager.GetString("Author", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Có sẵn.
+        /// </summary>
+        public static string Available {
+            get {
+                return ResourceManager.GetString("Available", resourceCulture);
             }
         }
         
@@ -690,6 +717,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Đã tồn tại.
+        /// </summary>
+        public static string Existing {
+            get {
+                return ResourceManager.GetString("Existing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tệp.
         /// </summary>
         public static string File {
@@ -780,6 +816,24 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lật ngang.
+        /// </summary>
+        public static string Flip_horizontal {
+            get {
+                return ResourceManager.GetString("Flip_horizontal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lật dọc.
+        /// </summary>
+        public static string Flip_vertical {
+            get {
+                return ResourceManager.GetString("Flip_vertical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thư mục.
         /// </summary>
         public static string Folder {
@@ -848,6 +902,15 @@ namespace BusinessModels.Resources {
         public static string Greeting {
             get {
                 return ResourceManager.GetString("Greeting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đã được sử dụng bởi {0}.
+        /// </summary>
+        public static string Has_been_used_by {
+            get {
+                return ResourceManager.GetString("Has_been_used_by", resourceCulture);
             }
         }
         
@@ -947,6 +1010,15 @@ namespace BusinessModels.Resources {
         public static string Invalid_key {
             get {
                 return ResourceManager.GetString("Invalid_key", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Định dạng mã thông báo không hợp lệ.
+        /// </summary>
+        public static string Invalid_token_format {
+            get {
+                return ResourceManager.GetString("Invalid_token_format", resourceCulture);
             }
         }
         
@@ -1501,6 +1573,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Xoay.
+        /// </summary>
+        public static string Rotate {
+            get {
+                return ResourceManager.GetString("Rotate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ngoại tuyến.
         /// </summary>
         public static string Routes_Offline_Offline {
@@ -1885,6 +1966,33 @@ namespace BusinessModels.Resources {
         public static string To_keep_connected_with_us_please_login_with_your_personal_info {
             get {
                 return ResourceManager.GetString("To keep connected with us please login with your personal info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mã thông báo đã được xác thực thành công.
+        /// </summary>
+        public static string Token_validated_successfully {
+            get {
+                return ResourceManager.GetString("Token_validated_successfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lỗi xác thực mã thông báo.
+        /// </summary>
+        public static string Token_validation_error {
+            get {
+                return ResourceManager.GetString("Token_validation_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xác thực mã thông báo thất bại.
+        /// </summary>
+        public static string Token_validation_failed {
+            get {
+                return ResourceManager.GetString("Token_validation_failed", resourceCulture);
             }
         }
         

@@ -624,4 +624,40 @@
     <data name="Search" xml:space="preserve">
       <value>검색</value>
     </data>
+    <data name="Flip_horizontal" xml:space="preserve">
+      <value>수평으로 뒤집기</value>
+    </data>
+    <data name="Flip_vertical" xml:space="preserve">
+      <value>수직으로 뒤집기</value>
+    </data>
+    <data name="Rotate" xml:space="preserve">
+      <value>회전</value>
+    </data>
+    <data name="Existing" xml:space="preserve">
+      <value>기존</value>
+    </data>
+    <data name="Has_been_used_by" xml:space="preserve">
+      <value>{0}에 의해 사용되었습니다</value>
+    </data>
+    <data name="Available" xml:space="preserve">
+      <value>사용 가능</value>
+    </data>
+    <data name="Authentication_failed" xml:space="preserve">
+      <value>인증 실패</value>
+    </data>
+    <data name="Invalid_token_format" xml:space="preserve">
+      <value>잘못된 토큰 형식</value>
+    </data>
+    <data name="Token_validation_failed" xml:space="preserve">
+      <value>토큰 검증 실패</value>
+    </data>
+    <data name="Token_validated_successfully" xml:space="preserve">
+      <value>토큰이 성공적으로 검증되었습니다</value>
+    </data>
+    <data name="Token_validation_error" xml:space="preserve">
+      <value>토큰 검증 오류</value>
+    </data>
+    <data name="Authentication_failed_with_reason" xml:space="preserve">
+      <value>인증 실패: {0}</value>
+    </data>
 </root>

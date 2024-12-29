@@ -29,6 +29,9 @@ public class IoTSensor : BaseModelEntry
     public DateTime? CalibrationTime { get; set; }
 
     public float Rotate { get; set; }
+    
+    public bool FlipHorizontal { get; set; }
+    public bool FlipVertical { get; set; }
 
     [BsonElement("status")]
     [BsonRepresentation(BsonType.String)]

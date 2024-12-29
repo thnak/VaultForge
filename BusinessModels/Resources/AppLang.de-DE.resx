@@ -627,4 +627,40 @@
     <data name="Search" xml:space="preserve">
       <value>Suche</value>
     </data>
+    <data name="Flip_horizontal" xml:space="preserve">
+      <value>Horizontal spiegeln</value>
+    </data>
+    <data name="Flip_vertical" xml:space="preserve">
+      <value>Vertikal spiegeln</value>
+    </data>
+    <data name="Rotate" xml:space="preserve">
+      <value>Drehen</value>
+    </data>
+    <data name="Existing" xml:space="preserve">
+      <value>Vorhanden</value>
+    </data>
+    <data name="Has_been_used_by" xml:space="preserve">
+      <value>Wurde verwendet von {0}</value>
+    </data>
+    <data name="Available" xml:space="preserve">
+      <value>Verfügbar</value>
+    </data>
+    <data name="Authentication_failed" xml:space="preserve">
+      <value>Authentifizierung fehlgeschlagen</value>
+    </data>
+    <data name="Invalid_token_format" xml:space="preserve">
+      <value>Ungültiges Token-Format</value>
+    </data>
+    <data name="Token_validation_failed" xml:space="preserve">
+      <value>Token-Validierung fehlgeschlagen</value>
+    </data>
+    <data name="Token_validated_successfully" xml:space="preserve">
+      <value>Token erfolgreich validiert</value>
+    </data>
+    <data name="Token_validation_error" xml:space="preserve">
+      <value>Fehler bei der Token-Validierung</value>
+    </data>
+    <data name="Authentication_failed_with_reason" xml:space="preserve">
+      <value>Authentifizierung fehlgeschlagen: {0}</value>
+    </data>
 </root>

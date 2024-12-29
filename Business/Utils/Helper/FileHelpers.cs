@@ -115,7 +115,7 @@ public static class FileHelpers
         { ".css", "text/css" },
         { ".csv", "text/csv" },
         { ".xml", "application/xml" },
-        { ".json", "application/json" },
+        { ".json", MediaTypeNames.Application.Json },
 
         // Image files
         { ".jpeg", "image/jpeg" },

@@ -66,11 +66,11 @@ public class Program
 
         #endregion
 
-
         #region Additionnal services
 
         builder.Services.AddDataServiceCollection();
         builder.Services.AddIotQueueService();
+        builder.Services.AddFontStyle();
 
         #endregion
 
@@ -85,7 +85,6 @@ public class Program
         builder.Services.AddCultureService();
 
         #endregion
-
 
         #region Authenticate & Protection
 

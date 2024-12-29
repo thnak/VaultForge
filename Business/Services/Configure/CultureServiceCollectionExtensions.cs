@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Services.Configure;
 
-public static class CultureService
+public static class CultureServiceCollectionExtensions
 {
     public static IServiceCollection AddCultureService(this IServiceCollection service)
     {

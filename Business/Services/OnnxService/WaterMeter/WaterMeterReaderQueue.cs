@@ -1,6 +1,6 @@
-﻿using BrainNet.Service.ObjectDetection.Model.Feeder;
-using BrainNet.Service.WaterMeter.Implements;
+﻿using BrainNet.Service.WaterMeter.Implements;
 using BrainNet.Service.WaterMeter.Interfaces;
+using BrainNet.Utils;
 using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Data.StorageSpace;
@@ -24,7 +24,6 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
     private readonly SemaphoreSlim _semaphore = new(1, 1);
     private readonly IWaterMeterReader _waterMeterReader;
     private readonly MemoryStream _memoryStream = new(16 * 1024 * 1024);
-    private readonly YoloFeeder _feeder;
     private readonly ILogger<IWaterMeterReaderQueue> _logger;
     private readonly RedundantArrayOfIndependentDisks _redundantArrayOfIndependentDisks;
     private readonly IFileSystemBusinessLayer _fileSystemBusinessLayer;
@@ -37,7 +36,6 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
         IIoTSensorBusinessLayer iotSensorBusinessLayer)
     {
         _waterMeterReader = new WaterMeterReader(configuration.GetOnnxConfig.WaterMeterWeightPath);
-        _feeder = new YoloFeeder(_waterMeterReader.GetInputDimensions()[2..], _waterMeterReader.GetStride());
         _logger = logger;
         _redundantArrayOfIndependentDisks = disks;
         _fileSystemBusinessLayer = fileSystemBusinessLayer;
@@ -70,22 +68,20 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
             _memoryStream.SetLength(0);
             await _redundantArrayOfIndependentDisks.ReadGetDataAsync(_memoryStream, file.AbsolutePath, cancellationToken);
             using var image = await Image.LoadAsync<Rgb24>(_memoryStream, cancellationToken);
-
+            image.AutoOrient();
             if (sensor is { Rotate: > 0 })
                 image.Mutate(i => i.Rotate(sensor.Rotate));
+            if(sensor is { FlipHorizontal: true})
+                image.Mutate(i => i.Flip(FlipMode.Horizontal));
+            if (sensor is { FlipVertical: true })
+                image.Mutate(i => i.Flip(FlipMode.Vertical));
 
-            _feeder.SetTensor(image);
             Count++;
 
-            var result = _waterMeterReader.PredictWaterMeter(_feeder);
-            _feeder.Clear();
-            if (!result.Any())
-            {
-                result.Add(0);
-            }
+            var result = _waterMeterReader.PredictWaterMeter(image);
 
-            await _recordBusinessLayer.UpdateIotValue(record.Id.ToString(), result[0], ProcessStatus.Completed, cancellationToken);
-            return result[0];
+            await _recordBusinessLayer.UpdateIotValue(record.Id.ToString(), result, ProcessStatus.Completed, cancellationToken);
+            return result;
         }
         catch (OperationCanceledException)
         {

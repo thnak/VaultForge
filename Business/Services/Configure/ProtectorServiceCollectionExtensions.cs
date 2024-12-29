@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Services.Configure;
 
-public static class ProtectorService
+public static class ProtectorServiceCollectionExtensions
 {
     public static IServiceCollection AddProtectorService(this IServiceCollection service)
     {

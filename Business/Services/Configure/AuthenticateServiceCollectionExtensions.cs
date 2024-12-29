@@ -18,7 +18,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Business.Services.Configure;
 
-public static class AuthenticateService
+public static class AuthenticateServiceCollectionExtensions
 {
     public static IServiceCollection AddAuthenticateService(this IServiceCollection service)
     {
@@ -114,7 +114,8 @@ public static class AuthenticateService
                 {
                     OnAuthenticationFailed = context =>
                     {
-                        Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+                        var message = string.Format(AppLang.Authentication_failed_with_reason, context.Exception.Message);
+                        Console.WriteLine(message);
                         return Task.CompletedTask;
                     },
                     OnTokenValidated = async context =>
@@ -125,7 +126,7 @@ public static class AuthenticateService
 
                             if (token == null)
                             {
-                                throw new SecurityTokenException("Invalid token format");
+                                throw new SecurityTokenException(AppLang.Invalid_token_format);
                             }
 
                             // Validate the token using JsonWebTokenCertificateProvider
@@ -133,17 +134,13 @@ public static class AuthenticateService
 
                             if (validatedPrincipal == null)
                             {
-                                throw new SecurityTokenException("Token validation failed");
+                                throw new SecurityTokenException(AppLang.Token_validation_failed);
                             }
-
-                            // Optional: Add custom claims or additional logic
-                            Console.WriteLine("Token validated successfully with JsonWebTokenCertificateProvider.");
                         }
                         catch (Exception ex)
                         {
                             // Log or handle token validation errors
-                            Console.WriteLine($"Token validation error: {ex.Message}");
-                            context.Fail("Token validation failed");
+                            context.Fail(AppLang.Token_validation_failed);
                         }
 
                         await Task.CompletedTask;

@@ -797,4 +797,40 @@ ClientY: {1}</value>
     <data name="File_moved_successfully" xml:space="preserve">
       <value>File moved successfully</value>
     </data>
+    <data name="Flip_horizontal" xml:space="preserve">
+      <value>Flip horizontal</value>
+    </data>
+    <data name="Flip_vertical" xml:space="preserve">
+      <value>Flip vertical</value>
+    </data>
+    <data name="Rotate" xml:space="preserve">
+      <value>Rotate</value>
+    </data>
+    <data name="Existing" xml:space="preserve">
+      <value>Existing</value>
+    </data>
+    <data name="Has_been_used_by" xml:space="preserve">
+      <value>Has been used by {0}</value>
+    </data>
+    <data name="Available" xml:space="preserve">
+      <value>Available</value>
+    </data>
+    <data name="Authentication_failed" xml:space="preserve">
+      <value>Authentication failed</value>
+    </data>
+    <data name="Invalid_token_format" xml:space="preserve">
+      <value>Invalid token format</value>
+    </data>
+    <data name="Token_validation_failed" xml:space="preserve">
+      <value>Token validation failed</value>
+    </data>
+    <data name="Token_validated_successfully" xml:space="preserve">
+      <value>Token validated successfully</value>
+    </data>
+    <data name="Token_validation_error" xml:space="preserve">
+      <value>Token validation error</value>
+    </data>
+    <data name="Authentication_failed_with_reason" xml:space="preserve">
+      <value>Authentication failed: {0}</value>
+    </data>
 </root>

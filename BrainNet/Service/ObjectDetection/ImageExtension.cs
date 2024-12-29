@@ -98,7 +98,6 @@ public static class ImageExtension
 
     public static void NormalizeInput(this Image<Rgb24> image, MemoryTensor<float> target, Size imageSize, float[] ratios, float[] pads, bool keepAspectRatio = false)
     {
-        image.AutoOrient();
         // Resize the input image
         using var resized = ResizeImage(image, out var padding, imageSize, keepAspectRatio);
         ratios[0] = (float)resized.Height / image.Height;

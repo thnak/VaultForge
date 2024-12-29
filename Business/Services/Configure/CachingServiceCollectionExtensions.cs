@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 
 namespace Business.Services.Configure;
 
-public static class CachingService
+public static class CachingServiceCollectionExtensions
 {
     public static IServiceCollection AddCachingService(this IServiceCollection service)
     {

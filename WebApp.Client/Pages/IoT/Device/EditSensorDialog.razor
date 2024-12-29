@@ -25,7 +25,17 @@
                 <EnumMudSelector T="IoTSensorStatus" For="@(() => SensorToEdit.Status)" LabelString="@AppLang.Status" @bind-SelectedValue="SensorToEdit.Status"/>
 
                 <MudTextField T="string" Label="@AppLang.Unit_of_measurement" For="@(() => SensorToEdit.UnitOfMeasurement)" Immediate="true" @bind-Value="SensorToEdit.UnitOfMeasurement"></MudTextField>
-                <MudNumericField T="float" Label="Rotate" For="@(() => SensorToEdit.Rotate)" Immediate="true" @bind-Value="SensorToEdit.Rotate"></MudNumericField>
+                <MudNumericField T="float" Label="@AppLang.Rotate" For="@(() => SensorToEdit.Rotate)" Immediate="true" @bind-Value="SensorToEdit.Rotate"></MudNumericField>
+
+                <div class="d-flex flex-row">
+                    <MudSpacer/>
+                    <MudCheckBox @bind-Value="SensorToEdit.FlipVertical" For="@(() => SensorToEdit.FlipVertical)" 
+                                 Label="@AppLang.Flip_vertical" Color="Color.Secondary"
+                                 CheckedIcon="fa-solid fa-arrows-up-down" UncheckedIcon="fa-regular fa-circle"></MudCheckBox>
+                    
+                    <MudCheckBox @bind-Value="SensorToEdit.FlipHorizontal" For="@(() => SensorToEdit.FlipHorizontal)" Label="@AppLang.Flip_horizontal" Color="Color.Tertiary" 
+                                 CheckedIcon="fa-solid fa-arrows-left-right" UncheckedIcon="fa-regular fa-circle"></MudCheckBox>
+                </div>
 
                 <MudNumericField T="float" Label="@AppLang.Accuracy" For="@(() => SensorToEdit.Accuracy)" Immediate="true" @bind-Value="SensorToEdit.Accuracy"></MudNumericField>
                 <MudDatePicker Label="@AppLang.Calibration_time" Date="CalibrationTime" DateChanged="CalibrationTimeChanged"></MudDatePicker>

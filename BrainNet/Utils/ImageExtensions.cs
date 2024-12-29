@@ -77,7 +77,7 @@ public static class ImageExtensions
             string jsonPayload = JsonSerializer.Serialize(payload);
 
             // Create HttpContent from the JSON payload
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+            var content = new StringContent(jsonPayload, Encoding.UTF8, MediaTypeNames.Application.Json);
 
             var response = await httpClient.PostAsync(connectionString, content, cancellationToken);
             if (response.StatusCode == HttpStatusCode.OK)

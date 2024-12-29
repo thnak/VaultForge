@@ -1,4 +1,8 @@
-﻿using BusinessModels.System;
+﻿using System.Net.Mime;
+using Business.Data.Repositories;
+using BusinessModels.General.Results;
+using BusinessModels.Resources;
+using BusinessModels.System;
 using BusinessModels.System.InternetOfThings;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -18,14 +22,32 @@ public partial class DeviceController
             Total = deviceCreateResult.Item2
         };
         var json = result.ToJson();
-        return Content(json, "application/json");
+        return Content(json, MediaTypeNames.Application.Json);
+    }
+
+    [HttpGet("check-available-ip")]
+    public async Task<IActionResult> CheckAvailableIp(string ip)
+    {
+        var device = await deviceBusinessLayer.Where(x => x.IpAddress == ip).FirstOrDefault();
+        var available = device != null;
+        var result = Result<bool>.SuccessWithMessage(available, available ? string.Format(AppLang.Has_been_used_by, device!.DeviceName) : AppLang.Available);
+        return Content(result.ToJson(), MediaTypeNames.Application.Json);
+    }
+
+    [HttpGet("check-available-mac")]
+    public async Task<IActionResult> CheckAvailableMacAddress(string mac)
+    {
+        var device = await deviceBusinessLayer.Where(x => x.MacAddress == mac).FirstOrDefault();
+        var available = device != null;
+        var result = Result<bool>.SuccessWithMessage(available, available ? string.Format(AppLang.Has_been_used_by, device!.DeviceName) : AppLang.Available);
+        return Content(result.ToJson(), MediaTypeNames.Application.Json);
     }
 
     [HttpGet("get-device-by-id")]
     public IActionResult GetDeviceByIdAsync(string deviceId)
     {
         var device = deviceBusinessLayer.Get(deviceId);
-        return device == null ? NotFound() : Content(device.ToJson(), "application/json");
+        return device == null ? NotFound() : Content(device.ToJson(), MediaTypeNames.Application.Json);
     }
 
     [HttpGet("search-device")]
@@ -41,7 +63,7 @@ public partial class DeviceController
         }
 
         var json = result.ToJson();
-        return Content(json, "application/json");
+        return Content(json, MediaTypeNames.Application.Json);
     }
 
 
@@ -56,29 +78,29 @@ public partial class DeviceController
             Total = deviceCreateResult.Item2
         };
         var json = result.ToJson();
-        return Content(json, "application/json");
+        return Content(json, MediaTypeNames.Application.Json);
     }
-    
+
     [HttpGet("get-sensor-by-id")]
     public IActionResult GetSensorByIdAsync(string id)
     {
         var device = sensorBusinessLayer.Get(id);
-        return device == null ? NotFound() : Content(device.ToJson(), "application/json");
+        return device == null ? NotFound() : Content(device.ToJson(), MediaTypeNames.Application.Json);
     }
 
     [HttpGet("get-sensor-by-device-id")]
     public async Task<IActionResult> GetDeviceByDeviceIdAsync(string deviceId)
     {
-        var device = sensorBusinessLayer.Where(x=>x.DeviceId == deviceId);
+        var device = sensorBusinessLayer.Where(x => x.DeviceId == deviceId);
         List<IoTSensor> result = [];
         await foreach (var d in device)
         {
             result.Add(d);
         }
-        
-        return Content(result.ToJson(), "application/json");
+
+        return Content(result.ToJson(), MediaTypeNames.Application.Json);
     }
-    
+
     [HttpGet("search-sensor")]
     public async Task<IActionResult> SearchSensorAsync(string searchString)
     {
@@ -92,6 +114,6 @@ public partial class DeviceController
         }
 
         var json = result.ToJson();
-        return Content(json, "application/json");
+        return Content(json, MediaTypeNames.Application.Json);
     }
 }

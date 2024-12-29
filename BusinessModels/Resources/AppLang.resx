@@ -799,4 +799,40 @@ ClientY: {1}</value>
     <data name="File_moved_successfully" xml:space="preserve">
       <value>Tệp đã được di chuyển thành công</value>
     </data>
+    <data name="Flip_horizontal" xml:space="preserve">
+      <value>Lật ngang</value>
+    </data>
+    <data name="Flip_vertical" xml:space="preserve">
+      <value>Lật dọc</value>
+    </data>
+    <data name="Rotate" xml:space="preserve">
+      <value>Xoay</value>
+    </data>
+    <data name="Existing" xml:space="preserve">
+      <value>Đã tồn tại</value>
+    </data>
+    <data name="Has_been_used_by" xml:space="preserve">
+      <value>Đã được sử dụng bởi {0}</value>
+    </data>
+    <data name="Available" xml:space="preserve">
+      <value>Có sẵn</value>
+    </data>
+    <data name="Authentication_failed" xml:space="preserve">
+      <value>Xác thực thất bại</value>
+    </data>
+    <data name="Invalid_token_format" xml:space="preserve">
+      <value>Định dạng mã thông báo không hợp lệ</value>
+    </data>
+    <data name="Token_validation_failed" xml:space="preserve">
+      <value>Xác thực mã thông báo thất bại</value>
+    </data>
+    <data name="Token_validated_successfully" xml:space="preserve">
+      <value>Mã thông báo đã được xác thực thành công</value>
+    </data>
+    <data name="Token_validation_error" xml:space="preserve">
+      <value>Lỗi xác thực mã thông báo</value>
+    </data>
+    <data name="Authentication_failed_with_reason" xml:space="preserve">
+      <value>Xác thực thất bại: {0}</value>
+    </data>
 </root>

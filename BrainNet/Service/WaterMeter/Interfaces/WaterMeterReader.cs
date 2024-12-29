@@ -3,6 +3,8 @@ using BrainNet.Service.ObjectDetection.Interfaces;
 using BrainNet.Service.ObjectDetection.Model.Feeder;
 using BrainNet.Service.ObjectDetection.Model.Result;
 using BrainNet.Service.WaterMeter.Implements;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace BrainNet.Service.WaterMeter.Interfaces;
 
@@ -25,12 +27,6 @@ public class WaterMeterReader(string waterMeterWeightPath) : IWaterMeterReader
 
     public List<int> PredictWaterMeter(YoloFeeder feeder)
     {
-        // _yoloDetection.SetInput();
-        // for (int i = 0; i < 100000; i++)
-        // {
-        //     _yoloDetection.WarmUp();
-        // }
-
         var pred = _yoloDetection.Predict(feeder).OrderBy(x => x.BatchId).ThenBy(x => x.X).GroupBy(x => x.BatchId).ToList().Select(x => x.Select(box => box.ClassIdx).ToList());
         List<int> result = new();
         foreach (var box in pred)
@@ -41,6 +37,20 @@ public class WaterMeterReader(string waterMeterWeightPath) : IWaterMeterReader
         }
 
         return result;
+    }
+
+    public int PredictWaterMeter(Image<Rgb24> image)
+    {
+        var pred = _yoloDetection.PreprocessAndRun(image).OrderBy(x => x.BatchId).ThenBy(x => x.X).GroupBy(x => x.BatchId).ToList().Select(x => x.Select(box => box.ClassIdx).ToList());
+        List<int> result = new();
+        foreach (var box in pred)
+        {
+            var valueText = string.Join("", box);
+            int.TryParse(valueText, out int value);
+            result.Add(value);
+        }
+
+        return result.FirstOrDefault(0);
     }
 
     public void Dispose()

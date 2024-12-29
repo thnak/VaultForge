@@ -88,7 +88,7 @@ public static class DataContextExtensions
 
             if (updates.Any())
             {
-                if(performUpdateModifiedTime)
+                if (performUpdateModifiedTime)
                     updates.Add(x => x.ModifiedTime, DateTime.UtcNow);
                 foreach (var update in updates)
                 {
@@ -115,5 +115,15 @@ public static class DataContextExtensions
         {
             return Result<string>.Failure(ex.Message, ErrorType.Validation);
         }
+    }
+
+    public static async Task<T?> FirstOrDefault<T>(this IAsyncEnumerable<T> enumerable, T? defaultValue = null) where T : BaseModelEntry
+    {
+        await foreach (var item in enumerable)
+        {
+            return item;
+        }
+
+        return defaultValue;
     }
 }

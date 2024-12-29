@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Services.Configure;
 
-public static class RateLimitService
+public static class RateLimitServiceCollectionExtensions
 {
     public static IServiceCollection AddRateLimitService(this IServiceCollection service)
     {

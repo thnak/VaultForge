@@ -10,7 +10,7 @@ public static class MimeTypeNames
         public const string GZip = "application/gzip";
 
         /// <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Application" /> data is in JSON format.</summary>
-        public const string Json = "application/json";
+        public const string Json = MediaTypeNames.Application.Json;
 
         /// <summary>Specifies that the <see cref="T:System.Net.Mime.MediaTypeNames.Application" /> data is in JSON patch format.</summary>
         public const string JsonPatch = "application/json-patch+json";

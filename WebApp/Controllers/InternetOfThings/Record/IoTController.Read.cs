@@ -42,7 +42,7 @@ public partial class IoTController
             Total = records.Count(),
         };
         var json = result.ToJson();
-        return Content(json, "application/json");
+        return Content(json, MediaTypeNames.Application.Json);
     }
 
     [HttpPost("compute-record")]
