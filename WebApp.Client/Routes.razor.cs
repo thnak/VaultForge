@@ -39,9 +39,10 @@ public partial class Routes(ILogger<Routes> logger) : ComponentBase, IDisposable
             EventListener.Offline += Offline;
             EventListener.InstalledEventAsync += InstalledWpa;
             EventListener.ScrollToReloadEventAsync += ScrollToReloadEventAsync;
+            await ApiService.RequestCulture().ConfigureAwait(false);
         }
 
-        await base.OnAfterRenderAsync(firstRender).ConfigureAwait(false);
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private void ResizeAction(BrowserViewportEventArgs obj)

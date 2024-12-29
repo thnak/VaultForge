@@ -45,9 +45,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="restore LoggerServiceCollectionExtensions.cs">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update file format, update logic update">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IIotSensorDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IIotSensorDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Routes.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Routes.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/wwwroot/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/wwwroot/css/app.css" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -175,6 +180,7 @@
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -978,15 +984,7 @@
       <workItem from="1735410229697" duration="417000" />
       <workItem from="1735441589446" duration="4101000" />
       <workItem from="1735445952880" duration="516000" />
-      <workItem from="1735446594857" duration="12491000" />
-    </task>
-    <task id="LOCAL-00479" summary="optimize code">
-      <option name="closed" value="true" />
-      <created>1734915785310</created>
-      <option name="number" value="00479" />
-      <option name="presentableId" value="LOCAL-00479" />
-      <option name="project" value="LOCAL" />
-      <updated>1734915785311</updated>
+      <workItem from="1735446594857" duration="14753000" />
     </task>
     <task id="LOCAL-00480" summary="fix too many char">
       <option name="closed" value="true" />
@@ -1372,7 +1370,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735473011958</updated>
     </task>
-    <option name="localTasksCounter" value="528" />
+    <task id="LOCAL-00528" summary="update file format, update logic update">
+      <option name="closed" value="true" />
+      <created>1735473562059</created>
+      <option name="number" value="00528" />
+      <option name="presentableId" value="LOCAL-00528" />
+      <option name="project" value="LOCAL" />
+      <updated>1735473562059</updated>
+    </task>
+    <option name="localTasksCounter" value="529" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1403,7 +1409,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="update filter to get correct time" />
     <MESSAGE value="add field" />
     <MESSAGE value="update service" />
     <MESSAGE value="dispose shit" />
@@ -1428,7 +1433,8 @@
     <MESSAGE value="add some bullshit service" />
     <MESSAGE value="update api, add new api, update language pack" />
     <MESSAGE value="restore LoggerServiceCollectionExtensions.cs" />
-    <option name="LAST_COMMIT_MESSAGE" value="restore LoggerServiceCollectionExtensions.cs" />
+    <MESSAGE value="update file format, update logic update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update file format, update logic update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1451,6 +1457,19 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="89" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/WebApp/Controllers/System/CultureController.cs</url>
+          <line>12</line>
+          <properties documentPath="C:\Users\thanh\Git\VaultForge\WebApp\Controllers\System\CultureController.cs" containingFunctionPresentation="Method 'Set'">
+            <startOffsets>
+              <option value="323" />
+            </startOffsets>
+            <endOffsets>
+              <option value="347" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="96" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">

@@ -511,6 +511,10 @@ html, body {
     max-width: 300px;
 }
 
+.page-content-container-search-field-width > div.mud-select.mud-autocomplete>.mud-input-control.mud-select{
+    margin: 0px !important;
+}
+
 .blur-3 {
     backdrop-filter: blur(8px);
 }

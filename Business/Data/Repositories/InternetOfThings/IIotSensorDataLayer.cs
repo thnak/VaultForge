@@ -31,7 +31,7 @@ public class IotSensorDataLayer(IMongoDataLayerContext context, ILogger<IIotSens
         {
             IndexKeysDefinition<IoTSensor>[] uniqueIndexesDefinitions =
             [
-                Builders<IoTSensor>.IndexKeys.Ascending(x=>x.DeviceId).Ascending(x => x.SensorId),
+                Builders<IoTSensor>.IndexKeys.Ascending(x => x.DeviceId).Ascending(x => x.SensorId),
             ];
             var uniqueIndexes = uniqueIndexesDefinitions.Select(x => new CreateIndexModel<IoTSensor>(x, new CreateIndexOptions { Unique = true }));
             await _data.Indexes.DropAllAsync(cancellationToken);
@@ -172,7 +172,10 @@ public class IotSensorDataLayer(IMongoDataLayerContext context, ILogger<IIotSens
 
     public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<IoTSensor> updates, CancellationToken cancellationToken = default)
     {
-        var updateResult = await _data.UpdateAsync(key, updates, cancellationToken);
+        var sensor = Get(key);
+        if (sensor == null)
+            return (false, AppLang.Sensor_not_found);
+        var updateResult = await _data.UpdateAsync(sensor.Id.ToString(), updates, cancellationToken);
         return (updateResult.IsSuccess, updateResult.Message);
     }
 

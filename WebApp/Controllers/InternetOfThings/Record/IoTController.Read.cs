@@ -7,7 +7,6 @@ using BusinessModels.System;
 using BusinessModels.System.InternetOfThings;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 
@@ -53,6 +52,7 @@ public partial class IoTController
     [HttpGet("get-excel-record")]
     public async Task<IActionResult> SummaryExcelRecord(string sensorId, int page, int pageSize, DateTime startTime, DateTime endTime)
     {
+        endTime = endTime.AddDays(1);
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFFont myFont = (HSSFFont)workbook.CreateFont();
         myFont.FontHeightInPoints = 11;
@@ -111,7 +111,7 @@ public partial class IoTController
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
-            FileName = HttpUtility.UrlEncode($"Report {startTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)}-{endTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)}.xls"),
+            FileName = HttpUtility.HtmlEncode($"Report {startTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)}-{endTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)}.xls"),
             Inline = false, // false = prompt the user for downloading;  true = browser to try to show the file inline,
             CreationDate = now,
             ModificationDate = now,

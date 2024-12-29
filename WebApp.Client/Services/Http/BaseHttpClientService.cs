@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Net;
 using BusinessModels.General.Results;
 using BusinessModels.Resources;
@@ -161,5 +162,11 @@ public partial class BaseHttpClientService
         }
 
         return responseData;
+    }
+
+    public async Task RequestCulture()
+    {
+        var uri = Navigation.GetUriWithQueryParameters(Navigation.BaseUri + $"culture/get", new Dictionary<string, object?>() { { "culture", CultureInfo.CurrentCulture.Name } });
+        await HttpClient.GetAsync(uri);
     }
 }
