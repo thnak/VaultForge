@@ -166,7 +166,7 @@ public partial class BaseHttpClientService
 
     public async Task RequestCulture()
     {
-        var uri = Navigation.GetUriWithQueryParameters(Navigation.BaseUri + $"culture/get", new Dictionary<string, object?>() { { "culture", CultureInfo.CurrentCulture.Name } });
+        var uri = Navigation.GetUriWithQueryParameters(Navigation.BaseUri + $"culture/set", new Dictionary<string, object?>() { { "culture", CultureInfo.CurrentCulture.Name } });
         await HttpClient.GetAsync(uri);
     }
 }

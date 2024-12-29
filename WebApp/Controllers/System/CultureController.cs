@@ -19,7 +19,7 @@ public class CultureController : Controller
                 new CookieOptions
                 {
                     IsEssential = true,
-                    Expires = DateTimeOffset.UtcNow.AddYears(1)
+                    Expires = DateTimeOffset.MaxValue
                 }
             );
         }
