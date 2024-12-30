@@ -9,6 +9,7 @@ using BusinessModels.Validator;
 using FluentValidation;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
 
 namespace BusinessModels.System.InternetOfThings;
 
@@ -16,55 +17,65 @@ public class IoTDevice : BaseModelEntry
 {
     [BsonElement("deviceId")]
     [JsonPropertyName("deviceId")]
+    [JsonProperty("deviceId")]
     public string DeviceId { get; set; } = string.Empty;
 
     [BsonElement("deviceName")]
     [JsonPropertyName("deviceName")]
+    [JsonProperty("deviceName")]
     public string DeviceName { get; set; } = string.Empty;
 
     [BsonElement("groupId")]
     [JsonPropertyName("groupId")]
+    [JsonProperty("groupId")]
     public string DeviceGroupId { get; set; } = string.Empty;
 
     [BsonElement("deviceType")]
     [JsonPropertyName("deviceType")]
-    
+    [JsonProperty("deviceType")]
     public IoTDeviceType IoTDeviceType { get; set; } // e.g., Gateway, Sensor Node
 
     [BsonElement("manufacturer")]
     [JsonPropertyName("manufacturer")]
+    [JsonProperty("manufacturer")]
     public string Manufacturer { get; set; } = string.Empty;
 
     [BsonElement("installationDate")]
     [JsonPropertyName("installationDate")]
+    [JsonProperty("installationDate")]
     public DateOnly InstallationDate { get; set; }
 
     [BsonElement("lastServiceDate")]
     [JsonPropertyName("lastServiceDate")]
+    [JsonProperty("lastServiceDate")]
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime? LastServiceDate { get; set; }
 
 
     [BsonElement("location")]
     [JsonPropertyName("location")]
+    [JsonProperty("location")]
     public string Location { get; set; } = string.Empty;
 
     [BsonElement("firmwareVersion")]
     [JsonPropertyName("firmwareVersion")]
+    [JsonProperty("firmwareVersion")]
     public string FirmwareVersion { get; set; } = string.Empty;
 
 
     [BsonElement("status")]
     [JsonPropertyName("status")]
-    
+    [JsonProperty("status")]
     public IoTDeviceStatus Status { get; set; }
 
     [BsonElement("macAddress")]
     [JsonPropertyName("macAddress")]
+    [JsonProperty("macAddress")]
     public string MacAddress { get; set; } = string.Empty;
 
     [BsonElement("ipAddress")]
     [JsonPropertyName("ipAddress")]
+    [JsonProperty("ipAddress")]
     public string IpAddress { get; set; } = string.Empty;
 
     public override string ToString()
