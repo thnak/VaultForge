@@ -22,7 +22,7 @@ public class IoTSensor : BaseModelEntry
 
     [BsonElement("sensorType")]
     [JsonPropertyName("sensorType")]
-    [BsonRepresentation(BsonType.String)]
+    
     public IoTSensorType IoTSensorType { get; set; } // Enum for sensor types
 
     [BsonElement("deviceId")]
@@ -49,7 +49,7 @@ public class IoTSensor : BaseModelEntry
 
     [BsonElement("status")]
     [JsonPropertyName("status")]
-    [BsonRepresentation(BsonType.String)]
+    
     public IoTSensorStatus Status { get; set; }
 
     public override string ToString()

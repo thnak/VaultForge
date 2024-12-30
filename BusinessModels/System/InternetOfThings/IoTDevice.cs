@@ -1,4 +1,5 @@
-﻿using BusinessModels.Base;
+﻿using System.Text.Json.Serialization;
+using BusinessModels.Base;
 using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings.status;
@@ -13,36 +14,58 @@ namespace BusinessModels.System.InternetOfThings;
 
 public class IoTDevice : BaseModelEntry
 {
-    [BsonElement("deviceId")] public string DeviceId { get; set; } = string.Empty;
-    [BsonElement("deviceName")] public string DeviceName { get; set; } = string.Empty;
+    [BsonElement("deviceId")]
+    [JsonPropertyName("deviceId")]
+    public string DeviceId { get; set; } = string.Empty;
 
-    [BsonElement("groupId")] public string DeviceGroupId { get; set; } = string.Empty;
+    [BsonElement("deviceName")]
+    [JsonPropertyName("deviceName")]
+    public string DeviceName { get; set; } = string.Empty;
+
+    [BsonElement("groupId")]
+    [JsonPropertyName("groupId")]
+    public string DeviceGroupId { get; set; } = string.Empty;
 
     [BsonElement("deviceType")]
-    [BsonRepresentation(BsonType.String)]
+    [JsonPropertyName("deviceType")]
+    
     public IoTDeviceType IoTDeviceType { get; set; } // e.g., Gateway, Sensor Node
 
-    [BsonElement("manufacturer")] public string Manufacturer { get; set; } = string.Empty;
+    [BsonElement("manufacturer")]
+    [JsonPropertyName("manufacturer")]
+    public string Manufacturer { get; set; } = string.Empty;
 
-    [BsonElement("installationDate")] public DateOnly InstallationDate { get; set; }
+    [BsonElement("installationDate")]
+    [JsonPropertyName("installationDate")]
+    public DateOnly InstallationDate { get; set; }
 
     [BsonElement("lastServiceDate")]
+    [JsonPropertyName("lastServiceDate")]
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime? LastServiceDate { get; set; }
 
 
-    [BsonElement("location")] public string Location { get; set; } = string.Empty;
+    [BsonElement("location")]
+    [JsonPropertyName("location")]
+    public string Location { get; set; } = string.Empty;
 
-    [BsonElement("firmwareVersion")] public string FirmwareVersion { get; set; } = string.Empty;
+    [BsonElement("firmwareVersion")]
+    [JsonPropertyName("firmwareVersion")]
+    public string FirmwareVersion { get; set; } = string.Empty;
 
 
     [BsonElement("status")]
-    [BsonRepresentation(BsonType.String)]
+    [JsonPropertyName("status")]
+    
     public IoTDeviceStatus Status { get; set; }
 
-    [BsonElement("macAddress")] public string MacAddress { get; set; } = string.Empty;
+    [BsonElement("macAddress")]
+    [JsonPropertyName("macAddress")]
+    public string MacAddress { get; set; } = string.Empty;
 
-    [BsonElement("ipAddress")] public string IpAddress { get; set; } = string.Empty;
+    [BsonElement("ipAddress")]
+    [JsonPropertyName("ipAddress")]
+    public string IpAddress { get; set; } = string.Empty;
 
     public override string ToString()
     {
