@@ -1967,7 +1967,8 @@
           "Microsoft.AspNetCore.SignalR.Client.Core": "[9.0.0, )",
           "Microsoft.AspNetCore.SignalR.Protocols.MessagePack": "[9.0.0, )",
           "MongoDB.Bson": "[3.1.0, )",
-          "MudBlazor": "[7.15.0, )"
+          "MudBlazor": "[7.15.0, )",
+          "Newtonsoft.Json": "[13.0.3, )"
         }
       }
     }

@@ -1,12 +1,18 @@
 ﻿using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
-using BusinessModels.Utils;
+using Newtonsoft.Json;
 
 namespace BusinessModels.General.Update;
 
 public class FieldUpdate<T> : FieldUpdate
 {
+    private readonly JsonSerializerSettings _serializerSettings = new()
+    {
+        TypeNameHandling = TypeNameHandling.All,
+        Formatting = Formatting.Indented
+    };
+
     public void Add<TParam>(Expression<Func<T, TParam>> propertyExpression, TParam? value)
     {
         ArgumentNullException.ThrowIfNull(propertyExpression);
@@ -40,21 +46,44 @@ public class FieldUpdate<T> : FieldUpdate
         return TryGet<TParam>(memberExpression.Member.Name);
     }
 
-    public string GetJson()
+    public FieldUpdate()
     {
-        return Parameters.ToJson();
+        Parameters = new Dictionary<string, object?>();
+        ParameterTypes = new Dictionary<string, string>();
     }
 
-    public void SetFromJson(string json)
+    public FieldUpdate(Dictionary<string, object?> parameters, Dictionary<string, string> parameterTypes)
     {
-        Parameters = json.DeSerialize<Dictionary<string, object?>>() ?? [];
+        Parameters = parameters;
+        ParameterTypes = parameterTypes;
+    }
+
+    public string GetJson()
+    {
+        return JsonConvert.SerializeObject(this, _serializerSettings);
+    }
+
+    public FieldUpdate SetFromJson(string json)
+    {
+        return JsonConvert.DeserializeObject<FieldUpdate<T>>(json, _serializerSettings) ?? new FieldUpdate<T>();
     }
 }
 
 public class FieldUpdate : IEnumerable<KeyValuePair<string, object>>
 {
     public Dictionary<string, object?> Parameters { get; set; } = [];
+    public Dictionary<string, string> ParameterTypes { get; set; } = new();
 
+
+    public FieldUpdate()
+    {
+    }
+
+    public FieldUpdate(Dictionary<string, object?> parameters, Dictionary<string, string> parameterTypes)
+    {
+        Parameters = parameters;
+        ParameterTypes = parameterTypes;
+    }
 
     public void Add(string parameterName, object? value)
     {
