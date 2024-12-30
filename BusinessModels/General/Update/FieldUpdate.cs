@@ -65,7 +65,7 @@ public class FieldUpdate<T> : FieldUpdate
 
     public FieldUpdate SetFromJson(string json)
     {
-        return JsonConvert.DeserializeObject<FieldUpdate<T>>(json, _serializerSettings) ?? new FieldUpdate<T>();
+        return JsonConvert.DeserializeObject<FieldUpdate>(json, _serializerSettings) ?? new FieldUpdate();
     }
 }
 
