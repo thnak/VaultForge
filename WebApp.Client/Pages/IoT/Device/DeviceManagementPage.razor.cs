@@ -1,5 +1,4 @@
 ﻿using BusinessModels.Resources;
-using BusinessModels.System;
 using BusinessModels.System.InternetOfThings;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -23,19 +22,21 @@ public partial class DeviceManagementPage : ComponentBase, IDisposable
     #endregion
 
     private MudDataGrid<PageModel>? _dataGrid;
-
-    private List<PageModel> Devices { get; set; } = new();
+    private readonly CancellationTokenSource _cancellationTokenSource = new();
     private string DeviceSearchString { get; set; } = string.Empty;
 
 
     public void Dispose()
     {
         _dataGrid?.Dispose();
+        _cancellationTokenSource.Cancel();
+        _cancellationTokenSource.Dispose();
     }
 
     private async Task<GridData<PageModel>> ServerReload(GridState<PageModel> arg)
     {
-        var result = await ApiService.GetAsync<SignalrResultValue<IoTDevice>>($"api/device/get-device?page{arg.Page}&pageSize={arg.PageSize}");
+        var cancellationToken = _cancellationTokenSource.Token;
+        var result = await ApiService.GetAllDevicesAsync(arg.Page, arg.PageSize, cancellationToken);
         return new GridData<PageModel>
         {
             Items = result.Data?.Data.Select(x => new PageModel(x)
