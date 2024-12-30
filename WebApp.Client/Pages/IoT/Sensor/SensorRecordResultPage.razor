@@ -62,26 +62,20 @@
         <MudText Typo="Typo.h6">@AppLang.Filter</MudText>
     </MudDrawerHeader>
 
-    <MudForm Model="_filterPage">
+    <MudForm Model="_filterPage" @ref="FilterForm">
         <MudCardContent>
 
             <MudDateRangePicker Label="@AppLang.Date" Variant="Variant.Outlined" @bind-DateRange="_filterPage.DateRange"></MudDateRangePicker>
 
-            @* <MudAutocomplete T="IoTDevice" Value="_filterPage.SelectedDevice"  Label="Device" Variant="Variant.Outlined"></MudAutocomplete> *@
+            <MudAutocomplete T="IoTDevice?" Value="_filterPage.SelectedDevice" Required RequiredError="@AppLang.Required_field" For="@(() => _filterPage.SelectedDevice)" ValueChanged="SelectedDeviceChanged"
+                             SearchFunc="SearchDevice" ShowProgressIndicator="true" Label="@AppLang.Device" Variant="Variant.Outlined"></MudAutocomplete>
 
-            <MudSelect T="IoTDevice" Variant="Variant.Outlined" Label="@AppLang.Device" @bind-SelectedValues="_filterPage.SelectedDevices">
-
-                @foreach (var device in DevicesList)
-                {
-                    <MudSelectItem Value="device">@device.DeviceName</MudSelectItem>
-                }
-
-            </MudSelect>
-            <MudSelect T="IoTSensor" Variant="Variant.Outlined" Label="@AppLang.Sensor" @bind-SelectedValues="_filterPage.Sensors">
+            <MudSelect T="IoTSensor?" Variant="Variant.Outlined" Required RequiredError="@AppLang.Required_field" Label="@AppLang.Sensor" 
+                       For="@(() => _filterPage.SelectedSensor)" @bind-SelectedValues="_filterPage.Sensors">
 
                 @foreach (var sensor in SensorList)
                 {
-                    <MudSelectItem Value="sensor">@sensor.SensorName</MudSelectItem>
+                    <MudSelectItem @key="sensor" Value="sensor">@sensor.SensorName</MudSelectItem>
                 }
 
             </MudSelect>

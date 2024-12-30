@@ -7,7 +7,7 @@ using WebApp.Client.Utils;
 
 namespace WebApp.Client.Pages.IoT.Sensor;
 
-public partial class SensorRecordResultPage : ComponentBase
+public partial class SensorRecordResultPage : ComponentBase, IDisposable
 {
     #region --- page models ---
 
@@ -45,46 +45,22 @@ public partial class SensorRecordResultPage : ComponentBase
     private List<IoTDevice> DevicesList { get; set; } = new();
     private List<IoTSensor> SensorList { get; set; } = new();
     private bool OpenFilterState { get; set; } = false;
+    private MudForm FilterForm { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await GetDevices();
-            await GetSensors();
             await _dataGrid!.ReloadServerData().ConfigureAwait(false);
         }
 
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private async Task GetDevices()
+
+    private async Task<IEnumerable<IoTDevice>> SearchDevice(string arg1, CancellationToken arg2)
     {
-        var result = await ApiService.GetAllDevicesAsync();
-        if (!result.IsSuccessStatusCode)
-        {
-            ToastService.ShowError(result.Message, TypeClassList.ToastDefaultSetting);
-        }
-
-        DevicesList = [..result.Data?.Data ?? []];
-        _filterPage.SelectedDevices = [..DevicesList];
-    }
-
-    private async Task GetSensors()
-    {
-        var result = await ApiService.GetAllIotSensorsAsync();
-        if (!result.IsSuccessStatusCode)
-        {
-            ToastService.ShowError(result.Message, TypeClassList.ToastDefaultSetting);
-        }
-
-        SensorList = [..result.Data?.Data ?? []];
-        _filterPage.Sensors = [..SensorList];
-    }
-
-    private async Task<IEnumerable<string>> SearchDevice(string arg1, CancellationToken arg2)
-    {
-        return [];
+        return await ApiService.SearchDevicesAsync(arg1, arg2);
     }
 
     private async Task<GridData<PageModel>> ServerReload(GridState<PageModel> arg)
@@ -156,8 +132,12 @@ public partial class SensorRecordResultPage : ComponentBase
 
     private async Task SubmitFilter()
     {
-        await CancelFilter();
-        await _dataGrid!.ReloadServerData();
+        await FilterForm.Validate();
+        if (FilterForm.IsValid)
+        {
+            await CancelFilter();
+            await _dataGrid!.ReloadServerData();
+        }
     }
 
     private async Task DownloadExcel()
@@ -169,5 +149,20 @@ public partial class SensorRecordResultPage : ComponentBase
                 _filterPage.DateRange.End.GetValueOrDefault(DateTime.Now).Date);
             await JsRuntime.Download(uri);
         }
+    }
+
+    private async Task SelectedDeviceChanged(IoTDevice? arg)
+    {
+        _filterPage.SelectedDevice = arg;
+        var result = await ApiService.GetIotSensorFromDeviceAsync(_filterPage.SelectedDevice?.DeviceId ?? string.Empty);
+        SensorList = [..result];
+        _filterPage.Sensors = [..SensorList];
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        _dataGrid?.Dispose();
+        FilterForm.Dispose();
     }
 }
