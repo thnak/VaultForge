@@ -81,7 +81,6 @@ public class FieldUpdate : IEnumerable<KeyValuePair<string, object>>
     {
     }
     
-    [JsonConstructor]
     public FieldUpdate(Dictionary<string, object?> parameters, Dictionary<string, string> parameterTypes)
     {
         Parameters = parameters;
