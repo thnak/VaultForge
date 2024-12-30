@@ -45,7 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="shit">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BusinessModels/General/Update/FieldUpdate.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/General/Update/FieldUpdate.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -173,6 +173,8 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff56e9dabec8513a52b6f0caca4a8979301377a3ae924a82a78d3c3dfd001c/TextOptions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/General/Update/FieldUpdate.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/General/Update/FieldUpdate.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/General/Update/FieldUpdate.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/System/InternetOfThings/IoTSensor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
@@ -982,23 +984,7 @@
       <workItem from="1735441589446" duration="4101000" />
       <workItem from="1735445952880" duration="516000" />
       <workItem from="1735446594857" duration="20834000" />
-      <workItem from="1735518961438" duration="8555000" />
-    </task>
-    <task id="LOCAL-00489" summary="allow to rotate, dispose resource">
-      <option name="closed" value="true" />
-      <created>1734968384798</created>
-      <option name="number" value="00489" />
-      <option name="presentableId" value="LOCAL-00489" />
-      <option name="project" value="LOCAL" />
-      <updated>1734968384798</updated>
-    </task>
-    <task id="LOCAL-00490" summary="small update">
-      <option name="closed" value="true" />
-      <created>1734969295814</created>
-      <option name="number" value="00490" />
-      <option name="presentableId" value="LOCAL-00490" />
-      <option name="project" value="LOCAL" />
-      <updated>1734969295814</updated>
+      <workItem from="1735518961438" duration="9640000" />
     </task>
     <task id="LOCAL-00491" summary="add open image">
       <option name="closed" value="true" />
@@ -1376,7 +1362,23 @@
       <option name="project" value="LOCAL" />
       <updated>1735530743853</updated>
     </task>
-    <option name="localTasksCounter" value="538" />
+    <task id="LOCAL-00538" summary="update">
+      <option name="closed" value="true" />
+      <created>1735536838764</created>
+      <option name="number" value="00538" />
+      <option name="presentableId" value="LOCAL-00538" />
+      <option name="project" value="LOCAL" />
+      <updated>1735536838764</updated>
+    </task>
+    <task id="LOCAL-00539" summary="shit">
+      <option name="closed" value="true" />
+      <created>1735537477015</created>
+      <option name="number" value="00539" />
+      <option name="presentableId" value="LOCAL-00539" />
+      <option name="project" value="LOCAL" />
+      <updated>1735537477015</updated>
+    </task>
+    <option name="localTasksCounter" value="540" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1407,7 +1409,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="show error" />
     <MESSAGE value="change to unix sec" />
     <MESSAGE value="fix missing type" />
     <MESSAGE value="add new rule for sensor node" />
@@ -1426,13 +1427,14 @@
     <MESSAGE value="update file format, update logic update" />
     <MESSAGE value="update style, fix update sensor" />
     <MESSAGE value="format cell" />
-    <MESSAGE value="update" />
     <MESSAGE value="small fix" />
     <MESSAGE value="fix not found issue" />
     <MESSAGE value="remove shit" />
     <MESSAGE value="serialize opject" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="update" />
+    <MESSAGE value="shit" />
+    <option name="LAST_COMMIT_MESSAGE" value="shit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

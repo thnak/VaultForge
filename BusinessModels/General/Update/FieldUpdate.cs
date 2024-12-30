@@ -12,7 +12,7 @@ public class FieldUpdate<T> : FieldUpdate
     {
         TypeNameHandling = TypeNameHandling.All,
         Formatting = Formatting.Indented,
-        Converters = [new GenericFieldUpdateConverter()]
+        Converters = [new FieldUpdateConverter()]
     };
 
     public void Add<TParam>(Expression<Func<T, TParam>> propertyExpression, TParam? value)
@@ -65,12 +65,15 @@ public class FieldUpdate<T> : FieldUpdate
         return JsonConvert.SerializeObject(this, _serializerSettings);
     }
 
-    public FieldUpdate SetFromJson(string json)
+    public void SetFromJson(string json)
     {
-        return JsonConvert.DeserializeObject<FieldUpdate>(json, _serializerSettings) ?? new FieldUpdate();
+        var result = JsonConvert.DeserializeObject<FieldUpdate>(json, _serializerSettings) ?? new FieldUpdate();
+        ParameterTypes = result.ParameterTypes;
+        Parameters = result.Parameters;
     }
 }
 
+[JsonObject]
 public class FieldUpdate : IEnumerable<KeyValuePair<string, object>>
 {
     public Dictionary<string, object?> Parameters { get; set; } = [];
@@ -217,5 +220,35 @@ public class GenericFieldUpdateConverter : JsonConverter
         // Instantiate the converter and use it to serialize
         var converter = (JsonConverter)Activator.CreateInstance(converterType)!;
         converter.WriteJson(writer, value, serializer);
+    }
+}
+
+public class FieldUpdateConverter : JsonConverter<FieldUpdate>
+{
+    public override void WriteJson(JsonWriter writer, FieldUpdate? value, JsonSerializer serializer)
+    {
+        writer.WriteStartObject();
+
+        writer.WritePropertyName("Parameters");
+        serializer.Serialize(writer, value?.Parameters);
+
+        writer.WritePropertyName("ParameterTypes");
+        serializer.Serialize(writer, value?.ParameterTypes);
+
+        writer.WriteEndObject();
+    }
+
+    public override FieldUpdate ReadJson(JsonReader reader, Type objectType, FieldUpdate? existingValue, bool hasExistingValue, JsonSerializer serializer)
+    {
+        var obj = JObject.Load(reader);
+
+        var parameters = obj["Parameters"]?.ToObject<Dictionary<string, object?>>(serializer) ?? new Dictionary<string, object?>();
+        var parameterTypes = obj["ParameterTypes"]?.ToObject<Dictionary<string, string>>(serializer) ?? new Dictionary<string, string>();
+
+        return new FieldUpdate
+        {
+            Parameters = parameters,
+            ParameterTypes = parameterTypes
+        };
     }
 }
