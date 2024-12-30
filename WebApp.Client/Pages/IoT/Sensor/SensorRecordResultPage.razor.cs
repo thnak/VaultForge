@@ -28,6 +28,7 @@ public partial class SensorRecordResultPage : ComponentBase, IDisposable
     {
         public IoTDevice? SelectedDevice { get; set; }
         public IEnumerable<IoTSensor> Sensors { get; set; } = [];
+        public IoTSensor? SelectedSensor { get; set; }
         public DateRange DateRange { get; set; } = new() { Start = DateTime.Now, End = DateTime.Now };
     }
 

@@ -70,10 +70,11 @@
             <MudAutocomplete T="IoTDevice?" Value="_filterPage.SelectedDevice" Required RequiredError="@AppLang.Required_field" For="@(() => _filterPage.SelectedDevice)" ValueChanged="SelectedDeviceChanged"
                              SearchFunc="SearchDevice" ShowProgressIndicator="true" Label="@AppLang.Device" Variant="Variant.Outlined"></MudAutocomplete>
 
-            <MudSelect T="IoTSensor?" Variant="Variant.Outlined" MultiSelection="true" SelectAll="true" 
+            <MudSelect T="IoTSensor?" Variant="Variant.Outlined" MultiSelection="true" SelectAll="true"
                        SelectAllText="@AppLang.Select_All"
-                       Required RequiredError="@AppLang.Required_field" Label="@AppLang.Sensor" 
-                       For="@(() => _filterPage.SelectedSensor)" @bind-SelectedValues="_filterPage.Sensors">
+                       Required RequiredError="@AppLang.Required_field" Label="@AppLang.Sensor"
+                       For="@(() => _filterPage.SelectedSensor)"
+                       @bind-Value="_filterPage.SelectedSensor" @bind-SelectedValues="_filterPage.Sensors">
 
                 @foreach (var sensor in SensorList)
                 {
