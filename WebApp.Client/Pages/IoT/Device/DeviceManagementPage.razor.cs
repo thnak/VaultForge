@@ -63,7 +63,7 @@ public partial class DeviceManagementPage : ComponentBase, IDisposable
                 builder.AddContent(1, $"{LangDict[AppLang.Delete_device]} {device.DeviceName}");
                 builder.CloseElement();
             },
-            Icon = "fa-solid fa-triangle-exclamation",
+            TitleIcon = "fa-solid fa-triangle-exclamation",
             Color = Color.Error
         };
         var option = new DialogOptions

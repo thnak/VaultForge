@@ -20,7 +20,7 @@
                 <MudForm Model="DeviceToEdit" @ref="_form" Disabled="Processing" Validation="@(_orderValidator.ValidateValueAsync)" ValidationDelay="0">
 
                     <MudCardContent>
-                        <MudTextField T="string" Label="ID" For="@(() => DeviceToEdit.DeviceId)" Immediate="true" RequiredError="@AppLang.This_field_is_required" Disabled="IsEditing" Required @bind-Value="DeviceToEdit.DeviceId"></MudTextField>
+                        <MudTextField T="string" Label="ID" For="@(() => DeviceToEdit.DeviceId)" Immediate="true" RequiredError="@AppLang.Required_field" Disabled="IsEditing" Required @bind-Value="DeviceToEdit.DeviceId"></MudTextField>
                         <MudTextField T="string" Label="@AppLang.Device_name" For="@(() => DeviceToEdit.DeviceName)" Immediate="true" Required @bind-Value="DeviceToEdit.DeviceName"></MudTextField>
                         <MudTextField T="string" Label="@AppLang.Device_group" For="@(() => DeviceToEdit.DeviceGroupId)" Immediate="true" @bind-Value="DeviceToEdit.DeviceGroupId"></MudTextField>
                         <MudTextField T="string" Label="@AppLang.Manufacturer" For="@(() => DeviceToEdit.Manufacturer)" Immediate="true" @bind-Value="DeviceToEdit.Manufacturer"></MudTextField>

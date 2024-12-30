@@ -156,6 +156,9 @@ public static class FieldUpdateExtensions
 
 public class FieldUpdateConverter<T> : JsonConverter<FieldUpdate<T>>
 {
+    private const string ParameterTypesKey = "ParameterTypes";
+    private const string ParametersKey = "Parameters";
+    
     public override void WriteJson(JsonWriter writer, FieldUpdate<T>? value, JsonSerializer serializer)
     {
         if (value == null)
@@ -166,7 +169,7 @@ public class FieldUpdateConverter<T> : JsonConverter<FieldUpdate<T>>
 
         writer.WriteStartObject();
 
-        writer.WritePropertyName("Parameters");
+        writer.WritePropertyName(ParametersKey);
         writer.WriteStartObject();
         foreach (var kvp in value.Parameters)
         {
@@ -176,7 +179,7 @@ public class FieldUpdateConverter<T> : JsonConverter<FieldUpdate<T>>
 
         writer.WriteEndObject();
 
-        writer.WritePropertyName("ParameterTypes");
+        writer.WritePropertyName(ParameterTypesKey);
         serializer.Serialize(writer, value.ParameterTypes);
 
         writer.WriteEndObject();
@@ -187,9 +190,9 @@ public class FieldUpdateConverter<T> : JsonConverter<FieldUpdate<T>>
         var obj = JObject.Load(reader);
 
         var parameters = new Dictionary<string, object?>();
-        var parameterTypes = obj["ParameterTypes"]?.ToObject<Dictionary<string, string>>(serializer) ?? new();
+        var parameterTypes = obj[ParameterTypesKey]?.ToObject<Dictionary<string, string>>(serializer) ?? new();
 
-        if (obj["Parameters"] is JObject parametersObj)
+        if (obj[ParametersKey] is JObject parametersObj)
         {
             foreach (var property in parametersObj.Properties())
             {

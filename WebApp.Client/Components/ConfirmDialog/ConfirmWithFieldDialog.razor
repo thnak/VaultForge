@@ -1,11 +1,17 @@
 ﻿<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6" >
+            <MudIcon Class="mb-n1 mr-3" Color="@TitleIconColor" Icon="@TitleIcon" />
+            @DialogInstance.Title
+        </MudText>
+    </TitleContent>
     <DialogContent>
-        <MudForm @ref="Form" >
-            <MudTextField @bind-Value="NewValueField" For="@(() => NewValueField)" Label="@FieldName" T="string" Variant="Variant.Outlined" />
+        <MudForm @ref="Form">
+            <MudTextField @bind-Value="NewValueField" Immediate For="@(() => NewValueField)" Label="@FieldName" T="string" Variant="Variant.Outlined"/>
         </MudForm>
     </DialogContent>
     <DialogActions>
-        <MudButton Color="MudColor.Error" Class="rounded-pill" OnClick="@Cancel" Variant="Variant.Outlined" >@AppLang.Cancel</MudButton>
-        <MudButton Color="MudColor.Primary" Class="rounded-pill" OnClick="@Submit" Variant="Variant.Filled" >@AppLang.Submit</MudButton>
+        <MudButton Color="MudColor.Error" Class="rounded-pill" OnClick="@Cancel" Variant="Variant.Outlined">@AppLang.Cancel</MudButton>
+        <MudButton Color="MudColor.Primary" Class="rounded-pill" OnClick="@Submit" Variant="Variant.Filled">@AppLang.Submit</MudButton>
     </DialogActions>
 </MudDialog>

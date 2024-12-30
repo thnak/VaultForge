@@ -45,11 +45,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.vi-VN.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.vi-VN.resx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Components/Field/EnumMudSelector.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Components/Field/EnumMudSelector.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
@@ -180,6 +178,10 @@
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/General/Update/FieldUpdate.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/General/Update/FieldUpdate.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/General/Update/FieldUpdate.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/Resources/AppLang.de-DE.resx" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/System/InternetOfThings/IoTDevice.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/System/InternetOfThings/IoTDevice.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/System/InternetOfThings/IoTSensor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/System/InternetOfThings/IoTSensor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
@@ -990,31 +992,7 @@
       <workItem from="1735441589446" duration="4101000" />
       <workItem from="1735445952880" duration="516000" />
       <workItem from="1735446594857" duration="20834000" />
-      <workItem from="1735518961438" duration="16968000" />
-    </task>
-    <task id="LOCAL-00495" summary="fix utc issue">
-      <option name="closed" value="true" />
-      <created>1735004242740</created>
-      <option name="number" value="00495" />
-      <option name="presentableId" value="LOCAL-00495" />
-      <option name="project" value="LOCAL" />
-      <updated>1735004242740</updated>
-    </task>
-    <task id="LOCAL-00496" summary="update order">
-      <option name="closed" value="true" />
-      <created>1735014563256</created>
-      <option name="number" value="00496" />
-      <option name="presentableId" value="LOCAL-00496" />
-      <option name="project" value="LOCAL" />
-      <updated>1735014563256</updated>
-    </task>
-    <task id="LOCAL-00497" summary="update index for sensor">
-      <option name="closed" value="true" />
-      <created>1735035579777</created>
-      <option name="number" value="00497" />
-      <option name="presentableId" value="LOCAL-00497" />
-      <option name="project" value="LOCAL" />
-      <updated>1735035579777</updated>
+      <workItem from="1735518961438" duration="19933000" />
     </task>
     <task id="LOCAL-00498" summary="small update">
       <option name="closed" value="true" />
@@ -1384,7 +1362,31 @@
       <option name="project" value="LOCAL" />
       <updated>1735547031934</updated>
     </task>
-    <option name="localTasksCounter" value="544" />
+    <task id="LOCAL-00544" summary=".">
+      <option name="closed" value="true" />
+      <created>1735551820581</created>
+      <option name="number" value="00544" />
+      <option name="presentableId" value="LOCAL-00544" />
+      <option name="project" value="LOCAL" />
+      <updated>1735551820581</updated>
+    </task>
+    <task id="LOCAL-00545" summary="json map">
+      <option name="closed" value="true" />
+      <created>1735555198002</created>
+      <option name="number" value="00545" />
+      <option name="presentableId" value="LOCAL-00545" />
+      <option name="project" value="LOCAL" />
+      <updated>1735555198002</updated>
+    </task>
+    <task id="LOCAL-00546" summary="remove bullshit">
+      <option name="closed" value="true" />
+      <created>1735555565896</created>
+      <option name="number" value="00546" />
+      <option name="presentableId" value="LOCAL-00546" />
+      <option name="project" value="LOCAL" />
+      <updated>1735555565896</updated>
+    </task>
+    <option name="localTasksCounter" value="547" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1415,9 +1417,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="add new rule for sensor node" />
-    <MESSAGE value="update language" />
-    <MESSAGE value="use more text" />
     <MESSAGE value="fix wrong property" />
     <MESSAGE value="fix worng value filter" />
     <MESSAGE value="update pack" />
@@ -1440,7 +1439,10 @@
     <MESSAGE value="small update" />
     <MESSAGE value="fix wrong type" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="." />
+    <MESSAGE value="json map" />
+    <MESSAGE value="remove bullshit" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove bullshit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1463,32 +1465,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="89" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs</url>
-          <line>130</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\BusinessModels\System\InternetOfThings\IoTDevice.cs" containingFunctionPresentation="Method 'CheckAvailableAddress'">
-            <startOffsets>
-              <option value="4336" />
-            </startOffsets>
-            <endOffsets>
-              <option value="4398" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="98" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs</url>
-          <line>125</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\BusinessModels\System\InternetOfThings\IoTDevice.cs" containingFunctionPresentation="Method 'CheckAvailableAddress'">
-            <startOffsets>
-              <option value="4159" />
-            </startOffsets>
-            <endOffsets>
-              <option value="4190" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="99" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">

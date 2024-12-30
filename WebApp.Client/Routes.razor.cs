@@ -59,7 +59,7 @@ public partial class Routes(ILogger<Routes> logger) : ComponentBase, IDisposable
         };
         var dataModel = new DialogConfirmDataModel()
         {
-            Icon = "fa-solid fa-rotate-right",
+            TitleIcon = "fa-solid fa-rotate-right",
             Color = Color.Secondary,
             Fragment = builder =>
             {

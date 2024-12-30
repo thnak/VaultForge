@@ -12,8 +12,8 @@ public class FolderNameFluentValidator : ExtendFluentValidator<string>
             .Must(x => x.ValidateSystemPathName()).WithMessage(x =>
             {
                 x.ValidateSystemPathName(out var c);
-                return string.Format(AppLang.Folder_name_contains_invalid_character__x, c);
+                return string.Format(AppLang.Folder_name_invalid_character, c);
             })
-            .NotEmpty().WithMessage(AppLang.ThisFieldIsRequired);
+            .NotEmpty().WithMessage(AppLang.Required_field);
     }
 }

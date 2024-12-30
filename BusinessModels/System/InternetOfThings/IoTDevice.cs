@@ -24,13 +24,11 @@ public class IoTDevice : BaseModelEntry
 
 
     public string Manufacturer { get; set; } = string.Empty;
-
-
-    public DateOnly InstallationDate { get; set; }
+    
+    public DateOnly InstallationDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime? LastServiceDate { get; set; }
-
 
     public string Location { get; set; } = string.Empty;
 

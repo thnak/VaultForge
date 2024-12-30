@@ -17,8 +17,8 @@
 
             <MudCardContent>
 
-                <MudTextField T="string" Label="Device ID" For="@(() => SensorToEdit.DeviceId)" Immediate="true" Disabled RequiredError="@AppLang.This_field_is_required" Required @bind-Value="SensorToEdit.DeviceId"></MudTextField>
-                <MudTextField T="string" Label="Sensor ID" For="@(() => SensorToEdit.SensorId)" Immediate="true" Disabled="IsEditing" RequiredError="@AppLang.This_field_is_required" Required @bind-Value="SensorToEdit.SensorId"></MudTextField>
+                <MudTextField T="string" Label="Device ID" For="@(() => SensorToEdit.DeviceId)" Immediate="true" Disabled RequiredError="@AppLang.Required_field" Required @bind-Value="SensorToEdit.DeviceId"></MudTextField>
+                <MudTextField T="string" Label="Sensor ID" For="@(() => SensorToEdit.SensorId)" Immediate="true" Disabled="IsEditing" RequiredError="@AppLang.Required_field" Required @bind-Value="SensorToEdit.SensorId"></MudTextField>
                 <MudTextField T="string" Label="Sensor name" For="@(() => SensorToEdit.SensorName)" Immediate="true" @bind-Value="SensorToEdit.SensorName"></MudTextField>
 
                 <EnumMudSelector T="IoTSensorType" For="@(() => SensorToEdit.IoTSensorType)" LabelString="@AppLang.Type" @bind-SelectedValue="SensorToEdit.IoTSensorType"/>

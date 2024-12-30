@@ -1,25 +1,32 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Net;
+using Blazored.Toast.Services;
 using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace WebApp.Client.Services.Http;
 
 public partial class BaseHttpClientService
 {
-    public HttpClient HttpClient { get; set; }
-    public NavigationManager Navigation { get; set; }
+    public HttpClient HttpClient { get; }
+    private NavigationManager Navigation { get; }
+    private IDialogService DialogService { get; set; }
+    private  IToastService ToastService { get; set; }
+    private ILogger<BaseHttpClientService> Logger { get; set; }
 
-
-    public BaseHttpClientService(NavigationManager navigation)
+    public BaseHttpClientService(NavigationManager navigation, IDialogService dialogService, IToastService toastService, ILogger<BaseHttpClientService> logger)
     {
         Navigation = navigation;
         var httpClient = new HttpClient(new CookieHandler());
         httpClient.BaseAddress = new Uri(Navigation.BaseUri);
         HttpClient = httpClient;
+        DialogService = dialogService;
+        ToastService = toastService;
+        Logger = logger;
     }
 
     public string GetBaseUrl()
@@ -56,7 +63,7 @@ public partial class BaseHttpClientService
         }
         catch (Exception e)
         {
-            Console.WriteLine(AppLang.BaseHttpClientService_PostAsync__ERROR___0_, e.Message);
+            Logger.LogError(AppLang.BaseHttpClientService_PostAsync__ERROR___0_, e.Message);
         }
 
         return responseData;

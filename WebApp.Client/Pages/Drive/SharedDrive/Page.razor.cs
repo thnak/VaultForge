@@ -599,19 +599,9 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     {
         Loading = true;
         await Render();
-        var option = new DialogOptions
-        {
-            FullWidth = true,
-            MaxWidth = MaxWidth.Small
-        };
-        var dialogParam = new DialogParameters<ConfirmWithFieldDialog>
-        {
-            { x => x.FieldName, AppLang.FileName },
-            { x => x.OldValueField, oldName }
-        };
-        var dialog = await DialogService.ShowAsync<ConfirmWithFieldDialog>(AppLang.ReName, dialogParam, option);
-        var dialogResult = await dialog.Result;
-        if (dialogResult is { Canceled: false, Data: string newName })
+      
+        var dialogResult = await DialogService.OpenTextFieldDialog(AppLang.ReName, AppLang.FileName, oldName, Icons.Material.Filled.FilePresent, Color.Primary);
+        if (dialogResult is { IsSuccess: true, Value: { } newName })
         {
             if (newName.ValidateSystemPathName(out var keyword))
             {
@@ -633,7 +623,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             }
             else
             {
-                ToastService.ShowError(string.Format(AppLang.File_name_contains_invalid_character__x, keyword),
+                ToastService.ShowError(string.Format(AppLang.File_name_invalid_character, keyword),
                     TypeClassList.ToastDefaultSetting);
             }
         }
@@ -725,7 +715,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 builder.AddContent(1, file.Status == FileStatus.DeletedFile ? AppLang.Delete_forever : AppLang.Move_to_recycle_bin);
                 builder.CloseElement();
             },
-            Icon = "fa-solid fa-triangle-exclamation",
+            TitleIcon = "fa-solid fa-triangle-exclamation",
             Color = Color.Error
         };
         var option = new DialogOptions
@@ -767,7 +757,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 builder.AddContent(1, folder.Type == FolderContentType.DeletedFolder ? AppLang.Delete_forever : AppLang.Move_to_recycle_bin);
                 builder.CloseElement();
             },
-            Icon = "fa-solid fa-triangle-exclamation",
+            TitleIcon = "fa-solid fa-triangle-exclamation",
             Color = Color.Error
         };
         var option = new DialogOptions

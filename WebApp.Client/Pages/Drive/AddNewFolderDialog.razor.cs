@@ -15,12 +15,12 @@ public partial class AddNewFolderDialog : ComponentBase, IDisposable
     private string Name { get; set; } = string.Empty;
 
     private SimpleFluentValueValidator<string> Validator { get; } = new(x => x
-        .NotEmpty().WithMessage(AppLang.ThisFieldIsRequired)
+        .NotEmpty().WithMessage(AppLang.Required_field)
         .Length(1, 100)
         .Must(s => s.ValidateSystemPathName()).WithMessage(s =>
         {
             s.ValidateSystemPathName(out var c);
-            return string.Format(AppLang.Folder_name_contains_invalid_character__x, c);
+            return string.Format(AppLang.Folder_name_invalid_character, c);
         }));
 
     public void Dispose()

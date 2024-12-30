@@ -52,11 +52,6 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
     protected override void OnParametersSet()
     {
         DeviceToEdit = Device ?? DeviceToEdit;
-        if (IsEditing)
-        {
-            DeviceToEdit.InstallationDate = DateOnly.FromDateTime(DateTime.Now);
-        }
-
         InstallationDate = DeviceToEdit.InstallationDate.ToDateTime(TimeOnly.MinValue);
         _orderValidator.ValidateForCreate = Device is null;
         _orderValidator.CheckDeviceExists = CheckDeviceExists;

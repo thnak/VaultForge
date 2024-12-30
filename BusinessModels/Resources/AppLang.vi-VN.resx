@@ -210,9 +210,6 @@
     <data name="Create Account" xml:space="preserve">
     <value>Tạo tài khoản</value>
   </data>
-    <data name="Welcome back!" xml:space="preserve">
-    <value>Chào mừng trở lại!</value>
-  </data>
     <data name="To keep connected with us please login with your personal info" xml:space="preserve">
     <value>Để duy trì kết nối với chúng tôi vui lòng đăng nhập bằng thông tin cá nhân của bạn</value>
   </data>
@@ -270,18 +267,15 @@
     <data name="Create failed" xml:space="preserve">
     <value>Tạo thất bại</value>
   </data>
-    <data name="Could not delete root folder" xml:space="preserve">
-    <value>Không thể xóa thư mục gốc</value>
-  </data>
     <data name="Other operations" xml:space="preserve">
     <value>Thao tác khác</value>
   </data>
     <data name="Cancel" xml:space="preserve">
-    <value>Hủy</value>
-  </data>
+      <value>Hủy bỏ</value>
+    </data>
     <data name="Submit" xml:space="preserve">
-    <value>Gửi</value>
-  </data>
+      <value>Gửi</value>
+    </data>
     <data name="FileName" xml:space="preserve">
     <value>Tên tập tin</value>
   </data>
@@ -290,9 +284,6 @@
   </data>
     <data name="ReName" xml:space="preserve">
     <value>Đổi tên</value>
-  </data>
-    <data name="ThisFieldIsRequired" xml:space="preserve">
-    <value>Trường này là bắt buộc</value>
   </data>
     <data name="You have been banned from logging in, please try again at X0" xml:space="preserve">
       <value>Bạn đã bị cấm đăng nhập, vui lòng thử lại lúc {0}</value>
@@ -321,17 +312,11 @@
     <data name="Root folder could not be found" xml:space="preserve">
     <value>Thư mục gốc không được tìm thấy</value>
   </data>
-    <data name="New folder" xml:space="preserve">
-    <value>Thư mực mới</value>
-  </data>
     <data name="New" xml:space="preserve">
-    <value>Mới</value>
-  </data>
+      <value>Mới</value>
+    </data>
     <data name="Target folder could not have found" xml:space="preserve">
     <value>Thư mục đích không được tìm thấy</value>
-  </data>
-    <data name="Folder moved successfully" xml:space="preserve">
-    <value>Di chuyển thư mục thành công</value>
   </data>
     <data name="Folder" xml:space="preserve">
       <value>Thư mục</value>
@@ -339,24 +324,12 @@
     <data name="File" xml:space="preserve">
       <value>Tệp</value>
     </data>
-    <data name="Current folder could not have found" xml:space="preserve">
-    <value>Không tìm thấy thư mục hiện tại</value>
-  </data>
     <data name="Exception" xml:space="preserve">
       <value>Ngoại lệ</value>
     </data>
     <data name="Page_ContextMenuClick_" xml:space="preserve">
     <value>ClientX: {0} 
 ClientY: {1}</value>
-  </data>
-    <data name="Folder name contains invalid character: x" xml:space="preserve">
-    <value>Tên thư mục chứa ký tự không hợp lệ: {0}</value>
-  </data>
-    <data name="File name contains invalid character: x" xml:space="preserve">
-    <value>Tên tập tin mục chứa ký tự không hợp lệ: {0}</value>
-  </data>
-    <data name="User information is required" xml:space="preserve">
-    <value>Thông tin người dùng là bắt buộc</value>
   </data>
     <data name="BaseHttpClientService_DeleteAsync__ERROR___0_" xml:space="preserve">
     <value>[ERROR] {0}</value>
@@ -373,38 +346,14 @@ ClientY: {1}</value>
     <data name="ProtectedSessionStorage_GetAsync__ERROR___0_" xml:space="preserve">
     <value>[ERROR] {0}</value>
   </data>
-    <data name="Could not remove root folder" xml:space="preserve">
-      <value>Không thể xóa thư mục gốc</value>
-    </data>
-    <data name="Move _0_" xml:space="preserve">
-      <value>Di chuyển {0}</value>
-    </data>
     <data name="Current location" xml:space="preserve">
       <value>Địa điểm hiện tại</value>
     </data>
     <data name="Search" xml:space="preserve">
       <value>Tìm kiếm</value>
     </data>
-    <data name="Successfully uploaded" xml:space="preserve">
-      <value>Tải lên thành công</value>
-    </data>
-    <data name="This resource is protected by password" xml:space="preserve">
-      <value>Tài nguyên này được bảo vệ bởi mật khẩu</value>
-    </data>
-    <data name="My Drive" xml:space="preserve">
-      <value>Drive của tôi</value>
-    </data>
-    <data name="Recycle bin" xml:space="preserve">
-      <value>Thùng rác</value>
-    </data>
     <data name="Community" xml:space="preserve">
       <value>Cộng đồng</value>
-    </data>
-    <data name="Browse File to upload" xml:space="preserve">
-      <value>Duyệt tập tin để tải lên</value>
-    </data>
-    <data name="File upload" xml:space="preserve">
-      <value>Tải tập tin lên</value>
     </data>
     <data name="The page you were looking for does not exist. Don't worry, it happens to the best of us!" xml:space="preserve">
       <value>Trang bạn đang tìm kiếm không tồn tại. Đừng lo lắng, điều đó sẽ xảy ra với những người tốt nhất trong chúng ta!</value>
@@ -423,9 +372,6 @@ ClientY: {1}</value>
     </data>
     <data name="Author" xml:space="preserve">
       <value>Tác giả</value>
-    </data>
-    <data name="Create new" xml:space="preserve">
-      <value>Tạo mới</value>
     </data>
     <data name="Edit" xml:space="preserve">
       <value>Chỉnh sửa</value>
@@ -454,18 +400,6 @@ ClientY: {1}</value>
     <data name="Content editor" xml:space="preserve">
       <value>Biên tập nội dung</value>
     </data>
-    <data name="The resource you are looking for does not exist" xml:space="preserve">
-      <value>Tài nguyên bạn đang tìm không tồn tại</value>
-    </data>
-    <data name="Incorrect operation" xml:space="preserve">
-      <value>Thao tác không đúng</value>
-    </data>
-    <data name="Move to recycle bin" xml:space="preserve">
-      <value>Di chuyển vào thùng rác</value>
-    </data>
-    <data name="Delete forever" xml:space="preserve">
-      <value>Xóa vĩnh viễn</value>
-    </data>
     <data name="Download" xml:space="preserve">
       <value>Tải xuống</value>
     </data>
@@ -474,12 +408,6 @@ ClientY: {1}</value>
     </data>
     <data name="Share" xml:space="preserve">
       <value>Chia sẻ</value>
-    </data>
-    <data name="Get link" xml:space="preserve">
-      <value>Nhận liên kết</value>
-    </data>
-    <data name="Move to" xml:space="preserve">
-      <value>Di chuyển đến</value>
     </data>
     <data name="Info" xml:space="preserve">
       <value>Thông tin</value>
@@ -499,9 +427,6 @@ ClientY: {1}</value>
     <data name="Do you really want to reload the page?" xml:space="preserve">
       <value>Bạn có thực sự muốn tải lại trang?</value>
     </data>
-    <data name="Cannot delete system folder" xml:space="preserve">
-      <value>Không thể xóa thư mục hệ thống</value>
-    </data>
     <data name="Disconnected" xml:space="preserve">
       <value>Đã cắt kết nối</value>
     </data>
@@ -513,9 +438,6 @@ ClientY: {1}</value>
     </data>
     <data name="Invalid_key" xml:space="preserve">
       <value>Khóa không hợp lệ</value>
-    </data>
-    <data name="The document already exists" xml:space="preserve">
-      <value>Tài liệu đã tồn tại</value>
     </data>
     <data name="DeviceManagement" xml:space="preserve">
       <value>Quản lý thiết bị</value>
@@ -561,9 +483,6 @@ ClientY: {1}</value>
     </data>
     <data name="Status" xml:space="preserve">
       <value>Trạng thái</value>
-    </data>
-    <data name="Calibration time" xml:space="preserve">
-      <value>Thời gian hiệu chuẩn</value>
     </data>
     <data name="Action" xml:space="preserve">
       <value>Hành động</value>
@@ -846,5 +765,113 @@ ClientY: {1}</value>
     </data>
     <data name="Installation_date" xml:space="preserve">
       <value>Ngày cài đặt</value>
+    </data>
+    <data name="An_error_has_occurred" xml:space="preserve">
+      <value>Đã xảy ra lỗi</value>
+    </data>
+    <data name="Browse_File_to_upload" xml:space="preserve">
+      <value>Duyệt tệp để tải lên</value>
+    </data>
+    <data name="Calibration_time" xml:space="preserve">
+      <value>Thời gian hiệu chuẩn</value>
+    </data>
+    <data name="Cannot_delete_system_folder" xml:space="preserve">
+      <value>Không thể xóa thư mục hệ thống</value>
+    </data>
+    <data name="Could_not_delete_root_folder" xml:space="preserve">
+      <value>Không thể xóa thư mục gốc</value>
+    </data>
+    <data name="Could_not_remove_root_folder" xml:space="preserve">
+      <value>Không thể xóa bỏ thư mục gốc</value>
+    </data>
+    <data name="Create_new" xml:space="preserve">
+      <value>Tạo mới</value>
+    </data>
+    <data name="Current_folder_could_not_be_found" xml:space="preserve">
+      <value>Không tìm thấy thư mục hiện tại</value>
+    </data>
+    <data name="Delete_forever" xml:space="preserve">
+      <value>Xóa vĩnh viễn</value>
+    </data>
+    <data name="File_name_invalid_character" xml:space="preserve">
+      <value>Tên tệp chứa ký tự không hợp lệ: {0}</value>
+    </data>
+    <data name="Folder_name_invalid_character" xml:space="preserve">
+      <value>Tên thư mục chứa ký tự không hợp lệ: {0}</value>
+    </data>
+    <data name="Folder_name" xml:space="preserve">
+      <value>Tên thư mục</value>
+    </data>
+    <data name="Get_link" xml:space="preserve">
+      <value>Lấy liên kết</value>
+    </data>
+    <data name="Incorrect_operation" xml:space="preserve">
+      <value>Thao tác không chính xác</value>
+    </data>
+    <data name="Link" xml:space="preserve">
+      <value>Liên kết</value>
+    </data>
+    <data name="Move_to" xml:space="preserve">
+      <value>Di chuyển đến</value>
+    </data>
+    <data name="Move_to_recycle_bin" xml:space="preserve">
+      <value>Di chuyển đến thùng rác</value>
+    </data>
+    <data name="Move_{0}" xml:space="preserve">
+      <value>Di chuyển {0}</value>
+    </data>
+    <data name="My_Drive" xml:space="preserve">
+      <value>Ổ đĩa của tôi</value>
+    </data>
+    <data name="New_folder" xml:space="preserve">
+      <value>Thư mục mới</value>
+    </data>
+    <data name="Offline" xml:space="preserve">
+      <value>Ngoại tuyến</value>
+    </data>
+    <data name="Online" xml:space="preserve">
+      <value>Trực tuyến</value>
+    </data>
+    <data name="The_page_has_been_hidden" xml:space="preserve">
+      <value>Trang đã bị ẩn</value>
+    </data>
+    <data name="The_page_has_been_displayed" xml:space="preserve">
+      <value>Trang đã được hiển thị</value>
+    </data>
+    <data name="Successfully_uploaded" xml:space="preserve">
+      <value>Tải lên thành công</value>
+    </data>
+    <data name="The_document_already_exists" xml:space="preserve">
+      <value>Tài liệu đã tồn tại</value>
+    </data>
+    <data name="The_resource_you_are_looking_for_does_not_exist" xml:space="preserve">
+      <value>Tài nguyên bạn đang tìm không tồn tại</value>
+    </data>
+    <data name="This_resource_is_protected_by_password" xml:space="preserve">
+      <value>Tài nguyên này được bảo vệ bằng mật khẩu</value>
+    </data>
+    <data name="This_field_is_required" xml:space="preserve">
+      <value>Trường này là bắt buộc</value>
+    </data>
+    <data name="User_information_is_required" xml:space="preserve">
+      <value>Thông tin người dùng là bắt buộc</value>
+    </data>
+    <data name="Welcome_back" xml:space="preserve">
+      <value>Chào mừng trở lại!</value>
+    </data>
+    <data name="File_upload" xml:space="preserve">
+      <value>Tải lên tệp</value>
+    </data>
+    <data name="File_name" xml:space="preserve">
+      <value>Tên tệp</value>
+    </data>
+    <data name="Folder_moved_successfully" xml:space="preserve">
+      <value>Thư mục đã được di chuyển thành công</value>
+    </data>
+    <data name="Closed" xml:space="preserve">
+      <value>Đã đóng</value>
+    </data>
+    <data name="Recycle_bin" xml:space="preserve">
+      <value>Thùng rác</value>
     </data>
 </root>

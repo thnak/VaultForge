@@ -16,7 +16,7 @@ public partial class FilesController
         var file = fileServe.Get(objectId);
         if (file == null) return BadRequest(AppLang.File_not_found_);
         if (string.IsNullOrEmpty(newName))
-            return BadRequest(AppLang.ThisFieldIsRequired);
+            return BadRequest(AppLang.Required_field);
         file.FileName = newName;
         var status = await fileServe.UpdateAsync(file);
         return status.Item1 ? Ok(status.Item2) : BadRequest(status.Item2);
@@ -29,7 +29,7 @@ public partial class FilesController
         var folder = folderServe.Get(objectId);
         if (folder == null) return BadRequest(AppLang.Folder_could_not_be_found);
         if (string.IsNullOrEmpty(newName))
-            return BadRequest(AppLang.ThisFieldIsRequired);
+            return BadRequest(AppLang.Required_field);
 
         var rootFolder = folderServe.GetRoot(folder.RootFolder);
         if (rootFolder == default)
@@ -69,7 +69,7 @@ public partial class FilesController
     {
         var cancelToken = HttpContext.RequestAborted;
         var currentFolder = folderServe.Get(currentFolderCode);
-        if (currentFolder == null) return NotFound(AppLang.Current_folder_could_not_have_found);
+        if (currentFolder == null) return NotFound(AppLang.Current_folder_could_not_be_found);
 
         var targetFolder = folderServe.Get(targetFolderCode);
         if (targetFolder == null) return NotFound(AppLang.Target_folder_could_not_have_found);

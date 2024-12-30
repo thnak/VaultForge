@@ -210,9 +210,6 @@
     <data name="Create Account" xml:space="preserve">
     <value>アカウントを作成</value>
   </data>
-    <data name="Welcome back!" xml:space="preserve">
-    <value>.</value>
-  </data>
     <data name="To keep connected with us please login with your personal info" xml:space="preserve">
     <value>私たちとつながり続けるために、個人情報でログインしてください</value>
   </data>
@@ -270,18 +267,15 @@
     <data name="Create failed" xml:space="preserve">
     <value>생성 실패</value>
   </data>
-    <data name="Could not delete root folder" xml:space="preserve">
-    <value>.</value>
-  </data>
     <data name="Other operations" xml:space="preserve">
     <value>..</value>
   </data>
     <data name="Cancel" xml:space="preserve">
-    <value>.</value>
-  </data>
+      <value>キャンセル</value>
+    </data>
     <data name="Submit" xml:space="preserve">
-    <value>.</value>
-  </data>
+      <value>送信</value>
+    </data>
     <data name="FileName" xml:space="preserve">
     <value>.</value>
   </data>
@@ -291,9 +285,6 @@
     <data name="ReName" xml:space="preserve">
       <value>名前を変更</value>
     </data>
-    <data name="ThisFieldIsRequired" xml:space="preserve">
-    <value>...</value>
-  </data>
     <data name="You have been banned from logging in, please try again at X0" xml:space="preserve">
     <value>.</value>
   </data>
@@ -344,9 +335,6 @@
     </data>
     <data name="Status" xml:space="preserve">
       <value>ステータス</value>
-    </data>
-    <data name="Calibration time" xml:space="preserve">
-      <value>キャリブレーション時間</value>
     </data>
     <data name="Action" xml:space="preserve">
       <value>アクション</value>
@@ -595,7 +583,7 @@
       <value>コピーされました</value>
     </data>
     <data name="Reload_page_confirmation" xml:space="preserve">
-      <value>本当にページをリロードしますか？</value>
+      <value>本当にページを再読み込みしますか？</value>
     </data>
     <data name="Download" xml:space="preserve">
       <value>ダウンロード</value>
@@ -680,5 +668,158 @@
     </data>
     <data name="Installation_date" xml:space="preserve">
       <value>インストール日</value>
+    </data>
+    <data name="An_error_has_occurred" xml:space="preserve">
+      <value>エラーが発生しました</value>
+    </data>
+    <data name="Bookmark" xml:space="preserve">
+      <value>ブックマーク</value>
+    </data>
+    <data name="Browse_File_to_upload" xml:space="preserve">
+      <value>アップロードするファイルを参照</value>
+    </data>
+    <data name="Calibration_time" xml:space="preserve">
+      <value>キャリブレーション時間</value>
+    </data>
+    <data name="Cannot_delete_system_folder" xml:space="preserve">
+      <value>システムフォルダーを削除できません</value>
+    </data>
+    <data name="Could_not_delete_root_folder" xml:space="preserve">
+      <value>ルートフォルダーを削除できませんでした</value>
+    </data>
+    <data name="Could_not_remove_root_folder" xml:space="preserve">
+      <value>ルートフォルダーを削除できませんでした</value>
+    </data>
+    <data name="Create_new" xml:space="preserve">
+      <value>新規作成</value>
+    </data>
+    <data name="Current_folder_could_not_be_found" xml:space="preserve">
+      <value>現在のフォルダーが見つかりませんでした</value>
+    </data>
+    <data name="Delete_forever" xml:space="preserve">
+      <value>完全に削除</value>
+    </data>
+    <data name="Description" xml:space="preserve">
+      <value>説明</value>
+    </data>
+    <data name="File_name_invalid_character" xml:space="preserve">
+      <value>ファイル名に無効な文字が含まれています: {0}</value>
+    </data>
+    <data name="Folder_name_invalid_character" xml:space="preserve">
+      <value>フォルダー名に無効な文字が含まれています: {0}</value>
+    </data>
+    <data name="Folder_name" xml:space="preserve">
+      <value>フォルダー名</value>
+    </data>
+    <data name="Get_link" xml:space="preserve">
+      <value>リンクを取得</value>
+    </data>
+    <data name="Incorrect_operation" xml:space="preserve">
+      <value>不正な操作</value>
+    </data>
+    <data name="Info" xml:space="preserve">
+      <value>情報</value>
+    </data>
+    <data name="Invalid_key" xml:space="preserve">
+      <value>無効なキー</value>
+    </data>
+    <data name="Language" xml:space="preserve">
+      <value>言語</value>
+    </data>
+    <data name="Link" xml:space="preserve">
+      <value>リンク</value>
+    </data>
+    <data name="Loading" xml:space="preserve">
+      <value>読み込み中</value>
+    </data>
+    <data name="Move_to" xml:space="preserve">
+      <value>移動先</value>
+    </data>
+    <data name="Move_to_recycle_bin" xml:space="preserve">
+      <value>ゴミ箱に移動</value>
+    </data>
+    <data name="Move_{0}" xml:space="preserve">
+      <value>{0} を移動</value>
+    </data>
+    <data name="My_Drive" xml:space="preserve">
+      <value>マイドライブ</value>
+    </data>
+    <data name="New" xml:space="preserve">
+      <value>新しい</value>
+    </data>
+    <data name="New_folder" xml:space="preserve">
+      <value>新しいフォルダー</value>
+    </data>
+    <data name="Reconnecting" xml:space="preserve">
+      <value>再接続中</value>
+    </data>
+    <data name="Reload" xml:space="preserve">
+      <value>再読み込み</value>
+    </data>
+    <data name="Offline" xml:space="preserve">
+      <value>オフライン</value>
+    </data>
+    <data name="Online" xml:space="preserve">
+      <value>オンライン</value>
+    </data>
+    <data name="The_page_has_been_hidden" xml:space="preserve">
+      <value>ページが非表示になりました</value>
+    </data>
+    <data name="The_page_has_been_displayed" xml:space="preserve">
+      <value>ページが表示されました</value>
+    </data>
+    <data name="Share" xml:space="preserve">
+      <value>共有</value>
+    </data>
+    <data name="Sidebar" xml:space="preserve">
+      <value>サイドバー</value>
+    </data>
+    <data name="Successfully_uploaded" xml:space="preserve">
+      <value>アップロードに成功しました</value>
+    </data>
+    <data name="Tags" xml:space="preserve">
+      <value>タグ</value>
+    </data>
+    <data name="The_document_already_exists" xml:space="preserve">
+      <value>ドキュメントは既に存在します</value>
+    </data>
+    <data name="The_resource_you_are_looking_for_does_not_exist" xml:space="preserve">
+      <value>探しているリソースは存在しません</value>
+    </data>
+    <data name="This_resource_is_protected_by_password" xml:space="preserve">
+      <value>このリソースはパスワードで保護されています</value>
+    </data>
+    <data name="This_field_is_required" xml:space="preserve">
+      <value>このフィールドは必須です</value>
+    </data>
+    <data name="Title" xml:space="preserve">
+      <value>タイトル</value>
+    </data>
+    <data name="User_information_is_required" xml:space="preserve">
+      <value>ユーザー情報が必要です</value>
+    </data>
+    <data name="Welcome_back" xml:space="preserve">
+      <value>お帰りなさい！</value>
+    </data>
+    <data name="File_upload" xml:space="preserve">
+      <value>ファイルアップロード</value>
+    </data>
+    <data name="File_name" xml:space="preserve">
+      <value>ファイル名</value>
+    </data>
+    <data name="Folder_moved_successfully" xml:space="preserve">
+      <value>フォルダーが正常に移動されました</value>
+    </data>
+    <data name="Management" xml:space="preserve">
+      <value>管理</value>
+    </data>
+    <data name="Open" xml:space="preserve">
+      <value>開く</value>
+    </data>
+    <data name="Closed" xml:space="preserve">
+      <value>閉鎖された</value>
+    </data>
+    <data name="Recycle_bin" xml:space="preserve">
+      <value>ごみ箱</value>
     </data>
 </root>

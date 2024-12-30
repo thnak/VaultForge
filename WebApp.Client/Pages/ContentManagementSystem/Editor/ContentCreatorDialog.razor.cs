@@ -61,15 +61,15 @@ public partial class ContentCreatorDialog : ComponentBase, IDisposable, IAsyncDi
         {
             Hub = hubConnection;
             RuleFor(x => x.Title)
-                .NotEmpty().WithMessage(AppLang.ThisFieldIsRequired)
+                .NotEmpty().WithMessage(AppLang.Required_field)
                 .Length(1, 100).MustAsync(TitleCheckAsync).WithMessage(Existing);
 
             RuleFor(x => x.Language)
-                .NotEmpty().WithMessage(AppLang.ThisFieldIsRequired)
+                .NotEmpty().WithMessage(AppLang.Required_field)
                 .Length(1, 100).MustAsync(TitleCheckAsync).WithMessage(Existing);
 
             RuleFor(x => x.Summary)
-                .NotEmpty().WithMessage(AppLang.ThisFieldIsRequired)
+                .NotEmpty().WithMessage(AppLang.Required_field)
                 .Length(1, 100);
         }
 

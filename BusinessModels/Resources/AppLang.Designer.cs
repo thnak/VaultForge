@@ -141,6 +141,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Đã xảy ra lỗi.
+        /// </summary>
+        public static string An_error_has_occurred {
+            get {
+                return ResourceManager.GetString("An_error_has_occurred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lỗi đã được phát hiện.
         /// </summary>
         public static string An_exception_has_been_found {
@@ -258,11 +267,11 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Duyệt tập tin để tải lên.
+        ///   Looks up a localized string similar to Duyệt tệp để tải lên.
         /// </summary>
         public static string Browse_File_to_upload {
             get {
-                return ResourceManager.GetString("Browse File to upload", resourceCulture);
+                return ResourceManager.GetString("Browse_File_to_upload", resourceCulture);
             }
         }
         
@@ -271,12 +280,12 @@ namespace BusinessModels.Resources {
         /// </summary>
         public static string Calibration_time {
             get {
-                return ResourceManager.GetString("Calibration time", resourceCulture);
+                return ResourceManager.GetString("Calibration_time", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hủy.
+        ///   Looks up a localized string similar to Hủy bỏ.
         /// </summary>
         public static string Cancel {
             get {
@@ -289,7 +298,7 @@ namespace BusinessModels.Resources {
         /// </summary>
         public static string Cannot_delete_system_folder {
             get {
-                return ResourceManager.GetString("Cannot delete system folder", resourceCulture);
+                return ResourceManager.GetString("Cannot_delete_system_folder", resourceCulture);
             }
         }
         
@@ -317,6 +326,15 @@ namespace BusinessModels.Resources {
         public static string Close {
             get {
                 return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Đã đóng.
+        /// </summary>
+        public static string Closed {
+            get {
+                return ResourceManager.GetString("Closed", resourceCulture);
             }
         }
         
@@ -406,7 +424,7 @@ namespace BusinessModels.Resources {
         /// </summary>
         public static string Could_not_delete_root_folder {
             get {
-                return ResourceManager.GetString("Could not delete root folder", resourceCulture);
+                return ResourceManager.GetString("Could_not_delete_root_folder", resourceCulture);
             }
         }
         
@@ -420,11 +438,11 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Không thể xóa thư mục gốc.
+        ///   Looks up a localized string similar to Không thể xóa bỏ thư mục gốc.
         /// </summary>
         public static string Could_not_remove_root_folder {
             get {
-                return ResourceManager.GetString("Could not remove root folder", resourceCulture);
+                return ResourceManager.GetString("Could_not_remove_root_folder", resourceCulture);
             }
         }
         
@@ -451,7 +469,7 @@ namespace BusinessModels.Resources {
         /// </summary>
         public static string Create_new {
             get {
-                return ResourceManager.GetString("Create new", resourceCulture);
+                return ResourceManager.GetString("Create_new", resourceCulture);
             }
         }
         
@@ -467,9 +485,9 @@ namespace BusinessModels.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Không tìm thấy thư mục hiện tại.
         /// </summary>
-        public static string Current_folder_could_not_have_found {
+        public static string Current_folder_could_not_be_found {
             get {
-                return ResourceManager.GetString("Current folder could not have found", resourceCulture);
+                return ResourceManager.GetString("Current_folder_could_not_be_found", resourceCulture);
             }
         }
         
@@ -532,7 +550,7 @@ namespace BusinessModels.Resources {
         /// </summary>
         public static string Delete_forever {
             get {
-                return ResourceManager.GetString("Delete forever", resourceCulture);
+                return ResourceManager.GetString("Delete_forever", resourceCulture);
             }
         }
         
@@ -780,11 +798,20 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tên tập tin mục chứa ký tự không hợp lệ: {0}.
+        ///   Looks up a localized string similar to Tên tệp.
         /// </summary>
-        public static string File_name_contains_invalid_character__x {
+        public static string File_name {
             get {
-                return ResourceManager.GetString("File name contains invalid character: x", resourceCulture);
+                return ResourceManager.GetString("File_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên tệp chứa ký tự không hợp lệ: {0}.
+        /// </summary>
+        public static string File_name_invalid_character {
+            get {
+                return ResourceManager.GetString("File_name_invalid_character", resourceCulture);
             }
         }
         
@@ -798,11 +825,11 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tải tập tin lên.
+        ///   Looks up a localized string similar to Tải lên tệp.
         /// </summary>
         public static string File_upload {
             get {
-                return ResourceManager.GetString("File upload", resourceCulture);
+                return ResourceManager.GetString("File_upload", resourceCulture);
             }
         }
         
@@ -879,20 +906,29 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Di chuyển thư mục thành công.
+        ///   Looks up a localized string similar to Thư mục đã được di chuyển thành công.
         /// </summary>
         public static string Folder_moved_successfully {
             get {
-                return ResourceManager.GetString("Folder moved successfully", resourceCulture);
+                return ResourceManager.GetString("Folder_moved_successfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tên thư mục.
+        /// </summary>
+        public static string Folder_name {
+            get {
+                return ResourceManager.GetString("Folder_name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Tên thư mục chứa ký tự không hợp lệ: {0}.
         /// </summary>
-        public static string Folder_name_contains_invalid_character__x {
+        public static string Folder_name_invalid_character {
             get {
-                return ResourceManager.GetString("Folder name contains invalid character: x", resourceCulture);
+                return ResourceManager.GetString("Folder_name_invalid_character", resourceCulture);
             }
         }
         
@@ -906,11 +942,11 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nhận liên kết.
+        ///   Looks up a localized string similar to Lấy liên kết.
         /// </summary>
         public static string Get_link {
             get {
-                return ResourceManager.GetString("Get link", resourceCulture);
+                return ResourceManager.GetString("Get_link", resourceCulture);
             }
         }
         
@@ -1005,11 +1041,11 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thao tác không đúng.
+        ///   Looks up a localized string similar to Thao tác không chính xác.
         /// </summary>
         public static string Incorrect_operation {
             get {
-                return ResourceManager.GetString("Incorrect operation", resourceCulture);
+                return ResourceManager.GetString("Incorrect_operation", resourceCulture);
             }
         }
         
@@ -1113,7 +1149,7 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Đường dẫn.
+        ///   Looks up a localized string similar to Liên kết.
         /// </summary>
         public static string Link {
             get {
@@ -1252,7 +1288,7 @@ namespace BusinessModels.Resources {
         /// </summary>
         public static string Move__0_ {
             get {
-                return ResourceManager.GetString("Move _0_", resourceCulture);
+                return ResourceManager.GetString("Move_{0}", resourceCulture);
             }
         }
         
@@ -1261,25 +1297,25 @@ namespace BusinessModels.Resources {
         /// </summary>
         public static string Move_to {
             get {
-                return ResourceManager.GetString("Move to", resourceCulture);
+                return ResourceManager.GetString("Move_to", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Di chuyển vào thùng rác.
+        ///   Looks up a localized string similar to Di chuyển đến thùng rác.
         /// </summary>
         public static string Move_to_recycle_bin {
             get {
-                return ResourceManager.GetString("Move to recycle bin", resourceCulture);
+                return ResourceManager.GetString("Move_to_recycle_bin", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drive của tôi.
+        ///   Looks up a localized string similar to Ổ đĩa của tôi.
         /// </summary>
         public static string My_Drive {
             get {
-                return ResourceManager.GetString("My Drive", resourceCulture);
+                return ResourceManager.GetString("My_Drive", resourceCulture);
             }
         }
         
@@ -1302,11 +1338,11 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thư mực mới.
+        ///   Looks up a localized string similar to Thư mục mới.
         /// </summary>
         public static string New_folder {
             get {
-                return ResourceManager.GetString("New folder", resourceCulture);
+                return ResourceManager.GetString("New_folder", resourceCulture);
             }
         }
         
@@ -1329,11 +1365,29 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ngoại tuyến.
+        /// </summary>
+        public static string Offline {
+            get {
+                return ResourceManager.GetString("Offline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vui lòng đợi một lát.
         /// </summary>
         public static string One_moment_please {
             get {
                 return ResourceManager.GetString("One moment please", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trực tuyến.
+        /// </summary>
+        public static string Online {
+            get {
+                return ResourceManager.GetString("Online", resourceCulture);
             }
         }
         
@@ -1478,7 +1532,7 @@ namespace BusinessModels.Resources {
         /// </summary>
         public static string Recycle_bin {
             get {
-                return ResourceManager.GetString("Recycle bin", resourceCulture);
+                return ResourceManager.GetString("Recycle_bin", resourceCulture);
             }
         }
         
@@ -1865,7 +1919,7 @@ namespace BusinessModels.Resources {
         /// </summary>
         public static string Successfully_uploaded {
             get {
-                return ResourceManager.GetString("Successfully uploaded", resourceCulture);
+                return ResourceManager.GetString("Successfully_uploaded", resourceCulture);
             }
         }
         
@@ -1915,11 +1969,29 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The document already exists.
+        ///   Looks up a localized string similar to Tài liệu đã tồn tại.
         /// </summary>
         public static string The_document_already_exists {
             get {
-                return ResourceManager.GetString("The document already exists", resourceCulture);
+                return ResourceManager.GetString("The_document_already_exists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trang đã được hiển thị.
+        /// </summary>
+        public static string The_page_has_been_displayed {
+            get {
+                return ResourceManager.GetString("The_page_has_been_displayed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trang đã bị ẩn.
+        /// </summary>
+        public static string The_page_has_been_hidden {
+            get {
+                return ResourceManager.GetString("The_page_has_been_hidden", resourceCulture);
             }
         }
         
@@ -1938,7 +2010,7 @@ namespace BusinessModels.Resources {
         /// </summary>
         public static string The_resource_you_are_looking_for_does_not_exist {
             get {
-                return ResourceManager.GetString("The resource you are looking for does not exist", resourceCulture);
+                return ResourceManager.GetString("The_resource_you_are_looking_for_does_not_exist", resourceCulture);
             }
         }
         
@@ -1961,20 +2033,11 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Đây là trường bắt buộc.
-        /// </summary>
-        public static string This_field_is_required {
-            get {
-                return ResourceManager.GetString("This field is required", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Tài nguyên này được bảo vệ bởi mật khẩu.
+        ///   Looks up a localized string similar to Tài nguyên này được bảo vệ bằng mật khẩu.
         /// </summary>
         public static string This_resource_is_protected_by_password {
             get {
-                return ResourceManager.GetString("This resource is protected by password", resourceCulture);
+                return ResourceManager.GetString("This_resource_is_protected_by_password", resourceCulture);
             }
         }
         
@@ -1984,15 +2047,6 @@ namespace BusinessModels.Resources {
         public static string This_resource_requires_X0_years_old {
             get {
                 return ResourceManager.GetString("This resource requires X0 years old", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Trường này là bắt buộc.
-        /// </summary>
-        public static string ThisFieldIsRequired {
-            get {
-                return ResourceManager.GetString("ThisFieldIsRequired", resourceCulture);
             }
         }
         
@@ -2145,7 +2199,7 @@ namespace BusinessModels.Resources {
         /// </summary>
         public static string User_information_is_required {
             get {
-                return ResourceManager.GetString("User information is required", resourceCulture);
+                return ResourceManager.GetString("User_information_is_required", resourceCulture);
             }
         }
         
@@ -2260,9 +2314,9 @@ namespace BusinessModels.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Chào mừng trở lại!.
         /// </summary>
-        public static string Welcome_back_ {
+        public static string Welcome_back {
             get {
-                return ResourceManager.GetString("Welcome back!", resourceCulture);
+                return ResourceManager.GetString("Welcome_back", resourceCulture);
             }
         }
         

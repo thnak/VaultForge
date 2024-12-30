@@ -210,9 +210,6 @@
     <data name="Create Account" xml:space="preserve">
     <value>Konto erstellen</value>
   </data>
-    <data name="Welcome back!" xml:space="preserve">
-    <value>.</value>
-  </data>
     <data name="To keep connected with us please login with your personal info" xml:space="preserve">
     <value>Um mit uns verbunden zu bleiben, melden Sie sich bitte mit Ihren persönlichen Daten an</value>
   </data>
@@ -274,11 +271,11 @@
     <value>.</value>
   </data>
     <data name="Cancel" xml:space="preserve">
-    <value>.</value>
-  </data>
+      <value>Abbrechen</value>
+    </data>
     <data name="Submit" xml:space="preserve">
-    <value>.</value>
-  </data>
+      <value>Einreichen</value>
+    </data>
     <data name="FileName" xml:space="preserve">
     <value>Fil</value>
   </data>
@@ -288,17 +285,11 @@
     <data name="ReName" xml:space="preserve">
       <value>Umbenennen</value>
     </data>
-    <data name="ThisFieldIsRequired" xml:space="preserve">
-    <value>.</value>
-  </data>
     <data name="You have been banned from logging in, please try again at X0" xml:space="preserve">
     <value>.</value>
   </data>
     <data name="This resource requires X0 years old" xml:space="preserve">
     <value>Diese Ressource muss X0 Jahre alt sein</value>
-  </data>
-    <data name="Folder moved successfully" xml:space="preserve">
-    <value>Folder moved successfully</value>
   </data>
     <data name="DeviceManagement" xml:space="preserve">
       <value>Geräteverwaltung</value>
@@ -344,9 +335,6 @@
     </data>
     <data name="Status" xml:space="preserve">
       <value>Status</value>
-    </data>
-    <data name="Calibration time" xml:space="preserve">
-      <value>Kalibrierungszeit</value>
     </data>
     <data name="Action" xml:space="preserve">
       <value>Aktion</value>
@@ -683,5 +671,158 @@
     </data>
     <data name="Installation_date" xml:space="preserve">
       <value>Installationsdatum</value>
+    </data>
+    <data name="An_error_has_occurred" xml:space="preserve">
+      <value>Ein Fehler ist aufgetreten</value>
+    </data>
+    <data name="Bookmark" xml:space="preserve">
+      <value>Lesezeichen</value>
+    </data>
+    <data name="Browse_File_to_upload" xml:space="preserve">
+      <value>Datei zum Hochladen durchsuchen</value>
+    </data>
+    <data name="Calibration_time" xml:space="preserve">
+      <value>Kalibrierzeit</value>
+    </data>
+    <data name="Cannot_delete_system_folder" xml:space="preserve">
+      <value>Systemordner kann nicht gelöscht werden</value>
+    </data>
+    <data name="Could_not_delete_root_folder" xml:space="preserve">
+      <value>Root-Ordner konnte nicht gelöscht werden</value>
+    </data>
+    <data name="Could_not_remove_root_folder" xml:space="preserve">
+      <value>Root-Ordner konnte nicht entfernt werden</value>
+    </data>
+    <data name="Create_new" xml:space="preserve">
+      <value>Neu erstellen</value>
+    </data>
+    <data name="Current_folder_could_not_be_found" xml:space="preserve">
+      <value>Aktueller Ordner konnte nicht gefunden werden</value>
+    </data>
+    <data name="Delete_forever" xml:space="preserve">
+      <value>Für immer löschen</value>
+    </data>
+    <data name="Description" xml:space="preserve">
+      <value>Beschreibung</value>
+    </data>
+    <data name="File_name_invalid_character" xml:space="preserve">
+      <value>Dateiname enthält ein ungültiges Zeichen: {0}</value>
+    </data>
+    <data name="Folder_name_invalid_character" xml:space="preserve">
+      <value>Ordnername enthält ein ungültiges Zeichen: {0}</value>
+    </data>
+    <data name="Folder_name" xml:space="preserve">
+      <value>Ordnername</value>
+    </data>
+    <data name="Get_link" xml:space="preserve">
+      <value>Link abrufen</value>
+    </data>
+    <data name="Incorrect_operation" xml:space="preserve">
+      <value>Falscher Vorgang</value>
+    </data>
+    <data name="Info" xml:space="preserve">
+      <value>Info</value>
+    </data>
+    <data name="Invalid_key" xml:space="preserve">
+      <value>Ungültiger Schlüssel</value>
+    </data>
+    <data name="Language" xml:space="preserve">
+      <value>Sprache</value>
+    </data>
+    <data name="Link" xml:space="preserve">
+      <value>Link</value>
+    </data>
+    <data name="Loading" xml:space="preserve">
+      <value>Laden</value>
+    </data>
+    <data name="Move_to" xml:space="preserve">
+      <value>Verschieben nach</value>
+    </data>
+    <data name="Move_to_recycle_bin" xml:space="preserve">
+      <value>In den Papierkorb verschieben</value>
+    </data>
+    <data name="Move_{0}" xml:space="preserve">
+      <value>Verschieben {0}</value>
+    </data>
+    <data name="My_Drive" xml:space="preserve">
+      <value>Mein Laufwerk</value>
+    </data>
+    <data name="New" xml:space="preserve">
+      <value>Neu</value>
+    </data>
+    <data name="New_folder" xml:space="preserve">
+      <value>Neuer Ordner</value>
+    </data>
+    <data name="Reconnecting" xml:space="preserve">
+      <value>Wiederverbinden</value>
+    </data>
+    <data name="Reload" xml:space="preserve">
+      <value>Neu laden</value>
+    </data>
+    <data name="Offline" xml:space="preserve">
+      <value>Offline</value>
+    </data>
+    <data name="Online" xml:space="preserve">
+      <value>Online</value>
+    </data>
+    <data name="The_page_has_been_hidden" xml:space="preserve">
+      <value>Die Seite wurde ausgeblendet</value>
+    </data>
+    <data name="The_page_has_been_displayed" xml:space="preserve">
+      <value>Die Seite wurde angezeigt</value>
+    </data>
+    <data name="Share" xml:space="preserve">
+      <value>Teilen</value>
+    </data>
+    <data name="Sidebar" xml:space="preserve">
+      <value>Seitenleiste</value>
+    </data>
+    <data name="Successfully_uploaded" xml:space="preserve">
+      <value>Erfolgreich hochgeladen</value>
+    </data>
+    <data name="Tags" xml:space="preserve">
+      <value>Tags</value>
+    </data>
+    <data name="The_document_already_exists" xml:space="preserve">
+      <value>Das Dokument existiert bereits</value>
+    </data>
+    <data name="The_resource_you_are_looking_for_does_not_exist" xml:space="preserve">
+      <value>Die gesuchte Ressource existiert nicht</value>
+    </data>
+    <data name="This_resource_is_protected_by_password" xml:space="preserve">
+      <value>Diese Ressource ist durch ein Passwort geschützt</value>
+    </data>
+    <data name="This_field_is_required" xml:space="preserve">
+      <value>Dieses Feld ist erforderlich</value>
+    </data>
+    <data name="Title" xml:space="preserve">
+      <value>Titel</value>
+    </data>
+    <data name="User_information_is_required" xml:space="preserve">
+      <value>Benutzerinformationen sind erforderlich</value>
+    </data>
+    <data name="Welcome_back" xml:space="preserve">
+      <value>Willkommen zurück!</value>
+    </data>
+    <data name="File_upload" xml:space="preserve">
+      <value>Datei hochladen</value>
+    </data>
+    <data name="File_name" xml:space="preserve">
+      <value>Dateiname</value>
+    </data>
+    <data name="Folder_moved_successfully" xml:space="preserve">
+      <value>Ordner erfolgreich verschoben</value>
+    </data>
+    <data name="Management" xml:space="preserve">
+      <value>Verwaltung</value>
+    </data>
+    <data name="Open" xml:space="preserve">
+      <value>Öffnen</value>
+    </data>
+    <data name="Closed" xml:space="preserve">
+      <value>Geschlossen</value>
+    </data>
+    <data name="Recycle_bin" xml:space="preserve">
+      <value>Papierkorb</value>
     </data>
 </root>

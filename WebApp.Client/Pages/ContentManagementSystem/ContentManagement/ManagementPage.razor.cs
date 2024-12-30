@@ -118,19 +118,7 @@ public partial class ManagementPage : ComponentBase, IAsyncDisposable, IDisposab
 
     private async Task DeleteItem(ArticleModel contextItem)
     {
-        var param = new DialogParameters<ConfirmDialog>()
-        {
-            {
-                x => x.DataModel, new DialogConfirmDataModel()
-                {
-                    Icon = Icons.Material.Filled.Delete,
-                    Message = $"{AppLang.Delete} {contextItem.Title} ({contextItem.Language})",
-                }
-            }
-        };
-        var dialog = await DialogService.ShowAsync<ConfirmDialog>(AppLang.Warning, param);
-        var dialogResult = await dialog.Result;
-        if (dialogResult is { Canceled: false })
+        if (await DialogService.OpenConfirmDialogAsync(AppLang.Warning, Icons.Material.Filled.Delete, $"{AppLang.Delete} {contextItem.Title} ({contextItem.Language})"))
         {
             if (Hub != null)
             {
