@@ -135,7 +135,7 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
                         Sensors = Sensors.Select(x => x.IoTSensor).ToList()
                     };
                     var textPlant = new StringContent(requestToCreate.ToJson(), Encoding.UTF8, MediaTypeNames.Application.Json);
-                    var result = await ApiService.PostAsync<string>("/api/device/add-new-device", textPlant);
+                    var result = await ApiService.PostAsync("/api/device/add-new-device", textPlant);
                     if (result.IsSuccessStatusCode)
                     {
                         ToastService.ShowSuccess(result.Message, TypeClassList.ToastDefaultSetting);
@@ -165,7 +165,7 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
 
                     content.Add(new StringContent(DeviceToEdit.DeviceId), "deviceId");
                     content.Add(new StringContent(field2Update.GetJson()), "json");
-                    var result = await ApiService.PostAsync<string>("/api/device/update-device", content);
+                    var result = await ApiService.PostAsync("/api/device/update-device", content);
                     if (result.IsSuccessStatusCode)
                     {
                         ToastService.ShowSuccess(result.Message, TypeClassList.ToastDefaultSetting);

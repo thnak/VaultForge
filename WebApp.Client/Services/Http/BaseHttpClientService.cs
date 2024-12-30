@@ -61,6 +61,34 @@ public partial class BaseHttpClientService
 
         return responseData;
     }
+    
+    public async Task<ResponseDataResult<string>> PostAsync([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, HttpContent? content = null, CancellationToken cancellationToken = default, bool forceRedirect = true)
+    {
+        var responseData = new ResponseDataResult<string>();
+
+        try
+        {
+            var responseMessage = await HttpClient.PostAsync(requestUri, content, cancellationToken);
+            if (responseMessage is { StatusCode: HttpStatusCode.Redirect or HttpStatusCode.MovedPermanently })
+                if (responseMessage.Headers.Location != null)
+                {
+                    Navigation.NavigateTo(responseMessage.Headers.Location.ToString(), forceRedirect);
+                }
+
+            responseData.IsSuccessStatusCode = responseMessage.IsSuccessStatusCode;
+            responseData.StatusCode = responseMessage.StatusCode;
+
+            var responseText = await responseMessage.Content.ReadAsStringAsync(cancellationToken);
+            responseData.Message = responseText;
+            responseData.Data = responseText;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(AppLang.BaseHttpClientService_PostAsync__ERROR___0_, e.Message);
+        }
+
+        return responseData;
+    }
 
     public async Task<ResponseDataResult<T>> PutAsync<T>([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, HttpContent? content = null, CancellationToken cancellationToken = default, bool forceRedirect = true)
     {

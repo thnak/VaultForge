@@ -45,9 +45,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="shit">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="fix wrong type">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/General/Update/FieldUpdate.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/General/Update/FieldUpdate.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
@@ -176,10 +176,13 @@
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/General/Update/FieldUpdate.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/General/Update/FieldUpdate.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/General/Update/FieldUpdate.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/General/Update/FieldUpdate.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/General/Update/FieldUpdate.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/System/InternetOfThings/IoTSensor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -984,31 +987,7 @@
       <workItem from="1735441589446" duration="4101000" />
       <workItem from="1735445952880" duration="516000" />
       <workItem from="1735446594857" duration="20834000" />
-      <workItem from="1735518961438" duration="9640000" />
-    </task>
-    <task id="LOCAL-00491" summary="add open image">
-      <option name="closed" value="true" />
-      <created>1734971673663</created>
-      <option name="number" value="00491" />
-      <option name="presentableId" value="LOCAL-00491" />
-      <option name="project" value="LOCAL" />
-      <updated>1734971673663</updated>
-    </task>
-    <task id="LOCAL-00492" summary="fix out of range">
-      <option name="closed" value="true" />
-      <created>1735000934082</created>
-      <option name="number" value="00492" />
-      <option name="presentableId" value="LOCAL-00492" />
-      <option name="project" value="LOCAL" />
-      <updated>1735000934082</updated>
-    </task>
-    <task id="LOCAL-00493" summary="fix not update field">
-      <option name="closed" value="true" />
-      <created>1735001917782</created>
-      <option name="number" value="00493" />
-      <option name="presentableId" value="LOCAL-00493" />
-      <option name="project" value="LOCAL" />
-      <updated>1735001917782</updated>
+      <workItem from="1735518961438" duration="15824000" />
     </task>
     <task id="LOCAL-00494" summary="remove shit">
       <option name="closed" value="true" />
@@ -1378,7 +1357,31 @@
       <option name="project" value="LOCAL" />
       <updated>1735537477015</updated>
     </task>
-    <option name="localTasksCounter" value="540" />
+    <task id="LOCAL-00540" summary="bind value">
+      <option name="closed" value="true" />
+      <created>1735538026174</created>
+      <option name="number" value="00540" />
+      <option name="presentableId" value="LOCAL-00540" />
+      <option name="project" value="LOCAL" />
+      <updated>1735538026174</updated>
+    </task>
+    <task id="LOCAL-00541" summary="small update">
+      <option name="closed" value="true" />
+      <created>1735542653473</created>
+      <option name="number" value="00541" />
+      <option name="presentableId" value="LOCAL-00541" />
+      <option name="project" value="LOCAL" />
+      <updated>1735542653474</updated>
+    </task>
+    <task id="LOCAL-00542" summary="fix wrong type">
+      <option name="closed" value="true" />
+      <created>1735546335464</created>
+      <option name="number" value="00542" />
+      <option name="presentableId" value="LOCAL-00542" />
+      <option name="project" value="LOCAL" />
+      <updated>1735546335464</updated>
+    </task>
+    <option name="localTasksCounter" value="543" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1409,8 +1412,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="change to unix sec" />
-    <MESSAGE value="fix missing type" />
     <MESSAGE value="add new rule for sensor node" />
     <MESSAGE value="update language" />
     <MESSAGE value="use more text" />
@@ -1431,10 +1432,12 @@
     <MESSAGE value="fix not found issue" />
     <MESSAGE value="remove shit" />
     <MESSAGE value="serialize opject" />
-    <MESSAGE value="small update" />
     <MESSAGE value="update" />
     <MESSAGE value="shit" />
-    <option name="LAST_COMMIT_MESSAGE" value="shit" />
+    <MESSAGE value="bind value" />
+    <MESSAGE value="small update" />
+    <MESSAGE value="fix wrong type" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix wrong type" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

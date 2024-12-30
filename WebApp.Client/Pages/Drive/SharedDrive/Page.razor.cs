@@ -620,7 +620,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                     "newName");
                 formDataContent.Add(new StringContent(id, Encoding.UTF8, MediaTypeNames.Application.Json), "objectId");
 
-                var response = await baseClientService.PostAsync<string>(url, formDataContent, _cts.Token);
+                var response = await baseClientService.PostAsync(url, formDataContent, _cts.Token);
                 if (response.IsSuccessStatusCode)
                 {
                     ToastService.ShowSuccess(response.Message, TypeClassList.ToastDefaultSetting);
