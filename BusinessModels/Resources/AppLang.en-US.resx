@@ -848,4 +848,10 @@ ClientY: {1}</value>
     <data name="Server_overloaded_try_again_later" xml:space="preserve">
       <value>Server is overloaded, try again later.</value>
     </data>
+    <data name="Select_All" xml:space="preserve">
+      <value>Select All</value>
+    </data>
+    <data name="Installation_date" xml:space="preserve">
+      <value>Installation date</value>
+    </data>
 </root>

@@ -569,7 +569,7 @@ ClientY: {1}</value>
       <value>Hành động</value>
     </data>
     <data name="Device group" xml:space="preserve">
-      <value>장비 그룹</value>
+      <value>Nhóm thiết bị</value>
     </data>
     <data name="Manufacturer" xml:space="preserve">
       <value>Nhà sản xuất</value>
@@ -840,5 +840,11 @@ ClientY: {1}</value>
     </data>
     <data name="Server_overloaded_try_again_later" xml:space="preserve">
       <value>Máy chủ quá tải, vui lòng thử lại sau.</value>
+    </data>
+    <data name="Select_All" xml:space="preserve">
+      <value>Chọn tất cả</value>
+    </data>
+    <data name="Installation_date" xml:space="preserve">
+      <value>Ngày cài đặt</value>
     </data>
 </root>

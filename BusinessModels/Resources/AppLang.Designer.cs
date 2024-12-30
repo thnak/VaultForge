@@ -1032,6 +1032,15 @@ namespace BusinessModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ngày cài đặt.
+        /// </summary>
+        public static string Installation_date {
+            get {
+                return ResourceManager.GetString("Installation_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Khóa không hợp lệ.
         /// </summary>
         public static string Invalid_key {
@@ -1686,6 +1695,15 @@ namespace BusinessModels.Resources {
         public static string Second {
             get {
                 return ResourceManager.GetString("Second", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chọn tất cả.
+        /// </summary>
+        public static string Select_All {
+            get {
+                return ResourceManager.GetString("Select_All", resourceCulture);
             }
         }
         

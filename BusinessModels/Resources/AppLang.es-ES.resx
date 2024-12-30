@@ -675,4 +675,10 @@
     <data name="Server_overloaded_try_again_later" xml:space="preserve">
       <value>El servidor está sobrecargado, inténtalo más tarde.</value>
     </data>
+    <data name="Select_All" xml:space="preserve">
+      <value>Seleccionar todo</value>
+    </data>
+    <data name="Installation_date" xml:space="preserve">
+      <value>Fecha de instalación</value>
+    </data>
 </root>

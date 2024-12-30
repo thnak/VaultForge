@@ -850,4 +850,10 @@ ClientY: {1}</value>
     <data name="Server_overloaded_try_again_later" xml:space="preserve">
       <value>Máy chủ quá tải, vui lòng thử lại sau.</value>
     </data>
+    <data name="Select_All" xml:space="preserve">
+      <value>Chọn tất cả</value>
+    </data>
+    <data name="Installation_date" xml:space="preserve">
+      <value>Ngày cài đặt</value>
+    </data>
 </root>

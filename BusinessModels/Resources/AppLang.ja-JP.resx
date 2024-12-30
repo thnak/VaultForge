@@ -675,4 +675,10 @@
     <data name="Server_overloaded_try_again_later" xml:space="preserve">
       <value>サーバーが過負荷です。後でもう一度お試しください。</value>
     </data>
+    <data name="Select_All" xml:space="preserve">
+      <value>すべて選択</value>
+    </data>
+    <data name="Installation_date" xml:space="preserve">
+      <value>インストール日</value>
+    </data>
 </root>

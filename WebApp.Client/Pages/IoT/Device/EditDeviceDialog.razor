@@ -34,7 +34,7 @@
                         <EnumMudSelector T="IoTDeviceStatus" For="@(() => DeviceToEdit.Status)" LabelString="@AppLang.Status" @bind-SelectedValue="DeviceToEdit.Status"/>
 
 
-                        <MudDatePicker Label="Installation Date" Date="InstallationDate" DateChanged="InstallationDateChanged"></MudDatePicker>
+                        <MudDatePicker Label="@AppLang.Installation_date" Date="InstallationDate" DateChanged="InstallationDateChanged"></MudDatePicker>
 
                     </MudCardContent>
 
@@ -53,7 +53,7 @@
                         <PropertyColumn Property="x => x.IoTSensor.SensorName" Title="@AppLang.Name"/>
                         <PropertyColumn Property="x => x.IoTSensor.IoTSensorType" Title="@AppLang.Type"/>
                         <PropertyColumn Property="x => x.IoTSensor.Status" Title="@AppLang.Status"/>
-                        <PropertyColumn Property="x => x.IoTSensor.Rotate" Title="Rotate"/>
+                        <PropertyColumn Property="x => x.IoTSensor.Rotate" Title="@AppLang.Rotate"/>
                         
                         <PropertyColumn Property="x => x.IoTSensor.CalibrationTime" Title="@AppLang.Calibration_time"/>
 

@@ -45,9 +45,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="fix wrong type">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.vi-VN.resx" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Resources/AppLang.vi-VN.resx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Components/Field/EnumMudSelector.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Components/Field/EnumMudSelector.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
@@ -183,6 +185,7 @@
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Services/Http/BaseHttpClientService.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -987,15 +990,7 @@
       <workItem from="1735441589446" duration="4101000" />
       <workItem from="1735445952880" duration="516000" />
       <workItem from="1735446594857" duration="20834000" />
-      <workItem from="1735518961438" duration="15824000" />
-    </task>
-    <task id="LOCAL-00494" summary="remove shit">
-      <option name="closed" value="true" />
-      <created>1735002836771</created>
-      <option name="number" value="00494" />
-      <option name="presentableId" value="LOCAL-00494" />
-      <option name="project" value="LOCAL" />
-      <updated>1735002836771</updated>
+      <workItem from="1735518961438" duration="16968000" />
     </task>
     <task id="LOCAL-00495" summary="fix utc issue">
       <option name="closed" value="true" />
@@ -1381,7 +1376,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735546335464</updated>
     </task>
-    <option name="localTasksCounter" value="543" />
+    <task id="LOCAL-00543" summary="update">
+      <option name="closed" value="true" />
+      <created>1735547031934</created>
+      <option name="number" value="00543" />
+      <option name="presentableId" value="LOCAL-00543" />
+      <option name="project" value="LOCAL" />
+      <updated>1735547031934</updated>
+    </task>
+    <option name="localTasksCounter" value="544" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1432,12 +1435,12 @@
     <MESSAGE value="fix not found issue" />
     <MESSAGE value="remove shit" />
     <MESSAGE value="serialize opject" />
-    <MESSAGE value="update" />
     <MESSAGE value="shit" />
     <MESSAGE value="bind value" />
     <MESSAGE value="small update" />
     <MESSAGE value="fix wrong type" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix wrong type" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -678,4 +678,10 @@
     <data name="Server_overloaded_try_again_later" xml:space="preserve">
       <value>Server ist überlastet, versuchen Sie es später erneut.</value>
     </data>
+    <data name="Select_All" xml:space="preserve">
+      <value>Alles auswählen</value>
+    </data>
+    <data name="Installation_date" xml:space="preserve">
+      <value>Installationsdatum</value>
+    </data>
 </root>
