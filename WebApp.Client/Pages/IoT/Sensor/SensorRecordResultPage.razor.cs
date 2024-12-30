@@ -26,12 +26,8 @@ public partial class SensorRecordResultPage : ComponentBase, IDisposable
 
     private class FilterPageModel
     {
-        public IEnumerable<IoTDevice> SelectedDevices { get; set; } = [];
         public IoTDevice? SelectedDevice { get; set; }
         public IEnumerable<IoTSensor> Sensors { get; set; } = [];
-        public IoTSensor? SelectedSensor { get; set; }
-
-
         public DateRange DateRange { get; set; } = new() { Start = DateTime.Now, End = DateTime.Now };
     }
 
@@ -42,10 +38,9 @@ public partial class SensorRecordResultPage : ComponentBase, IDisposable
 
     private string DeviceSearchString { get; set; } = string.Empty;
 
-    private List<IoTDevice> DevicesList { get; set; } = new();
     private List<IoTSensor> SensorList { get; set; } = new();
-    private bool OpenFilterState { get; set; } = false;
-    private MudForm FilterForm { get; set; }
+    private bool OpenFilterState { get; set; }
+    private MudForm? FilterForm { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -75,7 +70,7 @@ public partial class SensorRecordResultPage : ComponentBase, IDisposable
             if (data.IsSuccessStatusCode)
             {
                 total = data.Data.Total;
-                records.AddRange(data.Data.Data ?? []);
+                records.AddRange(data.Data.Data);
             }
             else
             {
@@ -132,7 +127,7 @@ public partial class SensorRecordResultPage : ComponentBase, IDisposable
 
     private async Task SubmitFilter()
     {
-        await FilterForm.Validate();
+        await FilterForm!.Validate();
         if (FilterForm.IsValid)
         {
             await CancelFilter();
@@ -163,6 +158,6 @@ public partial class SensorRecordResultPage : ComponentBase, IDisposable
     public void Dispose()
     {
         _dataGrid?.Dispose();
-        FilterForm.Dispose();
+        FilterForm?.Dispose();
     }
 }

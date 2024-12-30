@@ -19,7 +19,7 @@
 
             <div class="d-flex flex-row gap-3">
                 <div class="page-content-container-search-field-width">
-                    <MudAutocomplete T="string" @bind-Value="DeviceSearchString" SearchFunc="SearchDevice" Placeholder="@AppLang.Search"
+                    <MudAutocomplete T="string" @bind-Value="DeviceSearchString" Placeholder="@AppLang.Search"
                                      Adornment="Adornment.Start" Margin="Margin.Dense" Variant="Variant.Outlined"
                                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0">
                         <ProgressIndicatorTemplate>
@@ -70,7 +70,9 @@
             <MudAutocomplete T="IoTDevice?" Value="_filterPage.SelectedDevice" Required RequiredError="@AppLang.Required_field" For="@(() => _filterPage.SelectedDevice)" ValueChanged="SelectedDeviceChanged"
                              SearchFunc="SearchDevice" ShowProgressIndicator="true" Label="@AppLang.Device" Variant="Variant.Outlined"></MudAutocomplete>
 
-            <MudSelect T="IoTSensor?" Variant="Variant.Outlined" Required RequiredError="@AppLang.Required_field" Label="@AppLang.Sensor" 
+            <MudSelect T="IoTSensor?" Variant="Variant.Outlined" MultiSelection="true" SelectAll="true" 
+                       SelectAllText="@AppLang.Select_All"
+                       Required RequiredError="@AppLang.Required_field" Label="@AppLang.Sensor" 
                        For="@(() => _filterPage.SelectedSensor)" @bind-SelectedValues="_filterPage.Sensors">
 
                 @foreach (var sensor in SensorList)
