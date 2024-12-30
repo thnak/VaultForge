@@ -158,7 +158,8 @@ public partial class EditDeviceDialog(ILogger<EditDeviceDialog> logger) : Compon
                         { x => x.Manufacturer, DeviceToEdit.Manufacturer },
                         { x => x.DeviceGroupId, DeviceToEdit.DeviceGroupId },
                         { x => x.Status, DeviceToEdit.Status },
-                        { x => x.IoTDeviceType, DeviceToEdit.IoTDeviceType }
+                        { x => x.IoTDeviceType, DeviceToEdit.IoTDeviceType },
+                        { x => x.FirmwareVersion, DeviceToEdit.FirmwareVersion }
                     };
                     using var content = new MultipartFormDataContent();
 
