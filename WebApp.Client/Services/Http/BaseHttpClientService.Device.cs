@@ -15,10 +15,10 @@ public partial class BaseHttpClientService
 
     public async Task<List<IoTDevice>> SearchDevicesAsync(string query, CancellationToken cancellationToken = default)
     {
-        var result = await GetAsync<List<IoTDevice>>($"api/device/search-device?searchString={query}", cancellationToken);
+        var result = await GetAsync<List<IoTDevice>>($"api/device/search-device?searchString={Uri.EscapeDataString(query)}", cancellationToken);
         if (result.IsSuccessStatusCode)
             return result.Data;
-        
+
         Logger.LogWarning(result.Message);
         return [];
     }

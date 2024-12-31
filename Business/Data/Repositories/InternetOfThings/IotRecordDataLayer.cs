@@ -45,23 +45,15 @@ public class IotRecordDataLayer : IIotRecordDataLayer
     {
         IndexKeysDefinition<IoTRecord>[] indexKeysDefinitions =
         [
+            Builders<IoTRecord>.IndexKeys.Ascending(x => x.Id),
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date),
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Hour),
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.CreateTime).Ascending(x => x.Metadata.SensorId),
         ];
-
-        IndexKeysDefinition<IoTRecord>[] uniqueIndexKeysDefinitions =
-        [
-            Builders<IoTRecord>.IndexKeys.Ascending(x => x.Id),
-        ];
-
-
+        
         await _dataDb.Indexes.DropAllAsync(cancellationToken);
-
         var indexModels = indexKeysDefinitions.Select(x => new CreateIndexModel<IoTRecord>(x));
-        var uniqueIndexModels = uniqueIndexKeysDefinitions.Select(x => new CreateIndexModel<IoTRecord>(x, new CreateIndexOptions { Unique = true }));
         await _dataDb.Indexes.CreateManyAsync(indexModels, cancellationToken);
-        await _dataDb.Indexes.CreateManyAsync(uniqueIndexModels, cancellationToken);
 
         return await Task.FromResult((true, string.Empty));
     }

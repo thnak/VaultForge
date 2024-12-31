@@ -8,6 +8,7 @@ using Business.Data.Interfaces.Advertisement;
 using Business.Data.Interfaces.Chat;
 using Business.Data.Interfaces.ComputeVision;
 using Business.Data.Interfaces.FileSystem;
+using Business.Data.Interfaces.InternetOfThings;
 using Business.Data.Interfaces.User;
 using Business.Data.Interfaces.VectorDb;
 using Business.Data.Interfaces.Wiki;
@@ -51,6 +52,9 @@ public class HostApplicationLifetimeEventsHostedService(
         await QueueInitializationTask<IWikipediaDataLayer>(cancellationToken);
         await QueueInitializationTask<RedundantArrayOfIndependentDisks>(cancellationToken);
         await QueueInitializationTask<IYoloLabelDataLayer>(cancellationToken);
+        await QueueInitializationTask<IIotDeviceDataLayer>(cancellationToken);
+        await QueueInitializationTask<IIotSensorDataLayer>(cancellationToken);
+        await QueueInitializationTask<IIotRecordDataLayer>(cancellationToken);
 
 
         await QueueInitializationExtendServiceTask<IFolderSystemBusinessLayer>(cancellationToken);

@@ -45,9 +45,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update">
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Utils/SearchEngineExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Utils/SearchEngineExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Device/DeviceController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Device/DeviceController.Read.cs" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update bl">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/HostedServices/Base/HostApplicationLifetimeEventsHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostedServices/Base/HostApplicationLifetimeEventsHostedService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.Device.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.Device.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
@@ -168,6 +173,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e862b2dbf388458c8b8c44c404dbc872b94e4a936e352de3d30a8f52729573c/MudSelect.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e8aee3972f4f46ef190c2b4224be16d75e671b3496b06c7b50b6cbe2418e38/EndPointHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f08263c1b162536d21bcac5d3d5599c6108a7df0503ecd6facc435edad3ead4/INumber.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f6bac6c9ecc68b194f8bf9bc05091eea8de3c63a8f2efd73b05a3c783f1474/ServiceCollectionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f77be22079eb1bdddcd5dbcd5df7fecbed559688b86a491da2be84d9f269191/StringValues.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fd5df964a94a255455f7b077e863af646a024518fa7703879230fff599b192/OrtIoBinding.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fe3b1716bf2f8f83ac793e7e3faa60f88a7868347653f77591f74b86d0d97675/Server.cs" root0="FORCE_HIGHLIGHTING" />
@@ -985,23 +991,8 @@
       <workItem from="1735564046832" duration="11035000" />
       <workItem from="1735603839790" duration="1090000" />
       <workItem from="1735605021943" duration="1194000" />
-      <workItem from="1735611960658" duration="2967000" />
-    </task>
-    <task id="LOCAL-00506" summary="fix wrong implement">
-      <option name="closed" value="true" />
-      <created>1735188962863</created>
-      <option name="number" value="00506" />
-      <option name="presentableId" value="LOCAL-00506" />
-      <option name="project" value="LOCAL" />
-      <updated>1735188962864</updated>
-    </task>
-    <task id="LOCAL-00507" summary="show error">
-      <option name="closed" value="true" />
-      <created>1735189122404</created>
-      <option name="number" value="00507" />
-      <option name="presentableId" value="LOCAL-00507" />
-      <option name="project" value="LOCAL" />
-      <updated>1735189122404</updated>
+      <workItem from="1735611960658" duration="4201000" />
+      <workItem from="1735623983244" duration="1731000" />
     </task>
     <task id="LOCAL-00508" summary="change to unix sec">
       <option name="closed" value="true" />
@@ -1379,7 +1370,23 @@
       <option name="project" value="LOCAL" />
       <updated>1735619139387</updated>
     </task>
-    <option name="localTasksCounter" value="555" />
+    <task id="LOCAL-00555" summary="update search function">
+      <option name="closed" value="true" />
+      <created>1735619293942</created>
+      <option name="number" value="00555" />
+      <option name="presentableId" value="LOCAL-00555" />
+      <option name="project" value="LOCAL" />
+      <updated>1735619293942</updated>
+    </task>
+    <task id="LOCAL-00556" summary="update bl">
+      <option name="closed" value="true" />
+      <created>1735621060758</created>
+      <option name="number" value="00556" />
+      <option name="presentableId" value="LOCAL-00556" />
+      <option name="project" value="LOCAL" />
+      <updated>1735621060758</updated>
+    </task>
+    <option name="localTasksCounter" value="557" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1410,8 +1417,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="remove duplicate resource" />
-    <MESSAGE value="add resource" />
     <MESSAGE value="add some bullshit service" />
     <MESSAGE value="update api, add new api, update language pack" />
     <MESSAGE value="restore LoggerServiceCollectionExtensions.cs" />
@@ -1435,7 +1440,9 @@
     <MESSAGE value="fix missing field" />
     <MESSAGE value="add cancel page" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="update search function" />
+    <MESSAGE value="update bl" />
+    <option name="LAST_COMMIT_MESSAGE" value="update bl" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

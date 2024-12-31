@@ -17,8 +17,8 @@ public class ThreadSafeSearchEngine<T> : IThreadSafeSearchEngine<T> where T : Ba
     private readonly FSDirectory _indexDirectory;
     private readonly QueryParser _queryParser;
     private readonly Analyzer _analyzer;
-    private readonly IndexReader _indexReader;
-    private readonly IndexSearcher _searcher;
+    private IndexReader? IndexReader { get; set; }
+    private IndexSearcher? Searcher { get; set; }
     private readonly ConcurrentDictionary<int, T> _items;
     private readonly Func<T, Document> _documentMapper;
 
@@ -27,8 +27,7 @@ public class ThreadSafeSearchEngine<T> : IThreadSafeSearchEngine<T> where T : Ba
         Directory.CreateDirectory(indexPath);
         _indexDirectory = FSDirectory.Open(indexPath);
         _analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
-        _indexReader = IndexReader.Open(_indexDirectory, true);
-        _searcher = new IndexSearcher(_indexReader);
+
         _queryParser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "name", _analyzer);
         _items = new ConcurrentDictionary<int, T>();
         _documentMapper = documentMapper;
@@ -42,8 +41,11 @@ public class ThreadSafeSearchEngine<T> : IThreadSafeSearchEngine<T> where T : Ba
             var doc = _documentMapper(item);
             writer.AddDocument(doc);
             var itemHash = item.GetHashCode();
-            _items.AddOrUpdate(itemHash, item, (key, old) => item);
+            _items.AddOrUpdate(itemHash, item, (_, _) => item);
         }
+
+        writer.Commit();
+        InitSearcher();
     }
 
     public async Task LoadAndIndexItems(IAsyncEnumerable<T> items)
@@ -54,20 +56,36 @@ public class ThreadSafeSearchEngine<T> : IThreadSafeSearchEngine<T> where T : Ba
             var doc = _documentMapper(item);
             writer.AddDocument(doc);
             var itemHash = item.GetHashCode();
-            _items.AddOrUpdate(itemHash, item, (key, old) => item);
+            _items.AddOrUpdate(itemHash, item, (_, _) => item);
         }
+
+        writer.Commit();
+        InitSearcher();
+    }
+
+    private void InitSearcher()
+    {
+        if (IndexReader != null)
+            IndexReader.Dispose();
+        if (Searcher != null)
+            Searcher.Dispose();
+        IndexReader = IndexReader.Open(_indexDirectory, true);
+        Searcher = new IndexSearcher(IndexReader);
     }
 
     public IEnumerable<T> Search(string query, int limit = 10)
     {
-        var hits = _searcher.Search(_queryParser.Parse(query), limit);
-        foreach (var hit in hits.ScoreDocs)
+        if (Searcher != null)
         {
-            var doc = _searcher.Doc(hit.Doc);
-            int itemId = int.Parse(doc.Get("id"));
-            if (_items.TryGetValue(itemId, out var item))
+            var hits = Searcher.Search(_queryParser.Parse(query), limit);
+            foreach (var hit in hits.ScoreDocs)
             {
-                yield return item;
+                var doc = Searcher.Doc(hit.Doc);
+                int itemId = int.Parse(doc.Get("id"));
+                if (_items.TryGetValue(itemId, out var item))
+                {
+                    yield return item;
+                }
             }
         }
     }
@@ -86,8 +104,8 @@ public class ThreadSafeSearchEngine<T> : IThreadSafeSearchEngine<T> where T : Ba
     // Dispose of resources when the object is no longer needed
     public void Dispose()
     {
-        _indexReader.Dispose();
-        _searcher.Dispose();
+        IndexReader?.Dispose();
+        Searcher?.Dispose();
         _indexDirectory.Dispose();
     }
 }

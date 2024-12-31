@@ -43,7 +43,7 @@ internal class Program
             return httpClient;
         });
 
-        builder.Services.AddSingleton<BaseHttpClientService>();
+        builder.Services.AddScoped<BaseHttpClientService>();
 
         #endregion
 
