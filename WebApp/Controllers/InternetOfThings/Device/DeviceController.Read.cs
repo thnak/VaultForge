@@ -54,7 +54,7 @@ public partial class DeviceController
     public async Task<IActionResult> SearchDeviceAsync(string searchString)
     {
         var cancelToken = HttpContext.RequestAborted;
-        var deviceCreateResult = deviceBusinessLayer.Where(x => x.DeviceName == searchString || x.MacAddress == searchString || x.IpAddress == searchString, cancelToken);
+        var deviceCreateResult = deviceBusinessLayer.Search(searchString, 10, cancelToken);
 
         List<IoTDevice> result = [];
         await foreach (var de in deviceCreateResult)

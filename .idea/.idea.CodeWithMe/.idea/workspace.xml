@@ -45,20 +45,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Business/Data/Interfaces/IThreadSafeSearchEngine.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/ThreadSafeDeviceSearchEngine.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Business/Data/Repositories/Utils/SearchEngineExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IIotSensorDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotSensorDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Business/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/packages.lock.json" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update">
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Utils/SearchEngineExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Utils/SearchEngineExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Device/DeviceController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Device/DeviceController.Read.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/packages.lock.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -995,15 +985,7 @@
       <workItem from="1735564046832" duration="11035000" />
       <workItem from="1735603839790" duration="1090000" />
       <workItem from="1735605021943" duration="1194000" />
-      <workItem from="1735611960658" duration="2590000" />
-    </task>
-    <task id="LOCAL-00505" summary="update filter">
-      <option name="closed" value="true" />
-      <created>1735187423331</created>
-      <option name="number" value="00505" />
-      <option name="presentableId" value="LOCAL-00505" />
-      <option name="project" value="LOCAL" />
-      <updated>1735187423331</updated>
+      <workItem from="1735611960658" duration="2967000" />
     </task>
     <task id="LOCAL-00506" summary="fix wrong implement">
       <option name="closed" value="true" />
@@ -1389,7 +1371,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735577254861</updated>
     </task>
-    <option name="localTasksCounter" value="554" />
+    <task id="LOCAL-00554" summary="update">
+      <option name="closed" value="true" />
+      <created>1735619139386</created>
+      <option name="number" value="00554" />
+      <option name="presentableId" value="LOCAL-00554" />
+      <option name="project" value="LOCAL" />
+      <updated>1735619139387</updated>
+    </task>
+    <option name="localTasksCounter" value="555" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1435,7 +1425,6 @@
     <MESSAGE value="shit" />
     <MESSAGE value="bind value" />
     <MESSAGE value="fix wrong type" />
-    <MESSAGE value="update" />
     <MESSAGE value="." />
     <MESSAGE value="json map" />
     <MESSAGE value="remove bullshit" />
@@ -1445,7 +1434,8 @@
     <MESSAGE value="fix error type" />
     <MESSAGE value="fix missing field" />
     <MESSAGE value="add cancel page" />
-    <option name="LAST_COMMIT_MESSAGE" value="add cancel page" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
