@@ -8,6 +8,7 @@ using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
+using Directory = System.IO.Directory;
 
 namespace Business.Data.Repositories;
 
@@ -23,6 +24,7 @@ public class ThreadSafeSearchEngine<T> : IThreadSafeSearchEngine<T> where T : Ba
 
     public ThreadSafeSearchEngine(string indexPath, Func<T, Document> documentMapper)
     {
+        Directory.CreateDirectory(indexPath);
         _indexDirectory = FSDirectory.Open(indexPath);
         _analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
         _indexReader = IndexReader.Open(_indexDirectory, true);
