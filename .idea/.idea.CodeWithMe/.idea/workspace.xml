@@ -46,9 +46,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Business/Data/Interfaces/IThreadSafeSearchEngine.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/ThreadSafeDeviceSearchEngine.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Business/Data/Repositories/Utils/SearchEngineExtensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IIotSensorDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotSensorDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Business/packages.lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/packages.lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/packages.lock.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -110,6 +120,7 @@
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Private.CoreLib/src/System/Threading/Tasks/Task.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Security.Cryptography/src/System/Security/Cryptography/X509Certificates/CertificatePal.Windows.Import.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Text.Json/src/System/Text/Json/Serialization/JsonConverterOfT.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/06f1cebe3a4b49688cb93231ee02bc5eb8000/67/561a064b/IndexReader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0fb7a5f343ed4578a15c716986a3f17950c00/7a/d308585c/NativeDateTimeResolver.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4992fbaf8fdc4e35afbc4135b809fa7329e30/e6/d3d3ecbc/OllamaEmbeddingGenerator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4f1fdec7cbfe4433a7ec3a6d1bd0e54223918/cd/d84d2cb7/ServiceCollectionServiceExtensions.cs" root0="FORCE_HIGHLIGHTING" />
@@ -173,21 +184,9 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff56e9dabec8513a52b6f0caca4a8979301377a3ae924a82a78d3c3dfd001c/TextOptions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/General/Update/FieldUpdate.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/General/Update/FieldUpdate.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/General/Update/FieldUpdate.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/General/Update/FieldUpdate.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/General/Update/FieldUpdate.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/Resources/AppLang.de-DE.resx" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/System/InternetOfThings/IoTDevice.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/System/InternetOfThings/IoTDevice.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/System/InternetOfThings/IoTSensor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/System/InternetOfThings/IoTSensor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Services/Http/BaseHttpClientService.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -993,62 +992,10 @@
       <workItem from="1735445952880" duration="516000" />
       <workItem from="1735446594857" duration="20834000" />
       <workItem from="1735518961438" duration="19933000" />
-    </task>
-    <task id="LOCAL-00498" summary="small update">
-      <option name="closed" value="true" />
-      <created>1735087491739</created>
-      <option name="number" value="00498" />
-      <option name="presentableId" value="LOCAL-00498" />
-      <option name="project" value="LOCAL" />
-      <updated>1735087491739</updated>
-    </task>
-    <task id="LOCAL-00499" summary="fix not found sub file resource">
-      <option name="closed" value="true" />
-      <created>1735088141149</created>
-      <option name="number" value="00499" />
-      <option name="presentableId" value="LOCAL-00499" />
-      <option name="project" value="LOCAL" />
-      <updated>1735088141149</updated>
-    </task>
-    <task id="LOCAL-00500" summary="update filter to get correct time">
-      <option name="closed" value="true" />
-      <created>1735088229431</created>
-      <option name="number" value="00500" />
-      <option name="presentableId" value="LOCAL-00500" />
-      <option name="project" value="LOCAL" />
-      <updated>1735088229431</updated>
-    </task>
-    <task id="LOCAL-00501" summary="add field">
-      <option name="closed" value="true" />
-      <created>1735097069346</created>
-      <option name="number" value="00501" />
-      <option name="presentableId" value="LOCAL-00501" />
-      <option name="project" value="LOCAL" />
-      <updated>1735097069347</updated>
-    </task>
-    <task id="LOCAL-00502" summary="update service">
-      <option name="closed" value="true" />
-      <created>1735121402521</created>
-      <option name="number" value="00502" />
-      <option name="presentableId" value="LOCAL-00502" />
-      <option name="project" value="LOCAL" />
-      <updated>1735121402522</updated>
-    </task>
-    <task id="LOCAL-00503" summary="dispose shit">
-      <option name="closed" value="true" />
-      <created>1735146381432</created>
-      <option name="number" value="00503" />
-      <option name="presentableId" value="LOCAL-00503" />
-      <option name="project" value="LOCAL" />
-      <updated>1735146381432</updated>
-    </task>
-    <task id="LOCAL-00504" summary="un">
-      <option name="closed" value="true" />
-      <created>1735176688157</created>
-      <option name="number" value="00504" />
-      <option name="presentableId" value="LOCAL-00504" />
-      <option name="project" value="LOCAL" />
-      <updated>1735176688157</updated>
+      <workItem from="1735564046832" duration="11035000" />
+      <workItem from="1735603839790" duration="1090000" />
+      <workItem from="1735605021943" duration="1194000" />
+      <workItem from="1735611960658" duration="2590000" />
     </task>
     <task id="LOCAL-00505" summary="update filter">
       <option name="closed" value="true" />
@@ -1386,7 +1333,63 @@
       <option name="project" value="LOCAL" />
       <updated>1735555565896</updated>
     </task>
-    <option name="localTasksCounter" value="547" />
+    <task id="LOCAL-00547" summary="small update">
+      <option name="closed" value="true" />
+      <created>1735571210814</created>
+      <option name="number" value="00547" />
+      <option name="presentableId" value="LOCAL-00547" />
+      <option name="project" value="LOCAL" />
+      <updated>1735571210814</updated>
+    </task>
+    <task id="LOCAL-00548" summary="small update">
+      <option name="closed" value="true" />
+      <created>1735573235222</created>
+      <option name="number" value="00548" />
+      <option name="presentableId" value="LOCAL-00548" />
+      <option name="project" value="LOCAL" />
+      <updated>1735573235222</updated>
+    </task>
+    <task id="LOCAL-00549" summary="add page size">
+      <option name="closed" value="true" />
+      <created>1735574599495</created>
+      <option name="number" value="00549" />
+      <option name="presentableId" value="LOCAL-00549" />
+      <option name="project" value="LOCAL" />
+      <updated>1735574599495</updated>
+    </task>
+    <task id="LOCAL-00550" summary="update page">
+      <option name="closed" value="true" />
+      <created>1735575778179</created>
+      <option name="number" value="00550" />
+      <option name="presentableId" value="LOCAL-00550" />
+      <option name="project" value="LOCAL" />
+      <updated>1735575778179</updated>
+    </task>
+    <task id="LOCAL-00551" summary="fix error type">
+      <option name="closed" value="true" />
+      <created>1735576258051</created>
+      <option name="number" value="00551" />
+      <option name="presentableId" value="LOCAL-00551" />
+      <option name="project" value="LOCAL" />
+      <updated>1735576258051</updated>
+    </task>
+    <task id="LOCAL-00552" summary="fix missing field">
+      <option name="closed" value="true" />
+      <created>1735576349689</created>
+      <option name="number" value="00552" />
+      <option name="presentableId" value="LOCAL-00552" />
+      <option name="project" value="LOCAL" />
+      <updated>1735576349689</updated>
+    </task>
+    <task id="LOCAL-00553" summary="add cancel page">
+      <option name="closed" value="true" />
+      <created>1735577254861</created>
+      <option name="number" value="00553" />
+      <option name="presentableId" value="LOCAL-00553" />
+      <option name="project" value="LOCAL" />
+      <updated>1735577254861</updated>
+    </task>
+    <option name="localTasksCounter" value="554" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1417,11 +1420,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fix wrong property" />
-    <MESSAGE value="fix worng value filter" />
-    <MESSAGE value="update pack" />
-    <MESSAGE value="update lang pack" />
-    <MESSAGE value="update language pack" />
     <MESSAGE value="remove duplicate resource" />
     <MESSAGE value="add resource" />
     <MESSAGE value="add some bullshit service" />
@@ -1436,13 +1434,18 @@
     <MESSAGE value="serialize opject" />
     <MESSAGE value="shit" />
     <MESSAGE value="bind value" />
-    <MESSAGE value="small update" />
     <MESSAGE value="fix wrong type" />
     <MESSAGE value="update" />
     <MESSAGE value="." />
     <MESSAGE value="json map" />
     <MESSAGE value="remove bullshit" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove bullshit" />
+    <MESSAGE value="small update" />
+    <MESSAGE value="add page size" />
+    <MESSAGE value="update page" />
+    <MESSAGE value="fix error type" />
+    <MESSAGE value="fix missing field" />
+    <MESSAGE value="add cancel page" />
+    <option name="LAST_COMMIT_MESSAGE" value="add cancel page" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

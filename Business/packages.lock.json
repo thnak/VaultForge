@@ -22,6 +22,15 @@
         "resolved": "1.0.0",
         "contentHash": "NopGvFsEOAoTrUijZ3dlSqemVm2jMYpcd+9qdlZomBF+oCzl1qaoA3perGrPIIW6649wu+ooQBASbfU6abDRFQ=="
       },
+      "Lucene.Net": {
+        "type": "Direct",
+        "requested": "[3.0.3, )",
+        "resolved": "3.0.3",
+        "contentHash": "A/70q4eDcuuafQeDB9eaiDP9FQG7X29T4VIYRphS7Wk8kAM9gNcfVqYyd0H8BJ1BTpA5C1ORm9RzFn4BiNavrw==",
+        "dependencies": {
+          "SharpZipLib": "0.86.0"
+        }
+      },
       "Microsoft.AspNetCore.Authentication.JwtBearer": {
         "type": "Direct",
         "requested": "[9.0.0, )",

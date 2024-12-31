@@ -177,6 +177,14 @@
         "resolved": "11.11.0",
         "contentHash": "cyIVdQBwSipxWG8MA3Rqox7iNbUNUTK5bfJi9tIdm4CAfH71Oo5ABLP4/QyrUwuakqpUEPGtE43BDddvEehuYw=="
       },
+      "Lucene.Net": {
+        "type": "Transitive",
+        "resolved": "3.0.3",
+        "contentHash": "A/70q4eDcuuafQeDB9eaiDP9FQG7X29T4VIYRphS7Wk8kAM9gNcfVqYyd0H8BJ1BTpA5C1ORm9RzFn4BiNavrw==",
+        "dependencies": {
+          "SharpZipLib": "0.86.0"
+        }
+      },
       "MathNet.Numerics.Signed": {
         "type": "Transitive",
         "resolved": "5.0.0",
@@ -2426,6 +2434,7 @@
           "BrainNet": "[1.0.0, )",
           "Build5Nines.SharpVector": "[1.0.0, )",
           "BusinessModels": "[1.0.0, )",
+          "Lucene.Net": "[3.0.3, )",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "[9.0.0, )",
           "Microsoft.AspNetCore.DataProtection": "[9.0.0, )",
           "Microsoft.AspNetCore.Http.Features": "[6.0.0-preview.4.21253.5, )",

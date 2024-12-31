@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.InternetOfThings;
+using Business.Data.Repositories.Utils;
 using Business.Models;
 using Business.Utils;
 using Business.Utils.Protector;
@@ -9,6 +10,7 @@ using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
+using Lucene.Net.Documents;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
@@ -20,10 +22,12 @@ public class IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDevi
 {
     private readonly IMongoCollection<IoTDevice> _data = context.MongoDatabase.GetCollection<IoTDevice>("IoTDevice");
     private readonly IDataProtector _protectionProvider = provider.CreateProtector("IoTDeviceDataLayerProtector");
+    private readonly ThreadSafeSearchEngine<IoTDevice> _threadSafeSearchEngine = new("IoTDevice", SearchEngineExtensions.IoTDeviceDocumentMapper);
+
 
     public void Dispose()
     {
-        //
+        _threadSafeSearchEngine.Dispose();
     }
 
     public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
@@ -39,7 +43,8 @@ public class IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDevi
             var uniqueIndexes = uniqueIndexesDefinitions.Select(x => new CreateIndexModel<IoTDevice>(x, new CreateIndexOptions { Unique = true }));
             await _data.Indexes.DropAllAsync(cancellationToken);
             await _data.Indexes.CreateManyAsync(uniqueIndexes, cancellationToken);
-
+            var cursor = GetAllAsync([], cancellationToken: cancellationToken);
+            await _threadSafeSearchEngine.LoadAndIndexItems(cursor);
             return (true, AppLang.Create_successfully);
         }
         catch (Exception e)
@@ -64,9 +69,13 @@ public class IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDevi
         return result;
     }
 
-    public IAsyncEnumerable<IoTDevice> Search(string queryString, int limit = 10, CancellationToken cancellationToken = default)
+    public async IAsyncEnumerable<IoTDevice> Search(string queryString, int limit = 10, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        await Task.Delay(1, cancellationToken);
+        foreach (var item in _threadSafeSearchEngine.Search(queryString, limit))
+        {
+            yield return item;
+        }
     }
 
     public IAsyncEnumerable<IoTDevice> FindAsync(FilterDefinition<IoTDevice> filter, CancellationToken cancellationToken = default)
