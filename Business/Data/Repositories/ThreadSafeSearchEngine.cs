@@ -99,6 +99,7 @@ public class ThreadSafeSearchEngine<T> : IThreadSafeSearchEngine<T> where T : Ba
         }
 
         _items.TryRemove(item.GetHashCode(), out _);
+        InitSearcher();
     }
 
     // Dispose of resources when the object is no longer needed
