@@ -14,7 +14,7 @@ public class BaseModelEntry
     [Key(0)]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [JsonConverter(typeof(ObjectIdConverter))]
-    public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
+    public ObjectId Id { get; } = ObjectId.GenerateNewId();
 
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(1)]

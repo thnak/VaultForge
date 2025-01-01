@@ -48,6 +48,11 @@ public class IoTDevice : BaseModelEntry
     {
         return DeviceName;
     }
+
+    public override int GetHashCode()
+    {
+        return Id.GetHashCode();
+    }
 }
 
 public class IoTDeviceFluentValidator : ExtendFluentValidator<IoTDevice>
