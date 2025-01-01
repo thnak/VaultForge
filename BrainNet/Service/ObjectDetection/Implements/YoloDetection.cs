@@ -25,7 +25,7 @@ public class YoloDetection : IYoloDetection
     private readonly IMemoryAllocatorService _memoryAllocatorService = new MemoryAllocatorService();
     private readonly IFontServiceProvider _fontServiceProvider = new FontServiceProvider();
     private readonly InferenceSession _session;
-    private IOptions<BrainNetSettingModel> Options { get; }
+    private IOptions<BrainNetSettingModel>? Options { get; }
     private string[] InputNames { get; set; } = null!;
     private string[] OutputNames { get; set; } = null!;
     public int[] InputDimensions { get; set; } = [];
@@ -74,7 +74,7 @@ public class YoloDetection : IYoloDetection
         var sessionOptions = new SessionOptions();
         // sessionOptions.RegisterOrtExtensions();
         sessionOptions.InitSessionOption();
-        // sessionOptions.InitExecutionProviderOptions(Options.Value.FaceEmbeddingSetting.DeviceIndex);
+        sessionOptions.InitExecutionProviderOptions(Options?.Value.FaceEmbeddingSetting.DeviceIndex ?? 0);
         return sessionOptions;
     }
 

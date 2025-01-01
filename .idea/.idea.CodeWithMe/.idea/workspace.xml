@@ -45,16 +45,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small fix">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="unsafe with objectid set to read only from BaseModelEntry.cs">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Base/BaseModelEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Base/BaseModelEntry.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Logging/UserLogModel.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FileInfoModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FileInfoModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FileRaidModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FileRaidModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FolderInfoModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FolderInfoModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTRecord.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTRecord.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTSensor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTSensor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloDetection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloDetection.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -185,6 +178,7 @@
     <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/Base/BaseModelEntry.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/Base/BaseModelEntry.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/Base/BaseModelEntry.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/System/InternetOfThings/IoTDevice.cs" root0="SKIP_HIGHLIGHTING" />
@@ -1003,15 +997,7 @@
       <workItem from="1735605021943" duration="1194000" />
       <workItem from="1735611960658" duration="4201000" />
       <workItem from="1735623983244" duration="6567000" />
-      <workItem from="1735694225070" duration="9197000" />
-    </task>
-    <task id="LOCAL-00515" summary="fix worng value filter">
-      <option name="closed" value="true" />
-      <created>1735270045173</created>
-      <option name="number" value="00515" />
-      <option name="presentableId" value="LOCAL-00515" />
-      <option name="project" value="LOCAL" />
-      <updated>1735270045174</updated>
+      <workItem from="1735694225070" duration="9708000" />
     </task>
     <task id="LOCAL-00516" summary="update">
       <option name="closed" value="true" />
@@ -1397,7 +1383,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735703883240</updated>
     </task>
-    <option name="localTasksCounter" value="564" />
+    <task id="LOCAL-00564" summary="unsafe with objectid set to read only from BaseModelEntry.cs">
+      <option name="closed" value="true" />
+      <created>1735706276831</created>
+      <option name="number" value="00564" />
+      <option name="presentableId" value="LOCAL-00564" />
+      <option name="project" value="LOCAL" />
+      <updated>1735706276831</updated>
+    </task>
+    <option name="localTasksCounter" value="565" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1428,7 +1422,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="update file format, update logic update" />
     <MESSAGE value="update style, fix update sensor" />
     <MESSAGE value="format cell" />
     <MESSAGE value="fix not found issue" />
@@ -1453,7 +1446,8 @@
     <MESSAGE value="small update" />
     <MESSAGE value="update" />
     <MESSAGE value="small fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="small fix" />
+    <MESSAGE value="unsafe with objectid set to read only from BaseModelEntry.cs" />
+    <option name="LAST_COMMIT_MESSAGE" value="unsafe with objectid set to read only from BaseModelEntry.cs" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1476,19 +1470,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="89" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Create.cs</url>
-          <line>60</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\WebApp\Controllers\InternetOfThings\Record\IoTController.Create.cs" containingFunctionPresentation="Method 'AddImage'">
-            <startOffsets>
-              <option value="2298" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2326" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="97" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">
