@@ -61,20 +61,20 @@
                 switch (status)
                 {
                     case ProcessStatus.Requesting:
-                        builder.AddAttribute(0, "class", "d-flex align-center flex-row gap-0 mud-chip-filled mud-chip-color-error rounded-pill py-1 pl-1");
+                        builder.AddAttribute(0, "class", "d-flex align-center flex-row gap-0 mud-chip-filled mud-chip-color-error rounded-pill pa-1");
                         break;
                     case ProcessStatus.Processing:
-                        builder.AddAttribute(0, "class", "d-flex align-center flex-row gap-0 mud-chip-filled mud-chip-color-primary rounded-pill py-1 pl-1");
+                        builder.AddAttribute(0, "class", "d-flex align-center flex-row gap-0 mud-chip-filled mud-chip-color-primary rounded-pill pa-1");
                         break;
                     case ProcessStatus.Completed:
-                        builder.AddAttribute(0, "class", "d-flex align-center flex-row gap-0 mud-chip-filled mud-chip-color-success rounded-pill py-1 pl-1");
+                        builder.AddAttribute(0, "class", "d-flex align-center flex-row gap-0 mud-chip-filled mud-chip-color-success rounded-pill pa-1");
                         break;
                 }
 
                 if (status == ProcessStatus.Completed)
                 {
                     builder.OpenComponent<MudIcon>(0);
-                    builder.AddComponentParameter(0, "Color", Color.Error);
+                    builder.AddComponentParameter(0, "Color", Color.Inherit);
                     builder.AddComponentParameter(1, "Size", Size.Small);
                     builder.AddComponentParameter(2, "Title", AppLang.Success);
                     builder.AddComponentParameter(3, "Icon", Icons.Material.Filled.Check);
@@ -83,14 +83,14 @@
                 else
                 {
                     builder.OpenComponent<MudProgressCircular>(0);
-                    builder.AddComponentParameter(0, "Color", Color.Error);
+                    builder.AddComponentParameter(0, "Color", Color.Inherit);
                     builder.AddComponentParameter(1, "Size", Size.Small);
                     builder.AddComponentParameter(2, "Indeterminate", true);
                     builder.CloseComponent();
                 }
 
                 builder.OpenElement(1, "span");
-                builder.AddAttribute(2, "class", "d-flex flex-column ml-1");
+                builder.AddAttribute(2, "class", "d-flex flex-column mx-1");
                 builder.AddAttribute(3, "style", "width:100%");
                 builder.AddContent(4, status.ToString());
                 builder.CloseElement();

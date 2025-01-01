@@ -519,9 +519,9 @@ html, body {
     backdrop-filter: blur(8px);
 }
 
-.d-flex.flex-row.align-center.gap-0.mud-chip-filled.mud-chip-color-error.rounded-pill.py-1.pl-1 > .mud-progress-circular.mud-progress-small,
-.d-flex.flex-row.align-center.gap-0.mud-chip-filled.primary.rounded-pill.py-1.pl-1 > .mud-progress-circular.mud-progress-small,
-.d-flex.flex-row.align-center.gap-0.mud-chip-filled.mud-chip-color-success.rounded-pill.py-1.pl-1 > .mud-progress-circular.mud-progress-small {
+.d-flex.flex-row.align-center.gap-0.mud-chip-filled.mud-chip-color-error.rounded-pill.pa-1 > .mud-progress-circular.mud-progress-small,
+.d-flex.flex-row.align-center.gap-0.mud-chip-filled.primary.rounded-pill.pa-1 > .mud-progress-circular.mud-progress-small,
+.d-flex.flex-row.align-center.gap-0.mud-chip-filled.mud-chip-color-success.rounded-pill.pa-1 > .mud-progress-circular.mud-progress-small {
     height: auto !important;
     width: 24px;
     color: white;

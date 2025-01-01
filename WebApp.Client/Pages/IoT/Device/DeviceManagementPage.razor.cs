@@ -174,8 +174,8 @@ public partial class DeviceManagementPage(ILogger<DeviceManagementPage> logger) 
         AllowRendering = true;
         try
         {
-            var result = await ApiService.GetAsync<List<IoTDevice>>("api/device/search-device", arg2);
-            return result.Data?.Select(x => x.DeviceId) ?? [];
+            var result = await ApiService.SearchDevicesAsync(arg1, arg2);
+            return result.Select(x => x.DeviceName);
         }
         catch (Exception e)
         {
