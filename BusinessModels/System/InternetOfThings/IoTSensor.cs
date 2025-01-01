@@ -41,11 +41,6 @@ public class IoTSensor : BaseModelEntry
     {
         return SensorName;
     }
-
-    public override int GetHashCode()
-    {
-        return Id.GetHashCode();
-    }
 }
 
 public class IoTSensorFluentValidator : ExtendFluentValidator<IoTSensor>

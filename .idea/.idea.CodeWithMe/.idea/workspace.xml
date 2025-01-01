@@ -45,7 +45,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Base/BaseModelEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Base/BaseModelEntry.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTSensor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTSensor.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
@@ -172,6 +178,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fe3b1716bf2f8f83ac793e7e3faa60f88a7868347653f77591f74b86d0d97675/Server.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff56e9dabec8513a52b6f0caca4a8979301377a3ae924a82a78d3c3dfd001c/TextOptions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/Base/BaseModelEntry.cs" root0="SKIP_HIGHLIGHTING" />
@@ -991,15 +998,7 @@
       <workItem from="1735605021943" duration="1194000" />
       <workItem from="1735611960658" duration="4201000" />
       <workItem from="1735623983244" duration="6567000" />
-      <workItem from="1735694225070" duration="5721000" />
-    </task>
-    <task id="LOCAL-00513" summary="small update">
-      <option name="closed" value="true" />
-      <created>1735266804677</created>
-      <option name="number" value="00513" />
-      <option name="presentableId" value="LOCAL-00513" />
-      <option name="project" value="LOCAL" />
-      <updated>1735266804677</updated>
+      <workItem from="1735694225070" duration="7033000" />
     </task>
     <task id="LOCAL-00514" summary="fix wrong property">
       <option name="closed" value="true" />
@@ -1385,7 +1384,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735700656708</updated>
     </task>
-    <option name="localTasksCounter" value="562" />
+    <task id="LOCAL-00562" summary="update">
+      <option name="closed" value="true" />
+      <created>1735702710857</created>
+      <option name="number" value="00562" />
+      <option name="presentableId" value="LOCAL-00562" />
+      <option name="project" value="LOCAL" />
+      <updated>1735702710857</updated>
+    </task>
+    <option name="localTasksCounter" value="563" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1434,14 +1441,14 @@
     <MESSAGE value="fix error type" />
     <MESSAGE value="fix missing field" />
     <MESSAGE value="add cancel page" />
-    <MESSAGE value="update" />
     <MESSAGE value="update search function" />
     <MESSAGE value="update bl" />
     <MESSAGE value="update logic to prevent error" />
     <MESSAGE value="complete search engine service" />
     <MESSAGE value="adding add, remove action for search engine" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="update" />
+    <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

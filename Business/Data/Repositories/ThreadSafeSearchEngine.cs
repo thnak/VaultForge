@@ -22,13 +22,18 @@ public class ThreadSafeSearchEngine<T> : IThreadSafeSearchEngine<T> where T : Ba
     private readonly ConcurrentDictionary<int, T> _items;
     private readonly Func<T, Document> _documentMapper;
     private const string DocumentIdFieldName = nameof(BaseModelEntry.Id);
-    private const Lucene.Net.Util.Version Version = Lucene.Net.Util.Version.LUCENE_29;
+    private const Lucene.Net.Util.Version Version = Lucene.Net.Util.Version.LUCENE_30;
 
-    public ThreadSafeSearchEngine(string indexPath, IEnumerable<string> fields, Func<T, Document> documentMapper)
+    public ThreadSafeSearchEngine(string indexPath, Func<T, Document> documentMapper)
     {
         Directory.CreateDirectory(indexPath);
         _indexDirectory = FSDirectory.Open(indexPath);
         _analyzer = new StandardAnalyzer(Version);
+
+        T model = Activator.CreateInstance<T>();
+        var mappedValue = documentMapper(model);
+        IEnumerable<string> fields = mappedValue.fields_ForNUnit.Select(x => x.Name);
+
         _queryParser = new MultiFieldQueryParser(Version, fields.ToArray(), _analyzer);
 
         _items = new ConcurrentDictionary<int, T>();

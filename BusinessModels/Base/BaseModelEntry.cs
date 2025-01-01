@@ -23,4 +23,9 @@ public class BaseModelEntry
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(2)]
     public DateTime ModifiedTime { get; set; } = DateTime.UtcNow;
+    
+    public override int GetHashCode()
+    {
+        return Id.GetHashCode();
+    }
 }

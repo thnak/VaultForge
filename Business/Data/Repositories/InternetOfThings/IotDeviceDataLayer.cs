@@ -25,16 +25,7 @@ public class IotDeviceDataLayer : IIotDeviceDataLayer
     public IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDeviceDataLayer> logger)
     {
         _data = context.MongoDatabase.GetCollection<IoTDevice>("IoTDevice");
-        IoTDevice model = new IoTDevice();
-        var memberNames = model.GetMemberNames(
-            x => x.Id,
-            device => device.DeviceName,
-            device => model.Location,
-            device => device.Manufacturer,
-            device => device.MacAddress,
-            device => device.IpAddress);
-        
-        _threadSafeSearchEngine = new("IoTDevice", memberNames, SearchEngineExtensions.IoTDeviceDocumentMapper);
+        _threadSafeSearchEngine = new("IoTDevice", SearchEngineExtensions.IoTDeviceDocumentMapper);
         _logger = logger;
     }
 
