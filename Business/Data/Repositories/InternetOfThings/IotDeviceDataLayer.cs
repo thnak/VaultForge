@@ -9,17 +9,34 @@ using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
+using BusinessModels.Utils;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Business.Data.Repositories.InternetOfThings;
 
-public class IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDeviceDataLayer> logger) : IIotDeviceDataLayer
+public class IotDeviceDataLayer : IIotDeviceDataLayer
 {
-    private readonly IMongoCollection<IoTDevice> _data = context.MongoDatabase.GetCollection<IoTDevice>("IoTDevice");
-    private readonly ThreadSafeSearchEngine<IoTDevice> _threadSafeSearchEngine = new("IoTDevice", SearchEngineExtensions.IoTDeviceDocumentMapper);
+    private readonly IMongoCollection<IoTDevice> _data;
+    private readonly ThreadSafeSearchEngine<IoTDevice> _threadSafeSearchEngine;
+    private readonly ILogger<IIotDeviceDataLayer> _logger;
 
+    public IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDeviceDataLayer> logger)
+    {
+        _data = context.MongoDatabase.GetCollection<IoTDevice>("IoTDevice");
+        IoTDevice model = new IoTDevice();
+        var memberNames = model.GetMemberNames(
+            x => x.Id,
+            device => device.DeviceName,
+            device => model.Location,
+            device => device.Manufacturer,
+            device => device.MacAddress,
+            device => device.IpAddress);
+        
+        _threadSafeSearchEngine = new("IoTDevice", memberNames, SearchEngineExtensions.IoTDeviceDocumentMapper);
+        _logger = logger;
+    }
 
     public void Dispose()
     {
@@ -163,7 +180,7 @@ public class IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDevi
         }
         catch (Exception e)
         {
-            logger.LogError(e, e.Message);
+            _logger.LogError(e, e.Message);
             return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
     }

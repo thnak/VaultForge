@@ -21,14 +21,16 @@ public class ThreadSafeSearchEngine<T> : IThreadSafeSearchEngine<T> where T : Ba
     private IndexSearcher? Searcher { get; set; }
     private readonly ConcurrentDictionary<int, T> _items;
     private readonly Func<T, Document> _documentMapper;
+    private const string DocumentIdFieldName = nameof(BaseModelEntry.Id);
+    private const Lucene.Net.Util.Version Version = Lucene.Net.Util.Version.LUCENE_29;
 
-    public ThreadSafeSearchEngine(string indexPath, Func<T, Document> documentMapper)
+    public ThreadSafeSearchEngine(string indexPath, IEnumerable<string> fields, Func<T, Document> documentMapper)
     {
         Directory.CreateDirectory(indexPath);
         _indexDirectory = FSDirectory.Open(indexPath);
-        _analyzer = new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30);
+        _analyzer = new StandardAnalyzer(Version);
+        _queryParser = new MultiFieldQueryParser(Version, fields.ToArray(), _analyzer);
 
-        _queryParser = new QueryParser(Lucene.Net.Util.Version.LUCENE_30, "name", _analyzer);
         _items = new ConcurrentDictionary<int, T>();
         _documentMapper = documentMapper;
     }
@@ -81,7 +83,7 @@ public class ThreadSafeSearchEngine<T> : IThreadSafeSearchEngine<T> where T : Ba
             foreach (var hit in hits.ScoreDocs)
             {
                 var doc = Searcher.Doc(hit.Doc);
-                int itemId = int.Parse(doc.Get("id"));
+                int itemId = int.Parse(doc.Get(DocumentIdFieldName));
                 if (_items.TryGetValue(itemId, out var item))
                 {
                     yield return item;
@@ -94,7 +96,7 @@ public class ThreadSafeSearchEngine<T> : IThreadSafeSearchEngine<T> where T : Ba
     {
         using (var writer = new IndexWriter(_indexDirectory, _analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED))
         {
-            writer.DeleteDocuments(new Term("id", item.GetHashCode().ToString()));
+            writer.DeleteDocuments(new Term(DocumentIdFieldName, item.GetHashCode().ToString()));
             writer.Commit();
         }
 
