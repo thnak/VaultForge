@@ -46,11 +46,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
-      <change afterPath="$PROJECT_DIR$/BusinessModels/Utils/ReflectionExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Utils/SearchEngineExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Utils/SearchEngineExtensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
@@ -178,6 +173,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff56e9dabec8513a52b6f0caca4a8979301377a3ae924a82a78d3c3dfd001c/TextOptions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/Base/BaseModelEntry.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/System/InternetOfThings/IoTDevice.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/System/InternetOfThings/IoTSensor.cs" root0="SKIP_HIGHLIGHTING" />
@@ -995,15 +991,7 @@
       <workItem from="1735605021943" duration="1194000" />
       <workItem from="1735611960658" duration="4201000" />
       <workItem from="1735623983244" duration="6567000" />
-      <workItem from="1735694225070" duration="5013000" />
-    </task>
-    <task id="LOCAL-00512" summary="use more text">
-      <option name="closed" value="true" />
-      <created>1735232233913</created>
-      <option name="number" value="00512" />
-      <option name="presentableId" value="LOCAL-00512" />
-      <option name="project" value="LOCAL" />
-      <updated>1735232233913</updated>
+      <workItem from="1735694225070" duration="5721000" />
     </task>
     <task id="LOCAL-00513" summary="small update">
       <option name="closed" value="true" />
@@ -1389,7 +1377,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735699031604</updated>
     </task>
-    <option name="localTasksCounter" value="561" />
+    <task id="LOCAL-00561" summary="small update">
+      <option name="closed" value="true" />
+      <created>1735700656708</created>
+      <option name="number" value="00561" />
+      <option name="presentableId" value="LOCAL-00561" />
+      <option name="project" value="LOCAL" />
+      <updated>1735700656708</updated>
+    </task>
+    <option name="localTasksCounter" value="562" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

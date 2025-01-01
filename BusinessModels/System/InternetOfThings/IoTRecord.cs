@@ -19,7 +19,6 @@ public class IoTRecord : BaseModelEntry
 
     public IoTRecord(RecordMetadata metadata)
     {
-        Id = ObjectId.GenerateNewId();
         CreateTime = DateTime.UtcNow; // Set to current time by default
         Metadata = metadata;
         Date = CreateTime.Date;

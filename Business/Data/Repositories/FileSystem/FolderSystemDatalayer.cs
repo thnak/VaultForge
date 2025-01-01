@@ -346,7 +346,6 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
             await _dataDb.DeleteOneAsync(filter, cancelToken);
             if (folder.Type == FolderContentType.SystemFolder || folder.PreviousType == FolderContentType.SystemFolder)
             {
-                folder.Id = ObjectId.GenerateNewId();
                 folder.Type = FolderContentType.SystemFolder;
                 folder.PreviousType = FolderContentType.Folder;
                 await CreateAsync(folder, cancelToken);
