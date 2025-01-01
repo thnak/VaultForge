@@ -45,13 +45,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="unsafe with objectid set to read only from BaseModelEntry.cs">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update log">
+      <change afterPath="$PROJECT_DIR$/WebApp.Client/Utils/RazorExtensions/DataGridExtensions.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloDetection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloDetection.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Models/ButtonAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Models/ButtonAction.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" afterDir="false" />
     </list>
-    <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
-      <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
-    </list>
+    <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -997,23 +1000,7 @@
       <workItem from="1735605021943" duration="1194000" />
       <workItem from="1735611960658" duration="4201000" />
       <workItem from="1735623983244" duration="6567000" />
-      <workItem from="1735694225070" duration="9708000" />
-    </task>
-    <task id="LOCAL-00516" summary="update">
-      <option name="closed" value="true" />
-      <created>1735277168793</created>
-      <option name="number" value="00516" />
-      <option name="presentableId" value="LOCAL-00516" />
-      <option name="project" value="LOCAL" />
-      <updated>1735277168793</updated>
-    </task>
-    <task id="LOCAL-00517" summary="update pack">
-      <option name="closed" value="true" />
-      <created>1735376720665</created>
-      <option name="number" value="00517" />
-      <option name="presentableId" value="LOCAL-00517" />
-      <option name="project" value="LOCAL" />
-      <updated>1735376720665</updated>
+      <workItem from="1735694225070" duration="16592000" />
     </task>
     <task id="LOCAL-00518" summary="update lang pack">
       <option name="closed" value="true" />
@@ -1391,7 +1378,23 @@
       <option name="project" value="LOCAL" />
       <updated>1735706276831</updated>
     </task>
-    <option name="localTasksCounter" value="565" />
+    <task id="LOCAL-00565" summary="re open execution provider option">
+      <option name="closed" value="true" />
+      <created>1735706721189</created>
+      <option name="number" value="00565" />
+      <option name="presentableId" value="LOCAL-00565" />
+      <option name="project" value="LOCAL" />
+      <updated>1735706721189</updated>
+    </task>
+    <task id="LOCAL-00566" summary="update log">
+      <option name="closed" value="true" />
+      <created>1735712043354</created>
+      <option name="number" value="00566" />
+      <option name="presentableId" value="LOCAL-00566" />
+      <option name="project" value="LOCAL" />
+      <updated>1735712043354</updated>
+    </task>
+    <option name="localTasksCounter" value="567" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1422,8 +1425,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="update style, fix update sensor" />
-    <MESSAGE value="format cell" />
     <MESSAGE value="fix not found issue" />
     <MESSAGE value="remove shit" />
     <MESSAGE value="serialize opject" />
@@ -1447,7 +1448,9 @@
     <MESSAGE value="update" />
     <MESSAGE value="small fix" />
     <MESSAGE value="unsafe with objectid set to read only from BaseModelEntry.cs" />
-    <option name="LAST_COMMIT_MESSAGE" value="unsafe with objectid set to read only from BaseModelEntry.cs" />
+    <MESSAGE value="re open execution provider option" />
+    <MESSAGE value="update log" />
+    <option name="LAST_COMMIT_MESSAGE" value="update log" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

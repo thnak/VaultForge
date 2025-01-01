@@ -15,7 +15,7 @@ public partial class SensorRecordResultPage : ComponentBase, IDisposable
     {
         public IoTRecord Device { get; set; }
         public ButtonAction OpenImageBtn { get; set; } = new();
-
+        public RenderFragment? StatusRenderFragment { get; set; }
         public PageModel(IoTRecord device)
         {
             device.CreateTime = device.CreateTime.ToLocalTime();
@@ -84,8 +84,25 @@ public partial class SensorRecordResultPage : ComponentBase, IDisposable
             TotalItems = (int)total,
             Items = records.OrderByDescending(x => x.Metadata.RecordedAt).Select(x => new PageModel(x)
             {
-                OpenImageBtn = new ButtonAction() { Action = () => OpenImage(x.Metadata.ImagePath).ConfigureAwait(false) }
+                OpenImageBtn = new ButtonAction() { Action = () => OpenImage(x.Metadata.ImagePath).ConfigureAwait(false) },
+                StatusRenderFragment = GenerateStatusElement(x)
             }).ToArray()
+        };
+    }
+
+    private RenderFragment? GenerateStatusElement(IoTRecord ioTRecord)
+    {
+        return builder =>
+        {
+            builder.OpenElement(0, "div");
+            builder.AddAttribute(1, "class", "d-flex flex-row gap-2 ");
+            builder.OpenComponent<MudProgressCircular>(0);
+            builder.AddComponentParameter(0, "Color", Color.Default);
+            builder.AddComponentParameter(1, "Size", Size.Small);
+            builder.AddComponentParameter(2, "Indeterminate", true);
+            builder.CloseComponent();
+            
+            builder.CloseElement();
         };
     }
 

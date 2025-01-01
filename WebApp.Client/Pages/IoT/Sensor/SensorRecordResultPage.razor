@@ -46,7 +46,11 @@
             <PropertyColumn Property="x => x.Device.Metadata.SensorData" Title="@AppLang.Value"/>
             <PropertyColumn Property="x => x.Device.Metadata.SignalStrength" Title="@AppLang.Signal_strength"/>
             <PropertyColumn Property="x => x.Device.Metadata.OnChipTemperature" Title="@AppLang.Chip_temperature"/>
-            <PropertyColumn T="PageModel" TProperty="ProcessStatus" Property="x => x.Device.Metadata.ProcessStatus" Title="@AppLang.Process_status" CellStyleFunc="ProcessStatusStyle"/>
+            <PropertyColumn T="PageModel" TProperty="ProcessStatus" Property="x => x.Device.Metadata.ProcessStatus" Title="@AppLang.Process_status">
+                <CellTemplate>
+                    @context.Item.StatusRenderFragment
+                </CellTemplate>
+            </PropertyColumn>
 
         </Columns>
         <PagerContent>

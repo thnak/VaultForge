@@ -1,0 +1,56 @@
+﻿@using Color = MudBlazor.Color
+@using Size = MudBlazor.Size
+@using WebApp.Client.Models
+
+
+@code{
+
+    public class DataGridExtensionsBuilder
+    {
+        public RenderFragment GenerateTableAction(ButtonAction updateAction, ButtonAction editAction)
+        {
+            return @<div class="d-flex flex-row gap-3">
+                <MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="@AppLang.Edit">
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Filled"
+                                   OnClick="@updateAction.Action" Disabled="@updateAction.Disabled"
+                                   Color="Color.Primary"/>
+                </MudTooltip>
+
+                <MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="@AppLang.Delete">
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled"
+                                   Size="Size.Small"
+                                   OnClick="@editAction.Action" Disabled="@editAction.Disabled"
+                                   Color="Color.Primary"/>
+                </MudTooltip>
+            </div>;
+        }
+
+        public RenderFragment GenerateTableAction(params IEnumerable<ButtonAction> actionsBtn)
+        {
+            return builder =>
+            {
+                builder.OpenElement(0, "div");
+                builder.AddAttribute(0, "class", "d-flex flex-row gap-3");
+
+                int index = 0;
+                foreach (var content in actionsBtn)
+                {
+                    builder.AddContent(index++, ButtonAndTooltip(content));
+                }
+
+                builder.CloseElement();
+            };
+        }
+
+        private RenderFragment ButtonAndTooltip(ButtonAction action)
+        {
+            return @<MudTooltip Arrow="true" Placement="Placement.Top" Color="Color.Secondary" Text="@action.Title">
+                <MudIconButton Icon="@action.Icon" Variant="action.ButtonVariant"
+                               Size="action.ButtonSize"
+                               OnClick="@action.Action" Disabled="@action.Disabled"
+                               Color="action.ButtonColor"/>
+            </MudTooltip>;
+        }
+    }
+
+}

@@ -5,18 +5,18 @@ using MudBlazor;
 using WebApp.Client.Components.ConfirmDialog;
 using WebApp.Client.Models;
 using WebApp.Client.Utils;
+using DataGridExtensions = WebApp.Client.Utils.RazorExtensions.DataGridExtensions;
 
 namespace WebApp.Client.Pages.IoT.Device;
 
-public partial class DeviceManagementPage : ComponentBase, IDisposable
+public partial class DeviceManagementPage(ILogger<DeviceManagementPage> logger) : ComponentBase, IDisposable
 {
     #region --- page models ---
 
     private class PageModel(IoTDevice device)
     {
-        public IoTDevice Device { get; set; } = device;
-        public ButtonAction DeleteBtn { get; set; } = new();
-        public ButtonAction UpdateBtn { get; set; } = new();
+        public IoTDevice Device { get; } = device;
+        public RenderFragment? ActionContent { get; set; }
     }
 
     #endregion
@@ -24,7 +24,10 @@ public partial class DeviceManagementPage : ComponentBase, IDisposable
     private MudDataGrid<PageModel>? _dataGrid;
     private readonly CancellationTokenSource _cancellationTokenSource = new();
     private string DeviceSearchString { get; set; } = string.Empty;
+    private readonly DataGridExtensions.DataGridExtensionsBuilder _builderHelper = new();
+    private bool AllowRendering { get; set; } = false;
 
+    protected override bool ShouldRender() => AllowRendering;
 
     public void Dispose()
     {
@@ -35,89 +38,150 @@ public partial class DeviceManagementPage : ComponentBase, IDisposable
 
     private async Task<GridData<PageModel>> ServerReload(GridState<PageModel> arg)
     {
-        var cancellationToken = _cancellationTokenSource.Token;
-        var result = await ApiService.GetAllDevicesAsync(arg.Page, arg.PageSize, cancellationToken);
-        return new GridData<PageModel>
+        AllowRendering = true;
+        try
         {
-            Items = result.Data?.Data.Select(x => new PageModel(x)
+            var cancellationToken = _cancellationTokenSource.Token;
+            var result = await ApiService.GetAllDevicesAsync(arg.Page, arg.PageSize, cancellationToken);
+            return new GridData<PageModel>
             {
-                DeleteBtn = new()
+                Items = result.Data?.Data.Select(x =>
                 {
-                    Action = () => ConfirmDelete(x).ConfigureAwait(false)
-                },
-                UpdateBtn = new()
-                {
-                    Action = () => UpdateDevice(x).ConfigureAwait(false)
-                }
-            }) ?? [],
-            TotalItems = (int)(result.Data?.Total ?? 0)
-        };
+                    var model = new PageModel(x);
+                    var deleteBtn = new ButtonAction
+                    {
+                        Action = () => ConfirmDelete(x).ConfigureAwait(false),
+                        Title = AppLang.Delete,
+                        Icon = Icons.Material.Filled.Delete,
+                        ButtonColor = Color.Error,
+                        ButtonSize = Size.Small
+                    };
+                    var updateBtn = new ButtonAction
+                    {
+                        Action = () => UpdateDevice(x).ConfigureAwait(false),
+                        Title = AppLang.Delete,
+                        Icon = Icons.Material.Filled.Edit,
+                        ButtonColor = Color.Default,
+                        ButtonSize = Size.Small
+                    };
+                    model.ActionContent = _builderHelper.GenerateTableAction([updateBtn, deleteBtn]);
+                    return model;
+                }) ?? [],
+                TotalItems = (int)(result.Data?.Total ?? 0)
+            };
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, e.Message);
+            return new GridData<PageModel>();
+        }
+        finally
+        {
+            AllowRendering = false;
+        }
     }
 
     private async Task ConfirmDelete(IoTDevice device)
     {
-        var data = new DialogConfirmDataModel
+        AllowRendering = true;
+        try
         {
-            Fragment = builder =>
+            var data = new DialogConfirmDataModel
             {
-                builder.OpenElement(0, "span");
-                builder.AddContent(1, $"{LangDict[AppLang.Delete_device]} {device.DeviceName}");
-                builder.CloseElement();
-            },
-            TitleIcon = "fa-solid fa-triangle-exclamation",
-            Color = Color.Error
-        };
-        var option = new DialogOptions
-        {
-            MaxWidth = MaxWidth.Small,
-            FullWidth = true
-        };
-        var parameter = new DialogParameters<ConfirmDialog>
-        {
-            { x => x.DataModel, data }
-        };
+                Fragment = builder =>
+                {
+                    builder.OpenElement(0, "span");
+                    builder.AddContent(1, $"{LangDict[AppLang.Delete_device]} {device.DeviceName}");
+                    builder.CloseElement();
+                },
+                TitleIcon = "fa-solid fa-triangle-exclamation",
+                Color = Color.Error
+            };
+            var option = new DialogOptions
+            {
+                MaxWidth = MaxWidth.Small,
+                FullWidth = true
+            };
+            var parameter = new DialogParameters<ConfirmDialog>
+            {
+                { x => x.DataModel, data }
+            };
 
-        var dialog = await DialogService.ShowAsync<ConfirmDialog>(LangDict[AppLang.Warning], parameter, option);
-        var dialogResult = await dialog.Result;
-        if (dialogResult is { Canceled: false })
+            var dialog = await DialogService.ShowAsync<ConfirmDialog>(LangDict[AppLang.Warning], parameter, option);
+            var dialogResult = await dialog.Result;
+            if (dialogResult is { Canceled: false })
+            {
+                var response = await ApiService.DeleteAsync<string>($"/api/device/delete-device?deviceId={device.DeviceId}");
+                if (response.IsSuccessStatusCode)
+                {
+                    await _dataGrid!.ReloadServerData();
+                    ToastService.ShowSuccess(AppLang.Delete_successfully, TypeClassList.ToastDefaultSetting);
+                }
+                else
+                {
+                    ToastService.ShowError(response.Message, TypeClassList.ToastDefaultSetting);
+                }
+            }
+        }
+        catch (Exception e)
         {
-            var response = await ApiService.DeleteAsync<string>($"/api/device/delete-device?deviceId={device.DeviceId}");
-            if (response.IsSuccessStatusCode)
-            {
-                await _dataGrid!.ReloadServerData();
-                ToastService.ShowSuccess(AppLang.Delete_successfully, TypeClassList.ToastDefaultSetting);
-            }
-            else
-            {
-                ToastService.ShowError(response.Message, TypeClassList.ToastDefaultSetting);
-            }
+            logger.LogError(e, e.Message);
+        }
+        finally
+        {
+            AllowRendering = false;
         }
     }
 
     private async Task UpdateDevice(IoTDevice? device)
     {
-        var option = new DialogOptions
+        AllowRendering = true;
+        try
         {
-            MaxWidth = MaxWidth.Small,
-            FullWidth = true,
-            BackgroundClass = "blur-3"
-        };
-        var param = new DialogParameters<EditDeviceDialog>
+            var option = new DialogOptions
+            {
+                MaxWidth = MaxWidth.Small,
+                FullWidth = true,
+                BackgroundClass = "blur-3"
+            };
+            var param = new DialogParameters<EditDeviceDialog>
+            {
+                { x => x.Device, device }
+            };
+            var dialog = await DialogService.ShowAsync<EditDeviceDialog>("", param, option);
+            var dialogResult = await dialog.Result;
+            if (dialogResult is { Canceled: false, Data: bool status })
+            {
+                if (status) await _dataGrid!.ReloadServerData();
+            }
+        }
+        catch (Exception e)
         {
-            { x => x.Device, device }
-        };
-        var dialog = await DialogService.ShowAsync<EditDeviceDialog>("", param, option);
-        var dialogResult = await dialog.Result;
-        if (dialogResult is { Canceled: false, Data: bool status })
+            logger.LogError(e, e.Message);
+        }
+        finally
         {
-            if (status) await _dataGrid!.ReloadServerData();
+            AllowRendering = false;
         }
     }
 
     private async Task<IEnumerable<string>> SearchDevice(string arg1, CancellationToken arg2)
     {
-        var result = await ApiService.GetAsync<List<IoTDevice>>("api/device/search-device", arg2);
-        return result.Data?.Select(x => x.DeviceId) ?? [];
+        AllowRendering = true;
+        try
+        {
+            var result = await ApiService.GetAsync<List<IoTDevice>>("api/device/search-device", arg2);
+            return result.Data?.Select(x => x.DeviceId) ?? [];
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, e.Message);
+            return [];
+        }
+        finally
+        {
+            AllowRendering = false;
+        }
     }
 
     private async Task OpenAddDialog()
