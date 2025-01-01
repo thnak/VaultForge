@@ -11,7 +11,7 @@ public static class SessionOptionExtension
         sessionOptions.EnableProfiling = false;
         sessionOptions.GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_ALL;
         sessionOptions.ExecutionMode = ExecutionMode.ORT_PARALLEL;
-        sessionOptions.LogSeverityLevel = OrtLoggingLevel.ORT_LOGGING_LEVEL_VERBOSE;
+        sessionOptions.LogSeverityLevel = OrtLoggingLevel.ORT_LOGGING_LEVEL_WARNING;
         sessionOptions.OptimizedModelFilePath = "optimized_model.onnx";
     }
 
@@ -39,7 +39,7 @@ public static class SessionOptionExtension
                 OrtCUDAProviderOptions providerOptions = new OrtCUDAProviderOptions();
                 var providerOptionsDict = new Dictionary<string, string>
                 {
-                    ["device_id"] = $"0",
+                    ["device_id"] = $"{deviceId}",
                     ["cudnn_conv_algo_search"] = "EXHAUSTIVE"
                 };
                 options.ExecutionMode = ExecutionMode.ORT_SEQUENTIAL;
