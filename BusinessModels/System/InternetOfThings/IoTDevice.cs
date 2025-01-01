@@ -6,6 +6,7 @@ using BusinessModels.System.InternetOfThings.type;
 using BusinessModels.Utils;
 using BusinessModels.Validator;
 using FluentValidation;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace BusinessModels.System.InternetOfThings;
@@ -24,7 +25,7 @@ public class IoTDevice : BaseModelEntry
 
 
     public string Manufacturer { get; set; } = string.Empty;
-    
+
     public DateOnly InstallationDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
@@ -47,6 +48,17 @@ public class IoTDevice : BaseModelEntry
     public override string ToString()
     {
         return DeviceName;
+    }
+
+    // Default constructor for new instances
+    public IoTDevice()
+    {
+    }
+
+    // Constructor for deserialization
+    [BsonConstructor]
+    public IoTDevice(ObjectId id) : base(id)
+    {
     }
 }
 

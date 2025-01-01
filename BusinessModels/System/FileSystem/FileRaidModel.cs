@@ -1,4 +1,5 @@
 ﻿using BusinessModels.Base;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace BusinessModels.System.FileSystem;
@@ -28,6 +29,17 @@ public class FileRaidModel : BaseModelEntry
 
     public string CheckSum { get; set; } = string.Empty;
     public long Size { get; set; }
+
+    // Default constructor for new instances
+    public FileRaidModel()
+    {
+    }
+
+    // Constructor for deserialization
+    [BsonConstructor]
+    public FileRaidModel(ObjectId id) : base(id)
+    {
+    }
 }
 
 public enum RaidType

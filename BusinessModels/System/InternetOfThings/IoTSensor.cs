@@ -4,6 +4,7 @@ using BusinessModels.System.InternetOfThings.status;
 using BusinessModels.System.InternetOfThings.type;
 using BusinessModels.Validator;
 using FluentValidation;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace BusinessModels.System.InternetOfThings;
@@ -40,6 +41,17 @@ public class IoTSensor : BaseModelEntry
     public override string ToString()
     {
         return SensorName;
+    }
+
+    // Default constructor for new instances
+    public IoTSensor()
+    {
+    }
+
+    // Constructor for deserialization
+    [BsonConstructor]
+    public IoTSensor(ObjectId id) : base(id)
+    {
     }
 }
 
