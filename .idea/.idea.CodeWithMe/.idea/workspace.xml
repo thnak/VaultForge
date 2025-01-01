@@ -45,14 +45,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update bl">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/HostedServices/Base/HostApplicationLifetimeEventsHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostedServices/Base/HostApplicationLifetimeEventsHostedService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.Device.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.Device.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/ThreadSafeDeviceSearchEngine.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditDeviceDialog.razor.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
@@ -180,6 +177,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff56e9dabec8513a52b6f0caca4a8979301377a3ae924a82a78d3c3dfd001c/TextOptions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/Repositories/ThreadSafeSearchEngine.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
@@ -992,23 +990,8 @@
       <workItem from="1735603839790" duration="1090000" />
       <workItem from="1735605021943" duration="1194000" />
       <workItem from="1735611960658" duration="4201000" />
-      <workItem from="1735623983244" duration="1731000" />
-    </task>
-    <task id="LOCAL-00508" summary="change to unix sec">
-      <option name="closed" value="true" />
-      <created>1735224056060</created>
-      <option name="number" value="00508" />
-      <option name="presentableId" value="LOCAL-00508" />
-      <option name="project" value="LOCAL" />
-      <updated>1735224056060</updated>
-    </task>
-    <task id="LOCAL-00509" summary="fix missing type">
-      <option name="closed" value="true" />
-      <created>1735224307291</created>
-      <option name="number" value="00509" />
-      <option name="presentableId" value="LOCAL-00509" />
-      <option name="project" value="LOCAL" />
-      <updated>1735224307291</updated>
+      <workItem from="1735623983244" duration="6567000" />
+      <workItem from="1735694225070" duration="532000" />
     </task>
     <task id="LOCAL-00510" summary="add new rule for sensor node">
       <option name="closed" value="true" />
@@ -1386,7 +1369,23 @@
       <option name="project" value="LOCAL" />
       <updated>1735621060758</updated>
     </task>
-    <option name="localTasksCounter" value="557" />
+    <task id="LOCAL-00557" summary="update logic to prevent error">
+      <option name="closed" value="true" />
+      <created>1735625869742</created>
+      <option name="number" value="00557" />
+      <option name="presentableId" value="LOCAL-00557" />
+      <option name="project" value="LOCAL" />
+      <updated>1735625869742</updated>
+    </task>
+    <task id="LOCAL-00558" summary="complete search engine service">
+      <option name="closed" value="true" />
+      <created>1735627319970</created>
+      <option name="number" value="00558" />
+      <option name="presentableId" value="LOCAL-00558" />
+      <option name="project" value="LOCAL" />
+      <updated>1735627319970</updated>
+    </task>
+    <option name="localTasksCounter" value="559" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1417,8 +1416,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="add some bullshit service" />
-    <MESSAGE value="update api, add new api, update language pack" />
     <MESSAGE value="restore LoggerServiceCollectionExtensions.cs" />
     <MESSAGE value="update file format, update logic update" />
     <MESSAGE value="update style, fix update sensor" />
@@ -1442,7 +1439,9 @@
     <MESSAGE value="update" />
     <MESSAGE value="update search function" />
     <MESSAGE value="update bl" />
-    <option name="LAST_COMMIT_MESSAGE" value="update bl" />
+    <MESSAGE value="update logic to prevent error" />
+    <MESSAGE value="complete search engine service" />
+    <option name="LAST_COMMIT_MESSAGE" value="complete search engine service" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

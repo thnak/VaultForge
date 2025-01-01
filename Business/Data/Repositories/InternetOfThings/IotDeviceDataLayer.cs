@@ -3,25 +3,21 @@ using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.InternetOfThings;
 using Business.Data.Repositories.Utils;
-using Business.Models;
 using Business.Utils;
 using Business.Utils.Protector;
 using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
-using Lucene.Net.Documents;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Business.Data.Repositories.InternetOfThings;
 
-public class IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDeviceDataLayer> logger, IDataProtectionProvider provider) : IIotDeviceDataLayer
+public class IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDeviceDataLayer> logger) : IIotDeviceDataLayer
 {
     private readonly IMongoCollection<IoTDevice> _data = context.MongoDatabase.GetCollection<IoTDevice>("IoTDevice");
-    private readonly IDataProtector _protectionProvider = provider.CreateProtector("IoTDeviceDataLayerProtector");
     private readonly ThreadSafeSearchEngine<IoTDevice> _threadSafeSearchEngine = new("IoTDevice", SearchEngineExtensions.IoTDeviceDocumentMapper);
 
 
@@ -159,6 +155,7 @@ public class IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDevi
                 }
 
                 await _data.InsertOneAsync(model, cancellationToken: cancellationToken);
+                _threadSafeSearchEngine.LoadAndIndexItems([model]);
                 return Result<bool>.Success(true);
             }
 
@@ -184,6 +181,13 @@ public class IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDevi
     public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<IoTDevice> updates, CancellationToken cancellationToken = default)
     {
         var updateResult = await _data.UpdateAsync(key, updates, cancellationToken);
+        if (updateResult.IsSuccess)
+        {
+            var device = Get(key)!;
+            _threadSafeSearchEngine.RemoveItemFromIndex(device);
+            _threadSafeSearchEngine.LoadAndIndexItems([device]);
+        }
+
         return (updateResult.IsSuccess, updateResult.Message);
     }
 
@@ -194,20 +198,33 @@ public class IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDevi
 
     public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
+        bool isSuccess = false;
+        var device = Get(key);
+        if (device == null)
+            return Task.FromResult<(bool, string)>((isSuccess, AppLang.Device_not_found));
         try
         {
             if (ObjectId.TryParse(key, out ObjectId id))
             {
                 _data.DeleteMany(x => x.Id == id);
+                isSuccess = true;
                 return Task.FromResult((true, AppLang.Delete_successfully));
             }
 
             _data.DeleteOne(x => x.DeviceId == key);
+            isSuccess = true;
             return Task.FromResult((true, AppLang.Delete_successfully));
         }
         catch (Exception e)
         {
             return Task.FromResult((false, e.Message));
+        }
+        finally
+        {
+            if (isSuccess)
+            {
+                _threadSafeSearchEngine.RemoveItemFromIndex(device);
+            }
         }
     }
 }
