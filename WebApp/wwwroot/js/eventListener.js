@@ -64,7 +64,7 @@ async function PageHideEvent() {
 
 async function ContextMenuEvent(e) {
     var keyPrevent = localStorage.getItem("PreventKey");
-    if (keyPrevent.includes("contextmenu")) {
+    if (keyPrevent !== null && keyPrevent.includes("contextmenu")) {
         e.preventDefault();
     }
     await DotNet.invokeMethodAsync(assemblyName, 'ContextMenuEventListener')

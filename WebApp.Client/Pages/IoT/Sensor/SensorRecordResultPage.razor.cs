@@ -1,13 +1,13 @@
 ﻿using BusinessModels.System.InternetOfThings;
-using BusinessModels.System.InternetOfThings.type;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using WebApp.Client.Models;
 using WebApp.Client.Utils;
+using DataGridExtensions = WebApp.Client.Utils.RazorExtensions.DataGridExtensions;
 
 namespace WebApp.Client.Pages.IoT.Sensor;
 
-public partial class SensorRecordResultPage : ComponentBase, IDisposable
+public partial class SensorRecordResultPage(ILogger<SensorRecordResultPage> logger) : ComponentBase, IDisposable
 {
     #region --- page models ---
 
@@ -16,6 +16,7 @@ public partial class SensorRecordResultPage : ComponentBase, IDisposable
         public IoTRecord Device { get; set; }
         public ButtonAction OpenImageBtn { get; set; } = new();
         public RenderFragment? StatusRenderFragment { get; set; }
+
         public PageModel(IoTRecord device)
         {
             device.CreateTime = device.CreateTime.ToLocalTime();
@@ -42,17 +43,7 @@ public partial class SensorRecordResultPage : ComponentBase, IDisposable
     private List<IoTSensor> SensorList { get; set; } = new();
     private bool OpenFilterState { get; set; }
     private MudForm? FilterForm { get; set; }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await _dataGrid!.ReloadServerData().ConfigureAwait(false);
-        }
-
-        await base.OnAfterRenderAsync(firstRender);
-    }
-
+    private readonly DataGridExtensions.DataGridExtensionsBuilder _builderHelper = new();
 
     private async Task<IEnumerable<IoTDevice>> SearchDevice(string arg1, CancellationToken arg2)
     {
@@ -63,72 +54,50 @@ public partial class SensorRecordResultPage : ComponentBase, IDisposable
     {
         List<IoTRecord> records = new();
         long total = 0;
-        foreach (var sensor in _filterPage.Sensors)
+        try
         {
-            var data = await ApiService.GetIotRecordsAsync(sensor.SensorId, arg.Page, arg.PageSize,
-                _filterPage.DateRange.Start.GetValueOrDefault(DateTime.Now).Date,
-                _filterPage.DateRange.End.GetValueOrDefault(DateTime.Now).Date);
-            if (data.IsSuccessStatusCode)
+            foreach (var sensor in _filterPage.Sensors)
             {
-                total = data.Data.Total;
-                records.AddRange(data.Data.Data);
+                var data = await ApiService.GetIotRecordsAsync(sensor.SensorId, arg.Page, arg.PageSize,
+                    _filterPage.DateRange.Start.GetValueOrDefault(DateTime.Now).Date,
+                    _filterPage.DateRange.End.GetValueOrDefault(DateTime.Now).Date);
+                if (data.IsSuccessStatusCode)
+                {
+                    total = data.Data.Total;
+                    records.AddRange(data.Data.Data);
+                }
+                else
+                {
+                    ToastService.ShowError(data.Message, TypeClassList.ToastDefaultSetting);
+                }
             }
-            else
+
+            return new GridData<PageModel>()
             {
-                ToastService.ShowError(data.Message, TypeClassList.ToastDefaultSetting);
-            }
+                TotalItems = (int)total,
+                Items = records.OrderByDescending(x => x.Metadata.RecordedAt).Select(x => new PageModel(x)
+                {
+                    OpenImageBtn = new ButtonAction() { Action = () => OpenImage(x.Metadata.ImagePath) },
+                    StatusRenderFragment = _builderHelper.GenerateStatusElement(x.Metadata.ProcessStatus)
+                }).ToArray()
+            };
         }
-
-        return new GridData<PageModel>()
+        catch (Exception e)
         {
-            TotalItems = (int)total,
-            Items = records.OrderByDescending(x => x.Metadata.RecordedAt).Select(x => new PageModel(x)
-            {
-                OpenImageBtn = new ButtonAction() { Action = () => OpenImage(x.Metadata.ImagePath).ConfigureAwait(false) },
-                StatusRenderFragment = GenerateStatusElement(x)
-            }).ToArray()
-        };
+            logger.LogError(e, e.Message);
+            return new();
+        }
     }
 
-    private RenderFragment? GenerateStatusElement(IoTRecord ioTRecord)
-    {
-        return builder =>
-        {
-            builder.OpenElement(0, "div");
-            builder.AddAttribute(1, "class", "d-flex flex-row gap-2 ");
-            builder.OpenComponent<MudProgressCircular>(0);
-            builder.AddComponentParameter(0, "Color", Color.Default);
-            builder.AddComponentParameter(1, "Size", Size.Small);
-            builder.AddComponentParameter(2, "Indeterminate", true);
-            builder.CloseComponent();
-            
-            builder.CloseElement();
-        };
-    }
 
-    private async Task OpenImage(string code)
+    private void OpenImage(string code)
     {
         var uri = Navigation.GetUriWithQueryParameters(Navigation.BaseUri + "api/files/get-file", new Dictionary<string, object?>()
         {
             { "id", code },
             { "type", "ThumbnailWebpFile" }
         });
-        await JsRuntime.OpenToNewWindow(uri);
-    }
-
-    private string ProcessStatusStyle(PageModel arg)
-    {
-        switch (arg.Device.Metadata.ProcessStatus)
-        {
-            case ProcessStatus.Requesting:
-                return "background-color:red;color:white;";
-            case ProcessStatus.Processing:
-                return "background-color:blue;color:white;";
-            case ProcessStatus.Completed:
-                return "background-color:green;color:white;";
-        }
-
-        return "";
+        JsRuntime.OpenToNewWindow(uri);
     }
 
     private Task OpenFilter()
@@ -177,5 +146,10 @@ public partial class SensorRecordResultPage : ComponentBase, IDisposable
     {
         _dataGrid?.Dispose();
         FilterForm?.Dispose();
+    }
+
+    private Task ReloadPage()
+    {
+        return _dataGrid!.ReloadServerData();
     }
 }

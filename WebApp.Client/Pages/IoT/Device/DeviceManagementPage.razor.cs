@@ -22,18 +22,23 @@ public partial class DeviceManagementPage(ILogger<DeviceManagementPage> logger) 
     #endregion
 
     private MudDataGrid<PageModel>? _dataGrid;
-    private readonly CancellationTokenSource _cancellationTokenSource = new();
     private string DeviceSearchString { get; set; } = string.Empty;
     private readonly DataGridExtensions.DataGridExtensionsBuilder _builderHelper = new();
     private bool AllowRendering { get; set; } = false;
 
     protected override bool ShouldRender() => AllowRendering;
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await ReloadPage();
+        }
+    }
+
     public void Dispose()
     {
         _dataGrid?.Dispose();
-        _cancellationTokenSource.Cancel();
-        _cancellationTokenSource.Dispose();
     }
 
     private async Task<GridData<PageModel>> ServerReload(GridState<PageModel> arg)
@@ -41,8 +46,7 @@ public partial class DeviceManagementPage(ILogger<DeviceManagementPage> logger) 
         AllowRendering = true;
         try
         {
-            var cancellationToken = _cancellationTokenSource.Token;
-            var result = await ApiService.GetAllDevicesAsync(arg.Page, arg.PageSize, cancellationToken);
+            var result = await ApiService.GetAllDevicesAsync(arg.Page, arg.PageSize);
             return new GridData<PageModel>
             {
                 Items = result.Data?.Data.Select(x =>
@@ -187,5 +191,10 @@ public partial class DeviceManagementPage(ILogger<DeviceManagementPage> logger) 
     private async Task OpenAddDialog()
     {
         await UpdateDevice(null);
+    }
+
+    private Task ReloadPage()
+    {
+        return _dataGrid!.ReloadServerData();
     }
 }

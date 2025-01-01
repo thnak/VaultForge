@@ -1,6 +1,8 @@
 ﻿@using Color = MudBlazor.Color
 @using Size = MudBlazor.Size
-@rendermode InteractiveWebAssembly
+
+
+@rendermode InteractiveAuto
 @attribute [Route(PageRoutes.InternetOfThings.DeviceManagement)]
 @* @attribute [Authorize] *@
 @layout MainLayout
@@ -10,14 +12,14 @@
 <div class="page-content-container">
 
     <MudDataGrid @ref="_dataGrid" T="PageModel" ServerData="ServerReload" Height="calc(100vh - var(--mud-appbar-height) - 115px)"
-                 ReadOnly="true"
+                 ReadOnly="true" FixedHeader="true"
                  Filterable="false" Dense="true" Bordered="true" Culture="CultureInfo.CurrentCulture" Hover="true" Striped="true">
         <ToolBarContent>
             <MudText Typo="Typo.h6">@AppLang.DeviceManagement</MudText>
             <MudSpacer/>
-            
+
             <div class="d-flex flex-row gap-3">
-                
+
                 <div class="page-content-container-search-field-width">
                     <MudAutocomplete T="string" @bind-Value="DeviceSearchString" Placeholder="@AppLang.Search_device" SearchFunc="@SearchDevice"
                                      Adornment="Adornment.Start" Margin="Margin.Dense" Variant="Variant.Outlined"
@@ -27,12 +29,13 @@
                         </ProgressIndicatorTemplate>
                     </MudAutocomplete>
                 </div>
-                
+
                 <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Filled" OnClick="OpenAddDialog">@AppLang.Add</MudButton>
-                
+                <MudButton StartIcon="fa-solid fa-arrows-rotate" Variant="Variant.Filled" OnClick="ReloadPage">@AppLang.Refresh_data</MudButton>
+
             </div>
-            
-            
+
+
         </ToolBarContent>
         <Columns>
             <PropertyColumn Property="x => x.Device.DeviceId" Title="ID"/>
@@ -41,11 +44,11 @@
             <PropertyColumn Property="x => x.Device.IpAddress" Title="@AppLang.IP_address"/>
             <PropertyColumn Property="x => x.Device.MacAddress" Title="@AppLang.MAC_address"/>
             <PropertyColumn Property="x => x.Device.Status" Title="@AppLang.Status"/>
-            <TemplateColumn Title="@AppLang.Action">
+            <TemplateColumn T="PageModel" Title="@AppLang.Action">
                 <CellTemplate>
-                    
+
                     @context.Item.ActionContent
-                    
+
                 </CellTemplate>
             </TemplateColumn>
         </Columns>

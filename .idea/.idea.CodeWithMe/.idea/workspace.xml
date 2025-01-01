@@ -45,14 +45,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update log">
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Utils/RazorExtensions/DataGridExtensions.razor" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add some extension, double check to render mode">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Models/ButtonAction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Models/ButtonAction.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/DeviceGroup/DeviceGroupManagementPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/DeviceGroup/DeviceGroupManagementPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorManagementPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorManagementPage.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Utils/RazorExtensions/DataGridExtensions.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Utils/RazorExtensions/DataGridExtensions.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/wwwroot/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/wwwroot/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/wwwroot/js/eventListener.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/wwwroot/js/eventListener.js" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -1000,15 +1003,7 @@
       <workItem from="1735605021943" duration="1194000" />
       <workItem from="1735611960658" duration="4201000" />
       <workItem from="1735623983244" duration="6567000" />
-      <workItem from="1735694225070" duration="16592000" />
-    </task>
-    <task id="LOCAL-00518" summary="update lang pack">
-      <option name="closed" value="true" />
-      <created>1735378747210</created>
-      <option name="number" value="00518" />
-      <option name="presentableId" value="LOCAL-00518" />
-      <option name="project" value="LOCAL" />
-      <updated>1735378747210</updated>
+      <workItem from="1735694225070" duration="28240000" />
     </task>
     <task id="LOCAL-00519" summary="update">
       <option name="closed" value="true" />
@@ -1394,7 +1389,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735712043354</updated>
     </task>
-    <option name="localTasksCounter" value="567" />
+    <task id="LOCAL-00567" summary="add some extension, double check to render mode">
+      <option name="closed" value="true" />
+      <created>1735728727624</created>
+      <option name="number" value="00567" />
+      <option name="presentableId" value="LOCAL-00567" />
+      <option name="project" value="LOCAL" />
+      <updated>1735728727624</updated>
+    </task>
+    <option name="localTasksCounter" value="568" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1425,7 +1428,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fix not found issue" />
     <MESSAGE value="remove shit" />
     <MESSAGE value="serialize opject" />
     <MESSAGE value="shit" />
@@ -1450,7 +1452,8 @@
     <MESSAGE value="unsafe with objectid set to read only from BaseModelEntry.cs" />
     <MESSAGE value="re open execution provider option" />
     <MESSAGE value="update log" />
-    <option name="LAST_COMMIT_MESSAGE" value="update log" />
+    <MESSAGE value="add some extension, double check to render mode" />
+    <option name="LAST_COMMIT_MESSAGE" value="add some extension, double check to render mode" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

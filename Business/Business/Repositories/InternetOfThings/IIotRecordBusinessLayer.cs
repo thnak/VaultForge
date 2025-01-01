@@ -118,6 +118,12 @@ public class IotRecordBusinessLayer(IIotRecordDataLayer data, IIotRequestQueue i
             iotRequestQueue.IncrementTotalRequests(item.Metadata.SensorId);
         }
 
+        var cursor2 = Where(x => x.Metadata.ProcessStatus != ProcessStatus.Completed, cancellationToken);
+        await foreach (var item in cursor2)
+        {
+            await iotRequestQueue.QueueRequest(item, cancellationToken);
+        }
+
         return Result<bool>.SuccessWithMessage(true, AppLang.Success);
     }
 

@@ -28,7 +28,7 @@ public class IotRequestQueue : IIotRequestQueue
     private readonly IParallelBackgroundTaskQueue _backgroundTaskQueue;
     private readonly ILogger<IIotRequestQueue> _logger;
 
-    public IotRequestQueue(ApplicationConfiguration options, IHubContext<IoTSensorSignalHub, IIoTSensorSignal> hubContext, 
+    public IotRequestQueue(ApplicationConfiguration options, IHubContext<IoTSensorSignalHub, IIoTSensorSignal> hubContext,
         IParallelBackgroundTaskQueue backgroundTaskQueue, ILogger<IIotRequestQueue> logger)
     {
         var maxQueueSize = options.GetIoTRequestQueueConfig.MaxQueueSize;
@@ -56,6 +56,11 @@ public class IotRequestQueue : IIotRequestQueue
         }
         catch (OperationCanceledException)
         {
+            return false;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
             return false;
         }
     }
