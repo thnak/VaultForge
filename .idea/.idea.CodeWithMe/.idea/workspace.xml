@@ -45,31 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/BrainNet/Models/Result/InferenceResult.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Interfaces/IYoloInferenceService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Feeder/YoloInferenceServiceFeeder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/WaterMeterInferenceHostedService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterInferenceService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Models/Setting/BrainNetSettingModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Models/Setting/BrainNetSettingModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/Memory/Utils/MemoryAllocatorExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/Memory/Utils/MemoryAllocatorExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloDetection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloDetection.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Result/YoloPrediction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Result/YoloPrediction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Utils/BusinessExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Utils/BusinessExtension.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/StorageSpace/RedundantArrayOfIndependentDisks.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/StorageSpace/RedundantArrayOfIndependentDisks.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/DataServiceCollectionExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/DataServiceCollectionExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/TaskQueueServices/Base/ParallelBackgroundTaskQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/TaskQueueServices/Base/ParallelBackgroundTaskQueue.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/General/SettingModels/AppSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Models/SettingModels/AppSettings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/type/ProcessStatus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/type/ProcessStatus.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="big update to inference server">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
@@ -1014,15 +990,7 @@
       <workItem from="1735623983244" duration="6567000" />
       <workItem from="1735694225070" duration="30186000" />
       <workItem from="1735789839188" duration="17220000" />
-      <workItem from="1735797476923" duration="5454000" />
-    </task>
-    <task id="LOCAL-00521" summary="update language pack">
-      <option name="closed" value="true" />
-      <created>1735381696562</created>
-      <option name="number" value="00521" />
-      <option name="presentableId" value="LOCAL-00521" />
-      <option name="project" value="LOCAL" />
-      <updated>1735381696562</updated>
+      <workItem from="1735797476923" duration="5927000" />
     </task>
     <task id="LOCAL-00522" summary="update">
       <option name="closed" value="true" />
@@ -1408,7 +1376,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735750430623</updated>
     </task>
-    <option name="localTasksCounter" value="570" />
+    <task id="LOCAL-00570" summary="big update to inference server">
+      <option name="closed" value="true" />
+      <created>1735836031911</created>
+      <option name="number" value="00570" />
+      <option name="presentableId" value="LOCAL-00570" />
+      <option name="project" value="LOCAL" />
+      <updated>1735836031911</updated>
+    </task>
+    <option name="localTasksCounter" value="571" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1439,7 +1415,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="remove shit" />
     <MESSAGE value="serialize opject" />
     <MESSAGE value="shit" />
     <MESSAGE value="bind value" />
@@ -1464,7 +1439,8 @@
     <MESSAGE value="update log" />
     <MESSAGE value="add some extension, double check to render mode" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="big update to inference server" />
+    <option name="LAST_COMMIT_MESSAGE" value="big update to inference server" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

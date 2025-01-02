@@ -38,12 +38,14 @@ public class YoloInferenceService : IYoloInferenceService
     public int[] InputDimensions { get; set; } = [];
     public long[] OutputDimensions { get; set; } = [];
     private float[] InputFeedBuffer { get; set; }
+    private bool[] InferenceStates { get; set; } 
     public IReadOnlyCollection<string> CategoryReadOnlyCollection { get; set; } = [];
     public int Stride { get; set; }
     private readonly RunOptions _runOptions;
     private TensorShape _tensorShape;
     private Size _inputSize;
     private readonly ArrayPool<float> _floatPool = ArrayPool<float>.Create();
+    private readonly ArrayPool<bool> _boolPool = ArrayPool<bool>.Create();
     public SixLabors.Fonts.Font PrimaryFont;
 
 
@@ -72,6 +74,7 @@ public class YoloInferenceService : IYoloInferenceService
         }
 
         InputFeedBuffer = _arrayPool.Rent(size);
+        InferenceStates = _boolPool.Rent(InputDimensions[0]);
         _inputChannel = Channel.CreateBounded<(YoloInferenceServiceFeeder feeder, TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>> tcs)>(new BoundedChannelOptions(maxQueueSize)
         {
             FullMode = BoundedChannelFullMode.Wait // Wait when the channel is full
@@ -94,6 +97,7 @@ public class YoloInferenceService : IYoloInferenceService
             size *= InputDimensions[i];
         }
 
+        InferenceStates = _boolPool.Rent(InputDimensions[0]);
         InputFeedBuffer = _arrayPool.Rent(size);
         _inputChannel = Channel.CreateBounded<(YoloInferenceServiceFeeder feeder, TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>> tcs)>(new BoundedChannelOptions(options.Value.WaterSetting.MaxQueSize)
         {
@@ -224,6 +228,9 @@ public class YoloInferenceService : IYoloInferenceService
     private void ProcessBatchAsync(List<(YoloInferenceServiceFeeder, TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>>)> batch)
     {
         var batchSize = batch.Count;
+
+        // make sure nms dont make task stuck right here
+        
         var inputSize = batch[0].Item1.Buffer.Length;
         try
         {
@@ -249,6 +256,15 @@ public class YoloInferenceService : IYoloInferenceService
             {
                 var resultList = batchResult.ToList();
                 batch[batchResult.Key].Item2.SetResult(InferenceResult<List<YoloBoundingBox>>.Success(resultList));
+                InferenceStates[batchResult.Key] = true;
+            }
+
+            for (int i = 0; i < batchSize; i++)
+            {
+                if (InferenceStates[i] != true)
+                {
+                    batch[i].Item2.SetResult(InferenceResult<List<YoloBoundingBox>>.Success([]));
+                }
             }
         }
         finally
@@ -260,6 +276,7 @@ public class YoloInferenceService : IYoloInferenceService
     public void Dispose()
     {
         _arrayPool.Return(InputFeedBuffer);
+        _boolPool.Return(InferenceStates);
         _session.Dispose();
         _memoryAllocatorService.Dispose();
         _runOptions.Dispose();
