@@ -230,6 +230,7 @@ public class YoloInferenceService : IYoloInferenceService
             // Copy inputs into the batched array
             for (int i = 0; i < batchSize; i++)
             {
+                InferenceStates[i] = false;
                 var inputSize = batch[0].Item1.Buffer.Length;
                 Array.Copy(batch[i].Item1.Buffer, 0, InputFeedBuffer, i * inputSize, inputSize);
             }

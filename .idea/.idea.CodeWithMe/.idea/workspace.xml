@@ -45,11 +45,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="fix out of index">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="fix wrong input shape">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+    </list>
+    <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
-    <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -175,6 +176,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fe3b1716bf2f8f83ac793e7e3faa60f88a7868347653f77591f74b86d0d97675/Server.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff56e9dabec8513a52b6f0caca4a8979301377a3ae924a82a78d3c3dfd001c/TextOptions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Service/ObjectDetection/ImageExtension.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
@@ -994,15 +996,7 @@
       <workItem from="1735623983244" duration="6567000" />
       <workItem from="1735694225070" duration="30186000" />
       <workItem from="1735789839188" duration="17220000" />
-      <workItem from="1735797476923" duration="7380000" />
-    </task>
-    <task id="LOCAL-00524" summary="add resource">
-      <option name="closed" value="true" />
-      <created>1735447452176</created>
-      <option name="number" value="00524" />
-      <option name="presentableId" value="LOCAL-00524" />
-      <option name="project" value="LOCAL" />
-      <updated>1735447452176</updated>
+      <workItem from="1735797476923" duration="8132000" />
     </task>
     <task id="LOCAL-00525" summary="add some bullshit service">
       <option name="closed" value="true" />
@@ -1388,7 +1382,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735837475565</updated>
     </task>
-    <option name="localTasksCounter" value="573" />
+    <task id="LOCAL-00573" summary="fix wrong input shape">
+      <option name="closed" value="true" />
+      <created>1735837813419</created>
+      <option name="number" value="00573" />
+      <option name="presentableId" value="LOCAL-00573" />
+      <option name="project" value="LOCAL" />
+      <updated>1735837813419</updated>
+    </task>
+    <option name="localTasksCounter" value="574" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1419,7 +1421,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="bind value" />
     <MESSAGE value="fix wrong type" />
     <MESSAGE value="." />
     <MESSAGE value="json map" />
@@ -1444,7 +1445,8 @@
     <MESSAGE value="big update to inference server" />
     <MESSAGE value="optimize return state" />
     <MESSAGE value="fix out of index" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix out of index" />
+    <MESSAGE value="fix wrong input shape" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix wrong input shape" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1467,19 +1469,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="89" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/BrainNet/Service/ObjectDetection/ImageExtension.cs</url>
-          <line>47</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\BrainNet\Service\ObjectDetection\ImageExtension.cs" containingFunctionPresentation="Method 'ProcessToTensorCore'">
-            <startOffsets>
-              <option value="1595" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1624" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="132" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">
