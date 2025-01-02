@@ -1,10 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
-using BrainNet.Assets;
 using BrainNet.Models.Vector;
 using BrainNet.Service.ObjectDetection.Model.Result;
-using BrainNet.Utils;
 using Microsoft.ML.OnnxRuntime.Tensors;
-using OllamaSharp.Models.Chat;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
@@ -13,10 +10,8 @@ using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using Color = SixLabors.ImageSharp.Color;
 using PointF = SixLabors.ImageSharp.PointF;
-using Rectangle = SixLabors.ImageSharp.Rectangle;
 using RectangleF = SixLabors.ImageSharp.RectangleF;
 using Size = SixLabors.ImageSharp.Size;
-using SystemFonts = System.Drawing.SystemFonts;
 
 namespace BrainNet.Service.ObjectDetection;
 

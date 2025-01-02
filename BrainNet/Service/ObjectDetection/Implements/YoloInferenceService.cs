@@ -231,12 +231,12 @@ public class YoloInferenceService : IYoloInferenceService
 
         // make sure nms dont make task stuck right here
         
-        var inputSize = batch[0].Item1.Buffer.Length;
         try
         {
             // Copy inputs into the batched array
             for (int i = 0; i < batchSize; i++)
             {
+                var inputSize = batch[0].Item1.Buffer.Length;
                 Array.Copy(batch[i].Item1.Buffer, 0, InputFeedBuffer, i * inputSize, inputSize);
             }
 
