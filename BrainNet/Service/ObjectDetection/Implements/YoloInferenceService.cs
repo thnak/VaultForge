@@ -32,7 +32,7 @@ public class YoloInferenceService : IYoloInferenceService
 
     private readonly IMemoryAllocatorService _memoryAllocatorService = new MemoryAllocatorService();
     private readonly IFontServiceProvider _fontServiceProvider = new FontServiceProvider();
-    private IOptions<BrainNetSettingModel>? Options { get; }
+    // private IOptions<BrainNetSettingModel>? Options { get; }
     private string[] InputNames { get; set; } = null!;
     private string[] OutputNames { get; set; } = null!;
     public int[] InputDimensions { get; set; } = [];
@@ -43,6 +43,7 @@ public class YoloInferenceService : IYoloInferenceService
     public int Stride { get; set; }
     private readonly RunOptions _runOptions;
     private TensorShape _tensorShape;
+    private TensorShape _inputTensorShape;
     private Size _inputSize;
     private readonly ArrayPool<float> _floatPool = ArrayPool<float>.Create();
     private readonly ArrayPool<bool> _boolPool = ArrayPool<bool>.Create();
@@ -51,17 +52,9 @@ public class YoloInferenceService : IYoloInferenceService
 
     public YoloInferenceService(string modelPath, TimeSpan timeout, int maxQueueSize, int deviceIndex)
     {
-        var settings = new BrainNetSettingModel()
-        {
-            FaceEmbeddingSetting = new FaceEmbeddingSettingModel
-            {
-                FaceEmbeddingPath = modelPath,
-                DeviceIndex = deviceIndex,
-            }
-        };
         var sessionOption = InitSessionOption(deviceIndex);
         _session = new InferenceSession(modelPath, sessionOption);
-        Options = new OptionsWrapper<BrainNetSettingModel>(settings);
+        // Options = new OptionsWrapper<BrainNetSettingModel>(settings);
         InitializeSession();
         InitCategory();
         _runOptions = new();
@@ -85,7 +78,7 @@ public class YoloInferenceService : IYoloInferenceService
     {
         var sessionOption = InitSessionOption(options.Value.WaterSetting.DeviceIndex);
         _session = new InferenceSession(options.Value.WaterSetting.DetectionPath, sessionOption);
-        Options = options;
+        // Options = options;
         InitializeSession();
         InitCategory();
         _runOptions = new();
@@ -115,6 +108,7 @@ public class YoloInferenceService : IYoloInferenceService
         InputDimensions = _session.InputMetadata.First().Value.Dimensions;
         OutputDimensions = [.._session.OutputMetadata.First().Value.Dimensions];
         _tensorShape = new TensorShape(InputDimensions);
+        _inputTensorShape = new TensorShape([1, InputDimensions[1], InputDimensions[2], InputDimensions[3]]);
         _inputSize = new Size(InputDimensions[^1], InputDimensions[^2]);
     }
 
@@ -178,7 +172,7 @@ public class YoloInferenceService : IYoloInferenceService
     public async Task<InferenceResult<List<YoloBoundingBox>>> AddInputAsync(Image<Rgb24> image)
     {
         var tcs = new TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>>();
-        using MemoryTensorOwner<float> memoryTensorOwner = _memoryAllocatorService.AllocateTensor<float>(_tensorShape, true);
+        using MemoryTensorOwner<float> memoryTensorOwner = _memoryAllocatorService.AllocateTensor<float>(_inputTensorShape, true);
         var pads = _floatPool.Rent(1);
         var ratios = _floatPool.Rent(1);
         image.NormalizeInput(memoryTensorOwner.Tensor, _inputSize, ratios, pads, true);
