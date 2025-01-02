@@ -1,7 +1,8 @@
 using System.Reflection;
+using BrainNet.Models.Setting;
 using BusinessModels.System.FileSystem;
 
-namespace BusinessModels.General.SettingModels;
+namespace Business.Models.SettingModels;
 
 public class AppSettings
 {
@@ -17,6 +18,8 @@ public class AppSettings
     public AppCertificate AppCertificate { get; set; } = new();
 
     public Authenticate Authenticate { get; set; } = new();
+    
+    public BrainNetSettingModel BrainNetSettingModel { get; set; } = new();
 }
 
 public class BackgroundQueue

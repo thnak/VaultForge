@@ -1,5 +1,6 @@
-﻿using BusinessModels;
-using BusinessModels.General.SettingModels;
+﻿using BrainNet.Models.Setting;
+using Business.Models.SettingModels;
+using BusinessModels;
 using Microsoft.Extensions.Options;
 
 namespace Business.Services.Configure;
@@ -32,6 +33,8 @@ public class ApplicationConfiguration
 
         InitVideoEncodeConfig(appSettings);
 
+        BrainNetConfig(appSettings);
+        
         DisplayGroupedConfigurations(InitLogoAsciiArt(), Configs.ConvertToDictionary());
     }
 
@@ -113,6 +116,14 @@ public class ApplicationConfiguration
         Configs.OnnxConfig.WaterMeterWeightPath = GetEnvironmentVariable("OnnxConfigWaterMeterPath", appSettings.Value.OnnxConfig.WaterMeterWeightPath);
     }
 
+    private void BrainNetConfig(IOptions<AppSettings> appSettings)
+    {
+        Configs.BrainNetSettingModel.WaterSetting.DetectionPath = GetEnvironmentVariable("BrainNetSettingModelWaterSettingDetectionPath", appSettings.Value.BrainNetSettingModel.WaterSetting.DetectionPath);
+        Configs.BrainNetSettingModel.WaterSetting.DeviceIndex = GetIntEnvironmentVariable("BrainNetSettingModelWaterSettingDeviceIndex", appSettings.Value.BrainNetSettingModel.WaterSetting.DeviceIndex);
+        Configs.BrainNetSettingModel.WaterSetting.PeriodicTimer = GetIntEnvironmentVariable("BrainNetSettingModelWaterSettingPeriodicTimer", appSettings.Value.BrainNetSettingModel.WaterSetting.PeriodicTimer);
+        Configs.BrainNetSettingModel.WaterSetting.MaxQueSize = GetIntEnvironmentVariable("BrainNetSettingModelWaterSettingMaxQueSize", appSettings.Value.BrainNetSettingModel.WaterSetting.MaxQueSize);
+    }
+
     public OllamaConfig GetOllamaConfig => Configs.OllamaConfig;
 
     public OnnxConfig GetOnnxConfig => Configs.OnnxConfig;
@@ -126,8 +137,9 @@ public class ApplicationConfiguration
     public AppCertificate GetAppCertificate => Configs.AppCertificate;
     public VideoTransCode GetVideoTransCode => Configs.VideoTransCode;
 
-    public BusinessModels.General.SettingModels.Authenticate GetAuthenticate => Configs.Authenticate;
-    
+    public Models.SettingModels.Authenticate GetAuthenticate => Configs.Authenticate;
+    public BrainNetSettingModel GetBrainNetSetting => Configs.BrainNetSettingModel;
+
     private string GetEnvironmentVariable(string key, string defaultValue)
     {
         var envValue = Environment.GetEnvironmentVariable(key);

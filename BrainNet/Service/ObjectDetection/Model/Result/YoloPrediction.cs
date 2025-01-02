@@ -25,6 +25,15 @@ public class YoloPrediction
         Ratios = ratios;
     }
 
+
+    public YoloPrediction(ReadOnlySpan<float> predictionArrayResults, string[] categories, List<float[]> dhdws, List<float[]> ratios, List<int[]> imageShapes)
+    {
+        PredictionArrays = predictionArrayResults.ToArray();
+        Categories = categories;
+        Dwdhs = dhdws;
+        ImageShapes = imageShapes;
+        Ratios = ratios;
+    }
     /// <summary>
     /// get all prediction
     /// </summary>

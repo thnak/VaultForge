@@ -149,8 +149,7 @@ public class YoloDetection : IYoloDetection
         using var fromResult = _session.Run(_runOptions, inputs, OutputNames);
         float[] resultArrays = fromResult[0].Value.GetTensorDataAsSpan<float>().ToArray();
 
-        YoloPrediction predictions = new YoloPrediction(resultArrays, CategoryReadOnlyCollection.ToArray(),
-            [pads], [ratios], [[image.Height, image.Width]]);
+        YoloPrediction predictions = new YoloPrediction(resultArrays, CategoryReadOnlyCollection.ToArray(), [pads], [ratios], [[image.Height, image.Width]]);
         _floatPool.Return(pads);
         _floatPool.Return(ratios);
         return predictions.GetDetect();

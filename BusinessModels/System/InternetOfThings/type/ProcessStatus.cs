@@ -5,4 +5,5 @@ public enum ProcessStatus
     Requesting,
     Processing,
     Completed,
+    Failed
 }

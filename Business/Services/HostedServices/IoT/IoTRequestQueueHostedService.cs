@@ -1,7 +1,6 @@
 ﻿using Business.Business.Interfaces.InternetOfThings;
 using Business.Services.Configure;
 using Business.Services.OnnxService.WaterMeter;
-using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.System.InternetOfThings;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -11,7 +10,6 @@ namespace Business.Services.HostedServices.IoT;
 public class IoTRequestQueueHostedService(
     ApplicationConfiguration options,
     IIotRequestQueue iotRequestQueue,
-    IParallelBackgroundTaskQueue queue,
     IIotRecordBusinessLayer iotBusinessLayer,
     IWaterMeterReaderQueue waterMeterReaderQueue,
     ILogger<IoTRequestQueueHostedService> logger) : BackgroundService
@@ -30,19 +28,16 @@ public class IoTRequestQueueHostedService(
             _currentDay = today;
         }
 
-        queue.QueueBackgroundWorkItemAsync(async serverToken =>
+        List<IoTRecord> batch = [];
+        while (iotRequestQueue.TryRead(out var data))
         {
-            List<IoTRecord> batch = [];
-            while (iotRequestQueue.TryRead(out var data))
-            {
-                batch.Add(data);
-            }
+            batch.Add(data);
+        }
 
-            if (batch.Count == 0)
-                return;
+        if (batch.Count == 0)
+            return;
 
-            await InsertBatchIntoDatabase(batch, serverToken);
-        });
+        InsertBatchIntoDatabase(batch).ConfigureAwait(false);
     }
 
     private async Task InsertBatchIntoDatabase(IReadOnlyCollection<IoTRecord> batch, CancellationToken cancellationToken = default)

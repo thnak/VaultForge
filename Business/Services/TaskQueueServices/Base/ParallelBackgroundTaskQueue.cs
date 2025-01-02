@@ -2,7 +2,6 @@
 using System.Threading.Channels;
 using Business.Services.Configure;
 using Business.Services.TaskQueueServices.Base.Interfaces;
-using BusinessModels.General.SettingModels;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 

@@ -16,7 +16,9 @@ public static class BusinessExtension
     {
         serviceCollection.AddSingleton<IIotRequestQueue, IotRequestQueue>();
         serviceCollection.AddSingleton<IWaterMeterReaderQueue, WaterMeterReaderQueue>();
+        serviceCollection.AddSingleton<IWaterMeterInferenceService, WaterMeterInferenceService>();
         serviceCollection.AddHostedService<IoTRequestQueueHostedService>();
+        serviceCollection.AddHostedService<WaterMeterInferenceHostedService>();
     }
 
     public static async Task<List<SearchScore<VectorRecord>>> RagSearch(this ConcurrentDictionary<string, IInMemoryVectorDb> vectorDictionary, string query, int count, CancellationToken cancellationToken = default)

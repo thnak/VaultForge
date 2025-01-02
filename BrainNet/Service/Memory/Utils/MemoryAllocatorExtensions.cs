@@ -20,8 +20,13 @@ internal static class MemoryAllocatorExtensions
         return CreateOrtValue(tensor.Buffer, tensor.Dimensions64);
     }
 
-    private static OrtValue CreateOrtValue(this Memory<float> buffer, long[] shape)
+    public static OrtValue CreateOrtValue(this Memory<float> buffer, long[] shape)
     {
         return OrtValue.CreateTensorValueFromMemory(OrtMemoryInfo.DefaultInstance, buffer, shape);
+    }
+    
+    public static OrtValue CreateOrtValue(this float[] buffer, long[] shape)
+    {
+        return OrtValue.CreateTensorValueFromMemory(OrtMemoryInfo.DefaultInstance, buffer.AsMemory(), shape);
     }
 }
