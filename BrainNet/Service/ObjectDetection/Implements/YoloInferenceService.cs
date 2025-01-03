@@ -206,7 +206,7 @@ public class YoloInferenceService : IYoloInferenceService
                 }
                 else
                 {
-                    await Task.Delay(10, cancellationToken); // Small delay to prevent busy-waiting
+                    await Task.Delay(100, cancellationToken); // Small delay to prevent busy-waiting
                 }
             }
             sw.Restart();
