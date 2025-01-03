@@ -26,15 +26,14 @@ internal class MemoryAllocatorService : IMemoryAllocatorService
 
         public ArrayMemoryPoolBuffer(int length, bool clean)
         {
-            var source = ArrayPool<T>.Shared.Rent(length);
+            _buffer = ArrayPool<T>.Shared.Rent(length);
 
             if (clean)
             {
-                Array.Clear(source, 0, length);
+                Array.Clear(_buffer, 0, length);
             }
 
             _length = length;
-            _buffer = source;
         }
 
         ~ArrayMemoryPoolBuffer() => Dispose();

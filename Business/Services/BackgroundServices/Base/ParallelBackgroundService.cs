@@ -31,7 +31,7 @@ public class ParallelBackgroundService(IParallelBackgroundTaskQueue parallelBack
             {
                 while (parallelBackgroundTaskQueue.TryDequeue(out Func<CancellationToken, ValueTask>? workItem))
                 {
-                    _ = _factory.StartNew(async () => await workItem(stoppingToken), stoppingToken).ConfigureAwait(false);
+                    await _factory.StartNew(async () => await workItem(stoppingToken), stoppingToken);
                 }
             }
         }
