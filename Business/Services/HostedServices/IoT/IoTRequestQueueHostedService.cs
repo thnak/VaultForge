@@ -47,13 +47,11 @@ public class IoTRequestQueueHostedService(
         var result = await iotBusinessLayer.CreateAsync(batch, cancellationToken);
         if (result.IsSuccess)
         {
-            const int chunkSize = 4; // Adjust based on memory and processing constraints
-            var chunkedBatch = batch.Where(data => !string.IsNullOrEmpty(data.Metadata.ImagePath)).Chunk(chunkSize);
+            var chunkedBatch = batch.Where(data => !string.IsNullOrEmpty(data.Metadata.ImagePath));
 
-            foreach (var chunk in chunkedBatch)
+            foreach (var data in chunkedBatch)
             {
-                var tasks = chunk.Select(data => Task.Run(() => waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, cancellationToken), cancellationToken));
-                await queue.QueueBackgroundWorkItemAsync(async _ => await Task.WhenAll(tasks), cancellationToken);
+                await queue.QueueBackgroundWorkItemAsync(async _ => await waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, cancellationToken), cancellationToken);
             }
         }
         else

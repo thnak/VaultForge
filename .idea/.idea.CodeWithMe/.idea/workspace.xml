@@ -48,6 +48,7 @@
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -999,15 +1000,7 @@
       <workItem from="1735870415827" duration="194000" />
       <workItem from="1735871483025" duration="8532000" />
       <workItem from="1735897174747" duration="790000" />
-      <workItem from="1735911133327" duration="11090000" />
-    </task>
-    <task id="LOCAL-00534" summary="fix not found issue">
-      <option name="closed" value="true" />
-      <created>1735493650017</created>
-      <option name="number" value="00534" />
-      <option name="presentableId" value="LOCAL-00534" />
-      <option name="project" value="LOCAL" />
-      <updated>1735493650017</updated>
+      <workItem from="1735911133327" duration="12329000" />
     </task>
     <task id="LOCAL-00535" summary="remove shit">
       <option name="closed" value="true" />
@@ -1393,7 +1386,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735922182582</updated>
     </task>
-    <option name="localTasksCounter" value="583" />
+    <task id="LOCAL-00583" summary="small update">
+      <option name="closed" value="true" />
+      <created>1735922713034</created>
+      <option name="number" value="00583" />
+      <option name="presentableId" value="LOCAL-00583" />
+      <option name="project" value="LOCAL" />
+      <updated>1735922713035</updated>
+    </task>
+    <option name="localTasksCounter" value="584" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
