@@ -59,7 +59,7 @@ public class IoTRequestQueueHostedService(
                 // Start all tasks for this chunk without awaiting
                 try
                 {
-                    await Task.WhenAll(tasks).ConfigureAwait(false);
+                    await Task.WhenAll(tasks);
                 }
                 catch (Exception ex)
                 {
