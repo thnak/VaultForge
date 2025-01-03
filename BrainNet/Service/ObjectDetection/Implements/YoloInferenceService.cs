@@ -31,14 +31,16 @@ public class YoloInferenceService : IYoloInferenceService
     private readonly ArrayPool<float> _arrayPool = ArrayPool<float>.Shared;
 
     private readonly IMemoryAllocatorService _memoryAllocatorService = new MemoryAllocatorService();
+
     private readonly IFontServiceProvider _fontServiceProvider = new FontServiceProvider();
+
     // private IOptions<BrainNetSettingModel>? Options { get; }
     private string[] InputNames { get; set; } = null!;
     private string[] OutputNames { get; set; } = null!;
     public int[] InputDimensions { get; set; } = [];
     public long[] OutputDimensions { get; set; } = [];
     private float[] InputFeedBuffer { get; set; }
-    private bool[] InferenceStates { get; set; } 
+    private bool[] InferenceStates { get; set; }
     public IReadOnlyCollection<string> CategoryReadOnlyCollection { get; set; } = [];
     public int Stride { get; set; }
     private readonly RunOptions _runOptions;
@@ -209,6 +211,7 @@ public class YoloInferenceService : IYoloInferenceService
                     await Task.Delay(100, cancellationToken); // Small delay to prevent busy-waiting
                 }
             }
+
             sw.Restart();
 
             if (buffer.Count > 0)
@@ -222,6 +225,7 @@ public class YoloInferenceService : IYoloInferenceService
     private void ProcessBatchAsync(List<(YoloInferenceServiceFeeder, TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>>)> batch)
     {
         var batchSize = batch.Count;
+        Console.WriteLine($"Batch size: {batchSize}");
         // Copy inputs into the batched array
         for (int i = 0; i < batchSize; i++)
         {
@@ -229,6 +233,7 @@ public class YoloInferenceService : IYoloInferenceService
             var inputSize = batch[0].Item1.Buffer.Length;
             Array.Copy(batch[i].Item1.Buffer, 0, InputFeedBuffer, i * inputSize, inputSize);
         }
+
         try
         {
             // Run inference
@@ -259,6 +264,7 @@ public class YoloInferenceService : IYoloInferenceService
                     batch[i].Item2.SetResult(InferenceResult<List<YoloBoundingBox>>.Success([]));
                 }
             }
+
             Array.Clear(InputFeedBuffer);
         }
     }

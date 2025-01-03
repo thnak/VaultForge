@@ -45,13 +45,8 @@ public class IoTRequestQueueHostedService(
         var result = await iotBusinessLayer.CreateAsync(batch, cancellationToken);
         if (result.IsSuccess)
         {
-            foreach (var data in batch)
-            {
-                if (!string.IsNullOrEmpty(data.Metadata.ImagePath))
-                {
-                    _ = Task.Run(() => waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, cancellationToken), cancellationToken);
-                }
-            }
+            var task = batch.Where(x => !string.IsNullOrEmpty(x.Metadata.ImagePath)).Select(data => waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, cancellationToken));
+            await Task.WhenAll(task);
         }
         else
         {
