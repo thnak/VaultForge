@@ -45,11 +45,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="memory leak">
-      <change afterPath="$PROJECT_DIR$/BrainNet/Models/Result/InferenceResultAwaiter.cs" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1001,15 +999,7 @@
       <workItem from="1735870415827" duration="194000" />
       <workItem from="1735871483025" duration="8532000" />
       <workItem from="1735897174747" duration="790000" />
-      <workItem from="1735911133327" duration="10263000" />
-    </task>
-    <task id="LOCAL-00533" summary="small update">
-      <option name="closed" value="true" />
-      <created>1735492613836</created>
-      <option name="number" value="00533" />
-      <option name="presentableId" value="LOCAL-00533" />
-      <option name="project" value="LOCAL" />
-      <updated>1735492613836</updated>
+      <workItem from="1735911133327" duration="11090000" />
     </task>
     <task id="LOCAL-00534" summary="fix not found issue">
       <option name="closed" value="true" />
@@ -1395,7 +1385,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735917975000</updated>
     </task>
-    <option name="localTasksCounter" value="582" />
+    <task id="LOCAL-00582" summary="small update">
+      <option name="closed" value="true" />
+      <created>1735922182582</created>
+      <option name="number" value="00582" />
+      <option name="presentableId" value="LOCAL-00582" />
+      <option name="project" value="LOCAL" />
+      <updated>1735922182582</updated>
+    </task>
+    <option name="localTasksCounter" value="583" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1444,14 +1442,14 @@
     <MESSAGE value="optimize return state" />
     <MESSAGE value="fix out of index" />
     <MESSAGE value="fix wrong input shape" />
-    <MESSAGE value="small update" />
     <MESSAGE value="batch now working good" />
     <MESSAGE value="do not wait" />
     <MESSAGE value="update logic, add log" />
     <MESSAGE value="add chunk" />
     <MESSAGE value="wait it" />
     <MESSAGE value="memory leak" />
-    <option name="LAST_COMMIT_MESSAGE" value="memory leak" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

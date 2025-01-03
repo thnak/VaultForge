@@ -16,11 +16,11 @@ public class IoTRequestQueueHostedService(
     ILogger<IoTRequestQueueHostedService> logger,
     IParallelBackgroundTaskQueue queue) : BackgroundService
 {
-    private Timer? BatchTimer { get; set; }
+    private PeriodicTimer? BatchTimer { get; set; }
     private readonly int _timePeriod = options.GetIoTRequestQueueConfig.TimePeriodInSecond;
     private DateTime _currentDay = DateTime.UtcNow.Date; // Tracks the current day
 
-    private void InsertPeriodTimerCallback(object? state)
+    private async Task InsertPeriodTimerCallback(CancellationToken cancellationToken)
     {
         var today = DateTime.UtcNow.Date;
         // Reset the counter if the day has changed
@@ -39,7 +39,7 @@ public class IoTRequestQueueHostedService(
         if (batch.Count == 0)
             return;
 
-        queue.QueueBackgroundWorkItemAsync(async serverCancel => await InsertBatchIntoDatabase(batch, serverCancel));
+        await InsertBatchIntoDatabase(batch, cancellationToken);
     }
 
     private async Task InsertBatchIntoDatabase(IReadOnlyCollection<IoTRecord> batch, CancellationToken cancellationToken = default)
@@ -47,24 +47,13 @@ public class IoTRequestQueueHostedService(
         var result = await iotBusinessLayer.CreateAsync(batch, cancellationToken);
         if (result.IsSuccess)
         {
-            const int chunkSize = 32; // Adjust based on memory and processing constraints
+            const int chunkSize = 4; // Adjust based on memory and processing constraints
             var chunkedBatch = batch.Where(data => !string.IsNullOrEmpty(data.Metadata.ImagePath)).Chunk(chunkSize);
 
             foreach (var chunk in chunkedBatch)
             {
-                var tasks = chunk
-                    .Select(data => Task.Run(() =>
-                        waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, cancellationToken), cancellationToken));
-
-                // Start all tasks for this chunk without awaiting
-                try
-                {
-                    await Task.WhenAll(tasks);
-                }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, "Error occurred while processing a chunk of water meter readings.");
-                }
+                var tasks = chunk.Select(data => Task.Run(() => waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, cancellationToken), cancellationToken));
+                await queue.QueueBackgroundWorkItemAsync(async _ => await Task.WhenAll(tasks), cancellationToken);
             }
         }
         else
@@ -73,15 +62,18 @@ public class IoTRequestQueueHostedService(
         }
     }
 
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        BatchTimer = new Timer(InsertPeriodTimerCallback, null, TimeSpan.Zero, TimeSpan.FromSeconds(_timePeriod));
-        return Task.CompletedTask;
+        BatchTimer = new PeriodicTimer(TimeSpan.FromSeconds(_timePeriod));
+        while (await BatchTimer.WaitForNextTickAsync(stoppingToken))
+        {
+            await InsertPeriodTimerCallback(stoppingToken);
+        }
     }
 
     public override async Task StopAsync(CancellationToken stoppingToken)
     {
-        if (BatchTimer != null) await BatchTimer.DisposeAsync();
+        if (BatchTimer != null) BatchTimer.Dispose();
         await base.StopAsync(stoppingToken);
     }
 }
