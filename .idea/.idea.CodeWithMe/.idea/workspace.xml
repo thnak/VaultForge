@@ -45,10 +45,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="memory leak">
+      <change afterPath="$PROJECT_DIR$/BrainNet/Models/Result/InferenceResultAwaiter.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/BackgroundServices/Base/ParallelBackgroundService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/BackgroundServices/Base/ParallelBackgroundService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -129,6 +130,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2854ce6d56c18d0d837d3a3ef9c4f2c7c77691fa3528c8394986ac7ce7719/StackFrameIterator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2b54a8d6295726a4b8041791a5f6b2992ffd98228be84a32877624da44cf018/InferenceSession.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3156559e76fa93dbd2cb4066befe67578c77ca96444eebcc2274bdf90838d/MatOfT.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/39cb14863af59eed60d689c68e4b3aedc7eaa1e544187bc5a84933d314b719/ValueTuple.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3b77eb95a5c127467d81a024e610c2498b68e2e375d1b36a2076e41f9166a4/DateTime.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3c13bcf2472e33fbd9b71675dd1d838142686d7a4f62aafb458d93deb4794/AbstractValidator.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3dd3992f2bc1dcaea84e579f94d8ebea25ac8ee7bbdc81978df19e5af51013fe/Font.cs" root0="SKIP_HIGHLIGHTING" />
@@ -209,7 +211,7 @@
     ".NET Launch Settings Profile.Web: https.executor": "Debug",
     ".NET Launch Settings Profile.WebApp no browser.executor": "Debug",
     ".NET Launch Settings Profile.WebApp: IIS Express.executor": "Debug",
-    ".NET Launch Settings Profile.WebApp: https.executor": "Debug",
+    ".NET Launch Settings Profile.WebApp: https.executor": "Run",
     ".NET Launch Settings Profile.WebApp: no-browser.executor": "Debug",
     ".NET Project.ConsoleApp1.executor": "Debug",
     ".NET Project.WebApp.Client.executor": "Debug",
@@ -999,15 +1001,7 @@
       <workItem from="1735870415827" duration="194000" />
       <workItem from="1735871483025" duration="8532000" />
       <workItem from="1735897174747" duration="790000" />
-      <workItem from="1735911133327" duration="6075000" />
-    </task>
-    <task id="LOCAL-00532" summary="small fix">
-      <option name="closed" value="true" />
-      <created>1735492215009</created>
-      <option name="number" value="00532" />
-      <option name="presentableId" value="LOCAL-00532" />
-      <option name="project" value="LOCAL" />
-      <updated>1735492215009</updated>
+      <workItem from="1735911133327" duration="10263000" />
     </task>
     <task id="LOCAL-00533" summary="small update">
       <option name="closed" value="true" />
@@ -1393,7 +1387,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735913503667</updated>
     </task>
-    <option name="localTasksCounter" value="581" />
+    <task id="LOCAL-00581" summary="memory leak">
+      <option name="closed" value="true" />
+      <created>1735917975000</created>
+      <option name="number" value="00581" />
+      <option name="presentableId" value="LOCAL-00581" />
+      <option name="project" value="LOCAL" />
+      <updated>1735917975000</updated>
+    </task>
+    <option name="localTasksCounter" value="582" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1424,7 +1426,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="update page" />
     <MESSAGE value="fix error type" />
     <MESSAGE value="fix missing field" />
     <MESSAGE value="add cancel page" />
@@ -1449,7 +1450,8 @@
     <MESSAGE value="update logic, add log" />
     <MESSAGE value="add chunk" />
     <MESSAGE value="wait it" />
-    <option name="LAST_COMMIT_MESSAGE" value="wait it" />
+    <MESSAGE value="memory leak" />
+    <option name="LAST_COMMIT_MESSAGE" value="memory leak" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

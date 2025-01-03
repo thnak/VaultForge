@@ -225,8 +225,8 @@ public class YoloInferenceService : IYoloInferenceService
     private void ProcessBatchAsync(List<(YoloInferenceServiceFeeder, TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>>)> batch)
     {
         var batchSize = batch.Count;
-        Console.WriteLine($"Batch size: {batchSize}");
         // Copy inputs into the batched array
+        
         for (int i = 0; i < batchSize; i++)
         {
             InferenceStates[i] = false;
@@ -240,7 +240,10 @@ public class YoloInferenceService : IYoloInferenceService
             using var ortInput = InputFeedBuffer.CreateOrtValue(_tensorShape.Dimensions64);
 
             var inputs = new Dictionary<string, OrtValue> { { InputNames.First(), ortInput } };
+
+
             using var results = _session.Run(_runOptions, inputs, OutputNames);
+
 
             var pads = batch.Select(x => new[] { x.Item1.PadHeight, x.Item1.PadWidth }).ToList();
             var ratios = batch.Select(x => new[] { x.Item1.HeightRatio, x.Item1.WidthRatio }).ToList();
@@ -248,12 +251,91 @@ public class YoloInferenceService : IYoloInferenceService
             YoloPrediction predictions = new YoloPrediction(results[0].Value.GetTensorDataAsSpan<float>(),
                 CategoryReadOnlyCollection.ToArray(),
                 pads, ratios, originShape);
+
+            Task.Run(() =>
+            {
+                var resultStateCopy = _boolPool.Rent(InferenceStates.Length);
+                Array.Copy(InferenceStates, 0, resultStateCopy, 0, InferenceStates.Length);
+                foreach (var batchResult in predictions.GetDetect().GroupBy(x => x.BatchId))
+                {
+                    var resultList = batchResult.ToList();
+                    batch[batchResult.Key].Item2.SetResult(InferenceResult<List<YoloBoundingBox>>.Success(resultList));
+                    resultStateCopy[batchResult.Key] = true;
+                }
+
+                for (int i = 0; i < batchSize; i++)
+                {
+                    if (resultStateCopy[i] == false)
+                    {
+                        batch[i].Item2.SetResult(InferenceResult<List<YoloBoundingBox>>.Success([]));
+                    }
+                }
+
+                _boolPool.Return(resultStateCopy);
+            });
+        }
+        finally
+        {
+            Array.Clear(InputFeedBuffer);
+        }
+    }
+
+
+    private void ProcessBatchAsync(List<(YoloInferenceServiceFeeder, InferenceResultAwaiter<InferenceResult<List<YoloBoundingBox>>>)> batch)
+    {
+        var batchSize = batch.Count;
+        // Copy inputs into the batched array
+
+        Stopwatch sw = Stopwatch.StartNew();
+
+        for (int i = 0; i < batchSize; i++)
+        {
+            InferenceStates[i] = false;
+            var inputSize = batch[0].Item1.Buffer.Length;
+            Array.Copy(batch[i].Item1.Buffer, 0, InputFeedBuffer, i * inputSize, inputSize);
+        }
+
+        sw.Stop();
+        Console.WriteLine($"Took {sw.ElapsedMilliseconds}ms to coppy.");
+        sw.Restart();
+
+        try
+        {
+            // Run inference
+            using var ortInput = InputFeedBuffer.CreateOrtValue(_tensorShape.Dimensions64);
+
+            var inputs = new Dictionary<string, OrtValue> { { InputNames.First(), ortInput } };
+            sw.Stop();
+            Console.WriteLine($"Took {sw.ElapsedMilliseconds}ms create tensor.");
+            sw.Restart();
+
+            using var results = _session.Run(_runOptions, inputs, OutputNames);
+            sw.Stop();
+            Console.WriteLine($"Took {sw.ElapsedMilliseconds}ms to run the session.");
+            sw.Restart();
+
+            var pads = batch.Select(x => new[] { x.Item1.PadHeight, x.Item1.PadWidth }).ToList();
+            var ratios = batch.Select(x => new[] { x.Item1.HeightRatio, x.Item1.WidthRatio }).ToList();
+            var originShape = batch.Select(x => new[] { x.Item1.OriginImageHeight, x.Item1.OriginImageWidth }).ToList();
+            YoloPrediction predictions = new YoloPrediction(results[0].Value.GetTensorDataAsSpan<float>(),
+                CategoryReadOnlyCollection.ToArray(),
+                pads, ratios, originShape);
+
+            sw.Stop();
+            Console.WriteLine($"Took {sw.ElapsedMilliseconds}ms to create predictions.");
+            sw.Restart();
+
+
             foreach (var batchResult in predictions.GetDetect().GroupBy(x => x.BatchId))
             {
                 var resultList = batchResult.ToList();
                 batch[batchResult.Key].Item2.SetResult(InferenceResult<List<YoloBoundingBox>>.Success(resultList));
                 InferenceStates[batchResult.Key] = true;
             }
+
+            sw.Stop();
+            Console.WriteLine($"Took {sw.ElapsedMilliseconds}ms to retrieve predictions.");
+            sw.Restart();
         }
         finally
         {
@@ -268,6 +350,7 @@ public class YoloInferenceService : IYoloInferenceService
             Array.Clear(InputFeedBuffer);
         }
     }
+
 
     public void Dispose()
     {
