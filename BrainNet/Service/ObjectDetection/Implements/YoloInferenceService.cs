@@ -222,19 +222,15 @@ public class YoloInferenceService : IYoloInferenceService
     private void ProcessBatchAsync(List<(YoloInferenceServiceFeeder, TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>>)> batch)
     {
         var batchSize = batch.Count;
-
-        // make sure nms dont make task stuck right here
-        
+        // Copy inputs into the batched array
+        for (int i = 0; i < batchSize; i++)
+        {
+            InferenceStates[i] = false;
+            var inputSize = batch[0].Item1.Buffer.Length;
+            Array.Copy(batch[i].Item1.Buffer, 0, InputFeedBuffer, i * inputSize, inputSize);
+        }
         try
         {
-            // Copy inputs into the batched array
-            for (int i = 0; i < batchSize; i++)
-            {
-                InferenceStates[i] = false;
-                var inputSize = batch[0].Item1.Buffer.Length;
-                Array.Copy(batch[i].Item1.Buffer, 0, InputFeedBuffer, i * inputSize, inputSize);
-            }
-
             // Run inference
             using var ortInput = InputFeedBuffer.CreateOrtValue(_tensorShape.Dimensions64);
 
@@ -253,17 +249,16 @@ public class YoloInferenceService : IYoloInferenceService
                 batch[batchResult.Key].Item2.SetResult(InferenceResult<List<YoloBoundingBox>>.Success(resultList));
                 InferenceStates[batchResult.Key] = true;
             }
-
+        }
+        finally
+        {
             for (int i = 0; i < batchSize; i++)
             {
-                if (InferenceStates[i] != true)
+                if (InferenceStates[i] == false)
                 {
                     batch[i].Item2.SetResult(InferenceResult<List<YoloBoundingBox>>.Success([]));
                 }
             }
-        }
-        finally
-        {
             Array.Clear(InputFeedBuffer);
         }
     }

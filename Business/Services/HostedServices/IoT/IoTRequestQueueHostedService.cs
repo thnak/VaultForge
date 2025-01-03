@@ -49,7 +49,7 @@ public class IoTRequestQueueHostedService(
             {
                 if (!string.IsNullOrEmpty(data.Metadata.ImagePath))
                 {
-                    await waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, cancellationToken);
+                    await waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, cancellationToken).ConfigureAwait(false);
                 }
             }
         }

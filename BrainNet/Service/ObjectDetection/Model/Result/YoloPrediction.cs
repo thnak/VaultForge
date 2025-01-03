@@ -1,97 +1,109 @@
-﻿namespace BrainNet.Service.ObjectDetection.Model.Result;
+﻿using System.Collections.Concurrent;
+
+namespace BrainNet.Service.ObjectDetection.Model.Result;
+
+using System;
+using System.Buffers;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 public class YoloPrediction
 {
-    private float[] PredictionArrays { get; set; }
-    private string[] Categories { get; set; }
-    private List<float[]> Dwdhs { get; set; }
-    private List<int[]> ImageShapes { get; set; }
-    private List<float[]> Ratios { get; set; }
-
-    /// <summary>
-    /// init an object that hold all prediction at one
-    /// </summary>
-    /// <param name="predictionArrayResults"></param>
-    /// <param name="categories"></param>
-    /// <param name="dhdws"></param>
-    /// <param name="ratios"></param>
-    /// <param name="imageShapes"></param>
-    public YoloPrediction(float[] predictionArrayResults, string[] categories, List<float[]> dhdws, List<float[]> ratios, List<int[]> imageShapes)
+    private float[] PredictionArrays { get; }
+    private string[] Categories { get; }
+    private List<float[]> PadHeightAndWidths { get; }
+    private List<int[]> ImageShapes { get; }
+    private List<float[]> Ratios { get; }
+    private ArrayPool<float> ArrayPool { get; } = ArrayPool<float>.Shared;
+    public YoloPrediction(float[] predictionArrayResults, string[] categories, List<float[]> padHeightAndWidths, List<float[]> ratios, List<int[]> imageShapes)
     {
         PredictionArrays = predictionArrayResults;
         Categories = categories;
-        Dwdhs = dhdws;
+        PadHeightAndWidths = padHeightAndWidths;
         ImageShapes = imageShapes;
         Ratios = ratios;
     }
 
-
-    public YoloPrediction(ReadOnlySpan<float> predictionArrayResults, string[] categories, List<float[]> dhdws, List<float[]> ratios, List<int[]> imageShapes)
+    public YoloPrediction(ReadOnlySpan<float> predictionArrayResults, string[] categories, List<float[]> padHeightAndWidths, List<float[]> ratios, List<int[]> imageShapes)
     {
         PredictionArrays = predictionArrayResults.ToArray();
         Categories = categories;
-        Dwdhs = dhdws;
+        PadHeightAndWidths = padHeightAndWidths;
         ImageShapes = imageShapes;
         Ratios = ratios;
     }
-    /// <summary>
-    /// get all prediction
-    /// </summary>
-    /// <returns>a list of Yolov7Predict</returns>
+
     public List<YoloBoundingBox> GetDetect()
     {
-        List<YoloBoundingBox> yoloBoundingBoxs = new List<YoloBoundingBox>();
+        int length = PredictionArrays.Length / 7;
+        if (length == 0) return new List<YoloBoundingBox>();
 
-        int length = PredictionArrays.Length;
-        if (length > 0)
+        var yoloBoundingBoxes = new ConcurrentBag<YoloBoundingBox>();
+
+        Parallel.For(0, length, i =>
         {
-            length /= 7;
-            Parallel.For(0, length, i =>
+            var slice = PredictionArrays.AsSpan(i * 7, 7);
+            var clsIdx = (int)slice[5];
+            var batchId = (int)slice[0];
+
+            var boxArray = ArrayPool.Rent(4);
+            var adjustedBoxArray = ArrayPool.Rent(4);
+            try
             {
-                int start = i * 7;
-                int end = start + 7;
-                float[] slice = PredictionArrays[start..end];
-                int clsIdx = (int)slice[5];
-                int batchId = (int)slice[0];
-                float[] boxArray = [slice[1], slice[2], slice[3], slice[4]];
-                float[] doubleDwDhs = [Dwdhs[batchId][1], Dwdhs[batchId][0], Dwdhs[batchId][1], Dwdhs[batchId][0]];
-                int[] oriImageShapes = ImageShapes[batchId];
-                boxArray[0] -= doubleDwDhs[0];
-                boxArray[1] -= doubleDwDhs[1];
-                boxArray[2] -= doubleDwDhs[2];
-                boxArray[3] -= doubleDwDhs[3];
-                boxArray = boxArray.Select(x => Math.Max(x / Ratios[batchId][0], 0)).ToArray();
+                // Extract box coordinates
+                slice.Slice(1, 4).CopyTo(boxArray);
 
-                int[] box = new[] { (int)Math.Round(boxArray[0]), (int)Math.Round(boxArray[1]), (int)Math.Round(boxArray[2]), (int)Math.Round(boxArray[3]) };
-                yoloBoundingBoxs.Add(new YoloBoundingBox()
+                // Adjust box using padding
+                var pad = PadHeightAndWidths[batchId];
+                var ratios = Ratios[batchId];
+                var oriShapes = ImageShapes[batchId];
+                
+                for (int j = 0; j < 4; j++)
                 {
-                    BatchId = (int)slice[0],
-                    ClassIdx = clsIdx,
-                    Score = slice[6],
-                    ClassName = Categories[clsIdx],
-                    Box = box,
-                    Bbox = Xyxy2Xywh(box, oriImageShapes[0], oriImageShapes[1])
-                });
-            });
-        }
+                    boxArray[j] -= (j % 2 == 0 ? pad[1] : pad[0]);
+                    adjustedBoxArray[j] = Math.Max(boxArray[j] / ratios[0], 0);
+                }
 
-        return yoloBoundingBoxs;
+                var box = new[]
+                {
+                    (int)Math.Round(adjustedBoxArray[0]),
+                    (int)Math.Round(adjustedBoxArray[1]),
+                    (int)Math.Round(adjustedBoxArray[2]),
+                    (int)Math.Round(adjustedBoxArray[3])
+                };
+
+                lock (yoloBoundingBoxes) // To prevent concurrent list modification
+                {
+                    yoloBoundingBoxes.Add(new YoloBoundingBox
+                    {
+                        BatchId = batchId,
+                        ClassIdx = clsIdx,
+                        Score = slice[6],
+                        ClassName = Categories[clsIdx],
+                        Box = box,
+                        Bbox = Xyxy2Xywh(box, oriShapes[0], oriShapes[1])
+                    });
+                }
+            }
+            finally
+            {
+                ArrayPool.Return(boxArray);
+                ArrayPool.Return(adjustedBoxArray);
+            }
+        });
+
+        return yoloBoundingBoxes.ToList();
     }
 
-    /// <summary>
-    /// convert xyxy to xywh 
-    /// </summary>
-    /// <param name="inputs"></param>
-    /// <param name="imageHeight"></param>
-    /// <param name="imageWidth"></param>
-    /// <returns></returns>
     private int[] Xyxy2Xywh(IReadOnlyList<int> inputs, int imageHeight, int imageWidth)
     {
-        var feed = new int[inputs.Count];
-        feed[0] = inputs[0];
-        feed[1] = inputs[1];
-        feed[2] = Math.Min(inputs[2], imageWidth) - inputs[0];
-        feed[3] = Math.Min(inputs[3], imageHeight) - inputs[1];
-        return feed;
+        return
+        [
+            inputs[0],
+            inputs[1],
+            Math.Min(inputs[2], imageWidth) - inputs[0],
+            Math.Min(inputs[3], imageHeight) - inputs[1]
+        ];
     }
 }
