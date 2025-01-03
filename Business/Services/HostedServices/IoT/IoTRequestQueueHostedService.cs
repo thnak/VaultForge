@@ -1,6 +1,7 @@
 ﻿using Business.Business.Interfaces.InternetOfThings;
 using Business.Services.Configure;
 using Business.Services.OnnxService.WaterMeter;
+using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.System.InternetOfThings;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -12,7 +13,8 @@ public class IoTRequestQueueHostedService(
     IIotRequestQueue iotRequestQueue,
     IIotRecordBusinessLayer iotBusinessLayer,
     IWaterMeterReaderQueue waterMeterReaderQueue,
-    ILogger<IoTRequestQueueHostedService> logger) : BackgroundService
+    ILogger<IoTRequestQueueHostedService> logger,
+    IParallelBackgroundTaskQueue queue) : BackgroundService
 {
     private Timer? BatchTimer { get; set; }
     private readonly int _timePeriod = options.GetIoTRequestQueueConfig.TimePeriodInSecond;
@@ -37,7 +39,7 @@ public class IoTRequestQueueHostedService(
         if (batch.Count == 0)
             return;
 
-        InsertBatchIntoDatabase(batch).ConfigureAwait(false);
+        queue.QueueBackgroundWorkItemAsync(async serverCancel => await InsertBatchIntoDatabase(batch, serverCancel));
     }
 
     private async Task InsertBatchIntoDatabase(IReadOnlyCollection<IoTRecord> batch, CancellationToken cancellationToken = default)
@@ -45,8 +47,25 @@ public class IoTRequestQueueHostedService(
         var result = await iotBusinessLayer.CreateAsync(batch, cancellationToken);
         if (result.IsSuccess)
         {
-            var task = batch.Where(x => !string.IsNullOrEmpty(x.Metadata.ImagePath)).Select(data => waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, cancellationToken));
-            await Task.WhenAll(task);
+            const int chunkSize = 32; // Adjust based on memory and processing constraints
+            var chunkedBatch = batch.Where(data => !string.IsNullOrEmpty(data.Metadata.ImagePath)).Chunk(chunkSize);
+
+            foreach (var chunk in chunkedBatch)
+            {
+                var tasks = chunk
+                    .Select(data => Task.Run(() =>
+                        waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, cancellationToken), cancellationToken));
+
+                // Start all tasks for this chunk without awaiting
+                try
+                {
+                    await Task.WhenAll(tasks).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "Error occurred while processing a chunk of water meter readings.");
+                }
+            }
         }
         else
         {

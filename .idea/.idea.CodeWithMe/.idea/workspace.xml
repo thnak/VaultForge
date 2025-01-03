@@ -45,8 +45,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update logic, add log">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -998,15 +999,7 @@
       <workItem from="1735870415827" duration="194000" />
       <workItem from="1735871483025" duration="8532000" />
       <workItem from="1735897174747" duration="790000" />
-      <workItem from="1735911133327" duration="1246000" />
-    </task>
-    <task id="LOCAL-00529" summary="update style, fix update sensor">
-      <option name="closed" value="true" />
-      <created>1735487222717</created>
-      <option name="number" value="00529" />
-      <option name="presentableId" value="LOCAL-00529" />
-      <option name="project" value="LOCAL" />
-      <updated>1735487222717</updated>
+      <workItem from="1735911133327" duration="1893000" />
     </task>
     <task id="LOCAL-00530" summary="format cell">
       <option name="closed" value="true" />
@@ -1392,7 +1385,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735898870982</updated>
     </task>
-    <option name="localTasksCounter" value="578" />
+    <task id="LOCAL-00578" summary="update logic, add log">
+      <option name="closed" value="true" />
+      <created>1735912789203</created>
+      <option name="number" value="00578" />
+      <option name="presentableId" value="LOCAL-00578" />
+      <option name="project" value="LOCAL" />
+      <updated>1735912789203</updated>
+    </task>
+    <option name="localTasksCounter" value="579" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1423,7 +1424,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="json map" />
     <MESSAGE value="remove bullshit" />
     <MESSAGE value="add page size" />
     <MESSAGE value="update page" />
@@ -1448,7 +1448,8 @@
     <MESSAGE value="small update" />
     <MESSAGE value="batch now working good" />
     <MESSAGE value="do not wait" />
-    <option name="LAST_COMMIT_MESSAGE" value="do not wait" />
+    <MESSAGE value="update logic, add log" />
+    <option name="LAST_COMMIT_MESSAGE" value="update logic, add log" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
