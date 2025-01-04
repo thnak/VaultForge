@@ -1,5 +1,4 @@
-﻿using System.Buffers;
-using BrainNet.Utils;
+﻿using BrainNet.Utils;
 using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Data.StorageSpace;
@@ -24,7 +23,6 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
     private readonly IFileSystemBusinessLayer _fileSystemBusinessLayer;
     private readonly IIoTSensorBusinessLayer _iotSensorBusinessLayer;
     private readonly IWaterMeterInferenceService _waterMeterInferenceService;
-    private readonly ArrayPool<byte> _memoryPool = ArrayPool<byte>.Shared;
 
     public WaterMeterReaderQueue(ILogger<IWaterMeterReaderQueue> logger,
         RedundantArrayOfIndependentDisks disks, IFileSystemBusinessLayer fileSystemBusinessLayer,
@@ -52,7 +50,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
             };
         }
 
-        var buffer = _memoryPool.Rent((int)file.FileSize);
+        using MemoryStream buffer = new MemoryStream((int)file.FileSize);
 
         try
         {
@@ -90,10 +88,6 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
         catch (Exception e)
         {
             _logger.LogError(e, e.Message);
-        }
-        finally
-        {
-            _memoryPool.Return(buffer);
         }
 
         return new IoTRecordUpdateModel()

@@ -203,7 +203,6 @@ public class YoloInferenceService : IYoloInferenceService
             }
             catch (OperationCanceledException)
             {
-                _floatPool.Return(buffer);
                 tcs.SetResult(InferenceResult<List<YoloBoundingBox>>.Canceled("Canceled"));
                 return await tcs.Task;
             }
