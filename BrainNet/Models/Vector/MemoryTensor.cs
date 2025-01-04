@@ -41,25 +41,7 @@ public class MemoryTensor<T> where T : unmanaged
 
     public MemoryTensor(Memory<T> buffer, int[] dimensions)
     {
-        var size = 1;
-
-        for (int i = 0; i < dimensions.Length; i++)
-        {
-            if (dimensions[i] < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(dimensions), "Dimensions must be non-negative");
-            }
-
-            size *= dimensions[i];
-        }
-
-        if (size != buffer.Length)
-        {
-            throw new InvalidOperationException();
-        }
-
         Strides = GetStrides(dimensions);
-
         Dimensions = dimensions;
         Dimensions64 = [.. dimensions.Select(x => (long)x)];
         

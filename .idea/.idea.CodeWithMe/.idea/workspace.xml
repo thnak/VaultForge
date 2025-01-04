@@ -45,19 +45,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="refactor, using allocated pool array">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloDetection.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Models/Vector/MemoryTensor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Models/Vector/MemoryTensor.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Interfaces/IYoloDetection.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Result/YoloPrediction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Result/YoloPrediction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/WaterMeter/Implements/IWaterMeterReader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/WaterMeter/Interfaces/WaterMeterReader.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Feeder/YoloInferenceServiceFeeder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Feeder/YoloInferenceServiceFeeder.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1011,15 +1003,7 @@
       <workItem from="1735897174747" duration="790000" />
       <workItem from="1735911133327" duration="12329000" />
       <workItem from="1735975073448" duration="8478000" />
-      <workItem from="1736006257577" duration="5031000" />
-    </task>
-    <task id="LOCAL-00546" summary="remove bullshit">
-      <option name="closed" value="true" />
-      <created>1735555565896</created>
-      <option name="number" value="00546" />
-      <option name="presentableId" value="LOCAL-00546" />
-      <option name="project" value="LOCAL" />
-      <updated>1735555565896</updated>
+      <workItem from="1736006257577" duration="6191000" />
     </task>
     <task id="LOCAL-00547" summary="small update">
       <option name="closed" value="true" />
@@ -1405,7 +1389,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735987682503</updated>
     </task>
-    <option name="localTasksCounter" value="595" />
+    <task id="LOCAL-00595" summary="refactor, using allocated pool array">
+      <option name="closed" value="true" />
+      <created>1736011394491</created>
+      <option name="number" value="00595" />
+      <option name="presentableId" value="LOCAL-00595" />
+      <option name="project" value="LOCAL" />
+      <updated>1736011394491</updated>
+    </task>
+    <option name="localTasksCounter" value="596" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1436,7 +1428,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="adding add, remove action for search engine" />
     <MESSAGE value="small fix" />
     <MESSAGE value="unsafe with objectid set to read only from BaseModelEntry.cs" />
     <MESSAGE value="re open execution provider option" />
@@ -1461,7 +1452,8 @@
     <MESSAGE value="debug" />
     <MESSAGE value="try debug" />
     <MESSAGE value="limit this fucking shit to prevent OOM" />
-    <option name="LAST_COMMIT_MESSAGE" value="limit this fucking shit to prevent OOM" />
+    <MESSAGE value="refactor, using allocated pool array" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor, using allocated pool array" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
