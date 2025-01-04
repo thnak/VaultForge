@@ -20,5 +20,4 @@ public partial class IoTController(
     IFileSystemBusinessLayer fileSystemServe,
     IIotRecordBusinessLayer iIotRecordBusinessService,
     RedundantArrayOfIndependentDisks raidService,
-    IThumbnailService thumbnailService,
     ILogger<IoTController> logger) : ControllerBase;

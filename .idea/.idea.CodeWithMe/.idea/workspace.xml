@@ -45,21 +45,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add bulk update for record">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Interfaces/IYoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Interfaces/IYoloInferenceService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Feeder/YoloInferenceServiceFeeder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Feeder/YoloInferenceServiceFeeder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Result/YoloPrediction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Result/YoloPrediction.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Interfaces/InternetOfThings/IIotRecordBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Interfaces/InternetOfThings/IIotRecordBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IIotRecordBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IIotRecordBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Interfaces/InternetOfThings/IIotRecordDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Interfaces/InternetOfThings/IIotRecordDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterInferenceService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTRecord.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTRecord.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1017,14 +1004,6 @@
       <workItem from="1735897174747" duration="790000" />
       <workItem from="1735911133327" duration="12329000" />
     </task>
-    <task id="LOCAL-00535" summary="remove shit">
-      <option name="closed" value="true" />
-      <created>1735519977195</created>
-      <option name="number" value="00535" />
-      <option name="presentableId" value="LOCAL-00535" />
-      <option name="project" value="LOCAL" />
-      <updated>1735519977195</updated>
-    </task>
     <task id="LOCAL-00536" summary="serialize opject">
       <option name="closed" value="true" />
       <created>1735530063106</created>
@@ -1409,7 +1388,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735922713035</updated>
     </task>
-    <option name="localTasksCounter" value="584" />
+    <task id="LOCAL-00584" summary="add bulk update for record">
+      <option name="closed" value="true" />
+      <created>1735962098542</created>
+      <option name="number" value="00584" />
+      <option name="presentableId" value="LOCAL-00584" />
+      <option name="project" value="LOCAL" />
+      <updated>1735962098542</updated>
+    </task>
+    <option name="localTasksCounter" value="585" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1440,7 +1427,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fix error type" />
     <MESSAGE value="fix missing field" />
     <MESSAGE value="add cancel page" />
     <MESSAGE value="update search function" />
@@ -1465,7 +1451,8 @@
     <MESSAGE value="wait it" />
     <MESSAGE value="memory leak" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="add bulk update for record" />
+    <option name="LAST_COMMIT_MESSAGE" value="add bulk update for record" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
