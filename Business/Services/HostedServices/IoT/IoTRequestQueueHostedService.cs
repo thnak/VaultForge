@@ -4,6 +4,7 @@ using Business.Services.Configure;
 using Business.Services.OnnxService.WaterMeter;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.System.InternetOfThings;
+using BusinessModels.System.InternetOfThings.type;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 

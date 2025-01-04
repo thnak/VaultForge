@@ -50,7 +50,6 @@ public class IotRequestQueue : IIotRequestQueue
         {
             await _channel.Writer.WriteAsync(data, cancellationToken);
             IncrementDailyRequestCount();
-            await IncrementSensorRequestCount(data.Metadata.SensorId, cancellationToken);
             await UpdateSensorLastValue(data.Metadata.SensorId, data.Metadata.SensorData, cancellationToken);
             return true;
         }
@@ -124,28 +123,15 @@ public class IotRequestQueue : IIotRequestQueue
         }
     }
 
-    /// <summary>
-    /// If the sensorId doesn't exist, initialize with 1. If it exists, increment the count
-    /// </summary>
-    /// <param name="sensorId"></param>
-    /// <param name="cancellationToken"></param>
-    private async Task IncrementSensorRequestCount(string sensorId, CancellationToken cancellationToken = default)
+    private async Task UpdateSensorLastValue(string sensorId, float value, CancellationToken cancellationToken = default)
     {
+        _sensorLastValues.AddOrUpdate(sensorId, value, (_, _) => value);
         _sensorRequestCounts.AddOrUpdate(sensorId, 1, (_, oldValue) => oldValue + 1);
+
         await _backgroundTaskQueue.QueueBackgroundWorkItemAsync(async _ =>
         {
             if (_sensorRequestCounts.TryGetValue(sensorId, out var count))
                 await _hub.Clients.Groups(sensorId).ReceiveCount(count);
-        }, cancellationToken);
-    }
-
-    private async Task UpdateSensorLastValue(string sensorId, float value, CancellationToken cancellationToken = default)
-    {
-        _sensorLastValues.AddOrUpdate(sensorId, value, (_, _) => value);
-        await _backgroundTaskQueue.QueueBackgroundWorkItemAsync(async _ =>
-        {
-            if (_sensorLastValues.TryGetValue(sensorId, out var count))
-                await _hub.Clients.Groups(sensorId).ReceiveValue(count);
         }, cancellationToken);
     }
 }

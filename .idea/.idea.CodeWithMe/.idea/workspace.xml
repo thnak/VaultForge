@@ -45,8 +45,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add bulk update for record">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="dont create thumb for iot image">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1004,14 +1006,6 @@
       <workItem from="1735897174747" duration="790000" />
       <workItem from="1735911133327" duration="12329000" />
     </task>
-    <task id="LOCAL-00536" summary="serialize opject">
-      <option name="closed" value="true" />
-      <created>1735530063106</created>
-      <option name="number" value="00536" />
-      <option name="presentableId" value="LOCAL-00536" />
-      <option name="project" value="LOCAL" />
-      <updated>1735530063106</updated>
-    </task>
     <task id="LOCAL-00537" summary="small update">
       <option name="closed" value="true" />
       <created>1735530743853</created>
@@ -1396,7 +1390,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735962098542</updated>
     </task>
-    <option name="localTasksCounter" value="585" />
+    <task id="LOCAL-00585" summary="dont create thumb for iot image">
+      <option name="closed" value="true" />
+      <created>1735963022378</created>
+      <option name="number" value="00585" />
+      <option name="presentableId" value="LOCAL-00585" />
+      <option name="project" value="LOCAL" />
+      <updated>1735963022378</updated>
+    </task>
+    <option name="localTasksCounter" value="586" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1427,7 +1429,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fix missing field" />
     <MESSAGE value="add cancel page" />
     <MESSAGE value="update search function" />
     <MESSAGE value="update bl" />
@@ -1452,7 +1453,8 @@
     <MESSAGE value="memory leak" />
     <MESSAGE value="small update" />
     <MESSAGE value="add bulk update for record" />
-    <option name="LAST_COMMIT_MESSAGE" value="add bulk update for record" />
+    <MESSAGE value="dont create thumb for iot image" />
+    <option name="LAST_COMMIT_MESSAGE" value="dont create thumb for iot image" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
