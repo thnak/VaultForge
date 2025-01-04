@@ -76,3 +76,11 @@ public class RecordMetadata
 
     public string ImagePath { get; set; } = string.Empty;
 }
+
+public class IoTRecordUpdateModel
+{
+    public string SensorId { get; set; } = string.Empty;
+    public DateTime RecordedAt { get; set; }
+    public float SensorData { get; set; }
+    public ProcessStatus ProcessStatus { get; set; }
+}

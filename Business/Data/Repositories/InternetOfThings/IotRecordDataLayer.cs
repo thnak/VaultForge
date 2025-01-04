@@ -17,23 +17,22 @@ namespace Business.Data.Repositories.InternetOfThings;
 
 public class IotRecordDataLayer : IIotRecordDataLayer
 {
+    private const string CollectionName = "IotDB";
+
     public IotRecordDataLayer(IMongoDataLayerContext context, ILogger<IotRecordDataLayer> logger)
     {
-        try
+        if (!context.MongoDatabase.ListCollectionNames().ToList().Contains(CollectionName))
         {
             var options = new CreateCollectionOptions
             {
                 TimeSeriesOptions = new TimeSeriesOptions(nameof(IoTRecord.CreateTime), nameof(IoTRecord.Metadata), TimeSeriesGranularity.Seconds)
             };
-            context.MongoDatabase.CreateCollection("IotDB", options);
-        }
-        catch (Exception)
-        {
-            //
+            context.MongoDatabase.CreateCollection(CollectionName, options);
         }
 
+
         var writeConcern = new WriteConcern(1, new Optional<TimeSpan?>(TimeSpan.FromSeconds(10)), journal: new Optional<bool?>(false), fsync: false);
-        _dataDb = context.MongoDatabase.GetCollection<IoTRecord>("IotDB", new MongoCollectionSettings() { WriteConcern = writeConcern });
+        _dataDb = context.MongoDatabase.GetCollection<IoTRecord>(CollectionName, new MongoCollectionSettings() { WriteConcern = writeConcern });
         _logger = logger;
     }
 
@@ -50,7 +49,7 @@ public class IotRecordDataLayer : IIotRecordDataLayer
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Hour),
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.CreateTime).Ascending(x => x.Metadata.SensorId),
         ];
-        
+
         await _dataDb.Indexes.DropAllAsync(cancellationToken);
         var indexModels = indexKeysDefinitions.Select(x => new CreateIndexModel<IoTRecord>(x));
         await _dataDb.Indexes.CreateManyAsync(indexModels, cancellationToken);
@@ -267,6 +266,39 @@ public class IotRecordDataLayer : IIotRecordDataLayer
             return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
     }
+
+    public async Task<Result<bool>> UpdateIoTValuesBatch(IEnumerable<IoTRecordUpdateModel> updates, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var bulkOperations = new List<WriteModel<IoTRecord>>();
+
+            foreach (var updateModel in updates)
+            {
+                var filter = Builders<IoTRecord>.Filter
+                                 .Eq(record => record.Metadata.SensorId, updateModel.SensorId) &
+                             Builders<IoTRecord>.Filter.Eq(record => record.Metadata.RecordedAt, updateModel.RecordedAt);
+
+                var update = Builders<IoTRecord>.Update
+                    .Set(record => record.Metadata.ProcessStatus, updateModel.ProcessStatus)
+                    .Set(record => record.Metadata.SensorData, updateModel.SensorData);
+
+                bulkOperations.Add(new UpdateManyModel<IoTRecord>(filter, update));
+            }
+
+            if (bulkOperations.Count == 0)
+                return Result<bool>.SuccessWithMessage(true, "No valid updates generated.");
+
+            var result = await _dataDb.BulkWriteAsync(bulkOperations, cancellationToken: cancellationToken);
+
+            return Result<bool>.SuccessWithMessage(true, $"{result.ModifiedCount} records updated successfully.");
+        }
+        catch (Exception e)
+        {
+            return Result<bool>.Failure(e.Message, ErrorType.Unknown);
+        }
+    }
+
 
     public void Dispose()
     {

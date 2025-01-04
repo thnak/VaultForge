@@ -1,4 +1,5 @@
-﻿using Business.Business.Interfaces.InternetOfThings;
+﻿using System.Collections.Concurrent;
+using Business.Business.Interfaces.InternetOfThings;
 using Business.Services.Configure;
 using Business.Services.OnnxService.WaterMeter;
 using Business.Services.TaskQueueServices.Base.Interfaces;
@@ -11,7 +12,7 @@ namespace Business.Services.HostedServices.IoT;
 public class IoTRequestQueueHostedService(
     ApplicationConfiguration options,
     IIotRequestQueue iotRequestQueue,
-    IIotRecordBusinessLayer iotBusinessLayer,
+    IIotRecordBusinessLayer iotRecordBusinessLayer,
     IWaterMeterReaderQueue waterMeterReaderQueue,
     ILogger<IoTRequestQueueHostedService> logger,
     IParallelBackgroundTaskQueue queue) : BackgroundService
@@ -19,6 +20,7 @@ public class IoTRequestQueueHostedService(
     private PeriodicTimer? BatchTimer { get; set; }
     private readonly int _timePeriod = options.GetIoTRequestQueueConfig.TimePeriodInSecond;
     private DateTime _currentDay = DateTime.UtcNow.Date; // Tracks the current day
+    private readonly ConcurrentBag<IoTRecordUpdateModel> _ioTRequestQueue = [];
 
     private async Task InsertPeriodTimerCallback(CancellationToken cancellationToken)
     {
@@ -40,21 +42,34 @@ public class IoTRequestQueueHostedService(
             return;
 
         await InsertBatchIntoDatabase(batch, cancellationToken);
+        await BulkUpdateAsync(cancellationToken);
     }
 
     private async Task InsertBatchIntoDatabase(IReadOnlyCollection<IoTRecord> batch, CancellationToken cancellationToken = default)
     {
-        var result = await iotBusinessLayer.CreateAsync(batch, cancellationToken);
+        var result = await iotRecordBusinessLayer.CreateAsync(batch, cancellationToken);
         if (result.IsSuccess)
         {
             var chunkedBatch = batch.Where(data => !string.IsNullOrEmpty(data.Metadata.ImagePath));
 
             foreach (var data in chunkedBatch)
             {
-                await queue.QueueBackgroundWorkItemAsync(async _ => await waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, cancellationToken), cancellationToken);
+                await queue.QueueBackgroundWorkItemAsync(async ser => _ioTRequestQueue.Add(await waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, ser)), cancellationToken);
             }
         }
         else
+        {
+            logger.LogWarning(result.Message);
+        }
+    }
+
+    private async Task BulkUpdateAsync(CancellationToken cancellationToken = default)
+    {
+        List<IoTRecordUpdateModel> batch = [];
+        while (_ioTRequestQueue.TryTake(out var data))
+            batch.Add(data);
+        var result =  await iotRecordBusinessLayer.UpdateIoTValuesBatch(batch, cancellationToken);
+        if (!result.IsSuccess)
         {
             logger.LogWarning(result.Message);
         }

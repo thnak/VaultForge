@@ -47,8 +47,19 @@
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Interfaces/IYoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Interfaces/IYoloInferenceService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Feeder/YoloInferenceServiceFeeder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Feeder/YoloInferenceServiceFeeder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Result/YoloPrediction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Result/YoloPrediction.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Interfaces/InternetOfThings/IIotRecordBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Interfaces/InternetOfThings/IIotRecordBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IIotRecordBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IIotRecordBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Interfaces/InternetOfThings/IIotRecordDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Interfaces/InternetOfThings/IIotRecordDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterInferenceService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTRecord.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTRecord.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -72,7 +83,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="terrible-threads" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -178,8 +189,12 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fd5df964a94a255455f7b077e863af646a024518fa7703879230fff599b192/OrtIoBinding.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fe3b1716bf2f8f83ac793e7e3faa60f88a7868347653f77591f74b86d0d97675/Server.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff56e9dabec8513a52b6f0caca4a8979301377a3ae924a82a78d3c3dfd001c/TextOptions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
@@ -210,7 +225,7 @@
     ".NET Launch Settings Profile.Web: https.executor": "Debug",
     ".NET Launch Settings Profile.WebApp no browser.executor": "Debug",
     ".NET Launch Settings Profile.WebApp: IIS Express.executor": "Debug",
-    ".NET Launch Settings Profile.WebApp: https.executor": "Run",
+    ".NET Launch Settings Profile.WebApp: https.executor": "Debug",
     ".NET Launch Settings Profile.WebApp: no-browser.executor": "Debug",
     ".NET Project.ConsoleApp1.executor": "Debug",
     ".NET Project.WebApp.Client.executor": "Debug",
@@ -229,7 +244,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "project.propDebugger",
+    "settings.editor.selected.configurable": "CodeLensConfigurable",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -1473,6 +1488,32 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="89" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs</url>
+          <line>209</line>
+          <properties documentPath="C:\Users\thanh\Git\VaultForge\BrainNet\Service\ObjectDetection\Implements\YoloInferenceService.cs" containingFunctionPresentation="Method 'AddInputAsync'">
+            <startOffsets>
+              <option value="8587" />
+            </startOffsets>
+            <endOffsets>
+              <option value="8609" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="97" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs</url>
+          <line>213</line>
+          <properties documentPath="C:\Users\thanh\Git\VaultForge\BrainNet\Service\ObjectDetection\Implements\YoloInferenceService.cs" containingFunctionPresentation="Method 'AddInputAsync'">
+            <startOffsets>
+              <option value="8643" />
+            </startOffsets>
+            <endOffsets>
+              <option value="8757" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="98" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">

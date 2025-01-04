@@ -55,6 +55,9 @@ public class YoloPrediction
                 slice.Slice(1, 4).CopyTo(boxArray);
 
                 // Adjust box using padding
+                if(batchId >= PadHeightAndWidths.Count)
+                    return;
+                
                 var pad = PadHeightAndWidths[batchId];
                 var ratios = Ratios[batchId];
                 var oriShapes = ImageShapes[batchId];

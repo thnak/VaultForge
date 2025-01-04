@@ -136,4 +136,9 @@ public class IotRecordBusinessLayer(IIotRecordDataLayer data, IIotRequestQueue i
     {
         return data.UpdateIotValue(key, value, processStatus, cancellationToken);
     }
+
+    public Task<Result<bool>> UpdateIoTValuesBatch(IEnumerable<IoTRecordUpdateModel> updates, CancellationToken cancellationToken = default)
+    {
+        return data.UpdateIoTValuesBatch(updates, cancellationToken);
+    }
 }

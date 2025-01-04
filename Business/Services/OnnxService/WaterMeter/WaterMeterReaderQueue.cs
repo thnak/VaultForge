@@ -14,7 +14,7 @@ namespace Business.Services.OnnxService.WaterMeter;
 
 public interface IWaterMeterReaderQueue : IDisposable
 {
-    public Task GetWaterMeterReadingCountAsync(IoTRecord record, CancellationToken cancellationToken = default);
+    public Task<IoTRecordUpdateModel> GetWaterMeterReadingCountAsync(IoTRecord record, CancellationToken cancellationToken = default);
 }
 
 public class WaterMeterReaderQueue : IWaterMeterReaderQueue
@@ -22,33 +22,34 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
     private readonly ILogger<IWaterMeterReaderQueue> _logger;
     private readonly RedundantArrayOfIndependentDisks _redundantArrayOfIndependentDisks;
     private readonly IFileSystemBusinessLayer _fileSystemBusinessLayer;
-    private readonly IIotRecordBusinessLayer _recordBusinessLayer;
     private readonly IIoTSensorBusinessLayer _iotSensorBusinessLayer;
     private readonly IWaterMeterInferenceService _waterMeterInferenceService;
     private readonly ArrayPool<byte> _memoryPool = ArrayPool<byte>.Shared;
 
     public WaterMeterReaderQueue(ILogger<IWaterMeterReaderQueue> logger,
-        RedundantArrayOfIndependentDisks disks, IFileSystemBusinessLayer fileSystemBusinessLayer, IIotRecordBusinessLayer recordBusinessLayer,
+        RedundantArrayOfIndependentDisks disks, IFileSystemBusinessLayer fileSystemBusinessLayer,
         IIoTSensorBusinessLayer iotSensorBusinessLayer,
         IWaterMeterInferenceService waterMeterInferenceService)
     {
         _logger = logger;
         _redundantArrayOfIndependentDisks = disks;
         _fileSystemBusinessLayer = fileSystemBusinessLayer;
-        _recordBusinessLayer = recordBusinessLayer;
         _iotSensorBusinessLayer = iotSensorBusinessLayer;
         _waterMeterInferenceService = waterMeterInferenceService;
     }
 
 
-    public async Task GetWaterMeterReadingCountAsync(IoTRecord record, CancellationToken cancellationToken = default)
+    public async Task<IoTRecordUpdateModel> GetWaterMeterReadingCountAsync(IoTRecord record, CancellationToken cancellationToken = default)
     {
         var file = _fileSystemBusinessLayer.Get(record.Metadata.ImagePath);
         if (file is null)
         {
             _logger.LogWarning($"image not found: {record.Metadata.ImagePath}");
-            await _recordBusinessLayer.UpdateIotValue(record.Id.ToString(), 0, ProcessStatus.Failed, cancellationToken);
-            return;
+            return new IoTRecordUpdateModel()
+            {
+                SensorId = record.Metadata.SensorId,
+                ProcessStatus = ProcessStatus.Failed
+            };
         }
 
         var buffer = _memoryPool.Rent((int)file.FileSize);
@@ -67,12 +68,17 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
                 image.Mutate(i => i.Flip(FlipMode.Vertical));
 
 
-            var predResult = await _waterMeterInferenceService.AddInputAsync(image);
+            var predResult = await _waterMeterInferenceService.AddInputAsync(image, cancellationToken);
             if (predResult.IsSuccess)
             {
                 var resultString = string.Join("", predResult.Value.OrderBy(x => x.X).Select(x => x.ClassIdx.ToString()));
                 float.TryParse(resultString, out var result);
-                await _recordBusinessLayer.UpdateIotValue(record.Id.ToString(), result, ProcessStatus.Completed, cancellationToken);
+                return new IoTRecordUpdateModel()
+                {
+                    SensorId = record.Metadata.SensorId,
+                    ProcessStatus = ProcessStatus.Completed,
+                    SensorData = result
+                };
             }
         }
         catch (OperationCanceledException)
@@ -86,6 +92,12 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
         {
             _memoryPool.Return(buffer);
         }
+
+        return new IoTRecordUpdateModel()
+        {
+            SensorId = record.Metadata.SensorId,
+            ProcessStatus = ProcessStatus.Failed
+        };
     }
 
     public void Dispose()
