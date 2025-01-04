@@ -45,10 +45,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="dont create thumb for iot image">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Models/Vector/MemoryTensor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Models/Vector/MemoryTensor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/Memory/Interfaces/IMemoryAllocatorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/Memory/Interfaces/IMemoryAllocatorService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/Memory/Utils/MemoryAllocatorExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/Memory/Utils/MemoryAllocatorExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.Device.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.Device.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -178,6 +182,8 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fd5df964a94a255455f7b077e863af646a024518fa7703879230fff599b192/OrtIoBinding.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fe3b1716bf2f8f83ac793e7e3faa60f88a7868347653f77591f74b86d0d97675/Server.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff56e9dabec8513a52b6f0caca4a8979301377a3ae924a82a78d3c3dfd001c/TextOptions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
@@ -1006,14 +1012,6 @@
       <workItem from="1735897174747" duration="790000" />
       <workItem from="1735911133327" duration="12329000" />
     </task>
-    <task id="LOCAL-00537" summary="small update">
-      <option name="closed" value="true" />
-      <created>1735530743853</created>
-      <option name="number" value="00537" />
-      <option name="presentableId" value="LOCAL-00537" />
-      <option name="project" value="LOCAL" />
-      <updated>1735530743853</updated>
-    </task>
     <task id="LOCAL-00538" summary="update">
       <option name="closed" value="true" />
       <created>1735536838764</created>
@@ -1398,7 +1396,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735963022378</updated>
     </task>
-    <option name="localTasksCounter" value="586" />
+    <task id="LOCAL-00586" summary="small update">
+      <option name="closed" value="true" />
+      <created>1735965187537</created>
+      <option name="number" value="00586" />
+      <option name="presentableId" value="LOCAL-00586" />
+      <option name="project" value="LOCAL" />
+      <updated>1735965187537</updated>
+    </task>
+    <option name="localTasksCounter" value="587" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1451,10 +1457,10 @@
     <MESSAGE value="add chunk" />
     <MESSAGE value="wait it" />
     <MESSAGE value="memory leak" />
-    <MESSAGE value="small update" />
     <MESSAGE value="add bulk update for record" />
     <MESSAGE value="dont create thumb for iot image" />
-    <option name="LAST_COMMIT_MESSAGE" value="dont create thumb for iot image" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1477,32 +1483,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="89" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs</url>
-          <line>209</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\BrainNet\Service\ObjectDetection\Implements\YoloInferenceService.cs" containingFunctionPresentation="Method 'AddInputAsync'">
-            <startOffsets>
-              <option value="8587" />
-            </startOffsets>
-            <endOffsets>
-              <option value="8609" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="97" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs</url>
-          <line>213</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\BrainNet\Service\ObjectDetection\Implements\YoloInferenceService.cs" containingFunctionPresentation="Method 'AddInputAsync'">
-            <startOffsets>
-              <option value="8643" />
-            </startOffsets>
-            <endOffsets>
-              <option value="8757" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="98" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">

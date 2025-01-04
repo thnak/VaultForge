@@ -62,7 +62,7 @@ public class MemoryTensor<T> where T : unmanaged
 
         Dimensions = dimensions;
         Dimensions64 = [.. dimensions.Select(x => (long)x)];
-
+        
         _buffer = buffer;
     }
 

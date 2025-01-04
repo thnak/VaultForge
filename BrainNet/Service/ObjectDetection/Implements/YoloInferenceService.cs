@@ -50,7 +50,6 @@ public class YoloInferenceService : IYoloInferenceService
     private readonly ArrayPool<bool> _boolPool = ArrayPool<bool>.Create();
     public SixLabors.Fonts.Font PrimaryFont;
 
-    private readonly int _inputLength;
     private readonly int _singleInputLength;
 
     public YoloInferenceService(string modelPath, TimeSpan timeout, int maxQueueSize, int deviceIndex)
@@ -63,15 +62,15 @@ public class YoloInferenceService : IYoloInferenceService
         _runOptions = new();
         PrimaryFont = _fontServiceProvider.CreateFont(FontFamily.RobotoRegular, 14, FontStyle.Regular);
         _timeout = timeout;
-        _inputLength = 1;
+        var inputLength = 1;
         for (int i = 0; i < InputDimensions.Length; i++)
         {
-            _inputLength *= InputDimensions[i];
+            inputLength *= InputDimensions[i];
         }
 
-        _singleInputLength = _inputLength / InputDimensions[0];
+        _singleInputLength = inputLength / InputDimensions[0];
 
-        InputFeedBuffer = _floatPool.Rent(_inputLength);
+        InputFeedBuffer = _floatPool.Rent(inputLength);
         InferenceStates = _boolPool.Rent(InputDimensions[0]);
         _inputChannel = Channel.CreateBounded<(YoloInferenceServiceFeeder feeder, TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>> tcs)>(new BoundedChannelOptions(maxQueueSize)
         {
@@ -89,16 +88,16 @@ public class YoloInferenceService : IYoloInferenceService
         _runOptions = new();
         PrimaryFont = _fontServiceProvider.CreateFont(FontFamily.RobotoRegular, 14, FontStyle.Regular);
         _timeout = TimeSpan.FromSeconds(options.Value.WaterSetting.PeriodicTimer);
-        _inputLength = 1;
+        var inputLength = 1;
         for (int i = 0; i < InputDimensions.Length; i++)
         {
-            _inputLength *= InputDimensions[i];
+            inputLength *= InputDimensions[i];
         }
 
-        _singleInputLength = _inputLength / InputDimensions[0];
+        _singleInputLength = inputLength / InputDimensions[0];
 
         InferenceStates = _boolPool.Rent(InputDimensions[0]);
-        InputFeedBuffer = _floatPool.Rent(_inputLength);
+        InputFeedBuffer = _floatPool.Rent(inputLength);
         _inputChannel = Channel.CreateBounded<(YoloInferenceServiceFeeder feeder, TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>> tcs)>(new BoundedChannelOptions(options.Value.WaterSetting.MaxQueSize)
         {
             FullMode = BoundedChannelFullMode.Wait // Wait when the channel is full
@@ -181,7 +180,7 @@ public class YoloInferenceService : IYoloInferenceService
         while (await _inputChannel.Writer.WaitToWriteAsync(cancellationToken))
         {
             var tcs = new TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>>();
-            using MemoryTensorOwner<float> memoryTensorOwner = _memoryAllocatorService.AllocateTensor<float>(_inputTensorShape, true);
+            using MemoryTensorOwner<float> memoryTensorOwner = _memoryAllocatorService.AllocateTensor(_inputTensorShape, true);
             var pads = _floatPool.Rent(1);
             var ratios = _floatPool.Rent(1);
             image.NormalizeInput(memoryTensorOwner.Tensor, _inputSize, ratios, pads, true);
@@ -262,7 +261,7 @@ public class YoloInferenceService : IYoloInferenceService
             using var ortInput = InputFeedBuffer.CreateOrtValue(_tensorShape.Dimensions64);
 
             var inputs = new Dictionary<string, OrtValue> { { InputNames.First(), ortInput } };
-            
+
             using var results = _session.Run(_runOptions, inputs, OutputNames);
 
             var predictSpan = results[0].Value.GetTensorDataAsSpan<float>();

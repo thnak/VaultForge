@@ -3,30 +3,32 @@ using BrainNet.Service.Memory.Interfaces;
 
 namespace BrainNet.Service.Memory.Implements;
 
-internal class MemoryAllocatorService : IMemoryAllocatorService
+internal sealed class MemoryAllocatorService : IMemoryAllocatorService
 {
     #region ArrayMemoryPoolBuffer<T>
 
-    private class ArrayMemoryPoolBuffer<T> : IMemoryOwner<T>
+    private sealed class ArrayMemoryPoolBuffer<T> : IMemoryOwner<T>
     {
+        private readonly ArrayPool<T> _pool;
         private readonly int _length;
-
-        private readonly T[] _buffer;
+        private T[]? _buffer;
+        private bool _disposed;
 
         public Memory<T> Memory
         {
             get
             {
 #if DEBUG
-                ObjectDisposedException.ThrowIf(_buffer == null, this);
+                if (_disposed) throw new ObjectDisposedException(nameof(ArrayMemoryPoolBuffer<T>));
 #endif
-                return new Memory<T>(_buffer, 0, _length);
+                return new Memory<T>(_buffer!, 0, _length);
             }
         }
 
-        public ArrayMemoryPoolBuffer(int length, bool clean)
+        public ArrayMemoryPoolBuffer(ArrayPool<T> pool, int length, bool clean)
         {
-            _buffer = ArrayPool<T>.Shared.Rent(length);
+            _pool = pool;
+            _buffer = _pool.Rent(length);
 
             if (clean)
             {
@@ -40,19 +42,46 @@ internal class MemoryAllocatorService : IMemoryAllocatorService
 
         public void Dispose()
         {
-            ArrayPool<T>.Shared.Return(_buffer);
+            if (!_disposed)
+            {
+                if (_buffer != null)
+                {
+                    _pool.Return(_buffer);
+                    _buffer = null;
+                }
+
+                _disposed = true;
+                GC.SuppressFinalize(this);
+            }
         }
     }
 
     #endregion
 
+    private readonly ArrayPool<float> _floatPool;
+
+    public MemoryAllocatorService(int maxArrayLength = 1024, int maxArraysPerBucket = 50)
+    {
+        _floatPool = ArrayPool<float>.Create(maxArrayLength, maxArraysPerBucket);
+    }
+
+    public MemoryAllocatorService()
+    {
+        _floatPool = ArrayPool<float>.Create();
+    }
+
     public IMemoryOwner<T> Allocate<T>(int length, bool clean = false)
     {
-        return new ArrayMemoryPoolBuffer<T>(length, clean);
+        return new ArrayMemoryPoolBuffer<T>((ArrayPool<T>)(object)_floatPool, length, clean);
+    }
+    
+    public IMemoryOwner<float> Allocate(int length, bool clean = false)
+    {
+        return new ArrayMemoryPoolBuffer<float>(_floatPool, length, clean);
     }
 
     public void Dispose()
     {
-        // TODO release managed resources here
+        // If other resources are added later, release them here.
     }
 }
