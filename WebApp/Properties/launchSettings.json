@@ -19,7 +19,7 @@
         "OnnxConfigWaterMeterPath": "C:/Users/thanh/source/water-meter.onnx",
         "BrainNetSettingModelWaterSettingDetectionPath": "C:/Users/thanh/source/best-fp16.onnx",
         "BrainNetSettingModelWaterSettingPeriodicTimer": "1000",
-        "BrainNetSettingModelWaterSettingMaxQueSize": "1000",
+        "BrainNetSettingModelWaterSettingMaxQueSize": "16",
         "BrainNetSettingModelWaterSettingDeviceIndex": "0"
       },
       "dotnetRunMessages": true,

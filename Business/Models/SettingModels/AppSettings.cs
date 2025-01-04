@@ -18,7 +18,7 @@ public class AppSettings
     public AppCertificate AppCertificate { get; set; } = new();
 
     public Authenticate Authenticate { get; set; } = new();
-    
+
     public BrainNetSettingModel BrainNetSettingModel { get; set; } = new();
 }
 
@@ -100,7 +100,7 @@ public class AppCertificate
     public string Password { get; set; } = string.Empty;
 }
 
-public class Authenticate()
+public class Authenticate
 {
     public string Pepper { get; set; } = string.Empty;
     public string Issuer { get; set; } = string.Empty;
@@ -109,12 +109,22 @@ public class Authenticate()
 
 public static class AppSettingsConverter
 {
-    public static Dictionary<string, Dictionary<string, string>> ConvertToDictionary(this AppSettings appSettings)
+    public static Dictionary<string, Dictionary<string, string>> ConvertToDictionary<T>(this T? appSettings) where T : class
     {
         var result = new Dictionary<string, Dictionary<string, string>>();
-
+        if (appSettings == null)
+            return result;
         foreach (var property in appSettings.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
         {
+            if (property.PropertyType.IsClass)
+            {
+                var dict = (property as T).ConvertToDictionary();
+                foreach (var pair in dict)
+                {
+                    result.TryAdd(property.Name + '.' + pair.Key, pair.Value);
+                }
+            }
+
             var groupName = property.Name;
             var groupValue = property.GetValue(appSettings);
 

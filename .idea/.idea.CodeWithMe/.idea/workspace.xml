@@ -45,10 +45,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="try fix">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/ImageExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/ImageExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1008,14 +1008,6 @@
       <workItem from="1735897174747" duration="790000" />
       <workItem from="1735911133327" duration="12329000" />
     </task>
-    <task id="LOCAL-00539" summary="shit">
-      <option name="closed" value="true" />
-      <created>1735537477015</created>
-      <option name="number" value="00539" />
-      <option name="presentableId" value="LOCAL-00539" />
-      <option name="project" value="LOCAL" />
-      <updated>1735537477015</updated>
-    </task>
     <task id="LOCAL-00540" summary="bind value">
       <option name="closed" value="true" />
       <created>1735538026174</created>
@@ -1400,7 +1392,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735967073578</updated>
     </task>
-    <option name="localTasksCounter" value="588" />
+    <task id="LOCAL-00588" summary="try fix">
+      <option name="closed" value="true" />
+      <created>1735969345794</created>
+      <option name="number" value="00588" />
+      <option name="presentableId" value="LOCAL-00588" />
+      <option name="project" value="LOCAL" />
+      <updated>1735969345794</updated>
+    </task>
+    <option name="localTasksCounter" value="589" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1431,7 +1431,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="add cancel page" />
     <MESSAGE value="update search function" />
     <MESSAGE value="update bl" />
     <MESSAGE value="update logic to prevent error" />
@@ -1456,7 +1455,8 @@
     <MESSAGE value="add bulk update for record" />
     <MESSAGE value="dont create thumb for iot image" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="try fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="try fix" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
