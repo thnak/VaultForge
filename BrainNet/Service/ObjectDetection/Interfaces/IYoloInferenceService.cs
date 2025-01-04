@@ -7,6 +7,8 @@ namespace BrainNet.Service.ObjectDetection.Interfaces;
 
 public interface IYoloInferenceService : IDisposable
 {
+
+    public int GetBatchSize();
     /// <summary>
     /// return a TaskCompletionSource
     /// </summary>

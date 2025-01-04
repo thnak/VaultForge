@@ -45,12 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="refactor, using allocated pool array">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Models/Vector/MemoryTensor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Models/Vector/MemoryTensor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Feeder/YoloInferenceServiceFeeder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Feeder/YoloInferenceServiceFeeder.cs" afterDir="false" />
-    </list>
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
@@ -1003,15 +998,7 @@
       <workItem from="1735897174747" duration="790000" />
       <workItem from="1735911133327" duration="12329000" />
       <workItem from="1735975073448" duration="8478000" />
-      <workItem from="1736006257577" duration="6191000" />
-    </task>
-    <task id="LOCAL-00547" summary="small update">
-      <option name="closed" value="true" />
-      <created>1735571210814</created>
-      <option name="number" value="00547" />
-      <option name="presentableId" value="LOCAL-00547" />
-      <option name="project" value="LOCAL" />
-      <updated>1735571210814</updated>
+      <workItem from="1736006257577" duration="6454000" />
     </task>
     <task id="LOCAL-00548" summary="small update">
       <option name="closed" value="true" />
@@ -1397,7 +1384,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736011394491</updated>
     </task>
-    <option name="localTasksCounter" value="596" />
+    <task id="LOCAL-00596" summary="optimize code">
+      <option name="closed" value="true" />
+      <created>1736012647862</created>
+      <option name="number" value="00596" />
+      <option name="presentableId" value="LOCAL-00596" />
+      <option name="project" value="LOCAL" />
+      <updated>1736012647863</updated>
+    </task>
+    <option name="localTasksCounter" value="597" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1428,7 +1423,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="small fix" />
     <MESSAGE value="unsafe with objectid set to read only from BaseModelEntry.cs" />
     <MESSAGE value="re open execution provider option" />
     <MESSAGE value="update log" />
@@ -1453,7 +1447,8 @@
     <MESSAGE value="try debug" />
     <MESSAGE value="limit this fucking shit to prevent OOM" />
     <MESSAGE value="refactor, using allocated pool array" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor, using allocated pool array" />
+    <MESSAGE value="optimize code" />
+    <option name="LAST_COMMIT_MESSAGE" value="optimize code" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

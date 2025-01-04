@@ -181,6 +181,11 @@ public class YoloInferenceService : IYoloInferenceService
 
     #endregion
 
+    public int GetBatchSize()
+    {
+        return InputDimensions[0];
+    }
+
     public async Task<InferenceResult<List<YoloBoundingBox>>> AddInputAsync(Image<Rgb24> image, CancellationToken cancellationToken = default)
     {
         while (await _inputChannel.Writer.WaitToWriteAsync(cancellationToken))
