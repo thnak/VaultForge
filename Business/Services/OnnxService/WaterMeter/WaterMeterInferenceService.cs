@@ -14,8 +14,8 @@ public interface IWaterMeterInferenceService : IYoloInferenceService
 
 public class WaterMeterInferenceService(ApplicationConfiguration configuration) : IWaterMeterInferenceService
 {
-    public YoloInferenceService YoloInferenceService = new(configuration.GetBrainNetSetting.WaterSetting.DetectionPath, 
-        TimeSpan.FromMilliseconds(configuration.GetBrainNetSetting.WaterSetting.PeriodicTimer), 
+    public YoloInferenceService YoloInferenceService = new(configuration.GetBrainNetSetting.WaterSetting.DetectionPath,
+        TimeSpan.FromMilliseconds(configuration.GetBrainNetSetting.WaterSetting.PeriodicTimer),
         configuration.GetBrainNetSetting.WaterSetting.MaxQueSize,
         configuration.GetBrainNetSetting.WaterSetting.DeviceIndex);
 

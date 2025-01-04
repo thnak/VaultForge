@@ -58,7 +58,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
         {
             var sensor = _iotSensorBusinessLayer.Get(record.Metadata.SensorId);
             await _redundantArrayOfIndependentDisks.ReadGetDataAsync(buffer, file.AbsolutePath, cancellationToken);
-            using var image = Image.Load<Rgb24>(buffer);
+            var image = Image.Load<Rgb24>(buffer);
             image.AutoOrient();
             if (sensor is { Rotate: > 0 })
                 image.Mutate(i => i.Rotate(sensor.Rotate));
@@ -69,6 +69,9 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
 
 
             var predResult = await _waterMeterInferenceService.AddInputAsync(image, cancellationToken);
+
+            image.Dispose();
+
             if (predResult.IsSuccess)
             {
                 var resultString = string.Join("", predResult.Value.OrderBy(x => x.X).Select(x => x.ClassIdx.ToString()));

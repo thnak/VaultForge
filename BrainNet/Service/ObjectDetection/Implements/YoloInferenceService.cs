@@ -195,8 +195,7 @@ public class YoloInferenceService : IYoloInferenceService
                 PadHeight = pads[0],
                 PadWidth = pads[1],
             };
-            _floatPool.Return(pads);
-            _floatPool.Return(ratios);
+        
             try
             {
                 await _inputChannel.Writer.WriteAsync((feeder, tcs), cancellationToken);
@@ -207,6 +206,12 @@ public class YoloInferenceService : IYoloInferenceService
                 _floatPool.Return(buffer);
                 tcs.SetResult(InferenceResult<List<YoloBoundingBox>>.Canceled("Canceled"));
                 return await tcs.Task;
+            }
+            finally
+            {
+                _floatPool.Return(buffer);
+                _floatPool.Return(pads);
+                _floatPool.Return(ratios);
             }
         }
 
@@ -252,11 +257,9 @@ public class YoloInferenceService : IYoloInferenceService
             InferenceStates[i] = false;
             var inputSize = batch[i].Item1.Buffer.Length;
             Array.Copy(batch[i].Item1.Buffer, 0, InputFeedBuffer, i * inputSize, inputSize);
-            _floatPool.Return(batch[i].Item1.Buffer);
         }
 
-        try
-        {
+        
             // Run inference
             using var ortInput = InputFeedBuffer.CreateOrtValue(_tensorShape.Dimensions64);
 
@@ -303,17 +306,7 @@ public class YoloInferenceService : IYoloInferenceService
 
             _floatPool.Return(predictArray);
             Array.Clear(InputFeedBuffer);
-        }
-        catch (Exception exception)
-        {
-            for (int i = 0; i < batchSize; i++)
-            {
-                batch[i].Item2.SetResult(InferenceResult<List<YoloBoundingBox>>.Failure(exception.Message, InferenceErrorType.Unknown));
-            }
-        }
-        finally
-        {
-        }
+     
     }
 
     public void Dispose()

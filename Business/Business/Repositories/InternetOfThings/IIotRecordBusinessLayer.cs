@@ -118,7 +118,7 @@ public class IotRecordBusinessLayer(IIotRecordDataLayer data, IIotRequestQueue i
             iotRequestQueue.IncrementTotalRequests(item.Metadata.SensorId);
         }
 
-        var cursor2 = Where(x => x.Metadata.ProcessStatus != ProcessStatus.Completed, cancellationToken);
+        var cursor2 = Where(x => x.Metadata.ProcessStatus != ProcessStatus.Completed && x.Metadata.ProcessStatus != ProcessStatus.Failed, cancellationToken);
         await foreach (var item in cursor2)
         {
             await iotRequestQueue.QueueRequest(item, cancellationToken);
