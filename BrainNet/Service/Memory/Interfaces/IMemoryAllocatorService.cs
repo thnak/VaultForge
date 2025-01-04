@@ -4,5 +4,5 @@ namespace BrainNet.Service.Memory.Interfaces;
 
 public interface IMemoryAllocatorService : IDisposable
 {
-    public IMemoryOwner<T> Allocate<T>(int length, bool clean = false);
+    public IMemoryOwner<TItem> Allocate<TItem>(int length, bool clean = false);
 }

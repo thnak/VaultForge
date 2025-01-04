@@ -67,7 +67,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
                 image.Mutate(i => i.Flip(FlipMode.Vertical));
 
 
-            var predResult = await _waterMeterInferenceService.AddInputAsync(image);
+            var predResult = await _waterMeterInferenceService.AddInputAsync(image, cancellationToken);
             if (predResult.IsSuccess)
             {
                 var resultString = string.Join("", predResult.Value.OrderBy(x => x.X).Select(x => x.ClassIdx.ToString()));

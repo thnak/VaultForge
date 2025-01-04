@@ -17,23 +17,22 @@ namespace Business.Data.Repositories.InternetOfThings;
 
 public class IotRecordDataLayer : IIotRecordDataLayer
 {
+    private const string CollectionName = "IotDB";
+
     public IotRecordDataLayer(IMongoDataLayerContext context, ILogger<IotRecordDataLayer> logger)
     {
-        try
+        if (!context.MongoDatabase.ListCollectionNames().ToList().Contains(CollectionName))
         {
             var options = new CreateCollectionOptions
             {
                 TimeSeriesOptions = new TimeSeriesOptions(nameof(IoTRecord.CreateTime), nameof(IoTRecord.Metadata), TimeSeriesGranularity.Seconds)
             };
-            context.MongoDatabase.CreateCollection("IotDB", options);
-        }
-        catch (Exception)
-        {
-            //
+            context.MongoDatabase.CreateCollection(CollectionName, options);
         }
 
+
         var writeConcern = new WriteConcern(1, new Optional<TimeSpan?>(TimeSpan.FromSeconds(10)), journal: new Optional<bool?>(false), fsync: false);
-        _dataDb = context.MongoDatabase.GetCollection<IoTRecord>("IotDB", new MongoCollectionSettings() { WriteConcern = writeConcern });
+        _dataDb = context.MongoDatabase.GetCollection<IoTRecord>(CollectionName, new MongoCollectionSettings() { WriteConcern = writeConcern });
         _logger = logger;
     }
 
@@ -50,7 +49,7 @@ public class IotRecordDataLayer : IIotRecordDataLayer
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.Date).Ascending(x => x.Hour),
             Builders<IoTRecord>.IndexKeys.Ascending(x => x.CreateTime).Ascending(x => x.Metadata.SensorId),
         ];
-        
+
         await _dataDb.Indexes.DropAllAsync(cancellationToken);
         var indexModels = indexKeysDefinitions.Select(x => new CreateIndexModel<IoTRecord>(x));
         await _dataDb.Indexes.CreateManyAsync(indexModels, cancellationToken);

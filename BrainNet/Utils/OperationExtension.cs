@@ -56,6 +56,24 @@ public static class OperationExtension
         return denseTensor;
     }
 
+    public static void CopyMemoryToByteArray(Memory<float> memory, float[] byteArray)
+    {
+        // Create a byte array large enough to hold the float values
+        
+        // Get a span of the memory to access its values
+        Span<float> span = memory.Span;
+
+        // Convert each float to bytes and copy them into the byte array
+        for (int i = 0; i < span.Length; i++)
+        {
+            // Use BitConverter to convert each float to a byte array
+            byte[] floatBytes = BitConverter.GetBytes(span[i]);
+            
+            // Copy the bytes into the byteArray
+            Array.Copy(floatBytes, 0, byteArray, i * sizeof(float), sizeof(float));
+        }
+    }
+    
     /// <summary>
     /// concatenate 3D array into 4D array
     /// </summary>
