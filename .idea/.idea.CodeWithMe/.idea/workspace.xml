@@ -45,7 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="remove bullshit shared array">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" afterDir="false" />
     </list>
@@ -1007,15 +1007,7 @@
       <workItem from="1735871483025" duration="8532000" />
       <workItem from="1735897174747" duration="790000" />
       <workItem from="1735911133327" duration="12329000" />
-      <workItem from="1735975073448" duration="1795000" />
-    </task>
-    <task id="LOCAL-00542" summary="fix wrong type">
-      <option name="closed" value="true" />
-      <created>1735546335464</created>
-      <option name="number" value="00542" />
-      <option name="presentableId" value="LOCAL-00542" />
-      <option name="project" value="LOCAL" />
-      <updated>1735546335464</updated>
+      <workItem from="1735975073448" duration="3220000" />
     </task>
     <task id="LOCAL-00543" summary="update">
       <option name="closed" value="true" />
@@ -1401,7 +1393,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735975786633</updated>
     </task>
-    <option name="localTasksCounter" value="591" />
+    <task id="LOCAL-00591" summary="remove bullshit shared array">
+      <option name="closed" value="true" />
+      <created>1735977499091</created>
+      <option name="number" value="00591" />
+      <option name="presentableId" value="LOCAL-00591" />
+      <option name="project" value="LOCAL" />
+      <updated>1735977499091</updated>
+    </task>
+    <option name="localTasksCounter" value="592" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1432,7 +1432,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="update search function" />
     <MESSAGE value="update bl" />
     <MESSAGE value="update logic to prevent error" />
     <MESSAGE value="complete search engine service" />
@@ -1457,7 +1456,8 @@
     <MESSAGE value="try fix" />
     <MESSAGE value="update" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="remove bullshit shared array" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove bullshit shared array" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
