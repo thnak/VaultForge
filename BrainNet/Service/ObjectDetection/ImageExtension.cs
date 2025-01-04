@@ -44,6 +44,9 @@ public static class ImageExtension
         var strideG = tensor.Strides[1] * 1;
         var strideB = tensor.Strides[1] * 2;
 
+        var padG = strideG - strideR;
+        var padB = strideB - strideR;
+
         // Get a span of the whole tensor for fast access
         var tensorSpan = tensor.Span;
 
@@ -62,7 +65,7 @@ public static class ImageExtension
 
                 var pixel = pixels[index];
 
-                WriteSpanPixel(tensorSpan, tensorIndex, pixel, strideR, strideG, strideB);
+                WriteSpanPixel(tensorSpan, tensorIndex, pixel, padG, padB);
             }
         }
         else
@@ -77,7 +80,7 @@ public static class ImageExtension
                     var tensorIndex = tensorYIndex + strideX * (x + padding.X);
                     var pixel = rowSpan[x];
 
-                    WriteSpanPixel(tensorSpan, tensorIndex, pixel, strideR, strideG, strideB);
+                    WriteSpanPixel(tensorSpan, tensorIndex, pixel, padG, padB);
                 }
             }
         }
@@ -89,6 +92,14 @@ public static class ImageExtension
         target[index] = pixel.R / 255f;
         target[index + strideBatchG - strideBatchR] = pixel.G / 255f;
         target[index + strideBatchB - strideBatchR] = pixel.B / 255f;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void WriteSpanPixel(Span<float> target, int index, Rgb24 pixel, int padG, int padB)
+    {
+        target[index] = pixel.R / 255f;
+        target[index + padG] = pixel.G / 255f;
+        target[index + padB] = pixel.B / 255f;
     }
 
     public static void NormalizeInput(this Image<Rgb24> image, MemoryTensor<float> target, Size imageSize, float[] ratios, float[] pads, bool keepAspectRatio = false)

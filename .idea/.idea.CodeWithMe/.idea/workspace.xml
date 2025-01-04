@@ -47,12 +47,8 @@
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Models/Vector/MemoryTensor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Models/Vector/MemoryTensor.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/Memory/Interfaces/IMemoryAllocatorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/Memory/Interfaces/IMemoryAllocatorService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/Memory/Utils/MemoryAllocatorExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/Memory/Utils/MemoryAllocatorExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.Device.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.Device.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/ImageExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/ImageExtension.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1012,14 +1008,6 @@
       <workItem from="1735897174747" duration="790000" />
       <workItem from="1735911133327" duration="12329000" />
     </task>
-    <task id="LOCAL-00538" summary="update">
-      <option name="closed" value="true" />
-      <created>1735536838764</created>
-      <option name="number" value="00538" />
-      <option name="presentableId" value="LOCAL-00538" />
-      <option name="project" value="LOCAL" />
-      <updated>1735536838764</updated>
-    </task>
     <task id="LOCAL-00539" summary="shit">
       <option name="closed" value="true" />
       <created>1735537477015</created>
@@ -1404,7 +1392,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735965187537</updated>
     </task>
-    <option name="localTasksCounter" value="587" />
+    <task id="LOCAL-00587" summary="small update">
+      <option name="closed" value="true" />
+      <created>1735967073578</created>
+      <option name="number" value="00587" />
+      <option name="presentableId" value="LOCAL-00587" />
+      <option name="project" value="LOCAL" />
+      <updated>1735967073578</updated>
+    </task>
+    <option name="localTasksCounter" value="588" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -10,20 +10,9 @@ internal sealed class MemoryAllocatorService : IMemoryAllocatorService
     private sealed class ArrayMemoryPoolBuffer<T> : IMemoryOwner<T>
     {
         private readonly ArrayPool<T> _pool;
-        private readonly int _length;
-        private T[]? _buffer;
-        private bool _disposed;
+        private readonly T[] _buffer;
 
-        public Memory<T> Memory
-        {
-            get
-            {
-#if DEBUG
-                if (_disposed) throw new ObjectDisposedException(nameof(ArrayMemoryPoolBuffer<T>));
-#endif
-                return new Memory<T>(_buffer!, 0, _length);
-            }
-        }
+        public Memory<T> Memory => _buffer.AsMemory();
 
         public ArrayMemoryPoolBuffer(ArrayPool<T> pool, int length, bool clean)
         {
@@ -35,24 +24,14 @@ internal sealed class MemoryAllocatorService : IMemoryAllocatorService
                 Array.Clear(_buffer, 0, length);
             }
 
-            _length = length;
         }
 
         ~ArrayMemoryPoolBuffer() => Dispose();
 
         public void Dispose()
         {
-            if (!_disposed)
-            {
-                if (_buffer != null)
-                {
-                    _pool.Return(_buffer);
-                    _buffer = null;
-                }
-
-                _disposed = true;
-                GC.SuppressFinalize(this);
-            }
+            _pool.Return(_buffer);
+            GC.SuppressFinalize(this);
         }
     }
 
@@ -74,7 +53,7 @@ internal sealed class MemoryAllocatorService : IMemoryAllocatorService
     {
         return new ArrayMemoryPoolBuffer<T>((ArrayPool<T>)(object)_floatPool, length, clean);
     }
-    
+
     public IMemoryOwner<float> Allocate(int length, bool clean = false)
     {
         return new ArrayMemoryPoolBuffer<float>(_floatPool, length, clean);
