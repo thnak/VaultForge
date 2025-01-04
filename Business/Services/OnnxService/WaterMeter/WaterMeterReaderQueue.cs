@@ -1,4 +1,5 @@
-﻿using BrainNet.Utils;
+﻿using System.Buffers;
+using BrainNet.Utils;
 using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Data.StorageSpace;
@@ -23,6 +24,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
     private readonly IFileSystemBusinessLayer _fileSystemBusinessLayer;
     private readonly IIoTSensorBusinessLayer _iotSensorBusinessLayer;
     private readonly IWaterMeterInferenceService _waterMeterInferenceService;
+    private readonly ArrayPool<byte> _arrayPool = ArrayPool<byte>.Create();
 
     public WaterMeterReaderQueue(ILogger<IWaterMeterReaderQueue> logger,
         RedundantArrayOfIndependentDisks disks, IFileSystemBusinessLayer fileSystemBusinessLayer,
@@ -46,47 +48,48 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
             return new IoTRecordUpdateModel()
             {
                 SensorId = record.Metadata.SensorId,
+                RecordedAt = record.Metadata.RecordedAt,
                 ProcessStatus = ProcessStatus.Failed
             };
         }
 
-        using MemoryStream buffer = new MemoryStream((int)file.FileSize);
-
         try
         {
             var sensor = _iotSensorBusinessLayer.Get(record.Metadata.SensorId);
+            byte[] buffer = _arrayPool.Rent((int)file.FileSize);
             await _redundantArrayOfIndependentDisks.ReadGetDataAsync(buffer, file.AbsolutePath, cancellationToken);
-            using (var image = await Image.LoadAsync<Rgb24>(buffer, cancellationToken))
+            using var image = Image.Load<Rgb24>(buffer);
+            _arrayPool.Return(buffer);
+            image.AutoOrient();
+            if (sensor is { Rotate: > 0 })
+                image.Mutate(i => i.Rotate(sensor.Rotate));
+            if (sensor is { FlipHorizontal: true })
+                image.Mutate(i => i.Flip(FlipMode.Horizontal));
+            if (sensor is { FlipVertical: true })
+                image.Mutate(i => i.Flip(FlipMode.Vertical));
+
+
+            var predResult = await _waterMeterInferenceService.AddInputAsync(image, cancellationToken);
+
+            if (predResult.IsSuccess)
             {
-                image.AutoOrient();
-                if (sensor is { Rotate: > 0 })
-                    image.Mutate(i => i.Rotate(sensor.Rotate));
-                if (sensor is { FlipHorizontal: true })
-                    image.Mutate(i => i.Flip(FlipMode.Horizontal));
-                if (sensor is { FlipVertical: true })
-                    image.Mutate(i => i.Flip(FlipMode.Vertical));
-
-
-                var predResult = await _waterMeterInferenceService.AddInputAsync(image, cancellationToken);
-
-                if (predResult.IsSuccess)
-                {
-                    var resultString = string.Join("", predResult.Value.OrderBy(x => x.X).Select(x => x.ClassIdx.ToString()));
-                    float.TryParse(resultString, out var result);
-                    return new IoTRecordUpdateModel()
-                    {
-                        SensorId = record.Metadata.SensorId,
-                        ProcessStatus = ProcessStatus.Completed,
-                        SensorData = result
-                    };
-                }
-
+                var resultString = string.Join("", predResult.Value.OrderBy(x => x.X).Select(x => x.ClassIdx.ToString()));
+                float.TryParse(resultString, out var result);
                 return new IoTRecordUpdateModel()
                 {
                     SensorId = record.Metadata.SensorId,
-                    ProcessStatus = ProcessStatus.Completed
+                    RecordedAt = record.Metadata.RecordedAt,
+                    ProcessStatus = ProcessStatus.Completed,
+                    SensorData = result
                 };
             }
+
+            return new IoTRecordUpdateModel()
+            {
+                SensorId = record.Metadata.SensorId,
+                RecordedAt = record.Metadata.RecordedAt,
+                ProcessStatus = ProcessStatus.Failed
+            };
         }
         catch (OperationCanceledException)
         {
@@ -99,6 +102,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
         return new IoTRecordUpdateModel()
         {
             SensorId = record.Metadata.SensorId,
+            RecordedAt = record.Metadata.RecordedAt,
             ProcessStatus = ProcessStatus.Failed
         };
     }

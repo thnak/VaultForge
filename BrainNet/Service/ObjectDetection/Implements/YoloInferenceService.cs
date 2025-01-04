@@ -46,7 +46,8 @@ public class YoloInferenceService : IYoloInferenceService
     private TensorShape _tensorShape;
     private TensorShape _inputTensorShape;
     private Size _inputSize;
-    private readonly ArrayPool<float> _floatPool = ArrayPool<float>.Create();
+    private readonly ArrayPool<float> _singleFrameInputArrayPool;
+    private readonly ArrayPool<float> _padAndRatiosArrayPool;
     private readonly ArrayPool<bool> _boolPool = ArrayPool<bool>.Create();
     public SixLabors.Fonts.Font PrimaryFont;
 
@@ -69,13 +70,16 @@ public class YoloInferenceService : IYoloInferenceService
         }
 
         _singleInputLength = inputLength / InputDimensions[0];
+        _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, (int)(maxQueueSize * 1.5));
+        _padAndRatiosArrayPool = ArrayPool<float>.Create(1, maxQueueSize * 2);
 
-        InputFeedBuffer = _floatPool.Rent(inputLength);
+        InputFeedBuffer = ArrayPool<float>.Shared.Rent(inputLength);
         InferenceStates = _boolPool.Rent(InputDimensions[0]);
-        _inputChannel = Channel.CreateBounded<(YoloInferenceServiceFeeder feeder, TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>> tcs)>(new BoundedChannelOptions(maxQueueSize)
-        {
-            FullMode = BoundedChannelFullMode.Wait // Wait when the channel is full
-        });
+        _inputChannel = Channel.CreateBounded<(YoloInferenceServiceFeeder feeder, TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>> tcs)>(
+            new BoundedChannelOptions(maxQueueSize)
+            {
+                FullMode = BoundedChannelFullMode.Wait // Wait when the channel is full
+            });
     }
 
     public YoloInferenceService(IOptions<BrainNetSettingModel> options)
@@ -97,7 +101,10 @@ public class YoloInferenceService : IYoloInferenceService
         _singleInputLength = inputLength / InputDimensions[0];
 
         InferenceStates = _boolPool.Rent(InputDimensions[0]);
-        InputFeedBuffer = _floatPool.Rent(inputLength);
+        _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, (int)(options.Value.WaterSetting.MaxQueSize * 1.5));
+        _padAndRatiosArrayPool = ArrayPool<float>.Create(1, options.Value.WaterSetting.MaxQueSize * 2);
+
+        InputFeedBuffer = _singleFrameInputArrayPool.Rent(inputLength);
         _inputChannel = Channel.CreateBounded<(YoloInferenceServiceFeeder feeder, TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>> tcs)>(new BoundedChannelOptions(options.Value.WaterSetting.MaxQueSize)
         {
             FullMode = BoundedChannelFullMode.Wait // Wait when the channel is full
@@ -181,10 +188,10 @@ public class YoloInferenceService : IYoloInferenceService
         {
             var tcs = new TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>>();
             using MemoryTensorOwner<float> memoryTensorOwner = _memoryAllocatorService.AllocateTensor(_inputTensorShape, true);
-            var pads = _floatPool.Rent(1);
-            var ratios = _floatPool.Rent(1);
+            var pads = _padAndRatiosArrayPool.Rent(1);
+            var ratios = _padAndRatiosArrayPool.Rent(1);
             image.NormalizeInput(memoryTensorOwner.Tensor, _inputSize, ratios, pads, true);
-            var buffer = _floatPool.Rent(_singleInputLength);
+            var buffer = _singleFrameInputArrayPool.Rent(_singleInputLength);
             memoryTensorOwner.Tensor.Span.CopyTo(buffer);
             YoloInferenceServiceFeeder feeder = new YoloInferenceServiceFeeder(buffer)
             {
@@ -195,7 +202,7 @@ public class YoloInferenceService : IYoloInferenceService
                 PadHeight = pads[0],
                 PadWidth = pads[1],
             };
-        
+
             try
             {
                 await _inputChannel.Writer.WriteAsync((feeder, tcs), cancellationToken);
@@ -208,9 +215,9 @@ public class YoloInferenceService : IYoloInferenceService
             }
             finally
             {
-                _floatPool.Return(buffer);
-                _floatPool.Return(pads);
-                _floatPool.Return(ratios);
+                _singleFrameInputArrayPool.Return(buffer);
+                _padAndRatiosArrayPool.Return(pads);
+                _padAndRatiosArrayPool.Return(ratios);
             }
         }
 
@@ -258,59 +265,54 @@ public class YoloInferenceService : IYoloInferenceService
             Array.Copy(batch[i].Item1.Buffer, 0, InputFeedBuffer, i * inputSize, inputSize);
         }
 
+
+        // Run inference
+        using var ortInput = InputFeedBuffer.CreateOrtValue(_tensorShape.Dimensions64);
+
+        var inputs = new Dictionary<string, OrtValue> { { InputNames.First(), ortInput } };
+
+        using var results = _session.Run(_runOptions, inputs, OutputNames);
+
+        var predictSpan = results[0].Value.GetTensorDataAsSpan<float>();
+        var predictArray = _singleFrameInputArrayPool.Rent(predictSpan.Length);
+        predictSpan.CopyTo(predictArray);
+
+        var pads = batch.Select(x => new[] { x.Item1.PadHeight, x.Item1.PadWidth }).ToList();
+        var ratios = batch.Select(x => new[] { x.Item1.HeightRatio, x.Item1.WidthRatio }).ToList();
+        var originShape = batch.Select(x => new[] { x.Item1.OriginImageHeight, x.Item1.OriginImageWidth }).ToList();
         
-            // Run inference
-            using var ortInput = InputFeedBuffer.CreateOrtValue(_tensorShape.Dimensions64);
+        YoloPrediction predictions = new YoloPrediction(predictArray, predictSpan.Length, CategoryReadOnlyCollection, pads, ratios, originShape);
 
-            var inputs = new Dictionary<string, OrtValue> { { InputNames.First(), ortInput } };
-
-            using var results = _session.Run(_runOptions, inputs, OutputNames);
-
-            var predictSpan = results[0].Value.GetTensorDataAsSpan<float>();
-            var predictArray = _floatPool.Rent(predictSpan.Length);
-            predictSpan.CopyTo(predictArray);
-
-            var pads = batch.Select(x => new[] { x.Item1.PadHeight, x.Item1.PadWidth }).ToList();
-            var ratios = batch.Select(x => new[] { x.Item1.HeightRatio, x.Item1.WidthRatio }).ToList();
-            var originShape = batch.Select(x => new[] { x.Item1.OriginImageHeight, x.Item1.OriginImageWidth }).ToList();
-
-
-#if DEBUG
-            // predictions.
-#endif
-            YoloPrediction predictions = new YoloPrediction(predictArray, CategoryReadOnlyCollection, pads, ratios, originShape);
-
-            foreach (var batchResult in predictions.GetDetect().GroupBy(x => x.BatchId))
+        foreach (var batchResult in predictions.GetDetect().GroupBy(x => x.BatchId))
+        {
+            try
             {
-                try
-                {
-                    var resultList = batchResult.ToList();
-                    batch[batchResult.Key].Item2.SetResult(InferenceResult<List<YoloBoundingBox>>.Success(resultList));
-                    InferenceStates[batchResult.Key] = true;
-                }
-                catch (Exception)
-                {
-                    InferenceStates[batchResult.Key] = false;
-                }
+                var resultList = batchResult.ToList();
+                batch[batchResult.Key].Item2.SetResult(InferenceResult<List<YoloBoundingBox>>.Success(resultList));
+                InferenceStates[batchResult.Key] = true;
             }
-
-
-            for (int i = 0; i < batchSize; i++)
+            catch (Exception)
             {
-                if (InferenceStates[i] == false)
-                {
-                    batch[i].Item2.SetResult(InferenceResult<List<YoloBoundingBox>>.Success([]));
-                }
+                InferenceStates[batchResult.Key] = false;
             }
+        }
 
-            _floatPool.Return(predictArray);
-            Array.Clear(InputFeedBuffer);
-     
+
+        for (int i = 0; i < batchSize; i++)
+        {
+            if (InferenceStates[i] == false)
+            {
+                batch[i].Item2.SetResult(InferenceResult<List<YoloBoundingBox>>.Success([]));
+            }
+        }
+
+        _singleFrameInputArrayPool.Return(predictArray);
+        Array.Clear(InputFeedBuffer);
     }
 
     public void Dispose()
     {
-        _floatPool.Return(InputFeedBuffer);
+        ArrayPool<float>.Shared.Return(InputFeedBuffer);
         _boolPool.Return(InferenceStates);
         _session.Dispose();
         _memoryAllocatorService.Dispose();

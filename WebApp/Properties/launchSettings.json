@@ -20,7 +20,7 @@
         "BrainNetSettingModelWaterSettingDetectionPath": "C:/Users/thanh/source/best-fp16.onnx",
         "BrainNetSettingModelWaterSettingPeriodicTimer": "1000",
         "BrainNetSettingModelWaterSettingMaxQueSize": "16",
-        "BrainNetSettingModelWaterSettingDeviceIndex": "0"
+        "BrainNetSettingModelWaterSettingDeviceIndex": "1"
       },
       "dotnetRunMessages": true,
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",

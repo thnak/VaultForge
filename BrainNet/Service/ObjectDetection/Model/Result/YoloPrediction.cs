@@ -16,27 +16,30 @@ public class YoloPrediction
     private List<int[]> ImageShapes { get; }
     private List<float[]> Ratios { get; }
     private ArrayPool<float> ArrayPool { get; } = ArrayPool<float>.Shared;
-    public YoloPrediction(float[] predictionArrayResults, string[] categories, List<float[]> padHeightAndWidths, List<float[]> ratios, List<int[]> imageShapes)
+    private int BufferLength { get; }
+    public YoloPrediction(float[] predictionArrayResults, int bufferLength, string[] categories, List<float[]> padHeightAndWidths, List<float[]> ratios, List<int[]> imageShapes)
     {
         PredictionArrays = predictionArrayResults;
         Categories = categories;
         PadHeightAndWidths = padHeightAndWidths;
         ImageShapes = imageShapes;
         Ratios = ratios;
+        BufferLength = bufferLength;
     }
 
-    public YoloPrediction(ReadOnlySpan<float> predictionArrayResults, string[] categories, List<float[]> padHeightAndWidths, List<float[]> ratios, List<int[]> imageShapes)
+    public YoloPrediction(ReadOnlySpan<float> predictionArrayResults, int bufferLength, string[] categories, List<float[]> padHeightAndWidths, List<float[]> ratios, List<int[]> imageShapes)
     {
         PredictionArrays = predictionArrayResults.ToArray();
         Categories = categories;
         PadHeightAndWidths = padHeightAndWidths;
         ImageShapes = imageShapes;
         Ratios = ratios;
+        BufferLength = bufferLength;
     }
 
     public List<YoloBoundingBox> GetDetect()
     {
-        int length = PredictionArrays.Length / 7;
+        int length = BufferLength / 7;
         if (length == 0) return new List<YoloBoundingBox>();
 
         var yoloBoundingBoxes = new ConcurrentBag<YoloBoundingBox>();

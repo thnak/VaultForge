@@ -31,7 +31,6 @@ internal sealed class MemoryAllocatorService : IMemoryAllocatorService
         public void Dispose()
         {
             _pool.Return(_buffer);
-            GC.SuppressFinalize(this);
         }
     }
 

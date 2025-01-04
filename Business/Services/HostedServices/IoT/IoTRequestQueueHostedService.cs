@@ -1,11 +1,9 @@
-﻿using System.Collections.Concurrent;
-using System.Threading.Channels;
+﻿using System.Threading.Channels;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Services.Configure;
 using Business.Services.OnnxService.WaterMeter;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.System.InternetOfThings;
-using BusinessModels.System.InternetOfThings.type;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -35,22 +33,19 @@ public class IoTRequestQueueHostedService(
             iotRequestQueue.Reset();
             _currentDay = today;
         }
+        
+        await InsertBatchIntoDatabase(cancellationToken);
+        await BulkUpdateAsync(cancellationToken);
+    }
 
+    private async Task InsertBatchIntoDatabase(CancellationToken cancellationToken = default)
+    {
         List<IoTRecord> batch = [];
         while (iotRequestQueue.TryRead(out var data))
         {
             batch.Add(data);
         }
 
-        if (batch.Count == 0)
-            return;
-
-        await InsertBatchIntoDatabase(batch, cancellationToken);
-        await BulkUpdateAsync(cancellationToken);
-    }
-
-    private async Task InsertBatchIntoDatabase(IReadOnlyCollection<IoTRecord> batch, CancellationToken cancellationToken = default)
-    {
         var result = await iotRecordBusinessLayer.CreateAsync(batch, cancellationToken);
         if (result.IsSuccess)
         {
