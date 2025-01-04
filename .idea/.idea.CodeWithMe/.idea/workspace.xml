@@ -45,9 +45,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="debug">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="try debug">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1007,15 +1006,7 @@
       <workItem from="1735871483025" duration="8532000" />
       <workItem from="1735897174747" duration="790000" />
       <workItem from="1735911133327" duration="12329000" />
-      <workItem from="1735975073448" duration="5943000" />
-    </task>
-    <task id="LOCAL-00544" summary=".">
-      <option name="closed" value="true" />
-      <created>1735551820581</created>
-      <option name="number" value="00544" />
-      <option name="presentableId" value="LOCAL-00544" />
-      <option name="project" value="LOCAL" />
-      <updated>1735551820581</updated>
+      <workItem from="1735975073448" duration="7522000" />
     </task>
     <task id="LOCAL-00545" summary="json map">
       <option name="closed" value="true" />
@@ -1401,7 +1392,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735978826492</updated>
     </task>
-    <option name="localTasksCounter" value="593" />
+    <task id="LOCAL-00593" summary="try debug">
+      <option name="closed" value="true" />
+      <created>1735984862219</created>
+      <option name="number" value="00593" />
+      <option name="presentableId" value="LOCAL-00593" />
+      <option name="project" value="LOCAL" />
+      <updated>1735984862219</updated>
+    </task>
+    <option name="localTasksCounter" value="594" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1432,7 +1431,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="update logic to prevent error" />
     <MESSAGE value="complete search engine service" />
     <MESSAGE value="adding add, remove action for search engine" />
     <MESSAGE value="small fix" />
@@ -1457,7 +1455,8 @@
     <MESSAGE value="small update" />
     <MESSAGE value="remove bullshit shared array" />
     <MESSAGE value="debug" />
-    <option name="LAST_COMMIT_MESSAGE" value="debug" />
+    <MESSAGE value="try debug" />
+    <option name="LAST_COMMIT_MESSAGE" value="try debug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

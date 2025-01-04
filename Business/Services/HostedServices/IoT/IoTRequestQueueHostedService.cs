@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Threading.Channels;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Services.Configure;
 using Business.Services.OnnxService.WaterMeter;
@@ -21,7 +22,9 @@ public class IoTRequestQueueHostedService(
     private PeriodicTimer? BatchTimer { get; set; }
     private readonly int _timePeriod = options.GetIoTRequestQueueConfig.TimePeriodInSecond;
     private DateTime _currentDay = DateTime.UtcNow.Date; // Tracks the current day
-    private readonly ConcurrentBag<IoTRecordUpdateModel> _ioTRequestQueue = [];
+
+
+    private readonly Channel<IoTRecordUpdateModel> _ioTRequestQueue = Channel.CreateBounded<IoTRecordUpdateModel>(new BoundedChannelOptions(1024) { FullMode = BoundedChannelFullMode.Wait });
 
     private async Task InsertPeriodTimerCallback(CancellationToken cancellationToken)
     {
@@ -55,7 +58,7 @@ public class IoTRequestQueueHostedService(
 
             foreach (var data in chunkedBatch)
             {
-                await queue.QueueBackgroundWorkItemAsync(async ser => _ioTRequestQueue.Add(await waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, ser)), cancellationToken);
+                await queue.QueueBackgroundWorkItemAsync(async ser => await _ioTRequestQueue.Writer.WriteAsync(await waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, ser), ser), cancellationToken);
             }
         }
         else
@@ -67,9 +70,9 @@ public class IoTRequestQueueHostedService(
     private async Task BulkUpdateAsync(CancellationToken cancellationToken = default)
     {
         List<IoTRecordUpdateModel> batch = [];
-        while (_ioTRequestQueue.TryTake(out var data))
+        while (_ioTRequestQueue.Reader.TryRead(out var data))
             batch.Add(data);
-        var result =  await iotRecordBusinessLayer.UpdateIoTValuesBatch(batch, cancellationToken);
+        var result = await iotRecordBusinessLayer.UpdateIoTValuesBatch(batch, cancellationToken);
         if (!result.IsSuccess)
         {
             logger.LogWarning(result.Message);
