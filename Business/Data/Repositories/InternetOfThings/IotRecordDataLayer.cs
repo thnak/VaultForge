@@ -274,23 +274,18 @@ public class IotRecordDataLayer : IIotRecordDataLayer
         try
         {
             var bulkOperations = new List<WriteModel<IoTRecord>>();
-
             foreach (var updateModel in updates)
             {
                 var filter = Builders<IoTRecord>.Filter.Eq(record => record.Metadata.SensorId, updateModel.SensorId) &
                              Builders<IoTRecord>.Filter.Eq(record => record.Metadata.RecordedAt, updateModel.RecordedAt);
-
                 var update = Builders<IoTRecord>.Update
                     .Set(record => record.Metadata.ProcessStatus, updateModel.ProcessStatus)
                     .Set(record => record.Metadata.SensorData, updateModel.SensorData)
                     .Set(record => record.Metadata.ProcessStatus, updateModel.ProcessStatus);
-
                 bulkOperations.Add(new UpdateManyModel<IoTRecord>(filter, update));
             }
-
             if (bulkOperations.Count == 0)
                 return Result<bool>.SuccessWithMessage(true, "No valid updates generated.");
-
             var result = await _dataDb.BulkWriteAsync(bulkOperations, new BulkWriteOptions()
             {
                 IsOrdered = false

@@ -190,6 +190,30 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         await stream.ReadExactlyAsync(outputStream, 0, (int)raidData.Size, cancellationToken: cancellationToken);
     }
 
+    public async Task<Raid5Stream> GetStreamDataAsync(string path, CancellationToken cancellationToken = default)
+    {
+        var raidData = Get(path);
+        if (raidData == null)
+        {
+            throw new Exception($"File {path} already exists");
+        }
+
+        var dataBlocksFilter = Builders<FileRaidDataBlockModel>.Filter.Eq(x => x.RelativePath, raidData.Id.ToString());
+
+        using var fileData = await _fileMetaDataDataDb.FindAsync(dataBlocksFilter, cancellationToken: cancellationToken);
+        List<FileRaidDataBlockModel> dataBlocks = fileData.ToList();
+        await foreach (var model in GetDataBlocks(raidData.Id.ToString(), cancellationToken, m => m.AbsolutePath, m => m.Status, model => model.Index))
+        {
+            if (model.Status != FileRaidStatus.Normal)
+                model.AbsolutePath = string.Empty;
+            dataBlocks.Add(model);
+        }
+
+        dataBlocks = dataBlocks.OrderBy(x => x.Index).DistinctBy(x => x.AbsolutePath).ToList();
+        Raid5Stream stream = new Raid5Stream(dataBlocks.Select(x => x.AbsolutePath), raidData.Size, raidData.StripSize, FileMode.Open, FileAccess.Read, FileShare.Read);
+        return stream;
+    }
+
     public async Task<RaidFileInfo?> GetDataBlockPaths(string path, CancellationToken cancellationToken = default)
     {
         var raidData = Get(path);

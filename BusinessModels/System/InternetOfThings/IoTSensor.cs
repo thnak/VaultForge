@@ -12,37 +12,21 @@ namespace BusinessModels.System.InternetOfThings;
 public class IoTSensor : BaseModelEntry
 {
     public string SensorId { get; set; } = string.Empty;
-
-
     public string SensorName { get; set; } = string.Empty;
-
-
     public IoTSensorType IoTSensorType { get; set; } // Enum for sensor types
-
     public string DeviceId { get; set; } = string.Empty; // Foreign key to Device
-
-
     public string UnitOfMeasurement { get; set; } = string.Empty; // e.g., °C, %, Pa
-
     public float Accuracy { get; set; }
-
-
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime? CalibrationTime { get; set; }
-
     public float Rotate { get; set; }
-
     public bool FlipHorizontal { get; set; }
     public bool FlipVertical { get; set; }
-
-
     public IoTSensorStatus Status { get; set; }
-
     public override string ToString()
     {
         return SensorName;
     }
-
     // Default constructor for new instances
     public IoTSensor()
     {

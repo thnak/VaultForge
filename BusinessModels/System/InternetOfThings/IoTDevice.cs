@@ -14,37 +14,18 @@ namespace BusinessModels.System.InternetOfThings;
 public class IoTDevice : BaseModelEntry
 {
     public string DeviceId { get; set; } = string.Empty;
-
-
     public string DeviceName { get; set; } = string.Empty;
-
     public string DeviceGroupId { get; set; } = string.Empty;
-
-
     public IoTDeviceType IoTDeviceType { get; set; } // e.g., Gateway, Sensor Node
-
-
     public string Manufacturer { get; set; } = string.Empty;
-
-    public DateOnly InstallationDate { get; set; } = DateOnly.FromDateTime(DateTime.Now);
-
+    public DateOnly InstallationDate { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime? LastServiceDate { get; set; }
-
     public string Location { get; set; } = string.Empty;
-
-
     public string FirmwareVersion { get; set; } = string.Empty;
-
-
     public IoTDeviceStatus Status { get; set; }
-
-
     public string MacAddress { get; set; } = string.Empty;
-
-
     public string IpAddress { get; set; } = string.Empty;
-
     public override string ToString()
     {
         return DeviceName;

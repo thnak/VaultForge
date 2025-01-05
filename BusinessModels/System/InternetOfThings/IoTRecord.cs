@@ -9,14 +9,9 @@ public class IoTRecord : BaseModelEntry
 {
     [BsonDateTimeOptions(DateOnly = true, Kind = DateTimeKind.Utc)]
     public DateTime Date { get; set; }
-
     public int Hour { get; set; }
-
-    /// <summary>
-    /// Optional metadata
-    /// </summary>
+    
     public RecordMetadata Metadata { get; set; }
-
     public IoTRecord(RecordMetadata metadata)
     {
         CreateTime = DateTime.UtcNow; // Set to current time by default
@@ -51,29 +46,22 @@ public class RecordMetadata
     /// Sensor or device identifier
     /// </summary>
     public string SensorId { get; set; } = string.Empty;
-
     /// <summary>
     /// Sensor data (could be temperature, humidity, etc.)
     /// </summary>
     public float SensorData { get; set; }
-
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime RecordedAt { get; set; } = DateTime.UtcNow; // Copy of Timestamp
-
     /// <summary>
     /// Represented as a percentage (0-100)
     /// </summary>
     public int SignalStrength { get; set; }
-
     public ProcessStatus ProcessStatus { get; set; }
-
     public float OnChipTemperature { get; set; }
-
     /// <summary>
     /// Represented as a percentage (0-100)
     /// </summary>
     public int BatteryLevel { get; set; }
-
     public string ImagePath { get; set; } = string.Empty;
 }
 

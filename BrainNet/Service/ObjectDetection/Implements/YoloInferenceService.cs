@@ -266,17 +266,13 @@ public class YoloInferenceService : IYoloInferenceService
             InferenceStates[i] = false;
             var inputSize = batch[i].Item1.Buffer.Span.Length;
             batch[i].Item1.Buffer.Span.CopyTo(InputFeedBuffer.AsSpan(i * _singleInputLength, inputSize));
-            // Array.Copy(batch[i].Item1.Buffer.Span, 0, InputFeedBuffer, i * inputSize, inputSize);
         }
 
 
         // Run inference
         using var ortInput = InputFeedBuffer.CreateOrtValue(_tensorShape.Dimensions64);
-
         var inputs = new Dictionary<string, OrtValue> { { InputNames.First(), ortInput } };
-
         using var results = _session.Run(_runOptions, inputs, OutputNames);
-
         var predictSpan = results[0].Value.GetTensorDataAsSpan<float>();
         var predictArray = _singleFrameInputArrayPool.Rent(predictSpan.Length);
         predictSpan.CopyTo(predictArray);
@@ -286,7 +282,6 @@ public class YoloInferenceService : IYoloInferenceService
         var originShape = batch.Select(x => new[] { x.Item1.OriginImageHeight, x.Item1.OriginImageWidth }).ToList();
 
         YoloPrediction predictions = new YoloPrediction(predictArray, predictSpan.Length, CategoryReadOnlyCollection, pads, ratios, originShape);
-
         foreach (var batchResult in predictions.GetDetect().GroupBy(x => x.BatchId))
         {
             try
