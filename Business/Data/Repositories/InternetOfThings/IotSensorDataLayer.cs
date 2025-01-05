@@ -21,8 +21,8 @@ public class IotSensorDataLayer(IMongoDataLayerContext context, ILogger<IIotSens
     private readonly IMongoCollection<IoTSensor> _data = context.MongoDatabase.GetCollection<IoTSensor>(IotSensorCollectionName);
     private readonly IDataProtector _protectionProvider = provider.CreateProtector("IotSensorDataLayerProtector");
 
-    private const string IotSensorCollectionName = "IotSensor";
-    
+    private const string IotSensorCollectionName = "IoTSensor";
+
     public void Dispose()
     {
         //

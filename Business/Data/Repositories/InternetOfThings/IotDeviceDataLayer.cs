@@ -9,7 +9,6 @@ using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
-using BusinessModels.Utils;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -21,11 +20,11 @@ public class IotDeviceDataLayer : IIotDeviceDataLayer
     private readonly IMongoCollection<IoTDevice> _data;
     private readonly ThreadSafeSearchEngine<IoTDevice> _threadSafeSearchEngine;
     private readonly ILogger<IIotDeviceDataLayer> _logger;
-
+    private const string CollectionName = "IoTDevice";
     public IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDeviceDataLayer> logger)
     {
-        _data = context.MongoDatabase.GetCollection<IoTDevice>("IoTDevice");
-        _threadSafeSearchEngine = new("IoTDevice", SearchEngineExtensions.IoTDeviceDocumentMapper);
+        _data = context.MongoDatabase.GetCollection<IoTDevice>(CollectionName);
+        _threadSafeSearchEngine = new(CollectionName, SearchEngineExtensions.IoTDeviceDocumentMapper);
         _logger = logger;
     }
 

@@ -45,16 +45,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="remove cache when it was not usable">
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Components/Photo/ShowImageDialog.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Components/Photo/ShowImageDialog.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Components/Photo/ShowImageDialog.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/Utils/HttpContextExtensions.cs" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add dialog">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Utils/DialogServiceExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Utils/DialogServiceExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotSensorDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotSensorDataLayer.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1010,15 +1004,7 @@
       <workItem from="1735911133327" duration="12329000" />
       <workItem from="1735975073448" duration="8478000" />
       <workItem from="1736006257577" duration="6454000" />
-      <workItem from="1736013978809" duration="4587000" />
-    </task>
-    <task id="LOCAL-00552" summary="fix missing field">
-      <option name="closed" value="true" />
-      <created>1735576349689</created>
-      <option name="number" value="00552" />
-      <option name="presentableId" value="LOCAL-00552" />
-      <option name="project" value="LOCAL" />
-      <updated>1735576349689</updated>
+      <workItem from="1736013978809" duration="6132000" />
     </task>
     <task id="LOCAL-00553" summary="add cancel page">
       <option name="closed" value="true" />
@@ -1404,7 +1390,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736041146894</updated>
     </task>
-    <option name="localTasksCounter" value="601" />
+    <task id="LOCAL-00601" summary="add dialog">
+      <option name="closed" value="true" />
+      <created>1736043139792</created>
+      <option name="number" value="00601" />
+      <option name="presentableId" value="LOCAL-00601" />
+      <option name="project" value="LOCAL" />
+      <updated>1736043139793</updated>
+    </task>
+    <option name="localTasksCounter" value="602" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1435,7 +1429,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="big update to inference server" />
     <MESSAGE value="optimize return state" />
     <MESSAGE value="fix out of index" />
     <MESSAGE value="fix wrong input shape" />
@@ -1460,7 +1453,8 @@
     <MESSAGE value="add limit" />
     <MESSAGE value="allow more parallel task" />
     <MESSAGE value="remove cache when it was not usable" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove cache when it was not usable" />
+    <MESSAGE value="add dialog" />
+    <option name="LAST_COMMIT_MESSAGE" value="add dialog" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1496,6 +1490,19 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="93" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs</url>
+          <line>138</line>
+          <properties documentPath="C:\Users\thanh\Git\VaultForge\WebApp.Client\Pages\IoT\Sensor\SensorRecordResultPage.razor.cs" containingFunctionPresentation="Method 'SelectedDeviceChanged'">
+            <startOffsets>
+              <option value="4762" />
+            </startOffsets>
+            <endOffsets>
+              <option value="4874" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="97" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">

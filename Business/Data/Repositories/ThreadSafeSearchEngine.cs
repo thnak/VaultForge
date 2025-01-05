@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using Business.Data.Interfaces;
+using Business.Data.Repositories.Utils;
 using BusinessModels.Base;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
@@ -84,7 +85,7 @@ public class ThreadSafeSearchEngine<T> : IThreadSafeSearchEngine<T> where T : Ba
     {
         if (Searcher != null)
         {
-            var hits = Searcher.Search(_queryParser.Parse(query), limit);
+            var hits = Searcher.Search(_queryParser.Parse(query.EscapeLuceneQuery()), limit);
             foreach (var hit in hits.ScoreDocs)
             {
                 var doc = Searcher.Doc(hit.Doc);
