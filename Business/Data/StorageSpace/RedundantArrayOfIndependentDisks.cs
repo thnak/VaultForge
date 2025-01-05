@@ -105,7 +105,13 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                 StripSize = _stripSize
             };
 
-            string[] arrayDisk = [..options.GetStorage.Disks];
+            string date = DateTime.Now.ToString("yyyyMMdd").ToJson();
+            string[] arrayDisk = [..options.GetStorage.Disks.Select(x => Path.Combine(x, date))];
+            foreach (string disk in arrayDisk)
+            {
+                Directory.CreateDirectory(disk);
+            }
+
             arrayDisk.Shuffle();
             List<FileRaidDataBlockModel> disks = arrayDisk.GetShuffledDisks(raidModel.Id);
 
@@ -160,7 +166,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
         await stream.CopyToAsync(outputStream, 20 * 4096, cancellationToken: cancellationToken);
         outputStream.SeekBeginOrigin();
     }
-    
+
     public async Task ReadGetDataAsync(byte[] outputStream, string path, CancellationToken cancellationToken = default)
     {
         var raidData = Get(path);

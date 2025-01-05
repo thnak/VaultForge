@@ -45,7 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="parallel update" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="fix wrong value for large batch size" />
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
@@ -1000,15 +1000,7 @@
       <workItem from="1735911133327" duration="12329000" />
       <workItem from="1735975073448" duration="8478000" />
       <workItem from="1736006257577" duration="6454000" />
-      <workItem from="1736013978809" duration="8133000" />
-    </task>
-    <task id="LOCAL-00555" summary="update search function">
-      <option name="closed" value="true" />
-      <created>1735619293942</created>
-      <option name="number" value="00555" />
-      <option name="presentableId" value="LOCAL-00555" />
-      <option name="project" value="LOCAL" />
-      <updated>1735619293942</updated>
+      <workItem from="1736013978809" duration="8446000" />
     </task>
     <task id="LOCAL-00556" summary="update bl">
       <option name="closed" value="true" />
@@ -1394,7 +1386,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736046086947</updated>
     </task>
-    <option name="localTasksCounter" value="604" />
+    <task id="LOCAL-00604" summary="fix wrong value for large batch size">
+      <option name="closed" value="true" />
+      <created>1736047381568</created>
+      <option name="number" value="00604" />
+      <option name="presentableId" value="LOCAL-00604" />
+      <option name="project" value="LOCAL" />
+      <updated>1736047381568</updated>
+    </task>
+    <option name="localTasksCounter" value="605" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1425,7 +1425,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fix wrong input shape" />
     <MESSAGE value="batch now working good" />
     <MESSAGE value="do not wait" />
     <MESSAGE value="update logic, add log" />
@@ -1450,7 +1449,8 @@
     <MESSAGE value="add dialog" />
     <MESSAGE value="prevent escape error, fix wrong collection name" />
     <MESSAGE value="parallel update" />
-    <option name="LAST_COMMIT_MESSAGE" value="parallel update" />
+    <MESSAGE value="fix wrong value for large batch size" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix wrong value for large batch size" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
