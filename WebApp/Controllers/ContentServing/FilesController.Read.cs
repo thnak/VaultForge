@@ -131,8 +131,8 @@ public partial class FilesController
 
         return new FileStreamResult(raid5Stream, file.ContentType)
         {
-            FileDownloadName = file.FileName,
-            LastModified = file.ModifiedTime,
+            FileDownloadName = cd.FileName,
+            LastModified = cd.ModificationDate,
             EnableRangeProcessing = true
         };
     }
