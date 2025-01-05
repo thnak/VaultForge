@@ -45,14 +45,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="move to new excel format">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="move to new lucene version">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Business/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditSensorDialog.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/EditSensorDialog.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.Device.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.Device.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -143,6 +142,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4f5ca8a0b4696ee177cb72bbae4ff2c856ae748de567464543668dfb1fff/DistanceFunction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/552e6bce87629e4fba09e4647c288ca66bef86e470e455f343ccfb9bc41b6f/MudFormComponent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/55f44cf26c4f8a472241f32786a20f211d7e1ed80801eceac2a40539086141d/MemoryExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/57334938c37984ed44dcd0b3e1ff22984d161fa9fc6c7161a38d29e3e85eb6/HttpHeaderParser.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5a21f73be9e2671c3cf5a490cac2d792fa4d215ab83d8de89af7916f8d08179/ComponentBase.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5eecc2d22de68b16cb5f68b3e333591fc6c5f58cfc4185587e5dfe96213947/IMongoIndexManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/611eff977ba21ad25be53ce7d7387c4517e0e8a27abce4d6a91998e8b538135/ProviderOptions.shared.cs" root0="FORCE_HIGHLIGHTING" />
@@ -1008,15 +1008,7 @@
       <workItem from="1735975073448" duration="8478000" />
       <workItem from="1736006257577" duration="6454000" />
       <workItem from="1736013978809" duration="15562000" />
-      <workItem from="1736057897995" duration="1526000" />
-    </task>
-    <task id="LOCAL-00562" summary="update">
-      <option name="closed" value="true" />
-      <created>1735702710857</created>
-      <option name="number" value="00562" />
-      <option name="presentableId" value="LOCAL-00562" />
-      <option name="project" value="LOCAL" />
-      <updated>1735702710857</updated>
+      <workItem from="1736057897995" duration="3131000" />
     </task>
     <task id="LOCAL-00563" summary="small fix">
       <option name="closed" value="true" />
@@ -1402,7 +1394,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736053568399</updated>
     </task>
-    <option name="localTasksCounter" value="611" />
+    <task id="LOCAL-00611" summary="move to new lucene version">
+      <option name="closed" value="true" />
+      <created>1736059495624</created>
+      <option name="number" value="00611" />
+      <option name="presentableId" value="LOCAL-00611" />
+      <option name="project" value="LOCAL" />
+      <updated>1736059495625</updated>
+    </task>
+    <option name="localTasksCounter" value="612" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1433,7 +1433,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="memory leak" />
     <MESSAGE value="add bulk update for record" />
     <MESSAGE value="dont create thumb for iot image" />
     <MESSAGE value="try fix" />
@@ -1458,7 +1457,8 @@
     <MESSAGE value="small update" />
     <MESSAGE value="correct file name and encode it" />
     <MESSAGE value="move to new excel format" />
-    <option name="LAST_COMMIT_MESSAGE" value="move to new excel format" />
+    <MESSAGE value="move to new lucene version" />
+    <option name="LAST_COMMIT_MESSAGE" value="move to new lucene version" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1525,6 +1525,7 @@
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="Type#System.Nullable`1" memberName="Value" />
+        <PinnedItemInfo parentTag="Type#Lucene.Net.Search.ScoreDoc" memberName="Doc" />
       </pinned-members>
     </pin-to-top-manager>
   </component>

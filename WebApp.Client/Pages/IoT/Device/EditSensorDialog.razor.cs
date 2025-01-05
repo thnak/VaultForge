@@ -75,7 +75,7 @@ public partial class EditSensorDialog(ILogger<EditSensorDialog> logger) : Compon
                 if (Sensor == null)
                 {
                     var textPlant = new StringContent(SensorToEdit.ToJson(), Encoding.UTF8, MediaTypeNames.Application.Json);
-                    var result = await ApiService.PostAsync($"/api/device/add-new-sensor/{Uri.EscapeDataString(DeviceId)}", textPlant);
+                    var result = await ApiService.PostAsync($"/api/device/add-new-sensor/{HttpUtility.UrlEncode(DeviceId)}", textPlant);
                     if (result.IsSuccessStatusCode)
                     {
                         ToastService.ShowSuccess(result.Message, TypeClassList.ToastDefaultSetting);

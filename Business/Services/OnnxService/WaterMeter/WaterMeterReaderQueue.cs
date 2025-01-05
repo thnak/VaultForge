@@ -7,7 +7,6 @@ using BusinessModels.System.InternetOfThings;
 using BusinessModels.System.InternetOfThings.type;
 using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Memory;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
@@ -61,6 +60,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
             await _semaphore.WaitAsync(cancellationToken);
             var sensor = _iotSensorBusinessLayer.Get(record.Metadata.SensorId);
             byte[] buffer = _arrayPool.Rent((int)file.FileSize);
+            Array.Clear(buffer, 0, buffer.Length);
             await _redundantArrayOfIndependentDisks.ReadGetDataAsync(buffer, file.AbsolutePath, cancellationToken);
             using var image = Image.Load<Rgb24>(buffer);
             _arrayPool.Return(buffer);

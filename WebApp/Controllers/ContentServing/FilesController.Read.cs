@@ -1,4 +1,5 @@
 ﻿using System.Net.Mime;
+using System.Web;
 using Business.Data.StorageSpace;
 using Business.Utils.Protector;
 using BusinessModels.General.EnumModel;
@@ -48,7 +49,7 @@ public partial class FilesController
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
-            FileName = Uri.EscapeDataString(file.FileName),
+            FileName = HttpUtility.UrlEncode(file.FileName),
             Inline = true, // false = prompt the user for downloading;  true = browser to try to show the file inline,
             CreationDate = now,
             ModificationDate = now,
@@ -83,10 +84,12 @@ public partial class FilesController
         if (file == null)
             return NotFound(AppLang.File_not_found_);
 
+        file.ContentType = string.IsNullOrWhiteSpace(file.ContentType) ? "application/octet-stream" : file.ContentType;
+        
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
-            FileName = Uri.EscapeDataString(file.FileName),
+            FileName = HttpUtility.UrlEncode(file.FileName),
             Inline = true, // false = prompt the user for downloading;  true = browser to try to show the file inline,
             CreationDate = now,
             ModificationDate = now,
@@ -147,7 +150,7 @@ public partial class FilesController
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
-            FileName = Uri.EscapeDataString(file.FileName),
+            FileName = HttpUtility.UrlEncode(file.FileName),
             Inline = false, // false = prompt the user for downloading;  true = browser to try to show the file inline,
             CreationDate = now,
             ModificationDate = now,

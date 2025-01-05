@@ -17,7 +17,7 @@ public partial class BaseHttpClientService
     {
         if (string.IsNullOrWhiteSpace(query))
             return [];
-        var result = await GetAsync<List<IoTDevice>>($"api/device/search-device?searchString={Uri.EscapeDataString(query)}", cancellationToken);
+        var result = await GetAsync<List<IoTDevice>>($"api/device/search-device?searchString={HttpUtility.UrlEncode(query)}", cancellationToken);
         if (result.IsSuccessStatusCode)
             return result.Data;
 

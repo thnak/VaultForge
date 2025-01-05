@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Net.Mime;
+using System.Web;
 using Business.Utils.Excel;
 using BusinessModels.Resources;
 using BusinessModels.System;
@@ -142,7 +143,7 @@ public partial class IoTController
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
-            FileName = Uri.EscapeDataString($"Report {startTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)}-{endTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)}.xlsx"),
+            FileName = HttpUtility.UrlEncode($"Report {startTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)}-{endTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)}.xlsx"),
             Inline = false, // false = prompt the user for downloading;  true = browser to try to show the file inline,
             CreationDate = now,
             ModificationDate = now,
