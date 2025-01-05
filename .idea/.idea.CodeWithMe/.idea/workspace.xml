@@ -45,15 +45,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="fix missing content type">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="optimize">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/StorageSpace/RedundantArrayOfIndependentDisks.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/StorageSpace/RedundantArrayOfIndependentDisks.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FileInfoModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FileInfoModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTRecord.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTRecord.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTSensor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTSensor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -130,6 +126,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f144f137e8c44478ad03d647d3e83e8771910/68/2e705602/EncryptionAlgorithm.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1059a9b9258b3670df5a4c449544237362d49ae9599d8964fde76c16fc50b6/VectorStoreRecordProperty.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1e9051104f7894b9ba7e669e1d0bb793b9aa7e74273a7cc1cf79a91e248ca97/Tensor.shared.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1e98fab23de26676a61424c1c3dae32dfd9c5f3f70742cac1dc4e3ec96c2556c/ImageDecoderCore.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2565b9d99fdde488bc7801b84387b2cc864959cfb63212e1ff576fc9c6bb7e/CancellationToken.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2854ce6d56c18d0d837d3a3ef9c4f2c7c77691fa3528c8394986ac7ce7719/StackFrameIterator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2b54a8d6295726a4b8041791a5f6b2992ffd98228be84a32877624da44cf018/InferenceSession.shared.cs" root0="FORCE_HIGHLIGHTING" />
@@ -155,6 +152,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7c8ad03b50ccbf3ec7daba64f8ffc229c843a4bc37369f5fbdc6f33edf2b4c/IFilterDefinition.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7f8658dbc94ae748656a7c455b13c808ff68ba92237b079ce9911167c657cb4/Cast.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/82422ecdc3616eb5e45fac1bced9eeae8afd44bea38139f7bb911f06d4eef/DrawTextExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/85aa322377ce0ee541dec91b77afdee928c7e3c4356f79fcfe1e9be67a1f/ImageFormatManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/86d5b2bdb5124d72b98b9ea98c7d07c6ca31a1995fab1b3f9b9c897a9ca563b/StringContent.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8a8a7c52b4b5e4ee92c9fed29affe5d381cc817f69216bef50b2c6e5c37f1e60/VectorStoreRecordKeyProperty.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/94161852baae3b22ea67ddc433a083544b7e81baecce9c3e294c1bcbff3f4dee/DenseTensor.shared.cs" root0="FORCE_HIGHLIGHTING" />
@@ -168,6 +166,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c4b095b650c2e655fc77354b7fb11b527436bb75f1f6b2d1bd6ebef68ba031/IVectorStoreRecordCollection.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c7102cd0ffb8973777e61b1942c3fffac7e14016a511d055c3adf73ff91748/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d1287462d4ec4078c61b8e92a0952fb7de3e7e877d279e390a4c136a6365126/Stream.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d26e877a394f5c16c1b17c5edafaba7697458d69f1d7af0db34aa9b19ea5347/Lock.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d3a8ba7c70f69747f44151e17c654d11935565c9f23a3c8931ab4d29356/VectorStoreRecordDataProperty.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d4eb219188a145d3671fd144557c775d74713258e0be5fe65cf37ba781c324e/ExclusiveConnectionPool.Helpers.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d5f17ec831d849c96437c5a6d46c374f745c4aabb107eb92969a3508898ed21/SemaphoreSlimSignalable.cs" root0="FORCE_HIGHLIGHTING" />
@@ -1011,15 +1010,7 @@
       <workItem from="1735975073448" duration="8478000" />
       <workItem from="1736006257577" duration="6454000" />
       <workItem from="1736013978809" duration="15562000" />
-      <workItem from="1736057897995" duration="14576000" />
-    </task>
-    <task id="LOCAL-00564" summary="unsafe with objectid set to read only from BaseModelEntry.cs">
-      <option name="closed" value="true" />
-      <created>1735706276831</created>
-      <option name="number" value="00564" />
-      <option name="presentableId" value="LOCAL-00564" />
-      <option name="project" value="LOCAL" />
-      <updated>1735706276831</updated>
+      <workItem from="1736057897995" duration="18191000" />
     </task>
     <task id="LOCAL-00565" summary="re open execution provider option">
       <option name="closed" value="true" />
@@ -1405,7 +1396,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736061226155</updated>
     </task>
-    <option name="localTasksCounter" value="613" />
+    <task id="LOCAL-00613" summary="optimize">
+      <option name="closed" value="true" />
+      <created>1736093827728</created>
+      <option name="number" value="00613" />
+      <option name="presentableId" value="LOCAL-00613" />
+      <option name="project" value="LOCAL" />
+      <updated>1736093827728</updated>
+    </task>
+    <option name="localTasksCounter" value="614" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1436,7 +1435,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="dont create thumb for iot image" />
     <MESSAGE value="try fix" />
     <MESSAGE value="update" />
     <MESSAGE value="remove bullshit shared array" />
@@ -1461,7 +1459,8 @@
     <MESSAGE value="move to new excel format" />
     <MESSAGE value="move to new lucene version" />
     <MESSAGE value="fix missing content type" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix missing content type" />
+    <MESSAGE value="optimize" />
+    <option name="LAST_COMMIT_MESSAGE" value="optimize" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1499,23 +1498,29 @@
           <option name="timeStamp" value="93" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs</url>
-          <line>111</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\Business\Data\Repositories\ThreadSafeSearchEngine.cs" containingFunctionPresentation="Method 'Dispose'">
+          <url>file://$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs</url>
+          <line>67</line>
+          <properties documentPath="C:\Users\thanh\Git\VaultForge\Business\Services\OnnxService\WaterMeter\WaterMeterReaderQueue.cs" containingFunctionPresentation="Method 'GetWaterMeterReadingCountAsync'">
             <startOffsets>
-              <option value="3890" />
+              <option value="3127" />
             </startOffsets>
             <endOffsets>
-              <option value="3916" />
+              <option value="3146" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="94" />
+          <option name="timeStamp" value="108" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">
             <option name="internal" value="false" />
           </properties>
           <option name="timeStamp" value="85" />
+        </breakpoint>
+        <breakpoint enabled="true" suspend="NONE" type="DotNet Exception Breakpoints">
+          <properties exception="System.IO.EndOfStreamException" isInternal="false" displayValue="EndOfStreamException" namespaceName="System.IO">
+            <option name="internal" value="false" />
+          </properties>
+          <option name="timeStamp" value="106" />
         </breakpoint>
       </breakpoints>
       <default-breakpoints>

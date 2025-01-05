@@ -54,16 +54,17 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
                 ProcessStatus = ProcessStatus.Failed
             };
         }
-
+        byte[] bufferArray = _arrayPool.Rent((int)file.FileSize);
+        Array.Clear(bufferArray, 0, bufferArray.Length);
         try
         {
             await _semaphore.WaitAsync(cancellationToken);
             var sensor = _iotSensorBusinessLayer.Get(record.Metadata.SensorId);
-            byte[] buffer = _arrayPool.Rent((int)file.FileSize);
-            Array.Clear(buffer, 0, buffer.Length);
-            await _redundantArrayOfIndependentDisks.ReadGetDataAsync(buffer, file.AbsolutePath, cancellationToken);
-            using var image = Image.Load<Rgb24>(buffer);
-            _arrayPool.Return(buffer);
+           
+            // using var buffer = new MemoryStream((int)file.FileSize);
+            // await _redundantArrayOfIndependentDisks.ReadGetDataAsync(buffer, file.AbsolutePath, cancellationToken);
+            await _redundantArrayOfIndependentDisks.ReadGetDataAsync(bufferArray, file.AbsolutePath, cancellationToken);
+            using var image = Image.Load<Rgb24>(bufferArray);
             image.AutoOrient();
             if (sensor is { Rotate: > 0 })
                 image.Mutate(i => i.Rotate(sensor.Rotate));
@@ -104,6 +105,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
         }
         finally
         {
+            _arrayPool.Return(bufferArray);
             _semaphore.Release();
         }
 

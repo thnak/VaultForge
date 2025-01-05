@@ -16,7 +16,7 @@ namespace Business.Data.Repositories;
 
 public class ThreadSafeSearchEngine<T> : IThreadSafeSearchEngine<T> where T : BaseModelEntry
 {
-    private readonly FSDirectory _indexDirectory;
+    private readonly RAMDirectory _indexDirectory;
     private readonly MultiFieldQueryParser _queryParser;
     private readonly Analyzer _analyzer;
     private IndexSearcher? Searcher { get; set; }
@@ -31,8 +31,8 @@ public class ThreadSafeSearchEngine<T> : IThreadSafeSearchEngine<T> where T : Ba
         var basePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
         indexPath = Path.Combine(basePath, indexPath);
         Directory.CreateDirectory(indexPath);
-
-        _indexDirectory = FSDirectory.Open(indexPath);
+        _indexDirectory = new RAMDirectory();
+        
         _analyzer = new StandardAnalyzer(Version);
 
         T model = Activator.CreateInstance<T>();
