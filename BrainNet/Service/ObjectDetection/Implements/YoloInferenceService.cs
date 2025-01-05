@@ -49,6 +49,7 @@ public class YoloInferenceService : IYoloInferenceService
     private readonly ArrayPool<float> _singleFrameInputArrayPool;
     private readonly ArrayPool<float> _padAndRatiosArrayPool;
     private readonly ArrayPool<bool> _boolPool = ArrayPool<bool>.Create();
+    private readonly int _singleInputLength;
     public SixLabors.Fonts.Font PrimaryFont;
 
     public YoloInferenceService(string modelPath, TimeSpan timeout, int maxQueueSize, int deviceIndex)
@@ -67,10 +68,10 @@ public class YoloInferenceService : IYoloInferenceService
             inputLength *= InputDimensions[i];
         }
 
-        var singleInputLength = inputLength / InputDimensions[0];
-        _singleFrameInputArrayPool = ArrayPool<float>.Create(singleInputLength, (int)(maxQueueSize * 1.5));
+        _singleInputLength = inputLength / InputDimensions[0];
+        _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, (int)(maxQueueSize * 1.5));
         _padAndRatiosArrayPool = ArrayPool<float>.Create(1, maxQueueSize * 2);
-        _memoryAllocatorService = new MemoryAllocatorService(singleInputLength);
+        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength);
 
         InputFeedBuffer = ArrayPool<float>.Shared.Rent(inputLength);
         InferenceStates = _boolPool.Rent(InputDimensions[0]);
@@ -97,12 +98,12 @@ public class YoloInferenceService : IYoloInferenceService
             inputLength *= InputDimensions[i];
         }
 
-        var singleInputLength = inputLength / InputDimensions[0];
+        _singleInputLength = inputLength / InputDimensions[0];
 
         InferenceStates = _boolPool.Rent(InputDimensions[0]);
-        _singleFrameInputArrayPool = ArrayPool<float>.Create(singleInputLength, (int)(options.Value.WaterSetting.MaxQueSize * 1.5));
+        _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, (int)(options.Value.WaterSetting.MaxQueSize * 1.5));
         _padAndRatiosArrayPool = ArrayPool<float>.Create(1, options.Value.WaterSetting.MaxQueSize * 2);
-        _memoryAllocatorService = new MemoryAllocatorService(singleInputLength);
+        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength);
         InputFeedBuffer = _singleFrameInputArrayPool.Rent(inputLength);
         _inputChannel = Channel.CreateBounded<(YoloInferenceServiceFeeder feeder, TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>> tcs)>(new BoundedChannelOptions(options.Value.WaterSetting.MaxQueSize)
         {
@@ -263,7 +264,7 @@ public class YoloInferenceService : IYoloInferenceService
         {
             InferenceStates[i] = false;
             var inputSize = batch[i].Item1.Buffer.Span.Length;
-            batch[i].Item1.Buffer.Span.CopyTo(InputFeedBuffer.AsSpan(i * inputSize, inputSize));
+            batch[i].Item1.Buffer.Span.CopyTo(InputFeedBuffer.AsSpan(i * _singleInputLength, inputSize));
             // Array.Copy(batch[i].Item1.Buffer.Span, 0, InputFeedBuffer, i * inputSize, inputSize);
         }
 

@@ -2,7 +2,7 @@
 
 namespace BrainNet.Service.ObjectDetection.Model.Feeder;
 
-public class YoloInferenceServiceFeeder(MemoryTensor<float> buffer)
+public record YoloInferenceServiceFeeder(MemoryTensor<float> Buffer)
 {
     public int OriginImageHeight { get; set; }
     public int OriginImageWidth { get; set; }
@@ -13,5 +13,5 @@ public class YoloInferenceServiceFeeder(MemoryTensor<float> buffer)
     public float PadHeight { get; set; }
     public float PadWidth { get; set; }
 
-    public MemoryTensor<float> Buffer { get; set; } = buffer;
+    public MemoryTensor<float> Buffer { get; set; } = Buffer;
 }

@@ -45,9 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="prevent escape error, fix wrong collection name">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="parallel update" />
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
@@ -1002,15 +1000,7 @@
       <workItem from="1735911133327" duration="12329000" />
       <workItem from="1735975073448" duration="8478000" />
       <workItem from="1736006257577" duration="6454000" />
-      <workItem from="1736013978809" duration="7400000" />
-    </task>
-    <task id="LOCAL-00554" summary="update">
-      <option name="closed" value="true" />
-      <created>1735619139386</created>
-      <option name="number" value="00554" />
-      <option name="presentableId" value="LOCAL-00554" />
-      <option name="project" value="LOCAL" />
-      <updated>1735619139387</updated>
+      <workItem from="1736013978809" duration="8133000" />
     </task>
     <task id="LOCAL-00555" summary="update search function">
       <option name="closed" value="true" />
@@ -1396,7 +1386,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736044681184</updated>
     </task>
-    <option name="localTasksCounter" value="603" />
+    <task id="LOCAL-00603" summary="parallel update">
+      <option name="closed" value="true" />
+      <created>1736046086947</created>
+      <option name="number" value="00603" />
+      <option name="presentableId" value="LOCAL-00603" />
+      <option name="project" value="LOCAL" />
+      <updated>1736046086947</updated>
+    </task>
+    <option name="localTasksCounter" value="604" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1427,7 +1425,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fix out of index" />
     <MESSAGE value="fix wrong input shape" />
     <MESSAGE value="batch now working good" />
     <MESSAGE value="do not wait" />
@@ -1452,7 +1449,8 @@
     <MESSAGE value="remove cache when it was not usable" />
     <MESSAGE value="add dialog" />
     <MESSAGE value="prevent escape error, fix wrong collection name" />
-    <option name="LAST_COMMIT_MESSAGE" value="prevent escape error, fix wrong collection name" />
+    <MESSAGE value="parallel update" />
+    <option name="LAST_COMMIT_MESSAGE" value="parallel update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
