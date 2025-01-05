@@ -105,7 +105,8 @@ public class YoloInferenceService : IYoloInferenceService
         _padAndRatiosArrayPool = ArrayPool<float>.Create(1, options.Value.WaterSetting.MaxQueSize * 2);
         _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength);
         InputFeedBuffer = _singleFrameInputArrayPool.Rent(inputLength);
-        _inputChannel = Channel.CreateBounded<(YoloInferenceServiceFeeder feeder, TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>> tcs)>(new BoundedChannelOptions(options.Value.WaterSetting.MaxQueSize)
+        _inputChannel = Channel.CreateBounded<(YoloInferenceServiceFeeder feeder, 
+            TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>> tcs)>(new BoundedChannelOptions(options.Value.WaterSetting.MaxQueSize)
         {
             FullMode = BoundedChannelFullMode.Wait // Wait when the channel is full
         });

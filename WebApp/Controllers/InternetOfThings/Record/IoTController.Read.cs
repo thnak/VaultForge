@@ -1,15 +1,15 @@
-﻿using System.Diagnostics;
+﻿using System.Buffers;
+using System.Diagnostics;
 using System.Globalization;
 using System.Net.Mime;
-using System.Web;
 using Business.Utils.Excel;
 using BusinessModels.Resources;
 using BusinessModels.System;
 using BusinessModels.System.InternetOfThings;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Mvc;
-using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 
 namespace WebApp.Controllers.InternetOfThings.Record;
 
@@ -53,21 +53,26 @@ public partial class IoTController
     [HttpGet("get-excel-record")]
     public async Task<IActionResult> SummaryExcelRecord(string sensorId, int page, int pageSize, DateTime startTime, DateTime endTime)
     {
+        var cancelToken = HttpContext.RequestAborted;
+
         endTime = endTime.AddDays(1);
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFFont myFont = (HSSFFont)workbook.CreateFont();
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        Response.RegisterForDispose(workbook);
+
+        XSSFFont myFont = (XSSFFont)workbook.CreateFont();
         myFont.FontHeightInPoints = 11;
         myFont.FontName = "Tahoma";
         // Defining a border
-        HSSFCellStyle borderedCellStyle = (HSSFCellStyle)workbook.CreateCellStyle();
+
+        XSSFCellStyle borderedCellStyle = (XSSFCellStyle)workbook.CreateCellStyle();
         borderedCellStyle.SetFont(myFont);
         borderedCellStyle.BorderLeft = BorderStyle.Medium;
         borderedCellStyle.BorderTop = BorderStyle.Medium;
         borderedCellStyle.BorderRight = BorderStyle.Medium;
         borderedCellStyle.BorderBottom = BorderStyle.Medium;
         borderedCellStyle.VerticalAlignment = VerticalAlignment.Center;
-        
-        HSSFCellStyle dateStyle = (HSSFCellStyle)workbook.CreateCellStyle();
+
+        XSSFCellStyle dateStyle = (XSSFCellStyle)workbook.CreateCellStyle();
         IDataFormat dataFormat = workbook.CreateDataFormat();
         dateStyle.SetFont(myFont);
         dateStyle.BorderLeft = BorderStyle.Medium;
@@ -75,7 +80,7 @@ public partial class IoTController
         dateStyle.BorderRight = BorderStyle.Medium;
         dateStyle.BorderBottom = BorderStyle.Medium;
         dateStyle.VerticalAlignment = VerticalAlignment.Center;
-        dateStyle.DataFormat = dataFormat.GetFormat("yyyy-MM-dd HH:mm:ss"); 
+        dateStyle.DataFormat = dataFormat.GetFormat("yyyy-MM-dd HH:mm:ss");
 
         ISheet sheet = workbook.CreateSheet("Report");
         //Creat The Headers of the excel
@@ -90,21 +95,36 @@ public partial class IoTController
         headerRow.CreateCellWithValue(3, AppLang.Image, borderedCellStyle);
 
         // This Where the Data row starts from
-        var data = businessLayer.Where(x => x.Metadata.RecordedAt >= startTime && x.Metadata.RecordedAt < endTime && x.Metadata.SensorId == sensorId);
+        var data = businessLayer.Where(x => x.Metadata.RecordedAt >= startTime && x.Metadata.RecordedAt < endTime && x.Metadata.SensorId == sensorId, cancelToken);
         List<IoTRecord> records = new List<IoTRecord>();
         await foreach (var record in data)
         {
             records.Add(record);
         }
 
+        var arrayPool = ArrayPool<byte>.Create();
         foreach (var batchErrorReport in records)
         {
             //Creating the CurrentDataRow
-            IRow currentRow = sheet.CreateRow(rowIndex++);
+            IRow currentRow = sheet.CreateRow(rowIndex);
             currentRow.CreateCellWithValue(0, batchErrorReport.Metadata.RecordedAt, dateStyle);
             currentRow.CreateCellWithValue(1, batchErrorReport.Metadata.SensorData, borderedCellStyle);
             currentRow.CreateCellWithValue(2, batchErrorReport.Metadata.SignalStrength, borderedCellStyle);
             currentRow.CreateCellWithValue(3, batchErrorReport.Metadata.ImagePath, borderedCellStyle);
+            var file = fileSystemServe.Get(batchErrorReport.Metadata.ImagePath);
+            if (file == null)
+                continue;
+            var buffer = arrayPool.Rent((int)file.FileSize);
+            await raidService.ReadGetDataAsync(buffer, file.AbsolutePath, cancelToken);
+            var imageIndex = workbook.AddPicture(buffer, PictureType.JPEG);
+            arrayPool.Return(buffer);
+            ICreationHelper helper = workbook.GetCreationHelper();
+            IDrawing drawing = sheet.CreateDrawingPatriarch();
+            IClientAnchor anchor = helper.CreateClientAnchor();
+            anchor.Col1 = 4; //0 index based column
+            anchor.Row1 = rowIndex++; //0 index based row
+            IPicture picture = drawing.CreatePicture(anchor, imageIndex);
+            picture.Resize();
         }
 
         // Auto sized all the affected columns
@@ -114,16 +134,15 @@ public partial class IoTController
             sheet.AutoSizeColumn(i);
         }
 
-        // Write Excel to disk 
         MemoryStream ms = new MemoryStream();
+        Response.RegisterForDisposeAsync(ms);
+
         workbook.Write(ms);
         ms.Seek(0, SeekOrigin.Begin);
-        Response.RegisterForDisposeAsync(ms);
-        Response.RegisterForDispose(workbook);
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
-            FileName = HttpUtility.HtmlEncode($"Report {startTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)}-{endTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)}.xls"),
+            FileName = Uri.EscapeDataString($"Report {startTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)}-{endTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)}.xlsx"),
             Inline = false, // false = prompt the user for downloading;  true = browser to try to show the file inline,
             CreationDate = now,
             ModificationDate = now,
