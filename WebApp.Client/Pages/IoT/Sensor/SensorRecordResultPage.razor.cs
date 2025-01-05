@@ -77,7 +77,7 @@ public partial class SensorRecordResultPage(ILogger<SensorRecordResultPage> logg
                 TotalItems = (int)total,
                 Items = records.OrderByDescending(x => x.Metadata.RecordedAt).Select(x => new PageModel(x)
                 {
-                    OpenImageBtn = new ButtonAction() { Action = () => OpenImage(x.Metadata.ImagePath) },
+                    OpenImageBtn = new ButtonAction() { Action = () => OpenImage(x) },
                     StatusRenderFragment = _builderHelper.GenerateStatusElement(x.Metadata.ProcessStatus)
                 }).ToArray()
             };
@@ -90,14 +90,14 @@ public partial class SensorRecordResultPage(ILogger<SensorRecordResultPage> logg
     }
 
 
-    private void OpenImage(string code)
+    private Task OpenImage(IoTRecord record)
     {
         var uri = Navigation.GetUriWithQueryParameters(Navigation.BaseUri + "api/files/get-file", new Dictionary<string, object?>()
         {
-            { "id", code },
-            { "type", "ThumbnailWebpFile" }
+            { "id", record.Metadata.ImagePath },
         });
-        JsRuntime.OpenToNewWindow(uri);
+        return DialogService.OpenImageViewDialog(uri, title: record.Metadata.RecordedAt.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss"),
+            caption: record.Metadata.SensorData.ToString("N0"));
     }
 
     private Task OpenFilter()

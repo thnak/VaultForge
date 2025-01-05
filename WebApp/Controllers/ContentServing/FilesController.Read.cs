@@ -1,6 +1,4 @@
 ﻿using System.Net.Mime;
-using System.Security.Cryptography;
-using System.Text;
 using System.Web;
 using Business.Data.StorageSpace;
 using Business.Utils.Protector;
@@ -13,6 +11,7 @@ using BusinessModels.WebContent;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OutputCaching;
+using WebApp.Utils;
 
 namespace WebApp.Controllers.ContentServing;
 
@@ -75,13 +74,15 @@ public partial class FilesController
         }
 
         var cancelToken = HttpContext.RequestAborted;
+        var file = fileServe.Get(id);
         var fileList = await fileServe.GetSubFileByClassifyAsync(id, cancelToken, [fileClassify]);
-        if (fileList.Count == 0)
+        if (fileList.Count != 0)
         {
-            return NotFound("Not found sub file");
+            file = fileList.First();
         }
 
-        var file = fileList.First();
+        if (file == null)
+            return NotFound(AppLang.File_not_found_);
 
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
@@ -119,7 +120,7 @@ public partial class FilesController
                 var line = lines[i];
                 if (line.Contains(".m3u8") || line.Contains(".ts") || line.Contains(".vtt"))
                 {
-                    lines[i] = $"{HttpContext.Request.Scheme}://" + HttpContext.Request.Host.Value + HttpContext.Request.Path + "?id=" + line;
+                    lines[i] = HttpContext.BuildNewUriApi(new Dictionary<string, string?>() { { "id", line } });
                     lines[i] = lines[i].Trim();
                 }
             }

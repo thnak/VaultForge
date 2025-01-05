@@ -2,6 +2,7 @@
 using BusinessModels.Resources;
 using MudBlazor;
 using WebApp.Client.Components.ConfirmDialog;
+using WebApp.Client.Components.Photo;
 using WebApp.Client.Models;
 
 namespace WebApp.Client.Utils;
@@ -90,5 +91,17 @@ public static class DialogServiceExtensions
         }
 
         return Result<string>.Canceled(AppLang.Cancel);
+    }
+
+    public static async Task OpenImageViewDialog(this IDialogService dialogService, string imagePath, string title = "", string caption = "", string icon = Icons.Material.Filled.Image)
+    {
+        var dialogParam = new DialogParameters<ShowImageDialog>()
+        {
+            { x => x.Uri, imagePath },
+            { x => x.Caption, caption },
+            { x => x.Title, title },
+            { x => x.Icon, icon }
+        };
+        await dialogService.ShowAsync<ShowImageDialog>(title, dialogParam, ConfirmDialogOptions);
     }
 }
