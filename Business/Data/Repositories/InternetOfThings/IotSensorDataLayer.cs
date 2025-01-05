@@ -185,6 +185,7 @@ public class IotSensorDataLayer(IMongoDataLayerContext context, ILogger<IIotSens
         if (sensor == null)
             return (false, AppLang.Sensor_not_found);
         var updateResult = await _data.UpdateAsync(sensor.Id.ToString(), updates, cancellationToken);
+        memoryCache.Remove(IotSensorCollectionName + "Get" + key);
         return (updateResult.IsSuccess, updateResult.Message);
     }
 
@@ -204,6 +205,7 @@ public class IotSensorDataLayer(IMongoDataLayerContext context, ILogger<IIotSens
             }
 
             _data.DeleteOne(x => x.SensorId == key);
+            memoryCache.Remove(IotSensorCollectionName + "Get" + key);
             return Task.FromResult((true, AppLang.Delete_successfully));
         }
         catch (Exception e)
