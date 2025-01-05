@@ -45,9 +45,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="limit access to post-process step">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add limit">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterInferenceService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotSensorDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotSensorDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
@@ -1004,15 +1005,7 @@
       <workItem from="1735911133327" duration="12329000" />
       <workItem from="1735975073448" duration="8478000" />
       <workItem from="1736006257577" duration="6454000" />
-      <workItem from="1736013978809" duration="1556000" />
-    </task>
-    <task id="LOCAL-00549" summary="add page size">
-      <option name="closed" value="true" />
-      <created>1735574599495</created>
-      <option name="number" value="00549" />
-      <option name="presentableId" value="LOCAL-00549" />
-      <option name="project" value="LOCAL" />
-      <updated>1735574599495</updated>
+      <workItem from="1736013978809" duration="2607000" />
     </task>
     <task id="LOCAL-00550" summary="update page">
       <option name="closed" value="true" />
@@ -1398,7 +1391,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736014262565</updated>
     </task>
-    <option name="localTasksCounter" value="598" />
+    <task id="LOCAL-00598" summary="add limit">
+      <option name="closed" value="true" />
+      <created>1736039874461</created>
+      <option name="number" value="00598" />
+      <option name="presentableId" value="LOCAL-00598" />
+      <option name="project" value="LOCAL" />
+      <updated>1736039874461</updated>
+    </task>
+    <option name="localTasksCounter" value="599" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1429,7 +1430,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="re open execution provider option" />
     <MESSAGE value="update log" />
     <MESSAGE value="add some extension, double check to render mode" />
     <MESSAGE value="big update to inference server" />
@@ -1454,7 +1454,8 @@
     <MESSAGE value="refactor, using allocated pool array" />
     <MESSAGE value="optimize code" />
     <MESSAGE value="limit access to post-process step" />
-    <option name="LAST_COMMIT_MESSAGE" value="limit access to post-process step" />
+    <MESSAGE value="add limit" />
+    <option name="LAST_COMMIT_MESSAGE" value="add limit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1490,19 +1491,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="93" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs</url>
-          <line>39</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\Business\Services\OnnxService\WaterMeter\WaterMeterReaderQueue.cs" containingFunctionPresentation="Constructor 'WaterMeterReaderQueue'">
-            <startOffsets>
-              <option value="1790" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1855" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="94" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">

@@ -33,7 +33,7 @@ public class IoTRequestQueueHostedService(
             iotRequestQueue.Reset();
             _currentDay = today;
         }
-        
+
         await InsertBatchIntoDatabase(cancellationToken);
         await BulkUpdateAsync(cancellationToken);
     }
@@ -49,12 +49,9 @@ public class IoTRequestQueueHostedService(
         var result = await iotRecordBusinessLayer.CreateAsync(batch, cancellationToken);
         if (result.IsSuccess)
         {
-            var chunkedBatch = batch.Where(data => !string.IsNullOrEmpty(data.Metadata.ImagePath));
-
-            foreach (var data in chunkedBatch)
-            {
-                await queue.QueueBackgroundWorkItemAsync(async ser => await _ioTRequestQueue.Writer.WriteAsync(await waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, ser), ser), cancellationToken);
-            }
+            var chunkedBatch = batch.Where(data => !string.IsNullOrEmpty(data.Metadata.ImagePath))
+                .Select(async data => _ioTRequestQueue.Writer.WriteAsync(await waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, cancellationToken), cancellationToken));
+            await queue.QueueBackgroundWorkItemAsync(async _ => await Task.WhenAll(chunkedBatch), cancellationToken);
         }
         else
         {

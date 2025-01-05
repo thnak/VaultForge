@@ -7,6 +7,7 @@ using BusinessModels.System.InternetOfThings;
 using BusinessModels.System.InternetOfThings.type;
 using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Memory;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
@@ -37,7 +38,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
         _fileSystemBusinessLayer = fileSystemBusinessLayer;
         _iotSensorBusinessLayer = iotSensorBusinessLayer;
         _waterMeterInferenceService = waterMeterInferenceService;
-        _semaphore = new(_waterMeterInferenceService.GetBatchSize() * 3);
+        _semaphore = new(_waterMeterInferenceService.GetBatchSize() * 4);
     }
 
 

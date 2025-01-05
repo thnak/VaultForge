@@ -9,17 +9,20 @@ using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Business.Data.Repositories.InternetOfThings;
 
-public class IotSensorDataLayer(IMongoDataLayerContext context, ILogger<IIotSensorDataLayer> logger, IDataProtectionProvider provider) : IIotSensorDataLayer
+public class IotSensorDataLayer(IMongoDataLayerContext context, ILogger<IIotSensorDataLayer> logger, IDataProtectionProvider provider, IMemoryCache memoryCache) : IIotSensorDataLayer
 {
-    private readonly IMongoCollection<IoTSensor> _data = context.MongoDatabase.GetCollection<IoTSensor>("IoTSensor");
+    private readonly IMongoCollection<IoTSensor> _data = context.MongoDatabase.GetCollection<IoTSensor>(IotSensorCollectionName);
     private readonly IDataProtector _protectionProvider = provider.CreateProtector("IotSensorDataLayerProtector");
 
+    private const string IotSensorCollectionName = "IotSensor";
+    
     public void Dispose()
     {
         //
@@ -90,7 +93,13 @@ public class IotSensorDataLayer(IMongoDataLayerContext context, ILogger<IIotSens
     {
         try
         {
-            return _data.Get(key) ?? _data.Find(x => x.SensorId == key).FirstOrDefault();
+            var cacheKey = IotSensorCollectionName + "Get" + key;
+            return memoryCache.GetOrCreate(cacheKey, entry =>
+            {
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1);
+                entry.SetSlidingExpiration(TimeSpan.FromMinutes(1));
+                return _data.Get(key) ?? _data.Find(x => x.SensorId == key).FirstOrDefault();
+            });
         }
         catch (Exception)
         {
