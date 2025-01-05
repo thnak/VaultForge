@@ -64,11 +64,14 @@ public class IoTRequestQueueHostedService(
         List<IoTRecordUpdateModel> batch = [];
         while (_ioTRequestQueue.Reader.TryRead(out var data))
             batch.Add(data);
-        var result = await iotRecordBusinessLayer.UpdateIoTValuesBatch(batch, cancellationToken);
-        if (!result.IsSuccess)
+        await queue.QueueBackgroundWorkItemAsync(async token =>
         {
-            logger.LogWarning(result.Message);
-        }
+            var result = await iotRecordBusinessLayer.UpdateIoTValuesBatch(batch, token);
+            if (!result.IsSuccess)
+            {
+                logger.LogWarning(result.Message);
+            }
+        }, cancellationToken);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
