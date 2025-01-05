@@ -128,6 +128,7 @@ public partial class FilesController
             return Content(stringContent, file.ContentType);
         }
 
+        logger.LogInformation($"file name {cd.FileName}");
         return new FileStreamResult(raid5Stream, file.ContentType)
         {
             FileDownloadName = cd.FileName,

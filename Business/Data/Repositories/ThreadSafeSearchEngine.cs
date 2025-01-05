@@ -6,9 +6,10 @@ using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
-using Lucene.Net.QueryParsers;
+using Lucene.Net.QueryParsers.Classic;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
+using Lucene.Net.Util;
 using Directory = System.IO.Directory;
 
 namespace Business.Data.Repositories;
@@ -16,34 +17,42 @@ namespace Business.Data.Repositories;
 public class ThreadSafeSearchEngine<T> : IThreadSafeSearchEngine<T> where T : BaseModelEntry
 {
     private readonly FSDirectory _indexDirectory;
-    private readonly QueryParser _queryParser;
+    private readonly MultiFieldQueryParser _queryParser;
     private readonly Analyzer _analyzer;
-    private IndexReader? IndexReader { get; set; }
     private IndexSearcher? Searcher { get; set; }
     private readonly ConcurrentDictionary<int, T> _items;
     private readonly Func<T, Document> _documentMapper;
     private const string DocumentIdFieldName = nameof(BaseModelEntry.Id);
-    private const Lucene.Net.Util.Version Version = Lucene.Net.Util.Version.LUCENE_30;
+    private const LuceneVersion Version = LuceneVersion.LUCENE_48;
+    private readonly IndexWriter _writer;
 
     public ThreadSafeSearchEngine(string indexPath, Func<T, Document> documentMapper)
     {
+        var basePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+        indexPath = Path.Combine(basePath, indexPath);
         Directory.CreateDirectory(indexPath);
+
         _indexDirectory = FSDirectory.Open(indexPath);
         _analyzer = new StandardAnalyzer(Version);
 
         T model = Activator.CreateInstance<T>();
         var mappedValue = documentMapper(model);
-        IEnumerable<string> fields = mappedValue.fields_ForNUnit.Select(x => x.Name);
+        IEnumerable<string> fields = mappedValue.Fields.Select(x => x.Name);
 
         _queryParser = new MultiFieldQueryParser(Version, fields.ToArray(), _analyzer);
 
         _items = new ConcurrentDictionary<int, T>();
         _documentMapper = documentMapper;
+
+        var indexConfig = new IndexWriterConfig(Version, _analyzer);
+        _writer = new IndexWriter(_indexDirectory, indexConfig);
+        Searcher = new IndexSearcher(_writer.GetReader(applyAllDeletes: true));
     }
 
     public void LoadAndIndexItems(IEnumerable<T> items)
     {
-        using var writer = new IndexWriter(_indexDirectory, _analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED);
+        var indexConfig = new IndexWriterConfig(Version, _analyzer);
+        using var writer = new IndexWriter(_indexDirectory, indexConfig);
         foreach (var item in items)
         {
             var doc = _documentMapper(item);
@@ -53,33 +62,23 @@ public class ThreadSafeSearchEngine<T> : IThreadSafeSearchEngine<T> where T : Ba
         }
 
         writer.Commit();
-        InitSearcher();
+        _writer.Flush(triggerMerge: false, applyAllDeletes: false);
     }
 
     public async Task LoadAndIndexItems(IAsyncEnumerable<T> items)
     {
-        using var writer = new IndexWriter(_indexDirectory, _analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED);
         await foreach (var item in items)
         {
             var doc = _documentMapper(item);
-            writer.AddDocument(doc);
+            _writer.AddDocument(doc);
             var itemHash = item.GetHashCode();
             _items.AddOrUpdate(itemHash, item, (_, _) => item);
         }
 
-        writer.Commit();
-        InitSearcher();
+        _writer.Commit();
+        _writer.Flush(triggerMerge: false, applyAllDeletes: false);
     }
 
-    private void InitSearcher()
-    {
-        if (IndexReader != null)
-            IndexReader.Dispose();
-        if (Searcher != null)
-            Searcher.Dispose();
-        IndexReader = IndexReader.Open(_indexDirectory, true);
-        Searcher = new IndexSearcher(IndexReader);
-    }
 
     public IEnumerable<T> Search(string query, int limit = 10)
     {
@@ -100,21 +99,17 @@ public class ThreadSafeSearchEngine<T> : IThreadSafeSearchEngine<T> where T : Ba
 
     public void RemoveItemFromIndex(T item)
     {
-        using (var writer = new IndexWriter(_indexDirectory, _analyzer, true, IndexWriter.MaxFieldLength.UNLIMITED))
-        {
-            writer.DeleteDocuments(new Term(DocumentIdFieldName, item.GetHashCode().ToString()));
-            writer.Commit();
-        }
+        _writer.DeleteDocuments(new Term(DocumentIdFieldName, item.GetHashCode().ToString()));
+        _writer.Commit();
+
 
         _items.TryRemove(item.GetHashCode(), out _);
-        InitSearcher();
     }
 
     // Dispose of resources when the object is no longer needed
     public void Dispose()
     {
-        IndexReader?.Dispose();
-        Searcher?.Dispose();
         _indexDirectory.Dispose();
+        _writer.Dispose();
     }
 }
