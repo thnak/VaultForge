@@ -45,7 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small fix" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="fix type name" />
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
@@ -1000,15 +1000,7 @@
       <workItem from="1735911133327" duration="12329000" />
       <workItem from="1735975073448" duration="8478000" />
       <workItem from="1736006257577" duration="6454000" />
-      <workItem from="1736013978809" duration="10947000" />
-    </task>
-    <task id="LOCAL-00558" summary="complete search engine service">
-      <option name="closed" value="true" />
-      <created>1735627319970</created>
-      <option name="number" value="00558" />
-      <option name="presentableId" value="LOCAL-00558" />
-      <option name="project" value="LOCAL" />
-      <updated>1735627319970</updated>
+      <workItem from="1736013978809" duration="11937000" />
     </task>
     <task id="LOCAL-00559" summary="adding add, remove action for search engine">
       <option name="closed" value="true" />
@@ -1394,7 +1386,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736049291295</updated>
     </task>
-    <option name="localTasksCounter" value="607" />
+    <task id="LOCAL-00607" summary="fix type name">
+      <option name="closed" value="true" />
+      <created>1736050828913</created>
+      <option name="number" value="00607" />
+      <option name="presentableId" value="LOCAL-00607" />
+      <option name="project" value="LOCAL" />
+      <updated>1736050828913</updated>
+    </task>
+    <option name="localTasksCounter" value="608" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1425,7 +1425,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="update logic, add log" />
     <MESSAGE value="add chunk" />
     <MESSAGE value="wait it" />
     <MESSAGE value="memory leak" />
@@ -1450,7 +1449,8 @@
     <MESSAGE value="fix wrong value for large batch size" />
     <MESSAGE value="root being too large" />
     <MESSAGE value="small fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="small fix" />
+    <MESSAGE value="fix type name" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix type name" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
