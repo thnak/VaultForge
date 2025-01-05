@@ -5,7 +5,6 @@ using Business.Data.Interfaces;
 using Business.Data.StorageSpace.Utils;
 using Business.Services.Configure;
 using Business.Utils;
-using Business.Utils.StringExtensions;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
@@ -105,7 +104,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
                 StripSize = _stripSize
             };
 
-            string date = DateTime.Now.ToString("yyyyMMdd").ToJson();
+            string date = DateTime.Now.ToString("yyyyMMdd").Encode2Base64String().Substring(0, 12);
             string[] arrayDisk = [..options.GetStorage.Disks.Select(x => Path.Combine(x, date))];
             foreach (string disk in arrayDisk)
             {
