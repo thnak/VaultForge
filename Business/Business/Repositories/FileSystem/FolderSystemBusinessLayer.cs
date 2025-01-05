@@ -373,7 +373,7 @@ internal class FolderSystemBusinessLayer(
         var dateString = DateTime.UtcNow.ToString("dd-MM-yyy");
 
         var filePath = Path.Combine(dateString, Path.GetRandomFileName());
-
+        file.FileName = Path.GetFileName(file.FileName);
         file.AbsolutePath = filePath;
         file.RootFolder = folder.Id.ToString();
         file.RelativePath = Path.Combine(folder.RelativePath, file.FileName);
