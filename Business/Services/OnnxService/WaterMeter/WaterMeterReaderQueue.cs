@@ -25,7 +25,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
     private readonly IIoTSensorBusinessLayer _iotSensorBusinessLayer;
     private readonly IWaterMeterInferenceService _waterMeterInferenceService;
     private readonly ArrayPool<byte> _arrayPool = ArrayPool<byte>.Create();
-    private readonly SemaphoreSlim semaphore;
+    private readonly SemaphoreSlim _semaphore;
 
     public WaterMeterReaderQueue(ILogger<IWaterMeterReaderQueue> logger,
         RedundantArrayOfIndependentDisks disks, IFileSystemBusinessLayer fileSystemBusinessLayer,
@@ -37,7 +37,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
         _fileSystemBusinessLayer = fileSystemBusinessLayer;
         _iotSensorBusinessLayer = iotSensorBusinessLayer;
         _waterMeterInferenceService = waterMeterInferenceService;
-        semaphore = new(_waterMeterInferenceService.GetBatchSize() * 3);
+        _semaphore = new(_waterMeterInferenceService.GetBatchSize() * 3);
     }
 
 
@@ -57,7 +57,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
 
         try
         {
-            await semaphore.WaitAsync(cancellationToken);
+            await _semaphore.WaitAsync(cancellationToken);
             var sensor = _iotSensorBusinessLayer.Get(record.Metadata.SensorId);
             byte[] buffer = _arrayPool.Rent((int)file.FileSize);
             await _redundantArrayOfIndependentDisks.ReadGetDataAsync(buffer, file.AbsolutePath, cancellationToken);
@@ -103,7 +103,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
         }
         finally
         {
-            semaphore.Release();
+            _semaphore.Release();
         }
 
         return new IoTRecordUpdateModel()

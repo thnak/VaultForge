@@ -19,6 +19,11 @@ public class WaterMeterInferenceService(ApplicationConfiguration configuration) 
         configuration.GetBrainNetSetting.WaterSetting.MaxQueSize,
         configuration.GetBrainNetSetting.WaterSetting.DeviceIndex);
 
+    public int GetBatchSize()
+    {
+        return YoloInferenceService.GetBatchSize();
+    }
+
     public Task<InferenceResult<List<YoloBoundingBox>>> AddInputAsync(Image<Rgb24> image, CancellationToken cancellationToken = default)
     {
         return YoloInferenceService.AddInputAsync(image, cancellationToken);

@@ -45,7 +45,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="limit access to post-process step">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterInferenceService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" afterDir="false" />
+    </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
@@ -176,6 +180,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff56e9dabec8513a52b6f0caca4a8979301377a3ae924a82a78d3c3dfd001c/TextOptions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
@@ -999,14 +1004,7 @@
       <workItem from="1735911133327" duration="12329000" />
       <workItem from="1735975073448" duration="8478000" />
       <workItem from="1736006257577" duration="6454000" />
-    </task>
-    <task id="LOCAL-00548" summary="small update">
-      <option name="closed" value="true" />
-      <created>1735573235222</created>
-      <option name="number" value="00548" />
-      <option name="presentableId" value="LOCAL-00548" />
-      <option name="project" value="LOCAL" />
-      <updated>1735573235222</updated>
+      <workItem from="1736013978809" duration="1556000" />
     </task>
     <task id="LOCAL-00549" summary="add page size">
       <option name="closed" value="true" />
@@ -1392,7 +1390,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736012647863</updated>
     </task>
-    <option name="localTasksCounter" value="597" />
+    <task id="LOCAL-00597" summary="limit access to post-process step">
+      <option name="closed" value="true" />
+      <created>1736014262564</created>
+      <option name="number" value="00597" />
+      <option name="presentableId" value="LOCAL-00597" />
+      <option name="project" value="LOCAL" />
+      <updated>1736014262565</updated>
+    </task>
+    <option name="localTasksCounter" value="598" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1423,7 +1429,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="unsafe with objectid set to read only from BaseModelEntry.cs" />
     <MESSAGE value="re open execution provider option" />
     <MESSAGE value="update log" />
     <MESSAGE value="add some extension, double check to render mode" />
@@ -1448,7 +1453,8 @@
     <MESSAGE value="limit this fucking shit to prevent OOM" />
     <MESSAGE value="refactor, using allocated pool array" />
     <MESSAGE value="optimize code" />
-    <option name="LAST_COMMIT_MESSAGE" value="optimize code" />
+    <MESSAGE value="limit access to post-process step" />
+    <option name="LAST_COMMIT_MESSAGE" value="limit access to post-process step" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1484,6 +1490,19 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="93" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs</url>
+          <line>39</line>
+          <properties documentPath="C:\Users\thanh\Git\VaultForge\Business\Services\OnnxService\WaterMeter\WaterMeterReaderQueue.cs" containingFunctionPresentation="Constructor 'WaterMeterReaderQueue'">
+            <startOffsets>
+              <option value="1790" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1855" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="94" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">
