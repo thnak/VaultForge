@@ -45,9 +45,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add listener">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1008,15 +1007,7 @@
       <workItem from="1736006257577" duration="6454000" />
       <workItem from="1736013978809" duration="15562000" />
       <workItem from="1736057897995" duration="18724000" />
-      <workItem from="1736124408401" duration="13105000" />
-    </task>
-    <task id="LOCAL-00569" summary="small update">
-      <option name="closed" value="true" />
-      <created>1735750430623</created>
-      <option name="number" value="00569" />
-      <option name="presentableId" value="LOCAL-00569" />
-      <option name="project" value="LOCAL" />
-      <updated>1735750430623</updated>
+      <workItem from="1736124408401" duration="13878000" />
     </task>
     <task id="LOCAL-00570" summary="big update to inference server">
       <option name="closed" value="true" />
@@ -1402,7 +1393,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736138440424</updated>
     </task>
-    <option name="localTasksCounter" value="618" />
+    <task id="LOCAL-00618" summary="small update">
+      <option name="closed" value="true" />
+      <created>1736140753968</created>
+      <option name="number" value="00618" />
+      <option name="presentableId" value="LOCAL-00618" />
+      <option name="project" value="LOCAL" />
+      <updated>1736140753969</updated>
+    </task>
+    <option name="localTasksCounter" value="619" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1448,7 +1447,6 @@
     <MESSAGE value="root being too large" />
     <MESSAGE value="small fix" />
     <MESSAGE value="fix type name" />
-    <MESSAGE value="small update" />
     <MESSAGE value="correct file name and encode it" />
     <MESSAGE value="move to new excel format" />
     <MESSAGE value="move to new lucene version" />
@@ -1458,7 +1456,8 @@
     <MESSAGE value="rollback to disk" />
     <MESSAGE value="remove unmaintainable code" />
     <MESSAGE value="add listener" />
-    <option name="LAST_COMMIT_MESSAGE" value="add listener" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1507,12 +1506,6 @@
           </properties>
           <option name="timeStamp" value="106" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/WebApp/wwwroot/js/eventListener.js</url>
-          <line>5</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="115" />
-        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints" />

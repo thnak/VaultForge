@@ -27,7 +27,7 @@ public class DocumentObjectModelEventListener : IDisposable
         {
             try
             {
-                await _jsRuntime.InvokeVoidAsync("eventListenerInterop.addEventListener", elementId, eventNameStr, _dotNetRef, nameof(OnEventTriggered));
+                await _jsRuntime.InvokeVoidAsync("eventListenerInterop.addEventListener", elementId, eventNameStr, _dotNetRef, nameof(OnEventTriggeredEventListener));
             }
             catch (JSDisconnectedException e)
             {
@@ -59,7 +59,7 @@ public class DocumentObjectModelEventListener : IDisposable
     }
 
     [JSInvokable]
-    public static void OnEventTriggered(string key)
+    public static void OnEventTriggeredEventListener(string key)
     {
         if (RegisteredEvents.TryGetValue(key, out var callback))
         {
