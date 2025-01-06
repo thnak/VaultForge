@@ -25,11 +25,18 @@ public class DocumentObjectModelEventListener : IDisposable
         // Add to the static dictionary
         if (RegisteredEvents.TryAdd(key, callback))
         {
-            await _jsRuntime.InvokeVoidAsync("eventListenerInterop.addEventListener", elementId, eventName, _dotNetRef, nameof(OnEventTriggered));
+            try
+            {
+                await _jsRuntime.InvokeVoidAsync("eventListenerInterop.addEventListener", elementId, eventNameStr, _dotNetRef, nameof(OnEventTriggered));
+            }
+            catch (JSDisconnectedException e)
+            {
+                _logger.LogError(e, e.Message);
+            }
         }
         else
         {
-            _logger.LogError($"Event {eventName} for element {elementId} is already registered.");
+            _logger.LogError($"Event {eventNameStr} for element {elementId} is already registered.");
         }
     }
 
@@ -38,22 +45,25 @@ public class DocumentObjectModelEventListener : IDisposable
         string eventNameStr = eventName.ToString().ToLower(); // Convert enum to lowercase for JavaScript compatibility
         string key = GenerateKey(elementId, eventNameStr);
 
-        if (RegisteredEvents.Remove(key))
+        try
         {
-            await _jsRuntime.InvokeVoidAsync("eventListenerInterop.removeEventListener", elementId, eventName);
+            if (RegisteredEvents.Remove(key))
+            {
+                await _jsRuntime.InvokeVoidAsync("eventListenerInterop.removeEventListener", elementId, eventNameStr);
+            }
+        }
+        catch (JSDisconnectedException e)
+        {
+            _logger.LogError(e, e.Message);
         }
     }
 
     [JSInvokable]
-    public static async Task OnEventTriggered(string key)
+    public static void OnEventTriggered(string key)
     {
         if (RegisteredEvents.TryGetValue(key, out var callback))
         {
-            await callback();
-        }
-        else
-        {
-            Console.WriteLine($"No callback found for key: {key}");
+            callback.Invoke();
         }
     }
 

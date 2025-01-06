@@ -45,17 +45,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add listener">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Interfaces/IBusinessLayerRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Interfaces/IBusinessLayerRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FileSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FileSystemBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Layout/MainLayout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Layout/MainLayout.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Layout/MainLayout.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Layout/MainLayout.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/NavMenu/NavMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/NavMenu/NavMenu.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/wwwroot/js/eventListener.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/wwwroot/js/eventListener.js" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1016,15 +1008,7 @@
       <workItem from="1736006257577" duration="6454000" />
       <workItem from="1736013978809" duration="15562000" />
       <workItem from="1736057897995" duration="18724000" />
-      <workItem from="1736124408401" duration="10822000" />
-    </task>
-    <task id="LOCAL-00568" summary="small update">
-      <option name="closed" value="true" />
-      <created>1735749128737</created>
-      <option name="number" value="00568" />
-      <option name="presentableId" value="LOCAL-00568" />
-      <option name="project" value="LOCAL" />
-      <updated>1735749128737</updated>
+      <workItem from="1736124408401" duration="13105000" />
     </task>
     <task id="LOCAL-00569" summary="small update">
       <option name="closed" value="true" />
@@ -1410,7 +1394,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736128489175</updated>
     </task>
-    <option name="localTasksCounter" value="617" />
+    <task id="LOCAL-00617" summary="add listener">
+      <option name="closed" value="true" />
+      <created>1736138440424</created>
+      <option name="number" value="00617" />
+      <option name="presentableId" value="LOCAL-00617" />
+      <option name="project" value="LOCAL" />
+      <updated>1736138440424</updated>
+    </task>
+    <option name="localTasksCounter" value="618" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1441,7 +1433,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="debug" />
     <MESSAGE value="try debug" />
     <MESSAGE value="limit this fucking shit to prevent OOM" />
     <MESSAGE value="refactor, using allocated pool array" />
@@ -1466,7 +1457,8 @@
     <MESSAGE value="update logic" />
     <MESSAGE value="rollback to disk" />
     <MESSAGE value="remove unmaintainable code" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove unmaintainable code" />
+    <MESSAGE value="add listener" />
+    <option name="LAST_COMMIT_MESSAGE" value="add listener" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1503,19 +1495,6 @@
           </properties>
           <option name="timeStamp" value="93" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs</url>
-          <line>49</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\WebApp.Client\Services\UserInterfaces\DocumentObjectModelEventListener.cs" containingFunctionPresentation="Method 'OnEventTriggered'">
-            <startOffsets>
-              <option value="1910" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1966" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="113" />
-        </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">
             <option name="internal" value="false" />
@@ -1528,6 +1507,12 @@
           </properties>
           <option name="timeStamp" value="106" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/WebApp/wwwroot/js/eventListener.js</url>
+          <line>5</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="115" />
+        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints" />
