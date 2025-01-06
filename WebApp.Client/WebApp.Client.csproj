@@ -25,7 +25,7 @@
 		<BlazorEnableCompression>false</BlazorEnableCompression>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+	<PropertyGroup Condition="'$(Configuration)' == 'ReleaseX64'">
 		<RunAOTCompilation>true</RunAOTCompilation>
 		<WasmStripILAfterAOT>true</WasmStripILAfterAOT>
 		<WasmEnableExceptionHandling>true</WasmEnableExceptionHandling>

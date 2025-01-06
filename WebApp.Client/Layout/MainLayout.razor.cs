@@ -23,8 +23,9 @@ public partial class MainLayout : IAsyncDisposable
 
     private Task DrawerToggle()
     {
-        _drawerOpen = !_drawerOpen;
-        return InvokeAsync(StateHasChanged);
+        // _drawerOpen = !_drawerOpen;
+        // return InvokeAsync(StateHasChanged);
+        return Task.CompletedTask;
     }
 
     public async ValueTask DisposeAsync()

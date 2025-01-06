@@ -61,9 +61,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
             await _semaphore.WaitAsync(cancellationToken);
             var sensor = _iotSensorBusinessLayer.Get(record.Metadata.SensorId);
            
-            // using var buffer = new MemoryStream((int)file.FileSize);
-            // await _redundantArrayOfIndependentDisks.ReadGetDataAsync(buffer, file.AbsolutePath, cancellationToken);
-            await _redundantArrayOfIndependentDisks.ReadGetDataAsync(bufferArray, file.AbsolutePath, cancellationToken);
+            await _redundantArrayOfIndependentDisks.ReadGetDataAsync(bufferArray, file.AbsolutePath, CancellationToken.None);
             using var image = Image.Load<Rgb24>(bufferArray);
             image.AutoOrient();
             if (sensor is { Rotate: > 0 })

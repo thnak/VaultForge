@@ -99,8 +99,7 @@ public class IotRecordDataLayer : IIotRecordDataLayer
         {
             foreach (var model in cursor.Current)
             {
-                if (model != default)
-                    yield return model;
+                yield return model;
             }
         }
     }
@@ -166,7 +165,7 @@ public class IotRecordDataLayer : IIotRecordDataLayer
     {
         try
         {
-            if(models.Count == 0)
+            if (models.Count == 0)
                 return Result<bool>.SuccessWithMessage(true, AppLang.Create_successfully);
             await _dataDb.InsertManyAsync(models, cancellationToken: cancellationToken);
             return Result<bool>.SuccessWithMessage(true, AppLang.Create_successfully);
@@ -284,6 +283,7 @@ public class IotRecordDataLayer : IIotRecordDataLayer
                     .Set(record => record.Metadata.ProcessStatus, updateModel.ProcessStatus);
                 bulkOperations.Add(new UpdateManyModel<IoTRecord>(filter, update));
             }
+
             if (bulkOperations.Count == 0)
                 return Result<bool>.SuccessWithMessage(true, "No valid updates generated.");
             var result = await _dataDb.BulkWriteAsync(bulkOperations, new BulkWriteOptions()

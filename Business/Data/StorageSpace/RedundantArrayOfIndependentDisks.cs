@@ -187,7 +187,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
 
         dataBlocks = dataBlocks.OrderBy(x => x.Index).DistinctBy(x => x.AbsolutePath).ToList();
         await using Raid5Stream stream = new Raid5Stream(dataBlocks.Select(x => x.AbsolutePath), raidData.Size, raidData.StripSize, FileMode.Open, FileAccess.Read, FileShare.Read);
-        await stream.ReadExactlyAsync(outputStream, 0, (int)raidData.Size, cancellationToken: cancellationToken);
+        _ = await stream.ReadAsync(outputStream, 0, (int)raidData.Size, cancellationToken: cancellationToken);
     }
 
     public async Task<Raid5Stream> GetStreamDataAsync(string path, CancellationToken cancellationToken = default)

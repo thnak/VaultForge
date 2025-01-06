@@ -45,10 +45,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/wwwroot/js/eventListener.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/wwwroot/js/eventListener.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/StorageSpace/RedundantArrayOfIndependentDisks.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/StorageSpace/RedundantArrayOfIndependentDisks.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Layout/MainLayout.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Layout/MainLayout.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/DeviceGroup/DeviceGroupManagementPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/DeviceGroup/DeviceGroupManagementPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorManagementPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorManagementPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1009,15 +1014,8 @@
       <workItem from="1736006257577" duration="6454000" />
       <workItem from="1736013978809" duration="15562000" />
       <workItem from="1736057897995" duration="18724000" />
-      <workItem from="1736124408401" duration="15969000" />
-    </task>
-    <task id="LOCAL-00571" summary="optimize return state">
-      <option name="closed" value="true" />
-      <created>1735836806969</created>
-      <option name="number" value="00571" />
-      <option name="presentableId" value="LOCAL-00571" />
-      <option name="project" value="LOCAL" />
-      <updated>1735836806969</updated>
+      <workItem from="1736124408401" duration="18851000" />
+      <workItem from="1736174091098" duration="3636000" />
     </task>
     <task id="LOCAL-00572" summary="fix out of index">
       <option name="closed" value="true" />
@@ -1403,7 +1401,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736142380592</updated>
     </task>
-    <option name="localTasksCounter" value="620" />
+    <task id="LOCAL-00620" summary="update eventListener.js">
+      <option name="closed" value="true" />
+      <created>1736146511621</created>
+      <option name="number" value="00620" />
+      <option name="presentableId" value="LOCAL-00620" />
+      <option name="project" value="LOCAL" />
+      <updated>1736146511621</updated>
+    </task>
+    <option name="localTasksCounter" value="621" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1434,7 +1440,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="try debug" />
     <MESSAGE value="limit this fucking shit to prevent OOM" />
     <MESSAGE value="refactor, using allocated pool array" />
     <MESSAGE value="optimize code" />
@@ -1459,7 +1464,8 @@
     <MESSAGE value="remove unmaintainable code" />
     <MESSAGE value="add listener" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="update eventListener.js" />
+    <option name="LAST_COMMIT_MESSAGE" value="update eventListener.js" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1485,13 +1491,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs</url>
-          <line>150</line>
+          <line>149</line>
           <properties documentPath="C:\Users\thanh\Git\VaultForge\Business\Data\Repositories\InternetOfThings\IotRecordDataLayer.cs" containingFunctionPresentation="Method 'CreateAsync'">
             <startOffsets>
-              <option value="6192" />
+              <option value="6150" />
             </startOffsets>
             <endOffsets>
-              <option value="6266" />
+              <option value="6224" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="93" />
