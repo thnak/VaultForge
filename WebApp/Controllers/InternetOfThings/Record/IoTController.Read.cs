@@ -115,17 +115,24 @@ public partial class IoTController
             var file = fileSystemServe.Get(batchErrorReport.Metadata.ImagePath);
             if (file == null)
                 continue;
-            var buffer = arrayPool.Rent((int)file.FileSize);
-            await raidService.ReadGetDataAsync(buffer, file.AbsolutePath, cancelToken);
-            var imageIndex = workbook.AddPicture(buffer, PictureType.JPEG);
-            arrayPool.Return(buffer);
-            ICreationHelper helper = workbook.GetCreationHelper();
-            IDrawing drawing = sheet.CreateDrawingPatriarch();
-            IClientAnchor anchor = helper.CreateClientAnchor();
-            anchor.Col1 = 4; //0 index based column
-            anchor.Row1 = rowIndex++; //0 index based row
-            IPicture picture = drawing.CreatePicture(anchor, imageIndex);
-            picture.Resize();
+            try
+            {
+                var buffer = arrayPool.Rent((int)file.FileSize);
+                await raidService.ReadGetDataAsync(buffer, file.AbsolutePath, cancelToken);
+                var imageIndex = workbook.AddPicture(buffer, PictureType.JPEG);
+                arrayPool.Return(buffer);
+                ICreationHelper helper = workbook.GetCreationHelper();
+                IDrawing drawing = sheet.CreateDrawingPatriarch();
+                IClientAnchor anchor = helper.CreateClientAnchor();
+                anchor.Col1 = 4; //0 index based column
+                anchor.Row1 = rowIndex; //0 index based row
+                IPicture picture = drawing.CreatePicture(anchor, imageIndex);
+                picture.Resize();
+            }
+            finally
+            {
+                rowIndex++;
+            }
         }
 
         // Auto sized all the affected columns
