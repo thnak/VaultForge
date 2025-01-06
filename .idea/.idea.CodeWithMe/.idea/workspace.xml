@@ -45,11 +45,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="optimize">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -185,7 +183,6 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff56e9dabec8513a52b6f0caca4a8979301377a3ae924a82a78d3c3dfd001c/TextOptions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
@@ -1010,15 +1007,8 @@
       <workItem from="1735975073448" duration="8478000" />
       <workItem from="1736006257577" duration="6454000" />
       <workItem from="1736013978809" duration="15562000" />
-      <workItem from="1736057897995" duration="18191000" />
-    </task>
-    <task id="LOCAL-00565" summary="re open execution provider option">
-      <option name="closed" value="true" />
-      <created>1735706721189</created>
-      <option name="number" value="00565" />
-      <option name="presentableId" value="LOCAL-00565" />
-      <option name="project" value="LOCAL" />
-      <updated>1735706721189</updated>
+      <workItem from="1736057897995" duration="18724000" />
+      <workItem from="1736124408401" duration="1086000" />
     </task>
     <task id="LOCAL-00566" summary="update log">
       <option name="closed" value="true" />
@@ -1404,7 +1394,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736093827728</updated>
     </task>
-    <option name="localTasksCounter" value="614" />
+    <task id="LOCAL-00614" summary="update logic">
+      <option name="closed" value="true" />
+      <created>1736097853834</created>
+      <option name="number" value="00614" />
+      <option name="presentableId" value="LOCAL-00614" />
+      <option name="project" value="LOCAL" />
+      <updated>1736097853834</updated>
+    </task>
+    <option name="localTasksCounter" value="615" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1435,7 +1433,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="try fix" />
     <MESSAGE value="update" />
     <MESSAGE value="remove bullshit shared array" />
     <MESSAGE value="debug" />
@@ -1460,7 +1457,8 @@
     <MESSAGE value="move to new lucene version" />
     <MESSAGE value="fix missing content type" />
     <MESSAGE value="optimize" />
-    <option name="LAST_COMMIT_MESSAGE" value="optimize" />
+    <MESSAGE value="update logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="update logic" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1498,17 +1496,30 @@
           <option name="timeStamp" value="93" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs</url>
-          <line>67</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\Business\Services\OnnxService\WaterMeter\WaterMeterReaderQueue.cs" containingFunctionPresentation="Method 'GetWaterMeterReadingCountAsync'">
+          <url>file://$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs</url>
+          <line>77</line>
+          <properties documentPath="C:\Users\thanh\Git\VaultForge\Business\Data\Repositories\ThreadSafeSearchEngine.cs" containingFunctionPresentation="Method 'LoadAndIndexItems'">
             <startOffsets>
-              <option value="3127" />
+              <option value="2915" />
             </startOffsets>
             <endOffsets>
-              <option value="3146" />
+              <option value="2932" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="108" />
+          <option name="timeStamp" value="109" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs</url>
+          <line>63</line>
+          <properties documentPath="C:\Users\thanh\Git\VaultForge\Business\Data\Repositories\ThreadSafeSearchEngine.cs" containingFunctionPresentation="Method 'LoadAndIndexItems'">
+            <startOffsets>
+              <option value="2485" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2501" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="110" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">
