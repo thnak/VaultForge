@@ -4,7 +4,7 @@ namespace WebApp.Client.Services.UserInterfaces;
 
 public class DocumentObjectModelEventListener : IDisposable
 {
-    private static readonly Dictionary<string, Func<Task>> RegisteredEvents = [];
+    private readonly Dictionary<string, Func<Task>> _registeredEvents = [];
     private readonly IJSRuntime _jsRuntime;
     private readonly DotNetObjectReference<DocumentObjectModelEventListener> _dotNetRef;
     private readonly ILogger<DocumentObjectModelEventListener> _logger;
@@ -17,17 +17,17 @@ public class DocumentObjectModelEventListener : IDisposable
     }
 
 
-    public async Task AddEventListenerAsync(string elementId, DomEventName eventName, Func<Task> callback)
+    public ValueTask AddEventListenerAsync(string elementId, DomEventName eventName, Func<Task> callback)
     {
         string eventNameStr = eventName.ToString().ToLower(); // Convert enum to lowercase for JavaScript compatibility
         string key = GenerateKey(elementId, eventNameStr);
 
         // Add to the static dictionary
-        if (RegisteredEvents.TryAdd(key, callback))
+        if (_registeredEvents.TryAdd(key, callback))
         {
             try
             {
-                await _jsRuntime.InvokeVoidAsync("eventListenerInterop.addEventListener", elementId, eventNameStr, _dotNetRef, nameof(OnEventTriggeredEventListener));
+                return _jsRuntime.InvokeVoidAsync("eventListenerInterop.addEventListener", elementId, eventNameStr, _dotNetRef, nameof(OnEventTriggeredEventListener));
             }
             catch (JSDisconnectedException e)
             {
@@ -37,31 +37,35 @@ public class DocumentObjectModelEventListener : IDisposable
         else
         {
             _logger.LogError($"Event {eventNameStr} for element {elementId} is already registered.");
+            return ValueTask.CompletedTask;
         }
+        return ValueTask.CompletedTask;
     }
 
-    public async Task RemoveEventListenerAsync(string elementId, DomEventName eventName)
+    public  ValueTask RemoveEventListenerAsync(string elementId, DomEventName eventName)
     {
         string eventNameStr = eventName.ToString().ToLower(); // Convert enum to lowercase for JavaScript compatibility
         string key = GenerateKey(elementId, eventNameStr);
 
         try
         {
-            if (RegisteredEvents.Remove(key))
+            if (_registeredEvents.Remove(key))
             {
-                await _jsRuntime.InvokeVoidAsync("eventListenerInterop.removeEventListener", elementId, eventNameStr);
+                return _jsRuntime.InvokeVoidAsync("eventListenerInterop.removeEventListener", elementId, eventNameStr);
             }
         }
         catch (JSDisconnectedException e)
         {
             _logger.LogError(e, e.Message);
+            return ValueTask.FromException(e);
         }
+        return ValueTask.CompletedTask;
     }
 
-    [JSInvokable]
-    public static void OnEventTriggeredEventListener(string key)
+    [JSInvokable("OnEventTriggeredEventListener")]
+    public void OnEventTriggeredEventListener(string key)
     {
-        if (RegisteredEvents.TryGetValue(key, out var callback))
+        if (_registeredEvents.TryGetValue(key, out var callback))
         {
             callback.Invoke();
         }

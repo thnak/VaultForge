@@ -11,8 +11,7 @@ window.eventListenerInterop = (() => {
         }
 
         const key = `${elementId}:${eventName}`;
-        // const callback = () => dotNetHelper.invokeMethodAsync(callbackMethod, key);
-        const callback = () => DotNet.invokeMethodAsync(assemblyName,callbackMethod, key);
+        const callback = () => dotNetHelper.invokeMethodAsync(callbackMethod, key);
 
         if (!events.has(key)) {
             element.addEventListener(eventName, callback);
