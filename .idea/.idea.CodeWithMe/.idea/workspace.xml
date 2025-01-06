@@ -45,9 +45,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="rollback to disk">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Result/YoloPrediction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Result/YoloPrediction.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1008,15 +1009,7 @@
       <workItem from="1736006257577" duration="6454000" />
       <workItem from="1736013978809" duration="15562000" />
       <workItem from="1736057897995" duration="18724000" />
-      <workItem from="1736124408401" duration="1086000" />
-    </task>
-    <task id="LOCAL-00566" summary="update log">
-      <option name="closed" value="true" />
-      <created>1735712043354</created>
-      <option name="number" value="00566" />
-      <option name="presentableId" value="LOCAL-00566" />
-      <option name="project" value="LOCAL" />
-      <updated>1735712043354</updated>
+      <workItem from="1736124408401" duration="3818000" />
     </task>
     <task id="LOCAL-00567" summary="add some extension, double check to render mode">
       <option name="closed" value="true" />
@@ -1402,7 +1395,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736097853834</updated>
     </task>
-    <option name="localTasksCounter" value="615" />
+    <task id="LOCAL-00615" summary="rollback to disk">
+      <option name="closed" value="true" />
+      <created>1736125642181</created>
+      <option name="number" value="00615" />
+      <option name="presentableId" value="LOCAL-00615" />
+      <option name="project" value="LOCAL" />
+      <updated>1736125642182</updated>
+    </task>
+    <option name="localTasksCounter" value="616" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1433,7 +1434,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="update" />
     <MESSAGE value="remove bullshit shared array" />
     <MESSAGE value="debug" />
     <MESSAGE value="try debug" />
@@ -1458,7 +1458,8 @@
     <MESSAGE value="fix missing content type" />
     <MESSAGE value="optimize" />
     <MESSAGE value="update logic" />
-    <option name="LAST_COMMIT_MESSAGE" value="update logic" />
+    <MESSAGE value="rollback to disk" />
+    <option name="LAST_COMMIT_MESSAGE" value="rollback to disk" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

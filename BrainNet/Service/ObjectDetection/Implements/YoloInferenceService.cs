@@ -258,6 +258,7 @@ public class YoloInferenceService : IYoloInferenceService
 
     private void ProcessBatchAsync(List<(YoloInferenceServiceFeeder, TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>>)> batch)
     {
+        Array.Clear(InputFeedBuffer);
         var batchSize = batch.Count;
         // Copy inputs into the batched array
 
@@ -296,8 +297,7 @@ public class YoloInferenceService : IYoloInferenceService
                 InferenceStates[batchResult.Key] = true;
             }
         }
-
-
+        
         for (int i = 0; i < batchSize; i++)
         {
             if (InferenceStates[i] == false)
@@ -307,7 +307,6 @@ public class YoloInferenceService : IYoloInferenceService
         }
 
         _singleFrameInputArrayPool.Return(predictArray);
-        Array.Clear(InputFeedBuffer);
     }
 
     public void Dispose()
