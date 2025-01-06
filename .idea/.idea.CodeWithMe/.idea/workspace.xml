@@ -45,10 +45,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="rollback to disk">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Result/YoloPrediction.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Result/YoloPrediction.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Interfaces/IBusinessLayerRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Interfaces/IBusinessLayerRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FileSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FileSystemBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Layout/MainLayout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Layout/MainLayout.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Layout/MainLayout.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Layout/MainLayout.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/NavMenu/NavMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/NavMenu/NavMenu.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/wwwroot/js/eventListener.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/wwwroot/js/eventListener.js" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1009,15 +1016,7 @@
       <workItem from="1736006257577" duration="6454000" />
       <workItem from="1736013978809" duration="15562000" />
       <workItem from="1736057897995" duration="18724000" />
-      <workItem from="1736124408401" duration="3818000" />
-    </task>
-    <task id="LOCAL-00567" summary="add some extension, double check to render mode">
-      <option name="closed" value="true" />
-      <created>1735728727624</created>
-      <option name="number" value="00567" />
-      <option name="presentableId" value="LOCAL-00567" />
-      <option name="project" value="LOCAL" />
-      <updated>1735728727624</updated>
+      <workItem from="1736124408401" duration="10822000" />
     </task>
     <task id="LOCAL-00568" summary="small update">
       <option name="closed" value="true" />
@@ -1403,7 +1402,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736125642182</updated>
     </task>
-    <option name="localTasksCounter" value="616" />
+    <task id="LOCAL-00616" summary="remove unmaintainable code">
+      <option name="closed" value="true" />
+      <created>1736128489175</created>
+      <option name="number" value="00616" />
+      <option name="presentableId" value="LOCAL-00616" />
+      <option name="project" value="LOCAL" />
+      <updated>1736128489175</updated>
+    </task>
+    <option name="localTasksCounter" value="617" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1434,7 +1441,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="remove bullshit shared array" />
     <MESSAGE value="debug" />
     <MESSAGE value="try debug" />
     <MESSAGE value="limit this fucking shit to prevent OOM" />
@@ -1459,7 +1465,8 @@
     <MESSAGE value="optimize" />
     <MESSAGE value="update logic" />
     <MESSAGE value="rollback to disk" />
-    <option name="LAST_COMMIT_MESSAGE" value="rollback to disk" />
+    <MESSAGE value="remove unmaintainable code" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove unmaintainable code" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1497,30 +1504,17 @@
           <option name="timeStamp" value="93" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs</url>
-          <line>77</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\Business\Data\Repositories\ThreadSafeSearchEngine.cs" containingFunctionPresentation="Method 'LoadAndIndexItems'">
+          <url>file://$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs</url>
+          <line>49</line>
+          <properties documentPath="C:\Users\thanh\Git\VaultForge\WebApp.Client\Services\UserInterfaces\DocumentObjectModelEventListener.cs" containingFunctionPresentation="Method 'OnEventTriggered'">
             <startOffsets>
-              <option value="2915" />
+              <option value="1910" />
             </startOffsets>
             <endOffsets>
-              <option value="2932" />
+              <option value="1966" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="109" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Business/Data/Repositories/ThreadSafeSearchEngine.cs</url>
-          <line>63</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\Business\Data\Repositories\ThreadSafeSearchEngine.cs" containingFunctionPresentation="Method 'LoadAndIndexItems'">
-            <startOffsets>
-              <option value="2485" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2501" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="110" />
+          <option name="timeStamp" value="113" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">

@@ -216,6 +216,9 @@ public class FileSystemDatalayer(
                     model.AliasCode = model.Id.GenerateAliasKey(DateTime.Now.Ticks.ToString());
                 }
 
+                if (string.IsNullOrEmpty(model.ContentType))
+                    model.ContentType = "application/octet-stream";
+
                 await _fileDataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
                 return Result<bool>.Success(true);
             }
@@ -243,13 +246,11 @@ public class FileSystemDatalayer(
             {
                 return (false, AppLang.File_could_not_be_found);
             }
-            else
-            {
-                model.ModifiedTime = DateTime.UtcNow;
-                var filter = Builders<FileInfoModel>.Filter.Eq(x => x.Id, model.Id);
-                await _fileDataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
-                return (true, AppLang.Create_successfully);
-            }
+
+            model.ModifiedTime = DateTime.UtcNow;
+            var filter = Builders<FileInfoModel>.Filter.Eq(x => x.Id, model.Id);
+            await _fileDataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
+            return (true, AppLang.Create_successfully);
         }
         catch (OperationCanceledException)
         {

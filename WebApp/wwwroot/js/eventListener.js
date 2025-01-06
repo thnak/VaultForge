@@ -1,5 +1,38 @@
 const assemblyName = 'WebApp.Client';
 
+window.eventListenerInterop = (() => {
+    const events = new Map();
+
+    function addEventListener(elementId, eventName, dotNetHelper, callbackMethod) {
+        const element = document.getElementById(elementId);
+        if (!element) {
+            console.warn(`Element not found: ${elementId}`);
+            return;
+        }
+
+        const key = `${elementId}:${eventName}`;
+        const callback = () => dotNetHelper.invokeMethodAsync(callbackMethod, key);
+
+        if (!events.has(key)) {
+            element.addEventListener(eventName, callback);
+            events.set(key, { element, eventName, callback });
+        }
+    }
+
+    function removeEventListener(elementId, eventName) {
+        const key = `${elementId}:${eventName}`;
+        const event = events.get(key);
+
+        if (event) {
+            event.element.removeEventListener(event.eventName, event.callback);
+            events.delete(key);
+        }
+    }
+
+    return { addEventListener, removeEventListener };
+})();
+
+
 window.deleteTemplateCache = () => {
     caches.keys().then(function (names) {
         for (let name of names) caches.delete(name);

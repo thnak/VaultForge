@@ -4,6 +4,64 @@ namespace WebApp.Client.Services.UserInterfaces;
 
 public class DocumentObjectModelEventListener : IDisposable
 {
+    private static readonly Dictionary<string, Func<Task>> RegisteredEvents = [];
+    private readonly IJSRuntime _jsRuntime;
+    private readonly DotNetObjectReference<DocumentObjectModelEventListener> _dotNetRef;
+    private readonly ILogger<DocumentObjectModelEventListener> _logger;
+
+    public DocumentObjectModelEventListener(IJSRuntime jsRuntime, ILogger<DocumentObjectModelEventListener> logger)
+    {
+        _jsRuntime = jsRuntime;
+        _dotNetRef = DotNetObjectReference.Create(this);
+        _logger = logger;
+    }
+
+
+    public async Task AddEventListenerAsync(string elementId, DomEventName eventName, Func<Task> callback)
+    {
+        string eventNameStr = eventName.ToString().ToLower(); // Convert enum to lowercase for JavaScript compatibility
+        string key = GenerateKey(elementId, eventNameStr);
+
+        // Add to the static dictionary
+        if (RegisteredEvents.TryAdd(key, callback))
+        {
+            await _jsRuntime.InvokeVoidAsync("eventListenerInterop.addEventListener", elementId, eventName, _dotNetRef, nameof(OnEventTriggered));
+        }
+        else
+        {
+            _logger.LogError($"Event {eventName} for element {elementId} is already registered.");
+        }
+    }
+
+    public async Task RemoveEventListenerAsync(string elementId, DomEventName eventName)
+    {
+        string eventNameStr = eventName.ToString().ToLower(); // Convert enum to lowercase for JavaScript compatibility
+        string key = GenerateKey(elementId, eventNameStr);
+
+        if (RegisteredEvents.Remove(key))
+        {
+            await _jsRuntime.InvokeVoidAsync("eventListenerInterop.removeEventListener", elementId, eventName);
+        }
+    }
+
+    [JSInvokable]
+    public static async Task OnEventTriggered(string key)
+    {
+        if (RegisteredEvents.TryGetValue(key, out var callback))
+        {
+            await callback();
+        }
+        else
+        {
+            Console.WriteLine($"No callback found for key: {key}");
+        }
+    }
+
+    private static string GenerateKey(string elementId, string eventName)
+    {
+        return $"{elementId}:{eventName}";
+    }
+
     public void Dispose()
     {
         ContextMenuClickedAsync = null;
@@ -333,4 +391,15 @@ public class DocumentObjectModelEventListener : IDisposable
     }
 
     #endregion
+}
+
+public enum DomEventName
+{
+    Click,
+    MouseOver,
+    MouseOut,
+    KeyDown,
+    KeyUp,
+    Change,
+    Input
 }
