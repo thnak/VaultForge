@@ -10,7 +10,8 @@ namespace BusinessModels.Base;
 [MessagePackObject]
 public class BaseModelEntry
 {
-    [BsonId] [Key(0)] [DatabaseGenerated(DatabaseGeneratedOption.Identity)] [JsonConverter(typeof(ObjectIdConverter))]
+    [BsonId] [Key(0)] [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
+    [JsonConverter(typeof(ObjectIdConverter))]
     public readonly ObjectId Id;
 
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]

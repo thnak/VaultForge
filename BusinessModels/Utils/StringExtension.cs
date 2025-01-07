@@ -104,7 +104,7 @@ public static class StringExtension
     {
         var options = new JsonSerializerOptions
         {
-            Converters = { new JsonDescriptionConverter<T>() },
+            Converters = { new JsonDescriptionConverter<T>(), new ObjectIdConverter() },
             WriteIndented = true
         };
         return JsonSerializer.Serialize(model, options);
@@ -116,7 +116,7 @@ public static class StringExtension
         {
             var options = new JsonSerializerOptions
             {
-                Converters = { new JsonDescriptionConverter<T>() },
+                Converters = { new JsonDescriptionConverter<T>(), new ObjectIdConverter() },
                 WriteIndented = true
             };
             return JsonSerializer.Deserialize<T>(source, options);

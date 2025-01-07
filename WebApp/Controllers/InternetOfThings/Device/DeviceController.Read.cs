@@ -62,6 +62,8 @@ public partial class DeviceController
             result.Add(de);
         }
 
+        result = [..result.DistinctBy(x => x.DeviceId)];
+
         var json = result.ToJson();
         return Content(json, MediaTypeNames.Application.Json);
     }
