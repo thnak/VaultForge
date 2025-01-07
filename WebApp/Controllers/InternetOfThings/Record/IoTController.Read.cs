@@ -103,7 +103,9 @@ public partial class IoTController
             records.Add(record);
         }
 
-        var arrayPool = ArrayPool<byte>.Create();
+        MemoryStream memoryStream = new MemoryStream();
+        Response.RegisterForDispose(memoryStream);
+        
         foreach (var batchErrorReport in records)
         {
             //Creating the CurrentDataRow
@@ -117,10 +119,9 @@ public partial class IoTController
                 continue;
             try
             {
-                var buffer = arrayPool.Rent((int)file.FileSize);
-                await raidService.ReadGetDataAsync(buffer, file.AbsolutePath, cancelToken);
-                var imageIndex = workbook.AddPicture(buffer, PictureType.JPEG);
-                arrayPool.Return(buffer);
+                memoryStream.SeekBeginOrigin();
+                await raidService.ReadGetDataAsync(memoryStream, file.AbsolutePath, cancelToken);
+                var imageIndex = workbook.AddPicture(memoryStream.ToArray(), PictureType.JPEG);
                 ICreationHelper helper = workbook.GetCreationHelper();
                 IDrawing drawing = sheet.CreateDrawingPatriarch();
                 IClientAnchor anchor = helper.CreateClientAnchor();
@@ -129,10 +130,11 @@ public partial class IoTController
                 IPicture picture = drawing.CreatePicture(anchor, imageIndex);
                 picture.Resize();
             }
-            finally
+            catch (Exception)
             {
-                rowIndex++;
+                //
             }
+            rowIndex++;
         }
 
         // Auto sized all the affected columns
@@ -150,7 +152,7 @@ public partial class IoTController
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
-            FileName = HttpUtility.UrlEncode($"Report {startTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)}-{endTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)}.xlsx"),
+            FileName = HttpUtility.UrlEncode($"Report {startTime.ToLocalTime():dd/MM/yy} {endTime.ToLocalTime():dd/MM/yy}.xlsx"),
             Inline = false, // false = prompt the user for downloading;  true = browser to try to show the file inline,
             CreationDate = now,
             ModificationDate = now,

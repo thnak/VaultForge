@@ -47,38 +47,93 @@ public partial class IoTController
     public async Task<IActionResult> AddImage([FromForm] string sensorId, [FromForm] IFormFile file, [FromForm] int? signalStrength, [FromForm] int? battery, [FromForm] int? chipTemp, [FromForm] DateTime? dateTime)
     {
         var cancelToken = HttpContext.RequestAborted;
-        await using var fileData = file.OpenReadStream();
-
-        var folder = folderServe.Get("", "/iotImage");
-
-        var fileInfo = new FileInfoModel()
+        try
         {
-            FileName = file.FileName,
-            ContentType = file.ContentType,
-            FileSize = file.Length,
-        };
-        var createFileResult = await folderServe.CreateFileAsync(folder!, fileInfo, cancelToken);
-        if (!createFileResult.Item1)
-            return BadRequest(createFileResult.Item2);
+            await using var fileData = file.OpenReadStream();
 
-        await raidService.WriteDataAsync(fileData, fileInfo.AbsolutePath, cancelToken);
-        IoTRecord record = new IoTRecord(new RecordMetadata()
-        {
-            SensorId = sensorId,
-            SensorData = 0,
-            SignalStrength = signalStrength ?? 0,
-            BatteryLevel = battery ?? 0,
-            OnChipTemperature = chipTemp ?? 0,
-            ImagePath = fileInfo.AliasCode,
-            RecordedAt = dateTime ?? DateTime.UtcNow,
-        });
-        var queueResult = await requestQueueHostedService.QueueRequest(record, cancelToken);
-        if (!queueResult)
-        {
-            await fileSystemServe.DeleteAsync(fileInfo.Id.ToString(), cancelToken);
-            logger.LogWarning($"{AppLang.Error_processing_request} {sensorId}");
+            var folder = folderServe.Get("", "/iotImage");
+
+            var fileInfo = new FileInfoModel()
+            {
+                FileName = file.FileName,
+                ContentType = file.ContentType,
+                FileSize = file.Length,
+            };
+            var createFileResult = await folderServe.CreateFileAsync(folder!, fileInfo, cancelToken);
+            if (!createFileResult.Item1)
+                return BadRequest(createFileResult.Item2);
+
+            await raidService.WriteDataAsync(fileData, fileInfo.AbsolutePath, cancelToken);
+            IoTRecord record = new IoTRecord(new RecordMetadata()
+            {
+                SensorId = sensorId,
+                SensorData = 0,
+                SignalStrength = signalStrength ?? 0,
+                BatteryLevel = battery ?? 0,
+                OnChipTemperature = chipTemp ?? 0,
+                ImagePath = fileInfo.AliasCode,
+                RecordedAt = dateTime ?? DateTime.UtcNow,
+            });
+            var queueResult = await requestQueueHostedService.QueueRequest(record, cancelToken);
+            if (!queueResult)
+            {
+                await fileSystemServe.DeleteAsync(fileInfo.Id.ToString(), cancelToken);
+                logger.LogWarning($"{AppLang.Error_processing_request} {sensorId}");
+            }
+
+            return Ok();
         }
+        catch (OperationCanceledException e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 
-        return Ok();
+    [HttpPost("add-many-image")]
+    public async Task<IActionResult> AddManyImage([FromForm] string sensorId, [FromForm] List<IFormFile> files, [FromForm] int? signalStrength, [FromForm] int? battery, [FromForm] int? chipTemp, [FromForm] DateTime? dateTime)
+    {
+        var cancelToken = HttpContext.RequestAborted;
+        try
+        {
+            foreach (var file in files)
+            {
+                await using var fileData = file.OpenReadStream();
+                var folder = folderServe.Get("", "/iotImage");
+
+                var fileInfo = new FileInfoModel()
+                {
+                    FileName = file.FileName,
+                    ContentType = file.ContentType,
+                    FileSize = file.Length,
+                };
+                var createFileResult = await folderServe.CreateFileAsync(folder!, fileInfo, cancelToken);
+                if (!createFileResult.Item1)
+                    return BadRequest(createFileResult.Item2);
+
+                await raidService.WriteDataAsync(fileData, fileInfo.AbsolutePath, cancelToken);
+                IoTRecord record = new IoTRecord(new RecordMetadata()
+                {
+                    SensorId = sensorId,
+                    SensorData = 0,
+                    SignalStrength = signalStrength ?? 0,
+                    BatteryLevel = battery ?? 0,
+                    OnChipTemperature = chipTemp ?? 0,
+                    ImagePath = fileInfo.AliasCode,
+                    RecordedAt = dateTime ?? DateTime.UtcNow,
+                });
+                var queueResult = await requestQueueHostedService.QueueRequest(record, cancelToken);
+                if (!queueResult)
+                {
+                    await fileSystemServe.DeleteAsync(fileInfo.Id.ToString(), cancelToken);
+                    logger.LogWarning($"{AppLang.Error_processing_request} {sensorId}");
+                }
+            }
+
+            return Ok();
+        }
+        catch (OperationCanceledException e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 }
