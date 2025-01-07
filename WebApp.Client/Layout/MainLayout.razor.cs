@@ -6,7 +6,7 @@ namespace WebApp.Client.Layout;
 
 public partial class MainLayout : IAsyncDisposable
 {
-    private bool _drawerOpen;
+    private bool _drawerOpen = true;
     public static object NavMenu { get; } = new();
     [CascadingParameter] private MudThemeProvider MudThemeProvider { get; set; } = default!;
     private readonly Dictionary<string, object?> _drawerAttribute = new() { { "id", Guid.NewGuid().ToString() } };

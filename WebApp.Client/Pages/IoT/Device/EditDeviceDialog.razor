@@ -15,7 +15,7 @@
     </TitleContent>
     <DialogContent>
 
-        <MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary" KeepPanelsAlive="true" @bind-ActivePanelIndex="ActivateIndex">
+        <MudTabs Elevation="4"  Centered="true" Color="@Color.Primary" KeepPanelsAlive="true" @bind-ActivePanelIndex="ActivateIndex">
             <MudTabPanel Text="@AppLang.Add_new_device">
                 <MudForm Model="DeviceToEdit" @ref="_form" Disabled="Processing" Validation="@(_orderValidator.ValidateValueAsync)" ValidationDelay="0">
 
