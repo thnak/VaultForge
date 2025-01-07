@@ -18,5 +18,5 @@ public interface IYoloInferenceService : IDisposable
     public Task<InferenceResult<List<YoloBoundingBox>>> AddInputAsync(Image<Rgb24> image, CancellationToken cancellationToken = default);
 
     Task RunAsync(CancellationToken cancellationToken);
-
+    Task RunOneAsync(CancellationToken cancellationToken);
 }

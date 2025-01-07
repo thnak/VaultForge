@@ -7,7 +7,7 @@ public class YoloSessionManagerHostedService(IYoloSessionManager sessionManager)
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var periodTimer = new PeriodicTimer(TimeSpan.FromSeconds(10));
+        var periodTimer = new PeriodicTimer(TimeSpan.FromSeconds(1));
         while (await periodTimer.WaitForNextTickAsync(stoppingToken))
         {
             sessionManager.CleanupExpiredSessions();

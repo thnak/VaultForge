@@ -266,25 +266,38 @@ public class YoloInferenceService : IYoloInferenceService
 
         while (!cancellationToken.IsCancellationRequested)
         {
-            while (buffer.Count < InputDimensions[0] && sw.Elapsed < _timeout)
-            {
-                if (_inputChannel.Reader.TryRead(out var item))
-                {
-                    buffer.Add(item);
-                }
-                else
-                {
-                    await Task.Delay(100, cancellationToken); // Small delay to prevent busy-waiting
-                }
-            }
+            await SelfRunOneAsync(sw, buffer, cancellationToken);
+        }
+    }
 
-            sw.Restart();
 
-            if (buffer.Count > 0)
+    public async Task RunOneAsync(CancellationToken cancellationToken)
+    {
+        var buffer = new List<(YoloInferenceServiceFeeder feeder, TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>> tcs)>();
+        var sw = Stopwatch.StartNew();
+        await SelfRunOneAsync(sw, buffer, cancellationToken);
+    }
+
+    private async Task SelfRunOneAsync(Stopwatch sw, List<(YoloInferenceServiceFeeder feeder, TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>> tcs)> buffer, CancellationToken cancellationToken)
+    {
+        while (buffer.Count < InputDimensions[0] && sw.Elapsed < _timeout)
+        {
+            if (_inputChannel.Reader.TryRead(out var item))
             {
-                ProcessBatchAsync(buffer);
-                buffer.Clear();
+                buffer.Add(item);
             }
+            else
+            {
+                await Task.Delay(100, cancellationToken); // Small delay to prevent busy-waiting
+            }
+        }
+
+        sw.Restart();
+
+        if (buffer.Count > 0)
+        {
+            ProcessBatchAsync(buffer);
+            buffer.Clear();
         }
     }
 

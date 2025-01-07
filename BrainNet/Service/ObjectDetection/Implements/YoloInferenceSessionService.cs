@@ -27,7 +27,7 @@ public class YoloInferenceSessionService : IYoloInferenceSessionService
 
     public Task RunAsync(CancellationToken cancellationToken)
     {
-        if (_yoloInferenceService != null) return _yoloInferenceService.RunAsync(cancellationToken);
+        if (_yoloInferenceService != null) return _yoloInferenceService.RunOneAsync(cancellationToken);
         return Task.CompletedTask;
     }
 
