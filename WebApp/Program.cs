@@ -38,12 +38,12 @@ public class Program
             options.Limits.MaxRequestBufferSize = long.MaxValue;
         });
 
-        // builder.Services.Configure<FormOptions>(options =>
-        // {
-        //     options.MultipartBodyLengthLimit = long.MaxValue;
-        //     options.MultipartBoundaryLengthLimit = int.MaxValue;
-        //     options.ValueLengthLimit = int.MaxValue;
-        // });
+        builder.Services.Configure<FormOptions>(options =>
+        {
+            options.MultipartBodyLengthLimit = long.MaxValue;
+            options.MultipartBoundaryLengthLimit = int.MaxValue;
+            options.ValueLengthLimit = int.MaxValue;
+        });
 
         builder.Services.AddFrontEndService();
         builder.Services.AddFrontEndScopeService();
