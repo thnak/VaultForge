@@ -9,6 +9,6 @@ public interface IYoloInferenceSessionService : IDisposable
 {
     void Initialize(Stream modelStream);
     bool IsExpired();
-    Task RunAsync(CancellationToken cancellationToken);
+    Task RunOneAsync(CancellationToken cancellationToken);
     Task<InferenceResult<List<YoloBoundingBox>>> AddInputAsync(Image<Rgb24> image, CancellationToken cancellationToken = default);
 }

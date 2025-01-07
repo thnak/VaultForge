@@ -11,7 +11,7 @@ public class YoloSessionManagerHostedService(IYoloSessionManager sessionManager)
         while (await periodTimer.WaitForNextTickAsync(stoppingToken))
         {
             sessionManager.CleanupExpiredSessions();
-            await sessionManager.RunAsync(stoppingToken);
+            await sessionManager.RunOneAsync(stoppingToken);
         }
     }
 }

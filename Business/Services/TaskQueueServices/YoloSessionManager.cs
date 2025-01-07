@@ -10,7 +10,7 @@ public interface IYoloSessionManager
     
     bool TryGetService(Guid userId, out IYoloInferenceSessionService? sessionService);
     Guid RegisterService(Stream modelStream);
-    Task RunAsync(CancellationToken cancellationToken = default);
+    Task RunOneAsync(CancellationToken cancellationToken = default);
 }
 
 public class YoloSessionManager : IYoloSessionManager
@@ -31,14 +31,14 @@ public class YoloSessionManager : IYoloSessionManager
         return userId;
     }
 
-    public async Task RunAsync(CancellationToken cancellationToken = default)
+    public async Task RunOneAsync(CancellationToken cancellationToken = default)
     {
         List<Task> tasks = new();
         foreach (var (_, session) in _sessions)
         {
             if (session != null && !session.IsExpired())
             {
-                tasks.Add(session.RunAsync(cancellationToken));
+                tasks.Add(session.RunOneAsync(cancellationToken));
             }
         }
         await Task.WhenAll(tasks);

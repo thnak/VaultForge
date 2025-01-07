@@ -34,6 +34,11 @@ public class WaterMeterInferenceService(ApplicationConfiguration configuration) 
         return YoloInferenceService.RunAsync(cancellationToken);
     }
 
+    public Task RunOneAsync(CancellationToken cancellationToken)
+    {
+        return YoloInferenceService.RunOneAsync(cancellationToken);
+    }
+
     public void Dispose()
     {
         YoloInferenceService.Dispose();
