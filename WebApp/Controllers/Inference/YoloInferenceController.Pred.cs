@@ -17,8 +17,8 @@ public partial class YoloInferenceController
     }
 
     [HttpPost("predict")]
-    [RequestSizeLimit(524288000 * 2)] // 500 MB limit
-    [RequestFormLimits(MultipartBodyLengthLimit = 524288000 * 2, ValueLengthLimit = 524288000 * 2)]
+    [RequestSizeLimit(long.MaxValue)] // 500 MB limit
+    [RequestFormLimits(MultipartBodyLengthLimit = long.MaxValue, ValueLengthLimit = int.MaxValue)]
     public async Task<IActionResult> Pred([FromForm] IFormFile file, [FromForm] string api)
     {
         Guid guid = Guid.Parse(api);
