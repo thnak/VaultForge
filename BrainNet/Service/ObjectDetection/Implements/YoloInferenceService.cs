@@ -52,11 +52,41 @@ public class YoloInferenceService : IYoloInferenceService
     private readonly int _singleInputLength;
     public SixLabors.Fonts.Font PrimaryFont;
 
+    #region -- init service --
+
     public YoloInferenceService(string modelPath, TimeSpan timeout, int maxQueueSize, int deviceIndex)
     {
         var sessionOption = InitSessionOption(deviceIndex);
         _session = new InferenceSession(modelPath, sessionOption);
-        // Options = new OptionsWrapper<BrainNetSettingModel>(settings);
+        InitializeSession();
+        InitCategory();
+        _runOptions = new();
+        PrimaryFont = _fontServiceProvider.CreateFont(FontFamily.RobotoRegular, 14, FontStyle.Regular);
+        _timeout = timeout;
+        var inputLength = 1;
+        for (int i = 0; i < InputDimensions.Length; i++)
+        {
+            inputLength *= InputDimensions[i];
+        }
+
+        _singleInputLength = inputLength / InputDimensions[0];
+        _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, (int)(maxQueueSize * 1.5));
+        _padAndRatiosArrayPool = ArrayPool<float>.Create(1, maxQueueSize * 2);
+        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength);
+
+        InputFeedBuffer = ArrayPool<float>.Shared.Rent(inputLength);
+        InferenceStates = _boolPool.Rent(InputDimensions[0]);
+        _inputChannel = Channel.CreateBounded<(YoloInferenceServiceFeeder feeder, TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>> tcs)>(
+            new BoundedChannelOptions(maxQueueSize)
+            {
+                FullMode = BoundedChannelFullMode.Wait // Wait when the channel is full
+            });
+    }
+
+    public YoloInferenceService(byte[] modelWeight, TimeSpan timeout, int maxQueueSize, int deviceIndex)
+    {
+        var sessionOption = InitSessionOption(deviceIndex);
+        _session = new InferenceSession(modelWeight, sessionOption);
         InitializeSession();
         InitCategory();
         _runOptions = new();
@@ -105,12 +135,14 @@ public class YoloInferenceService : IYoloInferenceService
         _padAndRatiosArrayPool = ArrayPool<float>.Create(1, options.Value.WaterSetting.MaxQueSize * 2);
         _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength);
         InputFeedBuffer = _singleFrameInputArrayPool.Rent(inputLength);
-        _inputChannel = Channel.CreateBounded<(YoloInferenceServiceFeeder feeder, 
+        _inputChannel = Channel.CreateBounded<(YoloInferenceServiceFeeder feeder,
             TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>> tcs)>(new BoundedChannelOptions(options.Value.WaterSetting.MaxQueSize)
         {
             FullMode = BoundedChannelFullMode.Wait // Wait when the channel is full
         });
     }
+
+    #endregion
 
 
     #region Init
@@ -297,7 +329,7 @@ public class YoloInferenceService : IYoloInferenceService
                 InferenceStates[batchResult.Key] = true;
             }
         }
-        
+
         for (int i = 0; i < batchSize; i++)
         {
             if (InferenceStates[i] == false)

@@ -45,8 +45,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update nav menu">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="multi file">
+      <change afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceSessionService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Interfaces/IYoloInferenceSessionService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/YoloSessionManagerHostedService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Business/Services/TaskQueueServices/YoloSessionManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/Controllers/Inference/YoloInferenceController.Pred.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/Controllers/Inference/YoloInferenceController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Utils/BusinessExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Utils/BusinessExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Authenticate/PersistentAuthenticationStateProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Authenticate/PersistentAuthenticationStateProvider.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -182,9 +191,12 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff56e9dabec8513a52b6f0caca4a8979301377a3ae924a82a78d3c3dfd001c/TextOptions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/Utils/StringExtension.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Layout/MainLayout.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/Controllers/InternetOfThings/Device/DeviceController.Read.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -1009,31 +1021,7 @@
       <workItem from="1736057897995" duration="18724000" />
       <workItem from="1736124408401" duration="18851000" />
       <workItem from="1736174091098" duration="5130000" />
-      <workItem from="1736211330004" duration="4913000" />
-    </task>
-    <task id="LOCAL-00576" summary="batch now working good">
-      <option name="closed" value="true" />
-      <created>1735880971642</created>
-      <option name="number" value="00576" />
-      <option name="presentableId" value="LOCAL-00576" />
-      <option name="project" value="LOCAL" />
-      <updated>1735880971642</updated>
-    </task>
-    <task id="LOCAL-00577" summary="do not wait">
-      <option name="closed" value="true" />
-      <created>1735898870982</created>
-      <option name="number" value="00577" />
-      <option name="presentableId" value="LOCAL-00577" />
-      <option name="project" value="LOCAL" />
-      <updated>1735898870982</updated>
-    </task>
-    <task id="LOCAL-00578" summary="update logic, add log">
-      <option name="closed" value="true" />
-      <created>1735912789203</created>
-      <option name="number" value="00578" />
-      <option name="presentableId" value="LOCAL-00578" />
-      <option name="project" value="LOCAL" />
-      <updated>1735912789203</updated>
+      <workItem from="1736211330004" duration="15319000" />
     </task>
     <task id="LOCAL-00579" summary="add chunk">
       <option name="closed" value="true" />
@@ -1403,7 +1391,31 @@
       <option name="project" value="LOCAL" />
       <updated>1736215822910</updated>
     </task>
-    <option name="localTasksCounter" value="625" />
+    <task id="LOCAL-00625" summary="distine same search result">
+      <option name="closed" value="true" />
+      <created>1736220455368</created>
+      <option name="number" value="00625" />
+      <option name="presentableId" value="LOCAL-00625" />
+      <option name="project" value="LOCAL" />
+      <updated>1736220455368</updated>
+    </task>
+    <task id="LOCAL-00626" summary="small update">
+      <option name="closed" value="true" />
+      <created>1736220796322</created>
+      <option name="number" value="00626" />
+      <option name="presentableId" value="LOCAL-00626" />
+      <option name="project" value="LOCAL" />
+      <updated>1736220796322</updated>
+    </task>
+    <task id="LOCAL-00627" summary="multi file">
+      <option name="closed" value="true" />
+      <created>1736225543788</created>
+      <option name="number" value="00627" />
+      <option name="presentableId" value="LOCAL-00627" />
+      <option name="project" value="LOCAL" />
+      <updated>1736225543788</updated>
+    </task>
+    <option name="localTasksCounter" value="628" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1434,8 +1446,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="limit access to post-process step" />
-    <MESSAGE value="add limit" />
     <MESSAGE value="allow more parallel task" />
     <MESSAGE value="remove cache when it was not usable" />
     <MESSAGE value="add dialog" />
@@ -1457,9 +1467,11 @@
     <MESSAGE value="update eventListener.js" />
     <MESSAGE value="remove auto render mode" />
     <MESSAGE value="fix read image issue" />
-    <MESSAGE value="small update" />
     <MESSAGE value="update nav menu" />
-    <option name="LAST_COMMIT_MESSAGE" value="update nav menu" />
+    <MESSAGE value="distine same search result" />
+    <MESSAGE value="small update" />
+    <MESSAGE value="multi file" />
+    <option name="LAST_COMMIT_MESSAGE" value="multi file" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

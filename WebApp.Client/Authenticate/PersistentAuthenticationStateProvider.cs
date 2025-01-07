@@ -18,9 +18,9 @@ public class PersistentAuthenticationStateProvider : AuthenticationStateProvider
 
         List<Claim> claims =
         [
-            new Claim(ClaimTypes.NameIdentifier, userInfo.UserName),
-            new Claim(ClaimTypes.Name, userInfo.UserName),
-            new Claim(ClaimTypes.Email, userInfo.Email)
+            new (ClaimTypes.NameIdentifier, userInfo.UserName),
+            new (ClaimTypes.Name, userInfo.UserName),
+            new (ClaimTypes.Email, userInfo.Email)
         ];
         claims.AddRange(userInfo.Roles.Select(x => new Claim(ClaimTypes.Role, x)));
 

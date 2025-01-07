@@ -6,6 +6,7 @@ using Business.Business.Interfaces.InternetOfThings;
 using Business.Business.Repositories.InternetOfThings;
 using Business.Services.HostedServices.IoT;
 using Business.Services.OnnxService.WaterMeter;
+using Business.Services.TaskQueueServices;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.Business.Utils;
@@ -17,8 +18,10 @@ public static class BusinessExtension
         serviceCollection.AddSingleton<IIotRequestQueue, IotRequestQueue>();
         serviceCollection.AddSingleton<IWaterMeterReaderQueue, WaterMeterReaderQueue>();
         serviceCollection.AddSingleton<IWaterMeterInferenceService, WaterMeterInferenceService>();
+        serviceCollection.AddSingleton<IYoloSessionManager, YoloSessionManager>();
         serviceCollection.AddHostedService<IoTRequestQueueHostedService>();
         serviceCollection.AddHostedService<WaterMeterInferenceHostedService>();
+        serviceCollection.AddHostedService<YoloSessionManagerHostedService>();
     }
 
     public static async Task<List<SearchScore<VectorRecord>>> RagSearch(this ConcurrentDictionary<string, IInMemoryVectorDb> vectorDictionary, string query, int count, CancellationToken cancellationToken = default)
