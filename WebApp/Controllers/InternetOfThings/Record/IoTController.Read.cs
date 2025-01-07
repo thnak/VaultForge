@@ -104,7 +104,7 @@ public partial class IoTController
         }
 
         MemoryStream memoryStream = new MemoryStream();
-        Response.RegisterForDispose(memoryStream);
+        Response.RegisterForDisposeAsync(memoryStream);
         
         foreach (var batchErrorReport in records)
         {
@@ -119,7 +119,7 @@ public partial class IoTController
                 continue;
             try
             {
-                memoryStream.SeekBeginOrigin();
+                memoryStream.SetLength(0);
                 await raidService.ReadGetDataAsync(memoryStream, file.AbsolutePath, cancelToken);
                 var imageIndex = workbook.AddPicture(memoryStream.ToArray(), PictureType.JPEG);
                 ICreationHelper helper = workbook.GetCreationHelper();
@@ -147,7 +147,7 @@ public partial class IoTController
         MemoryStream ms = new MemoryStream();
         Response.RegisterForDisposeAsync(ms);
 
-        workbook.Write(ms);
+        workbook.Write(ms, true);
         ms.Seek(0, SeekOrigin.Begin);
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
