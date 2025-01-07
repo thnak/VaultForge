@@ -34,6 +34,8 @@ public partial class YoloInferenceController
                 Response.RegisterForDispose(resultImage);
 
                 MemoryStream ms = new();
+                Response.RegisterForDispose(ms);
+                
                 await resultImage.SaveAsPngAsync(ms);
                 ms.Seek(0, SeekOrigin.Begin);
                 return new FileStreamResult(ms, "image/png");
