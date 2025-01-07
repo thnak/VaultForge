@@ -7,6 +7,7 @@ using BusinessModels.Converter;
 using BusinessModels.Resources;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Services;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Options;
 using WebApp.Authenticate;
 using WebApp.Client.Services;
@@ -36,6 +37,13 @@ public class Program
             options.Limits.MinRequestBodyDataRate = null;
             options.Limits.MaxRequestBufferSize = long.MaxValue;
         });
+
+        // builder.Services.Configure<FormOptions>(options =>
+        // {
+        //     options.MultipartBodyLengthLimit = long.MaxValue;
+        //     options.MultipartBoundaryLengthLimit = int.MaxValue;
+        //     options.ValueLengthLimit = int.MaxValue;
+        // });
 
         builder.Services.AddFrontEndService();
         builder.Services.AddFrontEndScopeService();

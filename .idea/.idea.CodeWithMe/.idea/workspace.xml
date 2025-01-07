@@ -45,7 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="append file size limit">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
@@ -1012,15 +1012,7 @@
       <workItem from="1736057897995" duration="18724000" />
       <workItem from="1736124408401" duration="18851000" />
       <workItem from="1736174091098" duration="5130000" />
-      <workItem from="1736211330004" duration="19013000" />
-    </task>
-    <task id="LOCAL-00583" summary="small update">
-      <option name="closed" value="true" />
-      <created>1735922713034</created>
-      <option name="number" value="00583" />
-      <option name="presentableId" value="LOCAL-00583" />
-      <option name="project" value="LOCAL" />
-      <updated>1735922713035</updated>
+      <workItem from="1736211330004" duration="19737000" />
     </task>
     <task id="LOCAL-00584" summary="add bulk update for record">
       <option name="closed" value="true" />
@@ -1406,7 +1398,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736244852916</updated>
     </task>
-    <option name="localTasksCounter" value="632" />
+    <task id="LOCAL-00632" summary="update bullshit">
+      <option name="closed" value="true" />
+      <created>1736246147198</created>
+      <option name="number" value="00632" />
+      <option name="presentableId" value="LOCAL-00632" />
+      <option name="project" value="LOCAL" />
+      <updated>1736246147198</updated>
+    </task>
+    <option name="localTasksCounter" value="633" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1437,7 +1437,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="parallel update" />
     <MESSAGE value="fix wrong value for large batch size" />
     <MESSAGE value="root being too large" />
     <MESSAGE value="small fix" />
@@ -1462,7 +1461,8 @@
     <MESSAGE value="finish service" />
     <MESSAGE value="dispose unused resource" />
     <MESSAGE value="append file size limit" />
-    <option name="LAST_COMMIT_MESSAGE" value="append file size limit" />
+    <MESSAGE value="update bullshit" />
+    <option name="LAST_COMMIT_MESSAGE" value="update bullshit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

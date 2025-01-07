@@ -18,7 +18,7 @@ public partial class YoloInferenceController
 
     [HttpPost("predict")]
     [RequestSizeLimit(524288000 * 2)] // 500 MB limit
-    [RequestFormLimits(MultipartBodyLengthLimit = 524288000 * 2)]
+    [RequestFormLimits(MultipartBodyLengthLimit = 524288000 * 2, ValueLengthLimit = 524288000 * 2)]
     public async Task<IActionResult> Pred([FromForm] IFormFile file, [FromForm] string api)
     {
         Guid guid = Guid.Parse(api);
@@ -37,7 +37,7 @@ public partial class YoloInferenceController
 
                 MemoryStream ms = new();
                 Response.RegisterForDispose(ms);
-                
+
                 await resultImage.SaveAsPngAsync(ms);
                 ms.Seek(0, SeekOrigin.Begin);
                 return new FileStreamResult(ms, "image/png");
