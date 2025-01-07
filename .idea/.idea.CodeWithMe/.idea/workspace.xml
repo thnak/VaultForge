@@ -45,17 +45,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="multi file">
-      <change afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceSessionService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Interfaces/IYoloInferenceSessionService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/YoloSessionManagerHostedService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Business/Services/TaskQueueServices/YoloSessionManager.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/Controllers/Inference/YoloInferenceController.Pred.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/Controllers/Inference/YoloInferenceController.cs" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add new service">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Utils/BusinessExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Utils/BusinessExtension.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Authenticate/PersistentAuthenticationStateProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Authenticate/PersistentAuthenticationStateProvider.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1021,15 +1012,7 @@
       <workItem from="1736057897995" duration="18724000" />
       <workItem from="1736124408401" duration="18851000" />
       <workItem from="1736174091098" duration="5130000" />
-      <workItem from="1736211330004" duration="15319000" />
-    </task>
-    <task id="LOCAL-00579" summary="add chunk">
-      <option name="closed" value="true" />
-      <created>1735913486331</created>
-      <option name="number" value="00579" />
-      <option name="presentableId" value="LOCAL-00579" />
-      <option name="project" value="LOCAL" />
-      <updated>1735913486331</updated>
+      <workItem from="1736211330004" duration="16128000" />
     </task>
     <task id="LOCAL-00580" summary="wait it">
       <option name="closed" value="true" />
@@ -1415,7 +1398,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736225543788</updated>
     </task>
-    <option name="localTasksCounter" value="628" />
+    <task id="LOCAL-00628" summary="add new service">
+      <option name="closed" value="true" />
+      <created>1736237626500</created>
+      <option name="number" value="00628" />
+      <option name="presentableId" value="LOCAL-00628" />
+      <option name="project" value="LOCAL" />
+      <updated>1736237626500</updated>
+    </task>
+    <option name="localTasksCounter" value="629" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1446,7 +1437,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="allow more parallel task" />
     <MESSAGE value="remove cache when it was not usable" />
     <MESSAGE value="add dialog" />
     <MESSAGE value="prevent escape error, fix wrong collection name" />
@@ -1471,7 +1461,8 @@
     <MESSAGE value="distine same search result" />
     <MESSAGE value="small update" />
     <MESSAGE value="multi file" />
-    <option name="LAST_COMMIT_MESSAGE" value="multi file" />
+    <MESSAGE value="add new service" />
+    <option name="LAST_COMMIT_MESSAGE" value="add new service" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

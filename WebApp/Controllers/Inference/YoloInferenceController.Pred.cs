@@ -1,7 +1,9 @@
 ﻿using BrainNet.Service.ObjectDetection;
 using Microsoft.AspNetCore.Mvc;
+using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using FontFamily = BrainNet.Service.Font.Model.FontFamily;
 
 namespace WebApp.Controllers.Inference;
 
@@ -14,18 +16,30 @@ public partial class YoloInferenceController
         return Ok(key.ToString());
     }
 
-    // [HttpPost("predict")]
-    // public async Task<IActionResult> Pred([FromForm] IFormFile file, [FromForm] string api)
-    // {
-    //     Guid guid = Guid.Parse(api);
-    //     using var image = await Image.LoadAsync<Rgb24>(file.OpenReadStream());
-    //     if (yoloSessionManager.TryGetService(guid, out var service))
-    //     {
-    //         var predictResult = await service!.AddInputAsync(image);
-    //         if (predictResult.IsSuccess)
-    //         {
-    //             // image.PlotImage(service.fo)
-    //         }
-    //     }
-    // }
+    [HttpPost("predict")]
+    public async Task<IActionResult> Pred([FromForm] IFormFile file, [FromForm] string api)
+    {
+        Guid guid = Guid.Parse(api);
+        var image = await Image.LoadAsync<Rgb24>(file.OpenReadStream());
+
+        Response.RegisterForDispose(image);
+
+        if (yoloSessionManager.TryGetService(guid, out var service))
+        {
+            var predictResult = await service!.AddInputAsync(image);
+            if (predictResult.IsSuccess)
+            {
+                var font = fontServiceProvider.CreateFont(FontFamily.RobotoRegular, 12, FontStyle.Regular);
+                var resultImage = image.PlotImage(font, predictResult.Value);
+                Response.RegisterForDispose(resultImage);
+
+                MemoryStream ms = new();
+                await resultImage.SaveAsPngAsync(ms);
+                ms.Seek(0, SeekOrigin.Begin);
+                return new FileStreamResult(ms, "image/png");
+            }
+        }
+
+        return BadRequest("Not found service by key");
+    }
 }
