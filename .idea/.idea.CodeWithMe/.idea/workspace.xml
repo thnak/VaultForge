@@ -45,7 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="finish service">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="dispose unused resource">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
@@ -1012,15 +1012,7 @@
       <workItem from="1736057897995" duration="18724000" />
       <workItem from="1736124408401" duration="18851000" />
       <workItem from="1736174091098" duration="5130000" />
-      <workItem from="1736211330004" duration="17351000" />
-    </task>
-    <task id="LOCAL-00581" summary="memory leak">
-      <option name="closed" value="true" />
-      <created>1735917975000</created>
-      <option name="number" value="00581" />
-      <option name="presentableId" value="LOCAL-00581" />
-      <option name="project" value="LOCAL" />
-      <updated>1735917975000</updated>
+      <workItem from="1736211330004" duration="18188000" />
     </task>
     <task id="LOCAL-00582" summary="small update">
       <option name="closed" value="true" />
@@ -1406,7 +1398,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736238564826</updated>
     </task>
-    <option name="localTasksCounter" value="630" />
+    <task id="LOCAL-00630" summary="dispose unused resource">
+      <option name="closed" value="true" />
+      <created>1736240945243</created>
+      <option name="number" value="00630" />
+      <option name="presentableId" value="LOCAL-00630" />
+      <option name="project" value="LOCAL" />
+      <updated>1736240945243</updated>
+    </task>
+    <option name="localTasksCounter" value="631" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1437,7 +1437,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="add dialog" />
     <MESSAGE value="prevent escape error, fix wrong collection name" />
     <MESSAGE value="parallel update" />
     <MESSAGE value="fix wrong value for large batch size" />
@@ -1462,7 +1461,8 @@
     <MESSAGE value="multi file" />
     <MESSAGE value="add new service" />
     <MESSAGE value="finish service" />
-    <option name="LAST_COMMIT_MESSAGE" value="finish service" />
+    <MESSAGE value="dispose unused resource" />
+    <option name="LAST_COMMIT_MESSAGE" value="dispose unused resource" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
