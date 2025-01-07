@@ -5,15 +5,15 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
 using MudBlazor.Services;
-using WebApp.Client.Components.ConfirmDialog;
 using WebApp.Client.Models;
+using WebApp.Client.Utils;
 
 namespace WebApp.Client;
 
 public partial class Routes(ILogger<Routes> logger) : ComponentBase, IDisposable
 {
     private Guid ResizeId { get; set; }
-
+    private string PreviousPathGroup  { get; set; } = string.Empty;
     public void Dispose()
     {
         CustomStateContainer.OnChangedAsync -= OnChangedAsync;
@@ -53,10 +53,6 @@ public partial class Routes(ILogger<Routes> logger) : ComponentBase, IDisposable
 
     private async Task<bool> ScrollToReloadEventAsync()
     {
-        var option = new DialogOptions()
-        {
-            MaxWidth = MaxWidth.Small,
-        };
         var dataModel = new DialogConfirmDataModel()
         {
             TitleIcon = "fa-solid fa-rotate-right",
@@ -68,13 +64,8 @@ public partial class Routes(ILogger<Routes> logger) : ComponentBase, IDisposable
                 builder.CloseElement();
             }
         };
-        var param = new DialogParameters<ConfirmDialog>()
-        {
-            { x => x.DataModel, dataModel }
-        };
-        var dialog = await DialogService.ShowAsync<ConfirmDialog>(AppLang.Reload, param, option);
-        var dialogResult = await dialog.Result;
-        if (dialogResult is { Canceled: false })
+      
+        if (await DialogService.OpenConfirmDialogAsync(AppLang.Reload, dataModel))
         {
             return true;
         }

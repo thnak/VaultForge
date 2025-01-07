@@ -45,7 +45,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/NavMenu/Drive/DriveNavMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/NavMenu/Drive/DriveNavMenu.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Device/DeviceManagementPage.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Routes.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Routes.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Routes.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Routes.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Utils/DialogServiceExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Utils/DialogServiceExtensions.cs" afterDir="false" />
+    </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
@@ -1007,14 +1016,7 @@
       <workItem from="1736057897995" duration="18724000" />
       <workItem from="1736124408401" duration="18851000" />
       <workItem from="1736174091098" duration="5130000" />
-    </task>
-    <task id="LOCAL-00574" summary="small update">
-      <option name="closed" value="true" />
-      <created>1735838388453</created>
-      <option name="number" value="00574" />
-      <option name="presentableId" value="LOCAL-00574" />
-      <option name="project" value="LOCAL" />
-      <updated>1735838388453</updated>
+      <workItem from="1736211330004" duration="3431000" />
     </task>
     <task id="LOCAL-00575" summary="small update">
       <option name="closed" value="true" />
@@ -1400,7 +1402,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736184840636</updated>
     </task>
-    <option name="localTasksCounter" value="623" />
+    <task id="LOCAL-00623" summary="small update">
+      <option name="closed" value="true" />
+      <created>1736212285622</created>
+      <option name="number" value="00623" />
+      <option name="presentableId" value="LOCAL-00623" />
+      <option name="project" value="LOCAL" />
+      <updated>1736212285623</updated>
+    </task>
+    <option name="localTasksCounter" value="624" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1452,11 +1462,11 @@
     <MESSAGE value="rollback to disk" />
     <MESSAGE value="remove unmaintainable code" />
     <MESSAGE value="add listener" />
-    <MESSAGE value="small update" />
     <MESSAGE value="update eventListener.js" />
     <MESSAGE value="remove auto render mode" />
     <MESSAGE value="fix read image issue" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix read image issue" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

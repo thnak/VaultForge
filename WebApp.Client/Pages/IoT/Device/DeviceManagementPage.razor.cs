@@ -101,19 +101,8 @@ public partial class DeviceManagementPage(ILogger<DeviceManagementPage> logger) 
                 TitleIcon = "fa-solid fa-triangle-exclamation",
                 Color = Color.Error
             };
-            var option = new DialogOptions
-            {
-                MaxWidth = MaxWidth.Small,
-                FullWidth = true
-            };
-            var parameter = new DialogParameters<ConfirmDialog>
-            {
-                { x => x.DataModel, data }
-            };
 
-            var dialog = await DialogService.ShowAsync<ConfirmDialog>(LangDict[AppLang.Warning], parameter, option);
-            var dialogResult = await dialog.Result;
-            if (dialogResult is { Canceled: false })
+            if (await DialogService.OpenConfirmDialogAsync(LangDict[AppLang.Warning], data))
             {
                 var response = await ApiService.DeleteAsync<string>($"/api/device/delete-device?deviceId={device.DeviceId}");
                 if (response.IsSuccessStatusCode)
@@ -142,17 +131,11 @@ public partial class DeviceManagementPage(ILogger<DeviceManagementPage> logger) 
         AllowRendering = true;
         try
         {
-            var option = new DialogOptions
-            {
-                MaxWidth = MaxWidth.Small,
-                FullWidth = true,
-                BackgroundClass = "blur-3"
-            };
             var param = new DialogParameters<EditDeviceDialog>
             {
                 { x => x.Device, device }
             };
-            var dialog = await DialogService.ShowAsync<EditDeviceDialog>("", param, option);
+            var dialog = await DialogService.ShowAsync<EditDeviceDialog>(device == null ? AppLang.Add_new_device : AppLang.Edit, param, DialogServiceExtensions.ConfirmDialogOptionsLarge);
             var dialogResult = await dialog.Result;
             if (dialogResult is { Canceled: false, Data: bool status })
             {

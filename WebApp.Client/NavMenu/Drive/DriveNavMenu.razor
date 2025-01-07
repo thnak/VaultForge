@@ -1,10 +1,19 @@
-<MudNavGroup Title="Drive" Expanded>
-    <MudNavLink Href="@PageRoutes.Home.Root.Src">@AppLang.Home_page</MudNavLink>
-    <MudNavLink Href="@PageRoutes.Drive.Index.Src">@AppLang.My_Drive</MudNavLink>
-    <MudNavLink Href="@DeletedPrivate">@AppLang.Recycle_bin</MudNavLink>
+<MudNavMenu Bordered="true" Margin="Margin.Dense" Rounded="true">
 
-    <MudNavLink Href="@PageRoutes.Drive.Shared.Src">@AppLang.Community</MudNavLink>
-    <MudNavLink Href="@DeletedShared">@AppLang.Recycle_bin</MudNavLink>
-    <MudNavLink Href="/counter">Counter</MudNavLink>
+    <MudText Typo="Typo.h6" Class="px-4">Drive</MudText>
+    <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">manage your own drive</MudText>
+    <MudDivider Class="my-2" />
+    
+    <MudNavGroup Title="Drive" Expanded>
 
-</MudNavGroup>
+        <MudNavLink Href="@PageRoutes.Home.Root.Src">@AppLang.Home_page</MudNavLink>
+        <MudNavLink Href="@PageRoutes.Drive.Index.Src">@AppLang.My_Drive</MudNavLink>
+        <MudNavLink Href="@DeletedPrivate">@AppLang.Recycle_bin</MudNavLink>
+
+        <MudNavLink Href="@PageRoutes.Drive.Shared.Src">@AppLang.Community</MudNavLink>
+        <MudNavLink Href="@DeletedShared">@AppLang.Recycle_bin</MudNavLink>
+        <MudNavLink Href="/counter">Counter</MudNavLink>
+
+    </MudNavGroup>
+
+</MudNavMenu>

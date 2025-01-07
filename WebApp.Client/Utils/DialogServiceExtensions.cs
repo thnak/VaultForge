@@ -9,11 +9,20 @@ namespace WebApp.Client.Utils;
 
 public static class DialogServiceExtensions
 {
-    private static readonly DialogOptions ConfirmDialogOptions = new()
+    public static readonly DialogOptions ConfirmDialogOptionsSmall = new()
     {
         MaxWidth = MaxWidth.Small,
-        FullWidth = true
+        FullWidth = true,
+        BackgroundClass = "blur-3"
     };
+
+    public static readonly DialogOptions ConfirmDialogOptionsLarge = new()
+    {
+        MaxWidth = MaxWidth.Large,
+        FullWidth = true,
+        BackgroundClass = "blur-3"
+    };
+
 
     /// <summary>
     /// Open confirm dialog
@@ -36,7 +45,7 @@ public static class DialogServiceExtensions
                 }
             }
         };
-        var dialog = await dialogService.ShowAsync<ConfirmDialog>(title, param, ConfirmDialogOptions);
+        var dialog = await dialogService.ShowAsync<ConfirmDialog>(title, param, ConfirmDialogOptionsSmall);
         var dialogResult = await dialog.Result;
         if (dialogResult is { Canceled: false })
         {
@@ -52,7 +61,7 @@ public static class DialogServiceExtensions
         {
             { x => x.DataModel, dataModel }
         };
-        var dialog = await dialogService.ShowAsync<ConfirmDialog>(title, param, ConfirmDialogOptions);
+        var dialog = await dialogService.ShowAsync<ConfirmDialog>(title, param, ConfirmDialogOptionsSmall);
         var dialogResult = await dialog.Result;
         if (dialogResult is { Canceled: false })
         {
@@ -83,7 +92,7 @@ public static class DialogServiceExtensions
             { x => x.TitleIcon, icon },
             { x => x.TitleIconColor, titleIcoColor }
         };
-        var dialog = await dialogService.ShowAsync<ConfirmWithFieldDialog>(title, dialogParam, ConfirmDialogOptions);
+        var dialog = await dialogService.ShowAsync<ConfirmWithFieldDialog>(title, dialogParam, ConfirmDialogOptionsSmall);
         var dialogResult = await dialog.Result;
         if (dialogResult is { Canceled: false, Data: string newName })
         {
@@ -102,6 +111,6 @@ public static class DialogServiceExtensions
             { x => x.Title, title },
             { x => x.Icon, icon }
         };
-        await dialogService.ShowAsync<ShowImageDialog>(title, dialogParam, ConfirmDialogOptions);
+        await dialogService.ShowAsync<ShowImageDialog>(title, dialogParam, ConfirmDialogOptionsSmall);
     }
 }

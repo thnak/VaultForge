@@ -8,20 +8,23 @@
 
     private Task Navigating(NavigationContext arg)
     {
-        if (arg.Path.StartsWith(PageRoutes.Drive.Name[1..]))
+        if (arg.Path.StartsWith(PageRoutes.Drive.Name[1..]) && PreviousPathGroup != PageRoutes.Drive.Name[1..])
         {
+            PreviousPathGroup = PageRoutes.Drive.Name[1..];
             NavBar = @<DriveNavMenu/>;
             return Task.CompletedTask;
         }
 
-        if (arg.Path.StartsWith(PageRoutes.ContentCreator.Name[1..]))
+        if (arg.Path.StartsWith(PageRoutes.ContentCreator.Name[1..]) && PreviousPathGroup != PageRoutes.ContentCreator.Name[1..])
         {
+            PreviousPathGroup = PageRoutes.ContentCreator.Name[1..];
             NavBar = @<ContentManagementNavMenu/>;
             return Task.CompletedTask;
         }
 
-        if (arg.Path.StartsWith(PageRoutes.InternetOfThings.Name[1..]))
+        if (arg.Path.StartsWith(PageRoutes.InternetOfThings.Name[1..]) && PreviousPathGroup != PageRoutes.InternetOfThings.Name[1..])
         {
+            PreviousPathGroup = PageRoutes.InternetOfThings.Name[1..];
             NavBar = @<IoTNavGroup/>;
             return Task.CompletedTask;
         }

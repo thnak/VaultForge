@@ -12,14 +12,13 @@
 <div class="page-content-container">
 
     <MudDataGrid @ref="_dataGrid" T="PageModel" ServerData="ServerReload" Height="calc(100vh - var(--mud-appbar-height) - 115px)"
-                 ReadOnly="true" FixedHeader="true"
+                 ReadOnly="true" FixedHeader="true" Virtualize="true"
                  Filterable="false" Dense="true" Bordered="true" Culture="CultureInfo.CurrentCulture" Hover="true" Striped="true">
         <ToolBarContent>
             <MudText Typo="Typo.h6">@AppLang.DeviceManagement</MudText>
             <MudSpacer/>
 
             <div class="d-flex flex-row gap-3">
-
                 <div class="page-content-container-search-field-width">
                     <MudAutocomplete T="string" @bind-Value="DeviceSearchString" Placeholder="@AppLang.Search_device" SearchFunc="@SearchDevice"
                                      Adornment="Adornment.Start" Margin="Margin.Dense" Variant="Variant.Outlined"
