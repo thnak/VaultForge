@@ -34,7 +34,7 @@ public class Program
             options.AddServerHeader = false;
             options.Limits.MaxRequestBodySize = long.MaxValue;
             options.Limits.MinRequestBodyDataRate = null;
-            options.Limits.MaxRequestBufferSize = 1024 * 1024 * 1024;
+            options.Limits.MaxRequestBufferSize = long.MaxValue;
         });
 
         builder.Services.AddFrontEndService();
