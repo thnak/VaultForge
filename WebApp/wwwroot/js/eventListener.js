@@ -3,7 +3,7 @@ const assemblyName = 'WebApp.Client';
 window.eventListenerInterop = (() => {
     const events = new Map();
 
-    function addEventListener(elementId, eventName, dotNetHelper, callbackMethod) {
+    function addEventListener(elementId, eventName, dotNetHelper, callbackMethod, preventDefault = false) {
         const element = document.getElementById(elementId);
         if (!element) {
             console.warn(`Element not found: ${elementId}`);
@@ -11,8 +11,12 @@ window.eventListenerInterop = (() => {
         }
 
         const key = `${elementId}:${eventName}`;
-        const callback = () => dotNetHelper.invokeMethodAsync(callbackMethod, key);
-
+        const callback = (event) => {
+            if (preventDefault) {
+                event.preventDefault();
+            }
+            dotNetHelper.invokeMethodAsync(callbackMethod, key);
+        };
         if (!events.has(key)) {
             element.addEventListener(eventName, callback);
             events.set(key, { element, eventName, callback });

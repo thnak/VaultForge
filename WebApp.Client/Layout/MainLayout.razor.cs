@@ -15,17 +15,21 @@ public partial class MainLayout : IAsyncDisposable
     {
         if (firstRender)
         {
-            await EventListener.AddEventListenerAsync(_drawerAttribute["id"]!.ToString()!, DomEventName.Click, DrawerToggle);
+            await EventListener.AddEventListenerAsync(_drawerAttribute["id"]!.ToString()!, DomEventName.Click, DrawerHover);
         }
 
         await base.OnAfterRenderAsync(firstRender);
     }
 
+    private Task DrawerHover()
+    {
+        return Task.CompletedTask;
+    }
+
     private Task DrawerToggle()
     {
-        // _drawerOpen = !_drawerOpen;
-        // return InvokeAsync(StateHasChanged);
-        return Task.CompletedTask;
+        _drawerOpen = !_drawerOpen;
+        return InvokeAsync(StateHasChanged);
     }
 
     public async ValueTask DisposeAsync()

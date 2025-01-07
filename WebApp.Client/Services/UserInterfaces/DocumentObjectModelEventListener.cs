@@ -17,7 +17,7 @@ public class DocumentObjectModelEventListener : IDisposable
     }
 
 
-    public ValueTask AddEventListenerAsync(string elementId, DomEventName eventName, Func<Task> callback)
+    public ValueTask AddEventListenerAsync(string elementId, DomEventName eventName, Func<Task> callback, bool preventDefault = false)
     {
         string eventNameStr = eventName.ToString().ToLower(); // Convert enum to lowercase for JavaScript compatibility
         string key = GenerateKey(elementId, eventNameStr);
@@ -27,7 +27,7 @@ public class DocumentObjectModelEventListener : IDisposable
         {
             try
             {
-                return _jsRuntime.InvokeVoidAsync("eventListenerInterop.addEventListener", elementId, eventNameStr, _dotNetRef, nameof(OnEventTriggeredEventListener));
+                return _jsRuntime.InvokeVoidAsync("eventListenerInterop.addEventListener", elementId, eventNameStr, _dotNetRef, nameof(OnEventTriggeredEventListener), preventDefault);
             }
             catch (JSDisconnectedException e)
             {
@@ -39,10 +39,11 @@ public class DocumentObjectModelEventListener : IDisposable
             _logger.LogError($"Event {eventNameStr} for element {elementId} is already registered.");
             return ValueTask.CompletedTask;
         }
+
         return ValueTask.CompletedTask;
     }
 
-    public  ValueTask RemoveEventListenerAsync(string elementId, DomEventName eventName)
+    public ValueTask RemoveEventListenerAsync(string elementId, DomEventName eventName)
     {
         string eventNameStr = eventName.ToString().ToLower(); // Convert enum to lowercase for JavaScript compatibility
         string key = GenerateKey(elementId, eventNameStr);
@@ -59,6 +60,7 @@ public class DocumentObjectModelEventListener : IDisposable
             _logger.LogError(e, e.Message);
             return ValueTask.FromException(e);
         }
+
         return ValueTask.CompletedTask;
     }
 
@@ -409,11 +411,28 @@ public class DocumentObjectModelEventListener : IDisposable
 
 public enum DomEventName
 {
+    // Mouse events
     Click,
+    DblClick,
     MouseOver,
     MouseOut,
+    MouseEnter,
+    MouseLeave,
+
+    // Keyboard events
     KeyDown,
     KeyUp,
+
+    // Form events
     Change,
-    Input
+    Input,
+    Submit,
+
+    // Focus events
+    Focus,
+    Blur,
+
+    // Window events
+    Resize,
+    ContextMenu
 }

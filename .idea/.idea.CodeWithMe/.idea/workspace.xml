@@ -45,7 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="remove auto render mode" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
@@ -1006,15 +1006,7 @@
       <workItem from="1736013978809" duration="15562000" />
       <workItem from="1736057897995" duration="18724000" />
       <workItem from="1736124408401" duration="18851000" />
-      <workItem from="1736174091098" duration="4445000" />
-    </task>
-    <task id="LOCAL-00573" summary="fix wrong input shape">
-      <option name="closed" value="true" />
-      <created>1735837813419</created>
-      <option name="number" value="00573" />
-      <option name="presentableId" value="LOCAL-00573" />
-      <option name="project" value="LOCAL" />
-      <updated>1735837813419</updated>
+      <workItem from="1736174091098" duration="5130000" />
     </task>
     <task id="LOCAL-00574" summary="small update">
       <option name="closed" value="true" />
@@ -1400,7 +1392,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736179126567</updated>
     </task>
-    <option name="localTasksCounter" value="622" />
+    <task id="LOCAL-00622" summary="fix read image issue">
+      <option name="closed" value="true" />
+      <created>1736184840635</created>
+      <option name="number" value="00622" />
+      <option name="presentableId" value="LOCAL-00622" />
+      <option name="project" value="LOCAL" />
+      <updated>1736184840636</updated>
+    </task>
+    <option name="localTasksCounter" value="623" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1431,7 +1431,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="refactor, using allocated pool array" />
     <MESSAGE value="optimize code" />
     <MESSAGE value="limit access to post-process step" />
     <MESSAGE value="add limit" />
@@ -1456,7 +1455,8 @@
     <MESSAGE value="small update" />
     <MESSAGE value="update eventListener.js" />
     <MESSAGE value="remove auto render mode" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove auto render mode" />
+    <MESSAGE value="fix read image issue" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix read image issue" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
