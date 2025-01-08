@@ -1,4 +1,5 @@
 ﻿using BusinessModels.System.InternetOfThings;
+using WebApp.Client.Utils;
 
 namespace WebApp.Client.Pages;
 
@@ -45,6 +46,9 @@ public partial class Weather(ILogger<Weather> logger)
     {
         var m = new IoTDevice() { DeviceId = Guid.NewGuid().ToString() };
         var result = await IotDeviceIndexedDbService.AddItemAsync(DbName, StoreName, m);
-        ToastService.ShowInfo(result.Message);
+        ToastService.ShowInfo(result.Message, TypeClassList.ToastDefaultSetting);
+
+        var getResult = await IotDeviceIndexedDbService.GetItemAsync(DbName, StoreName, m.DeviceId);
+        ToastService.ShowSuccess(getResult.Message);
     }
 }
