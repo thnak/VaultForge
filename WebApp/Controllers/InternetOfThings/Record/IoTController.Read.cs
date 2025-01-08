@@ -126,10 +126,12 @@ public partial class IoTController
                 IDrawing drawing = sheet.CreateDrawingPatriarch();
                 IClientAnchor anchor = helper.CreateClientAnchor();
                 anchor.Col1 = 4; //0 index based column
+                anchor.Col2 = 4;
                 anchor.Row1 = rowIndex; //0 index based row
+                anchor.Row2 = rowIndex;
                 IPicture picture = drawing.CreatePicture(anchor, imageIndex);
                 picture.Resize();
-                
+                picture.Resize(0.1);
             }
             catch (Exception)
             {
