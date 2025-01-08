@@ -19,7 +19,7 @@ public class IndexedDbService<T> : UpgradeCallbackHandler, IIndexedDbService<T> 
     private readonly string _keyPath;
     private DotNetObjectReference<IndexedDbService<T>>? _dotNetRef;
 
-    public IndexedDbService(IJSRuntime jsRuntime) : base(null)
+    public IndexedDbService(IJSRuntime jsRuntime, ILogger<IIndexedDbService<T>> logger) : base(logger)
     {
         _jsRuntime = jsRuntime ?? throw new ArgumentNullException(nameof(jsRuntime));
 
@@ -38,11 +38,11 @@ public class IndexedDbService<T> : UpgradeCallbackHandler, IIndexedDbService<T> 
     {
         try
         {
-            _callback += upgradeCallback;
+            Callback += upgradeCallback;
             _dotNetRef = DotNetObjectReference.Create(this);
             // Initialize the IndexedDB store (you'll need to pass the upgrade handler to the JS runtime)
             await _jsRuntime.InvokeVoidAsync("indexedDbHelper.createStore", dbName, storeName, version, _keyPath, _dotNetRef);
-
+        
             return Result<bool>.Success(true);
         }
         catch (JSException ex)
@@ -93,13 +93,13 @@ public class IndexedDbService<T> : UpgradeCallbackHandler, IIndexedDbService<T> 
     public void Dispose()
     {
         _dotNetRef?.Dispose();
-        _callback = null;
+        Callback = null;
     }
 }
 
-public class UpgradeCallbackHandler(Func<int, int, Task>? callback)
+public class UpgradeCallbackHandler(ILogger logger)
 {
-    public Func<int, int, Task>? _callback = callback ?? throw new ArgumentNullException(nameof(callback));
+    public Func<int, int, Task>? Callback;
 
     // Constructor accepts the callback function
 
@@ -110,16 +110,16 @@ public class UpgradeCallbackHandler(Func<int, int, Task>? callback)
         try
         {
             // Ensure the callback is not null before calling
-            if (_callback != null)
+            if (Callback != null)
             {
                 // Call the callback with the old and new versions
-                await _callback(oldVersion, newVersion);
+                await Callback(oldVersion, newVersion);
             }
         }
         catch (Exception ex)
         {
             // Handle any errors that occur during the callback
-            Console.Error.WriteLine($"Error in UpgradeCallbackHandler.Invoke: {ex.Message}");
+            logger.LogError($"Error in UpgradeCallbackHandler.Invoke: {ex.Message}");
         }
     }
 }

@@ -41,9 +41,10 @@ public partial class Weather(ILogger<Weather> logger)
         }
     }
 
-    private Task AddNewItem()
+    private async Task AddNewItem()
     {
         var m = new IoTDevice() { DeviceId = Guid.NewGuid().ToString() };
-        return IotDeviceIndexedDbService.AddItemAsync(DbName, StoreName, m);
+        var result = await IotDeviceIndexedDbService.AddItemAsync(DbName, StoreName, m);
+        ToastService.ShowInfo(result.Message);
     }
 }
