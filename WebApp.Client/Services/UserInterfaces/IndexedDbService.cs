@@ -31,7 +31,7 @@ public class IndexedDbService<T> : UpgradeCallbackHandler, IIndexedDbService<T> 
             throw new InvalidOperationException($"No property in {typeof(T).Name} is marked with [IndexedDbKey].");
         }
 
-        _keyPath = keyProperty.Name;
+        _keyPath = char.ToLower(keyProperty.Name[0]) + keyProperty.Name.Substring(1);
     }
 
     public async Task<Result<bool>> CreateStoreAsync(string dbName, string storeName, int version, Func<int, int, Task>? upgradeCallback = null)

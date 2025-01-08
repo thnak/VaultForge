@@ -45,9 +45,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add new service">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/IndexedDbService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/IndexedDbService.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1019,15 +1018,8 @@
       <workItem from="1736174091098" duration="5130000" />
       <workItem from="1736211330004" duration="19737000" />
       <workItem from="1736258934054" duration="6261000" />
-      <workItem from="1736296545109" duration="12158000" />
-    </task>
-    <task id="LOCAL-00594" summary="limit this fucking shit to prevent OOM">
-      <option name="closed" value="true" />
-      <created>1735987682503</created>
-      <option name="number" value="00594" />
-      <option name="presentableId" value="LOCAL-00594" />
-      <option name="project" value="LOCAL" />
-      <updated>1735987682503</updated>
+      <workItem from="1736296545109" duration="12535000" />
+      <workItem from="1736310627877" duration="464000" />
     </task>
     <task id="LOCAL-00595" summary="refactor, using allocated pool array">
       <option name="closed" value="true" />
@@ -1413,7 +1405,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736308975008</updated>
     </task>
-    <option name="localTasksCounter" value="643" />
+    <task id="LOCAL-00643" summary="small update">
+      <option name="closed" value="true" />
+      <created>1736309538228</created>
+      <option name="number" value="00643" />
+      <option name="presentableId" value="LOCAL-00643" />
+      <option name="project" value="LOCAL" />
+      <updated>1736309538228</updated>
+    </task>
+    <option name="localTasksCounter" value="644" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1453,7 +1453,6 @@
     <MESSAGE value="fix read image issue" />
     <MESSAGE value="update nav menu" />
     <MESSAGE value="distine same search result" />
-    <MESSAGE value="small update" />
     <MESSAGE value="multi file" />
     <MESSAGE value="finish service" />
     <MESSAGE value="dispose unused resource" />
@@ -1469,7 +1468,8 @@
     <MESSAGE value="do not encode file name" />
     <MESSAGE value="auto close menu" />
     <MESSAGE value="add new service" />
-    <option name="LAST_COMMIT_MESSAGE" value="add new service" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
