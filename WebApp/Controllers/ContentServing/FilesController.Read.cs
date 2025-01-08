@@ -89,7 +89,7 @@ public partial class FilesController
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
-            FileName = HttpUtility.UrlEncode(file.FileName),
+            FileName = file.FileName,
             Inline = true, // false = prompt the user for downloading;  true = browser to try to show the file inline,
             CreationDate = now,
             ModificationDate = now,

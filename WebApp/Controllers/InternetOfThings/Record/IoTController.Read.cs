@@ -153,7 +153,7 @@ public partial class IoTController
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
-            FileName = HttpUtility.UrlEncode($"Report {startTime.ToLocalTime():dd/MM/yy} {endTime.ToLocalTime():dd/MM/yy}.xlsx"),
+            FileName = $"Report {startTime.ToLocalTime():dd/MM/yy} {endTime.ToLocalTime():dd/MM/yy}.xlsx",
             Inline = false, // false = prompt the user for downloading;  true = browser to try to show the file inline,
             CreationDate = now,
             ModificationDate = now,
