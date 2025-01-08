@@ -1,7 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
 <MudLayout Style="@("background-color:var(--mud-palette-background-grey)")">
-    <AppBar HandleDrawerOpen="@DrawerToggle"/>
+    <AppBar HandleDrawerOpen="@DrawerToggle" AppBarAttributes="@_appbarAttribute"/>
     <MudDrawer Anchor="Anchor.Start"
                @bind-Open="@_drawerOpen"
                Breakpoint="Breakpoint.Xxl"

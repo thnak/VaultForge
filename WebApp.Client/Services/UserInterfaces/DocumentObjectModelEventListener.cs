@@ -29,14 +29,14 @@ public class DocumentObjectModelEventListener : IDisposable
             {
                 return _jsRuntime.InvokeVoidAsync("eventListenerInterop.addEventListener", elementId, eventNameStr, _dotNetRef, nameof(OnEventTriggeredEventListener), preventDefault);
             }
-            catch (JSDisconnectedException e)
+            catch (JSDisconnectedException)
             {
-                _logger.LogError(e, e.Message);
+                //
             }
         }
         else
         {
-            _logger.LogError($"Event {eventNameStr} for element {elementId} is already registered.");
+            _logger.LogWarning($"Event {eventNameStr} for element {elementId} is already registered.");
             return ValueTask.CompletedTask;
         }
 
@@ -57,8 +57,7 @@ public class DocumentObjectModelEventListener : IDisposable
         }
         catch (JSDisconnectedException e)
         {
-            _logger.LogError(e, e.Message);
-            return ValueTask.FromException(e);
+            return ValueTask.CompletedTask;
         }
 
         return ValueTask.CompletedTask;

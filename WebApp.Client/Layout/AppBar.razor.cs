@@ -11,6 +11,7 @@ public partial class AppBar : ComponentBase, IDisposable
     internal static object TopBarSection3 = new();
     internal static object TopBarSectionN = new();
     [Parameter] public EventCallback HandleDrawerOpen { get; set; }
+    [Parameter] public Dictionary<string, object?> AppBarAttributes { get; set; } = new(); 
     private Dictionary<string, object?> MenuBarButtonAttribute => new() { { "aria-label", "nav menu button" } };
 
     private Color OnLineColor { get; set; } = Color.Success;
