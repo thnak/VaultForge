@@ -40,4 +40,6 @@ public enum ErrorType
     /// Permission denid
     /// </summary>
     PermissionDenied,
+    
+    JavaScriptError
 }

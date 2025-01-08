@@ -1,4 +1,5 @@
-﻿using BusinessModels.Base;
+﻿using BusinessModels.Attribute;
+using BusinessModels.Base;
 using MessagePack;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -8,6 +9,7 @@ namespace BusinessModels.People;
 public class UserModel : BaseModelEntry
 {
     [Key(3)]
+    [IndexedDbKey]
     public string UserName { get; set; } = string.Empty;
 
     [Key(4)]

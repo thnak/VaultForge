@@ -33,6 +33,7 @@
 @using BlazorWorker.WorkerBackgroundService
 @using BlazorWorker.Core
 @using Blazored.Toast.Configuration
+@using BusinessModels.System.InternetOfThings
 @using WebApp.Client.Authenticate
 
 
@@ -45,6 +46,7 @@
 
 @inject StateContainer CustomStateContainer
 @inject DocumentObjectModelEventListener EventListener
+@inject IIndexedDbService<IoTDevice> IotDeviceIndexedDbService
 @inject BaseHttpClientService ApiService
 @inject IJSRuntime JsRuntime
 @inject IStringLocalizer<AppLang> LangDict

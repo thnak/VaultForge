@@ -3,6 +3,7 @@ using ApexCharts;
 using Blazored.Toast;
 using BlazorWorker.Core;
 using BusinessModels.Converter;
+using BusinessModels.System.InternetOfThings;
 using MudBlazor;
 using MudBlazor.Services;
 using WebApp.Client.Services.UserInterfaces;
@@ -60,6 +61,7 @@ public static class FrontEnd
     {
         service.AddScoped<StateContainer>();
         service.AddScoped<DocumentObjectModelEventListener>();
+        service.AddScoped<IIndexedDbService<IoTDevice>, IndexedDbService<IoTDevice>>();
         service.AddScoped<IWorkerFactory, WorkerFactory>();
 
         return service;
@@ -74,6 +76,8 @@ public static class FrontEnd
     {
         service.AddSingleton<StateContainer>();
         service.AddSingleton<DocumentObjectModelEventListener>();
+        service.AddSingleton<IIndexedDbService<IoTDevice>, IndexedDbService<IoTDevice>>();
+
         return service;
     }
 }

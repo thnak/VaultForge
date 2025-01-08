@@ -45,7 +45,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="auto close menu">
+      <change afterPath="$PROJECT_DIR$/BusinessModels/Attribute/IndexedDbKeyAttribute.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Weather.razor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/IndexedDbService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/wwwroot/js/indexedDbHelper.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Utils/SearchEngineExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Utils/SearchEngineExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/General/Results/ErrorType.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/General/Results/ErrorType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/People/UserModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/People/UserModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Weather.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Weather.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/FrontEnd.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/FrontEnd.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/_Imports.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/_Imports.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Components/App.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Components/App.razor" afterDir="false" />
+    </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
@@ -60,8 +75,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -129,6 +144,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/39cb14863af59eed60d689c68e4b3aedc7eaa1e544187bc5a84933d314b719/ValueTuple.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3b77eb95a5c127467d81a024e610c2498b68e2e375d1b36a2076e41f9166a4/DateTime.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3c13bcf2472e33fbd9b71675dd1d838142686d7a4f62aafb458d93deb4794/AbstractValidator.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3ceb35a1fb1e998ce2b8cfa585907e5bec6851b0d478db7381ff566d997cd/IndexableFieldType.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3dd3992f2bc1dcaea84e579f94d8ebea25ac8ee7bbdc81978df19e5af51013fe/Font.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4bdc23b362859dd5c654fe11a179d9d623138f746e57c534861e29f65bb1/FontFamily.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4d6b99bacfc12eaebf321ec7f41797ea958521c92bdfac8e98fea119acc4f2/Filled.cs" root0="FORCE_HIGHLIGHTING" />
@@ -138,6 +154,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/55f44cf26c4f8a472241f32786a20f211d7e1ed80801eceac2a40539086141d/MemoryExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/57334938c37984ed44dcd0b3e1ff22984d161fa9fc6c7161a38d29e3e85eb6/HttpHeaderParser.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5a21f73be9e2671c3cf5a490cac2d792fa4d215ab83d8de89af7916f8d08179/ComponentBase.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5eb342285c931cbe11264b8de89f50b733919f7cdc6b39593e348b6fdf7ea70/Field.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5eecc2d22de68b16cb5f68b3e333591fc6c5f58cfc4185587e5dfe96213947/IMongoIndexManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/611eff977ba21ad25be53ce7d7387c4517e0e8a27abce4d6a91998e8b538135/ProviderOptions.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6354a7b35d7821629924d3676acd7e67a6f7f94343e0e66ec439aa2bd6ed5/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
@@ -150,10 +167,13 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/82422ecdc3616eb5e45fac1bced9eeae8afd44bea38139f7bb911f06d4eef/DrawTextExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/85aa322377ce0ee541dec91b77afdee928c7e3c4356f79fcfe1e9be67a1f/ImageFormatManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/86d5b2bdb5124d72b98b9ea98c7d07c6ca31a1995fab1b3f9b9c897a9ca563b/StringContent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/89b182f53cb492723e67e073e6c1ec03e9d14748c7e398c2e828bf0784df/FieldInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8a8a7c52b4b5e4ee92c9fed29affe5d381cc817f69216bef50b2c6e5c37f1e60/VectorStoreRecordKeyProperty.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8aea1acf66aa7281536dcb5d21d64b334a8611ef2c02ec5abfcd32d4f36a7/IndexableField.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/94161852baae3b22ea67ddc433a083544b7e81baecce9c3e294c1bcbff3f4dee/DenseTensor.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/948394a61fad115d827d4d89402087c31bc6fb51eaf74a396884f5708d153f/ExclusiveConnectionPool.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9769f0874b89d9a174c39e6c977aef6d979daefa49c7f3c239ef268493ea12/SemaphoreSlim.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9d6392d7da29b5663aaca22910d8ca5b62351bd1a786350db41d3b3688d194c/Document.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a387f56e0a254d6432b1c7dad82cf164131bf4cae191042f96133f70bfc2/SessionOptions.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b27e716cf9d53122a9e9a2da043a0702f3bb0e2ca1e2a5fc750e2a443586cf/GridState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bd1d5c50194fea68ff3559c160230b0ab50f5acf4ce3061bffd6d62958e2182/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
@@ -178,6 +198,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f77be22079eb1bdddcd5dbcd5df7fecbed559688b86a491da2be84d9f269191/StringValues.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fd5df964a94a255455f7b077e863af646a024518fa7703879230fff599b192/OrtIoBinding.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fe3b1716bf2f8f83ac793e7e3faa60f88a7868347653f77591f74b86d0d97675/Server.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fed1875a1a5324c32b9124faa83bc4a7e9aa99238c2fdc47764dec459fc11034/StringField.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff56e9dabec8513a52b6f0caca4a8979301377a3ae924a82a78d3c3dfd001c/TextOptions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
@@ -1010,30 +1031,7 @@
       <workItem from="1736174091098" duration="5130000" />
       <workItem from="1736211330004" duration="19737000" />
       <workItem from="1736258934054" duration="6261000" />
-    </task>
-    <task id="LOCAL-00590" summary="small update">
-      <option name="closed" value="true" />
-      <created>1735975786633</created>
-      <option name="number" value="00590" />
-      <option name="presentableId" value="LOCAL-00590" />
-      <option name="project" value="LOCAL" />
-      <updated>1735975786633</updated>
-    </task>
-    <task id="LOCAL-00591" summary="remove bullshit shared array">
-      <option name="closed" value="true" />
-      <created>1735977499091</created>
-      <option name="number" value="00591" />
-      <option name="presentableId" value="LOCAL-00591" />
-      <option name="project" value="LOCAL" />
-      <updated>1735977499091</updated>
-    </task>
-    <task id="LOCAL-00592" summary="debug">
-      <option name="closed" value="true" />
-      <created>1735978826492</created>
-      <option name="number" value="00592" />
-      <option name="presentableId" value="LOCAL-00592" />
-      <option name="project" value="LOCAL" />
-      <updated>1735978826492</updated>
+      <workItem from="1736296545109" duration="11146000" />
     </task>
     <task id="LOCAL-00593" summary="try debug">
       <option name="closed" value="true" />
@@ -1403,7 +1401,31 @@
       <option name="project" value="LOCAL" />
       <updated>1736266137438</updated>
     </task>
-    <option name="localTasksCounter" value="639" />
+    <task id="LOCAL-00639" summary="update column size">
+      <option name="closed" value="true" />
+      <created>1736297673290</created>
+      <option name="number" value="00639" />
+      <option name="presentableId" value="LOCAL-00639" />
+      <option name="project" value="LOCAL" />
+      <updated>1736297673291</updated>
+    </task>
+    <task id="LOCAL-00640" summary="do not encode file name">
+      <option name="closed" value="true" />
+      <created>1736297859302</created>
+      <option name="number" value="00640" />
+      <option name="presentableId" value="LOCAL-00640" />
+      <option name="project" value="LOCAL" />
+      <updated>1736297859302</updated>
+    </task>
+    <task id="LOCAL-00641" summary="auto close menu">
+      <option name="closed" value="true" />
+      <created>1736299087991</created>
+      <option name="number" value="00641" />
+      <option name="presentableId" value="LOCAL-00641" />
+      <option name="project" value="LOCAL" />
+      <updated>1736299087991</updated>
+    </task>
+    <option name="localTasksCounter" value="642" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1434,9 +1456,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="move to new lucene version" />
-    <MESSAGE value="fix missing content type" />
-    <MESSAGE value="optimize" />
     <MESSAGE value="update logic" />
     <MESSAGE value="rollback to disk" />
     <MESSAGE value="remove unmaintainable code" />
@@ -1459,7 +1478,10 @@
     <MESSAGE value="small update to get more session" />
     <MESSAGE value="ne name fix wrong implement" />
     <MESSAGE value="leave the file open" />
-    <option name="LAST_COMMIT_MESSAGE" value="leave the file open" />
+    <MESSAGE value="update column size" />
+    <MESSAGE value="do not encode file name" />
+    <MESSAGE value="auto close menu" />
+    <option name="LAST_COMMIT_MESSAGE" value="auto close menu" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

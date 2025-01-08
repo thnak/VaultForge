@@ -1,4 +1,5 @@
-﻿using BusinessModels.Base;
+﻿using BusinessModels.Attribute;
+using BusinessModels.Base;
 using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings.status;
@@ -13,6 +14,7 @@ namespace BusinessModels.System.InternetOfThings;
 
 public class IoTDevice : BaseModelEntry
 {
+    [IndexedDbKey]
     public string DeviceId { get; set; } = string.Empty;
     public string DeviceName { get; set; } = string.Empty;
     public string DeviceGroupId { get; set; } = string.Empty;
