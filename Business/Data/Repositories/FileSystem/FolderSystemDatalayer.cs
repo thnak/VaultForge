@@ -3,7 +3,6 @@ using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.FileSystem;
 using Business.Data.Interfaces.User;
-using Business.Models;
 using Business.Utils;
 using Business.Utils.ExpressionExtensions;
 using Business.Utils.Protector;

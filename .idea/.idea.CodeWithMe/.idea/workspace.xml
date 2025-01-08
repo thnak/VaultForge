@@ -45,10 +45,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="lower case first value">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Interfaces/FileSystem/IFolderSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Interfaces/FileSystem/IFolderSystemDatalayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/People/UserInfoModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/People/UserInfoModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Read.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Read.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -191,6 +197,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff56e9dabec8513a52b6f0caca4a8979301377a3ae924a82a78d3c3dfd001c/TextOptions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/Repositories/User/UserDataLayer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
@@ -1022,15 +1029,8 @@
       <workItem from="1736258934054" duration="6261000" />
       <workItem from="1736296545109" duration="12535000" />
       <workItem from="1736310627877" duration="2069000" />
-      <workItem from="1736327464717" duration="1997000" />
-    </task>
-    <task id="LOCAL-00596" summary="optimize code">
-      <option name="closed" value="true" />
-      <created>1736012647862</created>
-      <option name="number" value="00596" />
-      <option name="presentableId" value="LOCAL-00596" />
-      <option name="project" value="LOCAL" />
-      <updated>1736012647863</updated>
+      <workItem from="1736327464717" duration="2070000" />
+      <workItem from="1736349150751" duration="1189000" />
     </task>
     <task id="LOCAL-00597" summary="limit access to post-process step">
       <option name="closed" value="true" />
@@ -1416,7 +1416,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736311428034</updated>
     </task>
-    <option name="localTasksCounter" value="645" />
+    <task id="LOCAL-00645" summary="that tupid">
+      <option name="closed" value="true" />
+      <created>1736333214306</created>
+      <option name="number" value="00645" />
+      <option name="presentableId" value="LOCAL-00645" />
+      <option name="project" value="LOCAL" />
+      <updated>1736333214306</updated>
+    </task>
+    <option name="localTasksCounter" value="646" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1447,7 +1455,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="rollback to disk" />
     <MESSAGE value="remove unmaintainable code" />
     <MESSAGE value="add listener" />
     <MESSAGE value="update eventListener.js" />
@@ -1472,7 +1479,8 @@
     <MESSAGE value="add new service" />
     <MESSAGE value="small update" />
     <MESSAGE value="lower case first value" />
-    <option name="LAST_COMMIT_MESSAGE" value="lower case first value" />
+    <MESSAGE value="that tupid" />
+    <option name="LAST_COMMIT_MESSAGE" value="that tupid" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

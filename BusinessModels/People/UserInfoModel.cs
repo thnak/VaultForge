@@ -37,7 +37,7 @@ public class UserInfoModel
     [BsonElement("2")] [Key(2)] public string Department { get; set; } = string.Empty;
     [BsonElement("3")] [Key(3)] public string Email { get; set; } = string.Empty;
     [BsonElement("4")] [Key(4)] public string Company { get; set; } = string.Empty;
-    [BsonElement("5")] [Key(5)] public string UserName { get; set; } = "Anonymous";
+    [BsonElement("5")] [Key(5)] public string UserName { get; set; } = string.Empty;
     [BsonElement("6")] [Key(6)] public List<string> Roles { get; set; } = new();
     [BsonElement("7")] [Key(7)] public List<string> RoleGroups { get; set; } = new();
 

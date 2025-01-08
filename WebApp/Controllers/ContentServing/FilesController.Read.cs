@@ -1,5 +1,4 @@
 ﻿using System.Net.Mime;
-using System.Web;
 using Business.Data.StorageSpace;
 using Business.Utils.Protector;
 using BusinessModels.General.EnumModel;
@@ -25,7 +24,7 @@ public partial class FilesController
     {
         var cancelToken = HttpContext.RequestAborted;
 
-        var anonymousUser = "Anonymous".ComputeSha256Hash();
+        var anonymousUser = "".ComputeSha256Hash();
 
         var rootWallpaperFolder = folderServe.Get(anonymousUser, "/root/wallpaper");
         if (rootWallpaperFolder == null)
@@ -282,12 +281,12 @@ public partial class FilesController
         return PhysicalFile(file.AbsolutePath, file.ContentType, true);
     }
 
-    [HttpPost("{username}/get-folder")]
+    [HttpPost("get-folder")]
     [AllowAnonymous]
     [IgnoreAntiforgeryToken]
     [OutputCache(Duration = 10)]
     [ResponseCache(Duration = 50)]
-    public async Task<IActionResult> GetSharedFolder(string username, [FromForm] string? id, [FromForm] string? password,
+    public async Task<IActionResult> GetSharedFolder([FromForm]string username, [FromForm] string? id, [FromForm] string? password,
         [FromForm] int page, [FromForm] int pageSize, [FromForm] string? contentTypes, [FromForm] bool? forceReLoad)
     {
         var cancelToken = HttpContext.RequestAborted;

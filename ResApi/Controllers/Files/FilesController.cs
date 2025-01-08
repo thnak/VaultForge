@@ -47,7 +47,7 @@ public class FilesController(
     {
         var cancelToken = HttpContext.RequestAborted;
 
-        var anonymousUser = "Anonymous".ComputeSha256Hash();
+        var anonymousUser = "".ComputeSha256Hash();
 
         var rootWallpaperFolder = folderServe.Get(anonymousUser, "/root/wallpaper");
         if (rootWallpaperFolder == null)

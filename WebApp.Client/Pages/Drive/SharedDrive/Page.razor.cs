@@ -390,17 +390,14 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         formData.Add(new StringContent(forceReload.ToJson()), "forceReLoad");
 
         var authentication = await PersistentAuthenticationStateService.GetAuthenticationStateAsync();
-        string useName;
+        string useName = string.Empty;
         if (Navigation.Uri.EndsWith(PageRoutes.Drive.Index.Src))
         {
             useName = authentication.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
         }
-        else
-        {
-            useName = "Anonymous";
-        }
 
-        var responseMessage = await baseClientService.PostAsync<FolderRequest>(isDeletedPage ? "/api/files/get-deleted-content" : $"/api/Files/{useName}/get-folder", formData);
+        formData.Add(new StringContent(useName), "username");
+        var responseMessage = await baseClientService.PostAsync<FolderRequest>(isDeletedPage ? "/api/files/get-deleted-content" : $"/api/Files/get-folder", formData);
         if (responseMessage.IsSuccessStatusCode)
         {
             var folder = responseMessage.Data;
@@ -599,7 +596,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     {
         Loading = true;
         await Render();
-      
+
         var dialogResult = await DialogService.OpenTextFieldDialog(AppLang.ReName, AppLang.FileName, oldName, Icons.Material.Filled.FilePresent, Color.Primary);
         if (dialogResult is { IsSuccess: true, Value: { } newName })
         {

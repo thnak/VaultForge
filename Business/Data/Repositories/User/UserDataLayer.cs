@@ -2,7 +2,6 @@ using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.User;
-using Business.Models;
 using Business.Utils;
 using Business.Utils.Protector;
 using BusinessModels.General.Results;
@@ -53,7 +52,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
                     logger.LogError(result.Message);
             }
 
-            defaultUser = "Anonymous".ComputeSha256Hash();
+            defaultUser = "".ComputeSha256Hash();
             system = Get(defaultUser);
             if (system == null)
             {
@@ -170,18 +169,17 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
     {
         try
         {
-            var filter = Builders<UserModel>.Filter.Eq(x => x.UserName, key.ComputeSha256Hash());
-            filter |= Builders<UserModel>.Filter.Eq(x => x.UserName, key);
+            var filter = Builders<UserModel>.Filter.Eq(x => x.UserName, key);
             var result = _dataDb.Find(filter).Limit(1).FirstOrDefault();
             return result;
         }
         catch (OperationCanceledException)
         {
-            return default;
+            return null;
         }
         catch (MongoException)
         {
-            return default;
+            return null;
         }
     }
 
@@ -328,7 +326,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
 
     public UserModel GetAnonymous()
     {
-        return Get("Anonymous")!;
+        return Get("".ComputeSha256Hash())!;
     }
 
     public void Dispose()

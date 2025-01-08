@@ -343,11 +343,10 @@ internal class FolderSystemBusinessLayer(
             var res = CreateAsync(folder).Result;
             if (res.IsSuccess)
             {
-                userService.UpdateAsync(user);
                 return Get(folder.Id.ToString());
             }
 
-            return default;
+            return null;
         }
 
         return folder;
@@ -620,7 +619,7 @@ internal class FolderSystemBusinessLayer(
 
         var m3U8Files = Directory.GetFiles(outputDir, "playlist.m3u8", SearchOption.AllDirectories).ToArray();
 
-        var rootVideoFolder = Get("Anonymous", "/root/Videos");
+        var rootVideoFolder = Get("".ComputeSha256Hash(), "/root/Videos");
 
         if (rootVideoFolder == null)
         {
@@ -930,7 +929,7 @@ internal class FolderSystemBusinessLayer(
     /// <returns></returns>
     public UserModel? GetUser(string? username)
     {
-        if (string.IsNullOrEmpty(username)) username = "Anonymous";
+        if (string.IsNullOrEmpty(username)) username = "".ComputeSha256Hash();
         var user = userService.Get(username);
         return user;
     }
