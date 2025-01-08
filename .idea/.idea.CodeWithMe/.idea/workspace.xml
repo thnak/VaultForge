@@ -45,9 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
@@ -144,6 +142,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/611eff977ba21ad25be53ce7d7387c4517e0e8a27abce4d6a91998e8b538135/ProviderOptions.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6354a7b35d7821629924d3676acd7e67a6f7f94343e0e66ec439aa2bd6ed5/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/66f0292d6d8a9b716f2c022ea17708dde5be8e0a67ef1d1eadfd7bc84c2/Cell.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/69f82dfcd683547688c2c80e529252cc8ec5bd621fb654be7194a6136566c9/XSSFWorkbook.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6a44d1618475c554cdb454d3d6746789df652e379e2a5e5e67b916046b0e0d2/IndexKind.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/74e4c72cd3922ed61496931f33baf4a9b5950edddb6b78bc296241285f25c3/TaskAwaiter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7c8ad03b50ccbf3ec7daba64f8ffc229c843a4bc37369f5fbdc6f33edf2b4c/IFilterDefinition.cs" root0="FORCE_HIGHLIGHTING" />
@@ -182,12 +181,9 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff56e9dabec8513a52b6f0caca4a8979301377a3ae924a82a78d3c3dfd001c/TextOptions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/BusinessModels/Utils/StringExtension.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp.Client/Layout/MainLayout.razor" root0="SKIP_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" root2="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/Controllers/InternetOfThings/Device/DeviceController.Read.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -1013,54 +1009,7 @@
       <workItem from="1736124408401" duration="18851000" />
       <workItem from="1736174091098" duration="5130000" />
       <workItem from="1736211330004" duration="19737000" />
-    </task>
-    <task id="LOCAL-00584" summary="add bulk update for record">
-      <option name="closed" value="true" />
-      <created>1735962098542</created>
-      <option name="number" value="00584" />
-      <option name="presentableId" value="LOCAL-00584" />
-      <option name="project" value="LOCAL" />
-      <updated>1735962098542</updated>
-    </task>
-    <task id="LOCAL-00585" summary="dont create thumb for iot image">
-      <option name="closed" value="true" />
-      <created>1735963022378</created>
-      <option name="number" value="00585" />
-      <option name="presentableId" value="LOCAL-00585" />
-      <option name="project" value="LOCAL" />
-      <updated>1735963022378</updated>
-    </task>
-    <task id="LOCAL-00586" summary="small update">
-      <option name="closed" value="true" />
-      <created>1735965187537</created>
-      <option name="number" value="00586" />
-      <option name="presentableId" value="LOCAL-00586" />
-      <option name="project" value="LOCAL" />
-      <updated>1735965187537</updated>
-    </task>
-    <task id="LOCAL-00587" summary="small update">
-      <option name="closed" value="true" />
-      <created>1735967073578</created>
-      <option name="number" value="00587" />
-      <option name="presentableId" value="LOCAL-00587" />
-      <option name="project" value="LOCAL" />
-      <updated>1735967073578</updated>
-    </task>
-    <task id="LOCAL-00588" summary="try fix">
-      <option name="closed" value="true" />
-      <created>1735969345794</created>
-      <option name="number" value="00588" />
-      <option name="presentableId" value="LOCAL-00588" />
-      <option name="project" value="LOCAL" />
-      <updated>1735969345794</updated>
-    </task>
-    <task id="LOCAL-00589" summary="update">
-      <option name="closed" value="true" />
-      <created>1735970320489</created>
-      <option name="number" value="00589" />
-      <option name="presentableId" value="LOCAL-00589" />
-      <option name="project" value="LOCAL" />
-      <updated>1735970320489</updated>
+      <workItem from="1736258934054" duration="6261000" />
     </task>
     <task id="LOCAL-00590" summary="small update">
       <option name="closed" value="true" />
@@ -1406,7 +1355,55 @@
       <option name="project" value="LOCAL" />
       <updated>1736246147198</updated>
     </task>
-    <option name="localTasksCounter" value="633" />
+    <task id="LOCAL-00633" summary="make it larger">
+      <option name="closed" value="true" />
+      <created>1736259140087</created>
+      <option name="number" value="00633" />
+      <option name="presentableId" value="LOCAL-00633" />
+      <option name="project" value="LOCAL" />
+      <updated>1736259140087</updated>
+    </task>
+    <task id="LOCAL-00634" summary="max size">
+      <option name="closed" value="true" />
+      <created>1736259224297</created>
+      <option name="number" value="00634" />
+      <option name="presentableId" value="LOCAL-00634" />
+      <option name="project" value="LOCAL" />
+      <updated>1736259224297</updated>
+    </task>
+    <task id="LOCAL-00635" summary="option notwork">
+      <option name="closed" value="true" />
+      <created>1736260405669</created>
+      <option name="number" value="00635" />
+      <option name="presentableId" value="LOCAL-00635" />
+      <option name="project" value="LOCAL" />
+      <updated>1736260405670</updated>
+    </task>
+    <task id="LOCAL-00636" summary="small update to get more session">
+      <option name="closed" value="true" />
+      <created>1736262544367</created>
+      <option name="number" value="00636" />
+      <option name="presentableId" value="LOCAL-00636" />
+      <option name="project" value="LOCAL" />
+      <updated>1736262544367</updated>
+    </task>
+    <task id="LOCAL-00637" summary="ne name fix wrong implement">
+      <option name="closed" value="true" />
+      <created>1736263162780</created>
+      <option name="number" value="00637" />
+      <option name="presentableId" value="LOCAL-00637" />
+      <option name="project" value="LOCAL" />
+      <updated>1736263162780</updated>
+    </task>
+    <task id="LOCAL-00638" summary="leave the file open">
+      <option name="closed" value="true" />
+      <created>1736266137438</created>
+      <option name="number" value="00638" />
+      <option name="presentableId" value="LOCAL-00638" />
+      <option name="project" value="LOCAL" />
+      <updated>1736266137438</updated>
+    </task>
+    <option name="localTasksCounter" value="639" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1437,12 +1434,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fix wrong value for large batch size" />
-    <MESSAGE value="root being too large" />
-    <MESSAGE value="small fix" />
-    <MESSAGE value="fix type name" />
-    <MESSAGE value="correct file name and encode it" />
-    <MESSAGE value="move to new excel format" />
     <MESSAGE value="move to new lucene version" />
     <MESSAGE value="fix missing content type" />
     <MESSAGE value="optimize" />
@@ -1462,7 +1453,13 @@
     <MESSAGE value="dispose unused resource" />
     <MESSAGE value="append file size limit" />
     <MESSAGE value="update bullshit" />
-    <option name="LAST_COMMIT_MESSAGE" value="update bullshit" />
+    <MESSAGE value="make it larger" />
+    <MESSAGE value="max size" />
+    <MESSAGE value="option notwork" />
+    <MESSAGE value="small update to get more session" />
+    <MESSAGE value="ne name fix wrong implement" />
+    <MESSAGE value="leave the file open" />
+    <option name="LAST_COMMIT_MESSAGE" value="leave the file open" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

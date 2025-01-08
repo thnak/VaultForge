@@ -129,6 +129,7 @@ public partial class IoTController
                 anchor.Row1 = rowIndex; //0 index based row
                 IPicture picture = drawing.CreatePicture(anchor, imageIndex);
                 picture.Resize();
+                
             }
             catch (Exception)
             {
@@ -138,7 +139,7 @@ public partial class IoTController
         }
 
         // Auto sized all the affected columns
-        int lastColumNum = sheet.GetRow(0).LastCellNum;
+        int lastColumNum = sheet.GetRow(0).LastCellNum + 1;
         for (int i = 0; i <= lastColumNum; i++)
         {
             sheet.AutoSizeColumn(i);
