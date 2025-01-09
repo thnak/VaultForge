@@ -31,6 +31,116 @@ window.labelDrawerContainerHelper = (() => {
         canvas.height = canvas.parentElement.offsetHeight;
         image.src = imageSrc; // Replace with your image path
         ctx = canvas.getContext('2d');
+        // Handle mouse down
+        canvas.addEventListener('mousedown', (e) => {
+            const { x, y } = getTransformedPoint(e.offsetX, e.offsetY);
+
+            if (e.ctrlKey) {
+                // Start panning
+                isPanning = true;
+                lastPanX = e.offsetX;
+                lastPanY = e.offsetY;
+            } else if (isPointInImage(x, y)) {
+                // Start drawing a bounding box (only if within the image)
+                startX = x;
+                startY = y;
+                isDragging = true;
+            }
+        });
+
+        // Handle mouse move
+        canvas.addEventListener('mousemove', (e) => {
+            mouseX = e.offsetX;
+            mouseY = e.offsetY;
+            draw();
+
+            if (isPanning) {
+                // Panning logic
+                const dx = e.offsetX - lastPanX;
+                const dy = e.offsetY - lastPanY;
+
+                offsetX += dx;
+                offsetY += dy;
+
+                lastPanX = e.offsetX;
+                lastPanY = e.offsetY;
+
+            } else if (isDragging) {
+                // Drawing bounding box logic
+                const { x, y } = getTransformedPoint(e.offsetX, e.offsetY);
+
+                // Clamp endX and endY to ensure the box stays within the image
+                endX = Math.min(Math.max(0, x), image.width);
+                endY = Math.min(Math.max(0, y), image.height);
+
+                draw();
+
+                // Draw the current bounding box on canvas, adjusting for offsets
+                ctx.save();
+                ctx.strokeStyle = 'blue';
+                ctx.lineWidth = 2 / scale;
+                ctx.strokeRect(
+                    startX * scale + offsetX,
+                    startY * scale + offsetY,
+                    (endX - startX) * scale,
+                    (endY - startY) * scale
+                );
+                ctx.restore();
+            }
+        });
+
+
+        // Handle mouse up
+        canvas.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+
+                // Ensure bounding box is within image boundaries
+                const width = Math.min(image.width, endX) - Math.min(image.width, startX);
+                const height = Math.min(image.height, endY) - Math.min(image.height, startY);
+
+                if (width > 0 && height > 0) {
+                    boundingBoxes.push({
+                        x: Math.min(startX, endX),
+                        y: Math.min(startY, endY),
+                        width,
+                        height,
+                    });
+                }
+            } else if (isPanning) {
+                isPanning = false;
+            }
+
+            draw();
+            if (upgradeCallbackHandler) {
+                upgradeCallbackHandler.invokeMethodAsync("ReceiveBoundingBoxes", boundingBoxes);
+            }
+        });
+
+        // Zoom with Ctrl + Scroll
+        canvas.addEventListener('wheel', (e) => {
+            if (e.ctrlKey) {
+                e.preventDefault();
+
+                const zoomFactor = 1.1;
+                const mousePos = getTransformedPoint(e.offsetX, e.offsetY);
+
+                if (e.deltaY < 0) {
+                    scale *= zoomFactor;
+                } else {
+                    scale /= zoomFactor;
+                }
+
+                // Clamp zoom to prevent excessive zooming
+                scale = Math.min(Math.max(scale, 0.5), 5);
+
+                // Adjust offset to keep the zoom centered
+                offsetX -= (mousePos.x * (scale / zoomFactor - scale)) * zoomFactor;
+                offsetY -= (mousePos.y * (scale / zoomFactor - scale)) * zoomFactor;
+
+                draw();
+            }
+        });
     }
 
 
@@ -87,116 +197,7 @@ window.labelDrawerContainerHelper = (() => {
         ctx.restore();
     }
 
-// Handle mouse down
-    canvas.addEventListener('mousedown', (e) => {
-        const {x, y} = getTransformedPoint(e.offsetX, e.offsetY);
 
-        if (e.ctrlKey) {
-            // Start panning
-            isPanning = true;
-            lastPanX = e.offsetX;
-            lastPanY = e.offsetY;
-        } else if (isPointInImage(x, y)) {
-            // Start drawing a bounding box (only if within the image)
-            startX = x;
-            startY = y;
-            isDragging = true;
-        }
-    });
-
-// Handle mouse move
-    canvas.addEventListener('mousemove', (e) => {
-        mouseX = e.offsetX;
-        mouseY = e.offsetY;
-        draw();
-
-        if (isPanning) {
-            // Panning logic
-            const dx = e.offsetX - lastPanX;
-            const dy = e.offsetY - lastPanY;
-
-            offsetX += dx;
-            offsetY += dy;
-
-            lastPanX = e.offsetX;
-            lastPanY = e.offsetY;
-
-        } else if (isDragging) {
-            // Drawing bounding box logic
-            const {x, y} = getTransformedPoint(e.offsetX, e.offsetY);
-
-            // Clamp endX and endY to ensure the box stays within the image
-            endX = Math.min(Math.max(0, x), image.width);
-            endY = Math.min(Math.max(0, y), image.height);
-
-            draw();
-
-            // Draw the current bounding box on canvas, adjusting for offsets
-            ctx.save();
-            ctx.strokeStyle = 'blue';
-            ctx.lineWidth = 2 / scale;
-            ctx.strokeRect(
-                startX * scale + offsetX,
-                startY * scale + offsetY,
-                (endX - startX) * scale,
-                (endY - startY) * scale
-            );
-            ctx.restore();
-        }
-    });
-
-
-// Handle mouse up
-    canvas.addEventListener('mouseup', () => {
-        if (isDragging) {
-            isDragging = false;
-
-            // Ensure bounding box is within image boundaries
-            const width = Math.min(image.width, endX) - Math.min(image.width, startX);
-            const height = Math.min(image.height, endY) - Math.min(image.height, startY);
-
-            if (width > 0 && height > 0) {
-                boundingBoxes.push({
-                    x: Math.min(startX, endX),
-                    y: Math.min(startY, endY),
-                    width,
-                    height,
-                });
-            }
-        } else if (isPanning) {
-            isPanning = false;
-        }
-
-        draw();
-        if (upgradeCallbackHandler) {
-            upgradeCallbackHandler.invokeMethodAsync("ReceiveBoundingBoxes", boundingBoxes);
-        }
-    });
-
-// Zoom with Ctrl + Scroll
-    canvas.addEventListener('wheel', (e) => {
-        if (e.ctrlKey) {
-            e.preventDefault();
-
-            const zoomFactor = 1.1;
-            const mousePos = getTransformedPoint(e.offsetX, e.offsetY);
-
-            if (e.deltaY < 0) {
-                scale *= zoomFactor;
-            } else {
-                scale /= zoomFactor;
-            }
-
-            // Clamp zoom to prevent excessive zooming
-            scale = Math.min(Math.max(scale, 0.5), 5);
-
-            // Adjust offset to keep the zoom centered
-            offsetX -= (mousePos.x * (scale / zoomFactor - scale)) * zoomFactor;
-            offsetY -= (mousePos.y * (scale / zoomFactor - scale)) * zoomFactor;
-
-            draw();
-        }
-    });
 
 // Helper: Get transformed point
     function getTransformedPoint(x, y) {

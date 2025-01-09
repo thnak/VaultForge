@@ -574,7 +574,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 {
                     FolderName = name
                 },
-                RootId = RootFolder.Id.ToString(),
+                RootId = RootFolder.AliasCode,
                 RootPassWord = RootFolder.Password
             };
             var content = new StringContent(StringExtension.ToJson(model), Encoding.Unicode,

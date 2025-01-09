@@ -1,5 +1,4 @@
-﻿@using WebApp.Client.Components.Clock
-@using WebApp.Client.Components.IoT
+﻿
 @rendermode InteractiveWebAssembly
 @attribute [Route(PageRoutes.Home.Root.Src)]
 
@@ -18,19 +17,19 @@
 
 
 
-<div class="grid-container" @onmousedown="GridContainerMouseDown" @onmousemove="GridContainerMouseMove">
-    
-    @for (int i = 0; i < 100; i++)
-    {
-        var index = i;
-        string sensorIndex = $"A{index}";
-        <SensorSignal SensorId="@sensorIndex" @key="sensorIndex"/>
-        <ServerTime @key="index"/>
-    }
-    
-</div>
+@* <div class="grid-container" @onmousedown="GridContainerMouseDown" @onmousemove="GridContainerMouseMove"> *@
+@*      *@
+@*     @for (int i = 0; i < 100; i++) *@
+@*     { *@
+@*         var index = i; *@
+@*         string sensorIndex = $"A{index}"; *@
+@*         <SensorSignal SensorId="@sensorIndex" @key="sensorIndex"/> *@
+@*         <ServerTime @key="index"/> *@
+@*     } *@
+@*      *@
+@* </div> *@
 
-<ApexChart TItem="MyData" @ref="ChartRef" Options="ChartOption"
+<ApexChart TItem="MyData" @ref="ChartRef" Options="ChartOption" XAxisType="XAxisType.Datetime"
            Title="Sample Data">
 
     <ApexPointSeries TItem="MyData"
@@ -38,32 +37,15 @@
                      Name="Net Profit"
                      SeriesType="SeriesType.Bar"
                      XValue="e => e.Category"
-                     YValue="e=> e.NetProfit"/>
+                     YValue="e=> e.NetProfit"
+                     PointColor="PointColor"/>
 
-    <ApexPointSeries TItem="MyData"
-                     Items="Data"
-                     Name="Revenue"
-                     SeriesType="SeriesType.Bar"
-                     XValue="e => e.Category"
-                     YValue="e=> e.Revenue"/>
+    @* <ApexPointSeries TItem="MyData" *@
+    @*                  Items="Data" *@
+    @*                  Name="Revenue" *@
+    @*                  SeriesType="SeriesType.Bar" *@
+    @*                  XValue="e => e.Category" *@
+    @*                  YValue="e=> e.Revenue"/> *@
 </ApexChart>
 
 
-@code {
-    private List<MyData> Data { get; set; } = new();
-
-    protected override void OnInitialized()
-    {
-        Data.Add(new MyData { Category = "Jan", NetProfit = 12, Revenue = 33 });
-        Data.Add(new MyData { Category = "Feb", NetProfit = 43, Revenue = 42 });
-        Data.Add(new MyData { Category = "Mar", NetProfit = 112, Revenue = 23 });
-    }
-
-    public class MyData
-    {
-        public string Category { get; set; } = string.Empty;
-        public int NetProfit { get; set; }
-        public int Revenue { get; set; }
-    }
-
-}
