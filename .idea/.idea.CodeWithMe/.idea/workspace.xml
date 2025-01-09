@@ -45,12 +45,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="re-format rename">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="fix error">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Weather.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Weather.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/wwwroot/js/LabelDrawerContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/wwwroot/js/LabelDrawerContainer.js" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1030,15 +1028,7 @@
       <workItem from="1736327464717" duration="2070000" />
       <workItem from="1736349150751" duration="1968000" />
       <workItem from="1736383345047" duration="10905000" />
-      <workItem from="1736404627491" duration="7255000" />
-    </task>
-    <task id="LOCAL-00606" summary="small fix">
-      <option name="closed" value="true" />
-      <created>1736049291295</created>
-      <option name="number" value="00606" />
-      <option name="presentableId" value="LOCAL-00606" />
-      <option name="project" value="LOCAL" />
-      <updated>1736049291295</updated>
+      <workItem from="1736404627491" duration="11036000" />
     </task>
     <task id="LOCAL-00607" summary="fix type name">
       <option name="closed" value="true" />
@@ -1424,7 +1414,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736409256137</updated>
     </task>
-    <option name="localTasksCounter" value="655" />
+    <task id="LOCAL-00655" summary="fix error">
+      <option name="closed" value="true" />
+      <created>1736412238729</created>
+      <option name="number" value="00655" />
+      <option name="presentableId" value="LOCAL-00655" />
+      <option name="project" value="LOCAL" />
+      <updated>1736412238729</updated>
+    </task>
+    <option name="localTasksCounter" value="656" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1455,7 +1453,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="distine same search result" />
     <MESSAGE value="multi file" />
     <MESSAGE value="finish service" />
     <MESSAGE value="dispose unused resource" />
@@ -1480,7 +1477,8 @@
     <MESSAGE value="small update" />
     <MESSAGE value="allow empty" />
     <MESSAGE value="re-format rename" />
-    <option name="LAST_COMMIT_MESSAGE" value="re-format rename" />
+    <MESSAGE value="fix error" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix error" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -40,12 +40,13 @@
                      YValue="e=> e.NetProfit"
                      PointColor="PointColor"/>
 
-    @* <ApexPointSeries TItem="MyData" *@
-    @*                  Items="Data" *@
-    @*                  Name="Revenue" *@
-    @*                  SeriesType="SeriesType.Bar" *@
-    @*                  XValue="e => e.Category" *@
-    @*                  YValue="e=> e.Revenue"/> *@
+    <ApexPointSeries TItem="MyData"
+                     Items="Data"
+                     Name="Revenue"
+                     SeriesType="SeriesType.Line"
+                     XValue="e => e.Category"
+                     YValue="e=> e.StuPid"
+                     PointColor="Point2Color"/>
 </ApexChart>
 
 

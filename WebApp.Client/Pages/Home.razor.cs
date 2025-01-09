@@ -18,13 +18,13 @@ public partial class Home(ILogger<Home> logger) : ComponentBase, IDisposable
 
     protected override void OnInitialized()
     {
-        DateTime from = DateTime.Today.AddDays(-10);
+        DateTime from = DateTime.UtcNow.AddDays(-10);
         DateTime to = DateTime.Today;
         Data.Clear();
         Random random = new();
         for (DateTime i = from; i < to; i = i.AddDays(1))
         {
-            Data.Add(new MyData { Category = i, NetProfit = random.Next(3000, 6000) });
+            Data.Add(new MyData { Category = i, NetProfit = random.Next(3000, 6000), StuPid = random.Next(3000, 6000) });
         }
     }
 
@@ -32,6 +32,7 @@ public partial class Home(ILogger<Home> logger) : ComponentBase, IDisposable
     {
         public DateTime Category { get; set; }
         public int NetProfit { get; set; }
+        public int StuPid { get; set; }
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -55,24 +56,17 @@ public partial class Home(ILogger<Home> logger) : ComponentBase, IDisposable
     {
         var mode = CustomStateContainer.IsDarkMode ? Mode.Dark : Mode.Light;
         ChartOption.Theme.Mode = mode;
-        // ChartOption.Colors =
-        // [
-        //     """
-        //      function({ value, seriesIndex, w }) {
-        //       if (value < 5000) {
-        //         return '#FF0000'
-        //       } else {
-        //         return '#02DFDE'
-        //       }
-        //     } 
-        //     """
-        // ];
         await ChartRef.UpdateOptionsSafetyAsync();
     }
-    
+
     private string PointColor(MyData arg)
     {
         return arg.NetProfit > 5000 ? "#FF0000" : "#02DFDE";
+    }
+
+    private string Point2Color(MyData arg)
+    {
+        return "#02DFDE";
     }
 
     private async Task Crypting(MouseEventArgs obj)
