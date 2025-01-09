@@ -45,11 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/wwwroot/js/LabelDrawerContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/wwwroot/js/LabelDrawerContainer.js" afterDir="false" />
-    </list>
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="allow empty" />
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
@@ -1028,15 +1024,7 @@
       <workItem from="1736327464717" duration="2070000" />
       <workItem from="1736349150751" duration="1968000" />
       <workItem from="1736383345047" duration="10905000" />
-      <workItem from="1736404627491" duration="3835000" />
-    </task>
-    <task id="LOCAL-00604" summary="fix wrong value for large batch size">
-      <option name="closed" value="true" />
-      <created>1736047381568</created>
-      <option name="number" value="00604" />
-      <option name="presentableId" value="LOCAL-00604" />
-      <option name="project" value="LOCAL" />
-      <updated>1736047381568</updated>
+      <workItem from="1736404627491" duration="4303000" />
     </task>
     <task id="LOCAL-00605" summary="root being too large">
       <option name="closed" value="true" />
@@ -1422,7 +1410,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736406820103</updated>
     </task>
-    <option name="localTasksCounter" value="653" />
+    <task id="LOCAL-00653" summary="allow empty">
+      <option name="closed" value="true" />
+      <created>1736408615994</created>
+      <option name="number" value="00653" />
+      <option name="presentableId" value="LOCAL-00653" />
+      <option name="project" value="LOCAL" />
+      <updated>1736408615994</updated>
+    </task>
+    <option name="localTasksCounter" value="654" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1453,7 +1449,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="fix read image issue" />
     <MESSAGE value="update nav menu" />
     <MESSAGE value="distine same search result" />
     <MESSAGE value="multi file" />
@@ -1478,7 +1473,8 @@
     <MESSAGE value="remove autho" />
     <MESSAGE value="escape error message" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="allow empty" />
+    <option name="LAST_COMMIT_MESSAGE" value="allow empty" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -2,15 +2,15 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace WebApp.Client.Components;
+namespace WebApp.Client.Pages.Label;
 
-public partial class LabelDrawerContainer : ComponentBase, IDisposable
+public partial class LabelDrawerContainerPage : ComponentBase, IDisposable
 {
     private readonly string _containerId = Guid.NewGuid().ToString();
 
     private List<BoundingBox> BoundingBoxes { get; set; } = new();
 
-    private DotNetObjectReference<LabelDrawerContainer>? _dotNetRef;
+    private DotNetObjectReference<LabelDrawerContainerPage>? _dotNetRef;
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
