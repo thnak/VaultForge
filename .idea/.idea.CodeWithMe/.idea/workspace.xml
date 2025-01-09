@@ -45,16 +45,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/BusinessModels/General/BoundingBox.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Components/LabelDrawerContainer.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Components/LabelDrawerContainer.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Components/LabelDrawerContainer.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp/wwwroot/js/LabelDrawerContainer.js" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="try new stuff">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/DocumentObjectModelEventListener.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/wwwroot/js/indexedDbHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/wwwroot/js/indexedDbHelper.js" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1032,15 +1024,7 @@
       <workItem from="1736310627877" duration="2069000" />
       <workItem from="1736327464717" duration="2070000" />
       <workItem from="1736349150751" duration="1968000" />
-      <workItem from="1736383345047" duration="10129000" />
-    </task>
-    <task id="LOCAL-00598" summary="add limit">
-      <option name="closed" value="true" />
-      <created>1736039874461</created>
-      <option name="number" value="00598" />
-      <option name="presentableId" value="LOCAL-00598" />
-      <option name="project" value="LOCAL" />
-      <updated>1736039874461</updated>
+      <workItem from="1736383345047" duration="10777000" />
     </task>
     <task id="LOCAL-00599" summary="allow more parallel task">
       <option name="closed" value="true" />
@@ -1426,7 +1410,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736350483984</updated>
     </task>
-    <option name="localTasksCounter" value="647" />
+    <task id="LOCAL-00647" summary="try new stuff">
+      <option name="closed" value="true" />
+      <created>1736398532251</created>
+      <option name="number" value="00647" />
+      <option name="presentableId" value="LOCAL-00647" />
+      <option name="project" value="LOCAL" />
+      <updated>1736398532251</updated>
+    </task>
+    <option name="localTasksCounter" value="648" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1457,7 +1449,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="remove unmaintainable code" />
     <MESSAGE value="add listener" />
     <MESSAGE value="update eventListener.js" />
     <MESSAGE value="remove auto render mode" />
@@ -1482,7 +1473,8 @@
     <MESSAGE value="lower case first value" />
     <MESSAGE value="that tupid" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="try new stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="try new stuff" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
