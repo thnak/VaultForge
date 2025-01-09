@@ -47,9 +47,8 @@
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/IndexedDbService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/IndexedDbService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Components/App.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Components/App.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/wwwroot/js/indexedDbHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/wwwroot/js/indexedDbHelper.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/wwwroot/js/LabelDrawerContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/wwwroot/js/LabelDrawerContainer.js" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -118,6 +117,8 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4992fbaf8fdc4e35afbc4135b809fa7329e30/e6/d3d3ecbc/OllamaEmbeddingGenerator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4f1fdec7cbfe4433a7ec3a6d1bd0e54223918/cd/d84d2cb7/ServiceCollectionServiceExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5de964a0ff014d78b9bbaee58138798511938/40/098169e4/IFormFile.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/60718f1cfdb047c4b114817d7e2033a4b000/ac/df62153e/WorkerFactory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/60718f1cfdb047c4b114817d7e2033a4b000/f1/2565c3f7/IWorkerFactory.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/838402d166304061809e45e127735cb925920/11/d508170c/ILogger`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b19b48a658d34783924b2956c870b2ee39420/0f/e20d4436/AdditionalPropertiesDictionary.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/b19b48a658d34783924b2956c870b2ee39420/29/330bd635/EmbeddingGenerationOptions.cs" root0="FORCE_HIGHLIGHTING" />
@@ -1027,15 +1028,7 @@
       <workItem from="1736327464717" duration="2070000" />
       <workItem from="1736349150751" duration="1968000" />
       <workItem from="1736383345047" duration="10905000" />
-      <workItem from="1736404627491" duration="2121000" />
-    </task>
-    <task id="LOCAL-00603" summary="parallel update">
-      <option name="closed" value="true" />
-      <created>1736046086947</created>
-      <option name="number" value="00603" />
-      <option name="presentableId" value="LOCAL-00603" />
-      <option name="project" value="LOCAL" />
-      <updated>1736046086947</updated>
+      <workItem from="1736404627491" duration="3835000" />
     </task>
     <task id="LOCAL-00604" summary="fix wrong value for large batch size">
       <option name="closed" value="true" />
@@ -1421,7 +1414,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736406165984</updated>
     </task>
-    <option name="localTasksCounter" value="652" />
+    <task id="LOCAL-00652" summary="small update">
+      <option name="closed" value="true" />
+      <created>1736406820103</created>
+      <option name="number" value="00652" />
+      <option name="presentableId" value="LOCAL-00652" />
+      <option name="project" value="LOCAL" />
+      <updated>1736406820103</updated>
+    </task>
+    <option name="localTasksCounter" value="653" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

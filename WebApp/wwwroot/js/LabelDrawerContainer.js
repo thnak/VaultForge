@@ -1,9 +1,8 @@
 window.labelDrawerContainerHelper = (() => {
 
     let canvas = null;
-    const ctx = canvas.getContext('2d');
     let upgradeCallbackHandler = null;
-  
+    let ctx = null;
 
     let image = new Image();
     let scale = 1.0;
@@ -31,7 +30,7 @@ window.labelDrawerContainerHelper = (() => {
         canvas.width = canvas.parentElement.offsetWidth;
         canvas.height = canvas.parentElement.offsetHeight;
         image.src = imageSrc; // Replace with your image path
-
+        ctx = canvas.getContext('2d');
     }
 
 

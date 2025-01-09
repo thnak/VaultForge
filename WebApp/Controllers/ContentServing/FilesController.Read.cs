@@ -84,7 +84,7 @@ public partial class FilesController
             return NotFound(AppLang.File_not_found_);
 
         file.ContentType = string.IsNullOrWhiteSpace(file.ContentType) ? "application/octet-stream" : file.ContentType;
-        
+
         var now = DateTime.UtcNow;
         var cd = new ContentDisposition
         {
@@ -286,13 +286,13 @@ public partial class FilesController
     [IgnoreAntiforgeryToken]
     [OutputCache(Duration = 10)]
     [ResponseCache(Duration = 50)]
-    public async Task<IActionResult> GetSharedFolder([FromForm]string username, [FromForm] string? id, [FromForm] string? password,
+    public async Task<IActionResult> GetSharedFolder([FromForm] string? username, [FromForm] string? id, [FromForm] string? password,
         [FromForm] int page, [FromForm] int pageSize, [FromForm] string? contentTypes, [FromForm] bool? forceReLoad)
     {
         var cancelToken = HttpContext.RequestAborted;
         try
         {
-            var folderSource = string.IsNullOrEmpty(id) ? folderServe.GetRoot(username) : folderServe.Get(id);
+            var folderSource = string.IsNullOrEmpty(id) ? folderServe.GetRoot(username ?? string.Empty) : folderServe.Get(id);
             if (folderSource == null) return BadRequest(AppLang.Folder_could_not_be_found);
             if (!string.IsNullOrEmpty(folderSource.Password))
             {
