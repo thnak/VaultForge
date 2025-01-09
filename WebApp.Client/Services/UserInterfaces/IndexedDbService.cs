@@ -9,6 +9,7 @@ public interface IIndexedDbService<T> : IDisposable where T : class
 {
     Task<Result<bool>> CreateStoreAsync(string dbName, string storeName, int version, Func<int, int, Task>? upgradeCallback = null);
     Task<Result<bool>> AddItemAsync(string dbName, string storeName, T item);
+    Task<Result<bool>> AddFileAsync(string dbName, string storeName, Stream stream, string fileName, string contentType = "application/octet-stream");
     Task<Result<T?>> GetItemAsync(string dbName, string storeName, string id);
     Task<Result<bool>> DeleteItemAsync(string dbName, string storeName, string id);
 }
@@ -63,6 +64,20 @@ public class IndexedDbService<T> : UpgradeCallbackHandler, IIndexedDbService<T> 
             return Result<bool>.Failure($"Failed to add item: {ex.Message}", ErrorType.JavaScriptError);
         }
     }
+
+    public async Task<Result<bool>> AddFileAsync(string dbName, string storeName, Stream stream, string fileName, string contentType = "application/octet-stream")
+    {
+        try
+        {
+            var strRef = new DotNetStreamReference(stream);
+            await _jsRuntime.InvokeVoidAsync("indexedDbHelper.addFile", dbName, storeName, strRef, contentType, fileName);
+            return Result<bool>.Success(true);
+        }
+        catch (JSException ex)
+        {
+            return Result<bool>.Failure($"Failed to add item: {ex.Message}", ErrorType.JavaScriptError);
+        }    }
+
 
     public async Task<Result<T?>> GetItemAsync(string dbName, string storeName, string id)
     {

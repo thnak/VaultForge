@@ -45,10 +45,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="escape error message">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Components/LabelDrawerContainer.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Components/LabelDrawerContainer.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/wwwroot/js/LabelDrawerContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/wwwroot/js/LabelDrawerContainer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/IndexedDbService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/UserInterfaces/IndexedDbService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Components/App.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Components/App.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/wwwroot/js/indexedDbHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/wwwroot/js/indexedDbHelper.js" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1026,15 +1027,7 @@
       <workItem from="1736327464717" duration="2070000" />
       <workItem from="1736349150751" duration="1968000" />
       <workItem from="1736383345047" duration="10905000" />
-      <workItem from="1736404627491" duration="1477000" />
-    </task>
-    <task id="LOCAL-00602" summary="prevent escape error, fix wrong collection name">
-      <option name="closed" value="true" />
-      <created>1736044681183</created>
-      <option name="number" value="00602" />
-      <option name="presentableId" value="LOCAL-00602" />
-      <option name="project" value="LOCAL" />
-      <updated>1736044681184</updated>
+      <workItem from="1736404627491" duration="2121000" />
     </task>
     <task id="LOCAL-00603" summary="parallel update">
       <option name="closed" value="true" />
@@ -1420,7 +1413,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736405495452</updated>
     </task>
-    <option name="localTasksCounter" value="651" />
+    <task id="LOCAL-00651" summary="small update">
+      <option name="closed" value="true" />
+      <created>1736406165984</created>
+      <option name="number" value="00651" />
+      <option name="presentableId" value="LOCAL-00651" />
+      <option name="project" value="LOCAL" />
+      <updated>1736406165984</updated>
+    </task>
+    <option name="localTasksCounter" value="652" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1471,12 +1472,12 @@
     <MESSAGE value="add new service" />
     <MESSAGE value="lower case first value" />
     <MESSAGE value="that tupid" />
-    <MESSAGE value="small update" />
     <MESSAGE value="try new stuff" />
     <MESSAGE value="move land page" />
     <MESSAGE value="remove autho" />
     <MESSAGE value="escape error message" />
-    <option name="LAST_COMMIT_MESSAGE" value="escape error message" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -44,23 +44,47 @@ window.indexedDbHelper = (() => {
         });
     }
 
-    async function addFile(dbName, storeName, array) {
-        return new Promise((resolve, reject) => {
+    async function addFile(dbName, storeName, stream, contentType, title) {
+        return new Promise(async (resolve, reject) => {
             const db = databases[dbName];
             if (!db) return reject(new Error(`Database ${dbName} not opened`));
 
-            const transaction = db.transaction(storeName, "readwrite");
-            const store = transaction.objectStore(storeName);
+            let transaction;
+            try {
+                transaction = db.transaction(storeName, "readwrite");
+                const store = transaction.objectStore(storeName);
 
-            const blob = new Blob([array], { type: 'application/octet-stream' });
-            const fileData = {
-                fileId: fileId,  // unique identifier for the file
-                file: blob
-            };
-            const request = store.add(fileData);
+                const arrayBuffer = await stream.arrayBuffer();
+                let blobOptions = {};
+                if (contentType) {
+                    blobOptions['type'] = contentType;
+                }
+                const blob = new Blob([arrayBuffer], blobOptions);
 
-            request.onsuccess = () => resolve(true);
-            request.onerror = () => reject(request.error);
+                // Generate a unique identifier (e.g., using UUIDs)
+
+                const fileData = {
+                    fileId: title,
+                    file: blob
+                };
+
+                const request = store.add(fileData);
+
+                request.onsuccess = () => {
+                    transaction.commit();
+                    resolve(fileId); // Resolve with the fileId
+                };
+                request.onerror = (event) => {
+                    transaction.abort(); // Abort the transaction on error
+                    reject(new Error(`Error adding file: ${event.target.error}`));
+                };
+
+            } catch (error) {
+                if (transaction) {
+                    transaction.abort();
+                }
+                reject(error);
+            }
         });
     }
 
