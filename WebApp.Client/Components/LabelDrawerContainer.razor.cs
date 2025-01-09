@@ -8,8 +8,7 @@ public partial class LabelDrawerContainer : ComponentBase, IDisposable
 {
     private readonly string _containerId = Guid.NewGuid().ToString();
 
-    [Parameter] public List<BoundingBox> BoundingBoxes { get; set; } = new();
-    [Parameter] public EventCallback<List<BoundingBox>> BoundingBoxesChanged { get; set; }
+    private List<BoundingBox> BoundingBoxes { get; set; } = new();
 
     private DotNetObjectReference<LabelDrawerContainer>? _dotNetRef;
 
@@ -19,7 +18,7 @@ public partial class LabelDrawerContainer : ComponentBase, IDisposable
         if (firstRender)
         {
             _dotNetRef = DotNetObjectReference.Create(this);
-            await JsRuntime.InvokeVoidAsync("labelDrawerContainerHelper.SetRefHandler", _dotNetRef);
+            await JsRuntime.InvokeVoidAsync("labelDrawerContainerHelper.SetRefHandler", _dotNetRef, "LabelDrawerContainer", "https://cdn.pixabay.com/photo/2024/09/20/01/37/dubai-creek-9060098_640.jpg");
         }
 
         await base.OnAfterRenderAsync(firstRender);
@@ -29,7 +28,6 @@ public partial class LabelDrawerContainer : ComponentBase, IDisposable
     public void ReceiveBoundingBoxes(List<BoundingBox> boundingBoxes)
     {
         BoundingBoxes = [..boundingBoxes];
-        BoundingBoxesChanged.InvokeAsync(boundingBoxes);
     }
 
     public void Dispose()

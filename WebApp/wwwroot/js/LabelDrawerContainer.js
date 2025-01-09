@@ -1,13 +1,11 @@
 window.labelDrawerContainerHelper = (() => {
 
-    const canvas = document.getElementById('LabelDrawerContainer');
+    let canvas = null;
     const ctx = canvas.getContext('2d');
     let upgradeCallbackHandler = null;
-    canvas.width = canvas.parentElement.offsetWidth;
-    canvas.height = canvas.parentElement.offsetHeight;
+  
 
     let image = new Image();
-    image.src = 'https://cdn.pixabay.com/photo/2024/09/20/01/37/dubai-creek-9060098_640.jpg'; // Replace with your image path
     let scale = 1.0;
     let offsetX = 0;
     let offsetY = 0;
@@ -27,9 +25,15 @@ window.labelDrawerContainerHelper = (() => {
         draw();
     };
 
-    function SetRefHandler(dotnetRef) {
+    function SetRefHandler(dotnetRef, canvasId, imageSrc) {
         upgradeCallbackHandler = dotnetRef;
+        canvas = document.getElementById(canvasId);
+        canvas.width = canvas.parentElement.offsetWidth;
+        canvas.height = canvas.parentElement.offsetHeight;
+        image.src = imageSrc; // Replace with your image path
+
     }
+
 
 // Draw everything on the canvas
     function draw() {
@@ -165,7 +169,7 @@ window.labelDrawerContainerHelper = (() => {
         }
 
         draw();
-        if(upgradeCallbackHandler){
+        if (upgradeCallbackHandler) {
             upgradeCallbackHandler.invokeMethodAsync("ReceiveBoundingBoxes", boundingBoxes);
         }
     });
