@@ -55,7 +55,7 @@ public class DocumentObjectModelEventListener : IDisposable
                 return _jsRuntime.InvokeVoidAsync("eventListenerInterop.removeEventListener", elementId, eventNameStr);
             }
         }
-        catch (JSDisconnectedException e)
+        catch (JSDisconnectedException)
         {
             return ValueTask.CompletedTask;
         }

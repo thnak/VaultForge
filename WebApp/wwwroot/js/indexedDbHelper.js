@@ -44,6 +44,26 @@ window.indexedDbHelper = (() => {
         });
     }
 
+    async function addFile(dbName, storeName, array) {
+        return new Promise((resolve, reject) => {
+            const db = databases[dbName];
+            if (!db) return reject(new Error(`Database ${dbName} not opened`));
+
+            const transaction = db.transaction(storeName, "readwrite");
+            const store = transaction.objectStore(storeName);
+
+            const blob = new Blob([array], { type: 'application/octet-stream' });
+            const fileData = {
+                fileId: fileId,  // unique identifier for the file
+                file: blob
+            };
+            const request = store.add(fileData);
+
+            request.onsuccess = () => resolve(true);
+            request.onerror = () => reject(request.error);
+        });
+    }
+
     async function getItem(dbName, storeName, id) {
         return new Promise((resolve, reject) => {
             const db = databases[dbName];
@@ -75,6 +95,6 @@ window.indexedDbHelper = (() => {
         });
     }
 
-    return {createStore, addItem, getItem, deleteItem};
+    return {createStore, addItem, getItem, addFile, deleteItem};
 })();
 

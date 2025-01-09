@@ -1,0 +1,27 @@
+﻿div.drawer-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+canvas {
+    display: block;
+    cursor: crosshair;
+}
+
+.left-side, .right-side {
+    padding: 8px;
+}
+
+.right-side {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.page-container {
+    display: grid;
+    height: calc(100dvh - var(--mud-appbar-height));
+    grid-template-columns: 1fr 6fr 1fr;
+}

@@ -1,0 +1,21 @@
+﻿@rendermode InteractiveWebAssembly
+@attribute [Route("drawing")]
+@* @attribute [Authorize] *@
+@layout MainLayout
+
+<PageTitle>Drawing</PageTitle>
+
+<div class="page-content-container page-container mud-paper mud-elevation-1" id="@_containerId">
+    <div class="left-side"></div>
+    <div class="drawer-container">
+        <canvas id="LabelDrawerContainer"></canvas>
+    </div>
+    <div class="right-side">
+        @foreach (var box in BoundingBoxes)
+        {
+            <span>@box.X</span>
+        }
+    </div>
+</div>
+
+<script src="@Assets["js/LabelDrawerContainer.js"]"></script>
