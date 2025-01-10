@@ -228,6 +228,7 @@ public class YoloInferenceService : IYoloInferenceService
             using MemoryTensorOwner<float> memoryTensorOwner = _memoryAllocatorService.AllocateTensor(_inputTensorShape, true);
             var pads = _padAndRatiosArrayPool.Rent(1);
             var ratios = _padAndRatiosArrayPool.Rent(1);
+            memoryTensorOwner.Tensor.Span.Fill(114 / 255f);
             image.NormalizeInput(memoryTensorOwner.Tensor, _inputSize, ratios, pads, true);
             YoloInferenceServiceFeeder feeder = new YoloInferenceServiceFeeder(memoryTensorOwner.Tensor)
             {
@@ -310,8 +311,7 @@ public class YoloInferenceService : IYoloInferenceService
         for (int i = 0; i < batchSize; i++)
         {
             InferenceStates[i] = false;
-            var inputSize = batch[i].Item1.Buffer.Span.Length;
-            batch[i].Item1.Buffer.Span.CopyTo(InputFeedBuffer.AsSpan(i * _singleInputLength, inputSize));
+            batch[i].Item1.Buffer.Span.CopyTo(InputFeedBuffer.AsSpan(i * _singleInputLength, batch[i].Item1.Buffer.Span.Length));
         }
 
 

@@ -45,10 +45,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="alias code">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Home.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/ImageExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/ImageExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1029,14 +1030,7 @@
       <workItem from="1736349150751" duration="1968000" />
       <workItem from="1736383345047" duration="10905000" />
       <workItem from="1736404627491" duration="14003000" />
-    </task>
-    <task id="LOCAL-00608" summary="small update">
-      <option name="closed" value="true" />
-      <created>1736052178057</created>
-      <option name="number" value="00608" />
-      <option name="presentableId" value="LOCAL-00608" />
-      <option name="project" value="LOCAL" />
-      <updated>1736052178057</updated>
+      <workItem from="1736468856474" duration="1485000" />
     </task>
     <task id="LOCAL-00609" summary="correct file name and encode it">
       <option name="closed" value="true" />
@@ -1422,7 +1416,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736416764901</updated>
     </task>
-    <option name="localTasksCounter" value="657" />
+    <task id="LOCAL-00657" summary="alias code">
+      <option name="closed" value="true" />
+      <created>1736468990961</created>
+      <option name="number" value="00657" />
+      <option name="presentableId" value="LOCAL-00657" />
+      <option name="project" value="LOCAL" />
+      <updated>1736468990961</updated>
+    </task>
+    <option name="localTasksCounter" value="658" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1453,7 +1455,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="finish service" />
     <MESSAGE value="dispose unused resource" />
     <MESSAGE value="append file size limit" />
     <MESSAGE value="update bullshit" />
@@ -1478,7 +1479,8 @@
     <MESSAGE value="re-format rename" />
     <MESSAGE value="fix error" />
     <MESSAGE value="test" />
-    <option name="LAST_COMMIT_MESSAGE" value="test" />
+    <MESSAGE value="alias code" />
+    <option name="LAST_COMMIT_MESSAGE" value="alias code" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

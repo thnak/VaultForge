@@ -44,8 +44,8 @@ public static class ImageExtension
         var strideG = tensor.Strides[1] * 1;
         var strideB = tensor.Strides[1] * 2;
 
-        var padG = strideG - strideR;
-        var padB = strideB - strideR;
+        var padG = strideG;
+        var padB = strideB;
 
         // Get a span of the whole tensor for fast access
         var tensorSpan = tensor.Span;

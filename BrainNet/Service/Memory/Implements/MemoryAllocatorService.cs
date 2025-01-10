@@ -23,7 +23,6 @@ internal sealed class MemoryAllocatorService : IMemoryAllocatorService
             {
                 Array.Clear(_buffer, 0, length);
             }
-
         }
 
         ~ArrayMemoryPoolBuffer() => Dispose();
