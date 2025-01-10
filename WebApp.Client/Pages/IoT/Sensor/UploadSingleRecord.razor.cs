@@ -39,7 +39,8 @@ public partial class UploadSingleRecord(ILogger<UploadSingleRecord> logger) : Co
         if (_Form.IsValid)
         {
             MultipartFormDataContent form = new();
-            form.Add(new StreamContent(File!.OpenReadStream()), "file", File.Name);
+            await using var stream = File!.OpenReadStream(16 * 1024 * 1024);
+            form.Add(new StreamContent(stream), "file", File.Name);
             form.Add(new StringContent(SensorId.SensorId), "sensorId");
             var postResult = await ApiService.PostAsync("api/iot/add-image", form);
             if(postResult.IsSuccessStatusCode)

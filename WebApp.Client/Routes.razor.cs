@@ -113,6 +113,7 @@ public partial class Routes(ILogger<Routes> logger) : ComponentBase, IDisposable
     {
         ErrorRecordModel model = new(e);
         logger.LogError(e, e.Message);
+        ToastService.ShowError(AppLang.An_error_has_occurred, TypeClassList.ToastDefaultSetting);
         return Uri.EscapeDataString(model.ToJson());
     }
 }

@@ -7,7 +7,7 @@
             <MudTextField T="IoTDevice" Label="@AppLang.Device" Value="DeviceId" Variant="Variant.Outlined" Disabled="true"></MudTextField>
             <MudTextField T="IoTSensor" Label="@AppLang.Sensor" Value="SensorId" Variant="Variant.Outlined" Disabled="true"></MudTextField>
             
-            <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles" Accept="image/png, image/jpg">
+            <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles" Accept="image/*">
                 <ActivatorContent>
                     <MudFab Color="Color.Success"
                             StartIcon="@Icons.Material.Filled.AttachFile"/>

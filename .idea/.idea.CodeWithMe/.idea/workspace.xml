@@ -45,14 +45,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/UploadSingleRecord.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/UploadSingleRecord.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/UploadSingleRecord.razor.css" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add new btn">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/UploadSingleRecord.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/UploadSingleRecord.razor" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1038,15 +1033,7 @@
       <workItem from="1736349150751" duration="1968000" />
       <workItem from="1736383345047" duration="10905000" />
       <workItem from="1736404627491" duration="14003000" />
-      <workItem from="1736468856474" duration="15583000" />
-    </task>
-    <task id="LOCAL-00617" summary="add listener">
-      <option name="closed" value="true" />
-      <created>1736138440424</created>
-      <option name="number" value="00617" />
-      <option name="presentableId" value="LOCAL-00617" />
-      <option name="project" value="LOCAL" />
-      <updated>1736138440424</updated>
+      <workItem from="1736468856474" duration="16560000" />
     </task>
     <task id="LOCAL-00618" summary="small update">
       <option name="closed" value="true" />
@@ -1432,7 +1419,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736496831942</updated>
     </task>
-    <option name="localTasksCounter" value="666" />
+    <task id="LOCAL-00666" summary="add new btn">
+      <option name="closed" value="true" />
+      <created>1736501826142</created>
+      <option name="number" value="00666" />
+      <option name="presentableId" value="LOCAL-00666" />
+      <option name="project" value="LOCAL" />
+      <updated>1736501826142</updated>
+    </task>
+    <option name="localTasksCounter" value="667" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1463,7 +1458,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="small update to get more session" />
     <MESSAGE value="ne name fix wrong implement" />
     <MESSAGE value="leave the file open" />
     <MESSAGE value="update column size" />
@@ -1488,7 +1482,8 @@
     <MESSAGE value="wrong indices" />
     <MESSAGE value="clear all array when return" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="add new btn" />
+    <option name="LAST_COMMIT_MESSAGE" value="add new btn" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
