@@ -268,6 +268,7 @@ public class YoloInferenceService : IYoloInferenceService
         while (!cancellationToken.IsCancellationRequested)
         {
             await SelfRunOneAsync(sw, buffer, cancellationToken);
+            buffer.Clear();
         }
     }
 
@@ -298,7 +299,6 @@ public class YoloInferenceService : IYoloInferenceService
         if (buffer.Count > 0)
         {
             ProcessBatchAsync(buffer);
-            buffer.Clear();
         }
     }
 
