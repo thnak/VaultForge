@@ -1,5 +1,4 @@
-﻿using System.Buffers;
-using Business.Data.StorageSpace.Utils;
+﻿using Business.Data.StorageSpace.Utils;
 
 namespace Business.Data.StorageSpace;
 
@@ -12,8 +11,6 @@ public class Raid5Stream : Stream
     private int StripeRowIndex { get; set; }
     private int ActualBufferSize { get; set; }
     private int StartPaddingSize { get; set; }
-    private static readonly ArrayPool<byte> ByteArrayPool = ArrayPool<byte>.Shared;
-    private static readonly ArrayPool<int> IntArrayPool = ArrayPool<int>.Shared;
     private readonly byte[][] _readPooledArrays;
     private readonly byte[][] _parityPoolBuffers;
     private readonly int[] _indicesArrayPool;
@@ -29,15 +26,15 @@ public class Raid5Stream : Stream
         ActualBufferSize = _stripeSize * (realDataDisks);
         _readPooledArrays = new byte[FileStreams.Count][];
         _parityPoolBuffers = new byte[realDataDisks][];
-        _indicesArrayPool = IntArrayPool.Rent(1);
+        _indicesArrayPool = [1];
         for (int i = 0; i < FileStreams.Count; i++)
         {
-            _readPooledArrays[i] = ByteArrayPool.Rent(stripeSize);
+            _readPooledArrays[i] = new byte[stripeSize];
         }
 
         for (int i = 0; i < realDataDisks; i++)
         {
-            _parityPoolBuffers[i] = ByteArrayPool.Rent(stripeSize);
+            _parityPoolBuffers[i] = new byte[stripeSize];
         }
     }
 
@@ -383,19 +380,6 @@ public class Raid5Stream : Stream
             {
                 FileStreams[i]?.Dispose();
             }
-
-            // Return rented arrays to the pool
-            foreach (var array in _readPooledArrays)
-            {
-                ByteArrayPool.Return(array, clearArray: true); // Clear array if needed for security
-            }
-
-            foreach (var array in _parityPoolBuffers)
-            {
-                ByteArrayPool.Return(array, clearArray: true); // Clear array if needed for security
-            }
-
-            IntArrayPool.Return(_indicesArrayPool, clearArray: true); // Clear array if needed for security
         }
 
         base.Dispose(disposing);
@@ -408,17 +392,5 @@ public class Raid5Stream : Stream
             if (stream != null)
                 await stream.DisposeAsync();
         }
-
-        foreach (var array in _readPooledArrays)
-        {
-            ByteArrayPool.Return(array, clearArray: true); // Clear array if needed for security
-        }
-
-        foreach (var array in _parityPoolBuffers)
-        {
-            ByteArrayPool.Return(array, clearArray: true); // Clear array if needed for security
-        }
-
-        IntArrayPool.Return(_indicesArrayPool, clearArray: true); // Clear array if needed for security
     }
 }

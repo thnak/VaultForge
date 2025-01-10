@@ -45,9 +45,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="fix wrong id">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add buffer check dispose">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/StorageSpace/Raid5Stream.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/StorageSpace/Raid5Stream.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1033,15 +1034,7 @@
       <workItem from="1736349150751" duration="1968000" />
       <workItem from="1736383345047" duration="10905000" />
       <workItem from="1736404627491" duration="14003000" />
-      <workItem from="1736468856474" duration="6283000" />
-    </task>
-    <task id="LOCAL-00611" summary="move to new lucene version">
-      <option name="closed" value="true" />
-      <created>1736059495624</created>
-      <option name="number" value="00611" />
-      <option name="presentableId" value="LOCAL-00611" />
-      <option name="project" value="LOCAL" />
-      <updated>1736059495625</updated>
+      <workItem from="1736468856474" duration="8366000" />
     </task>
     <task id="LOCAL-00612" summary="fix missing content type">
       <option name="closed" value="true" />
@@ -1427,7 +1420,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736473682455</updated>
     </task>
-    <option name="localTasksCounter" value="660" />
+    <task id="LOCAL-00660" summary="add buffer check dispose">
+      <option name="closed" value="true" />
+      <created>1736478852042</created>
+      <option name="number" value="00660" />
+      <option name="presentableId" value="LOCAL-00660" />
+      <option name="project" value="LOCAL" />
+      <updated>1736478852042</updated>
+    </task>
+    <option name="localTasksCounter" value="661" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1458,7 +1459,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="append file size limit" />
     <MESSAGE value="update bullshit" />
     <MESSAGE value="make it larger" />
     <MESSAGE value="max size" />
@@ -1483,7 +1483,8 @@
     <MESSAGE value="alias code" />
     <MESSAGE value="small update" />
     <MESSAGE value="fix wrong id" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix wrong id" />
+    <MESSAGE value="add buffer check dispose" />
+    <option name="LAST_COMMIT_MESSAGE" value="add buffer check dispose" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
