@@ -29,7 +29,7 @@
 @*      *@
 @* </div> *@
 
-<ApexChart TItem="MyData" @ref="ChartRef" Options="ChartOption" XAxisType="XAxisType.Datetime"
+<ApexChart TItem="MyData" @ref="ChartRef" Options="ChartOption" XAxisType="XAxisType.Category"
            Title="Sample Data">
 
     <ApexPointSeries TItem="MyData"
@@ -47,6 +47,15 @@
                      XValue="e => e.Category"
                      YValue="e=> e.StuPid"
                      PointColor="Point2Color"/>
+
+    <ApexPointSeries TItem="MyData"
+                     Items="Data"
+                     Name="Revenue"
+                     SeriesType="SeriesType.Line"
+                     XValue="e => e.Category"
+                     YValue="e=> e.StuPid"
+                     PointColor="Point3Color"/>
+    
 </ApexChart>
 
 

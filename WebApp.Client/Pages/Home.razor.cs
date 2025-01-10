@@ -24,15 +24,16 @@ public partial class Home(ILogger<Home> logger) : ComponentBase, IDisposable
         Random random = new();
         for (DateTime i = from; i < to; i = i.AddDays(1))
         {
-            Data.Add(new MyData { Category = i, NetProfit = random.Next(3000, 6000), StuPid = random.Next(3000, 6000) });
+            Data.Add(new MyData { Category = i.ToString("dd/MM"), NetProfit = random.Next(3000, 6000), StuPid = random.Next(3000, 6000), Fack = random.Next(3000, 6000) });
         }
     }
 
     public class MyData
     {
-        public DateTime Category { get; set; }
+        public string Category { get; set; } = string.Empty;
         public int NetProfit { get; set; }
         public int StuPid { get; set; }
+        public int Fack { get; set; }
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -67,6 +68,11 @@ public partial class Home(ILogger<Home> logger) : ComponentBase, IDisposable
     private string Point2Color(MyData arg)
     {
         return "#02DFDE";
+    }
+    
+    private string Point3Color(MyData arg)
+    {
+        return "#551aba";
     }
 
     private async Task Crypting(MouseEventArgs obj)
