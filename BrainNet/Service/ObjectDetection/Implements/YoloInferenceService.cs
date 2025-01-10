@@ -230,8 +230,7 @@ public class YoloInferenceService : IYoloInferenceService
             var ratios = _padAndRatiosArrayPool.Rent(2);
             memoryTensorOwner.Tensor.Span.Fill(114 / 255f);
             image.NormalizeInput(memoryTensorOwner.Tensor, _inputSize, ratios, pads, true);
-            _padAndRatiosArrayPool.Return(pads, true);
-            _padAndRatiosArrayPool.Return(ratios, true);
+            
             YoloInferenceServiceFeeder feeder = new YoloInferenceServiceFeeder(memoryTensorOwner.Tensor)
             {
                 OriginImageHeight = image.Height,
@@ -241,6 +240,8 @@ public class YoloInferenceService : IYoloInferenceService
                 PadHeight = pads[0],
                 PadWidth = pads[1],
             };
+            _padAndRatiosArrayPool.Return(pads, true);
+            _padAndRatiosArrayPool.Return(ratios, true);
 
             try
             {
