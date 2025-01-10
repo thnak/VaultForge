@@ -31,7 +31,7 @@ public static partial class EnumerableSimd
             result[i] = left[i] + right[i];
         }
 
-        ArrayPool<T>.Shared.Return(result);
+        ArrayPool<T>.Shared.Return(result, true);
 
         return result;
     }
@@ -77,7 +77,7 @@ public static partial class EnumerableSimd
         }
 
         // Return the buffer to the pool
-        ArrayPool<T>.Shared.Return(buffer);
+        ArrayPool<T>.Shared.Return(buffer, true);
 
         // Calculate and return the mean
         if (totalCount == 0)

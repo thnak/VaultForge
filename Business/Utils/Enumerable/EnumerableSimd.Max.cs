@@ -75,7 +75,7 @@ public static partial class EnumerableSimd
         }
 
         // Return the buffer to the pool
-        ArrayPool<T>.Shared.Return(buffer);
+        ArrayPool<T>.Shared.Return(buffer, true);
 
         return overallMax;
     }

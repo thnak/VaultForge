@@ -351,7 +351,7 @@ public class YoloInferenceService : IYoloInferenceService
             }
         }
 
-        _singleFrameInputArrayPool.Return(predictArray);
+        _singleFrameInputArrayPool.Return(predictArray, true);
     }
 
     public void Dispose()
