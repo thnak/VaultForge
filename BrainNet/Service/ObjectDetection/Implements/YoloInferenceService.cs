@@ -226,8 +226,8 @@ public class YoloInferenceService : IYoloInferenceService
         {
             var tcs = new TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>>();
             using MemoryTensorOwner<float> memoryTensorOwner = _memoryAllocatorService.AllocateTensor(_inputTensorShape, true);
-            var pads = _padAndRatiosArrayPool.Rent(1);
-            var ratios = _padAndRatiosArrayPool.Rent(1);
+            var pads = _padAndRatiosArrayPool.Rent(2);
+            var ratios = _padAndRatiosArrayPool.Rent(2);
             memoryTensorOwner.Tensor.Span.Fill(114 / 255f);
             image.NormalizeInput(memoryTensorOwner.Tensor, _inputSize, ratios, pads, true);
             _padAndRatiosArrayPool.Return(pads, true);

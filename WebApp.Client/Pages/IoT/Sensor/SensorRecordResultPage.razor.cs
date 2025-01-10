@@ -1,4 +1,5 @@
-﻿using BusinessModels.System.InternetOfThings;
+﻿using BusinessModels.Resources;
+using BusinessModels.System.InternetOfThings;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using WebApp.Client.Models;
@@ -43,6 +44,8 @@ public partial class SensorRecordResultPage(ILogger<SensorRecordResultPage> logg
     private List<IoTSensor> SensorList { get; set; } = new();
     private bool OpenFilterState { get; set; }
     private MudForm? FilterForm { get; set; }
+    private bool DisableAddButton => !_filterPage.Sensors.Any();
+
     private readonly DataGridExtensions.DataGridExtensionsBuilder _builderHelper = new();
 
     private async Task<IEnumerable<IoTDevice>> SearchDevice(string arg1, CancellationToken arg2)
@@ -151,5 +154,20 @@ public partial class SensorRecordResultPage(ILogger<SensorRecordResultPage> logg
     private Task ReloadPage()
     {
         return _dataGrid!.ReloadServerData();
+    }
+
+    private async Task AddNewRecord()
+    {
+        var dialogParam = new DialogParameters<UploadSingleRecord>()
+        {
+            { x => x.DeviceId, _filterPage.SelectedDevice },
+            { x => x.SensorId, _filterPage.Sensors.First() }
+        };
+        var dialog = await DialogService.ShowAsync<UploadSingleRecord>(AppLang.Add, dialogParam);
+        var dialogResult = await dialog.Result;
+        if (dialogResult is { Canceled: false })
+        {
+            await _dataGrid!.ReloadServerData();
+        }
     }
 }

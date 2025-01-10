@@ -1,0 +1,27 @@
+﻿@using Color = MudBlazor.Color
+<MudDialog>
+    <DialogContent>
+        
+        <MudForm @ref="_Form" Class="grid-container">
+
+            <MudTextField T="IoTDevice" Label="@AppLang.Device" Value="DeviceId" Variant="Variant.Outlined" Disabled="true"></MudTextField>
+            <MudTextField T="IoTSensor" Label="@AppLang.Sensor" Value="SensorId" Variant="Variant.Outlined" Disabled="true"></MudTextField>
+            
+            <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles" Accept="image/png, image/jpg">
+                <ActivatorContent>
+                    <MudFab Color="Color.Success"
+                            StartIcon="@Icons.Material.Filled.AttachFile"/>
+                </ActivatorContent>
+            </MudFileUpload>
+            
+        </MudForm>
+
+    </DialogContent>
+    <DialogActions>
+        
+        <MudButton OnClick="@Cancel" Variant="Variant.Outlined" Color="Color.Default">@AppLang.Cancel</MudButton>
+        <MudButton OnClick="@Submit" Variant="Variant.Filled" Disabled="DisableSubmitBtn" Color="Color.Default">@AppLang.Submit</MudButton>
+
+
+    </DialogActions>
+</MudDialog>

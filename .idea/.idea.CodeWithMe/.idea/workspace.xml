@@ -45,9 +45,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="clear all array when return">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
+      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/UploadSingleRecord.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/UploadSingleRecord.razor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/UploadSingleRecord.razor.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/IoT/Sensor/SensorRecordResultPage.razor.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -63,8 +68,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="CSS File" />
         <option value="JavaScript File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -1033,15 +1038,7 @@
       <workItem from="1736349150751" duration="1968000" />
       <workItem from="1736383345047" duration="10905000" />
       <workItem from="1736404627491" duration="14003000" />
-      <workItem from="1736468856474" duration="13331000" />
-    </task>
-    <task id="LOCAL-00616" summary="remove unmaintainable code">
-      <option name="closed" value="true" />
-      <created>1736128489175</created>
-      <option name="number" value="00616" />
-      <option name="presentableId" value="LOCAL-00616" />
-      <option name="project" value="LOCAL" />
-      <updated>1736128489175</updated>
+      <workItem from="1736468856474" duration="15583000" />
     </task>
     <task id="LOCAL-00617" summary="add listener">
       <option name="closed" value="true" />
@@ -1427,7 +1424,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736487446508</updated>
     </task>
-    <option name="localTasksCounter" value="665" />
+    <task id="LOCAL-00665" summary="small update">
+      <option name="closed" value="true" />
+      <created>1736496831941</created>
+      <option name="number" value="00665" />
+      <option name="presentableId" value="LOCAL-00665" />
+      <option name="project" value="LOCAL" />
+      <updated>1736496831942</updated>
+    </task>
+    <option name="localTasksCounter" value="666" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1476,14 +1481,14 @@
     <MESSAGE value="fix error" />
     <MESSAGE value="test" />
     <MESSAGE value="alias code" />
-    <MESSAGE value="small update" />
     <MESSAGE value="fix wrong id" />
     <MESSAGE value="add buffer check dispose" />
     <MESSAGE value="remove shit" />
     <MESSAGE value="out of range" />
     <MESSAGE value="wrong indices" />
     <MESSAGE value="clear all array when return" />
-    <option name="LAST_COMMIT_MESSAGE" value="clear all array when return" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
