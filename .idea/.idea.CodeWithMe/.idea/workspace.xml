@@ -45,11 +45,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="alias code">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/ImageExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/ImageExtension.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/StorageSpace/Raid5Stream.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/StorageSpace/Raid5Stream.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1030,15 +1032,7 @@
       <workItem from="1736349150751" duration="1968000" />
       <workItem from="1736383345047" duration="10905000" />
       <workItem from="1736404627491" duration="14003000" />
-      <workItem from="1736468856474" duration="1485000" />
-    </task>
-    <task id="LOCAL-00609" summary="correct file name and encode it">
-      <option name="closed" value="true" />
-      <created>1736052480988</created>
-      <option name="number" value="00609" />
-      <option name="presentableId" value="LOCAL-00609" />
-      <option name="project" value="LOCAL" />
-      <updated>1736052480988</updated>
+      <workItem from="1736468856474" duration="4306000" />
     </task>
     <task id="LOCAL-00610" summary="move to new excel format">
       <option name="closed" value="true" />
@@ -1424,7 +1418,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736468990961</updated>
     </task>
-    <option name="localTasksCounter" value="658" />
+    <task id="LOCAL-00658" summary="small update">
+      <option name="closed" value="true" />
+      <created>1736470379548</created>
+      <option name="number" value="00658" />
+      <option name="presentableId" value="LOCAL-00658" />
+      <option name="project" value="LOCAL" />
+      <updated>1736470379548</updated>
+    </task>
+    <option name="localTasksCounter" value="659" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1474,13 +1476,13 @@
     <MESSAGE value="move land page" />
     <MESSAGE value="remove autho" />
     <MESSAGE value="escape error message" />
-    <MESSAGE value="small update" />
     <MESSAGE value="allow empty" />
     <MESSAGE value="re-format rename" />
     <MESSAGE value="fix error" />
     <MESSAGE value="test" />
     <MESSAGE value="alias code" />
-    <option name="LAST_COMMIT_MESSAGE" value="alias code" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

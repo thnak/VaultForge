@@ -441,10 +441,9 @@ internal class FolderSystemBusinessLayer(
 
         request.NewFolder.RelativePath = folderRoot.RelativePath + '/' + request.NewFolder.FolderName;
         request.NewFolder.AbsolutePath = request.NewFolder.RelativePath;
-        request.NewFolder.RootFolder = request.RootId;
+        request.NewFolder.RootFolder = folderRoot.Id.ToString();
         request.NewFolder.ModifiedTime = DateTime.Now;
         request.NewFolder.OwnerUsername = folderRoot.OwnerUsername;
-
 
         if (string.IsNullOrEmpty(request.NewFolder.ModifiedUserName))
             request.NewFolder.ModifiedUserName = folderRoot.OwnerUsername;

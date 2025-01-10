@@ -29,7 +29,7 @@ internal sealed class MemoryAllocatorService : IMemoryAllocatorService
 
         public void Dispose()
         {
-            _pool.Return(_buffer);
+            _pool.Return(_buffer, clearArray: true);
         }
     }
 

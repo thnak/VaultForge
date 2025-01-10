@@ -1,5 +1,4 @@
-﻿using System.Buffers;
-using BrainNet.Utils;
+﻿using BrainNet.Utils;
 using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Data.StorageSpace;
@@ -24,7 +23,6 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
     private readonly IFileSystemBusinessLayer _fileSystemBusinessLayer;
     private readonly IIoTSensorBusinessLayer _iotSensorBusinessLayer;
     private readonly IWaterMeterInferenceService _waterMeterInferenceService;
-    private readonly ArrayPool<byte> _arrayPool = ArrayPool<byte>.Create();
     private readonly SemaphoreSlim _semaphore;
 
     public WaterMeterReaderQueue(ILogger<IWaterMeterReaderQueue> logger,
@@ -43,26 +41,37 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
 
     public async Task<IoTRecordUpdateModel> GetWaterMeterReadingCountAsync(IoTRecord record, CancellationToken cancellationToken = default)
     {
-        var file = _fileSystemBusinessLayer.Get(record.Metadata.ImagePath);
-        if (file is null)
-        {
-            _logger.LogWarning($"image not found: {record.Metadata.ImagePath}");
-            return new IoTRecordUpdateModel()
-            {
-                SensorId = record.Metadata.SensorId,
-                RecordedAt = record.Metadata.RecordedAt,
-                ProcessStatus = ProcessStatus.Failed
-            };
-        }
-        byte[] bufferArray = _arrayPool.Rent((int)file.FileSize);
-        Array.Clear(bufferArray, 0, bufferArray.Length);
         try
         {
             await _semaphore.WaitAsync(cancellationToken);
+            var file = _fileSystemBusinessLayer.Get(record.Metadata.ImagePath);
+            if (file is null)
+            {
+                _logger.LogWarning($"image not found: {record.Metadata.ImagePath}");
+                return new IoTRecordUpdateModel()
+                {
+                    SensorId = record.Metadata.SensorId,
+                    RecordedAt = record.Metadata.RecordedAt,
+                    ProcessStatus = ProcessStatus.Failed
+                };
+            }
             var sensor = _iotSensorBusinessLayer.Get(record.Metadata.SensorId);
-           
-            await _redundantArrayOfIndependentDisks.ReadGetDataAsync(bufferArray, file.AbsolutePath, CancellationToken.None);
-            using var image = Image.Load<Rgb24>(bufferArray);
+
+            var pathArray = await _redundantArrayOfIndependentDisks.GetDataBlockPaths(file.AbsolutePath, CancellationToken.None);
+            if (pathArray == null)
+            {
+                _logger.LogWarning($"image not found in RAID: {record.Metadata.ImagePath}");
+                return new IoTRecordUpdateModel()
+                {
+                    SensorId = record.Metadata.SensorId,
+                    RecordedAt = record.Metadata.RecordedAt,
+                    ProcessStatus = ProcessStatus.Failed
+                };
+            }
+
+            await using Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files, pathArray.FileSize, pathArray.StripeSize, FileMode.Open, FileAccess.Read, FileShare.Read);
+
+            using var image = await Image.LoadAsync<Rgb24>(raid5Stream, CancellationToken.None);
             image.AutoOrient();
             if (sensor is { Rotate: > 0 })
                 image.Mutate(i => i.Rotate(sensor.Rotate));
@@ -103,7 +112,6 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
         }
         finally
         {
-            _arrayPool.Return(bufferArray);
             _semaphore.Release();
         }
 

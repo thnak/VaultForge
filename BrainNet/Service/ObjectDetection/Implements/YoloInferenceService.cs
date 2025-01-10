@@ -252,8 +252,8 @@ public class YoloInferenceService : IYoloInferenceService
             }
             finally
             {
-                _padAndRatiosArrayPool.Return(pads);
-                _padAndRatiosArrayPool.Return(ratios);
+                _padAndRatiosArrayPool.Return(pads, true);
+                _padAndRatiosArrayPool.Return(ratios, true);
             }
         }
 
@@ -356,8 +356,8 @@ public class YoloInferenceService : IYoloInferenceService
 
     public void Dispose()
     {
-        ArrayPool<float>.Shared.Return(InputFeedBuffer);
-        _boolPool.Return(InferenceStates);
+        ArrayPool<float>.Shared.Return(InputFeedBuffer, true);
+        _boolPool.Return(InferenceStates, true);
         _session.Dispose();
         _memoryAllocatorService.Dispose();
         _runOptions.Dispose();
