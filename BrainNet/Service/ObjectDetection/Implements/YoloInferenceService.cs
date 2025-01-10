@@ -72,7 +72,7 @@ public class YoloInferenceService : IYoloInferenceService
         _singleInputLength = inputLength / InputDimensions[0];
         _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, (int)(maxQueueSize * 1.5));
         _padAndRatiosArrayPool = ArrayPool<float>.Create(1, maxQueueSize * 2);
-        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength);
+        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength, maxQueueSize * 2);
 
         InputFeedBuffer = ArrayPool<float>.Shared.Rent(inputLength);
         InferenceStates = _boolPool.Rent(InputDimensions[0]);
@@ -101,7 +101,7 @@ public class YoloInferenceService : IYoloInferenceService
         _singleInputLength = inputLength / InputDimensions[0];
         _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, (int)(maxQueueSize * 1.5));
         _padAndRatiosArrayPool = ArrayPool<float>.Create(1, maxQueueSize * 2);
-        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength);
+        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength, maxQueueSize * 2);
 
         InputFeedBuffer = ArrayPool<float>.Shared.Rent(inputLength);
         InferenceStates = _boolPool.Rent(InputDimensions[0]);
@@ -230,6 +230,8 @@ public class YoloInferenceService : IYoloInferenceService
             var ratios = _padAndRatiosArrayPool.Rent(1);
             memoryTensorOwner.Tensor.Span.Fill(114 / 255f);
             image.NormalizeInput(memoryTensorOwner.Tensor, _inputSize, ratios, pads, true);
+            _padAndRatiosArrayPool.Return(pads, true);
+            _padAndRatiosArrayPool.Return(ratios, true);
             YoloInferenceServiceFeeder feeder = new YoloInferenceServiceFeeder(memoryTensorOwner.Tensor)
             {
                 OriginImageHeight = image.Height,
@@ -249,11 +251,6 @@ public class YoloInferenceService : IYoloInferenceService
             {
                 tcs.SetResult(InferenceResult<List<YoloBoundingBox>>.Canceled("Canceled"));
                 return await tcs.Task;
-            }
-            finally
-            {
-                _padAndRatiosArrayPool.Return(pads, true);
-                _padAndRatiosArrayPool.Return(ratios, true);
             }
         }
 

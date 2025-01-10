@@ -45,8 +45,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="out of range">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="clear all array when return">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1032,23 +1033,7 @@
       <workItem from="1736349150751" duration="1968000" />
       <workItem from="1736383345047" duration="10905000" />
       <workItem from="1736404627491" duration="14003000" />
-      <workItem from="1736468856474" duration="10741000" />
-    </task>
-    <task id="LOCAL-00614" summary="update logic">
-      <option name="closed" value="true" />
-      <created>1736097853834</created>
-      <option name="number" value="00614" />
-      <option name="presentableId" value="LOCAL-00614" />
-      <option name="project" value="LOCAL" />
-      <updated>1736097853834</updated>
-    </task>
-    <task id="LOCAL-00615" summary="rollback to disk">
-      <option name="closed" value="true" />
-      <created>1736125642181</created>
-      <option name="number" value="00615" />
-      <option name="presentableId" value="LOCAL-00615" />
-      <option name="project" value="LOCAL" />
-      <updated>1736125642182</updated>
+      <workItem from="1736468856474" duration="13331000" />
     </task>
     <task id="LOCAL-00616" summary="remove unmaintainable code">
       <option name="closed" value="true" />
@@ -1426,7 +1411,23 @@
       <option name="project" value="LOCAL" />
       <updated>1736485684857</updated>
     </task>
-    <option name="localTasksCounter" value="663" />
+    <task id="LOCAL-00663" summary="wrong indices">
+      <option name="closed" value="true" />
+      <created>1736487299504</created>
+      <option name="number" value="00663" />
+      <option name="presentableId" value="LOCAL-00663" />
+      <option name="project" value="LOCAL" />
+      <updated>1736487299504</updated>
+    </task>
+    <task id="LOCAL-00664" summary="clear all array when return">
+      <option name="closed" value="true" />
+      <created>1736487446508</created>
+      <option name="number" value="00664" />
+      <option name="presentableId" value="LOCAL-00664" />
+      <option name="project" value="LOCAL" />
+      <updated>1736487446508</updated>
+    </task>
+    <option name="localTasksCounter" value="665" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1457,8 +1458,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="max size" />
-    <MESSAGE value="option notwork" />
     <MESSAGE value="small update to get more session" />
     <MESSAGE value="ne name fix wrong implement" />
     <MESSAGE value="leave the file open" />
@@ -1482,7 +1481,9 @@
     <MESSAGE value="add buffer check dispose" />
     <MESSAGE value="remove shit" />
     <MESSAGE value="out of range" />
-    <option name="LAST_COMMIT_MESSAGE" value="out of range" />
+    <MESSAGE value="wrong indices" />
+    <MESSAGE value="clear all array when return" />
+    <option name="LAST_COMMIT_MESSAGE" value="clear all array when return" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
