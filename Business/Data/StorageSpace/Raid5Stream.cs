@@ -26,7 +26,7 @@ public class Raid5Stream : Stream
         ActualBufferSize = _stripeSize * realDataDisks;
         _readPooledArrays = new byte[FileStreams.Count][];
         _parityPoolBuffers = new byte[realDataDisks][];
-        _indicesArrayPool = [FileStreams.Count];
+        _indicesArrayPool = new int [FileStreams.Count];
         for (int i = 0; i < FileStreams.Count; i++)
         {
             _readPooledArrays[i] = new byte[stripeSize];
