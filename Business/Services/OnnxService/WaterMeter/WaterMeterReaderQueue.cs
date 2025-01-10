@@ -69,39 +69,55 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
                 };
             }
 
+            using MemoryStream memoryStream = new MemoryStream();
             await using Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files, pathArray.FileSize, pathArray.StripeSize, FileMode.Open, FileAccess.Read, FileShare.Read);
-
-            using var image = await Image.LoadAsync<Rgb24>(raid5Stream, CancellationToken.None);
-            image.AutoOrient();
-            if (sensor is { Rotate: > 0 })
-                image.Mutate(i => i.Rotate(sensor.Rotate));
-            if (sensor is { FlipHorizontal: true })
-                image.Mutate(i => i.Flip(FlipMode.Horizontal));
-            if (sensor is { FlipVertical: true })
-                image.Mutate(i => i.Flip(FlipMode.Vertical));
-
-
-            var predResult = await _waterMeterInferenceService.AddInputAsync(image, cancellationToken);
-
-            if (predResult.IsSuccess)
+            await raid5Stream.CopyToAsync(memoryStream, (int)pathArray.FileSize, CancellationToken.None);
+            memoryStream.Seek(0, SeekOrigin.Begin);
+            
+            try
             {
-                var resultString = string.Join("", predResult.Value.OrderBy(x => x.X).Select(x => x.ClassIdx.ToString()));
-                float.TryParse(resultString, out var result);
+                using var image = await Image.LoadAsync<Rgb24>(memoryStream, CancellationToken.None);
+                image.AutoOrient();
+                if (sensor is { Rotate: > 0 })
+                    image.Mutate(i => i.Rotate(sensor.Rotate));
+                if (sensor is { FlipHorizontal: true })
+                    image.Mutate(i => i.Flip(FlipMode.Horizontal));
+                if (sensor is { FlipVertical: true })
+                    image.Mutate(i => i.Flip(FlipMode.Vertical));
+
+
+                var predResult = await _waterMeterInferenceService.AddInputAsync(image, cancellationToken);
+
+                if (predResult.IsSuccess)
+                {
+                    var resultString = string.Join("", predResult.Value.OrderBy(x => x.X).Select(x => x.ClassIdx.ToString()));
+                    float.TryParse(resultString, out var result);
+                    return new IoTRecordUpdateModel()
+                    {
+                        SensorId = record.Metadata.SensorId,
+                        RecordedAt = record.Metadata.RecordedAt,
+                        ProcessStatus = ProcessStatus.Completed,
+                        SensorData = result
+                    };
+                }
+
                 return new IoTRecordUpdateModel()
                 {
                     SensorId = record.Metadata.SensorId,
                     RecordedAt = record.Metadata.RecordedAt,
-                    ProcessStatus = ProcessStatus.Completed,
-                    SensorData = result
+                    ProcessStatus = ProcessStatus.Failed
                 };
             }
-
-            return new IoTRecordUpdateModel()
+            catch (Exception e)
             {
-                SensorId = record.Metadata.SensorId,
-                RecordedAt = record.Metadata.RecordedAt,
-                ProcessStatus = ProcessStatus.Failed
-            };
+                _logger.LogError(e, "An error occured while processing image");
+                return new IoTRecordUpdateModel()
+                {
+                    SensorId = record.Metadata.SensorId,
+                    RecordedAt = record.Metadata.RecordedAt,
+                    ProcessStatus = ProcessStatus.Failed
+                };
+            }
         }
         catch (OperationCanceledException)
         {

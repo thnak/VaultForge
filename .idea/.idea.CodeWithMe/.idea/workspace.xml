@@ -45,12 +45,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="fix wrong id">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/StorageSpace/Raid5Stream.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/StorageSpace/Raid5Stream.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
@@ -195,6 +191,11 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fe3b1716bf2f8f83ac793e7e3faa60f88a7868347653f77591f74b86d0d97675/Server.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/fed1875a1a5324c32b9124faa83bc4a7e9aa99238c2fdc47764dec459fc11034/StringField.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ff56e9dabec8513a52b6f0caca4a8979301377a3ae924a82a78d3c3dfd001c/TextOptions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/BrainNet/Service/Memory/Implements/MemoryAllocatorService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
@@ -1032,15 +1033,7 @@
       <workItem from="1736349150751" duration="1968000" />
       <workItem from="1736383345047" duration="10905000" />
       <workItem from="1736404627491" duration="14003000" />
-      <workItem from="1736468856474" duration="4306000" />
-    </task>
-    <task id="LOCAL-00610" summary="move to new excel format">
-      <option name="closed" value="true" />
-      <created>1736053568398</created>
-      <option name="number" value="00610" />
-      <option name="presentableId" value="LOCAL-00610" />
-      <option name="project" value="LOCAL" />
-      <updated>1736053568399</updated>
+      <workItem from="1736468856474" duration="6283000" />
     </task>
     <task id="LOCAL-00611" summary="move to new lucene version">
       <option name="closed" value="true" />
@@ -1426,7 +1419,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736470379548</updated>
     </task>
-    <option name="localTasksCounter" value="659" />
+    <task id="LOCAL-00659" summary="fix wrong id">
+      <option name="closed" value="true" />
+      <created>1736473682455</created>
+      <option name="number" value="00659" />
+      <option name="presentableId" value="LOCAL-00659" />
+      <option name="project" value="LOCAL" />
+      <updated>1736473682455</updated>
+    </task>
+    <option name="localTasksCounter" value="660" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1457,7 +1458,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="dispose unused resource" />
     <MESSAGE value="append file size limit" />
     <MESSAGE value="update bullshit" />
     <MESSAGE value="make it larger" />
@@ -1482,7 +1482,8 @@
     <MESSAGE value="test" />
     <MESSAGE value="alias code" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="fix wrong id" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix wrong id" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
