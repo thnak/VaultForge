@@ -17,9 +17,9 @@ public partial class ImageShowDialog : ComponentBase
     protected override void OnParametersSet()
     {
         if (File.ContentType.IsImageFile())
-            ImageUrl = $"api/files/get-file?id={File.Id.ToString()}&type={FileClassify.ThumbnailWebpFile}";
+            ImageUrl = $"api/files/get-file?id={File.AliasCode}&type={FileClassify.ThumbnailWebpFile}";
         else if (File.ContentType.IsVideoFile())
-            ImageUrl = $"api/files/stream-raid?path={File.Id.ToString()}";
+            ImageUrl = $"api/files/stream-raid?path={File.AliasCode}";
 
         base.OnParametersSet();
     }

@@ -45,10 +45,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="remove stupid things">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1037,15 +1035,7 @@
       <workItem from="1736569442518" duration="67000" />
       <workItem from="1736587701524" duration="101000" />
       <workItem from="1736587862319" duration="120000" />
-      <workItem from="1736651723453" duration="8155000" />
-    </task>
-    <task id="LOCAL-00622" summary="fix read image issue">
-      <option name="closed" value="true" />
-      <created>1736184840635</created>
-      <option name="number" value="00622" />
-      <option name="presentableId" value="LOCAL-00622" />
-      <option name="project" value="LOCAL" />
-      <updated>1736184840636</updated>
+      <workItem from="1736651723453" duration="9825000" />
     </task>
     <task id="LOCAL-00623" summary="small update">
       <option name="closed" value="true" />
@@ -1431,7 +1421,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736659710793</updated>
     </task>
-    <option name="localTasksCounter" value="671" />
+    <task id="LOCAL-00671" summary="remove object ID from client">
+      <option name="closed" value="true" />
+      <created>1736662669265</created>
+      <option name="number" value="00671" />
+      <option name="presentableId" value="LOCAL-00671" />
+      <option name="project" value="LOCAL" />
+      <updated>1736662669265</updated>
+    </task>
+    <option name="localTasksCounter" value="672" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1462,7 +1460,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="auto close menu" />
     <MESSAGE value="add new service" />
     <MESSAGE value="lower case first value" />
     <MESSAGE value="that tupid" />
@@ -1487,7 +1484,8 @@
     <MESSAGE value="enchant dialog style" />
     <MESSAGE value="return array wrong position" />
     <MESSAGE value="remove stupid things" />
-    <option name="LAST_COMMIT_MESSAGE" value="remove stupid things" />
+    <MESSAGE value="remove object ID from client" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove object ID from client" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
