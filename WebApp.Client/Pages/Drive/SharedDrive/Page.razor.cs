@@ -177,7 +177,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
     private Task SendForm()
     {
         Uploading = true;
-        var folderId = RootFolder.Id.ToString();
+        var folderId = RootFolder.AliasCode;
         UpLoadFilesJs(baseClientService.GetBaseUrl() + $"api/Files/upload-physical/{folderId}", folderId);
         return Task.CompletedTask;
     }
@@ -409,7 +409,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                 FileItemList.Clear();
                 foreach (var file in folder.Files)
                 {
-                    var fileId = file.Id.ToString();
+                    var fileId = file.AliasCode;
                     FileItemList.Add(new DropItem
                     {
                         Identifier = "File",
@@ -458,11 +458,11 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
                         ItemClassList = InitStyleElement(f.Type),
                         DbLickEvent = new ButtonAction
                         {
-                            Action = () => OpenFolder(f.Id.ToString())
+                            Action = () => OpenFolder(f.AliasCode)
                         },
                         Rename = new ButtonAction
                         {
-                            Action = () => RenameFile(f.Id.ToString(), f.FolderName, "/api/files/re-name-folder").ConfigureAwait(false)
+                            Action = () => RenameFile(f.AliasCode, f.FolderName, "/api/files/re-name-folder").ConfigureAwait(false)
                         },
                         Delete = new ButtonAction()
                         {
@@ -531,7 +531,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         foreach (var folderInfoModel in folderRequest.BloodLines)
         {
             BreadcrumbItems.Add(new BreadcrumbItem(folderInfoModel.FolderName,
-                Navigation.GetUriWithQueryParameters(Navigation.Uri, new Dictionary<string, object?> { { "FolderId", folderInfoModel.Id.ToString() } }),
+                Navigation.GetUriWithQueryParameters(Navigation.Uri, new Dictionary<string, object?> { { "FolderId", folderInfoModel.AliasCode } }),
                 false, folderInfoModel.Icon == "" ? null : folderInfoModel.Icon));
         }
     }
@@ -639,19 +639,19 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             Title = AppLang.Open,
             Disabled = false,
             Icon = "fa-ellipsis-vertical fa-solid",
-            OnClick = () => OpenFileDetailDialog(item.Id.ToString()).ConfigureAwait(false)
+            OnClick = () => OpenFileDetailDialog(item.AliasCode).ConfigureAwait(false)
         });
         param.Add(new RedditMobileMenu.RedditMobileMenuData()
         {
             Title = AppLang.Download,
             Icon = "cloud-arrow-download",
-            OnClick = () => Download(item.Id.ToString()).ConfigureAwait(false)
+            OnClick = () => Download(item.AliasCode).ConfigureAwait(false)
         });
         param.Add(new RedditMobileMenu.RedditMobileMenuData()
         {
             Title = AppLang.ReName,
             Icon = "fa-solid fa-user-pen",
-            OnClick = () => RenameFile(item.Id.ToString(), item.FileName, "/api/files/re-name-file").ConfigureAwait(false)
+            OnClick = () => RenameFile(item.AliasCode, item.FileName, "/api/files/re-name-file").ConfigureAwait(false)
         });
 
         return builder =>
@@ -729,7 +729,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         var dialogResult = await dialog.Result;
         if (dialogResult is { Canceled: false })
         {
-            var response = await baseClientService.DeleteAsync<string>($"/api/Files/safe-delete-file?code={file.Id.ToString()}", _cts.Token);
+            var response = await baseClientService.DeleteAsync<string>($"/api/Files/safe-delete-file?code={file.AliasCode}", _cts.Token);
             if (response.IsSuccessStatusCode)
             {
                 await GetRootFolderAsync(forceReload: true);
@@ -750,7 +750,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
             Fragment = builder =>
             {
                 builder.OpenElement(0, "span");
-                builder.SetKey(folder.Id);
+                builder.SetKey(folder.AliasCode);
                 builder.AddContent(1, folder.Type == FolderContentType.DeletedFolder ? AppLang.Delete_forever : AppLang.Move_to_recycle_bin);
                 builder.CloseElement();
             },
@@ -771,7 +771,7 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         var dialogResult = await dialog.Result;
         if (dialogResult is { Canceled: false })
         {
-            var response = await baseClientService.DeleteAsync<string>($"/api/Files/safe-delete-folder?code={folder.Id.ToString()}", _cts.Token);
+            var response = await baseClientService.DeleteAsync<string>($"/api/Files/safe-delete-folder?code={folder.AliasCode}", _cts.Token);
             if (response.IsSuccessStatusCode)
             {
                 await GetRootFolderAsync(forceReload: true);

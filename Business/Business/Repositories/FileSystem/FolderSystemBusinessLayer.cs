@@ -853,7 +853,8 @@ internal class FolderSystemBusinessLayer(
             model => model.Icon,
             model => model.RelativePath,
             model => model.ModifiedTime,
-            model => model.CreateDate
+            model => model.CreateDate,
+            model => model.AliasCode
         };
         var fieldsFileToFetch = new Expression<Func<FileInfoModel, object>>[]
         {
@@ -864,7 +865,8 @@ internal class FolderSystemBusinessLayer(
             model => model.ContentType,
             model => model.RelativePath,
             model => model.ModifiedTime,
-            model => model.CreatedDate
+            model => model.CreatedDate,
+            model => model.AliasCode
         };
 
         await foreach (var m in GetContentFormParentFolderAsync(folderPredicate, pageNumber, pageSize, cancellationToken, fieldsFolderToFetch))

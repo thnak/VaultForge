@@ -45,16 +45,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Business/Utils/ExpressionExtensions/BsonClassMapExtensions.cs" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="remove stupid things">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Base/BaseModelEntry.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Base/BaseModelEntry.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FolderInfoModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/FileSystem/FolderInfoModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTDevice.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTRecord.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/System/InternetOfThings/IoTRecord.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1043,15 +1037,7 @@
       <workItem from="1736569442518" duration="67000" />
       <workItem from="1736587701524" duration="101000" />
       <workItem from="1736587862319" duration="120000" />
-      <workItem from="1736651723453" duration="6514000" />
-    </task>
-    <task id="LOCAL-00621" summary="remove auto render mode">
-      <option name="closed" value="true" />
-      <created>1736179126567</created>
-      <option name="number" value="00621" />
-      <option name="presentableId" value="LOCAL-00621" />
-      <option name="project" value="LOCAL" />
-      <updated>1736179126567</updated>
+      <workItem from="1736651723453" duration="8155000" />
     </task>
     <task id="LOCAL-00622" summary="fix read image issue">
       <option name="closed" value="true" />
@@ -1437,7 +1423,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736526279836</updated>
     </task>
-    <option name="localTasksCounter" value="670" />
+    <task id="LOCAL-00670" summary="remove stupid things">
+      <option name="closed" value="true" />
+      <created>1736659710792</created>
+      <option name="number" value="00670" />
+      <option name="presentableId" value="LOCAL-00670" />
+      <option name="project" value="LOCAL" />
+      <updated>1736659710793</updated>
+    </task>
+    <option name="localTasksCounter" value="671" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1468,7 +1462,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="do not encode file name" />
     <MESSAGE value="auto close menu" />
     <MESSAGE value="add new service" />
     <MESSAGE value="lower case first value" />
@@ -1493,7 +1486,8 @@
     <MESSAGE value="show error log, allow large file upload" />
     <MESSAGE value="enchant dialog style" />
     <MESSAGE value="return array wrong position" />
-    <option name="LAST_COMMIT_MESSAGE" value="return array wrong position" />
+    <MESSAGE value="remove stupid things" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove stupid things" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
