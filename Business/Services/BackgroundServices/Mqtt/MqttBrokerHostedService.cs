@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using Business.Data.Repositories.InternetOfThings;
+using Business.Data.Interfaces.InternetOfThings;
 using Business.Services.Configure;
 using BusinessModels.General.Update;
 using BusinessModels.System.InternetOfThings;
@@ -15,7 +15,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-public class MqttBrokerHostedService(ApplicationConfiguration configuration, ILogger<MqttBrokerHostedService> logger, IotDeviceDataLayer deviceDataLayer) : BackgroundService
+public class MqttBrokerHostedService(ApplicationConfiguration configuration, ILogger<MqttBrokerHostedService> logger, IIotDeviceDataLayer deviceDataLayer) : BackgroundService
 {
     private MqttServer? _mqttServer;
 
