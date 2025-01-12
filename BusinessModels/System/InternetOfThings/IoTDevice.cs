@@ -7,7 +7,6 @@ using BusinessModels.System.InternetOfThings.type;
 using BusinessModels.Utils;
 using BusinessModels.Validator;
 using FluentValidation;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace BusinessModels.System.InternetOfThings;
@@ -31,17 +30,6 @@ public class IoTDevice : BaseModelEntry
     public override string ToString()
     {
         return DeviceName;
-    }
-
-    // Default constructor for new instances
-    public IoTDevice()
-    {
-    }
-
-    // Constructor for deserialization
-    [BsonConstructor]
-    public IoTDevice(ObjectId id) : base(id)
-    {
     }
 }
 

@@ -19,7 +19,8 @@ using MongoDB.Driver;
 
 namespace Business.Data.Repositories.FileSystem;
 
-public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<FolderSystemDatalayer> logger, IUserDataLayer userDataLayer, IMemoryCache memoryCache) : IFolderSystemDatalayer
+public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<FolderSystemDatalayer> logger, IUserDataLayer userDataLayer, IMemoryCache memoryCache)
+    : IFolderSystemDatalayer
 {
     private readonly IMongoCollection<FolderInfoModel> _dataDb = context.MongoDatabase.GetCollection<FolderInfoModel>("FolderInfo");
 
@@ -52,9 +53,9 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
             await _dataDb.Indexes.DropAllAsync(cancellationToken);
             await _dataDb.Indexes.CreateManyAsync(indexModels, cancellationToken: cancellationToken);
-            
+
             await InitDefaultFolderForUser("", "/iotImage", cancellationToken);
-            
+
             var userCtx = userDataLayer.GetAllAsync([], cancellationToken);
             await foreach (var user in userCtx)
             {

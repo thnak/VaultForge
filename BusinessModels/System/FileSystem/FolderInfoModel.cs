@@ -2,7 +2,6 @@ using System.Text.Json;
 using BusinessModels.Base;
 using BusinessModels.General.EnumModel;
 using MessagePack;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace BusinessModels.System.FileSystem;
@@ -99,16 +98,4 @@ public class FolderInfoModel : BaseModelEntry
     }
 
     #endregion
-
-    // Default constructor for new instances
-    public FolderInfoModel()
-    {
-    }
-
-    // Constructor for deserialization
-    [BsonConstructor]
-    public FolderInfoModel(ObjectId id, string absolutePath) : base(id)
-    {
-        AbsolutePath = absolutePath;
-    }
 }

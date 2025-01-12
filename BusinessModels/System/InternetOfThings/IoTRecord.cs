@@ -1,6 +1,5 @@
 ﻿using BusinessModels.Base;
 using BusinessModels.System.InternetOfThings.type;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace BusinessModels.System.InternetOfThings;
@@ -16,25 +15,6 @@ public class IoTRecord : BaseModelEntry
     {
         CreateTime = DateTime.UtcNow; // Set to current time by default
         Metadata = metadata;
-        Date = CreateTime.Date;
-        Hour = CreateTime.Hour;
-    }
-
-    // Default constructor for new instances
-    public IoTRecord()
-    {
-        Metadata = new RecordMetadata();
-        CreateTime = DateTime.UtcNow; // Set to current time by default
-        Date = CreateTime.Date;
-        Hour = CreateTime.Hour;
-    }
-
-    // Constructor for deserialization
-    [BsonConstructor]
-    public IoTRecord(ObjectId id, RecordMetadata metadata) : base(id)
-    {
-        Metadata = metadata;
-        CreateTime = DateTime.UtcNow; // Set to current time by default
         Date = CreateTime.Date;
         Hour = CreateTime.Hour;
     }

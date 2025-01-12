@@ -1,8 +1,7 @@
+using BusinessModels.Attribute;
 using BusinessModels.Base;
 using BusinessModels.General.EnumModel;
 using MessagePack;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 
 namespace BusinessModels.System.FileSystem;
 
@@ -40,7 +39,9 @@ public class FileInfoModel : BaseModelEntry
     [Key(15)] public FileClassify Classify { get; set; }
     [Key(16)] public string Checksum { get; set; } = string.Empty;
     [Key(17)] public string Description { get; set; } = string.Empty;
-    [Key(18)] public string AliasCode { get; set; } = string.Empty;
+    [Key(18)]
+    [IndexedDbKey]
+    public string AliasCode { get; set; } = string.Empty;
 
     #region Front-End Methods
 
@@ -66,16 +67,4 @@ public class FileInfoModel : BaseModelEntry
     }
 
     #endregion
-
-    // Default constructor for new instances
-    public FileInfoModel()
-    {
-    }
-
-    // Constructor for deserialization
-    [BsonConstructor]
-    public FileInfoModel(ObjectId id, string absolutePath) : base(id)
-    {
-        AbsolutePath = absolutePath;
-    }
 }

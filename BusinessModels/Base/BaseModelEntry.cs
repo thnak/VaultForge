@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using BusinessModels.Converter;
 using MessagePack;
 using MongoDB.Bson;
@@ -10,9 +9,8 @@ namespace BusinessModels.Base;
 [MessagePackObject]
 public class BaseModelEntry
 {
-    [BsonId] [Key(0)] [DatabaseGenerated(DatabaseGeneratedOption.Identity)] 
-    [JsonConverter(typeof(ObjectIdConverter))]
-    public readonly ObjectId Id;
+    [BsonId] [Key(0)] [JsonConverter(typeof(ObjectIdConverter))]
+    public ObjectId Id = ObjectId.GenerateNewId();
 
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     [Key(1)]
@@ -22,21 +20,10 @@ public class BaseModelEntry
     [Key(2)]
     public DateTime ModifiedTime { get; set; } = DateTime.UtcNow;
 
-    public BaseModelEntry()
-    {
-        Id = ObjectId.GenerateNewId();
-    }
-
-
-    [BsonConstructor]
-    public BaseModelEntry(ObjectId id)
-    {
-        Id = id;
-    }
-
 
     public override int GetHashCode()
     {
+        // ReSharper disable once NonReadonlyMemberInGetHashCode
         return Id.GetHashCode();
     }
 }
