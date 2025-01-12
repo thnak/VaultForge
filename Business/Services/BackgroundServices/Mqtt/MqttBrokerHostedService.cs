@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using Business.Data.Repositories.InternetOfThings;
 using Business.Services.Configure;
 using BusinessModels.General.Update;
@@ -45,6 +46,7 @@ public class MqttBrokerHostedService(ApplicationConfiguration configuration, ILo
         _mqttServer.StartedAsync += MqttServerOnStartedAsync;
         _mqttServer.StoppedAsync += MqttServerOnStoppedAsync;
         _mqttServer.InterceptingSubscriptionAsync += MqttServerOnInterceptingSubscriptionAsync;
+        _mqttServer.InterceptingPublishAsync += MqttServerOnInterceptingPublishAsync;
         try
         {
             await _mqttServer.StartAsync();
@@ -53,6 +55,16 @@ public class MqttBrokerHostedService(ApplicationConfiguration configuration, ILo
         {
             logger.LogError(e, e.Message);
         }
+    }
+
+    private Task MqttServerOnInterceptingPublishAsync(InterceptingPublishEventArgs args)
+    {
+        string topic = args.ApplicationMessage.Topic;
+        string payload = Encoding.UTF8.GetString(args.ApplicationMessage.Payload);
+
+        logger.LogInformation($"Topic: {topic} Payload: {payload}");
+
+        return Task.CompletedTask;
     }
 
     private Task MqttServerOnInterceptingSubscriptionAsync(InterceptingSubscriptionEventArgs arg)
