@@ -122,16 +122,16 @@ public static class AppSettingsConverter
             return result;
         foreach (var property in appSettings.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
         {
-            if (property.PropertyType.IsClass)
-            {
-                var dict = (property as T).ConvertToDictionary();
-                foreach (var pair in dict)
-                {
-                    result.TryAdd(property.Name + '.' + pair.Key, pair.Value);
-                }
-
-                // continue;
-            }
+            // if (property.PropertyType.IsClass)
+            // {
+            //     var dict = property.ConvertToDictionary();
+            //     foreach (var pair in dict)
+            //     {
+            //         result.TryAdd(property.Name + '.' + pair.Key, pair.Value);
+            //     }
+            //
+            //     continue;
+            // }
 
             var groupName = property.Name;
             var groupValue = property.GetValue(appSettings);

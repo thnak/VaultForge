@@ -20,7 +20,10 @@
         "BrainNetSettingModelWaterSettingDetectionPath": "C:/Users/thanh/source/best-fp16.onnx",
         "BrainNetSettingModelWaterSettingPeriodicTimer": "1000",
         "BrainNetSettingModelWaterSettingMaxQueSize": "16",
-        "BrainNetSettingModelWaterSettingDeviceIndex": "1"
+        "BrainNetSettingModelWaterSettingDeviceIndex": "1",
+        "MQTT_ENABLE_SSL": "true",
+        "MQTT_SSL_PORT": "8883",
+        "MQTT_NON_SSL_PORT": "1883"
       },
       "dotnetRunMessages": true,
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",

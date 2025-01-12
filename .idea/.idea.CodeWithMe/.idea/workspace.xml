@@ -45,8 +45,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="import wrong type">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Models/SettingModels/AppSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Models/SettingModels/AppSettings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/BackgroundServices/Mqtt/MqttBrokerHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/BackgroundServices/Mqtt/MqttBrokerHostedService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -166,6 +170,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9769f0874b89d9a174c39e6c977aef6d979daefa49c7f3c239ef268493ea12/SemaphoreSlim.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9d6392d7da29b5663aaca22910d8ca5b62351bd1a786350db41d3b3688d194c/Document.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a387f56e0a254d6432b1c7dad82cf164131bf4cae191042f96133f70bfc2/SessionOptions.shared.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ad1d58b8dd22123dfae3f2cf5d8b199992465c9c344d032f93a826d8e5539ff/RuntimeType.CoreCLR.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b27e716cf9d53122a9e9a2da043a0702f3bb0e2ca1e2a5fc750e2a443586cf/GridState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bd1d5c50194fea68ff3559c160230b0ab50f5acf4ce3061bffd6d62958e2182/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c0825838dbca581cf60bf89f4791b3457ede3abd17df9e3cc61257c8e15b43/DefaultValidatorExtensions.cs" root0="FORCE_HIGHLIGHTING" />
@@ -1036,15 +1041,7 @@
       <workItem from="1736587701524" duration="101000" />
       <workItem from="1736587862319" duration="120000" />
       <workItem from="1736651723453" duration="9825000" />
-      <workItem from="1736677879989" duration="6655000" />
-    </task>
-    <task id="LOCAL-00627" summary="multi file">
-      <option name="closed" value="true" />
-      <created>1736225543788</created>
-      <option name="number" value="00627" />
-      <option name="presentableId" value="LOCAL-00627" />
-      <option name="project" value="LOCAL" />
-      <updated>1736225543788</updated>
+      <workItem from="1736677879989" duration="9334000" />
     </task>
     <task id="LOCAL-00628" summary="add new service">
       <option name="closed" value="true" />
@@ -1430,7 +1427,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736691373197</updated>
     </task>
-    <option name="localTasksCounter" value="676" />
+    <task id="LOCAL-00676" summary="shit">
+      <option name="closed" value="true" />
+      <created>1736697446437</created>
+      <option name="number" value="00676" />
+      <option name="presentableId" value="LOCAL-00676" />
+      <option name="project" value="LOCAL" />
+      <updated>1736697446437</updated>
+    </task>
+    <option name="localTasksCounter" value="677" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1461,7 +1466,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="move land page" />
     <MESSAGE value="remove autho" />
     <MESSAGE value="escape error message" />
     <MESSAGE value="allow empty" />
@@ -1486,7 +1490,8 @@
     <MESSAGE value="add config for mqtt" />
     <MESSAGE value="add receive" />
     <MESSAGE value="import wrong type" />
-    <option name="LAST_COMMIT_MESSAGE" value="import wrong type" />
+    <MESSAGE value="shit" />
+    <option name="LAST_COMMIT_MESSAGE" value="shit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1522,6 +1527,19 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="93" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Business/Services/BackgroundServices/Mqtt/MqttBrokerHostedService.cs</url>
+          <line>84</line>
+          <properties documentPath="C:\Users\thanh\Git\VaultForge\Business\Services\BackgroundServices\Mqtt\MqttBrokerHostedService.cs" containingFunctionPresentation="Method 'MqttServerOnStartedAsync'">
+            <startOffsets>
+              <option value="3181" />
+            </startOffsets>
+            <endOffsets>
+              <option value="3226" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="109" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">

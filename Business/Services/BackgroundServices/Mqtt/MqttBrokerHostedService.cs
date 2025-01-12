@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System.Security.Authentication;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Business.Data.Interfaces.InternetOfThings;
 using Business.Services.Configure;
@@ -24,15 +25,18 @@ public class MqttBrokerHostedService(ApplicationConfiguration configuration, ILo
         var mqttSettings = configuration.GetMqttSettings;
 
         var optionsBuilder = new MqttServerOptionsBuilder()
+            .WithDefaultEndpoint()
             .WithDefaultEndpointPort(mqttSettings.NonSslPort) // Standard MQTT port
             .WithDefaultEndpointBoundIPAddress(IPAddress.Any); // Accept connections from any IP
 
         if (mqttSettings.EnableSsl)
         {
             var certificate = X509CertificateLoader.LoadPkcs12FromFile(configuration.GetAppCertificate.FilePath, configuration.GetAppCertificate.Password);
-            optionsBuilder.WithEncryptedEndpoint()
+            optionsBuilder
+                .WithEncryptedEndpoint()
                 .WithEncryptedEndpointPort(mqttSettings.SslPort)
-                .WithEncryptionCertificate(certificate);
+                .WithEncryptionCertificate(certificate)
+                .WithEncryptionSslProtocol(SslProtocols.Tls13);
 
             logger.LogInformation($"SSL is enabled on port {mqttSettings.SslPort} using certificate at {configuration.GetAppCertificate.FilePath}");
         }
