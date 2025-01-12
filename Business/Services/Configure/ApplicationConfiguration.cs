@@ -34,8 +34,17 @@ public class ApplicationConfiguration
         InitVideoEncodeConfig(appSettings);
 
         BrainNetConfig(appSettings);
-        
+
+        InitMqttSettings(appSettings);
+
         DisplayGroupedConfigurations(InitLogoAsciiArt(), Configs.ConvertToDictionary());
+    }
+
+    private void InitMqttSettings(IOptions<AppSettings> appSettings)
+    {
+        Configs.MqttSettings.EnableSsl = GetIntEnvironmentVariable("MQTT_ENABLE_SSL", appSettings.Value.MqttSettings.EnableSsl);
+        Configs.MqttSettings.SslPort = GetIntEnvironmentVariable("MQTT_SSL_PORT", appSettings.Value.MqttSettings.SslPort);
+        Configs.MqttSettings.NonSslPort = GetIntEnvironmentVariable("MQTT_NON_SSL_PORT", appSettings.Value.MqttSettings.NonSslPort);
     }
 
     private void InitAuthenticateConfig(IOptions<AppSettings> appSettings)
@@ -140,6 +149,8 @@ public class ApplicationConfiguration
     public Models.SettingModels.Authenticate GetAuthenticate => Configs.Authenticate;
     public BrainNetSettingModel GetBrainNetSetting => Configs.BrainNetSettingModel;
 
+    public MqttSettings GetMqttSettings => Configs.MqttSettings;
+    
     private string GetEnvironmentVariable(string key, string defaultValue)
     {
         var envValue = Environment.GetEnvironmentVariable(key);
@@ -181,6 +192,18 @@ public class ApplicationConfiguration
         if (!string.IsNullOrEmpty(envValue))
         {
             var intValue = int.Parse(envValue);
+            return intValue;
+        }
+
+        return defaultValue;
+    }
+
+    private bool GetIntEnvironmentVariable(string key, bool defaultValue)
+    {
+        var envValue = Environment.GetEnvironmentVariable(key);
+        if (!string.IsNullOrEmpty(envValue))
+        {
+            var intValue = bool.Parse(envValue);
             return intValue;
         }
 

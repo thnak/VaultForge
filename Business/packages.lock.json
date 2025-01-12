@@ -190,6 +190,16 @@
           "MongoDB.Driver": "3.0.0"
         }
       },
+      "MQTTnet.AspNetCore": {
+        "type": "Direct",
+        "requested": "[5.0.1.1416, )",
+        "resolved": "5.0.1.1416",
+        "contentHash": "ku7XJqk9XqumqCoNVXIpW6TMhNj6FjJSWy4x8kqMSSK31G1YOjsnkKkNI+dhZMC/FH46UxwTZv2fy3IpBct6vw==",
+        "dependencies": {
+          "MQTTnet": "5.0.1.1416",
+          "MQTTnet.Server": "5.0.1.1416"
+        }
+      },
       "NAudio": {
         "type": "Direct",
         "requested": "[2.2.1, )",
@@ -992,6 +1002,19 @@
         "dependencies": {
           "System.Memory": "4.5.5",
           "System.Runtime.CompilerServices.Unsafe": "5.0.0"
+        }
+      },
+      "MQTTnet": {
+        "type": "Transitive",
+        "resolved": "5.0.1.1416",
+        "contentHash": "ONYieEMaHiIei5dAtHXywnfJGhmrd5Av5sNJSQERp6AtZdPk3xxjCR6Cv0C5RUr/XbLeHO4/HQ0Rc2bQ5NF5Mw=="
+      },
+      "MQTTnet.Server": {
+        "type": "Transitive",
+        "resolved": "5.0.1.1416",
+        "contentHash": "S17xbTitOKXEp+KMpIJgsLCRYVOqH+b8IF21+fqERI0zdiF5AqOfgXhI2Fmr4Ev8ftKoAUDfEEn8ckwo478i5Q==",
+        "dependencies": {
+          "MQTTnet": "5.0.1.1416"
         }
       },
       "MudBlazor": {

@@ -16,6 +16,7 @@ public class IoTDevice : BaseModelEntry
     [IndexedDbKey]
     public string DeviceId { get; set; } = string.Empty;
     public string DeviceName { get; set; } = string.Empty;
+    public string MqttPassword { get; set; } = string.Empty;
     public string DeviceGroupId { get; set; } = string.Empty;
     public IoTDeviceType IoTDeviceType { get; set; } // e.g., Gateway, Sensor Node
     public string Manufacturer { get; set; } = string.Empty;

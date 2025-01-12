@@ -1146,6 +1146,28 @@
           "MongoDB.Driver": "3.0.0"
         }
       },
+      "MQTTnet": {
+        "type": "Transitive",
+        "resolved": "5.0.1.1416",
+        "contentHash": "ONYieEMaHiIei5dAtHXywnfJGhmrd5Av5sNJSQERp6AtZdPk3xxjCR6Cv0C5RUr/XbLeHO4/HQ0Rc2bQ5NF5Mw=="
+      },
+      "MQTTnet.AspNetCore": {
+        "type": "Transitive",
+        "resolved": "5.0.1.1416",
+        "contentHash": "ku7XJqk9XqumqCoNVXIpW6TMhNj6FjJSWy4x8kqMSSK31G1YOjsnkKkNI+dhZMC/FH46UxwTZv2fy3IpBct6vw==",
+        "dependencies": {
+          "MQTTnet": "5.0.1.1416",
+          "MQTTnet.Server": "5.0.1.1416"
+        }
+      },
+      "MQTTnet.Server": {
+        "type": "Transitive",
+        "resolved": "5.0.1.1416",
+        "contentHash": "S17xbTitOKXEp+KMpIJgsLCRYVOqH+b8IF21+fqERI0zdiF5AqOfgXhI2Fmr4Ev8ftKoAUDfEEn8ckwo478i5Q==",
+        "dependencies": {
+          "MQTTnet": "5.0.1.1416"
+        }
+      },
       "MudBlazor": {
         "type": "Transitive",
         "resolved": "7.15.0",
@@ -2485,6 +2507,7 @@
           "Lucene.Net": "[4.8.0-beta00017, )",
           "Lucene.Net.Memory": "[4.8.0-beta00017, )",
           "Lucene.Net.QueryParser": "[4.8.0-beta00017, )",
+          "MQTTnet.AspNetCore": "[5.0.1.1416, )",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "[9.0.0, )",
           "Microsoft.AspNetCore.DataProtection": "[9.0.0, )",
           "Microsoft.AspNetCore.Http.Features": "[6.0.0-preview.4.21253.5, )",

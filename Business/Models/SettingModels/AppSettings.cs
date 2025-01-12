@@ -16,10 +16,16 @@ public class AppSettings
     public IoTCircuitBreaker IoTCircuitBreaker { get; set; } = new();
     public IoTRequestQueueConfig IoTRequestQueueConfig { get; set; } = new();
     public AppCertificate AppCertificate { get; set; } = new();
-
     public Authenticate Authenticate { get; set; } = new();
-
     public BrainNetSettingModel BrainNetSettingModel { get; set; } = new();
+    public MqttSettings MqttSettings { get; set; } = new();
+}
+
+public class MqttSettings
+{
+    public bool EnableSsl { get; set; }
+    public int SslPort { get; set; } = 8883;
+    public int NonSslPort { get; set; } = 1883;
 }
 
 public class BackgroundQueue
@@ -123,6 +129,8 @@ public static class AppSettingsConverter
                 {
                     result.TryAdd(property.Name + '.' + pair.Key, pair.Value);
                 }
+
+                continue;
             }
 
             var groupName = property.Name;

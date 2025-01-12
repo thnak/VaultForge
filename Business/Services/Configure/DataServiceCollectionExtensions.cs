@@ -31,6 +31,7 @@ using Business.Data.Repositories.Wiki;
 using Business.Data.StorageSpace;
 using Business.Models.SettingModels;
 using Business.Services.BackgroundServices.Base;
+using Business.Services.BackgroundServices.Mqtt;
 using Business.Services.BackgroundServices.ServerHealth;
 using Business.Services.FileSystem;
 using Business.Services.HostedServices.Base;
@@ -114,6 +115,7 @@ public static class DataServiceCollectionExtensions
         service.AddHostedService<Worker>();
         service.AddHostedService<SequenceQueuedBackgroundService>();
         service.AddHostedService<ParallelBackgroundService>();
+        service.AddHostedService<MqttBrokerHostedService>();
     }
 
     private static void AddAdvancedServiceCollection(this IServiceCollection service)
