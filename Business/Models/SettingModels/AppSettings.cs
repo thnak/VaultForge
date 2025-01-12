@@ -130,7 +130,7 @@ public static class AppSettingsConverter
                     result.TryAdd(property.Name + '.' + pair.Key, pair.Value);
                 }
 
-                continue;
+                // continue;
             }
 
             var groupName = property.Name;
