@@ -197,7 +197,10 @@ public class FileSystemDatalayer(
 
     public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<FileInfoModel> updates, CancellationToken cancellationToken = default)
     {
-        var updateResult = await _fileDataDb.UpdateAsync(key, updates, cancellationToken);
+        var oldValue = Get(key);
+        if(oldValue == null)
+            return (false, AppLang.NotFound);
+        var updateResult = await _fileDataDb.UpdateAsync(oldValue.Id.ToString(), updates, cancellationToken);
         return (updateResult.IsSuccess, updateResult.Message);
     }
 

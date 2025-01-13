@@ -10,16 +10,7 @@ public partial class FilesController
     {
         var file = fileServe.Get(fileId);
         if (file == null) return BadRequest(AppLang.File_not_found_);
-
-        var folder = folderServe.Get(folderId);
-        if (folder == null) return BadRequest(AppLang.Folder_could_not_be_found);
-
         var fileDeleteStatus = await fileServe.DeleteAsync(fileId);
-        if (fileDeleteStatus.Item1)
-        {
-            await folderServe.UpdateAsync(folder);
-        }
-
         return BadRequest(fileDeleteStatus.Item2);
     }
 

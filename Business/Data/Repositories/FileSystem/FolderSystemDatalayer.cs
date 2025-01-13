@@ -236,37 +236,31 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     {
         try
         {
-            if (ObjectId.TryParse(key, out var id))
+            var filter = ObjectId.TryParse(key, out var id) ? Builders<FolderInfoModel>.Filter.Eq(f => f.Id, id) : Builders<FolderInfoModel>.Filter.Eq(x => x.AliasCode, key);
+
+            // Build the update definition by combining multiple updates
+            var updateDefinitionBuilder = Builders<FolderInfoModel>.Update;
+            var updateDefinitions = new List<UpdateDefinition<FolderInfoModel>>();
+
+            if (updates.Any())
             {
-                var filter = Builders<FolderInfoModel>.Filter.Eq(f => f.Id, id);
-
-                // Build the update definition by combining multiple updates
-                var updateDefinitionBuilder = Builders<FolderInfoModel>.Update;
-                var updateDefinitions = new List<UpdateDefinition<FolderInfoModel>>();
-
-                if (updates.Any())
+                updates.Add(model => model.ModifiedTime, DateTime.UtcNow);
+                foreach (var update in updates)
                 {
-                    updates.Add(model => model.ModifiedTime, DateTime.UtcNow);
-                    foreach (var update in updates)
-                    {
-                        var fieldName = update.Key;
-                        var fieldValue = update.Value;
+                    var fieldName = update.Key;
+                    var fieldValue = update.Value;
 
-                        // Add the field-specific update to the list
-                        updateDefinitions.Add(updateDefinitionBuilder.Set(fieldName, fieldValue));
-                    }
-
-                    // Combine all update definitions into one
-                    var combinedUpdate = updateDefinitionBuilder.Combine(updateDefinitions);
-
-                    await _dataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
+                    // Add the field-specific update to the list
+                    updateDefinitions.Add(updateDefinitionBuilder.Set(fieldName, fieldValue));
                 }
 
-                return (true, AppLang.Update_successfully);
+                // Combine all update definitions into one
+                var combinedUpdate = updateDefinitionBuilder.Combine(updateDefinitions);
+
+                await _dataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
             }
 
-
-            return (false, AppLang.Invalid_key);
+            return (true, AppLang.Update_successfully);
         }
         catch (OperationCanceledException)
         {
@@ -279,7 +273,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     {
         try
         {
-            var isExists = await _dataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
+            var isExists = await _dataDb.Find(x => x.Id == model.Id || x.AliasCode == model.AliasCode).AnyAsync(cancellationToken: cancellationToken);
             if (isExists) return Result<bool>.Failure(AppLang.Folder_already_exists, ErrorType.Duplicate);
             model.ModifiedTime = DateTime.UtcNow;
             model.CreateTime = DateTime.UtcNow;
