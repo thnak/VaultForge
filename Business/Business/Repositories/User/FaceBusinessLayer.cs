@@ -7,7 +7,6 @@ using BrainNet.Models.Vector;
 using Business.Business.Interfaces.User;
 using Business.Data.Interfaces.User;
 using Business.Data.Interfaces.VectorDb;
-using Business.Models;
 using Business.Models.RetrievalAugmentedGeneration.Vector;
 using Business.Services.Configure;
 using BusinessModels.General.Results;

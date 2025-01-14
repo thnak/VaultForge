@@ -918,8 +918,8 @@
       },
       "Microsoft.SemanticKernel.Abstractions": {
         "type": "Transitive",
-        "resolved": "1.32.0",
-        "contentHash": "RkowDH+bZhahO+1pcSoqyYpZD0cS22uqIPoWA1NRVxcJlY1qrg+gU+yx0ysAgX6doCQ1sXpPfRn9e3Yxgtqtsw==",
+        "resolved": "1.33.0",
+        "contentHash": "Fl6kw1gpXdhVpui0c88rQA+sQT4Bsjdk51klMavH4KvxPP2yOcqsHCkhXMBDlBMJppChFBTt1KdSW3jxF440xg==",
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "8.0.0",
           "Microsoft.Bcl.HashCode": "1.1.1",
@@ -933,40 +933,40 @@
       },
       "Microsoft.SemanticKernel.Connectors.Google": {
         "type": "Transitive",
-        "resolved": "1.32.0-alpha",
-        "contentHash": "9Km69itECJscIIGK8Mq89Usqdae9z+djdFoeSgew/iqp7U6uApO4++RqQJNUFCrXD0FInfTtahXp6pqJJvbnDQ==",
+        "resolved": "1.33.0-alpha",
+        "contentHash": "MvSwkHwzZlfsnFaEVcEvudAhOjs4C1hsvREc8LNzy53U2H4XBNxEXUTtKIMpLmq0mltRrXydQcbjsIwXDG6yTw==",
         "dependencies": {
-          "Microsoft.SemanticKernel.Abstractions": "1.32.0",
-          "Microsoft.SemanticKernel.Core": "1.32.0"
+          "Microsoft.SemanticKernel.Abstractions": "1.33.0",
+          "Microsoft.SemanticKernel.Core": "1.33.0"
         }
       },
       "Microsoft.SemanticKernel.Connectors.InMemory": {
         "type": "Transitive",
-        "resolved": "1.32.0-preview",
-        "contentHash": "lvVM/F3Wl9lyN+42XzGGkcGvmhtV1EsHDMt0BBaVcuG9LTsJzHgns1Yi/ZBhmt+7DDjUBPkwFPcPm/1WbRsUew==",
+        "resolved": "1.33.0-preview",
+        "contentHash": "s4nUF3KH4dYKDA/TA27guC+CK8ZE2JC3Xei+I1nWGYpaK/xdx2JyD9U+klvhJLjwGZo0mtHf6D6/SMt2OuXOuQ==",
         "dependencies": {
-          "Microsoft.SemanticKernel.Abstractions": "1.32.0",
+          "Microsoft.SemanticKernel.Abstractions": "1.33.0",
           "System.Numerics.Tensors": "8.0.0"
         }
       },
       "Microsoft.SemanticKernel.Connectors.Ollama": {
         "type": "Transitive",
-        "resolved": "1.32.0-alpha",
-        "contentHash": "IS1CFSB0J5U63wbtVZgXtCuxnKQziDsaSBymN2U2ihJN5d4lz+sOF5mjgbQ3aTAh9kbhRtS85HpHqfz99g7qWQ==",
+        "resolved": "1.33.0-alpha",
+        "contentHash": "Np2wULU5rpiPUBP6TxRvoDc97sbSq1aFxfjhp+6RdA0pMjZSsmRXilUeKGtzzVNS1Wk4NQB/TG4H7fWPaMNNrg==",
         "dependencies": {
           "Microsoft.Extensions.AI": "9.0.1-preview.1.24570.5",
-          "Microsoft.SemanticKernel.Abstractions": "1.32.0",
-          "Microsoft.SemanticKernel.Core": "1.32.0",
-          "OllamaSharp": "4.0.8"
+          "Microsoft.SemanticKernel.Abstractions": "1.33.0",
+          "Microsoft.SemanticKernel.Core": "1.33.0",
+          "OllamaSharp": "4.0.17"
         }
       },
       "Microsoft.SemanticKernel.Core": {
         "type": "Transitive",
-        "resolved": "1.32.0",
-        "contentHash": "rwhDywnFTYoCVPvlAiOvFb8NQKrjBofbrNHqROsBNwIJicSwJz9k7Zc852O5MzQEGRvCzkJlA/oUEG+U++AT2Q==",
+        "resolved": "1.33.0",
+        "contentHash": "4RIexmgbiuVpCboSRR95+2QS3rSod49JupI1Sfww2I6rwsKMw4i6Dp5Dx+cwO9AsnW5vPyANNdmM35qkNCjZ0Q==",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": "8.0.1",
-          "Microsoft.SemanticKernel.Abstractions": "1.32.0",
+          "Microsoft.SemanticKernel.Abstractions": "1.33.0",
           "System.Numerics.Tensors": "8.0.0",
           "System.Text.Json": "8.0.5"
         }
@@ -1119,8 +1119,8 @@
       },
       "OllamaSharp": {
         "type": "Transitive",
-        "resolved": "4.0.8",
-        "contentHash": "4mZZQkVRxevJ/oDVO4Eg02H3tPO9Nxo7kmp9LIru2Po01oqMipLyBxsnueeXCMKC8LPVOaqEjbejwBMR0Stu3Q==",
+        "resolved": "4.0.17",
+        "contentHash": "VZSrgYMyfxRG7aRoLQRV0KtgLuKjKAm98vPA+pGZ6R8H7XCjfsZGLc7GVVJh/kaV6cMTsswkEEcV3h81WcJpsA==",
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "8.0.0",
           "Microsoft.Extensions.AI.Abstractions": "9.0.1-preview.1.24570.5"
@@ -2027,9 +2027,9 @@
           "Microsoft.Extensions.Options": "[9.0.0, )",
           "Microsoft.Extensions.VectorData.Abstractions": "[9.0.0-preview.1.24523.1, )",
           "Microsoft.ML.OnnxRuntime.DirectML": "[1.20.1, )",
-          "Microsoft.SemanticKernel.Connectors.Google": "[1.32.0-alpha, )",
-          "Microsoft.SemanticKernel.Connectors.InMemory": "[1.32.0-preview, )",
-          "Microsoft.SemanticKernel.Connectors.Ollama": "[1.32.0-alpha, )",
+          "Microsoft.SemanticKernel.Connectors.Google": "[1.33.0-alpha, )",
+          "Microsoft.SemanticKernel.Connectors.InMemory": "[1.33.0-preview, )",
+          "Microsoft.SemanticKernel.Connectors.Ollama": "[1.33.0-alpha, )",
           "Newtonsoft.Json": "[13.0.3, )",
           "OpenCvSharp4": "[4.10.0.20241108, )",
           "OpenCvSharp4.Windows": "[4.10.0.20241108, )",

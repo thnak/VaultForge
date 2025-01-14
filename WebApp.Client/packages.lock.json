@@ -4,9 +4,9 @@
     "net9.0": {
       "Blazor-ApexCharts": {
         "type": "Direct",
-        "requested": "[4.0.1, )",
-        "resolved": "4.0.1",
-        "contentHash": "LhBgL7pLWtib89EiH9LNsON0xoPGG0lp8xITgb4aGzJJ7RSmmC4W429TOIuDZePpD+Zw0oxOFBr2CXUKLRhKnA==",
+        "requested": "[5.0.1, )",
+        "resolved": "5.0.1",
+        "contentHash": "6bHx1FOjeJqEfvValeBDzG37Qc4xWi/v1Ex3EuTbcbxd3ydxWEgi4rprPY4FhNEGoBr3tHKNoiADqwbeaVD/bQ==",
         "dependencies": {
           "Microsoft.AspNetCore.Components": "8.0.10",
           "Microsoft.AspNetCore.Components.Web": "8.0.10",

@@ -546,7 +546,8 @@ internal class FolderSystemBusinessLayer(
             model => model.Icon,
             model => model.RelativePath,
             model => model.ModifiedTime,
-            model => model.CreateDate
+            model => model.CreateDate,
+            model => model.AliasCode,
         };
 
         var folderList = Where(x => x.OwnerUsername == user.UserName, cancellationToken, fieldsFolderToFetch);
@@ -569,7 +570,8 @@ internal class FolderSystemBusinessLayer(
                 model => model.ContentType,
                 model => model.RelativePath,
                 model => model.ModifiedTime,
-                model => model.CreatedDate
+                model => model.CreatedDate,
+                model => model.AliasCode
             };
 
             var fileCursor = fileSystemService.Where(x => x.Status == FileStatus.DeletedFile && x.RootFolder == rootFolder, cancellationTokenSource, fieldToFetch);
@@ -661,7 +663,7 @@ internal class FolderSystemBusinessLayer(
     }
 
     [Experimental("SKEXP0020")]
-    public  Task RequestIndexAsync(string key, CancellationToken cancellationToken = default)
+    public Task RequestIndexAsync(string key, CancellationToken cancellationToken = default)
     {
         return Task.CompletedTask;
     }

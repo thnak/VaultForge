@@ -47,7 +47,14 @@
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/BackgroundServices/Mqtt/MqttBrokerHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/BackgroundServices/Mqtt/MqttBrokerHostedService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/BrainNet.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/BrainNet.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Business/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConsoleApp1/ConsoleApp1.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/ConsoleApp1.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConsoleApp1/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/WebApp.Client.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/WebApp.Client.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/packages.lock.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1040,14 +1047,8 @@
       <workItem from="1736651723453" duration="9825000" />
       <workItem from="1736677879989" duration="9515000" />
       <workItem from="1736752800361" duration="3181000" />
-    </task>
-    <task id="LOCAL-00629" summary="finish service">
-      <option name="closed" value="true" />
-      <created>1736238564826</created>
-      <option name="number" value="00629" />
-      <option name="presentableId" value="LOCAL-00629" />
-      <option name="project" value="LOCAL" />
-      <updated>1736238564826</updated>
+      <workItem from="1736782240179" duration="2517000" />
+      <workItem from="1736817722113" duration="1834000" />
     </task>
     <task id="LOCAL-00630" summary="dispose unused resource">
       <option name="closed" value="true" />
@@ -1433,7 +1434,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736705109223</updated>
     </task>
-    <option name="localTasksCounter" value="678" />
+    <task id="LOCAL-00678" summary="fix wrong update fields">
+      <option name="closed" value="true" />
+      <created>1736784903712</created>
+      <option name="number" value="00678" />
+      <option name="presentableId" value="LOCAL-00678" />
+      <option name="project" value="LOCAL" />
+      <updated>1736784903712</updated>
+    </task>
+    <option name="localTasksCounter" value="679" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1464,7 +1473,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="remove autho" />
     <MESSAGE value="escape error message" />
     <MESSAGE value="allow empty" />
     <MESSAGE value="re-format rename" />
@@ -1489,7 +1497,8 @@
     <MESSAGE value="import wrong type" />
     <MESSAGE value="shit" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="fix wrong update fields" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix wrong update fields" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
