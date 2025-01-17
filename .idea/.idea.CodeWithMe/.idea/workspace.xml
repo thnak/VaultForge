@@ -45,14 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Models/Setting/BrainNetSettingModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Models/Setting/BrainNetSettingModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Models/SettingModels/AppSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Models/SettingModels/AppSettings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/Inference/FaceController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/Inference/FaceController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" afterDir="false" />
-    </list>
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update" />
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
@@ -1218,15 +1211,7 @@
       <workItem from="1736841393844" duration="312000" />
       <workItem from="1736987510351" duration="3483000" />
       <workItem from="1737073206751" duration="24248000" />
-      <workItem from="1737126239151" duration="2695000" />
-    </task>
-    <task id="LOCAL-00637" summary="ne name fix wrong implement">
-      <option name="closed" value="true" />
-      <created>1736263162780</created>
-      <option name="number" value="00637" />
-      <option name="presentableId" value="LOCAL-00637" />
-      <option name="project" value="LOCAL" />
-      <updated>1736263162780</updated>
+      <workItem from="1737126239151" duration="3436000" />
     </task>
     <task id="LOCAL-00638" summary="leave the file open">
       <option name="closed" value="true" />
@@ -1612,7 +1597,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737090423452</updated>
     </task>
-    <option name="localTasksCounter" value="686" />
+    <task id="LOCAL-00686" summary="small update">
+      <option name="closed" value="true" />
+      <created>1737130745311</created>
+      <option name="number" value="00686" />
+      <option name="presentableId" value="LOCAL-00686" />
+      <option name="project" value="LOCAL" />
+      <updated>1737130745311</updated>
+    </task>
+    <option name="localTasksCounter" value="687" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

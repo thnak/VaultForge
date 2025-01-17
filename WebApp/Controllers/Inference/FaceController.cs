@@ -22,7 +22,7 @@ public class FaceController(IFaceEmbeddingInferenceService faceEmbeddingInferenc
         foreach (var file in files)
         {
             await using var stream = file.OpenReadStream();
-            var image = await Image.LoadAsync<Rgb24>(stream);
+            using var image = await Image.LoadAsync<Rgb24>(stream);
             var vector = await faceEmbeddingInferenceService.AddInputAsync(image);
             await faceBusinessLayer.CreateAsync(new FaceVectorStorageModel()
             {
@@ -39,7 +39,7 @@ public class FaceController(IFaceEmbeddingInferenceService faceEmbeddingInferenc
     public async Task<IActionResult> SearchFace([FromForm] IFormFile file)
     {
         await using var stream = file.OpenReadStream();
-        var image = await Image.LoadAsync<Rgb24>(stream);
+        using var image = await Image.LoadAsync<Rgb24>(stream);
         var vector = await faceEmbeddingInferenceService.AddInputAsync(image);
 
         var searchResults = await faceBusinessLayer.SearchVectorAsync(vector);
