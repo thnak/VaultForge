@@ -120,11 +120,7 @@ public class FaceEmbedding : IFaceEmbedding
         _runOptions = new();
         PrimaryFont = _fontServiceProvider.CreateFont(FontFamily.RobotoRegular, 14, FontStyle.Regular);
         _timeout = TimeSpan.FromSeconds(options.Value.WaterSetting.PeriodicTimer);
-        var inputLength = 1;
-        for (int i = 0; i < InputDimensions.Length; i++)
-        {
-            inputLength *= InputDimensions[i];
-        }
+        var inputLength = InputDimensions.Aggregate(1, (current, t) => current * t);
 
         _singleInputLength = inputLength / InputDimensions[0];
 
@@ -150,7 +146,13 @@ public class FaceEmbedding : IFaceEmbedding
         InputNames = _session.GetInputNames();
         OutputNames = _session.GetOutputNames();
         InputDimensions = _session.InputMetadata.First().Value.Dimensions;
+
+        InputDimensions[0] = InputDimensions[0] == -1 ? 1 : InputDimensions[0];
+
         OutputDimensions = [.._session.OutputMetadata.First().Value.Dimensions];
+        
+        OutputDimensions[0] = OutputDimensions[0] == -1 ? 1 : OutputDimensions[0];
+
         _tensorShape = new TensorShape(InputDimensions);
         _inputTensorShape = new TensorShape([1, InputDimensions[1], InputDimensions[2], InputDimensions[3]]);
         _inputSize = new Size(InputDimensions[^1], InputDimensions[^2]);

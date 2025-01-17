@@ -17,7 +17,7 @@ namespace WebApp.Controllers.Inference;
 public class FaceController(IFaceEmbeddingInferenceService faceEmbeddingInferenceService, IFaceBusinessLayer faceBusinessLayer) : ControllerBase
 {
     [HttpPost("insert-new-face")]
-    public async Task<IActionResult> InsertFace([FromForm] IFormFile file, string owner)
+    public async Task<IActionResult> InsertFace([FromForm] IFormFile file, [FromForm] string owner)
     {
         await using var stream = file.OpenReadStream();
         var image = await Image.LoadAsync<Rgb24>(stream);
@@ -29,5 +29,17 @@ public class FaceController(IFaceEmbeddingInferenceService faceEmbeddingInferenc
         }, vector);
 
         return Content(updateResult.ToJson(), MediaTypeNames.Application.Json);
+    }
+
+    [HttpPost("search-face")]
+    public async Task<IActionResult> SearchFace([FromForm] IFormFile file)
+    {
+        await using var stream = file.OpenReadStream();
+        var image = await Image.LoadAsync<Rgb24>(stream);
+        var vector = await faceEmbeddingInferenceService.AddInputAsync(image);
+
+        var searchResults = await faceBusinessLayer.SearchVectorAsync(vector);
+        
+        return Content(searchResults.ToJson(), MediaTypeNames.Application.Json);
     }
 }
