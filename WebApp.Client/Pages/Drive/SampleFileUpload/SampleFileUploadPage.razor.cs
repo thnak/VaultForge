@@ -1,7 +1,6 @@
 ﻿using BusinessModels.System;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using MudBlazor;
 using WebApp.Client.Utils;
 
 namespace WebApp.Client.Pages.Drive.SampleFileUpload;
@@ -11,23 +10,28 @@ public partial class SampleFileUploadPage : ComponentBase
     private const string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
     private string _dragClass = DefaultDragClass;
     private readonly List<(string, double)> _fileNames = new();
-    private MudFileUpload<IReadOnlyList<IBrowserFile>>? _fileUpload;
+    private IReadOnlyList<IBrowserFile> _fileUpload;
 
-    private async Task ClearAsync()
+    private Task ClearAsync()
     {
-        await (_fileUpload?.ClearAsync() ?? Task.CompletedTask);
+        _fileUpload = [];
         _fileNames.Clear();
         ClearDragClass();
+        return Task.CompletedTask;
     }
 
     private Task OpenFilePickerAsync()
-        => _fileUpload?.OpenFilePickerAsync() ?? Task.CompletedTask;
+    {
+        _fileUpload = [];
+        return Task.CompletedTask;
+    }
 
     private void OnInputFileChanged(InputFileChangeEventArgs e)
     {
         ClearDragClass();
-        var files = e.GetMultipleFiles();
-        foreach (var file in files)
+        _fileUpload = e.GetMultipleFiles();
+        _fileNames.Clear();
+        foreach (var file in _fileUpload)
         {
             _fileNames.Add((file.Name, 0));
         }
@@ -36,36 +40,34 @@ public partial class SampleFileUploadPage : ComponentBase
     private async Task Upload()
     {
         int index = 0;
-        if (_fileUpload is { Files: not null })
-        {
-            using var multipartContent = new MultipartFormDataContent();
-            foreach (var file in _fileUpload.Files)
-            {
-                await using var fileStream = file.OpenReadStream(long.MaxValue);
-                var index1 = index;
-                var progress = new Progress<double>(percent =>
-                {
-                    _fileNames[index1] = (_fileNames[index1].Item1, percent);
-                    InvokeAsync(StateHasChanged);
-                });
-                await using var progressStream = new ProgressStreamContent(fileStream, progress);
-                var fileContent = new StreamContent(progressStream);
-                multipartContent.Add(fileContent, _fileNames[index].Item1);
-                index++;
-            }
 
-            var folderRequest = await ApiService.GetFolderRequestAsync("", 0, 50, null, false, false);
-            if (folderRequest.IsSuccessStatusCode)
+        using var multipartContent = new MultipartContent();
+        foreach (var file in _fileUpload)
+        {
+            await using var fileStream = file.OpenReadStream(long.MaxValue);
+            var index1 = index;
+            var progress = new Progress<double>(percent =>
             {
-                var result = await ApiService.PostAsync($"api/files/upload-physical/{folderRequest.Data.Folder.AliasCode}", multipartContent);
-                if (result.IsSuccessStatusCode)
-                {
-                    ToastService.ShowSuccess(result.Message, TypeClassList.ToastDefaultSetting);
-                }
-                else
-                {
-                    ToastService.ShowError(result.Message, TypeClassList.ToastDefaultSetting);
-                }
+                _fileNames[index1] = (_fileNames[index1].Item1, percent);
+                InvokeAsync(StateHasChanged);
+            });
+            await using var progressStream = new ProgressStreamContent(fileStream, progress);
+            var fileContent = new StreamContent(progressStream);
+            multipartContent.Add(fileContent);
+            index++;
+        }
+
+        var folderRequest = await ApiService.GetFolderRequestAsync(null, 0, 50, null, false, false);
+        if (folderRequest.IsSuccessStatusCode)
+        {
+            var result = await ApiService.PostAsync($"/api/files/upload-physical/{folderRequest.Data.Folder.AliasCode}", multipartContent);
+            if (result.IsSuccessStatusCode)
+            {
+                ToastService.ShowSuccess(result.Message, TypeClassList.ToastDefaultSetting);
+            }
+            else
+            {
+                ToastService.ShowError(result.Message, TypeClassList.ToastDefaultSetting);
             }
         }
     }

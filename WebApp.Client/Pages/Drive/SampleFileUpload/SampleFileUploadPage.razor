@@ -1,11 +1,9 @@
 ﻿@using Color = MudBlazor.Color
 @attribute [Route("sample-upload")]
-
-@inject ISnackbar Snackbar
+@rendermode InteractiveWebAssembly
 
 <MudStack Style="width: 100%">
     <MudFileUpload T="IReadOnlyList<IBrowserFile>"
-                   @ref="@_fileUpload"
                    OnFilesChanged="OnInputFileChanged"
                    AppendMultipleFiles
                    Hidden="@false"
