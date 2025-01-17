@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.ComputeVision;
-using Business.Models;
 using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
@@ -14,7 +13,7 @@ namespace Business.Data.Repositories.ComputeVision;
 
 public class YoloLabelDataLayer(IMongoDataLayerContext context) : IYoloLabelDataLayer
 {
-    private readonly IMongoCollection<YoloLabel> dataContext = context.MongoDatabase.GetCollection<YoloLabel>("YoloLabels");
+    private readonly IMongoCollection<YoloLabel> _dataContext = context.MongoDatabase.GetCollection<YoloLabel>("YoloLabels");
 
     public void Dispose()
     {
@@ -28,7 +27,7 @@ public class YoloLabelDataLayer(IMongoDataLayerContext context) : IYoloLabelData
             Builders<YoloLabel>.IndexKeys.Ascending(x => x.FileId).Ascending(x => x.Id)
         ];
         var modelIndexes = indexKeysDefinitions.Select(x => new CreateIndexModel<YoloLabel>(x));
-        await dataContext.Indexes.CreateManyAsync(modelIndexes, cancellationToken: cancellationToken);
+        await _dataContext.Indexes.CreateManyAsync(modelIndexes, cancellationToken: cancellationToken);
         return (true, string.Empty);
     }
 
@@ -53,7 +52,7 @@ public class YoloLabelDataLayer(IMongoDataLayerContext context) : IYoloLabelData
 
     public async IAsyncEnumerable<YoloLabel> FindAsync(FilterDefinition<YoloLabel> filter, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        using var cursor = await dataContext.FindAsync(filter, cancellationToken: cancellationToken);
+        using var cursor = await _dataContext.FindAsync(filter, cancellationToken: cancellationToken);
         while (await cursor.MoveNextAsync(cancellationToken))
         {
             foreach (var model in cursor.Current)
@@ -108,7 +107,7 @@ public class YoloLabelDataLayer(IMongoDataLayerContext context) : IYoloLabelData
     {
         try
         {
-            await dataContext.InsertOneAsync(model, cancellationToken: cancellationToken);
+            await _dataContext.InsertOneAsync(model, cancellationToken: cancellationToken);
             return Result<bool>.Success(true);
         }
         catch (Exception e)
@@ -141,11 +140,11 @@ public class YoloLabelDataLayer(IMongoDataLayerContext context) : IYoloLabelData
     {
         if (ObjectId.TryParse(key, out ObjectId objectId))
         {
-            await dataContext.DeleteManyAsync(x => x.Id == objectId, cancellationToken: cancelToken);
+            await _dataContext.DeleteManyAsync(x => x.Id == objectId, cancellationToken: cancelToken);
         }
         else
         {
-            await dataContext.DeleteManyAsync(x => x.FileId == key, cancellationToken: cancelToken);
+            await _dataContext.DeleteManyAsync(x => x.FileId == key, cancellationToken: cancelToken);
         }
 
         return (true, AppLang.Delete_successfully);

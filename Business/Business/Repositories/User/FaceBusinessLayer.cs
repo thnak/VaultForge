@@ -153,12 +153,12 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, IVectorDataLayer vector
     }
 
     [Experimental("SKEXP0020")]
-    public async Task<Result<List<SearchScore<VectorRecord>>>> SearchVectorAsync(float[] vector, CancellationToken cancellationToken = default)
+    public async Task<Result<List<SearchScore<VectorRecord>>>> SearchVectorAsync(float[] vector, int limit = 10, CancellationToken cancellationToken = default)
     {
         try
         {
             List<SearchScore<VectorRecord>> result = [];
-            var cursor = _iInMemoryVectorDb.Search(new ReadOnlyMemory<float>(vector), 10, cancellationToken);
+            var cursor = _iInMemoryVectorDb.Search(new ReadOnlyMemory<float>(vector), limit, cancellationToken);
             await foreach (var search in cursor)
             {
                 result.Add(search);
@@ -197,6 +197,12 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, IVectorDataLayer vector
             var createResult = await dataLayer.CreateAsync(model, cancellationToken);
             if (createResult.IsSuccess || createResult.ErrorType == ErrorType.Duplicate)
             {
+                var search = await SearchVectorAsync(vector, 10, cancellationToken);
+                if ((search.Value ?? []).FirstOrDefault()?.Score >= 1)
+                {
+                    return Result<bool>.SuccessWithMessage(true, AppLang.Already_existing);
+                }
+
                 await vectorDataLayer.CreateAsync(new Models.Vector.VectorRecord()
                 {
                     Collection = VectorCollectionName,

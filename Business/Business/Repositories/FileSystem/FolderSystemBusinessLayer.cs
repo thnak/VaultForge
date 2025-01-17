@@ -71,7 +71,7 @@ internal class FolderSystemBusinessLayer(
         }
     }
 
-    public Task<Result<List<SearchScore<VectorRecord>>?>> SearchVectorAsync(float[] vector, CancellationToken cancellationToken = default)
+    public Task<Result<List<SearchScore<VectorRecord>>?>> SearchVectorAsync(float[] vector, int limit = 10, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

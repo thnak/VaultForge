@@ -1,4 +1,6 @@
 ﻿using System.Net.Mime;
+using BrainNet.Models.Result;
+using BrainNet.Models.Vector;
 using Business.Business.Interfaces.User;
 using Business.Models.RetrievalAugmentedGeneration.Vector;
 using Business.Services.OnnxService.Face;
@@ -36,14 +38,23 @@ public class FaceController(IFaceEmbeddingInferenceService faceEmbeddingInferenc
     }
 
     [HttpPost("search-face")]
-    public async Task<IActionResult> SearchFace([FromForm] IFormFile file)
+    public async Task<IActionResult> SearchFace([FromForm] IFormFile file, [FromForm] int limit, [FromForm] double alpha, [FromForm] double beta)
+
     {
         await using var stream = file.OpenReadStream();
         using var image = await Image.LoadAsync<Rgb24>(stream);
         var vector = await faceEmbeddingInferenceService.AddInputAsync(image);
 
-        var searchResults = await faceBusinessLayer.SearchVectorAsync(vector);
+        var searchResults = await faceBusinessLayer.SearchVectorAsync(vector, limit);
 
-        return Content(searchResults.ToJson(), MediaTypeNames.Application.Json);
+        var scorer = new SearchScorer<VectorRecord>();
+        var classScores = scorer.GetWeightedTopScores<string>(
+            searchResults.Value ?? [],
+            value => value.Key, // Class based on the first letter (A or B)
+            decayFactor: alpha // Weight for sum of scores
+            // beta: beta // Weight for density
+        );
+
+        return Content(classScores.ToJson(), MediaTypeNames.Application.Json);
     }
 }

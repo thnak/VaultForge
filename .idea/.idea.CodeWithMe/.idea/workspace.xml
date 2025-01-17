@@ -45,7 +45,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="dispose image">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Models/Result/SearchScore.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Models/Result/SearchScore.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Interfaces/IExtendService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Interfaces/IExtendService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IIotRecordBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IIotRecordBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/Wiki/WikipediaBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/Wiki/WikipediaBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/ComputeVision/YoloLabelDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/ComputeVision/YoloLabelDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/Inference/FaceController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/Inference/FaceController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
+    </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
@@ -121,6 +133,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c73b3c6c598640c592fd3c6fa226c286e90908/4e/4750adba/IMemoryOwner`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c73b3c6c598640c592fd3c6fa226c286e90908/62/1fb63ed0/IDisposable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e3157c720a4245958cf8a1b12c4b4a27e90928/17/7dde157a/ArgumentOutOfRangeException.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e3157c720a4245958cf8a1b12c4b4a27e90928/f1/9791d11c/StackFrameIterator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f144f137e8c44478ad03d647d3e83e8771910/68/2e705602/EncryptionAlgorithm.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1059a9b9258b3670df5a4c449544237362d49ae9599d8964fde76c16fc50b6/VectorStoreRecordProperty.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1e9051104f7894b9ba7e669e1d0bb793b9aa7e74273a7cc1cf79a91e248ca97/Tensor.shared.cs" root0="FORCE_HIGHLIGHTING" />
@@ -1211,15 +1224,7 @@
       <workItem from="1736841393844" duration="312000" />
       <workItem from="1736987510351" duration="3483000" />
       <workItem from="1737073206751" duration="24248000" />
-      <workItem from="1737126239151" duration="3436000" />
-    </task>
-    <task id="LOCAL-00638" summary="leave the file open">
-      <option name="closed" value="true" />
-      <created>1736266137438</created>
-      <option name="number" value="00638" />
-      <option name="presentableId" value="LOCAL-00638" />
-      <option name="project" value="LOCAL" />
-      <updated>1736266137438</updated>
+      <workItem from="1737126239151" duration="7016000" />
     </task>
     <task id="LOCAL-00639" summary="update column size">
       <option name="closed" value="true" />
@@ -1605,7 +1610,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737130745311</updated>
     </task>
-    <option name="localTasksCounter" value="687" />
+    <task id="LOCAL-00687" summary="dispose image">
+      <option name="closed" value="true" />
+      <created>1737130863564</created>
+      <option name="number" value="00687" />
+      <option name="presentableId" value="LOCAL-00687" />
+      <option name="project" value="LOCAL" />
+      <updated>1737130863564</updated>
+    </task>
+    <option name="localTasksCounter" value="688" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1636,7 +1649,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="alias code" />
     <MESSAGE value="fix wrong id" />
     <MESSAGE value="add buffer check dispose" />
     <MESSAGE value="remove shit" />
@@ -1661,7 +1673,8 @@
     <MESSAGE value="small fix" />
     <MESSAGE value="add new service" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="dispose image" />
+    <option name="LAST_COMMIT_MESSAGE" value="dispose image" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
