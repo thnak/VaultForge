@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Mime;
 using System.Runtime.InteropServices.JavaScript;
 using System.Runtime.Versioning;
-using System.Security.Claims;
 using System.Text;
 using BusinessModels.General.EnumModel;
 using BusinessModels.Resources;
@@ -370,34 +369,9 @@ public partial class Page(BaseHttpClientService baseClientService) : ComponentBa
         CanBeDrag = EventListener.IsTouchEnabled;
         await Render();
 
-        var formData = new MultipartFormDataContent();
-        if (FolderId != null)
-            formData.Add(new StringContent(FolderId), "id");
-        formData.Add(new StringContent(CurrentPage.ToString()), "page");
-        formData.Add(new StringContent(PageSize.ToString()), "pageSize");
-
-        if (password != null)
-            formData.Add(new StringContent(password), "password");
-
         bool isDeletedPage = PageStatus == "deleted";
-        if (isDeletedPage)
-        {
-            ShowHidden = true;
-            FolderContentType[] types = [FolderContentType.DeletedFolder];
-            formData.Add(new StringContent(types.ToJson()), "contentTypes");
-        }
+        var responseMessage = await baseClientService.GetFolderRequestAsync(FolderId, CurrentPage, PageSize, password, isDeletedPage, forceReload);
 
-        formData.Add(new StringContent(forceReload.ToJson()), "forceReLoad");
-
-        var authentication = await PersistentAuthenticationStateService.GetAuthenticationStateAsync();
-        string useName = string.Empty;
-        if (Navigation.Uri.EndsWith(PageRoutes.Drive.Index.Src))
-        {
-            useName = authentication.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
-        }
-
-        formData.Add(new StringContent(useName), "username");
-        var responseMessage = await baseClientService.PostAsync<FolderRequest>(isDeletedPage ? "/api/files/get-deleted-content" : $"/api/Files/get-folder", formData);
         if (responseMessage.IsSuccessStatusCode)
         {
             var folder = responseMessage.Data;

@@ -6,6 +6,7 @@ using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
 
 namespace WebApp.Client.Services.Http;
@@ -17,8 +18,8 @@ public partial class BaseHttpClientService
     private IDialogService DialogService { get; set; }
     private  IToastService ToastService { get; set; }
     private ILogger<BaseHttpClientService> Logger { get; set; }
-
-    public BaseHttpClientService(NavigationManager navigation, IDialogService dialogService, IToastService toastService, ILogger<BaseHttpClientService> logger)
+    private AuthenticationStateProvider PersistentAuthenticationStateService { get; set; }
+    public BaseHttpClientService(NavigationManager navigation, IDialogService dialogService, IToastService toastService, ILogger<BaseHttpClientService> logger, AuthenticationStateProvider persistentAuthenticationStateService)
     {
         Navigation = navigation;
         var httpClient = new HttpClient(new CookieHandler());
@@ -27,6 +28,7 @@ public partial class BaseHttpClientService
         DialogService = dialogService;
         ToastService = toastService;
         Logger = logger;
+        PersistentAuthenticationStateService = persistentAuthenticationStateService;
     }
 
     public string GetBaseUrl()
