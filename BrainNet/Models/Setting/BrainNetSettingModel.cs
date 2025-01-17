@@ -10,6 +10,8 @@ public class FaceEmbeddingSettingModel
 {
     public string FaceEmbeddingPath { get; set; } = string.Empty;
     public int DeviceIndex { get; set; }
+    public int PeriodicTimer { get; set; } = 10;
+    public int MaxQueSize { get; set; } = 1000;
 }
 
 public class DetectionSettingModel

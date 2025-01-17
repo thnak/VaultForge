@@ -117,8 +117,8 @@ public class FaceDataLayer(IMongoDataLayerContext context, ILogger<FaceDataLayer
     {
         try
         {
-            var isExists = await _dataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
-            if (isExists) return Result<bool>.Failure(AppLang.Folder_already_exists, ErrorType.Duplicate);
+            var isExists = await _dataDb.Find(x => x.Owner == model.Owner).AnyAsync(cancellationToken: cancellationToken);
+            if (isExists) return Result<bool>.Failure(AppLang.Already_existing, ErrorType.Duplicate);
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
             return Result<bool>.Success(true);
         }

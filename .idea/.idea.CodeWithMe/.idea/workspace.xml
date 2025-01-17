@@ -45,10 +45,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small fix">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Business/Services/HostedServices/Face/FaceEmbeddingInferenceHostedService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Business/Services/OnnxService/Face/FaceEmbeddingInferenceService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp/Controllers/Inference/FaceController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SampleFileUpload/SampleFileUploadPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SampleFileUpload/SampleFileUploadPage.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SampleFileUpload/SampleFileUploadPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SampleFileUpload/SampleFileUploadPage.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Models/Setting/BrainNetSettingModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Models/Setting/BrainNetSettingModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/FaceEmbedding/Implements/FaceEmbedding.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/FaceEmbedding/Implements/FaceEmbedding.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/FaceEmbedding/Interfaces/FaceEmbedding.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/FaceEmbedding/Interfaces/FaceEmbedding.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Utils/BusinessExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Utils/BusinessExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/User/FaceDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/User/FaceDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1212,15 +1221,7 @@
       <workItem from="1736817722113" duration="1834000" />
       <workItem from="1736841393844" duration="312000" />
       <workItem from="1736987510351" duration="3483000" />
-      <workItem from="1737073206751" duration="6168000" />
-    </task>
-    <task id="LOCAL-00634" summary="max size">
-      <option name="closed" value="true" />
-      <created>1736259224297</created>
-      <option name="number" value="00634" />
-      <option name="presentableId" value="LOCAL-00634" />
-      <option name="project" value="LOCAL" />
-      <updated>1736259224297</updated>
+      <workItem from="1737073206751" duration="13250000" />
     </task>
     <task id="LOCAL-00635" summary="option notwork">
       <option name="closed" value="true" />
@@ -1606,7 +1607,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737076356924</updated>
     </task>
-    <option name="localTasksCounter" value="683" />
+    <task id="LOCAL-00683" summary="small update">
+      <option name="closed" value="true" />
+      <created>1737079639311</created>
+      <option name="number" value="00683" />
+      <option name="presentableId" value="LOCAL-00683" />
+      <option name="project" value="LOCAL" />
+      <updated>1737079639311</updated>
+    </task>
+    <option name="localTasksCounter" value="684" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1656,13 +1665,13 @@
     <MESSAGE value="add receive" />
     <MESSAGE value="import wrong type" />
     <MESSAGE value="shit" />
-    <MESSAGE value="small update" />
     <MESSAGE value="fix wrong update fields" />
     <MESSAGE value="fix small issue" />
     <MESSAGE value="update" />
     <MESSAGE value="small test" />
     <MESSAGE value="small fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="small fix" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1698,6 +1707,19 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="93" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs</url>
+          <line>86</line>
+          <properties documentPath="C:\Users\thanh\Git\VaultForge\WebApp\Controllers\ContentServing\FilesController.Create.cs" containingFunctionPresentation="Method 'UploadPhysical'">
+            <startOffsets>
+              <option value="3285" />
+            </startOffsets>
+            <endOffsets>
+              <option value="3325" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="108" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">

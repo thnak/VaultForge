@@ -195,7 +195,7 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, IVectorDataLayer vector
         try
         {
             var createResult = await dataLayer.CreateAsync(model, cancellationToken);
-            if (createResult.IsSuccess)
+            if (createResult.IsSuccess || createResult.ErrorType == ErrorType.Duplicate)
             {
                 await vectorDataLayer.CreateAsync(new Models.Vector.VectorRecord()
                 {

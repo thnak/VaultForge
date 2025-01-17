@@ -6,7 +6,9 @@ using BrainNet.Service.Font.Implements;
 using BrainNet.Service.Font.Interfaces;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Business.Repositories.InternetOfThings;
+using Business.Services.HostedServices.Face;
 using Business.Services.HostedServices.IoT;
+using Business.Services.OnnxService.Face;
 using Business.Services.OnnxService.WaterMeter;
 using Business.Services.TaskQueueServices;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,10 +22,12 @@ public static class BusinessExtension
         serviceCollection.AddSingleton<IIotRequestQueue, IotRequestQueue>();
         serviceCollection.AddSingleton<IWaterMeterReaderQueue, WaterMeterReaderQueue>();
         serviceCollection.AddSingleton<IWaterMeterInferenceService, WaterMeterInferenceService>();
+        serviceCollection.AddSingleton<IFaceEmbeddingInferenceService, FaceEmbeddingInferenceService>();
         serviceCollection.AddSingleton<IYoloSessionManager, YoloSessionManager>();
         serviceCollection.AddSingleton<IFontServiceProvider, FontServiceProvider>();
         serviceCollection.AddHostedService<IoTRequestQueueHostedService>();
         serviceCollection.AddHostedService<WaterMeterInferenceHostedService>();
+        serviceCollection.AddHostedService<FaceEmbeddingInferenceHostedService>();
         serviceCollection.AddHostedService<YoloSessionManagerHostedService>();
     }
 

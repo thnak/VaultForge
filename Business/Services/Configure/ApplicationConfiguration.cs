@@ -131,6 +131,11 @@ public class ApplicationConfiguration
         Configs.BrainNetSettingModel.WaterSetting.DeviceIndex = GetIntEnvironmentVariable("BrainNetSettingModelWaterSettingDeviceIndex", appSettings.Value.BrainNetSettingModel.WaterSetting.DeviceIndex);
         Configs.BrainNetSettingModel.WaterSetting.PeriodicTimer = GetIntEnvironmentVariable("BrainNetSettingModelWaterSettingPeriodicTimer", appSettings.Value.BrainNetSettingModel.WaterSetting.PeriodicTimer);
         Configs.BrainNetSettingModel.WaterSetting.MaxQueSize = GetIntEnvironmentVariable("BrainNetSettingModelWaterSettingMaxQueSize", appSettings.Value.BrainNetSettingModel.WaterSetting.MaxQueSize);
+
+        Configs.BrainNetSettingModel.FaceEmbeddingSetting.FaceEmbeddingPath = GetEnvironmentVariable("BrainNetSettingModelFaceEmbeddingSettingDetectionPath", appSettings.Value.BrainNetSettingModel.FaceEmbeddingSetting.FaceEmbeddingPath);
+        Configs.BrainNetSettingModel.FaceEmbeddingSetting.DeviceIndex = GetIntEnvironmentVariable("BrainNetSettingModelFaceEmbeddingSettingDeviceIndex", appSettings.Value.BrainNetSettingModel.FaceEmbeddingSetting.DeviceIndex);
+        Configs.BrainNetSettingModel.FaceEmbeddingSetting.PeriodicTimer = GetIntEnvironmentVariable("BrainNetSettingModelFaceEmbeddingSettingPeriodicTimer", appSettings.Value.BrainNetSettingModel.FaceEmbeddingSetting.PeriodicTimer);
+        Configs.BrainNetSettingModel.FaceEmbeddingSetting.MaxQueSize = GetIntEnvironmentVariable("BrainNetSettingModelFaceEmbeddingSettingMaxQueSize", appSettings.Value.BrainNetSettingModel.FaceEmbeddingSetting.MaxQueSize);
     }
 
     public OllamaConfig GetOllamaConfig => Configs.OllamaConfig;
@@ -150,7 +155,7 @@ public class ApplicationConfiguration
     public BrainNetSettingModel GetBrainNetSetting => Configs.BrainNetSettingModel;
 
     public MqttSettings GetMqttSettings => Configs.MqttSettings;
-    
+
     private string GetEnvironmentVariable(string key, string defaultValue)
     {
         var envValue = Environment.GetEnvironmentVariable(key);

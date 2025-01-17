@@ -21,6 +21,10 @@
         "BrainNetSettingModelWaterSettingPeriodicTimer": "1000",
         "BrainNetSettingModelWaterSettingMaxQueSize": "16",
         "BrainNetSettingModelWaterSettingDeviceIndex": "1",
+        "BrainNetSettingModelFaceEmbeddingSettingDetectionPath": "C:/Users/thanh/source/VGGFace.onnx",
+        "BrainNetSettingModelFaceEmbeddingSettingPeriodicTimer": "1000",
+        "BrainNetSettingModelFaceEmbeddingSettingMaxQueSize": "16",
+        "BrainNetSettingModelFaceEmbeddingSettingDeviceIndex": "1",
         "MQTT_ENABLE_SSL": "true",
         "MQTT_SSL_PORT": "8883",
         "MQTT_NON_SSL_PORT": "1883"
