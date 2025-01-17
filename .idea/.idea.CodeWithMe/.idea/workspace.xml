@@ -45,12 +45,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add new service">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/FaceEmbedding/Implements/FaceEmbedding.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/FaceEmbedding/Implements/FaceEmbedding.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Models/Setting/BrainNetSettingModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Models/Setting/BrainNetSettingModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Models/SettingModels/AppSettings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Models/SettingModels/AppSettings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/ApplicationConfiguration.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp/Controllers/Inference/FaceController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/Inference/FaceController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -224,40 +225,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.ResApi.executor": "Debug",
-    ".NET Launch Settings Profile.Web: https.executor": "Debug",
-    ".NET Launch Settings Profile.WebApp no browser.executor": "Debug",
-    ".NET Launch Settings Profile.WebApp: IIS Express.executor": "Debug",
-    ".NET Launch Settings Profile.WebApp: https.executor": "Debug",
-    ".NET Launch Settings Profile.WebApp: no-browser.executor": "Debug",
-    ".NET Project.ConsoleApp1.executor": "Debug",
-    ".NET Project.WebApp.Client.executor": "Debug",
-    "Docker.WebApp/Dockerfile (1).executor": "Run",
-    "Publish to folder.ResApi.executor": "Run",
-    "Publish to folder.Unnamed.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "XThreadsFramesViewSplitterKey": "0.40529165",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/thanh/Downloads",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "CodeLensConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.ResApi.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.Web: https.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.WebApp no browser.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.WebApp: IIS Express.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.WebApp: https.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Launch Settings Profile.WebApp: no-browser.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Project.ConsoleApp1.executor&quot;: &quot;Debug&quot;,
+    &quot;.NET Project.WebApp.Client.executor&quot;: &quot;Debug&quot;,
+    &quot;Docker.WebApp/Dockerfile (1).executor&quot;: &quot;Run&quot;,
+    &quot;Publish to folder.ResApi.executor&quot;: &quot;Run&quot;,
+    &quot;Publish to folder.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.40529165&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/thanh/Downloads&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;CodeLensConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "Shell Script"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;Shell Script&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
     <layout>
       <window_info id="Bookmarks" show_stripe_button="false" side_tool="true" />
@@ -1216,15 +1217,8 @@
       <workItem from="1736817722113" duration="1834000" />
       <workItem from="1736841393844" duration="312000" />
       <workItem from="1736987510351" duration="3483000" />
-      <workItem from="1737073206751" duration="15971000" />
-    </task>
-    <task id="LOCAL-00636" summary="small update to get more session">
-      <option name="closed" value="true" />
-      <created>1736262544367</created>
-      <option name="number" value="00636" />
-      <option name="presentableId" value="LOCAL-00636" />
-      <option name="project" value="LOCAL" />
-      <updated>1736262544367</updated>
+      <workItem from="1737073206751" duration="24248000" />
+      <workItem from="1737126239151" duration="2695000" />
     </task>
     <task id="LOCAL-00637" summary="ne name fix wrong implement">
       <option name="closed" value="true" />
@@ -1610,7 +1604,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737087654674</updated>
     </task>
-    <option name="localTasksCounter" value="685" />
+    <task id="LOCAL-00685" summary="small update">
+      <option name="closed" value="true" />
+      <created>1737090423452</created>
+      <option name="number" value="00685" />
+      <option name="presentableId" value="LOCAL-00685" />
+      <option name="project" value="LOCAL" />
+      <updated>1737090423452</updated>
+    </task>
+    <option name="localTasksCounter" value="686" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1664,9 +1666,9 @@
     <MESSAGE value="update" />
     <MESSAGE value="small test" />
     <MESSAGE value="small fix" />
-    <MESSAGE value="small update" />
     <MESSAGE value="add new service" />
-    <option name="LAST_COMMIT_MESSAGE" value="add new service" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -136,6 +136,7 @@ public class ApplicationConfiguration
         Configs.BrainNetSettingModel.FaceEmbeddingSetting.DeviceIndex = GetIntEnvironmentVariable("BrainNetSettingModelFaceEmbeddingSettingDeviceIndex", appSettings.Value.BrainNetSettingModel.FaceEmbeddingSetting.DeviceIndex);
         Configs.BrainNetSettingModel.FaceEmbeddingSetting.PeriodicTimer = GetIntEnvironmentVariable("BrainNetSettingModelFaceEmbeddingSettingPeriodicTimer", appSettings.Value.BrainNetSettingModel.FaceEmbeddingSetting.PeriodicTimer);
         Configs.BrainNetSettingModel.FaceEmbeddingSetting.MaxQueSize = GetIntEnvironmentVariable("BrainNetSettingModelFaceEmbeddingSettingMaxQueSize", appSettings.Value.BrainNetSettingModel.FaceEmbeddingSetting.MaxQueSize);
+        Configs.BrainNetSettingModel.FaceEmbeddingSetting.IndexVectorSize = GetIntEnvironmentVariable("BrainNetSettingModelFaceEmbeddingSettingIndexVectorSize", appSettings.Value.BrainNetSettingModel.FaceEmbeddingSetting.IndexVectorSize);
     }
 
     public OllamaConfig GetOllamaConfig => Configs.OllamaConfig;

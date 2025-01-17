@@ -85,7 +85,7 @@ public class FaceEmbeddingModel
 {
     public string ModelPath { get; set; } = string.Empty;
     public int VectorSize { get; set; } = 4096;
-    public string DistantFunc { get; set; } = "EuclideanDistance";
+    public string DistantFunc { get; set; } = "CosineSimilarity";
 }
 
 public class IoTCircuitBreaker

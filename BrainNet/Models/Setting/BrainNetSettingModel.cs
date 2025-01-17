@@ -12,6 +12,7 @@ public class FaceEmbeddingSettingModel
     public int DeviceIndex { get; set; }
     public int PeriodicTimer { get; set; } = 10;
     public int MaxQueSize { get; set; } = 1000;
+    public int IndexVectorSize { get; set; } = 4096;
 }
 
 public class DetectionSettingModel

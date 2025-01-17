@@ -17,18 +17,22 @@ namespace WebApp.Controllers.Inference;
 public class FaceController(IFaceEmbeddingInferenceService faceEmbeddingInferenceService, IFaceBusinessLayer faceBusinessLayer) : ControllerBase
 {
     [HttpPost("insert-new-face")]
-    public async Task<IActionResult> InsertFace([FromForm] IFormFile file, [FromForm] string owner)
+    public async Task<IActionResult> InsertFace([FromForm] List<IFormFile> files, [FromForm] string owner)
     {
-        await using var stream = file.OpenReadStream();
-        var image = await Image.LoadAsync<Rgb24>(stream);
-        var vector = await faceEmbeddingInferenceService.AddInputAsync(image);
-        var updateResult = await faceBusinessLayer.CreateAsync(new FaceVectorStorageModel()
+        foreach (var file in files)
         {
-            CreatedAt = DateTime.Now,
-            Owner = owner,
-        }, vector);
+            await using var stream = file.OpenReadStream();
+            var image = await Image.LoadAsync<Rgb24>(stream);
+            var vector = await faceEmbeddingInferenceService.AddInputAsync(image);
+            await faceBusinessLayer.CreateAsync(new FaceVectorStorageModel()
+            {
+                CreatedAt = DateTime.Now,
+                Owner = owner,
+            }, vector);
+        }
 
-        return Content(updateResult.ToJson(), MediaTypeNames.Application.Json);
+
+        return Content("ok", MediaTypeNames.Application.Json);
     }
 
     [HttpPost("search-face")]
@@ -39,7 +43,7 @@ public class FaceController(IFaceEmbeddingInferenceService faceEmbeddingInferenc
         var vector = await faceEmbeddingInferenceService.AddInputAsync(image);
 
         var searchResults = await faceBusinessLayer.SearchVectorAsync(vector);
-        
+
         return Content(searchResults.ToJson(), MediaTypeNames.Application.Json);
     }
 }
