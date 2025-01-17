@@ -45,16 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/BusinessModels/System/ProgressStreamContent.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SampleFileUpload/SampleFileUploadPage.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SampleFileUpload/SampleFileUploadPage.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SampleFileUpload/SampleFileUploadPage.razor.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.Files.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.cs" afterDir="false" />
-    </list>
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small test" />
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
@@ -1217,15 +1208,7 @@
       <workItem from="1736817722113" duration="1834000" />
       <workItem from="1736841393844" duration="312000" />
       <workItem from="1736987510351" duration="3483000" />
-      <workItem from="1737073206751" duration="2684000" />
-    </task>
-    <task id="LOCAL-00632" summary="update bullshit">
-      <option name="closed" value="true" />
-      <created>1736246147198</created>
-      <option name="number" value="00632" />
-      <option name="presentableId" value="LOCAL-00632" />
-      <option name="project" value="LOCAL" />
-      <updated>1736246147198</updated>
+      <workItem from="1737073206751" duration="3019000" />
     </task>
     <task id="LOCAL-00633" summary="make it larger">
       <option name="closed" value="true" />
@@ -1611,7 +1594,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737023946886</updated>
     </task>
-    <option name="localTasksCounter" value="681" />
+    <task id="LOCAL-00681" summary="small test">
+      <option name="closed" value="true" />
+      <created>1737076043062</created>
+      <option name="number" value="00681" />
+      <option name="presentableId" value="LOCAL-00681" />
+      <option name="project" value="LOCAL" />
+      <updated>1737076043063</updated>
+    </task>
+    <option name="localTasksCounter" value="682" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1642,7 +1633,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="re-format rename" />
     <MESSAGE value="fix error" />
     <MESSAGE value="test" />
     <MESSAGE value="alias code" />
@@ -1667,7 +1657,8 @@
     <MESSAGE value="fix wrong update fields" />
     <MESSAGE value="fix small issue" />
     <MESSAGE value="update" />
-    <option name="LAST_COMMIT_MESSAGE" value="update" />
+    <MESSAGE value="small test" />
+    <option name="LAST_COMMIT_MESSAGE" value="small test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

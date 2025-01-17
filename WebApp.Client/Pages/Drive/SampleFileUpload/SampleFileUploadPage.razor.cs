@@ -35,24 +35,23 @@ public partial class SampleFileUploadPage : ComponentBase
 
     private async Task Upload()
     {
-        // Upload the files here
-        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
-        Snackbar.Add("TODO: Upload your files!");
         int index = 0;
-        if (_fileUpload != null && _fileUpload.Files != null)
+        if (_fileUpload is { Files: not null })
         {
             using var multipartContent = new MultipartFormDataContent();
             foreach (var file in _fileUpload.Files)
             {
                 await using var fileStream = file.OpenReadStream(long.MaxValue);
+                var index1 = index;
                 var progress = new Progress<double>(percent =>
                 {
-                    _fileNames[index] = (_fileNames[index].Item1, percent);
+                    _fileNames[index1] = (_fileNames[index1].Item1, percent);
                     InvokeAsync(StateHasChanged);
                 });
                 await using var progressStream = new ProgressStreamContent(fileStream, progress);
                 var fileContent = new StreamContent(progressStream);
                 multipartContent.Add(fileContent, _fileNames[index].Item1);
+                index++;
             }
 
             var folderRequest = await ApiService.GetFolderRequestAsync("", 0, 50, null, false, false);
