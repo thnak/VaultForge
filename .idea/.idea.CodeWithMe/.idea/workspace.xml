@@ -45,19 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="dispose image">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Models/Result/SearchScore.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Models/Result/SearchScore.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Interfaces/IExtendService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Interfaces/IExtendService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IIotRecordBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IIotRecordBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/Wiki/WikipediaBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/Wiki/WikipediaBusinessLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/ComputeVision/YoloLabelDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/ComputeVision/YoloLabelDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/Inference/FaceController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/Inference/FaceController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
-    </list>
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
@@ -1224,15 +1212,7 @@
       <workItem from="1736841393844" duration="312000" />
       <workItem from="1736987510351" duration="3483000" />
       <workItem from="1737073206751" duration="24248000" />
-      <workItem from="1737126239151" duration="7016000" />
-    </task>
-    <task id="LOCAL-00639" summary="update column size">
-      <option name="closed" value="true" />
-      <created>1736297673290</created>
-      <option name="number" value="00639" />
-      <option name="presentableId" value="LOCAL-00639" />
-      <option name="project" value="LOCAL" />
-      <updated>1736297673291</updated>
+      <workItem from="1737126239151" duration="7056000" />
     </task>
     <task id="LOCAL-00640" summary="do not encode file name">
       <option name="closed" value="true" />
@@ -1618,7 +1598,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737130863564</updated>
     </task>
-    <option name="localTasksCounter" value="688" />
+    <task id="LOCAL-00688" summary="small update">
+      <option name="closed" value="true" />
+      <created>1737134635270</created>
+      <option name="number" value="00688" />
+      <option name="presentableId" value="LOCAL-00688" />
+      <option name="project" value="LOCAL" />
+      <updated>1737134635270</updated>
+    </task>
+    <option name="localTasksCounter" value="689" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1672,9 +1660,9 @@
     <MESSAGE value="small test" />
     <MESSAGE value="small fix" />
     <MESSAGE value="add new service" />
-    <MESSAGE value="small update" />
     <MESSAGE value="dispose image" />
-    <option name="LAST_COMMIT_MESSAGE" value="dispose image" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
