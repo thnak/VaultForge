@@ -12,10 +12,11 @@ public class SearchScorer<T>
         List<SearchScore<T>> results,
         Func<T, TKey> classSelector,
         double alpha = 1.0,
-        double beta = 0.5) where TKey : notnull
+        double beta = 0.5,
+        double threshold = 0) where TKey : notnull
     {
         return results
-            .Where(r => r.Score > 0) // Filter only positive scores
+            .Where(r => r.Score > threshold) // Filter only positive scores
             .GroupBy(r => classSelector(r.Value)) // Group by class
             .ToDictionary(
                 g => g.Key,
@@ -31,10 +32,11 @@ public class SearchScorer<T>
         List<SearchScore<T>> results,
         Func<T, TKey> classSelector,
         double alpha = 1.0,
-        double beta = 0.5) where TKey : notnull
+        double beta = 0.5,
+        double threshold = 0) where TKey : notnull
     {
         return results
-            .Where(r => r.Score > 0)
+            .Where(r => r.Score > threshold)
             .GroupBy(r => classSelector(r.Value))
             .ToDictionary(
                 g => g.Key,
@@ -53,7 +55,7 @@ public class SearchScorer<T>
         double threshold = 0) where TKey : notnull
     {
         return results
-            .Where(r => r.Score > 0)
+            .Where(r => r.Score > threshold)
             .GroupBy(r => classSelector(r.Value))
             .ToDictionary(
                 g => g.Key,
