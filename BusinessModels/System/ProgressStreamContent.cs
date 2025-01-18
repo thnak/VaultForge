@@ -51,4 +51,9 @@ public class ProgressStreamContent(Stream innerStream, IProgress<double> progres
     public override long Seek(long offset, SeekOrigin origin) => innerStream.Seek(offset, origin);
     public override void SetLength(long value) => innerStream.SetLength(value);
     public override void Write(byte[] buffer, int offset, int count) => innerStream.Write(buffer, offset, count);
+
+    public override ValueTask DisposeAsync()
+    {
+        return innerStream.DisposeAsync();
+    }
 }
