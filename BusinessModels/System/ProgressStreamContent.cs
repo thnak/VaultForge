@@ -38,7 +38,7 @@ public class ProgressStreamContent(Stream innerStream, IProgress<double> progres
         return bytesRead;
     }
     
-    public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = new CancellationToken())
+    public override async ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
     {
         var bytesRead = await innerStream.ReadAsync(buffer, cancellationToken);
         _bytesRead += bytesRead;

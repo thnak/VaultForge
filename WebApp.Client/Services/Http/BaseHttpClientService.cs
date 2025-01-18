@@ -8,6 +8,7 @@ using BusinessModels.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
+using WebApp.Client.Utils;
 
 namespace WebApp.Client.Services.Http;
 
@@ -16,9 +17,10 @@ public partial class BaseHttpClientService
     public HttpClient HttpClient { get; }
     private NavigationManager Navigation { get; }
     private IDialogService DialogService { get; set; }
-    private  IToastService ToastService { get; set; }
+    private IToastService ToastService { get; set; }
     private ILogger<BaseHttpClientService> Logger { get; set; }
     private AuthenticationStateProvider PersistentAuthenticationStateService { get; set; }
+
     public BaseHttpClientService(NavigationManager navigation, IDialogService dialogService, IToastService toastService, ILogger<BaseHttpClientService> logger, AuthenticationStateProvider persistentAuthenticationStateService)
     {
         Navigation = navigation;
@@ -65,12 +67,13 @@ public partial class BaseHttpClientService
         }
         catch (Exception e)
         {
-            Logger.LogError(AppLang.BaseHttpClientService_PostAsync__ERROR___0_, e.Message);
+            ToastService.ShowError(string.Format(AppLang.BaseHttpClientService_PostAsync__ERROR___0_, e.Message), TypeClassList.ToastDefaultSetting);
+            Logger.LogError(e, e.Message);
         }
 
         return responseData;
     }
-    
+
     public async Task<ResponseDataResult<string>> PostAsync([StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, HttpContent? content = null, CancellationToken cancellationToken = default, bool forceRedirect = true)
     {
         var responseData = new ResponseDataResult<string>();
@@ -93,7 +96,8 @@ public partial class BaseHttpClientService
         }
         catch (Exception e)
         {
-            Console.WriteLine(AppLang.BaseHttpClientService_PostAsync__ERROR___0_, e.Message);
+            ToastService.ShowError(string.Format(AppLang.BaseHttpClientService_PostAsync__ERROR___0_, e.Message), TypeClassList.ToastDefaultSetting);
+            Logger.LogError(e, e.Message);
         }
 
         return responseData;
@@ -127,7 +131,8 @@ public partial class BaseHttpClientService
         }
         catch (Exception e)
         {
-            Console.WriteLine(AppLang.BaseHttpClientService_PutAsync__ERROR___0_, e.Message);
+            ToastService.ShowError(string.Format(AppLang.BaseHttpClientService_PostAsync__ERROR___0_, e.Message), TypeClassList.ToastDefaultSetting);
+            Logger.LogError(e, e.Message);
         }
 
         return responseData;
@@ -161,7 +166,8 @@ public partial class BaseHttpClientService
         }
         catch (Exception e)
         {
-            Console.WriteLine(AppLang.BaseHttpClientService_GetAsync__ERROR___0_, e.Message);
+            ToastService.ShowError(string.Format(AppLang.BaseHttpClientService_PostAsync__ERROR___0_, e.Message), TypeClassList.ToastDefaultSetting);
+            Logger.LogError(e, e.Message);
         }
 
         return responseData;
@@ -195,7 +201,8 @@ public partial class BaseHttpClientService
         }
         catch (Exception e)
         {
-            Console.WriteLine(AppLang.BaseHttpClientService_DeleteAsync__ERROR___0_, e.Message);
+            ToastService.ShowError(string.Format(AppLang.BaseHttpClientService_PostAsync__ERROR___0_, e.Message), TypeClassList.ToastDefaultSetting);
+            Logger.LogError(e, e.Message);
         }
 
         return responseData;
