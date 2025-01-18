@@ -47,10 +47,8 @@
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Business/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Models/Result/SearchScore.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Models/Result/SearchScore.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/Inference/FaceController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/Inference/FaceController.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1219,15 +1217,7 @@
       <workItem from="1736987510351" duration="3483000" />
       <workItem from="1737073206751" duration="24248000" />
       <workItem from="1737126239151" duration="7056000" />
-      <workItem from="1737161001977" duration="3719000" />
-    </task>
-    <task id="LOCAL-00641" summary="auto close menu">
-      <option name="closed" value="true" />
-      <created>1736299087991</created>
-      <option name="number" value="00641" />
-      <option name="presentableId" value="LOCAL-00641" />
-      <option name="project" value="LOCAL" />
-      <updated>1736299087991</updated>
+      <workItem from="1737161001977" duration="9110000" />
     </task>
     <task id="LOCAL-00642" summary="add new service">
       <option name="closed" value="true" />
@@ -1613,7 +1603,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737161112109</updated>
     </task>
-    <option name="localTasksCounter" value="690" />
+    <task id="LOCAL-00690" summary="small update">
+      <option name="closed" value="true" />
+      <created>1737172308261</created>
+      <option name="number" value="00690" />
+      <option name="presentableId" value="LOCAL-00690" />
+      <option name="project" value="LOCAL" />
+      <updated>1737172308261</updated>
+    </task>
+    <option name="localTasksCounter" value="691" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

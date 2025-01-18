@@ -54,7 +54,7 @@ public class SearchScorer<T>
         double decayFactor = 0.8,
         double threshold = 0) where TKey : notnull
     {
-        return results
+        var sortedResults = results
             .Where(r => r.Score > threshold)
             .GroupBy(r => classSelector(r.Value))
             .ToDictionary(
@@ -71,6 +71,12 @@ public class SearchScorer<T>
 
                     return weightedSum;
                 }).OrderByDescending(x => x.Value).ToDictionary();
+        var totalScore = sortedResults.Sum(x => x.Value);
+        foreach (var pair in sortedResults)
+        {
+            sortedResults[pair.Key] = pair.Value / totalScore;
+        }
+        return sortedResults;
     }
 
 
@@ -78,9 +84,10 @@ public class SearchScorer<T>
         List<SearchScore<T>> results,
         Func<T, TKey> classSelector,
         double alpha = 1.0,
-        double beta = 0.5) where TKey : notnull
+        double beta = 0.5,
+        double threshold = 0) where TKey : notnull
     {
-        var classScores = GetClassScores(results, classSelector, alpha, beta);
+        var classScores = GetClassScores(results, classSelector, alpha, beta, threshold);
         return classScores.OrderByDescending(kv => kv.Value).FirstOrDefault().Key;
     }
 }

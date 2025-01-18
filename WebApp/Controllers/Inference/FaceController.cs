@@ -38,8 +38,7 @@ public class FaceController(IFaceEmbeddingInferenceService faceEmbeddingInferenc
     }
 
     [HttpPost("search-face")]
-    public async Task<IActionResult> SearchFace([FromForm] IFormFile file, [FromForm] int limit, [FromForm] double alpha, [FromForm] double beta)
-
+    public async Task<IActionResult> SearchFace([FromForm] IFormFile file, [FromForm] int limit, [FromForm] double alpha, [FromForm] double beta, [FromForm] double threshold)
     {
         await using var stream = file.OpenReadStream();
         using var image = await Image.LoadAsync<Rgb24>(stream);
@@ -51,8 +50,8 @@ public class FaceController(IFaceEmbeddingInferenceService faceEmbeddingInferenc
         var classScores = scorer.GetWeightedTopScores<string>(
             searchResults.Value ?? [],
             value => value.Key, // Class based on the first letter (A or B)
-            decayFactor: alpha // Weight for sum of scores
-            // beta: beta // Weight for density
+            decayFactor: alpha, // Weight for sum of scores
+            threshold: threshold // Weight for density
         );
 
         return Content(classScores.ToJson(), MediaTypeNames.Application.Json);
