@@ -46,13 +46,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/FaceEmbedding/Implements/FaceEmbedding.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/FaceEmbedding/Implements/FaceEmbedding.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/Memory/Utils/MemoryAllocatorExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/Memory/Utils/MemoryAllocatorExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/Configure/AuthenticateServiceCollectionExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Configure/AuthenticateServiceCollectionExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SampleFileUpload/SampleFileUploadPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SampleFileUpload/SampleFileUploadPage.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Weather.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Weather.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/MiddleWares/Middleware.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/MiddleWares/Middleware.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -209,6 +203,7 @@
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/MiddleWares/Middleware.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -1225,15 +1220,7 @@
       <workItem from="1737073206751" duration="24248000" />
       <workItem from="1737126239151" duration="7056000" />
       <workItem from="1737161001977" duration="13654000" />
-      <workItem from="1737218818630" duration="12994000" />
-    </task>
-    <task id="LOCAL-00648" summary="move land page">
-      <option name="closed" value="true" />
-      <created>1736398955328</created>
-      <option name="number" value="00648" />
-      <option name="presentableId" value="LOCAL-00648" />
-      <option name="project" value="LOCAL" />
-      <updated>1736398955328</updated>
+      <workItem from="1737218818630" duration="13840000" />
     </task>
     <task id="LOCAL-00649" summary="remove autho">
       <option name="closed" value="true" />
@@ -1619,7 +1606,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737277840794</updated>
     </task>
-    <option name="localTasksCounter" value="697" />
+    <task id="LOCAL-00697" summary="small update">
+      <option name="closed" value="true" />
+      <created>1737279544241</created>
+      <option name="number" value="00697" />
+      <option name="presentableId" value="LOCAL-00697" />
+      <option name="project" value="LOCAL" />
+      <updated>1737279544241</updated>
+    </task>
+    <option name="localTasksCounter" value="698" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

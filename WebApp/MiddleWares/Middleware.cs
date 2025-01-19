@@ -1,4 +1,5 @@
 using BusinessModels.Resources;
+using BusinessModels.System;
 using Microsoft.AspNetCore.Localization;
 
 #if DEBUG
@@ -58,7 +59,7 @@ public class Middleware(RequestDelegate next, ILogger<Middleware> logger)
 #if DEBUG
         throw exception;
 #else
-var recordModel = new ErrorRecordModel
+        var recordModel = new ErrorRecordModel
         {
             Message = exception.Message,
             RequestId = context.TraceIdentifier,
