@@ -32,7 +32,7 @@ public class MqttBrokerHostedService(
             .WithDefaultEndpoint()
             .WithDefaultEndpointPort(mqttSettings.NonSslPort) // Standard MQTT port
             .WithDefaultEndpointBoundIPAddress(IPAddress.Any)
-            .WithDefaultEndpointBoundIPV6Address(IPAddress.Any); // Accept connections from any IP
+            .WithDefaultEndpointBoundIPV6Address(IPAddress.IPv6Any); // Accept connections from any IP
 
         if (mqttSettings.EnableSsl)
         {
@@ -102,13 +102,11 @@ public class MqttBrokerHostedService(
 
     private Task MqttServerOnStoppedAsync(EventArgs arg)
     {
-        logger.LogInformation("Mqtt server stopped.");
         return Task.CompletedTask;
     }
 
     private Task MqttServerOnStartedAsync(EventArgs arg)
     {
-        logger.LogInformation("Mqtt server started");
         return Task.CompletedTask;
     }
 

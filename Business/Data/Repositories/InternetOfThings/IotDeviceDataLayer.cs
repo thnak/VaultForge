@@ -21,6 +21,7 @@ public class IotDeviceDataLayer : IIotDeviceDataLayer
     private readonly ThreadSafeSearchEngine<IoTDevice> _threadSafeSearchEngine;
     private readonly ILogger<IIotDeviceDataLayer> _logger;
     private const string CollectionName = "IoTDevice";
+
     public IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDeviceDataLayer> logger)
     {
         _data = context.MongoDatabase.GetCollection<IoTDevice>(CollectionName);
@@ -48,7 +49,7 @@ public class IotDeviceDataLayer : IIotDeviceDataLayer
             await _data.Indexes.CreateManyAsync(uniqueIndexes, cancellationToken);
             var cursor = GetAllAsync([], cancellationToken: cancellationToken);
             await _threadSafeSearchEngine.LoadAndIndexItems(cursor);
-            return Result<bool>.SuccessWithMessage(true,AppLang.Create_successfully);
+            return Result<bool>.SuccessWithMessage(true, AppLang.Create_successfully);
         }
         catch (Exception e)
         {
@@ -188,13 +189,6 @@ public class IotDeviceDataLayer : IIotDeviceDataLayer
     public async Task<Result<bool>> UpdateAsync(string key, FieldUpdate<IoTDevice> updates, CancellationToken cancellationToken = default)
     {
         var updateResult = await _data.UpdateAsync(key, updates, cancellationToken);
-        if (updateResult.IsSuccess)
-        {
-            var device = Get(key)!;
-            _threadSafeSearchEngine.RemoveItemFromIndex(device);
-            _threadSafeSearchEngine.LoadAndIndexItems([device]);
-        }
-
         return Result<bool>.SuccessWithMessage(updateResult.IsSuccess, updateResult.Message);
     }
 
@@ -215,12 +209,12 @@ public class IotDeviceDataLayer : IIotDeviceDataLayer
             {
                 _data.DeleteMany(x => x.Id == id);
                 isSuccess = true;
-                return Task.FromResult(Result<bool>.SuccessWithMessage(true,AppLang.Delete_successfully));
+                return Task.FromResult(Result<bool>.SuccessWithMessage(true, AppLang.Delete_successfully));
             }
 
             _data.DeleteOne(x => x.DeviceId == key);
             isSuccess = true;
-            return Task.FromResult(Result<bool>.SuccessWithMessage(true,AppLang.Delete_successfully));
+            return Task.FromResult(Result<bool>.SuccessWithMessage(true, AppLang.Delete_successfully));
         }
         catch (Exception e)
         {

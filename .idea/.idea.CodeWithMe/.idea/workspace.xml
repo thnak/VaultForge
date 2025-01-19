@@ -45,7 +45,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/LogProvider/MqttNetLogger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/LogProvider/MqttNetLogger.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/BackgroundServices/Mqtt/MqttBrokerHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/BackgroundServices/Mqtt/MqttBrokerHostedService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
+    </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
@@ -154,7 +160,10 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/66f0292d6d8a9b716f2c022ea17708dde5be8e0a67ef1d1eadfd7bc84c2/Cell.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/69f82dfcd683547688c2c80e529252cc8ec5bd621fb654be7194a6136566c9/XSSFWorkbook.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6a44d1618475c554cdb454d3d6746789df652e379e2a5e5e67b916046b0e0d2/IndexKind.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6d2cd2d53ab41ffc609b3587667f9d8ec76cbc74fe5f585b8d1ed813c5c4/MqttNetSourceLogger.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6f9ada867a6d42c25bec62a843ee74fde1f3e87dfd7b4d233f7dbb8726819e4/MqttConnectReasonCode.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/74e4c72cd3922ed61496931f33baf4a9b5950edddb6b78bc296241285f25c3/TaskAwaiter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/79b4b5d07e8c5ac3de172b75667c6bded8e1fa6f42f36d8f6dc2f9e3d568/ArgumentNullException.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7c8ad03b50ccbf3ec7daba64f8ffc229c843a4bc37369f5fbdc6f33edf2b4c/IFilterDefinition.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7f8658dbc94ae748656a7c455b13c808ff68ba92237b079ce9911167c657cb4/Cast.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/82422ecdc3616eb5e45fac1bced9eeae8afd44bea38139f7bb911f06d4eef/DrawTextExtensions.cs" root0="FORCE_HIGHLIGHTING" />
@@ -186,6 +195,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d6602ff1ddf35b711bc3b983d596213d7dcb8daab122c98f3e6db39b5daca137/DropIndexOperation.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/dbd7444fd4f86415d17ca812139be60bfb5e6d4c191da070cd6afeb7fcbcd0/NativeApiStatus.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/dd1d106529dfdca59d731a6c474b9f2a36efeb5c9b57daa3a4954a172c1bacd/MudDataGridPager.razor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e75a5575ba872c8ea754c015cb363850e6c661f39569712d5b74aaca67263c/String.Manipulation.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e78a3461bb868758dc383a38ac7d247ff1acf779756a18c8be9515c32c9/Breakpoint.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e862b2dbf388458c8b8c44c404dbc872b94e4a936e352de3d30a8f52729573c/MudSelect.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e8aee3972f4f46ef190c2b4224be16d75e671b3496b06c7b50b6cbe2418e38/EndPointHelper.cs" root0="FORCE_HIGHLIGHTING" />
@@ -201,7 +211,6 @@
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/MiddleWares/Middleware.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -1219,30 +1228,7 @@
       <workItem from="1737126239151" duration="7056000" />
       <workItem from="1737161001977" duration="13654000" />
       <workItem from="1737218818630" duration="13864000" />
-    </task>
-    <task id="LOCAL-00650" summary="escape error message">
-      <option name="closed" value="true" />
-      <created>1736405495452</created>
-      <option name="number" value="00650" />
-      <option name="presentableId" value="LOCAL-00650" />
-      <option name="project" value="LOCAL" />
-      <updated>1736405495452</updated>
-    </task>
-    <task id="LOCAL-00651" summary="small update">
-      <option name="closed" value="true" />
-      <created>1736406165984</created>
-      <option name="number" value="00651" />
-      <option name="presentableId" value="LOCAL-00651" />
-      <option name="project" value="LOCAL" />
-      <updated>1736406165984</updated>
-    </task>
-    <task id="LOCAL-00652" summary="small update">
-      <option name="closed" value="true" />
-      <created>1736406820103</created>
-      <option name="number" value="00652" />
-      <option name="presentableId" value="LOCAL-00652" />
-      <option name="project" value="LOCAL" />
-      <updated>1736406820103</updated>
+      <workItem from="1737284663762" duration="5287000" />
     </task>
     <task id="LOCAL-00653" summary="allow empty">
       <option name="closed" value="true" />
@@ -1612,7 +1598,31 @@
       <option name="project" value="LOCAL" />
       <updated>1737281389945</updated>
     </task>
-    <option name="localTasksCounter" value="699" />
+    <task id="LOCAL-00699" summary="fix issue with mqtt logger">
+      <option name="closed" value="true" />
+      <created>1737285407660</created>
+      <option name="number" value="00699" />
+      <option name="presentableId" value="LOCAL-00699" />
+      <option name="project" value="LOCAL" />
+      <updated>1737285407661</updated>
+    </task>
+    <task id="LOCAL-00700" summary="add move event, support ipv6">
+      <option name="closed" value="true" />
+      <created>1737285978554</created>
+      <option name="number" value="00700" />
+      <option name="presentableId" value="LOCAL-00700" />
+      <option name="project" value="LOCAL" />
+      <updated>1737285978554</updated>
+    </task>
+    <task id="LOCAL-00701" summary="small update">
+      <option name="closed" value="true" />
+      <created>1737290752860</created>
+      <option name="number" value="00701" />
+      <option name="presentableId" value="LOCAL-00701" />
+      <option name="project" value="LOCAL" />
+      <updated>1737290752860</updated>
+    </task>
+    <option name="localTasksCounter" value="702" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1643,8 +1653,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="wrong indices" />
-    <MESSAGE value="clear all array when return" />
     <MESSAGE value="add new btn" />
     <MESSAGE value="show error log, allow large file upload" />
     <MESSAGE value="enchant dialog style" />
@@ -1666,9 +1674,11 @@
     <MESSAGE value="update logic" />
     <MESSAGE value="small update to prevent duplicate vector" />
     <MESSAGE value="update bl" />
-    <MESSAGE value="small update" />
     <MESSAGE value="import missing" />
-    <option name="LAST_COMMIT_MESSAGE" value="import missing" />
+    <MESSAGE value="fix issue with mqtt logger" />
+    <MESSAGE value="add move event, support ipv6" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

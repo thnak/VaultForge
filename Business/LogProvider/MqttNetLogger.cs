@@ -5,10 +5,10 @@ namespace Business.LogProvider;
 
 public class MqttNetLogger(ILogger<MqttNetLogger> logger) : IMqttNetLogger
 {
-    public void Publish(MqttNetLogLevel logLevel, string source, string message, object?[] parameters, Exception? exception)
+    public void Publish(MqttNetLogLevel logLevel, string source, string message, object?[]? parameters, Exception? exception)
     {
         message = string.IsNullOrEmpty(message) ? string.Empty : message;
-        var formattedMessage = $"{source}: {string.Format(message, parameters)}";
+        var formattedMessage = $"{source}: {string.Format(message, parameters ?? [])}";
 
         switch (logLevel)
         {
