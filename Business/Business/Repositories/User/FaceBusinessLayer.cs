@@ -198,7 +198,8 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, IVectorDataLayer vector
             if (createResult.IsSuccess || createResult.ErrorType == ErrorType.Duplicate)
             {
                 var search = await SearchVectorAsync(vector, 10, cancellationToken);
-                if ((search.Value ?? []).FirstOrDefault()?.Score >= 1)
+                
+                if ((search.Value ?? []).FirstOrDefault()?.Score >= 0.95)
                 {
                     return Result<bool>.SuccessWithMessage(true, AppLang.Already_existing);
                 }
