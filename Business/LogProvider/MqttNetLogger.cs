@@ -3,42 +3,36 @@ using MQTTnet.Diagnostics.Logger;
 
 namespace Business.LogProvider;
 
-public class MqttNetLogger : IMqttNetLogger
+public class MqttNetLogger(ILogger<MqttNetLogger> logger) : IMqttNetLogger
 {
-    private readonly ILogger<MqttNetLogger> _logger;
-
-    public MqttNetLogger(ILogger<MqttNetLogger> logger)
-    {
-        _logger = logger;
-    }
-
     public void Publish(MqttNetLogLevel logLevel, string source, string message, object?[] parameters, Exception? exception)
     {
+        message = string.IsNullOrEmpty(message) ? string.Empty : message;
         var formattedMessage = $"{source}: {string.Format(message, parameters)}";
 
         switch (logLevel)
         {
             case MqttNetLogLevel.Error:
-                _logger.LogError(exception, formattedMessage);
+                logger.LogError(exception, formattedMessage);
                 break;
 
             case MqttNetLogLevel.Warning:
-                _logger.LogWarning(formattedMessage);
+                logger.LogWarning(formattedMessage);
                 break;
 
             case MqttNetLogLevel.Info:
-                _logger.LogInformation(formattedMessage);
+                logger.LogInformation(formattedMessage);
                 break;
 
             case MqttNetLogLevel.Verbose:
-                _logger.LogDebug(formattedMessage);
+                logger.LogDebug(formattedMessage);
                 break;
 
             default:
-                _logger.LogDebug(formattedMessage);
+                logger.LogDebug(formattedMessage);
                 break;
         }
     }
 
-    public bool IsEnabled { get; } = true;
+    public bool IsEnabled => true;
 }

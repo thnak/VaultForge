@@ -33,7 +33,8 @@ public class MqttBrokerHostedService(
         var optionsBuilder = new MqttServerOptionsBuilder()
             .WithDefaultEndpoint()
             .WithDefaultEndpointPort(mqttSettings.NonSslPort) // Standard MQTT port
-            .WithDefaultEndpointBoundIPAddress(IPAddress.Any); // Accept connections from any IP
+            .WithDefaultEndpointBoundIPAddress(IPAddress.Any)
+            .WithDefaultEndpointBoundIPV6Address(IPAddress.Any); // Accept connections from any IP
 
         if (mqttSettings.EnableSsl)
         {
