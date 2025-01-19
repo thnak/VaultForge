@@ -10,7 +10,7 @@ public partial class SampleFileUploadPage(ILogger<SampleFileUploadPage> logger) 
     private const string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
     private string _dragClass = DefaultDragClass;
     private readonly List<(string, double)> _fileNames = new();
-    private IReadOnlyList<IBrowserFile> _fileUpload;
+    private IReadOnlyList<IBrowserFile> _fileUpload = [];
 
     private Task ClearAsync()
     {

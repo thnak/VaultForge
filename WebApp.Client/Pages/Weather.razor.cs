@@ -25,7 +25,7 @@ public partial class Weather(ILogger<Weather> logger)
         logger.LogInformation(result.Message);
     }
 
-    private async Task UpgradeDatabaseAsync(int oldVersion, int newVersion)
+    private Task UpgradeDatabaseAsync(int oldVersion, int newVersion)
     {
         logger.LogInformation($"Upgrading database from version {oldVersion} to {newVersion}.");
 
@@ -40,6 +40,7 @@ public partial class Weather(ILogger<Weather> logger)
             logger.LogInformation("Adding indexes...");
             // Custom logic for upgrading schema
         }
+        return Task.CompletedTask;
     }
 
     private async Task AddNewItem()

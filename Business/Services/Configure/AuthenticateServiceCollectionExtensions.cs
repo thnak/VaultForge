@@ -137,7 +137,7 @@ public static class AuthenticateServiceCollectionExtensions
                                 throw new SecurityTokenException(AppLang.Token_validation_failed);
                             }
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             // Log or handle token validation errors
                             context.Fail(AppLang.Token_validation_failed);

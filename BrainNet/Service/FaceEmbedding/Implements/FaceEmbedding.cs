@@ -68,9 +68,10 @@ public class FaceEmbedding : IFaceEmbedding
         }
 
         _singleInputLength = inputLength / InputDimensions[0];
-        _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, (int)(maxQueueSize * 1.5));
-        _padAndRatiosArrayPool = ArrayPool<float>.Create(1, maxQueueSize * 2);
-        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength, maxQueueSize * 2);
+        int arrayBucket = maxQueueSize * 2;
+        _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, arrayBucket);
+        _padAndRatiosArrayPool = ArrayPool<float>.Create(1, arrayBucket);
+        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength, arrayBucket);
 
         InputFeedBuffer = ArrayPool<float>.Shared.Rent(inputLength);
         InferenceStates = _boolPool.Rent(InputDimensions[0]);
@@ -97,9 +98,10 @@ public class FaceEmbedding : IFaceEmbedding
         }
 
         _singleInputLength = inputLength / InputDimensions[0];
-        _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, (int)(maxQueueSize * 1.5));
-        _padAndRatiosArrayPool = ArrayPool<float>.Create(1, maxQueueSize * 2);
-        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength, maxQueueSize * 2);
+        int arrayBucket = maxQueueSize * 2;
+        _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, arrayBucket);
+        _padAndRatiosArrayPool = ArrayPool<float>.Create(1, arrayBucket);
+        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength, arrayBucket);
 
         InputFeedBuffer = ArrayPool<float>.Shared.Rent(inputLength);
         InferenceStates = _boolPool.Rent(InputDimensions[0]);
@@ -125,9 +127,10 @@ public class FaceEmbedding : IFaceEmbedding
         _singleInputLength = inputLength / InputDimensions[0];
 
         InferenceStates = _boolPool.Rent(InputDimensions[0]);
-        _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, (int)(options.Value.WaterSetting.MaxQueSize * 1.5));
-        _padAndRatiosArrayPool = ArrayPool<float>.Create(1, options.Value.WaterSetting.MaxQueSize * 2);
-        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength);
+        int maxBucket = options.Value.WaterSetting.MaxQueSize * 2;
+        _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, maxBucket);
+        _padAndRatiosArrayPool = ArrayPool<float>.Create(1, maxBucket);
+        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength, maxBucket);
         InputFeedBuffer = _singleFrameInputArrayPool.Rent(inputLength);
         _inputChannel = Channel.CreateBounded<(MemoryTensorOwner<float> feeder,
             TaskCompletionSource<float[]> tcs)>(new BoundedChannelOptions(options.Value.WaterSetting.MaxQueSize)
@@ -243,6 +246,10 @@ public class FaceEmbedding : IFaceEmbedding
                 tcs.SetResult([]);
                 return await tcs.Task;
             }
+            finally
+            {
+                memoryTensorOwner.Dispose();
+            }
         }
 
         return [];
@@ -299,7 +306,6 @@ public class FaceEmbedding : IFaceEmbedding
         {
             InferenceStates[i] = false;
             batch[i].Item1.Tensor.Buffer.Span.CopyTo(InputFeedBuffer.AsSpan(i * _singleInputLength, batch[i].Item1.Tensor.Buffer.Span.Length));
-            batch[i].Item1.Dispose();
         }
 
         // Run inference
@@ -322,7 +328,7 @@ public class FaceEmbedding : IFaceEmbedding
 
     public void Dispose()
     {
-        ArrayPool<float>.Shared.Return(InputFeedBuffer, true);
+        _singleFrameInputArrayPool.Return(InputFeedBuffer, true);
         _boolPool.Return(InferenceStates, true);
         _session.Dispose();
         _memoryAllocatorService.Dispose();

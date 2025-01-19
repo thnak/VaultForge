@@ -70,9 +70,10 @@ public class YoloInferenceService : IYoloInferenceService
         }
 
         _singleInputLength = inputLength / InputDimensions[0];
-        _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, (int)(maxQueueSize * 1.5));
-        _padAndRatiosArrayPool = ArrayPool<float>.Create(1, maxQueueSize * 2);
-        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength, maxQueueSize * 2);
+        int arrayBucket = maxQueueSize * 2;
+        _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, arrayBucket);
+        _padAndRatiosArrayPool = ArrayPool<float>.Create(2, arrayBucket);
+        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength, arrayBucket);
 
         InputFeedBuffer = ArrayPool<float>.Shared.Rent(inputLength);
         InferenceStates = _boolPool.Rent(InputDimensions[0]);
@@ -99,9 +100,10 @@ public class YoloInferenceService : IYoloInferenceService
         }
 
         _singleInputLength = inputLength / InputDimensions[0];
-        _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, (int)(maxQueueSize * 1.5));
-        _padAndRatiosArrayPool = ArrayPool<float>.Create(1, maxQueueSize * 2);
-        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength, maxQueueSize * 2);
+        int arrayBucket = maxQueueSize * 2;
+        _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, arrayBucket);
+        _padAndRatiosArrayPool = ArrayPool<float>.Create(1, arrayBucket);
+        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength, arrayBucket);
 
         InputFeedBuffer = ArrayPool<float>.Shared.Rent(inputLength);
         InferenceStates = _boolPool.Rent(InputDimensions[0]);
@@ -131,9 +133,10 @@ public class YoloInferenceService : IYoloInferenceService
         _singleInputLength = inputLength / InputDimensions[0];
 
         InferenceStates = _boolPool.Rent(InputDimensions[0]);
-        _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, (int)(options.Value.WaterSetting.MaxQueSize * 1.5));
-        _padAndRatiosArrayPool = ArrayPool<float>.Create(1, options.Value.WaterSetting.MaxQueSize * 2);
-        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength);
+        int maxBucket = options.Value.WaterSetting.MaxQueSize * 2;
+        _singleFrameInputArrayPool = ArrayPool<float>.Create(_singleInputLength, maxBucket);
+        _padAndRatiosArrayPool = ArrayPool<float>.Create(1, maxBucket);
+        _memoryAllocatorService = new MemoryAllocatorService(_singleInputLength, maxBucket);
         InputFeedBuffer = _singleFrameInputArrayPool.Rent(inputLength);
         _inputChannel = Channel.CreateBounded<(YoloInferenceServiceFeeder feeder,
             TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>> tcs)>(new BoundedChannelOptions(options.Value.WaterSetting.MaxQueSize)
@@ -361,7 +364,7 @@ public class YoloInferenceService : IYoloInferenceService
 
     public void Dispose()
     {
-        ArrayPool<float>.Shared.Return(InputFeedBuffer, true);
+        _singleFrameInputArrayPool.Return(InputFeedBuffer, true);
         _boolPool.Return(InferenceStates, true);
         _session.Dispose();
         _memoryAllocatorService.Dispose();
