@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Business.Business.Interfaces.Advertisement;
 using Business.Data.Interfaces.Advertisement;
-using Business.Models;
 using BusinessModels.Advertisement;
 using BusinessModels.General.Results;
 using BusinessModels.General.Update;
@@ -72,7 +71,7 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
     }
 
 
-    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<ArticleModel> updates, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(string key, FieldUpdate<ArticleModel> updates, CancellationToken cancellationToken = default)
     {
         return dataLayer.UpdateAsync(key, updates, cancellationToken);
     }
@@ -87,7 +86,7 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> UpdateAsync(ArticleModel model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(ArticleModel model, CancellationToken cancellationToken = default)
     {
         return dataLayer.ReplaceAsync(model, cancellationToken);
     }
@@ -97,7 +96,7 @@ public class AdvertisementBusinessLayer(IAdvertisementDataLayer dataLayer) : IAd
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         throw new NotImplementedException();
     }

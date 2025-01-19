@@ -40,7 +40,7 @@ public class IotRecordDataLayer : IIotRecordDataLayer
     private readonly ILogger<IotRecordDataLayer> _logger;
 
 
-    public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
         IndexKeysDefinition<IoTRecord>[] indexKeysDefinitions =
         [
@@ -54,7 +54,7 @@ public class IotRecordDataLayer : IIotRecordDataLayer
         var indexModels = indexKeysDefinitions.Select(x => new CreateIndexModel<IoTRecord>(x));
         await _dataDb.Indexes.CreateManyAsync(indexModels, cancellationToken);
 
-        return await Task.FromResult((true, string.Empty));
+        return Result<bool>.Success(true);
     }
 
     public event Func<string, Task>? Added;
@@ -181,12 +181,12 @@ public class IotRecordDataLayer : IIotRecordDataLayer
         }
     }
 
-    public Task<(bool, string)> ReplaceAsync(IoTRecord model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> ReplaceAsync(IoTRecord model, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<IoTRecord> updates, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> UpdateAsync(string key, FieldUpdate<IoTRecord> updates, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -196,7 +196,7 @@ public class IotRecordDataLayer : IIotRecordDataLayer
 
                 var isExist = await _dataDb.Find(filter).AnyAsync(cancellationToken: cancellationToken);
                 if (!isExist)
-                    return (false, AppLang.NotFound);
+                    return Result<bool>.Failure(AppLang.NotFound, ErrorType.NotFound);
 
                 // Build the update definition by combining multiple updates
                 var updateDefinitionBuilder = Builders<IoTRecord>.Update;
@@ -219,14 +219,14 @@ public class IotRecordDataLayer : IIotRecordDataLayer
                     await _dataDb.UpdateManyAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
                 }
 
-                return (true, AppLang.Update_successfully);
+                return Result<bool>.SuccessWithMessage(true, AppLang.Update_successfully);
             }
 
-            return (false, AppLang.Invalid_key);
+            return Result<bool>.Failure(AppLang.Invalid_key, ErrorType.Validation);
         }
         catch (OperationCanceledException)
         {
-            return (false, string.Empty);
+            return Result<bool>.Failure(AppLang.Cancel, ErrorType.Cancelled);
         }
     }
 
@@ -235,7 +235,7 @@ public class IotRecordDataLayer : IIotRecordDataLayer
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         throw new NotImplementedException();
     }

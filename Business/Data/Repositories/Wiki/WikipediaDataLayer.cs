@@ -1,9 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Business.Data.Interfaces;
-using Business.Data.Interfaces.VectorDb;
 using Business.Data.Interfaces.Wiki;
-using Business.Models;
-using Business.Utils;
 using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
@@ -18,7 +15,7 @@ public class WikipediaDataLayer(IMongoDataLayerContext context, ILogger<Wikipedi
 {
     private readonly IMongoCollection<WikipediaDatasetModel> _dataDb = context.MongoDatabase.GetCollection<WikipediaDatasetModel>("Wikipedia");
 
-    public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
         List<IndexKeysDefinition<WikipediaDatasetModel>> indexKeysDefinitions =
         [
@@ -30,7 +27,7 @@ public class WikipediaDataLayer(IMongoDataLayerContext context, ILogger<Wikipedi
 
         await _dataDb.Indexes.DropAllAsync(cancellationToken);
         await _dataDb.Indexes.CreateManyAsync(indexesModels, cancellationToken);
-        return (true, string.Empty);
+        return Result<bool>.SuccessWithMessage(true, AppLang.Create_successfully);
     }
 
     public event Func<string, Task>? Added;
@@ -123,24 +120,24 @@ public class WikipediaDataLayer(IMongoDataLayerContext context, ILogger<Wikipedi
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> ReplaceAsync(WikipediaDatasetModel model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> ReplaceAsync(WikipediaDatasetModel model, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<WikipediaDatasetModel> updates, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> UpdateAsync(string key, FieldUpdate<WikipediaDatasetModel> updates, CancellationToken cancellationToken = default)
     {
         try
         {
             var result = await _dataDb.UpdateAsync(key, updates, cancellationToken: cancellationToken);
             if (result.IsSuccess)
-                return (true, AppLang.Update_successfully);
-            return (false, AppLang.User_update_failed);
+                return Result<bool>.SuccessWithMessage(true, AppLang.Update_successfully);
+            return Result<bool>.SuccessWithMessage(false, AppLang.User_update_failed, ErrorType.Unknown);
         }
         catch (OperationCanceledException)
         {
             logger.LogInformation("[Update] Operation cancelled");
-            return (false, string.Empty);
+            return Result<bool>.Canceled(AppLang.Cancel);
         }
     }
 
@@ -149,7 +146,7 @@ public class WikipediaDataLayer(IMongoDataLayerContext context, ILogger<Wikipedi
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         throw new NotImplementedException();
     }

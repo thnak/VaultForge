@@ -1,10 +1,12 @@
 ﻿using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using Business.Data.Interfaces.InternetOfThings;
+using Business.Business.Interfaces.InternetOfThings;
+using Business.LogProvider;
 using Business.Services.Configure;
 using BusinessModels.General.Update;
 using BusinessModels.System.InternetOfThings;
+using BusinessModels.System.InternetOfThings.status;
 using Microsoft.Extensions.Logging;
 
 namespace Business.Services.BackgroundServices.Mqtt;
@@ -16,7 +18,11 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-public class MqttBrokerHostedService(ApplicationConfiguration configuration, ILogger<MqttBrokerHostedService> logger, IIotDeviceDataLayer deviceDataLayer) : BackgroundService
+public class MqttBrokerHostedService(
+    ApplicationConfiguration configuration,
+    ILogger<MqttBrokerHostedService> logger,
+    ILogger<MqttNetLogger> mqttLogger,
+    IIotDeviceBusinessLayer deviceBs) : BackgroundService
 {
     private MqttServer? _mqttServer;
 
@@ -45,11 +51,12 @@ public class MqttBrokerHostedService(ApplicationConfiguration configuration, ILo
         var mqttServerOptions = optionsBuilder.Build();
 
         // Create and start the MQTT Server
-        _mqttServer = new MqttServerFactory().CreateMqttServer(mqttServerOptions);
+        _mqttServer = new MqttServerFactory(new MqttNetLogger(mqttLogger)).CreateMqttServer(mqttServerOptions);
         _mqttServer.ValidatingConnectionAsync += MqttServerOnValidatingConnectionAsync;
         _mqttServer.StartedAsync += MqttServerOnStartedAsync;
         _mqttServer.StoppedAsync += MqttServerOnStoppedAsync;
         _mqttServer.InterceptingSubscriptionAsync += MqttServerOnInterceptingSubscriptionAsync;
+        _mqttServer.InterceptingUnsubscriptionAsync += MqttServerOnInterceptingUnsubscriptionAsync;
         _mqttServer.InterceptingPublishAsync += MqttServerOnInterceptingPublishAsync;
         try
         {
@@ -59,6 +66,20 @@ public class MqttBrokerHostedService(ApplicationConfiguration configuration, ILo
         {
             logger.LogError(e, e.Message);
         }
+    }
+
+    private async Task MqttServerOnInterceptingSubscriptionAsync(InterceptingSubscriptionEventArgs arg)
+    {
+        await deviceBs.UpdateAsync(arg.UserName, new FieldUpdate<IoTDevice>()
+        {
+            { x => x.LastServiceDate, DateTime.Now },
+            { x => x.Status, IoTDeviceStatus.Active }
+        });
+    }
+
+    private async Task MqttServerOnInterceptingUnsubscriptionAsync(InterceptingUnsubscriptionEventArgs arg)
+    {
+        await deviceBs.UpdateLastServiceTime(arg.UserName);
     }
 
     private Task MqttServerOnInterceptingPublishAsync(InterceptingPublishEventArgs args)
@@ -71,10 +92,6 @@ public class MqttBrokerHostedService(ApplicationConfiguration configuration, ILo
         return Task.CompletedTask;
     }
 
-    private Task MqttServerOnInterceptingSubscriptionAsync(InterceptingSubscriptionEventArgs arg)
-    {
-        return Task.CompletedTask;
-    }
 
     private Task MqttServerOnStoppedAsync(EventArgs arg)
     {
@@ -90,20 +107,15 @@ public class MqttBrokerHostedService(ApplicationConfiguration configuration, ILo
 
     private async Task MqttServerOnValidatingConnectionAsync(ValidatingConnectionEventArgs context)
     {
-        var device = deviceDataLayer.Get(context.UserName);
-        if (device == null)
+        var device = deviceBs.ValidateUser(context.UserName, context.Password);
+        if (!device.IsSuccess)
         {
             context.ReasonCode = MQTTnet.Protocol.MqttConnectReasonCode.BadUserNameOrPassword;
             return;
         }
 
-        if (context.Password != device.MqttPassword)
-        {
-            context.ReasonCode = MQTTnet.Protocol.MqttConnectReasonCode.BadUserNameOrPassword;
-        }
-
         context.ReasonCode = MQTTnet.Protocol.MqttConnectReasonCode.Success;
-        await deviceDataLayer.UpdateAsync(context.UserName, new FieldUpdate<IoTDevice>()
+        await deviceBs.UpdateAsync(context.UserName, new FieldUpdate<IoTDevice>()
         {
             { x => x.LastServiceDate, DateTime.UtcNow }
         });

@@ -96,7 +96,7 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da, IMemoryCache memor
     }
     
 
-    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<FileInfoModel> updates, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(string key, FieldUpdate<FileInfoModel> updates, CancellationToken cancellationToken = default)
     {
         return da.UpdateAsync(key, updates, cancellationToken);
     }
@@ -111,7 +111,7 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da, IMemoryCache memor
         return da.CreateAsync(models, cancellationToken);
     }
 
-    public Task<(bool, string)> UpdateAsync(FileInfoModel model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(FileInfoModel model, CancellationToken cancellationToken = default)
     {
         return da.ReplaceAsync(model, cancellationToken);
     }
@@ -121,10 +121,10 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da, IMemoryCache memor
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public async Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         var file = Get(key);
-        if (file == default) return (false, AppLang.File_could_not_be_found);
+        if (file == default) return Result<bool>.Failure(AppLang.File_could_not_be_found, ErrorType.NotFound);
 
         if (file.Status != FileStatus.DeletedFile)
         {
@@ -133,7 +133,7 @@ public class FileSystemBusinessLayer(IFileSystemDatalayer da, IMemoryCache memor
                 { model => model.Status, FileStatus.DeletedFile },
                 { model => model.PreviousStatus, file.Status }
             }, cancelToken);
-            return (true, AppLang.Delete_successfully);
+            return Result<bool>.SuccessWithMessage(true, AppLang.Delete_successfully);
         }
 
         return await da.DeleteAsync(key, cancelToken);

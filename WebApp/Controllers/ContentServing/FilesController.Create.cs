@@ -5,6 +5,7 @@ using BusinessModels.General.EnumModel;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
+using BusinessModels.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -20,7 +21,7 @@ public partial class FilesController
     public async Task<IActionResult> CreateSharedFolder([FromBody] RequestNewFolderModel request)
     {
         var result = await folderServe.CreateFolder(request);
-        return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
+        return Ok(result.ToJson());
     }
 
     [HttpGet("decompress")]
@@ -173,7 +174,7 @@ public partial class FilesController
 
             var createFileResult = await folderServe.CreateFileAsync(folder, file, cancellationToken);
 
-            if (!createFileResult.Item1)
+            if (!createFileResult.IsSuccess)
             {
                 await DeleteFileAsync(file.Id.ToString());
                 return;
@@ -225,9 +226,9 @@ public partial class FilesController
         var updateResult = await fileServe.UpdateAsync(file.Id.ToString(), GetFileFieldUpdates(file));
         await thumbnailService.AddThumbnailRequest(file.Id.ToString());
 
-        if (!updateResult.Item1)
+        if (!updateResult.IsSuccess)
         {
-            logger.LogError(updateResult.Item2);
+            logger.LogError(updateResult.Message);
         }
     }
 

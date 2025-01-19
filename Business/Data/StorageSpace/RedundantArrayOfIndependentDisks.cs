@@ -5,6 +5,7 @@ using Business.Data.Interfaces;
 using Business.Data.StorageSpace.Utils;
 using Business.Services.Configure;
 using Business.Utils;
+using BusinessModels.General.Results;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using BusinessModels.Utils;
@@ -20,7 +21,7 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
     private readonly IMongoCollection<FileRaidDataBlockModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileRaidDataBlockModel>("FileRaidDataBlock");
     private readonly int _stripSize = options.GetStorage.StripSize;
 
-    public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
         try
         {
@@ -43,21 +44,21 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             if (!options.GetStorage.Disks.ValidateStorageFormat(options.GetStorage.DefaultRaidType))
             {
                 logger.LogError("Invalid Storage Format");
-                return (false, "Invalid Storage Format");
+                return Result<bool>.Failure("Invalid Storage Format", ErrorType.Validation);
             }
 
             logger.LogInformation($"Using RAID option: {options.GetStorage.DefaultRaidType}");
-            return (true, AppLang.Success);
+            return Result<bool>.Success(true);
         }
         catch (OperationCanceledException e)
         {
             logger.LogError(e, "Operation cancelled");
-            return (false, "Cancelled");
+            return Result<bool>.Failure(AppLang.Cancel, ErrorType.Cancelled);
         }
         catch (Exception e)
         {
             logger.LogError(e, e.Message);
-            return (false, "Error");
+            return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
     }
 

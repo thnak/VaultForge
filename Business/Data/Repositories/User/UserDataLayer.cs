@@ -20,7 +20,7 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
     private const string SearchIndexString = "UserSearchIndex";
     private readonly IMongoCollection<UserModel> _dataDb = context.MongoDatabase.GetCollection<UserModel>("User");
 
-    public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
         try
         {
@@ -68,11 +68,11 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
             }
 
             logger.LogInformation(@"[Init] User data layer");
-            return (true, string.Empty);
+            return Result<bool>.SuccessWithMessage(true, AppLang.Create_successfully);
         }
         catch (MongoException ex)
         {
-            return (false, ex.Message);
+            return Result<bool>.Failure(ex.Message, ErrorType.Unknown);
         }
     }
 
@@ -219,20 +219,17 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         return _dataDb.GetAll(field2Fetch, cancellationToken);
     }
 
-    public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<UserModel> updates, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> UpdateAsync(string key, FieldUpdate<UserModel> updates, CancellationToken cancellationToken = default)
     {
         try
         {
             var result = await _dataDb.UpdateAsync(key, updates, cancellationToken);
-            if (result.IsSuccess)
-                return (true, result.Message);
-
-            return (false, AppLang.User_update_failed);
+            return Result<bool>.SuccessWithMessage(result.IsSuccess, result.Message, result.ErrorType);
         }
         catch (OperationCanceledException)
         {
             logger.LogInformation("[Update] Operation cancelled");
-            return (false, string.Empty);
+            return Result<bool>.Canceled(AppLang.Cancel);
         }
     }
 
@@ -265,25 +262,25 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> ReplaceAsync(UserModel model, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> ReplaceAsync(UserModel model, CancellationToken cancellationToken = default)
     {
         try
         {
-            if (Get(model.UserName) == null) return (false, AppLang.User_is_not_exists);
+            if (Get(model.UserName) == null) return Result<bool>.SuccessWithMessage(false, AppLang.User_is_not_exists, ErrorType.NotFound);
             var filter = Builders<UserModel>.Filter.Eq(x => x.UserName, model.UserName);
             var result = await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
-            if (result.IsAcknowledged) return (true, AppLang.Success);
+            if (result.IsAcknowledged) return Result<bool>.SuccessWithMessage(true, AppLang.Update_successfully);
 
-            return (false, AppLang.User_update_failed);
+            return Result<bool>.Failure(AppLang.User_update_failed, ErrorType.Unknown);
         }
         catch (OperationCanceledException)
         {
             logger.LogInformation("[Update] Operation cancelled");
-            return (false, string.Empty);
+            return Result<bool>.Canceled(AppLang.Cancel);
         }
         catch (Exception e)
         {
-            return (false, e.Message);
+            return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
     }
 
@@ -294,21 +291,21 @@ public class UserDataLayer(IMongoDataLayerContext context, ILogger<UserDataLayer
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public async Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(key)) return (false, AppLang.User_name_is_not_valid);
+            if (string.IsNullOrWhiteSpace(key)) return Result<bool>.Failure(AppLang.User_name_is_not_valid, ErrorType.Validation);
 
             var query = Get(key);
-            if (query == null) return (false, AppLang.User_is_not_exists);
+            if (query == null) return Result<bool>.Failure(AppLang.User_is_not_exists, ErrorType.NotFound);
             query.Leave = DateTime.UtcNow;
             await ReplaceAsync(query, cancelToken);
-            return (true, AppLang.Success);
+            return Result<bool>.SuccessWithMessage(true, AppLang.Delete_successfully);
         }
         catch (Exception ex)
         {
-            return (false, ex.Message);
+            return Result<bool>.Failure(ex.Message, ErrorType.Unknown);
         }
     }
 

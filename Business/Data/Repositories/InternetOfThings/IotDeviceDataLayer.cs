@@ -33,7 +33,7 @@ public class IotDeviceDataLayer : IIotDeviceDataLayer
         _threadSafeSearchEngine.Dispose();
     }
 
-    public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
         try
         {
@@ -48,11 +48,11 @@ public class IotDeviceDataLayer : IIotDeviceDataLayer
             await _data.Indexes.CreateManyAsync(uniqueIndexes, cancellationToken);
             var cursor = GetAllAsync([], cancellationToken: cancellationToken);
             await _threadSafeSearchEngine.LoadAndIndexItems(cursor);
-            return (true, AppLang.Create_successfully);
+            return Result<bool>.SuccessWithMessage(true,AppLang.Create_successfully);
         }
         catch (Exception e)
         {
-            return (false, e.Message);
+            return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
     }
 
@@ -180,12 +180,12 @@ public class IotDeviceDataLayer : IIotDeviceDataLayer
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> ReplaceAsync(IoTDevice model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> ReplaceAsync(IoTDevice model, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<IoTDevice> updates, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> UpdateAsync(string key, FieldUpdate<IoTDevice> updates, CancellationToken cancellationToken = default)
     {
         var updateResult = await _data.UpdateAsync(key, updates, cancellationToken);
         if (updateResult.IsSuccess)
@@ -195,7 +195,7 @@ public class IotDeviceDataLayer : IIotDeviceDataLayer
             _threadSafeSearchEngine.LoadAndIndexItems([device]);
         }
 
-        return (updateResult.IsSuccess, updateResult.Message);
+        return Result<bool>.SuccessWithMessage(updateResult.IsSuccess, updateResult.Message);
     }
 
     public IAsyncEnumerable<(bool, string, string)> ReplaceAsync(IEnumerable<IoTDevice> models, CancellationToken cancellationToken = default)
@@ -203,28 +203,28 @@ public class IotDeviceDataLayer : IIotDeviceDataLayer
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         bool isSuccess = false;
         var device = Get(key);
         if (device == null)
-            return Task.FromResult<(bool, string)>((isSuccess, AppLang.Device_not_found));
+            return Task.FromResult(Result<bool>.Failure(AppLang.Device_not_found, ErrorType.NotFound));
         try
         {
             if (ObjectId.TryParse(key, out ObjectId id))
             {
                 _data.DeleteMany(x => x.Id == id);
                 isSuccess = true;
-                return Task.FromResult((true, AppLang.Delete_successfully));
+                return Task.FromResult(Result<bool>.SuccessWithMessage(true,AppLang.Delete_successfully));
             }
 
             _data.DeleteOne(x => x.DeviceId == key);
             isSuccess = true;
-            return Task.FromResult((true, AppLang.Delete_successfully));
+            return Task.FromResult(Result<bool>.SuccessWithMessage(true,AppLang.Delete_successfully));
         }
         catch (Exception e)
         {
-            return Task.FromResult((false, e.Message));
+            return Task.FromResult(Result<bool>.Failure(e.Message, ErrorType.Unknown));
         }
         finally
         {

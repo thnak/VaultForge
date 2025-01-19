@@ -1,4 +1,5 @@
 ﻿using BusinessModels.Resources;
+using BusinessModels.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers.ContentServing;
@@ -11,7 +12,7 @@ public partial class FilesController
         var file = fileServe.Get(fileId);
         if (file == null) return BadRequest(AppLang.File_not_found_);
         var fileDeleteStatus = await fileServe.DeleteAsync(fileId);
-        return BadRequest(fileDeleteStatus.Item2);
+        return BadRequest(fileDeleteStatus.ToJson());
     }
 
     [HttpDelete("safe-delete-file")]
@@ -19,7 +20,7 @@ public partial class FilesController
     public async Task<IActionResult> SafeDeleteFile(string code)
     {
         var result = await fileServe.DeleteAsync(code);
-        return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
+        return Ok(result.ToJson());
     }
 
     [HttpDelete("safe-delete-folder")]
@@ -27,6 +28,6 @@ public partial class FilesController
     public async Task<IActionResult> SafeDeleteFolder(string code)
     {
         var updateResult = await folderServe.DeleteAsync(code);
-        return updateResult.Item1 ? Ok(updateResult.Item2) : BadRequest(updateResult.Item2);
+        return Ok(updateResult.ToJson());
     }
 }

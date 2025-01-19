@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.Advertisement;
-using Business.Models;
 using Business.Utils;
 using BusinessModels.General.Results;
 using BusinessModels.General.Update;
@@ -136,12 +135,12 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         return _dataDb.GetAll(field2Fetch, cancellationToken);
     }
 
-    public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<ArticleModel> updates, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> UpdateAsync(string key, FieldUpdate<ArticleModel> updates, CancellationToken cancellationToken = default)
     {
         try
         {
             if (!ObjectId.TryParse(key, out var id))
-                return (false, AppLang.Invalid_key);
+                return Result<bool>.Failure(AppLang.Invalid_key, ErrorType.Validation);
 
             var filter = Builders<ArticleModel>.Filter.Eq(f => f.Id, id);
 
@@ -167,12 +166,12 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
             }
 
 
-            return (true, AppLang.Update_successfully);
+            return Result<bool>.Success(true);
         }
         catch (OperationCanceledException)
         {
             logger.LogInformation("[Update] Operation cancelled");
-            return (false, string.Empty);
+            return Result<bool>.Failure(AppLang.Cancel, ErrorType.Cancelled);
         }
     }
 
@@ -202,7 +201,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> ReplaceAsync(ArticleModel model, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> ReplaceAsync(ArticleModel model, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -211,22 +210,22 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
             {
                 file = Get(model.Title, model.Language);
                 if (file == null)
-                    return (false, AppLang.Article_does_not_exist);
+                    return Result<bool>.Failure(AppLang.Article_does_not_exist, ErrorType.NotFound);
             }
 
             model.ModifiedTime = DateTime.UtcNow;
             model.PublishDate = DateTime.UtcNow.Date;
             var filter = Builders<ArticleModel>.Filter.Eq(x => x.Id, model.Id);
             await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
-            return (true, AppLang.Update_successfully);
+            return Result<bool>.Success(true);
         }
         catch (MongoException e)
         {
-            return (false, e.Message);
+            return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
         catch (TaskCanceledException e)
         {
-            return (false, e.Message);
+            return Result<bool>.Failure(e.Message, ErrorType.Cancelled);
         }
     }
 
@@ -236,7 +235,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         throw new NotImplementedException();
     }
@@ -253,7 +252,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
         }
     }
 
-    public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
         try
         {
@@ -289,11 +288,11 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
             }
 
             logger.LogInformation(@"[Init] Article data layer");
-            return (true, string.Empty);
+            return Result<bool>.Success(true);
         }
         catch (MongoException ex)
         {
-            return (false, ex.Message);
+            return Result<bool>.Failure(ex.Message, ErrorType.Unknown);
         }
     }
 

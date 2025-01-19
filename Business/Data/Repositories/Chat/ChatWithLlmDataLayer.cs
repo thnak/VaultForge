@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.Chat;
-using Business.Models;
 using Business.Utils;
 using BusinessModels.General.Results;
 using BusinessModels.General.Update;
@@ -20,7 +19,7 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
     private readonly IMongoCollection<ChatWithChatBotMessageModel> _dataDb = context.MongoDatabase.GetCollection<ChatWithChatBotMessageModel>("ChatWithChatBotMessage");
 
 
-    public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
         try
         {
@@ -37,11 +36,11 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
             await _dataDb.Indexes.CreateManyAsync([indexModel, searchIndexModel], cancellationToken);
 
             logger.LogInformation(@"[Init] Chat conversation data layer");
-            return (true, AppLang.Success);
+            return Result<bool>.Success(true);
         }
         catch (MongoException ex)
         {
-            return (false, ex.Message);
+            return Result<bool>.Failure(ex.Message, ErrorType.Unknown);
         }
     }
 
@@ -172,31 +171,31 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> ReplaceAsync(ChatWithChatBotMessageModel model, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> ReplaceAsync(ChatWithChatBotMessageModel model, CancellationToken cancellationToken = default)
     {
         try
         {
             var isExists = await _dataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
             if (!isExists)
-                return (false, AppLang.User_is_not_exists);
+                return Result<bool>.Failure(AppLang.User_is_not_exists, ErrorType.NotFound);
             var filter = Builders<ChatWithChatBotMessageModel>.Filter.Eq(x => x.Id, model.Id);
             var result = await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
-            if (result.IsAcknowledged) return (true, AppLang.Success);
+            if (result.IsAcknowledged) return Result<bool>.Success(true);
 
-            return (false, AppLang.User_update_failed);
+            return Result<bool>.Failure(AppLang.User_update_failed, ErrorType.Validation);
         }
         catch (OperationCanceledException)
         {
             logger.LogInformation("[Update] Operation cancelled");
-            return (false, string.Empty);
+            return Result<bool>.Canceled(AppLang.Cancel);
         }
         catch (Exception e)
         {
-            return (false, e.Message);
+            return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
     }
 
-    public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<ChatWithChatBotMessageModel> updates, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> UpdateAsync(string key, FieldUpdate<ChatWithChatBotMessageModel> updates, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -205,7 +204,7 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
                 var isExists = await _dataDb.Find(x => x.Id == id).AnyAsync(cancellationToken: cancellationToken);
                 if (!isExists)
                 {
-                    return (false, AppLang.File_not_found_);
+                    return Result<bool>.Failure(AppLang.File_not_found_, ErrorType.NotFound);
                 }
 
                 var filter = Builders<ChatWithChatBotMessageModel>.Filter.Eq(f => f.Id, id);
@@ -232,15 +231,15 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
                 }
 
 
-                return (true, AppLang.Update_successfully);
+                return Result<bool>.SuccessWithMessage(true, AppLang.Update_successfully);
             }
 
-            return (false, AppLang.Invalid_key);
+            return Result<bool>.Failure(AppLang.Invalid_key, ErrorType.Validation);
         }
         catch (OperationCanceledException)
         {
             logger.LogInformation("[Update] Operation cancelled");
-            return (false, string.Empty);
+            return Result<bool>.Canceled(AppLang.Cancel);
         }
     }
 
@@ -249,7 +248,7 @@ public class ChatWithLlmDataLayer(IMongoDataLayerContext context, ILogger<ChatWi
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         throw new NotImplementedException();
     }

@@ -199,7 +199,7 @@ internal class FolderSystemBusinessLayer(
         return folderSystemService.GetAllAsync(field2Fetch, cancellationToken);
     }
 
-    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<FolderInfoModel> updates, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(string key, FieldUpdate<FolderInfoModel> updates, CancellationToken cancellationToken = default)
     {
         return folderSystemService.UpdateAsync(key, updates, cancellationToken);
     }
@@ -214,7 +214,7 @@ internal class FolderSystemBusinessLayer(
         return folderSystemService.CreateAsync(models, cancellationToken);
     }
 
-    public Task<(bool, string)> UpdateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
     {
         return folderSystemService.ReplaceAsync(model, cancellationToken);
     }
@@ -224,12 +224,12 @@ internal class FolderSystemBusinessLayer(
         return folderSystemService.ReplaceAsync(models, cancellationToken);
     }
 
-    public async Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public async Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         var folder = Get(key);
-        if (folder == null) return (false, AppLang.Folder_could_not_be_found);
+        if (folder == null) return Result<bool>.Failure(AppLang.Folder_could_not_be_found, ErrorType.NotFound);
 
-        if (folder.AbsolutePath == "/root") return (false, AppLang.Could_not_delete_root_folder);
+        if (folder.AbsolutePath == "/root") return Result<bool>.Failure(AppLang.Could_not_delete_root_folder, ErrorType.Validation);
 
         if (folder.Type != FolderContentType.DeletedFolder)
         {
@@ -238,11 +238,11 @@ internal class FolderSystemBusinessLayer(
                 { model => model.Type, FolderContentType.DeletedFolder },
                 { model => model.PreviousType, folder.Type }
             }, cancelToken);
-            return (true, AppLang.Delete_successfully);
+            return Result<bool>.SuccessWithMessage(true, AppLang.Delete_successfully);
         }
 
         var res = await folderSystemService.DeleteAsync(key, cancelToken);
-        if (res.Item1)
+        if (res.IsSuccess)
         {
             await sequenceBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async serverToken1 =>
             {
@@ -367,7 +367,7 @@ internal class FolderSystemBusinessLayer(
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> CreateFileAsync(FolderInfoModel folder, FileInfoModel file, CancellationToken cancellationTokenSource = default)
+    public async Task<Result<bool>> CreateFileAsync(FolderInfoModel folder, FileInfoModel file, CancellationToken cancellationTokenSource = default)
     {
         var dateString = DateTime.UtcNow.ToString("dd-MM-yyy");
 
@@ -380,26 +380,26 @@ internal class FolderSystemBusinessLayer(
         if (res.IsSuccess)
         {
             var folderUpdateResult = await UpdateAsync(folder, cancellationTokenSource);
-            if (!folderUpdateResult.Item1)
+            if (!folderUpdateResult.IsSuccess)
                 return folderUpdateResult;
         }
 
-        return (res.IsSuccess, res.Message);
+        return res;
     }
 
-    public async Task<(bool, string)> CreateFileAsync(string userName, FileInfoModel file, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> CreateFileAsync(string userName, FileInfoModel file, CancellationToken cancellationToken = default)
     {
         var user = userService.Get(userName) ?? userService.GetAnonymous();
         var folder = GetRoot(user.UserName)!;
         return await CreateFileAsync(folder, file, cancellationToken);
     }
 
-    public async Task<(bool, string)> CreateFolder(string userName, string targetFolderId, string folderName)
+    public async Task<Result<bool>> CreateFolder(string userName, string targetFolderId, string folderName)
     {
         var folder = Get(targetFolderId);
-        if (folder == null) return (false, AppLang.Folder_could_not_be_found);
+        if (folder == null) return Result<bool>.Failure(AppLang.Folder_could_not_be_found, ErrorType.NotFound);
         var user = GetUser(userName);
-        if (user == null) return (false, AppLang.User_is_not_exists);
+        if (user == null) return Result<bool>.Failure(AppLang.User_is_not_exists, ErrorType.NotFound);
 
         var newFolder = new FolderInfoModel
         {
@@ -412,7 +412,7 @@ internal class FolderSystemBusinessLayer(
         };
 
         if (Get(user.UserName, newFolder.RelativePath) != null)
-            return (false, AppLang.Folder_already_exists);
+            return Result<bool>.Failure(AppLang.Folder_already_exists, ErrorType.Duplicate);
 
         var createNewFolderResult = await CreateAsync(newFolder);
         if (createNewFolderResult.IsSuccess)
@@ -420,24 +420,24 @@ internal class FolderSystemBusinessLayer(
             await UpdateAsync(folder);
         }
 
-        return (createNewFolderResult.IsSuccess, createNewFolderResult.Message);
+        return createNewFolderResult;
     }
 
-    public async Task<(bool, string)> CreateFolder(RequestNewFolderModel request)
+    public async Task<Result<bool>> CreateFolder(RequestNewFolderModel request)
     {
         FolderNameFluentValidator validator = new();
         var validationResult = await validator.ValidateAsync(request.NewFolder.FolderName);
         if (!validationResult.IsValid)
             foreach (var error in validationResult.Errors)
-                return (false, error?.ErrorMessage ?? string.Empty);
+                return Result<bool>.Failure(error?.ErrorMessage ?? string.Empty, ErrorType.Validation);
 
         var folderRoot = Get(request.RootId);
-        if (folderRoot == null) return (false, AppLang.Root_folder_could_not_be_found);
+        if (folderRoot == null) return Result<bool>.Failure(AppLang.Root_folder_could_not_be_found, ErrorType.NotFound);
 
 
         if (!string.IsNullOrEmpty(folderRoot.Password))
             if (folderRoot.Password != request.RootPassWord.ComputeSha256Hash())
-                return (false, AppLang.Passwords_do_not_match_);
+                return Result<bool>.Failure(AppLang.Passwords_do_not_match_, ErrorType.Validation);
 
         request.NewFolder.RelativePath = folderRoot.RelativePath + '/' + request.NewFolder.FolderName;
         request.NewFolder.AbsolutePath = request.NewFolder.RelativePath;
@@ -449,17 +449,17 @@ internal class FolderSystemBusinessLayer(
             request.NewFolder.ModifiedUserName = folderRoot.OwnerUsername;
 
         if (Get(folderRoot.OwnerUsername, request.NewFolder.RelativePath) != null)
-            return (false, AppLang.Folder_already_exists);
+            return Result<bool>.Failure(AppLang.Folder_already_exists, ErrorType.Duplicate);
 
         var res = await CreateAsync(request.NewFolder);
         if (res.IsSuccess)
         {
             var result = await UpdateAsync(folderRoot);
-            if (result.Item1)
-                return (true, AppLang.Create_successfully);
+            if (result.IsSuccess)
+                return Result<bool>.SuccessWithMessage(true, AppLang.Create_successfully);
         }
 
-        return (false, AppLang.Create_failed);
+        return Result<bool>.SuccessWithMessage(false, AppLang.Create_failed, ErrorType.Unknown);
     }
 
     public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default)
@@ -709,7 +709,7 @@ internal class FolderSystemBusinessLayer(
                 FileName = entry.Name,
                 RootFolder = rootFolder.Id.ToString()
             });
-            if (fileCreateResult.Item1)
+            if (fileCreateResult.IsSuccess)
             {
                 var writeResult = await raidService.WriteDataAsync(entryStream, file.AbsolutePath);
                 await UpdateFilePropertiesAfterUpload(file, writeResult, "", entry.Name);
@@ -909,9 +909,9 @@ internal class FolderSystemBusinessLayer(
         var updateResult = await fileSystemService.UpdateAsync(file.Id.ToString(), GetFileFieldUpdates(file));
         await thumbnailService.AddThumbnailRequest(file.Id.ToString());
 
-        if (!updateResult.Item1)
+        if (!updateResult.IsSuccess)
         {
-            logger.LogError(updateResult.Item2);
+            logger.LogError(updateResult.Message);
         }
 
         static FieldUpdate<FileInfoModel> GetFileFieldUpdates(FileInfoModel file)

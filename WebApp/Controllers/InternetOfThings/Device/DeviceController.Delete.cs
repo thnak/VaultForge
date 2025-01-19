@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BusinessModels.Utils;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers.InternetOfThings.Device;
 
@@ -10,7 +11,7 @@ public partial class DeviceController
         var cancelToken = HttpContext.RequestAborted;
 
         var deviceDeleteResult = await deviceBusinessLayer.DeleteAsync(deviceId, cancelToken);
-        return deviceDeleteResult.Item1 ? Ok(deviceDeleteResult.Item2) : BadRequest(deviceDeleteResult.Item2);
+        return Ok(deviceDeleteResult.ToJson());
     }
 
     [HttpPost("delete-sensor")]
@@ -19,6 +20,6 @@ public partial class DeviceController
         var cancelToken = HttpContext.RequestAborted;
 
         var createResult = await sensorBusinessLayer.DeleteAsync(sensorId, cancelToken);
-        return createResult.Item1 ? Ok(createResult.Item2) : BadRequest(createResult.Item2);
+        return Ok(createResult.ToJson());
     }
 }

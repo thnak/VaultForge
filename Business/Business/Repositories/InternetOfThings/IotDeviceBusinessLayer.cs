@@ -1,11 +1,11 @@
 ﻿using System.Linq.Expressions;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Data.Interfaces.InternetOfThings;
-using Business.Models;
 using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
+using BusinessModels.System.InternetOfThings.status;
 using MongoDB.Driver;
 
 namespace Business.Business.Repositories.InternetOfThings;
@@ -82,17 +82,17 @@ public class IotDeviceBusinessLayer(IIotDeviceDataLayer dataLayer, IIotSensorDat
         return dataLayer.CreateAsync(models, cancellationToken);
     }
 
-    public Task<(bool, string)> UpdateAsync(IoTDevice model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(IoTDevice model, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<IoTDevice> updates, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> UpdateAsync(string key, FieldUpdate<IoTDevice> updates, CancellationToken cancellationToken = default)
     {
         var device = Get(key);
         if (device == null)
-            return Task.FromResult((false, AppLang.Device_not_found));
-        return dataLayer.UpdateAsync(device.Id.ToString(), updates, cancellationToken);
+            return Result<bool>.Failure(AppLang.Device_not_found, ErrorType.NotFound);
+        return await dataLayer.UpdateAsync(device.Id.ToString(), updates, cancellationToken);
     }
 
     public IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<IoTDevice> models, CancellationToken cancellationToken = default)
@@ -100,14 +100,14 @@ public class IotDeviceBusinessLayer(IIotDeviceDataLayer dataLayer, IIotSensorDat
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public async Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         var device = Get(key);
         if (device == null)
-            return (false, AppLang.Device_not_found);
+            return Result<bool>.Failure(AppLang.Device_not_found, ErrorType.NotFound);
 
-        var result = await dataLayer.DeleteAsync(key, cancelToken).ConfigureAwait(false);
-        if (result.Item1)
+        var result = await dataLayer.DeleteAsync(key, cancelToken);
+        if (result.IsSuccess)
         {
             var deviceId = device.Id.ToString();
             var sensors = iIotSensorDataLayer.WhereAsync(x => x.DeviceId == deviceId, cancelToken);
@@ -118,5 +118,24 @@ public class IotDeviceBusinessLayer(IIotDeviceDataLayer dataLayer, IIotSensorDat
         }
 
         return result;
+    }
+
+    public Result<bool> ValidateUser(string deviceId, string password)
+    {
+        var device = Get(deviceId);
+        if (device == null)
+            return Result<bool>.Failure(AppLang.Device_not_found, ErrorType.NotFound);
+        if (device.MqttPassword != password)
+            return Result<bool>.Failure(AppLang.Incorrect_password, ErrorType.Validation);
+        return Result<bool>.Success(true);
+    }
+
+    public async Task<Result<bool>> UpdateLastServiceTime(string deviceId)
+    {
+        return await UpdateAsync(deviceId, new FieldUpdate<IoTDevice>()
+        {
+            { x => x.LastServiceDate, DateTime.Now },
+            { x => x.Status, IoTDeviceStatus.Active }
+        });
     }
 }

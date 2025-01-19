@@ -7,7 +7,7 @@ public class MongoDbLoggerProvider(IMongoDataLayerContext dataContext) : ILogger
 {
     public ILogger CreateLogger(string categoryName)
     {
-        return new MongoDbLogger(dataContext, categoryName);
+        return new MongoDbLogger(dataContext, categoryName, "SystemLog");
     }
 
     public void Dispose()

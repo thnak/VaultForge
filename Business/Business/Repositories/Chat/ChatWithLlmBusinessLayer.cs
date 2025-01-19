@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Business.Business.Interfaces.Chat;
 using Business.Data.Interfaces.Chat;
-using Business.Models;
 using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.People;
@@ -81,12 +80,12 @@ public class ChatWithLlmBusinessLayer(IChatWithLlmDataLayer dataLayer) : IChatWi
         return dataLayer.CreateAsync(models, cancellationToken);
     }
 
-    public Task<(bool, string)> UpdateAsync(ChatWithChatBotMessageModel model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(ChatWithChatBotMessageModel model, CancellationToken cancellationToken = default)
     {
         return dataLayer.ReplaceAsync(model, cancellationToken);
     }
 
-    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<ChatWithChatBotMessageModel> updates, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(string key, FieldUpdate<ChatWithChatBotMessageModel> updates, CancellationToken cancellationToken = default)
     {
         return dataLayer.UpdateAsync(key, updates, cancellationToken);
     }
@@ -96,7 +95,7 @@ public class ChatWithLlmBusinessLayer(IChatWithLlmDataLayer dataLayer) : IChatWi
         return dataLayer.ReplaceAsync(models, cancellationToken);
     }
 
-    public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         return dataLayer.DeleteAsync(key, cancelToken);
     }

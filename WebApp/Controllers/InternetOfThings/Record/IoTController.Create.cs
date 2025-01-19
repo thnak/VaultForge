@@ -60,8 +60,8 @@ public partial class IoTController
                 FileSize = file.Length,
             };
             var createFileResult = await folderServe.CreateFileAsync(folder!, fileInfo, cancelToken);
-            if (!createFileResult.Item1)
-                return BadRequest(createFileResult.Item2);
+            if (!createFileResult.IsSuccess)
+                return BadRequest(createFileResult.Message);
 
             await raidService.WriteDataAsync(fileData, fileInfo.AbsolutePath, cancelToken);
             IoTRecord record = new IoTRecord(new RecordMetadata()
@@ -107,8 +107,8 @@ public partial class IoTController
                     FileSize = file.Length,
                 };
                 var createFileResult = await folderServe.CreateFileAsync(folder!, fileInfo, cancelToken);
-                if (!createFileResult.Item1)
-                    return BadRequest(createFileResult.Item2);
+                if (!createFileResult.IsSuccess)
+                    return BadRequest(createFileResult.Message);
 
                 await raidService.WriteDataAsync(fileData, fileInfo.AbsolutePath, cancelToken);
                 IoTRecord record = new IoTRecord(new RecordMetadata()

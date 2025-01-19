@@ -45,8 +45,49 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update to prevent duplicate vector">
+      <change afterPath="$PROJECT_DIR$/Business/LogProvider/MqttNetLogger.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Interfaces/FileSystem/IFolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Interfaces/FileSystem/IFolderSystemBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Interfaces/IBusinessLayerRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Interfaces/IBusinessLayerRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Interfaces/InternetOfThings/IIotDeviceBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Interfaces/InternetOfThings/IIotDeviceBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/Advertisement/AdvertisementBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/Advertisement/AdvertisementBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/Chat/ChatWithLlmBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/Chat/ChatWithLlmBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FileSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FileSystemBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IIotRecordBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IIotRecordBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IoTSensorBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IoTSensorBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IotDeviceBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IotDeviceBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/User/UserBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/User/UserBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/Wiki/WikipediaBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/Wiki/WikipediaBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Interfaces/IDataLayerRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Interfaces/IDataLayerRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Interfaces/IMongoDataInitializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Interfaces/IMongoDataInitializer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Advertisement/AdvertisementDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Advertisement/AdvertisementDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Chat/ChatWithLlmDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Chat/ChatWithLlmDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/ComputeVision/YoloLabelDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/ComputeVision/YoloLabelDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotRecordDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotSensorDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotSensorDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/User/FaceDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/User/FaceDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/User/UserDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/VectorDb/VectorDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/VectorDb/VectorDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Wiki/WikipediaDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Wiki/WikipediaDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/StorageSpace/RedundantArrayOfIndependentDisks.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/StorageSpace/RedundantArrayOfIndependentDisks.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/LogProvider/MongoDbLogger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/LogProvider/MongoDbLogger.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/LogProvider/MongoDbLoggerProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/LogProvider/MongoDbLoggerProvider.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/BackgroundServices/Mqtt/MqttBrokerHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/BackgroundServices/Mqtt/MqttBrokerHostedService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Implement/ContentManagementService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OllamaToolCallingServices/Implement/ContentManagementService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/SocketHubs/PageCreatorHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/SocketHubs/PageCreatorHub.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Delete.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Delete.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Update.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Update.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Device/DeviceController.Delete.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Device/DeviceController.Delete.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Device/DeviceController.Update.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Device/DeviceController.Update.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Create.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Create.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -112,6 +153,8 @@
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Text.Json/src/System/Text/Json/Serialization/JsonConverterOfT.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/06f1cebe3a4b49688cb93231ee02bc5eb8000/67/561a064b/IndexReader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0fb7a5f343ed4578a15c716986a3f17950c00/7a/d308585c/NativeDateTimeResolver.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/460eb0c121c14cee9174d62b35979cd6cd30/7f/23eb5914/LoggerInformation.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4982667bcc584b81a094468fbfdf129e38e38/1e/a0d5f7dc/IMqttNetLogger.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4992fbaf8fdc4e35afbc4135b809fa7329e30/e6/d3d3ecbc/OllamaEmbeddingGenerator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4f1fdec7cbfe4433a7ec3a6d1bd0e54223918/cd/d84d2cb7/ServiceCollectionServiceExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5de964a0ff014d78b9bbaee58138798511938/40/098169e4/IFormFile.cs" root0="FORCE_HIGHLIGHTING" />
@@ -176,6 +219,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c43c2f47f2c2e8f49b63133e24df3f437cdaf69f6ce4364bbfc18a3a55e2d4/Timer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c4b095b650c2e655fc77354b7fb11b527436bb75f1f6b2d1bd6ebef68ba031/IVectorStoreRecordCollection.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c7102cd0ffb8973777e61b1942c3fffac7e14016a511d055c3adf73ff91748/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c784500a4a550d2b670e3445f6fcf48cc4f153f7bf4f414cb6df129b36dea/MqttServerFactory.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d1287462d4ec4078c61b8e92a0952fb7de3e7e877d279e390a4c136a6365126/Stream.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d26e877a394f5c16c1b17c5edafaba7697458d69f1d7af0db34aa9b19ea5347/Lock.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d3a8ba7c70f69747f44151e17c654d11935565c9f23a3c8931ab4d29356/VectorStoreRecordDataProperty.cs" root0="FORCE_HIGHLIGHTING" />
@@ -1216,14 +1260,7 @@
       <workItem from="1737073206751" duration="24248000" />
       <workItem from="1737126239151" duration="7056000" />
       <workItem from="1737161001977" duration="13654000" />
-    </task>
-    <task id="LOCAL-00645" summary="that tupid">
-      <option name="closed" value="true" />
-      <created>1736333214306</created>
-      <option name="number" value="00645" />
-      <option name="presentableId" value="LOCAL-00645" />
-      <option name="project" value="LOCAL" />
-      <updated>1736333214306</updated>
+      <workItem from="1737218818630" duration="8807000" />
     </task>
     <task id="LOCAL-00646" summary="small update">
       <option name="closed" value="true" />
@@ -1609,7 +1646,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737196187926</updated>
     </task>
-    <option name="localTasksCounter" value="694" />
+    <task id="LOCAL-00694" summary="small update to prevent duplicate vector">
+      <option name="closed" value="true" />
+      <created>1737250590848</created>
+      <option name="number" value="00694" />
+      <option name="presentableId" value="LOCAL-00694" />
+      <option name="project" value="LOCAL" />
+      <updated>1737250590848</updated>
+    </task>
+    <option name="localTasksCounter" value="695" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1640,7 +1685,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="add buffer check dispose" />
     <MESSAGE value="remove shit" />
     <MESSAGE value="out of range" />
     <MESSAGE value="wrong indices" />
@@ -1665,7 +1709,8 @@
     <MESSAGE value="dispose image" />
     <MESSAGE value="small update" />
     <MESSAGE value="update logic" />
-    <option name="LAST_COMMIT_MESSAGE" value="update logic" />
+    <MESSAGE value="small update to prevent duplicate vector" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update to prevent duplicate vector" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1694,23 +1739,23 @@
           <line>149</line>
           <properties documentPath="C:\Users\thanh\Git\VaultForge\Business\Data\Repositories\InternetOfThings\IotRecordDataLayer.cs" containingFunctionPresentation="Method 'CreateAsync'">
             <startOffsets>
-              <option value="6150" />
+              <option value="6131" />
             </startOffsets>
             <endOffsets>
-              <option value="6224" />
+              <option value="6205" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="93" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs</url>
-          <line>86</line>
+          <line>87</line>
           <properties documentPath="C:\Users\thanh\Git\VaultForge\WebApp\Controllers\ContentServing\FilesController.Create.cs" containingFunctionPresentation="Method 'UploadPhysical'">
             <startOffsets>
-              <option value="3285" />
+              <option value="3274" />
             </startOffsets>
             <endOffsets>
-              <option value="3325" />
+              <option value="3314" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="108" />

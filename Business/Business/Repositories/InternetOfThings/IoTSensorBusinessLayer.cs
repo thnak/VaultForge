@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Data.Interfaces.InternetOfThings;
-using Business.Models;
 using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.System.InternetOfThings;
@@ -81,12 +80,12 @@ public class IoTSensorBusinessLayer(IIotSensorDataLayer iIotSensorDataLayer) : I
         return iIotSensorDataLayer.CreateAsync(models, cancellationToken);
     }
 
-    public Task<(bool, string)> UpdateAsync(IoTSensor model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(IoTSensor model, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<IoTSensor> updates, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(string key, FieldUpdate<IoTSensor> updates, CancellationToken cancellationToken = default)
     {
         return iIotSensorDataLayer.UpdateAsync(key, updates, cancellationToken);
     }
@@ -96,7 +95,7 @@ public class IoTSensorBusinessLayer(IIotSensorDataLayer iIotSensorDataLayer) : I
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         return iIotSensorDataLayer.DeleteAsync(key, cancelToken);
     }

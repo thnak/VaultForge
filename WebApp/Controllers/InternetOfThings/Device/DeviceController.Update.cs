@@ -1,6 +1,7 @@
 ﻿using BusinessModels.General.Update;
 using BusinessModels.System.InternetOfThings;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 
 namespace WebApp.Controllers.InternetOfThings.Device;
 
@@ -15,7 +16,7 @@ public partial class DeviceController
         field2Update.SetFromJson(json);
 
         var deviceUpdateResult = await deviceBusinessLayer.UpdateAsync(deviceId, field2Update, cancelToken);
-        return deviceUpdateResult.Item1 ? Ok(deviceUpdateResult.Item2) : BadRequest(deviceUpdateResult.Item2);
+        return Ok(deviceUpdateResult.ToJson());
     }
 
     [HttpPost("update-sensor")]
@@ -27,6 +28,6 @@ public partial class DeviceController
         field2Update.SetFromJson(json);
 
         var deviceUpdateResult = await sensorBusinessLayer.UpdateAsync(sensorId, field2Update, cancelToken);
-        return deviceUpdateResult.Item1 ? Ok(deviceUpdateResult.Item2) : BadRequest(deviceUpdateResult.Item2);
+        return Ok(deviceUpdateResult.ToJson());
     }
 }

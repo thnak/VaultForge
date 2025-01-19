@@ -24,7 +24,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 {
     private readonly IMongoCollection<FolderInfoModel> _dataDb = context.MongoDatabase.GetCollection<FolderInfoModel>("FolderInfo");
 
-    public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
         try
         {
@@ -67,16 +67,16 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
 
 
             logger.LogInformation(@"[Init] Folder info data layer");
-            return (true, string.Empty);
+            return Result<bool>.Success(true);
         }
         catch (OperationCanceledException e)
         {
-            return (false, e.Message);
+            return Result<bool>.Failure(e.Message, ErrorType.Cancelled);
         }
         catch (MongoException ex)
         {
             logger.LogError(ex, null);
-            return (false, ex.Message);
+            return Result<bool>.Failure(ex.Message, ErrorType.Unknown);
         }
     }
 
@@ -232,7 +232,7 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
     }
 
 
-    public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<FolderInfoModel> updates, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> UpdateAsync(string key, FieldUpdate<FolderInfoModel> updates, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -260,12 +260,12 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
                 await _dataDb.UpdateOneAsync(filter, combinedUpdate, cancellationToken: cancellationToken);
             }
 
-            return (true, AppLang.Update_successfully);
+            return Result<bool>.SuccessWithMessage(true, AppLang.Update_successfully);
         }
         catch (OperationCanceledException)
         {
             logger.LogInformation("[Update] Operation cancelled");
-            return (false, string.Empty);
+            return Result<bool>.Failure(AppLang.Cancel, ErrorType.Cancelled);
         }
     }
 
@@ -294,30 +294,28 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> ReplaceAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> ReplaceAsync(FolderInfoModel model, CancellationToken cancellationToken = default)
     {
         try
         {
             var isExists = await _dataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
             if (!isExists)
             {
-                return (false, AppLang.Folder_could_not_be_found);
+                return Result<bool>.Failure(AppLang.Folder_could_not_be_found, ErrorType.NotFound);
             }
-            else
-            {
-                model.ModifiedTime = DateTime.UtcNow;
-                var filter = Builders<FolderInfoModel>.Filter.Eq(x => x.Id, model.Id);
-                await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
-                return (true, AppLang.Update_successfully);
-            }
+
+            model.ModifiedTime = DateTime.UtcNow;
+            var filter = Builders<FolderInfoModel>.Filter.Eq(x => x.Id, model.Id);
+            await _dataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
+            return Result<bool>.SuccessWithMessage(true, AppLang.Update_successfully);
         }
         catch (OperationCanceledException)
         {
-            return (false, "cancel");
+            return Result<bool>.Canceled(AppLang.Cancel);
         }
         catch (Exception e)
         {
-            return (false, e.Message);
+            return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
     }
 
@@ -327,10 +325,10 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public async Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         if (!ObjectId.TryParse(key, out var id))
-            return (false, AppLang.Invalid_key);
+            return Result<bool>.Failure(AppLang.Invalid_key, ErrorType.Validation);
 
         var filter = Builders<FolderInfoModel>.Filter.Eq(f => f.Id, id);
         var isExists = await _dataDb.Find(filter).AnyAsync(cancellationToken: cancelToken);
@@ -345,10 +343,10 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
                 await CreateAsync(folder, cancelToken);
             }
 
-            return (true, AppLang.Delete_successfully);
+            return Result<bool>.SuccessWithMessage(true, AppLang.Delete_successfully);
         }
 
-        return (false, "Fail");
+        return Result<bool>.Failure(AppLang.NotFound, ErrorType.NotFound);
     }
 
     public (FolderInfoModel?, string) GetWithPassword(string id, string password)

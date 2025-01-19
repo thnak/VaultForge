@@ -32,14 +32,15 @@ public class FileSystemDatalayer(
     private readonly IMongoCollection<FileMetadataModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileMetadataModel>("FileMetaData");
     private readonly IDataProtector _protectionProvider = provider.CreateProtector("FileSystemDatalayerProtector");
 
-    public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
         try
         {
             IndexKeysDefinition<FileInfoModel>[] uniqueIndexesDefinitions =
             [
                 Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath),
-                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AliasCode)
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AliasCode),
+                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RelativePath).Ascending(x => x.RootFolder)
             ];
             IndexKeysDefinition<FileInfoModel>[] indexKeysDefinitions =
             [
@@ -91,17 +92,17 @@ public class FileSystemDatalayer(
 
             await _fileMetaDataDataDb.Indexes.CreateOneAsync(metaIndexModel, cancellationToken: cancellationToken);
 
-            return (true, string.Empty);
+            return Result<bool>.Success(true);
         }
         catch (OperationCanceledException ex)
         {
             logger.LogInformation(ex.Message);
-            return (false, string.Empty);
+            return Result<bool>.Canceled(AppLang.Cancel);
         }
         catch (MongoException ex)
         {
             logger.LogError(ex, null);
-            return (false, ex.Message);
+            return Result<bool>.Failure(ex.Message, ErrorType.Unknown);
         }
     }
 
@@ -195,13 +196,13 @@ public class FileSystemDatalayer(
         return _fileDataDb.GetAll(field2Fetch, cancellationToken);
     }
 
-    public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<FileInfoModel> updates, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> UpdateAsync(string key, FieldUpdate<FileInfoModel> updates, CancellationToken cancellationToken = default)
     {
         var oldValue = Get(key);
-        if(oldValue == null)
-            return (false, AppLang.NotFound);
+        if (oldValue == null)
+            return Result<bool>.Failure(AppLang.File_could_not_be_found, ErrorType.NotFound);
         var updateResult = await _fileDataDb.UpdateAsync(oldValue.Id.ToString(), updates, cancellationToken);
-        return (updateResult.IsSuccess, updateResult.Message);
+        return Result<bool>.SuccessWithMessage(updateResult.IsSuccess, updateResult.Message);
     }
 
     public async Task<Result<bool>> CreateAsync(FileInfoModel model, CancellationToken cancellationToken = default)
@@ -240,30 +241,30 @@ public class FileSystemDatalayer(
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> ReplaceAsync(FileInfoModel model, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> ReplaceAsync(FileInfoModel model, CancellationToken cancellationToken = default)
     {
         try
         {
             var isExists = await _fileDataDb.Find(x => x.Id == model.Id).AnyAsync(cancellationToken: cancellationToken);
             if (!isExists)
             {
-                return (false, AppLang.File_could_not_be_found);
+                return Result<bool>.Failure(AppLang.File_could_not_be_found, ErrorType.NotFound);
             }
 
             model.ModifiedTime = DateTime.UtcNow;
             var filter = Builders<FileInfoModel>.Filter.Eq(x => x.Id, model.Id);
             await _fileDataDb.ReplaceOneAsync(filter, model, cancellationToken: cancellationToken);
-            return (true, AppLang.Create_successfully);
+            return Result<bool>.SuccessWithMessage(true, AppLang.Create_successfully);
         }
         catch (OperationCanceledException)
         {
             logger.LogInformation("[Update] Operation cancelled");
-            return (false, "Operation cancelled");
+            return Result<bool>.Canceled(AppLang.Cancel);
         }
         catch (Exception e)
         {
             logger.LogError(e, null);
-            return (false, e.Message);
+            return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
     }
 
@@ -273,20 +274,20 @@ public class FileSystemDatalayer(
         foreach (var file in models.TakeWhile(_ => cancellationToken is not { IsCancellationRequested: true }))
         {
             var result = await ReplaceAsync(file, cancellationToken);
-            yield return (true, result.Item2, file.Id.ToString());
+            yield return (true, result.Message, file.Id.ToString());
         }
 
         yield return (true, AppLang.Success, string.Empty);
     }
 
-    public async Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public async Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(key)) return (false, AppLang.File_could_not_be_found);
+            if (string.IsNullOrWhiteSpace(key)) return Result<bool>.Failure(AppLang.File_could_not_be_found, ErrorType.NotFound);
 
             var query = Get(key);
-            if (query == null) return (false, AppLang.File_not_found_);
+            if (query == null) return Result<bool>.Failure(AppLang.File_not_found_, ErrorType.NotFound);
 
             var filter = Builders<FileInfoModel>.Filter.Eq(x => x.AbsolutePath, key);
             if (ObjectId.TryParse(key, out var id)) filter |= Builders<FileInfoModel>.Filter.Eq(x => x.Id, id);
@@ -295,16 +296,16 @@ public class FileSystemDatalayer(
             await raidService.DeleteAsync(query.AbsolutePath);
 
             DeleteMetadata(query.MetadataId);
-            return (true, AppLang.Delete_successfully);
+            return Result<bool>.SuccessWithMessage(true, AppLang.Delete_successfully);
         }
         catch (OperationCanceledException)
         {
-            return (false, AppLang.Cancel);
+            return Result<bool>.Canceled(AppLang.Cancel);
         }
         catch (Exception ex)
         {
             logger.LogError(ex, null);
-            return (false, ex.Message);
+            return Result<bool>.Failure(ex.Message, ErrorType.Unknown);
         }
         finally
         {

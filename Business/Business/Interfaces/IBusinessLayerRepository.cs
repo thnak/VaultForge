@@ -29,9 +29,9 @@ public interface IBusinessLayerRepository<T> where T : class
     IAsyncEnumerable<T> GetAllAsync(Expression<Func<T, object>>[] field2Fetch, CancellationToken cancellationToken);
     Task<Result<bool>> CreateAsync(T model, CancellationToken cancellationToken = default);
     Task<Result<bool>> CreateAsync(IReadOnlyCollection<T> models, CancellationToken cancellationToken = default);
-    Task<(bool, string)> UpdateAsync(T model, CancellationToken cancellationToken = default);
-    Task<(bool, string)> UpdateAsync(string key, FieldUpdate<T> updates, CancellationToken cancellationToken = default);
+    Task<Result<bool>> UpdateAsync(T model, CancellationToken cancellationToken = default);
+    Task<Result<bool>> UpdateAsync(string key, FieldUpdate<T> updates, CancellationToken cancellationToken = default);
 
     IAsyncEnumerable<(bool, string, string)> UpdateAsync(IEnumerable<T> models, CancellationToken cancellationToken = default);
-    Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default);
+    Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default);
 }

@@ -1,9 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Business.Data.Interfaces;
 using Business.Data.Interfaces.User;
-using Business.Models;
 using Business.Models.RetrievalAugmentedGeneration.Vector;
-using Business.Utils;
 using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
@@ -22,7 +20,7 @@ public class FaceDataLayer(IMongoDataLayerContext context, ILogger<FaceDataLayer
         //
     }
 
-    public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
         List<IndexKeysDefinition<FaceVectorStorageModel>> indexKeysDefinitions =
         [
@@ -34,7 +32,7 @@ public class FaceDataLayer(IMongoDataLayerContext context, ILogger<FaceDataLayer
 
         await _dataDb.Indexes.DropAllAsync(cancellationToken);
         await _dataDb.Indexes.CreateManyAsync(indexesModels, cancellationToken);
-        return (true, string.Empty);
+        return Result<bool>.Success(true);
     }
 
     public event Func<string, Task>? Added;
@@ -134,24 +132,24 @@ public class FaceDataLayer(IMongoDataLayerContext context, ILogger<FaceDataLayer
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> ReplaceAsync(FaceVectorStorageModel model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> ReplaceAsync(FaceVectorStorageModel model, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<FaceVectorStorageModel> updates, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> UpdateAsync(string key, FieldUpdate<FaceVectorStorageModel> updates, CancellationToken cancellationToken = default)
     {
         try
         {
             var result = await _dataDb.UpdateAsync(key, updates, cancellationToken: cancellationToken);
             if (result.IsSuccess)
-                return (true, AppLang.Update_successfully);
-            return (false, AppLang.User_update_failed);
+                return Result<bool>.SuccessWithMessage(true, AppLang.Update_successfully);
+            return Result<bool>.Failure(AppLang.User_update_failed, ErrorType.Unknown);
         }
         catch (OperationCanceledException)
         {
             logger.LogInformation("[Update] Operation cancelled");
-            return (false, string.Empty);
+            return Result<bool>.Failure(AppLang.Cancel, ErrorType.Cancelled);
         }
     }
 
@@ -160,7 +158,7 @@ public class FaceDataLayer(IMongoDataLayerContext context, ILogger<FaceDataLayer
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         throw new NotImplementedException();
     }

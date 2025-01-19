@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using Business.Business.Interfaces.Advertisement;
-using Business.Models;
 using Business.Services.OllamaToolCallingServices.Interfaces;
 using BusinessModels.Advertisement;
 using BusinessModels.General.Update;
@@ -73,7 +72,7 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
         if (article == null)
             return "The Article could not be found. Ask user to provide correct article ID and try again. Ask user provide correct article ID and try again.";
         var result = await businessLayer.DeleteAsync(id, cancellationToken);
-        return result.Item1 ? $"deleted successfully for article {article.Id}." : $"delete failed for article {article.Id}. Ask user to provide correct article ID and try again.";
+        return result.IsSuccess ? $"deleted successfully for article {article.Id}." : $"delete failed for article {article.Id}. Ask user to provide correct article ID and try again.";
     }
 
     public async Task<string> AddSummary(string id, string summary, CancellationToken cancellationToken = default)
@@ -88,7 +87,7 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
         };
 
         var result = await businessLayer.UpdateAsync(article.Id.ToString(), fieldUpdate, cancellationToken);
-        return result.Item1 ? $"Update successfully for article {article.Id}." : $"Update failed for article {article.Id}. Reason: {result.Item2}";
+        return result.IsSuccess ? $"Update successfully for article {article.Id}." : $"Update failed for article {article.Id}. Reason: {result.Message}";
     }
 
     public async Task<string> GetContent(string id, CancellationToken cancellationToken = default)
@@ -111,7 +110,7 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
         };
 
         var result = await businessLayer.UpdateAsync(article.Id.ToString(), fieldUpdate, cancellationToken);
-        return result.Item1 ? $"Update successfully for article {article.Id}." : $"Update failed for article {article.Id}. Reason: {result.Item2}";
+        return result.IsSuccess ? $"Update successfully for article {article.Id}." : $"Update failed for article {article.Id}. Reason: {result.Message}";
     }
 
     public async Task<string> UpdateCss(string id, string css, CancellationToken cancellationToken = default)
@@ -126,7 +125,7 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
         };
 
         var result = await businessLayer.UpdateAsync(article.Id.ToString(), fieldUpdate, cancellationToken);
-        return result.Item1 ? $"Update successfully for article {article.Id}." : $"Update failed for article {article.Id}. Reason: {result.Item2}";
+        return result.IsSuccess ? $"Update successfully for article {article.Id}." : $"Update failed for article {article.Id}. Reason: {result.Message}";
     }
 
     public async Task<string> UpdateJavascript(string id, string javascript, CancellationToken cancellationToken = default)
@@ -141,7 +140,7 @@ public class ContentManagementService(IAdvertisementBusinessLayer businessLayer)
         };
 
         var result = await businessLayer.UpdateAsync(article.Id.ToString(), fieldUpdate, cancellationToken);
-        return result.Item1 ? $"Update successfully for article {article.Id}." : $"Update failed for article {article.Id}. Reason: {result.Item2}";
+        return result.IsSuccess ? $"Update successfully for article {article.Id}." : $"Update failed for article {article.Id}. Reason: {result.Message}";
     }
 
     public async Task<string> GetArticleLink(string title, string language, CancellationToken cancellationToken = default)

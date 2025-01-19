@@ -109,14 +109,14 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, IVectorDataLayer vector
         return dataLayer.CreateAsync(models, cancellationToken);
     }
 
-    public Task<(bool, string)> UpdateAsync(FaceVectorStorageModel model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(FaceVectorStorageModel model, CancellationToken cancellationToken = default)
     {
         FieldUpdate<FaceVectorStorageModel> update = new FieldUpdate<FaceVectorStorageModel>();
         update.UpdateAllFields(model);
         return dataLayer.UpdateAsync(model.Id.ToString(), update, cancellationToken);
     }
 
-    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<FaceVectorStorageModel> updates, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(string key, FieldUpdate<FaceVectorStorageModel> updates, CancellationToken cancellationToken = default)
     {
         return dataLayer.UpdateAsync(key, updates, cancellationToken);
     }
@@ -126,7 +126,7 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, IVectorDataLayer vector
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         return dataLayer.DeleteAsync(key, cancelToken);
     }

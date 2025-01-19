@@ -28,7 +28,7 @@ public class IotSensorDataLayer(IMongoDataLayerContext context, ILogger<IIotSens
         //
     }
 
-    public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
         try
         {
@@ -40,11 +40,11 @@ public class IotSensorDataLayer(IMongoDataLayerContext context, ILogger<IIotSens
             await _data.Indexes.DropAllAsync(cancellationToken);
             await _data.Indexes.CreateManyAsync(uniqueIndexes, cancellationToken);
 
-            return (true, AppLang.Create_successfully);
+            return Result<bool>.SuccessWithMessage(true, AppLang.Create_successfully);
         }
         catch (Exception e)
         {
-            return (false, e.Message);
+            return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
     }
 
@@ -174,19 +174,19 @@ public class IotSensorDataLayer(IMongoDataLayerContext context, ILogger<IIotSens
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> ReplaceAsync(IoTSensor model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> ReplaceAsync(IoTSensor model, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> UpdateAsync(string key, FieldUpdate<IoTSensor> updates, CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> UpdateAsync(string key, FieldUpdate<IoTSensor> updates, CancellationToken cancellationToken = default)
     {
         var sensor = Get(key);
         if (sensor == null)
-            return (false, AppLang.Sensor_not_found);
+            return Result<bool>.Failure(AppLang.Sensor_not_found, ErrorType.NotFound);
         var updateResult = await _data.UpdateAsync(sensor.Id.ToString(), updates, cancellationToken);
         memoryCache.Remove(IotSensorCollectionName + "Get" + key);
-        return (updateResult.IsSuccess, updateResult.Message);
+        return Result<bool>.SuccessWithMessage(updateResult.IsSuccess, updateResult.Message);
     }
 
     public IAsyncEnumerable<(bool, string, string)> ReplaceAsync(IEnumerable<IoTSensor> models, CancellationToken cancellationToken = default)
@@ -194,23 +194,23 @@ public class IotSensorDataLayer(IMongoDataLayerContext context, ILogger<IIotSens
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         try
         {
             if (ObjectId.TryParse(key, out ObjectId id))
             {
                 _data.DeleteMany(x => x.Id == id);
-                return Task.FromResult((true, AppLang.Delete_successfully));
+                return Task.FromResult(Result<bool>.SuccessWithMessage(true, AppLang.Delete_successfully));
             }
 
             _data.DeleteOne(x => x.SensorId == key);
             memoryCache.Remove(IotSensorCollectionName + "Get" + key);
-            return Task.FromResult((true, AppLang.Delete_successfully));
+            return Task.FromResult(Result<bool>.SuccessWithMessage(true, AppLang.Delete_successfully));
         }
         catch (Exception e)
         {
-            return Task.FromResult((false, e.Message));
+            return Task.FromResult(Result<bool>.Failure(e.Message, ErrorType.Unknown));
         }
     }
 }

@@ -34,12 +34,12 @@ public interface IFolderSystemBusinessLayer : IBusinessLayerRepository<FolderInf
     /// <param name="file"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public Task<(bool, string)> CreateFileAsync(FolderInfoModel folder, FileInfoModel file, CancellationToken cancellationToken = default);
+    public Task<Result<bool>> CreateFileAsync(FolderInfoModel folder, FileInfoModel file, CancellationToken cancellationToken = default);
 
-    public Task<(bool, string)> CreateFileAsync(string userName, FileInfoModel file, CancellationToken cancellationToken = default);
-    public Task<(bool, string)> CreateFolder(string userName, string targetFolderId, string folderName);
+    public Task<Result<bool>> CreateFileAsync(string userName, FileInfoModel file, CancellationToken cancellationToken = default);
+    public Task<Result<bool>> CreateFolder(string userName, string targetFolderId, string folderName);
 
-    public Task<(bool, string)> CreateFolder(RequestNewFolderModel request);
+    public Task<Result<bool>> CreateFolder(RequestNewFolderModel request);
 
     public long GetFileSize(Expression<Func<FileInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default);
     public Task<long> GetFolderByteSize(Expression<Func<FolderInfoModel, bool>> predicate, CancellationToken cancellationTokenSource = default);

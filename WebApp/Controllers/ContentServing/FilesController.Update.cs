@@ -2,6 +2,7 @@
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
+using BusinessModels.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +20,7 @@ public partial class FilesController
             return BadRequest(AppLang.Required_field);
         file.FileName = newName;
         var status = await fileServe.UpdateAsync(file);
-        return status.Item1 ? Ok(status.Item2) : BadRequest(status.Item2);
+        return Ok(status.ToJson());
     }
 
     [HttpPost("re-name-folder")]
@@ -39,7 +40,7 @@ public partial class FilesController
         folder.RelativePath = rootFolder.RelativePath + "/" + newName;
 
         var status = await folderServe.UpdateAsync(folder);
-        return status.Item1 ? Ok(status.Item2) : BadRequest(status.Item2);
+        return Ok(status.ToJson());
     }
 
     [HttpPost("restore-content")]
@@ -52,14 +53,14 @@ public partial class FilesController
             var file = fileServe.Get(id);
             if (file == null) return BadRequest(AppLang.File_not_found_);
             var result = await fileServe.UpdateAsync(id, new FieldUpdate<FileInfoModel>() { { model => model.Status, file.PreviousStatus } });
-            return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
+            return Ok(result.ToJson());
         }
 
         {
             var folder = folderServe.Get(id);
             if (folder == null) return BadRequest(AppLang.File_not_found_);
             var result = await folderServe.UpdateAsync(id, new FieldUpdate<FolderInfoModel>() { { model => model.Type, folder.PreviousType } });
-            return result.Item1 ? Ok(result.Item2) : BadRequest(result.Item2);
+            return Ok(result.ToJson());
         }
     }
 

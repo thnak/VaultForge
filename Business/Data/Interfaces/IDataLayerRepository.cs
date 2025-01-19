@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using Business.Models;
 using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using MongoDB.Driver;
@@ -64,9 +63,9 @@ public interface IDataLayerRepository<T> where T : class
     IAsyncEnumerable<T> GetAllAsync(Expression<Func<T, object>>[] field2Fetch, CancellationToken cancellationToken);
     Task<Result<bool>> CreateAsync(T model, CancellationToken cancellationToken = default);
     Task<Result<bool>> CreateAsync(IReadOnlyCollection<T> models, CancellationToken cancellationToken = default);
-    Task<(bool, string)> ReplaceAsync(T model, CancellationToken cancellationToken = default);
-    Task<(bool, string)> UpdateAsync(string key, FieldUpdate<T> updates, CancellationToken cancellationToken = default);
+    Task<Result<bool>> ReplaceAsync(T model, CancellationToken cancellationToken = default);
+    Task<Result<bool>> UpdateAsync(string key, FieldUpdate<T> updates, CancellationToken cancellationToken = default);
 
     IAsyncEnumerable<(bool, string, string)> ReplaceAsync(IEnumerable<T> models, CancellationToken cancellationToken = default);
-    Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default);
+    Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default);
 }

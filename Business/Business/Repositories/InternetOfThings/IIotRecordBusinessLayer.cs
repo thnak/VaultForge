@@ -89,12 +89,12 @@ public class IotRecordBusinessLayer(IIotRecordDataLayer data, IIotRequestQueue i
         return data.CreateAsync(models, cancellationToken);
     }
 
-    public Task<(bool, string)> UpdateAsync(IoTRecord model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(IoTRecord model, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<IoTRecord> updates, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(string key, FieldUpdate<IoTRecord> updates, CancellationToken cancellationToken = default)
     {
         return data.UpdateAsync(key, updates, cancellationToken);
     }
@@ -104,7 +104,7 @@ public class IotRecordBusinessLayer(IIotRecordDataLayer data, IIotRequestQueue i
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         throw new NotImplementedException();
     }

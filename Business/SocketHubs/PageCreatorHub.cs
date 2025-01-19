@@ -1,5 +1,4 @@
 ﻿using Business.Business.Interfaces.Advertisement;
-using Business.Models;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using BusinessModels.Advertisement;
 using BusinessModels.General.Update;
@@ -99,7 +98,7 @@ public class PageCreatorHub(IMemoryCache memoryCache, IAdvertisementBusinessLaye
         memoryCache.Remove($"{nameof(PageCreatorHub)}{nameof(ArticleModel)}{articleId}");
         var listener = GetListeners(articleId);
         await Clients.Clients(listener).SendAsync("ReceiveMessage", new ArticleModel(), CancellationTokenSource.Token);
-        return new SignalrResult() { Message = result.Item2, Success = result.Item1 };
+        return new SignalrResult() { Message = result.Message, Success = result.IsSuccess };
     }
 
     private string[] GetListeners(string articleId)

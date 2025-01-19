@@ -20,7 +20,7 @@ public class YoloLabelDataLayer(IMongoDataLayerContext context) : IYoloLabelData
         //
     }
 
-    public async Task<(bool, string)> InitializeAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<bool>> InitializeAsync(CancellationToken cancellationToken = default)
     {
         IndexKeysDefinition<YoloLabel>[] indexKeysDefinitions =
         [
@@ -28,7 +28,7 @@ public class YoloLabelDataLayer(IMongoDataLayerContext context) : IYoloLabelData
         ];
         var modelIndexes = indexKeysDefinitions.Select(x => new CreateIndexModel<YoloLabel>(x));
         await _dataContext.Indexes.CreateManyAsync(modelIndexes, cancellationToken: cancellationToken);
-        return (true, string.Empty);
+        return Result<bool>.Success(true);
     }
 
     public event Func<string, Task>? Added;
@@ -121,12 +121,12 @@ public class YoloLabelDataLayer(IMongoDataLayerContext context) : IYoloLabelData
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> ReplaceAsync(YoloLabel model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> ReplaceAsync(YoloLabel model, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<YoloLabel> updates, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(string key, FieldUpdate<YoloLabel> updates, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
@@ -136,7 +136,7 @@ public class YoloLabelDataLayer(IMongoDataLayerContext context) : IYoloLabelData
         throw new NotImplementedException();
     }
 
-    public async Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public async Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         if (ObjectId.TryParse(key, out ObjectId objectId))
         {
@@ -147,6 +147,6 @@ public class YoloLabelDataLayer(IMongoDataLayerContext context) : IYoloLabelData
             await _dataContext.DeleteManyAsync(x => x.FileId == key, cancellationToken: cancelToken);
         }
 
-        return (true, AppLang.Delete_successfully);
+        return Result<bool>.SuccessWithMessage(true, AppLang.Delete_successfully);
     }
 }

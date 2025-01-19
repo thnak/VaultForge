@@ -9,7 +9,6 @@ using Business.Business.Interfaces.Wiki;
 using Business.Business.Utils;
 using Business.Data.Interfaces.VectorDb;
 using Business.Data.Interfaces.Wiki;
-using Business.Models;
 using Business.Services.Configure;
 using Business.Services.TaskQueueServices.Base.Interfaces;
 using Business.Utils.StringExtensions;
@@ -121,14 +120,14 @@ public class WikipediaBusinessLayer(
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> UpdateAsync(WikipediaDatasetModel model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(WikipediaDatasetModel model, CancellationToken cancellationToken = default)
     {
         FieldUpdate<WikipediaDatasetModel> update = new FieldUpdate<WikipediaDatasetModel>();
         update.UpdateAllFields(model);
         return dataLayer.UpdateAsync(model.Id.ToString(), update, cancellationToken);
     }
 
-    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<WikipediaDatasetModel> updates, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(string key, FieldUpdate<WikipediaDatasetModel> updates, CancellationToken cancellationToken = default)
     {
         return dataLayer.UpdateAsync(key, updates, cancellationToken);
     }
@@ -138,7 +137,7 @@ public class WikipediaBusinessLayer(
         throw new NotImplementedException();
     }
 
-    public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         throw new NotImplementedException();
     }

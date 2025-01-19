@@ -3,7 +3,6 @@ using System.Linq.Expressions;
 using System.Security.Claims;
 using Business.Business.Interfaces.User;
 using Business.Data.Interfaces.User;
-using Business.Models;
 using Business.Utils.Protector;
 using BusinessModels.General.Results;
 using BusinessModels.General.Update;
@@ -79,7 +78,7 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
     }
 
 
-    public Task<(bool, string)> UpdateAsync(string key, FieldUpdate<UserModel> updates, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(string key, FieldUpdate<UserModel> updates, CancellationToken cancellationToken = default)
     {
         return userDl.UpdateAsync(key, updates, cancellationToken);
     }
@@ -94,7 +93,7 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         return userDl.CreateAsync(models, cancellationToken);
     }
 
-    public Task<(bool, string)> UpdateAsync(UserModel model, CancellationToken cancellationToken = default)
+    public Task<Result<bool>> UpdateAsync(UserModel model, CancellationToken cancellationToken = default)
     {
         return userDl.ReplaceAsync(model, cancellationToken);
     }
@@ -104,7 +103,7 @@ public class UserBusinessLayer(IUserDataLayer userDl) : IUserBusinessLayer
         return userDl.ReplaceAsync(models, cancellationToken);
     }
 
-    public Task<(bool, string)> DeleteAsync(string key, CancellationToken cancelToken = default)
+    public Task<Result<bool>> DeleteAsync(string key, CancellationToken cancelToken = default)
     {
         return userDl.DeleteAsync(key, cancelToken);
     }
