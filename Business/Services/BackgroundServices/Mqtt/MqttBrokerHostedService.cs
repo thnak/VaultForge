@@ -118,6 +118,7 @@ public class MqttBrokerHostedService(
         if (!device.IsSuccess)
         {
             context.ReasonCode = MQTTnet.Protocol.MqttConnectReasonCode.BadUserNameOrPassword;
+            logger.LogInformation(device.Message);
             return;
         }
 
