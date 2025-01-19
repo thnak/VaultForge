@@ -8,7 +8,7 @@ window.indexedDbHelper = (() => {
             request.onupgradeneeded = (event) => {
                 const db = event.target.result;
                 if (!db.objectStoreNames.contains(storeName)) {
-                    db.createObjectStore(storeName, { keyPath: keyPath });
+                    db.createObjectStore(storeName, {keyPath: keyPath});
                 }
 
                 if (upgradeCallbackHandler) {
@@ -20,11 +20,11 @@ window.indexedDbHelper = (() => {
 
             request.onsuccess = () => {
                 databases[dbName] = request.result;
-                resolve({ status: "success", dbName: dbName });
+                resolve({status: "success", dbName: dbName});
             };
 
             request.onerror = () => {
-                reject({ status: "error", error: request.error.message });
+                reject({status: "error", error: request.error.message});
             };
         });
     }

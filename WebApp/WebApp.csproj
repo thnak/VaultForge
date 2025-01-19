@@ -30,30 +30,30 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Azure.Identity" Version="1.13.2" />
-        <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1" />
-        <PackageReference Include="Microsoft.Azure.StackExchangeRedis" Version="3.2.0" />
-        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.1" />
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.1" />
+        <PackageReference Include="Azure.Identity" Version="1.13.2"/>
+        <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1"/>
+        <PackageReference Include="Microsoft.Azure.StackExchangeRedis" Version="3.2.0"/>
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.1"/>
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.1"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ContainerPort Include="8081" />
+        <ContainerPort Include="8081"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BrainNet\BrainNet.csproj" />
-      <ProjectReference Include="..\Business\Business.csproj" />
-      
-      <ProjectReference Include="..\WebApp.Client\WebApp.Client.csproj" />
+        <ProjectReference Include="..\BrainNet\BrainNet.csproj"/>
+        <ProjectReference Include="..\Business\Business.csproj"/>
+
+        <ProjectReference Include="..\WebApp.Client\WebApp.Client.csproj"/>
     </ItemGroup>
 
 </Project>

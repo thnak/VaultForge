@@ -47,7 +47,7 @@ public partial class FilesController
     [AllowAnonymous]
     public async Task<IActionResult> ImportMovieResource(string folderCode, [FromForm] string url)
     {
-        await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async (token) =>
+        await parallelBackgroundTaskQueue.QueueBackgroundWorkItemAsync(async token =>
         {
             var folder = folderServe.Get(folderCode);
             if (folder == null)
@@ -59,13 +59,13 @@ public partial class FilesController
             using var httpClient = new HttpClient();
             var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, token);
             response.EnsureSuccessStatusCode();
-            Stopwatch sw = Stopwatch.StartNew();
-            string fileName = response.Content.Headers.GetFileNameFromHeaders() ?? url.GetFileNameFromUrl();
+            var sw = Stopwatch.StartNew();
+            var fileName = response.Content.Headers.GetFileNameFromHeaders() ?? url.GetFileNameFromUrl();
             logger.LogInformation($"File {fileName} has been added to download queue");
-            var file = new FileInfoModel()
+            var file = new FileInfoModel
             {
                 FileName = fileName,
-                ContentType = response.Content.Headers.ContentType?.MediaType ?? string.Empty,
+                ContentType = response.Content.Headers.ContentType?.MediaType ?? string.Empty
             };
             await folderServe.CreateFileAsync(folder, file, token);
             var stream = await response.Content.ReadAsStreamAsync(token);
@@ -85,17 +85,14 @@ public partial class FilesController
     [IgnoreAntiforgeryToken]
     public async Task<IActionResult> UploadPhysical(string folderCodes)
     {
-        string folderKeyString = AppLang.Folder;
-        string fileKeyString = AppLang.File;
+        var folderKeyString = AppLang.Folder;
+        var fileKeyString = AppLang.File;
         var cancellationToken = HttpContext.RequestAborted;
 
         try
         {
             // Validate request
-            if (!IsValidRequest(out IActionResult? errorResult))
-            {
-                return errorResult ?? BadRequest();
-            }
+            if (!IsValidRequest(out var errorResult)) return errorResult ?? BadRequest();
 
             // Validate folder
             var folder = folderServe.Get(folderCodes);
@@ -148,7 +145,7 @@ public partial class FilesController
 
     private bool IsValidRequest(out IActionResult? errorResult)
     {
-        string fileKeyString = AppLang.File;
+        var fileKeyString = AppLang.File;
 
         if (string.IsNullOrEmpty(Request.ContentType) || !MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
         {
@@ -167,10 +164,7 @@ public partial class FilesController
         try
         {
             var folder = folderServe.Get(folderCodes);
-            if (folder == null)
-            {
-                return;
-            }
+            if (folder == null) return;
 
             var createFileResult = await folderServe.CreateFileAsync(folder, file, cancellationToken);
 
@@ -215,21 +209,13 @@ public partial class FilesController
         file.Checksum = saveResult.CheckSum;
 
         if (string.IsNullOrEmpty(file.ContentType))
-        {
             file.ContentType = contentType;
-        }
-        else if (file.ContentType == "application/octet-stream")
-        {
-            file.ContentType = Path.GetExtension(trustedFileNameForDisplay).GetMimeTypeFromExtension();
-        }
+        else if (file.ContentType == "application/octet-stream") file.ContentType = Path.GetExtension(trustedFileNameForDisplay).GetMimeTypeFromExtension();
 
         var updateResult = await fileServe.UpdateAsync(file.Id.ToString(), GetFileFieldUpdates(file));
         await thumbnailService.AddThumbnailRequest(file.Id.ToString());
 
-        if (!updateResult.IsSuccess)
-        {
-            logger.LogError(updateResult.Message);
-        }
+        if (!updateResult.IsSuccess) logger.LogError(updateResult.Message);
     }
 
     private static FieldUpdate<FileInfoModel> GetFileFieldUpdates(FileInfoModel file)

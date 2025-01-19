@@ -19,7 +19,7 @@ public class SpeedTestController : ControllerBase
         try
         {
             // Create a MemoryStream with a defined size (e.g., 10 MB)
-            byte[] data = new byte[MemoryStreamSize];
+            var data = new byte[MemoryStreamSize];
             var memoryStream = new MemoryStream(data);
 
             // Start the stopwatch before sending the data
@@ -32,8 +32,8 @@ public class SpeedTestController : ControllerBase
             stopwatch.Stop();
 
             // Calculate the download speed in Mbps
-            double downloadTimeInSeconds = stopwatch.Elapsed.TotalSeconds;
-            double downloadSpeedMbps = MemoryStreamSize * 8 / (downloadTimeInSeconds * 1024 * 1024); // bits per second to Mbps
+            var downloadTimeInSeconds = stopwatch.Elapsed.TotalSeconds;
+            var downloadSpeedMbps = MemoryStreamSize * 8 / (downloadTimeInSeconds * 1024 * 1024); // bits per second to Mbps
 
             Response.RegisterForDisposeAsync(memoryStream);
 

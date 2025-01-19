@@ -26,10 +26,10 @@ public class FaceController(IFaceEmbeddingInferenceService faceEmbeddingInferenc
             await using var stream = file.OpenReadStream();
             using var image = await Image.LoadAsync<Rgb24>(stream);
             var vector = await faceEmbeddingInferenceService.AddInputAsync(image);
-            await faceBusinessLayer.CreateAsync(new FaceVectorStorageModel()
+            await faceBusinessLayer.CreateAsync(new FaceVectorStorageModel
             {
                 CreatedAt = DateTime.Now,
-                Owner = owner,
+                Owner = owner
             }, vector);
         }
 
@@ -50,8 +50,8 @@ public class FaceController(IFaceEmbeddingInferenceService faceEmbeddingInferenc
         var classScores = scorer.GetWeightedTopScores<string>(
             searchResults.Value ?? [],
             value => value.Key, // Class based on the first letter (A or B)
-            decayFactor: alpha, // Weight for sum of scores
-            threshold: threshold // Weight for density
+            alpha, // Weight for sum of scores
+            threshold // Weight for density
         );
 
         return Content(classScores.ToJson(), MediaTypeNames.Application.Json);

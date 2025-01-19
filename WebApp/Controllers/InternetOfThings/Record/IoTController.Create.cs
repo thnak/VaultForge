@@ -15,19 +15,16 @@ public partial class IoTController
         {
             try
             {
-                IoTRecord record = new IoTRecord(new RecordMetadata()
+                var record = new IoTRecord(new RecordMetadata
                 {
                     SensorId = sensorId,
                     SensorData = value,
                     SignalStrength = signalStrength ?? 0,
                     BatteryLevel = battery ?? 0,
-                    RecordedAt = dateTime ?? DateTime.UtcNow,
+                    RecordedAt = dateTime ?? DateTime.UtcNow
                 });
                 var queueResult = await requestQueueHostedService.QueueRequest(record, token);
-                if (!queueResult)
-                {
-                    logger.LogWarning($"{AppLang.Error_processing_request} {sensorId}");
-                }
+                if (!queueResult) logger.LogWarning($"{AppLang.Error_processing_request} {sensorId}");
             }
             catch (OperationCanceledException)
             {
@@ -53,18 +50,18 @@ public partial class IoTController
 
             var folder = folderServe.Get("", "/iotImage");
 
-            var fileInfo = new FileInfoModel()
+            var fileInfo = new FileInfoModel
             {
                 FileName = file.FileName,
                 ContentType = file.ContentType,
-                FileSize = file.Length,
+                FileSize = file.Length
             };
             var createFileResult = await folderServe.CreateFileAsync(folder!, fileInfo, cancelToken);
             if (!createFileResult.IsSuccess)
                 return BadRequest(createFileResult.Message);
 
             await raidService.WriteDataAsync(fileData, fileInfo.AbsolutePath, cancelToken);
-            IoTRecord record = new IoTRecord(new RecordMetadata()
+            var record = new IoTRecord(new RecordMetadata
             {
                 SensorId = sensorId,
                 SensorData = 0,
@@ -72,7 +69,7 @@ public partial class IoTController
                 BatteryLevel = battery ?? 0,
                 OnChipTemperature = chipTemp ?? 0,
                 ImagePath = fileInfo.AliasCode,
-                RecordedAt = dateTime ?? DateTime.UtcNow,
+                RecordedAt = dateTime ?? DateTime.UtcNow
             });
             var queueResult = await requestQueueHostedService.QueueRequest(record, cancelToken);
             if (!queueResult)
@@ -100,18 +97,18 @@ public partial class IoTController
                 await using var fileData = file.OpenReadStream();
                 var folder = folderServe.Get("", "/iotImage");
 
-                var fileInfo = new FileInfoModel()
+                var fileInfo = new FileInfoModel
                 {
                     FileName = file.FileName,
                     ContentType = file.ContentType,
-                    FileSize = file.Length,
+                    FileSize = file.Length
                 };
                 var createFileResult = await folderServe.CreateFileAsync(folder!, fileInfo, cancelToken);
                 if (!createFileResult.IsSuccess)
                     return BadRequest(createFileResult.Message);
 
                 await raidService.WriteDataAsync(fileData, fileInfo.AbsolutePath, cancelToken);
-                IoTRecord record = new IoTRecord(new RecordMetadata()
+                var record = new IoTRecord(new RecordMetadata
                 {
                     SensorId = sensorId,
                     SensorData = 0,
@@ -119,7 +116,7 @@ public partial class IoTController
                     BatteryLevel = battery ?? 0,
                     OnChipTemperature = chipTemp ?? 0,
                     ImagePath = fileInfo.AliasCode,
-                    RecordedAt = dateTime ?? DateTime.UtcNow,
+                    RecordedAt = dateTime ?? DateTime.UtcNow
                 });
                 var queueResult = await requestQueueHostedService.QueueRequest(record, cancelToken);
                 if (!queueResult)

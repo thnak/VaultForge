@@ -9,7 +9,7 @@ if ('serviceWorker' in navigator) {
 
 window.CloseProgressBar = () => {
     const progressWrapper = document.getElementById("progress-wrapper");
-    if(progressWrapper)
+    if (progressWrapper)
         progressWrapper.classList.add('closed');
 }
 

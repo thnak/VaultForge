@@ -35,10 +35,7 @@ public partial class FilesController
         if (file == null) return NotFound();
 
         var fileThumbnail = await fileServe.GetSubFileByClassifyAsync(file.Id.ToString(), FileClassify.ThumbnailWebpFile, cancelToken);
-        if (fileThumbnail != null)
-        {
-            file = fileThumbnail;
-        }
+        if (fileThumbnail != null) file = fileThumbnail;
 
         var memoryStream = new MemoryStream();
         await raidService.ReadGetDataAsync(memoryStream, file.AbsolutePath, cancelToken);
@@ -67,18 +64,12 @@ public partial class FilesController
     [IgnoreAntiforgeryToken]
     public async Task<IActionResult> GetFile(string id, string? type)
     {
-        if (!Enum.TryParse<FileClassify>(type, out var fileClassify))
-        {
-            fileClassify = FileClassify.ThumbnailFile;
-        }
+        if (!Enum.TryParse<FileClassify>(type, out var fileClassify)) fileClassify = FileClassify.ThumbnailFile;
 
         var cancelToken = HttpContext.RequestAborted;
         var file = fileServe.Get(id);
-        var fileList = await fileServe.GetSubFileByClassifyAsync(id, cancelToken, [fileClassify]);
-        if (fileList.Count != 0)
-        {
-            file = fileList.First();
-        }
+        var fileList = await fileServe.GetSubFileByClassifyAsync(id, cancelToken, fileClassify);
+        if (fileList.Count != 0) file = fileList.First();
 
         if (file == null)
             return NotFound(AppLang.File_not_found_);
@@ -107,7 +98,7 @@ public partial class FilesController
             return NotFound();
         }
 
-        Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files, pathArray.FileSize, pathArray.StripeSize, FileMode.Open, FileAccess.Read, FileShare.Read);
+        var raid5Stream = new Raid5Stream(pathArray.Files, pathArray.FileSize, pathArray.StripeSize, FileMode.Open, FileAccess.Read, FileShare.Read);
         Response.RegisterForDisposeAsync(raid5Stream);
 
         if (file is { Classify: FileClassify.M3U8File })
@@ -121,7 +112,7 @@ public partial class FilesController
                 var line = lines[i];
                 if (line.Contains(".m3u8") || line.Contains(".ts") || line.Contains(".vtt"))
                 {
-                    lines[i] = HttpContext.BuildNewUriApi(new Dictionary<string, string?>() { { "id", line } });
+                    lines[i] = HttpContext.BuildNewUriApi(new Dictionary<string, string?> { { "id", line } });
                     lines[i] = lines[i].Trim();
                 }
             }
@@ -162,7 +153,7 @@ public partial class FilesController
             return NotFound();
         }
 
-        Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files, pathArray.FileSize, pathArray.StripeSize, FileMode.Open, FileAccess.Read, FileShare.Read);
+        var raid5Stream = new Raid5Stream(pathArray.Files, pathArray.FileSize, pathArray.StripeSize, FileMode.Open, FileAccess.Read, FileShare.Read);
 
         Response.RegisterForDisposeAsync(raid5Stream);
 
@@ -194,23 +185,17 @@ public partial class FilesController
             var rangeHeader = Request.Headers["Range"].ToString();
             var range = rangeHeader.Replace("bytes=", "").Split('-');
 
-            long from = long.Parse(range[0]);
-            long to = range.Length > 1 && long.TryParse(range[1], out var endRange) ? endRange : file.FileSize - 1;
-            if (to - from > 1024 * 1024 * 4)
-            {
-                to = from + 1024 * 1024 * 4;
-            }
+            var from = long.Parse(range[0]);
+            var to = range.Length > 1 && long.TryParse(range[1], out var endRange) ? endRange : file.FileSize - 1;
+            if (to - from > 1024 * 1024 * 4) to = from + 1024 * 1024 * 4;
 
-            if (from >= file.FileSize)
-            {
-                return BadRequest("Requested range is not satisfiable.");
-            }
+            if (from >= file.FileSize) return BadRequest("Requested range is not satisfiable.");
 
             var length = (int)(to - from + 1);
 
-            byte[] buffer = new byte[length];
+            var buffer = new byte[length];
 
-            Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files, pathArray.FileSize, pathArray.StripeSize, FileMode.Open, FileAccess.Read, FileShare.Read);
+            var raid5Stream = new Raid5Stream(pathArray.Files, pathArray.FileSize, pathArray.StripeSize, FileMode.Open, FileAccess.Read, FileShare.Read);
             raid5Stream.Seek(from, SeekOrigin.Begin);
 
             _ = await raid5Stream.ReadAsync(buffer, 0, length, cancelToken);
@@ -295,10 +280,8 @@ public partial class FilesController
             var folderSource = string.IsNullOrEmpty(id) ? folderServe.GetRoot(username ?? string.Empty) : folderServe.Get(id);
             if (folderSource == null) return BadRequest(AppLang.Folder_could_not_be_found);
             if (!string.IsNullOrEmpty(folderSource.Password))
-            {
                 if (password == null || password.ComputeSha256Hash() != folderSource.Password)
                     return Unauthorized(AppLang.This_resource_is_protected_by_password);
-            }
 
             folderSource.Password = string.Empty;
             folderSource.OwnerUsername = string.Empty;
@@ -322,7 +305,7 @@ public partial class FilesController
 
             FileClassify[] fileClassify = [FileClassify.Normal];
 
-            string rootFolderId = folderSource.Id.ToString();
+            var rootFolderId = folderSource.Id.ToString();
             var res = await folderServe.GetFolderRequestAsync(rootFolderId,
                 folderInfoModel => folderInfoModel.RootFolder == rootFolderId && contentFolderTypesList.Contains(folderInfoModel.Type),
                 fileInfoModel => fileInfoModel.RootFolder == rootFolderId && contentFileTypesList.Contains(fileInfoModel.Status) && fileClassify.Contains(fileInfoModel.Classify),
@@ -349,7 +332,7 @@ public partial class FilesController
         try
         {
             var cancelToken = HttpContext.RequestAborted;
-            var content = await folderServe.GetDeletedContentAsync(userName, pageSize, page, cancellationToken: cancelToken);
+            var content = await folderServe.GetDeletedContentAsync(userName, pageSize, page, cancelToken);
             return Content(content.ToJson(), MediaTypeNames.Application.Json);
         }
         catch (OperationCanceledException)
@@ -371,9 +354,9 @@ public partial class FilesController
         try
         {
             await foreach (var x in folderServe.Where(x => x.FolderName.Contains(searchString) ||
-                                                           x.RelativePath.Contains(searchString) &&
-                                                           (user == null || x.OwnerUsername == user.UserName) &&
-                                                           x.Type == FolderContentType.Folder, cancelToken,
+                                                           (x.RelativePath.Contains(searchString) &&
+                                                            (user == null || x.OwnerUsername == user.UserName) &&
+                                                            x.Type == FolderContentType.Folder), cancelToken,
                                model => model.FolderName, model => model.Type, model => model.Icon, model => model.ModifiedTime, model => model.Id))
             {
                 folderList.Add(x);

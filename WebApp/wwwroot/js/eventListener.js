@@ -19,7 +19,7 @@ window.eventListenerInterop = (() => {
         };
         if (!events.has(key)) {
             element.addEventListener(eventName, callback);
-            events.set(key, { element, eventName, callback });
+            events.set(key, {element, eventName, callback});
         }
     }
 
@@ -33,7 +33,7 @@ window.eventListenerInterop = (() => {
         }
     }
 
-    return { addEventListener, removeEventListener };
+    return {addEventListener, removeEventListener};
 })();
 
 

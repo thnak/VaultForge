@@ -9,24 +9,6 @@ namespace WebApp.Components.Pages;
 
 public partial class LandPage : ComponentBase
 {
-    #region Parameters
-
-    [CascadingParameter] private HttpContext? HttpContext { get; set; }
-
-    [SupplyParameterFromQuery(Name = "id")]
-    public string? ContentId { get; set; }
-
-    #endregion
-
-    #region Fields
-
-    private RenderFragment? PageRenderFragment { get; set; }
-
-    private string Title { get; set; } = string.Empty;
-    private List<Dictionary<string, string>> Metadata { get; set; } = [];
-
-    #endregion
-
     protected override void OnInitialized()
     {
         ArticleModel? articleModel;
@@ -42,11 +24,11 @@ public partial class LandPage : ComponentBase
 
         if (articleModel != null)
         {
-            Metadata.Add(new Dictionary<string, string>() { { "name", "title" }, { "content", articleModel.Title } });
-            Metadata.Add(new Dictionary<string, string>() { { "name", "description" }, { "content", articleModel.Summary } });
-            Metadata.Add(new Dictionary<string, string>() { { "name", "keywords" }, { "content", string.Join(", ", articleModel.Keywords) } });
-            Metadata.Add(new Dictionary<string, string>() { { "name", "image" }, { "content", articleModel.Image } });
-            Metadata.Add(new Dictionary<string, string>() { { "name", "robots" }, { "content", "max-image-preview:large, index" } });
+            Metadata.Add(new Dictionary<string, string> { { "name", "title" }, { "content", articleModel.Title } });
+            Metadata.Add(new Dictionary<string, string> { { "name", "description" }, { "content", articleModel.Summary } });
+            Metadata.Add(new Dictionary<string, string> { { "name", "keywords" }, { "content", string.Join(", ", articleModel.Keywords) } });
+            Metadata.Add(new Dictionary<string, string> { { "name", "image" }, { "content", articleModel.Image } });
+            Metadata.Add(new Dictionary<string, string> { { "name", "robots" }, { "content", "max-image-preview:large, index" } });
 
             Title = articleModel.Title;
             RenderPage(articleModel.StyleSheet, articleModel.HtmlSheet, articleModel.JavaScriptSheet);
@@ -79,4 +61,22 @@ public partial class LandPage : ComponentBase
 
         InvokeAsync(StateHasChanged);
     }
+
+    #region Parameters
+
+    [CascadingParameter] private HttpContext? HttpContext { get; set; }
+
+    [SupplyParameterFromQuery(Name = "id")]
+    public string? ContentId { get; set; }
+
+    #endregion
+
+    #region Fields
+
+    private RenderFragment? PageRenderFragment { get; set; }
+
+    private string Title { get; set; } = string.Empty;
+    private List<Dictionary<string, string>> Metadata { get; } = [];
+
+    #endregion
 }

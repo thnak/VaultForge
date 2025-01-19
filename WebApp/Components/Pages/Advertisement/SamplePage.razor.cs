@@ -9,24 +9,6 @@ namespace WebApp.Components.Pages.Advertisement;
 
 public partial class SamplePage : ComponentBase
 {
-    #region Parameters
-
-    [CascadingParameter] private HttpContext? HttpContext { get; set; }
-
-    [SupplyParameterFromQuery(Name = "content_id")]
-    public string? ContentId { get; set; }
-
-    #endregion
-
-    #region Fields
-
-    private RenderFragment? PageRenderFragment { get; set; }
-
-    private string Title { get; set; } = string.Empty;
-    private List<Dictionary<string, string>> Metadata { get; set; } = [];
-
-    #endregion
-
     protected override void OnInitialized()
     {
         ArticleModel? articleModel = null;
@@ -34,18 +16,15 @@ public partial class SamplePage : ComponentBase
         {
             ContentId = HttpUtility.UrlDecode(ContentId);
             articleModel = AdvertisementService.Get(ContentId);
-            if (articleModel == null)
-            {
-                articleModel = AdvertisementService.Get(ContentId, CultureInfo.CurrentUICulture.Name);
-            }
+            if (articleModel == null) articleModel = AdvertisementService.Get(ContentId, CultureInfo.CurrentUICulture.Name);
 
             if (articleModel != null)
             {
-                Metadata.Add(new Dictionary<string, string>() { { "name", "title" }, { "content", articleModel.Title } });
-                Metadata.Add(new Dictionary<string, string>() { { "name", "description" }, { "content", articleModel.Summary } });
-                Metadata.Add(new Dictionary<string, string>() { { "name", "keywords" }, { "content", string.Join(", ", articleModel.Keywords) } });
-                Metadata.Add(new Dictionary<string, string>() { { "name", "image" }, { "content", articleModel.Image } });
-                Metadata.Add(new Dictionary<string, string>() { { "name", "robots" }, { "content", "max-image-preview:large, index" } });
+                Metadata.Add(new Dictionary<string, string> { { "name", "title" }, { "content", articleModel.Title } });
+                Metadata.Add(new Dictionary<string, string> { { "name", "description" }, { "content", articleModel.Summary } });
+                Metadata.Add(new Dictionary<string, string> { { "name", "keywords" }, { "content", string.Join(", ", articleModel.Keywords) } });
+                Metadata.Add(new Dictionary<string, string> { { "name", "image" }, { "content", articleModel.Image } });
+                Metadata.Add(new Dictionary<string, string> { { "name", "robots" }, { "content", "max-image-preview:large, index" } });
 
                 Title = articleModel.Title;
                 RenderPage(articleModel.StyleSheet, articleModel.HtmlSheet, articleModel.JavaScriptSheet);
@@ -80,4 +59,22 @@ public partial class SamplePage : ComponentBase
 
         InvokeAsync(StateHasChanged);
     }
+
+    #region Parameters
+
+    [CascadingParameter] private HttpContext? HttpContext { get; set; }
+
+    [SupplyParameterFromQuery(Name = "content_id")]
+    public string? ContentId { get; set; }
+
+    #endregion
+
+    #region Fields
+
+    private RenderFragment? PageRenderFragment { get; set; }
+
+    private string Title { get; set; } = string.Empty;
+    private List<Dictionary<string, string>> Metadata { get; } = [];
+
+    #endregion
 }

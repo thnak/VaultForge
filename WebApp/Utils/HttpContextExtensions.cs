@@ -15,10 +15,7 @@ public static class HttpContextExtensions
         if (parameters.Count > 0)
         {
             uriBuilder.Append("?");
-            foreach (var pair in parameters)
-            {
-                uriBuilder.Append($"{pair.Key}={HttpUtility.UrlEncode(pair.Value)}&");
-            }
+            foreach (var pair in parameters) uriBuilder.Append($"{pair.Key}={HttpUtility.UrlEncode(pair.Value)}&");
         }
 
         return uriBuilder.ToString();

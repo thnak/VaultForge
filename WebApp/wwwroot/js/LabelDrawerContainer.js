@@ -33,7 +33,7 @@ window.labelDrawerContainerHelper = (() => {
         ctx = canvas.getContext('2d');
         // Handle mouse down
         canvas.addEventListener('mousedown', (e) => {
-            const { x, y } = getTransformedPoint(e.offsetX, e.offsetY);
+            const {x, y} = getTransformedPoint(e.offsetX, e.offsetY);
 
             if (e.ctrlKey) {
                 // Start panning
@@ -67,7 +67,7 @@ window.labelDrawerContainerHelper = (() => {
 
             } else if (isDragging) {
                 // Drawing bounding box logic
-                const { x, y } = getTransformedPoint(e.offsetX, e.offsetY);
+                const {x, y} = getTransformedPoint(e.offsetX, e.offsetY);
 
                 // Clamp endX and endY to ensure the box stays within the image
                 endX = Math.min(Math.max(0, x), image.width);
@@ -196,7 +196,6 @@ window.labelDrawerContainerHelper = (() => {
         ctx.fill();
         ctx.restore();
     }
-
 
 
 // Helper: Get transformed point

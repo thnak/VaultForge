@@ -14,10 +14,7 @@ public partial class DeviceController
         var deviceCreateResult = await deviceBusinessLayer.CreateAsync(requestDevice.Device, cancelToken);
         if (deviceCreateResult.IsSuccess)
         {
-            foreach (var sensor in requestDevice.Sensors)
-            {
-                await sensorBusinessLayer.CreateAsync(sensor, cancelToken);
-            }
+            foreach (var sensor in requestDevice.Sensors) await sensorBusinessLayer.CreateAsync(sensor, cancelToken);
 
             return Ok(deviceCreateResult.Message);
         }

@@ -1,8 +1,5 @@
-﻿using System.Buffers;
-using System.Diagnostics;
-using System.Globalization;
+﻿using System.Diagnostics;
 using System.Net.Mime;
-using System.Web;
 using Business.Utils.Excel;
 using BusinessModels.Resources;
 using BusinessModels.System;
@@ -36,16 +33,13 @@ public partial class IoTController
         endTime = endTime.AddDays(1);
 
         var data = businessLayer.Where(x => x.Metadata.RecordedAt >= startTime && x.Metadata.RecordedAt < endTime && x.Metadata.SensorId == sensorId);
-        List<IoTRecord> records = new List<IoTRecord>();
-        await foreach (var record in data)
-        {
-            records.Add(record);
-        }
+        List<IoTRecord> records = new();
+        await foreach (var record in data) records.Add(record);
 
         SignalrResultValue<IoTRecord> result = new()
         {
             Data = records.OrderByDescending(x => x.Metadata.RecordedAt).Skip(page * pageSize).Take(pageSize).ToArray(),
-            Total = records.Count(),
+            Total = records.Count()
         };
         var json = result.ToJson();
         return Content(json, MediaTypeNames.Application.Json);
@@ -57,15 +51,15 @@ public partial class IoTController
         var cancelToken = HttpContext.RequestAborted;
 
         endTime = endTime.AddDays(1);
-        XSSFWorkbook workbook = new XSSFWorkbook();
+        var workbook = new XSSFWorkbook();
         Response.RegisterForDispose(workbook);
 
-        XSSFFont myFont = (XSSFFont)workbook.CreateFont();
+        var myFont = (XSSFFont)workbook.CreateFont();
         myFont.FontHeightInPoints = 11;
         myFont.FontName = "Tahoma";
         // Defining a border
 
-        XSSFCellStyle borderedCellStyle = (XSSFCellStyle)workbook.CreateCellStyle();
+        var borderedCellStyle = (XSSFCellStyle)workbook.CreateCellStyle();
         borderedCellStyle.SetFont(myFont);
         borderedCellStyle.BorderLeft = BorderStyle.Medium;
         borderedCellStyle.BorderTop = BorderStyle.Medium;
@@ -73,8 +67,8 @@ public partial class IoTController
         borderedCellStyle.BorderBottom = BorderStyle.Medium;
         borderedCellStyle.VerticalAlignment = VerticalAlignment.Center;
 
-        XSSFCellStyle dateStyle = (XSSFCellStyle)workbook.CreateCellStyle();
-        IDataFormat dataFormat = workbook.CreateDataFormat();
+        var dateStyle = (XSSFCellStyle)workbook.CreateCellStyle();
+        var dataFormat = workbook.CreateDataFormat();
         dateStyle.SetFont(myFont);
         dateStyle.BorderLeft = BorderStyle.Medium;
         dateStyle.BorderTop = BorderStyle.Medium;
@@ -83,10 +77,10 @@ public partial class IoTController
         dateStyle.VerticalAlignment = VerticalAlignment.Center;
         dateStyle.DataFormat = dataFormat.GetFormat("yyyy-MM-dd HH:mm:ss");
 
-        ISheet sheet = workbook.CreateSheet("Report");
+        var sheet = workbook.CreateSheet("Report");
         //Creat The Headers of the excel
-        int rowIndex = 0;
-        IRow headerRow = sheet.CreateRow(rowIndex++);
+        var rowIndex = 0;
+        var headerRow = sheet.CreateRow(rowIndex++);
 
         //Create The Actual Cells
 
@@ -97,19 +91,16 @@ public partial class IoTController
 
         // This Where the Data row starts from
         var data = businessLayer.Where(x => x.Metadata.RecordedAt >= startTime && x.Metadata.RecordedAt < endTime && x.Metadata.SensorId == sensorId, cancelToken);
-        List<IoTRecord> records = new List<IoTRecord>();
-        await foreach (var record in data)
-        {
-            records.Add(record);
-        }
+        List<IoTRecord> records = new();
+        await foreach (var record in data) records.Add(record);
 
-        MemoryStream memoryStream = new MemoryStream();
+        var memoryStream = new MemoryStream();
         Response.RegisterForDisposeAsync(memoryStream);
-        
+
         foreach (var batchErrorReport in records)
         {
             //Creating the CurrentDataRow
-            IRow currentRow = sheet.CreateRow(rowIndex);
+            var currentRow = sheet.CreateRow(rowIndex);
             currentRow.CreateCellWithValue(0, batchErrorReport.Metadata.RecordedAt, dateStyle);
             currentRow.CreateCellWithValue(1, batchErrorReport.Metadata.SensorData, borderedCellStyle);
             currentRow.CreateCellWithValue(2, batchErrorReport.Metadata.SignalStrength, borderedCellStyle);
@@ -122,14 +113,14 @@ public partial class IoTController
                 memoryStream.SetLength(0);
                 await raidService.ReadGetDataAsync(memoryStream, file.AbsolutePath, cancelToken);
                 var imageIndex = workbook.AddPicture(memoryStream.ToArray(), PictureType.JPEG);
-                ICreationHelper helper = workbook.GetCreationHelper();
-                IDrawing drawing = sheet.CreateDrawingPatriarch();
-                IClientAnchor anchor = helper.CreateClientAnchor();
+                var helper = workbook.GetCreationHelper();
+                var drawing = sheet.CreateDrawingPatriarch();
+                var anchor = helper.CreateClientAnchor();
                 anchor.Col1 = 4; //0 index based column
                 anchor.Col2 = 4;
                 anchor.Row1 = rowIndex; //0 index based row
                 anchor.Row2 = rowIndex;
-                IPicture picture = drawing.CreatePicture(anchor, imageIndex);
+                var picture = drawing.CreatePicture(anchor, imageIndex);
                 picture.Resize();
                 picture.Resize(0.1);
             }
@@ -137,17 +128,15 @@ public partial class IoTController
             {
                 //
             }
+
             rowIndex++;
         }
 
         // Auto sized all the affected columns
-        int lastColumNum = sheet.GetRow(0).LastCellNum + 1;
-        for (int i = 0; i <= lastColumNum; i++)
-        {
-            sheet.AutoSizeColumn(i);
-        }
+        var lastColumNum = sheet.GetRow(0).LastCellNum + 1;
+        for (var i = 0; i <= lastColumNum; i++) sheet.AutoSizeColumn(i);
 
-        MemoryStream ms = new MemoryStream();
+        var ms = new MemoryStream();
         Response.RegisterForDisposeAsync(ms);
 
         workbook.Write(ms, true);
@@ -177,23 +166,20 @@ public partial class IoTController
     [HttpPost("compute-record")]
     public async Task<IActionResult> SummaryRecord([FromForm] DateTime startDate, [FromForm] DateTime endDate)
     {
-        Stopwatch stopwatch = Stopwatch.StartNew();
-        List<IoTRecord> reorderRecords = new List<IoTRecord>();
+        var stopwatch = Stopwatch.StartNew();
+        List<IoTRecord> reorderRecords = new();
 
         var cancelToken = HttpContext.RequestAborted;
 
         try
         {
             var cursors = businessLayer.Where(x => x.Metadata.RecordedAt >= startDate && x.Metadata.RecordedAt <= endDate, cancelToken, model => model.Metadata.SensorData);
-            await foreach (var record in cursors)
-            {
-                reorderRecords.Add(record);
-            }
+            await foreach (var record in cursors) reorderRecords.Add(record);
 
             var totalValue = reorderRecords.Sum(x => x.Metadata.SensorData);
             var totalRecords = reorderRecords.Count;
             stopwatch.Stop();
-            string result = $"Total records: {totalRecords:N0} with value {totalValue:N0} in {stopwatch.ElapsedMilliseconds:N0} ms.";
+            var result = $"Total records: {totalRecords:N0} with value {totalValue:N0} in {stopwatch.ElapsedMilliseconds:N0} ms.";
             return Content(result, MediaTypeNames.Text.Plain);
         }
         catch (OperationCanceledException)

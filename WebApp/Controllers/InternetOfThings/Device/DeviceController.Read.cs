@@ -57,10 +57,7 @@ public partial class DeviceController
         var deviceCreateResult = deviceBusinessLayer.Search(searchString, 10, cancelToken);
 
         List<IoTDevice> result = [];
-        await foreach (var de in deviceCreateResult)
-        {
-            result.Add(de);
-        }
+        await foreach (var de in deviceCreateResult) result.Add(de);
 
         result = [..result.DistinctBy(x => x.DeviceId)];
 
@@ -95,10 +92,7 @@ public partial class DeviceController
     {
         var device = sensorBusinessLayer.Where(x => x.DeviceId == deviceId);
         List<IoTSensor> result = [];
-        await foreach (var d in device)
-        {
-            result.Add(d);
-        }
+        await foreach (var d in device) result.Add(d);
 
         return Content(result.ToJson(), MediaTypeNames.Application.Json);
     }
@@ -110,10 +104,7 @@ public partial class DeviceController
         var deviceCreateResult = sensorBusinessLayer.Where(x => x.SensorName == searchString || x.SensorId == searchString, cancelToken);
 
         List<IoTSensor> result = [];
-        await foreach (var de in deviceCreateResult)
-        {
-            result.Add(de);
-        }
+        await foreach (var de in deviceCreateResult) result.Add(de);
 
         var json = result.ToJson();
         return Content(json, MediaTypeNames.Application.Json);

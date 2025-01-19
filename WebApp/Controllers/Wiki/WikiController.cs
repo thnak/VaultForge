@@ -15,7 +15,7 @@ public class WikiController(IWikipediaBusinessLayer wikipediaBusinessLayer) : Co
     [HttpPost("insert")]
     public async Task<IActionResult> InsertNew([FromForm] string title, [FromForm] string content, [FromForm] string url, [FromForm] string? lang)
     {
-        var result = await wikipediaBusinessLayer.CreateAsync(new WikipediaDatasetModel()
+        var result = await wikipediaBusinessLayer.CreateAsync(new WikipediaDatasetModel
         {
             Title = title,
             Text = content,
@@ -36,10 +36,7 @@ public class WikiController(IWikipediaBusinessLayer wikipediaBusinessLayer) : Co
         foreach (var searchScore in result)
         {
             var wiki = wikipediaBusinessLayer.Get(searchScore.Value.Key);
-            if (wiki != null)
-            {
-                sb.AppendLine($"{searchScore.Score:P1}: {searchScore.Value.Title}\n{wiki.Text}\nUrl: {wiki.Url}");
-            }
+            if (wiki != null) sb.AppendLine($"{searchScore.Score:P1}: {searchScore.Value.Title}\n{wiki.Text}\nUrl: {wiki.Url}");
         }
 
         var planText = sb.ToString();

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers.Inference;
 
-
 [AllowAnonymous]
 [IgnoreAntiforgeryToken]
 [Route("api/yolo")]

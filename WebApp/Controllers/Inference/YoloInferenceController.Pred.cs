@@ -21,7 +21,7 @@ public partial class YoloInferenceController
     [RequestFormLimits(MultipartBodyLengthLimit = long.MaxValue, ValueLengthLimit = int.MaxValue)]
     public async Task<IActionResult> Pred([FromForm] IFormFile file, [FromForm] string api)
     {
-        Guid guid = Guid.Parse(api);
+        var guid = Guid.Parse(api);
         var image = await Image.LoadAsync<Rgb24>(file.OpenReadStream());
 
         Response.RegisterForDispose(image);

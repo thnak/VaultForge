@@ -22,7 +22,7 @@ public partial class App(ILogger<App> logger)
             {
                 IsBot = Regex.IsMatch(agent, @"bot|crawler|baiduspider|80legs|ia_archiver|voyager|curl|wget|yahoo! slurp|mediapartners-google", RegexOptions.IgnoreCase);
                 if (IsBot)
-                    logger.LogInformation($"[BOT][True]");
+                    logger.LogInformation("[BOT][True]");
             }
         }
 
@@ -40,6 +40,7 @@ public partial class App(ILogger<App> logger)
             IsWasm = true;
             return new InteractiveWebAssemblyRenderMode(false);
         }
+
         return mode;
     }
 }

@@ -43,7 +43,7 @@ public class ChatWithLlamaController(
             HttpContext.Response.RegisterForDispose(chat);
 
             //messages.Add(mess);
-            memoryCache.Set<List<Message>>(nameof(ChatWithLlamaController) + systemPrompt, [..chat.History], new MemoryCacheEntryOptions() { Priority = CacheItemPriority.NeverRemove });
+            memoryCache.Set<List<Message>>(nameof(ChatWithLlamaController) + systemPrompt, [..chat.History], new MemoryCacheEntryOptions { Priority = CacheItemPriority.NeverRemove });
 
             if (showHistory is true)
             {
@@ -71,7 +71,7 @@ public class ChatWithLlamaController(
     public async Task<IActionResult> GetEmbeddingAsync([FromForm] string prompt, [FromForm] int maxResult)
     {
         var result = await folderBl.SearchRagFromAllDb(prompt, maxResult);
-        StringBuilder stringBuilder = new StringBuilder();
+        var stringBuilder = new StringBuilder();
         foreach (var searchScore in result)
         {
             var fileResult = await fileBl.Get(searchScore.Value.Key, model => model.Id, model => model.Description);

@@ -52,14 +52,14 @@ public partial class FilesController
         {
             var file = fileServe.Get(id);
             if (file == null) return BadRequest(AppLang.File_not_found_);
-            var result = await fileServe.UpdateAsync(id, new FieldUpdate<FileInfoModel>() { { model => model.Status, file.PreviousStatus } });
+            var result = await fileServe.UpdateAsync(id, new FieldUpdate<FileInfoModel> { { model => model.Status, file.PreviousStatus } });
             return Ok(result.ToJson());
         }
 
         {
             var folder = folderServe.Get(id);
             if (folder == null) return BadRequest(AppLang.File_not_found_);
-            var result = await folderServe.UpdateAsync(id, new FieldUpdate<FolderInfoModel>() { { model => model.Type, folder.PreviousType } });
+            var result = await folderServe.UpdateAsync(id, new FieldUpdate<FolderInfoModel> { { model => model.Type, folder.PreviousType } });
             return Ok(result.ToJson());
         }
     }
@@ -141,7 +141,7 @@ public partial class FilesController
         long index = 0;
         await foreach (var x in files)
         {
-            await fileServe.UpdateAsync(x.Id.ToString(), new FieldUpdate<FileInfoModel>()
+            await fileServe.UpdateAsync(x.Id.ToString(), new FieldUpdate<FileInfoModel>
             {
                 { z => z.Status, x.PreviousStatus }
             }, cancelToken);

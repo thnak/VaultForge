@@ -68,7 +68,7 @@ public class AccountController(
         }
 
         if (!string.IsNullOrEmpty(request.ReturnUrl))
-            return Redirect(PageRoutes.Account.SignInError.Src.AppendAndEncodeBase64StringAsUri([authenticateState.Item2, request.ReturnUrl]));
+            return Redirect(PageRoutes.Account.SignInError.Src.AppendAndEncodeBase64StringAsUri(authenticateState.Item2, request.ReturnUrl));
         return Redirect(PageRoutes.Account.SignInError.Src.AppendAndEncodeBase64StringAsUri(authenticateState.Item2));
     }
 
