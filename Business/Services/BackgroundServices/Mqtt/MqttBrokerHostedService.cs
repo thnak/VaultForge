@@ -4,8 +4,6 @@ using System.Text;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.LogProvider;
 using Business.Services.Configure;
-using BusinessModels.General.Update;
-using BusinessModels.System.InternetOfThings;
 using BusinessModels.System.InternetOfThings.status;
 using Microsoft.Extensions.Logging;
 
@@ -59,6 +57,8 @@ public class MqttBrokerHostedService(
         _mqttServer.InterceptingSubscriptionAsync += MqttServerOnInterceptingSubscriptionAsync;
         _mqttServer.InterceptingUnsubscriptionAsync += MqttServerOnInterceptingUnsubscriptionAsync;
         _mqttServer.InterceptingPublishAsync += MqttServerOnInterceptingPublishAsync;
+        _mqttServer.ClientConnectedAsync += MqttServerOnClientConnectedAsync;
+        _mqttServer.ClientDisconnectedAsync += MqttServerOnClientDisconnectedAsync;
         try
         {
             await _mqttServer.StartAsync();
@@ -69,18 +69,24 @@ public class MqttBrokerHostedService(
         }
     }
 
+    private async Task MqttServerOnClientDisconnectedAsync(ClientDisconnectedEventArgs arg)
+    {
+        await deviceBs.UpdateLastServiceTime(arg.UserName, IoTDeviceStatus.Offline);
+    }
+
+    private async Task MqttServerOnClientConnectedAsync(ClientConnectedEventArgs arg)
+    {
+        await deviceBs.UpdateLastServiceTime(arg.UserName, IoTDeviceStatus.Active);
+    }
+
     private async Task MqttServerOnInterceptingSubscriptionAsync(InterceptingSubscriptionEventArgs arg)
     {
-        await deviceBs.UpdateAsync(arg.UserName, new FieldUpdate<IoTDevice>()
-        {
-            { x => x.LastServiceDate, DateTime.Now },
-            { x => x.Status, IoTDeviceStatus.Active }
-        });
+        await deviceBs.UpdateLastServiceTime(arg.UserName, IoTDeviceStatus.Active);
     }
 
     private async Task MqttServerOnInterceptingUnsubscriptionAsync(InterceptingUnsubscriptionEventArgs arg)
     {
-        await deviceBs.UpdateLastServiceTime(arg.UserName);
+        await deviceBs.UpdateLastServiceTime(arg.UserName, IoTDeviceStatus.Offline);
     }
 
     private Task MqttServerOnInterceptingPublishAsync(InterceptingPublishEventArgs args)
@@ -116,10 +122,7 @@ public class MqttBrokerHostedService(
         }
 
         context.ReasonCode = MQTTnet.Protocol.MqttConnectReasonCode.Success;
-        await deviceBs.UpdateAsync(context.UserName, new FieldUpdate<IoTDevice>()
-        {
-            { x => x.LastServiceDate, DateTime.UtcNow }
-        });
+        await deviceBs.UpdateLastServiceTime(context.UserName, IoTDeviceStatus.Active);
     }
 
     public override async Task StopAsync(CancellationToken stoppingToken)

@@ -130,12 +130,12 @@ public class IotDeviceBusinessLayer(IIotDeviceDataLayer dataLayer, IIotSensorDat
         return Result<bool>.Success(true);
     }
 
-    public async Task<Result<bool>> UpdateLastServiceTime(string deviceId)
+    public async Task<Result<bool>> UpdateLastServiceTime(string deviceId, IoTDeviceStatus status)
     {
         return await UpdateAsync(deviceId, new FieldUpdate<IoTDevice>()
         {
             { x => x.LastServiceDate, DateTime.Now },
-            { x => x.Status, IoTDeviceStatus.Active }
+            { x => x.Status, status }
         });
     }
 }
