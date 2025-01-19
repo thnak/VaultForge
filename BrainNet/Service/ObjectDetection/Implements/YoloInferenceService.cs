@@ -156,11 +156,11 @@ public class YoloInferenceService : IYoloInferenceService
         OutputNames = _session.GetOutputNames();
         InputDimensions = _session.InputMetadata.First().Value.Dimensions;
 
-        InputDimensions[0] = InputDimensions[0] == -1 ? 1 : InputDimensions[0];
+        InputDimensions[0] = InputDimensions[0] == -1 ? 8 : InputDimensions[0];
 
         OutputDimensions = [.._session.OutputMetadata.First().Value.Dimensions];
-
-        OutputDimensions[0] = OutputDimensions[0] == -1 ? 1 : OutputDimensions[0];
+        
+        OutputDimensions[0] = OutputDimensions[0] == -1 ? InputDimensions[0] : OutputDimensions[0];
 
 
         _tensorShape = new TensorShape(InputDimensions);
@@ -235,7 +235,7 @@ public class YoloInferenceService : IYoloInferenceService
         while (await _inputChannel.Writer.WaitToWriteAsync(cancellationToken))
         {
             var tcs = new TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>>();
-            using MemoryTensorOwner<float> memoryTensorOwner = _memoryAllocatorService.AllocateTensor(_inputTensorShape, true);
+            using MemoryTensorOwner<float> memoryTensorOwner = _memoryAllocatorService.AllocateTensor(_inputTensorShape);
             var pads = _padAndRatiosArrayPool.Rent(2);
             var ratios = _padAndRatiosArrayPool.Rent(2);
             memoryTensorOwner.Tensor.Span.Fill(114 / 255f);

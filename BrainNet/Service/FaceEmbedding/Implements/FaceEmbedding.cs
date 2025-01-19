@@ -150,11 +150,11 @@ public class FaceEmbedding : IFaceEmbedding
         OutputNames = _session.GetOutputNames();
         InputDimensions = _session.InputMetadata.First().Value.Dimensions;
 
-        InputDimensions[0] = InputDimensions[0] == -1 ? 1 : InputDimensions[0];
+        InputDimensions[0] = InputDimensions[0] == -1 ? 8 : InputDimensions[0];
 
         OutputDimensions = [.._session.OutputMetadata.First().Value.Dimensions];
         
-        OutputDimensions[0] = OutputDimensions[0] == -1 ? 1 : OutputDimensions[0];
+        OutputDimensions[0] = OutputDimensions[0] == -1 ? InputDimensions[0] : OutputDimensions[0];
 
         _tensorShape = new TensorShape(InputDimensions);
         _inputTensorShape = new TensorShape([1, InputDimensions[1], InputDimensions[2], InputDimensions[3]]);

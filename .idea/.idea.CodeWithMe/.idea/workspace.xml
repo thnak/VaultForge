@@ -45,12 +45,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="fix issue with update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/LogProvider/MqttNetLogger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/LogProvider/MqttNetLogger.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/BackgroundServices/Mqtt/MqttBrokerHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/BackgroundServices/Mqtt/MqttBrokerHostedService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/FaceEmbedding/Implements/FaceEmbedding.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/FaceEmbedding/Implements/FaceEmbedding.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1228,15 +1226,7 @@
       <workItem from="1737126239151" duration="7056000" />
       <workItem from="1737161001977" duration="13654000" />
       <workItem from="1737218818630" duration="13864000" />
-      <workItem from="1737284663762" duration="5287000" />
-    </task>
-    <task id="LOCAL-00653" summary="allow empty">
-      <option name="closed" value="true" />
-      <created>1736408615994</created>
-      <option name="number" value="00653" />
-      <option name="presentableId" value="LOCAL-00653" />
-      <option name="project" value="LOCAL" />
-      <updated>1736408615994</updated>
+      <workItem from="1737284663762" duration="6422000" />
     </task>
     <task id="LOCAL-00654" summary="re-format rename">
       <option name="closed" value="true" />
@@ -1622,7 +1612,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737290752860</updated>
     </task>
-    <option name="localTasksCounter" value="702" />
+    <task id="LOCAL-00702" summary="fix issue with update">
+      <option name="closed" value="true" />
+      <created>1737299254958</created>
+      <option name="number" value="00702" />
+      <option name="presentableId" value="LOCAL-00702" />
+      <option name="project" value="LOCAL" />
+      <updated>1737299254958</updated>
+    </task>
+    <option name="localTasksCounter" value="703" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1653,7 +1651,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="add new btn" />
     <MESSAGE value="show error log, allow large file upload" />
     <MESSAGE value="enchant dialog style" />
     <MESSAGE value="return array wrong position" />
@@ -1678,7 +1675,8 @@
     <MESSAGE value="fix issue with mqtt logger" />
     <MESSAGE value="add move event, support ipv6" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="fix issue with update" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix issue with update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
