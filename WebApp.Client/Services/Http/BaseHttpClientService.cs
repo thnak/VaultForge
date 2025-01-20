@@ -213,4 +213,39 @@ public partial class BaseHttpClientService
         var uri = Navigation.GetUriWithQueryParameters(Navigation.BaseUri + $"culture/set", new Dictionary<string, object?>() { { "culture", CultureInfo.CurrentCulture.Name } });
         await HttpClient.GetAsync(uri);
     }
+
+    private async Task<ResponseDataResult<T>> PostAsync<T>(HttpRequestMessage requestUri, CancellationToken cancellationToken = default, bool forceRedirect = true)
+    {
+        var responseData = new ResponseDataResult<T>();
+
+        try
+        {
+            var responseMessage = await HttpClient.SendAsync(requestUri, cancellationToken);
+            if (responseMessage is { StatusCode: HttpStatusCode.Redirect or HttpStatusCode.MovedPermanently })
+                if (responseMessage.Headers.Location != null)
+                {
+                    Navigation.NavigateTo(responseMessage.Headers.Location.ToString(), forceRedirect);
+                }
+
+            responseData.IsSuccessStatusCode = responseMessage.IsSuccessStatusCode;
+            responseData.StatusCode = responseMessage.StatusCode;
+            var responseText = await responseMessage.Content.ReadAsStringAsync(cancellationToken);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var data = responseText.DeSerialize<T>();
+                responseData.Data = data;
+            }
+            else
+            {
+                responseData.Message = responseText;
+            }
+        }
+        catch (Exception e)
+        {
+            ToastService.ShowError(string.Format(AppLang.BaseHttpClientService_PostAsync__ERROR___0_, e.Message), TypeClassList.ToastDefaultSetting);
+            Logger.LogError(e, e.Message);
+        }
+
+        return responseData;
+    }
 }

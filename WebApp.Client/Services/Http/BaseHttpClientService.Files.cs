@@ -39,4 +39,6 @@ public partial class BaseHttpClientService
         var responseMessage = await PostAsync<FolderRequest>(isDeletedPage ? "/api/files/get-deleted-content" : $"/api/Files/get-folder", formData);
         return responseMessage;
     }
+    
+    
 }

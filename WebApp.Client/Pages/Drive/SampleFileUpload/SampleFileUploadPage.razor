@@ -5,7 +5,7 @@
 <MudStack Style="width: 100%">
     <MudFileUpload T="IReadOnlyList<IBrowserFile>"
                    OnFilesChanged="OnInputFileChanged"
-                   AppendMultipleFiles
+                   AppendMultipleFiles MaximumFileCount="Int32.MaxValue"
                    Hidden="@false"
                    InputClass="absolute mud-width-full mud-height-full overflow-hidden z-10"
                    InputStyle="opacity:0"
@@ -23,7 +23,7 @@
                 </MudText>
                 @foreach (var file in _fileNames)
                 {
-                    <MudProgressLinear Color="Color.Secondary" Value="@file.Item2"/>
+                    <MudProgressLinear Color="Color.Secondary" Value="@file.Progress" @key="file.Guid"/>
                 }
             </MudPaper>
         </ActivatorContent>

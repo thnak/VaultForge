@@ -9,8 +9,15 @@ public partial class SampleFileUploadPage(ILogger<SampleFileUploadPage> logger) 
 {
     private const string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
     private string _dragClass = DefaultDragClass;
-    private readonly List<(string, double)> _fileNames = new();
+    private readonly List<UploadState> _fileNames = new();
     private IReadOnlyList<IBrowserFile> _fileUpload = [];
+
+    private class UploadState
+    {
+        public string FileName { get; set; } = string.Empty;
+        public double Progress { get; set; } = 0;
+        public string Guid = System.Guid.NewGuid().ToString();
+    }
 
     private Task ClearAsync()
     {
@@ -33,7 +40,10 @@ public partial class SampleFileUploadPage(ILogger<SampleFileUploadPage> logger) 
         _fileNames.Clear();
         foreach (var file in _fileUpload)
         {
-            _fileNames.Add((file.Name, 0));
+            _fileNames.Add(new UploadState()
+            {
+                FileName = file.Name,
+            });
         }
     }
 
@@ -50,7 +60,7 @@ public partial class SampleFileUploadPage(ILogger<SampleFileUploadPage> logger) 
                 var index1 = index;
                 var progress = new Progress<double>(percent =>
                 {
-                    _fileNames[index1] = (_fileNames[index1].Item1, percent);
+                    _fileNames[index1].Progress = percent;
                     InvokeAsync(StateHasChanged);
                 });
                 var progressStream = new ProgressStreamContent(file.OpenReadStream(long.MaxValue), progress);
@@ -63,7 +73,7 @@ public partial class SampleFileUploadPage(ILogger<SampleFileUploadPage> logger) 
             var folderRequest = await ApiService.GetFolderRequestAsync(null, 0, 50, null, false, false);
             if (folderRequest.IsSuccessStatusCode)
             {
-                var result = await ApiService.PostAsync($"/api/files/upload-physical/{folderRequest.Data.Folder.AliasCode}", multipartContent);
+                var result = await ApiService.UploadFileAsync($"/api/files/upload-physical/{folderRequest.Data.Folder.AliasCode}", multipartContent);
                 if (result.IsSuccessStatusCode)
                 {
                     ToastService.ShowSuccess(result.Message, TypeClassList.ToastDefaultSetting);

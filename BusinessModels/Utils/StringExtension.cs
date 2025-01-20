@@ -131,6 +131,8 @@ public static class StringExtension
     {
         try
         {
+            if (typeof(T) == typeof(string))
+                return (T)(object)self;
             return JsonSerializer.Deserialize<T>(self);
         }
 
@@ -140,8 +142,10 @@ public static class StringExtension
             throw;
         }
 #else
-        catch (Exception){ return default;
-                                 }
+        catch (Exception)
+        {
+            return default;
+        }
 #endif
     }
 
