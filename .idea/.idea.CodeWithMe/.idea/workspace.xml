@@ -45,10 +45,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="fix issue with update">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/FaceEmbedding/Implements/FaceEmbedding.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/FaceEmbedding/Implements/FaceEmbedding.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Implements/YoloInferenceService.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1226,15 +1224,7 @@
       <workItem from="1737126239151" duration="7056000" />
       <workItem from="1737161001977" duration="13654000" />
       <workItem from="1737218818630" duration="13864000" />
-      <workItem from="1737284663762" duration="6422000" />
-    </task>
-    <task id="LOCAL-00654" summary="re-format rename">
-      <option name="closed" value="true" />
-      <created>1736409256137</created>
-      <option name="number" value="00654" />
-      <option name="presentableId" value="LOCAL-00654" />
-      <option name="project" value="LOCAL" />
-      <updated>1736409256137</updated>
+      <workItem from="1737284663762" duration="8653000" />
     </task>
     <task id="LOCAL-00655" summary="fix error">
       <option name="closed" value="true" />
@@ -1620,7 +1610,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737299254958</updated>
     </task>
-    <option name="localTasksCounter" value="703" />
+    <task id="LOCAL-00703" summary="increase batch size">
+      <option name="closed" value="true" />
+      <created>1737300168526</created>
+      <option name="number" value="00703" />
+      <option name="presentableId" value="LOCAL-00703" />
+      <option name="project" value="LOCAL" />
+      <updated>1737300168526</updated>
+    </task>
+    <option name="localTasksCounter" value="704" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1651,7 +1649,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="show error log, allow large file upload" />
     <MESSAGE value="enchant dialog style" />
     <MESSAGE value="return array wrong position" />
     <MESSAGE value="remove stupid things" />
@@ -1676,7 +1673,8 @@
     <MESSAGE value="add move event, support ipv6" />
     <MESSAGE value="small update" />
     <MESSAGE value="fix issue with update" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix issue with update" />
+    <MESSAGE value="increase batch size" />
+    <option name="LAST_COMMIT_MESSAGE" value="increase batch size" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
