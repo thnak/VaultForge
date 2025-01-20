@@ -1225,38 +1225,7 @@
       <workItem from="1737161001977" duration="13654000" />
       <workItem from="1737218818630" duration="13864000" />
       <workItem from="1737284663762" duration="8653000" />
-    </task>
-    <task id="LOCAL-00655" summary="fix error">
-      <option name="closed" value="true" />
-      <created>1736412238729</created>
-      <option name="number" value="00655" />
-      <option name="presentableId" value="LOCAL-00655" />
-      <option name="project" value="LOCAL" />
-      <updated>1736412238729</updated>
-    </task>
-    <task id="LOCAL-00656" summary="test">
-      <option name="closed" value="true" />
-      <created>1736416764901</created>
-      <option name="number" value="00656" />
-      <option name="presentableId" value="LOCAL-00656" />
-      <option name="project" value="LOCAL" />
-      <updated>1736416764901</updated>
-    </task>
-    <task id="LOCAL-00657" summary="alias code">
-      <option name="closed" value="true" />
-      <created>1736468990961</created>
-      <option name="number" value="00657" />
-      <option name="presentableId" value="LOCAL-00657" />
-      <option name="project" value="LOCAL" />
-      <updated>1736468990961</updated>
-    </task>
-    <task id="LOCAL-00658" summary="small update">
-      <option name="closed" value="true" />
-      <created>1736470379548</created>
-      <option name="number" value="00658" />
-      <option name="presentableId" value="LOCAL-00658" />
-      <option name="project" value="LOCAL" />
-      <updated>1736470379548</updated>
+      <workItem from="1737332825660" duration="8997000" />
     </task>
     <task id="LOCAL-00659" summary="fix wrong id">
       <option name="closed" value="true" />
@@ -1618,7 +1587,39 @@
       <option name="project" value="LOCAL" />
       <updated>1737300168526</updated>
     </task>
-    <option name="localTasksCounter" value="704" />
+    <task id="LOCAL-00704" summary="change color">
+      <option name="closed" value="true" />
+      <created>1737333180999</created>
+      <option name="number" value="00704" />
+      <option name="presentableId" value="LOCAL-00704" />
+      <option name="project" value="LOCAL" />
+      <updated>1737333181000</updated>
+    </task>
+    <task id="LOCAL-00705" summary="move to new api">
+      <option name="closed" value="true" />
+      <created>1737335041506</created>
+      <option name="number" value="00705" />
+      <option name="presentableId" value="LOCAL-00705" />
+      <option name="project" value="LOCAL" />
+      <updated>1737335041506</updated>
+    </task>
+    <task id="LOCAL-00706" summary="small update">
+      <option name="closed" value="true" />
+      <created>1737335274883</created>
+      <option name="number" value="00706" />
+      <option name="presentableId" value="LOCAL-00706" />
+      <option name="project" value="LOCAL" />
+      <updated>1737335274883</updated>
+    </task>
+    <task id="LOCAL-00707" summary="small update">
+      <option name="closed" value="true" />
+      <created>1737344597686</created>
+      <option name="number" value="00707" />
+      <option name="presentableId" value="LOCAL-00707" />
+      <option name="project" value="LOCAL" />
+      <updated>1737344597686</updated>
+    </task>
+    <option name="localTasksCounter" value="708" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1649,8 +1650,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="enchant dialog style" />
-    <MESSAGE value="return array wrong position" />
     <MESSAGE value="remove stupid things" />
     <MESSAGE value="remove object ID from client" />
     <MESSAGE value="remove objectId from front end" />
@@ -1671,10 +1670,12 @@
     <MESSAGE value="import missing" />
     <MESSAGE value="fix issue with mqtt logger" />
     <MESSAGE value="add move event, support ipv6" />
-    <MESSAGE value="small update" />
     <MESSAGE value="fix issue with update" />
     <MESSAGE value="increase batch size" />
-    <option name="LAST_COMMIT_MESSAGE" value="increase batch size" />
+    <MESSAGE value="change color" />
+    <MESSAGE value="move to new api" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

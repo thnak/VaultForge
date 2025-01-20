@@ -36,7 +36,7 @@ public partial class SampleFileUploadPage(ILogger<SampleFileUploadPage> logger) 
     private void OnInputFileChanged(InputFileChangeEventArgs e)
     {
         ClearDragClass();
-        _fileUpload = e.GetMultipleFiles();
+        _fileUpload = e.GetMultipleFiles(Int32.MaxValue);
         _fileNames.Clear();
         foreach (var file in _fileUpload)
         {
