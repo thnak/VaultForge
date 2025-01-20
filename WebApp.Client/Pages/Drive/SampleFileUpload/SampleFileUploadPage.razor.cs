@@ -58,6 +58,7 @@ public partial class SampleFileUploadPage(ILogger<SampleFileUploadPage> logger) 
             foreach (var file in _fileUpload)
             {
                 var index1 = index;
+                _fileNames[index1].Progress = 0;
                 var progress = new Progress<double>(percent =>
                 {
                     _fileNames[index1].Progress = percent;

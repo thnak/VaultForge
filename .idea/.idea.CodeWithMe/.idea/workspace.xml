@@ -45,9 +45,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="" />
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
@@ -1225,15 +1223,7 @@
       <workItem from="1737161001977" duration="13654000" />
       <workItem from="1737218818630" duration="13864000" />
       <workItem from="1737284663762" duration="8653000" />
-      <workItem from="1737332825660" duration="8997000" />
-    </task>
-    <task id="LOCAL-00659" summary="fix wrong id">
-      <option name="closed" value="true" />
-      <created>1736473682455</created>
-      <option name="number" value="00659" />
-      <option name="presentableId" value="LOCAL-00659" />
-      <option name="project" value="LOCAL" />
-      <updated>1736473682455</updated>
+      <workItem from="1737332825660" duration="9711000" />
     </task>
     <task id="LOCAL-00660" summary="add buffer check dispose">
       <option name="closed" value="true" />
@@ -1619,7 +1609,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737344597686</updated>
     </task>
-    <option name="localTasksCounter" value="708" />
+    <task id="LOCAL-00708" summary="allow max num">
+      <option name="closed" value="true" />
+      <created>1737354881368</created>
+      <option name="number" value="00708" />
+      <option name="presentableId" value="LOCAL-00708" />
+      <option name="project" value="LOCAL" />
+      <updated>1737354881368</updated>
+    </task>
+    <option name="localTasksCounter" value="709" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1650,7 +1648,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="remove stupid things" />
     <MESSAGE value="remove object ID from client" />
     <MESSAGE value="remove objectId from front end" />
     <MESSAGE value="add config for mqtt" />
@@ -1675,7 +1672,8 @@
     <MESSAGE value="change color" />
     <MESSAGE value="move to new api" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="allow max num" />
+    <option name="LAST_COMMIT_MESSAGE" value="allow max num" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
