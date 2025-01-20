@@ -246,6 +246,7 @@ public partial class BaseHttpClientService
         {
             ToastService.ShowError(string.Format(AppLang.BaseHttpClientService_PostAsync__ERROR___0_, e.Message), TypeClassList.ToastDefaultSetting);
             Logger.LogError(e, e.Message);
+            responseData.Message = e.Message;
         }
 
         return responseData;

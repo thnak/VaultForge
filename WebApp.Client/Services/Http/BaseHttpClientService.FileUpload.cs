@@ -8,7 +8,7 @@ public partial class BaseHttpClientService
 {
     public async Task<ResponseDataResult<string>> UploadFileAsync(string folderAliasCode, HttpContent? content)
     {
-        var uri = $"/api/files/upload-physical/{folderAliasCode}";
+        var uri = $"api/files/upload-physical/{folderAliasCode}";
         //Added with .NET9
         var webAssemblyEnableStreamingRequestKey = new HttpRequestOptionsKey<bool>("WebAssemblyEnableStreamingRequest");
 

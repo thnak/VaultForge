@@ -73,7 +73,7 @@ public partial class SampleFileUploadPage(ILogger<SampleFileUploadPage> logger) 
             var folderRequest = await ApiService.GetFolderRequestAsync(null, 0, 50, null, false, false);
             if (folderRequest.IsSuccessStatusCode)
             {
-                var result = await ApiService.UploadFileAsync($"/api/files/upload-physical/{folderRequest.Data.Folder.AliasCode}", multipartContent);
+                var result = await ApiService.UploadFileAsync(folderRequest.Data.Folder.AliasCode, multipartContent);
                 if (result.IsSuccessStatusCode)
                 {
                     ToastService.ShowSuccess(result.Message, TypeClassList.ToastDefaultSetting);
