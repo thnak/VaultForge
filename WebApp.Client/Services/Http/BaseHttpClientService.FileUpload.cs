@@ -14,7 +14,10 @@ public partial class BaseHttpClientService
 
         var req = new HttpRequestMessage(HttpMethod.Post, uri);
         req.SetBrowserRequestStreamingEnabled(true);
-
+        
+        var antiToken = RequestAntiforgeryStateService.GetAntiforgeryToken()?.Value ?? string.Empty;
+        req.Headers.Add("RequestVerificationToken", [antiToken]);
+        
 //Added with .NET9
         req.Version = HttpVersion.Version20;
 //Added with .NET9
