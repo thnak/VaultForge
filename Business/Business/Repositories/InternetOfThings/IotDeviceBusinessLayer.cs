@@ -124,7 +124,7 @@ public class IotDeviceBusinessLayer(IIotDeviceDataLayer dataLayer, IIotSensorDat
     {
         var device = Get(deviceId);
         if (device == null)
-            return Result<bool>.Failure(AppLang.Device_not_found, ErrorType.NotFound);
+            return Result<bool>.Failure(AppLang.Device_not_found + $" {deviceId}", ErrorType.NotFound);
         if (device.MqttPassword != password)
             return Result<bool>.Failure(AppLang.Incorrect_password, ErrorType.Validation);
         return Result<bool>.Success(true);
