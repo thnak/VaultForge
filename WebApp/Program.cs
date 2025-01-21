@@ -23,7 +23,7 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
+        builder.Services.AddSingleton(TimeProvider.System);
         // Add services to the container.
         builder.Services.AddRazorComponents(options => options.DetailedErrors = builder.Environment.IsDevelopment())
             .AddInteractiveWebAssemblyComponents()

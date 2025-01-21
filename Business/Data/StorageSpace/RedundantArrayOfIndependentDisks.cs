@@ -15,7 +15,7 @@ using MongoDB.Driver;
 
 namespace Business.Data.StorageSpace;
 
-public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, ILogger<RedundantArrayOfIndependentDisks> logger, ApplicationConfiguration options) : IMongoDataInitializer
+public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, ILogger<RedundantArrayOfIndependentDisks> logger, ApplicationConfiguration options, TimeProvider timeProvider) : IMongoDataInitializer
 {
     private readonly IMongoCollection<FileRaidModel> _fileDataDb = context.MongoDatabase.GetCollection<FileRaidModel>("FileRaid");
     private readonly IMongoCollection<FileRaidDataBlockModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileRaidDataBlockModel>("FileRaidDataBlock");
@@ -100,12 +100,12 @@ public class RedundantArrayOfIndependentDisks(IMongoDataLayerContext context, IL
             FileRaidModel raidModel = new()
             {
                 RelativePath = path,
-                CreationTime = DateTime.UtcNow,
-                ModificationTime = DateTime.UtcNow,
+                CreationTime = timeProvider.UtcNow(),
+                ModificationTime = timeProvider.UtcNow(),
                 StripSize = _stripSize
             };
 
-            string date = DateTime.Now.ToString("yyyyMMdd").Encode2Base64String().Substring(0, 12);
+            string date = timeProvider.Now().ToString("yyyyMMdd").Encode2Base64String().Substring(0, 12);
             string[] arrayDisk = [..options.GetStorage.Disks.Select(x => Path.Combine(x, date))];
             foreach (string disk in arrayDisk)
             {

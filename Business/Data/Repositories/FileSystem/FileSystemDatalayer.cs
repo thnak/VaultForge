@@ -12,6 +12,7 @@ using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
+using BusinessModels.Utils;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
@@ -26,7 +27,7 @@ public class FileSystemDatalayer(
     ILogger<FileSystemDatalayer> logger,
     ISequenceBackgroundTaskQueue sequenceQueue,
     IMemoryCache memoryCache,
-    RedundantArrayOfIndependentDisks raidService) : IFileSystemDatalayer
+    RedundantArrayOfIndependentDisks raidService, TimeProvider timeProvider) : IFileSystemDatalayer
 {
     private readonly IMongoCollection<FileInfoModel> _fileDataDb = context.MongoDatabase.GetCollection<FileInfoModel>("FileInfo");
     private readonly IMongoCollection<FileMetadataModel> _fileMetaDataDataDb = context.MongoDatabase.GetCollection<FileMetadataModel>("FileMetaData");
@@ -213,11 +214,11 @@ public class FileSystemDatalayer(
             var isExist = await _fileDataDb.Find(filter).AnyAsync(cancellationToken: cancellationToken);
             if (!isExist)
             {
-                model.CreateTime = DateTime.UtcNow;
-                model.ModifiedTime = DateTime.UtcNow;
+                model.CreateTime = timeProvider.UtcNow();
+                model.ModifiedTime = timeProvider.UtcNow();
                 if (string.IsNullOrEmpty(model.AliasCode))
                 {
-                    model.AliasCode = model.Id.GenerateAliasKey(DateTime.Now.Ticks.ToString());
+                    model.AliasCode = model.Id.GenerateAliasKey(timeProvider.UtcNow().Ticks.ToString());
                 }
 
                 if (string.IsNullOrEmpty(model.ContentType))
@@ -321,7 +322,7 @@ public class FileSystemDatalayer(
                 {
                     await DeleteAsync(extendFile, serverToken);
                 }
-            });
+            }, CancellationToken.None);
         }
     }
 
@@ -333,7 +334,7 @@ public class FileSystemDatalayer(
             return _fileMetaDataDataDb.Find(filter).Limit(1).FirstOrDefault();
         }
 
-        return default;
+        return null;
     }
 
     public (bool, string) DeleteMetadata(string metaId)

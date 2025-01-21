@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Business.Services.BackgroundServices.Base;
 
-public class ParallelBackgroundService(IParallelBackgroundTaskQueue parallelBackgroundTaskQueue, ApplicationConfiguration options, ILogger<ParallelBackgroundService> logger) : BackgroundService
+public class ParallelBackgroundService(IParallelBackgroundTaskQueue parallelBackgroundTaskQueue, TimeProvider timeProvider, ApplicationConfiguration options, ILogger<ParallelBackgroundService> logger) : BackgroundService
 {
     private readonly TaskFactory _factory = new(new LimitedConcurrencyLevelTaskScheduler(options.GetBackgroundQueue.MaxParallelThreads));
 
@@ -24,7 +24,7 @@ public class ParallelBackgroundService(IParallelBackgroundTaskQueue parallelBack
 
     private async Task ProcessTaskQueueAsync(CancellationToken stoppingToken)
     {
-        using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+        using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(1), timeProvider);
         try
         {
             while (!stoppingToken.IsCancellationRequested && await timer.WaitForNextTickAsync(stoppingToken))

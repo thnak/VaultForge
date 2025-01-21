@@ -12,6 +12,7 @@ using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
+using BusinessModels.Utils;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
@@ -19,7 +20,7 @@ using MongoDB.Driver;
 
 namespace Business.Data.Repositories.FileSystem;
 
-public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<FolderSystemDatalayer> logger, IUserDataLayer userDataLayer, IMemoryCache memoryCache)
+public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<FolderSystemDatalayer> logger, IUserDataLayer userDataLayer, TimeProvider timeProvider, IMemoryCache memoryCache)
     : IFolderSystemDatalayer
 {
     private readonly IMongoCollection<FolderInfoModel> _dataDb = context.MongoDatabase.GetCollection<FolderInfoModel>("FolderInfo");
@@ -275,9 +276,9 @@ public class FolderSystemDatalayer(IMongoDataLayerContext context, ILogger<Folde
         {
             var isExists = await _dataDb.Find(x => x.Id == model.Id || x.AliasCode == model.AliasCode).AnyAsync(cancellationToken: cancellationToken);
             if (isExists) return Result<bool>.Failure(AppLang.Folder_already_exists, ErrorType.Duplicate);
-            model.ModifiedTime = DateTime.UtcNow;
-            model.CreateTime = DateTime.UtcNow;
-            model.AliasCode = model.Id.GenerateAliasKey(model.OwnerUsername + DateTime.Now.Ticks);
+            model.ModifiedTime = timeProvider.UtcNow();
+            model.CreateTime = timeProvider.UtcNow();
+            model.AliasCode = model.Id.GenerateAliasKey(model.OwnerUsername + timeProvider.UtcNow().Ticks);
             await _dataDb.InsertOneAsync(model, cancellationToken: cancellationToken);
             return Result<bool>.Success(true);
         }

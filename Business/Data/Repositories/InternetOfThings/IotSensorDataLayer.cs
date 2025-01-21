@@ -8,6 +8,7 @@ using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
+using BusinessModels.Utils;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
@@ -16,7 +17,7 @@ using MongoDB.Driver;
 
 namespace Business.Data.Repositories.InternetOfThings;
 
-public class IotSensorDataLayer(IMongoDataLayerContext context, ILogger<IIotSensorDataLayer> logger, IDataProtectionProvider provider, IMemoryCache memoryCache) : IIotSensorDataLayer
+public class IotSensorDataLayer(IMongoDataLayerContext context, ILogger<IIotSensorDataLayer> logger, IDataProtectionProvider provider, TimeProvider timeProvider, IMemoryCache memoryCache) : IIotSensorDataLayer
 {
     private readonly IMongoCollection<IoTSensor> _data = context.MongoDatabase.GetCollection<IoTSensor>(IotSensorCollectionName);
     private readonly IDataProtector _protectionProvider = provider.CreateProtector("IotSensorDataLayerProtector");
@@ -148,11 +149,11 @@ public class IotSensorDataLayer(IMongoDataLayerContext context, ILogger<IIotSens
             var isExist = await _data.Find(filter).AnyAsync(cancellationToken: cancellationToken);
             if (!isExist)
             {
-                model.CreateTime = DateTime.UtcNow;
-                model.ModifiedTime = DateTime.UtcNow;
+                model.CreateTime = timeProvider.UtcNow();
+                model.ModifiedTime = timeProvider.UtcNow();
                 if (string.IsNullOrEmpty(model.SensorId))
                 {
-                    model.SensorId = model.Id.GenerateAliasKey(DateTime.Now.Ticks.ToString());
+                    model.SensorId = model.Id.GenerateAliasKey(timeProvider.UtcNow().Ticks.ToString());
                     model.SensorId = _protectionProvider.Protect(model.SensorId);
                 }
 

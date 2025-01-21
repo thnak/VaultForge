@@ -39,14 +39,35 @@
     <projectFile pubXmlPath="WebApp/WebApp/Properties/PublishProfiles/_myrepo_.azurecr.io.pubxml">WebApp/WebApp/WebApp.csproj</projectFile>
     <projectFile pubXmlPath="WebApp/WebApp/Properties/PublishProfiles/registry.hub.docker.com_thnak.pubxml">WebApp/WebApp/WebApp.csproj</projectFile>
     <projectFile pubXmlPath="WebApp/WebApp/Properties/PublishProfiles/thnak_vaultforge.pubxml">WebApp/WebApp/WebApp.csproj</projectFile>
+    <projectFile profileName="WorkerService1">WorkerService1/WorkerService1.csproj</projectFile>
     <projectFile kind="DockerCompose">docker-compose.dcproj</projectFile>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="clear progress">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/BusinessModels/Utils/TimeProviderExtensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/FileSystem/FolderSystemBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IotDeviceBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/InternetOfThings/IotDeviceBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Repositories/User/FaceBusinessLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/Advertisement/AdvertisementDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/Advertisement/AdvertisementDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FolderSystemDatalayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotDeviceDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotSensorDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/InternetOfThings/IotSensorDataLayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Data/StorageSpace/RedundantArrayOfIndependentDisks.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/StorageSpace/RedundantArrayOfIndependentDisks.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Models/RetrievalAugmentedGeneration/Vector/FaceVectorStorageModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Models/RetrievalAugmentedGeneration/Vector/FaceVectorStorageModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Business/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConsoleApp1/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/packages.lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.FileUpload.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.FileUpload.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/packages.lock.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -128,6 +149,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e3157c720a4245958cf8a1b12c4b4a27e90928/f1/9791d11c/StackFrameIterator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f144f137e8c44478ad03d647d3e83e8771910/68/2e705602/EncryptionAlgorithm.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1059a9b9258b3670df5a4c449544237362d49ae9599d8964fde76c16fc50b6/VectorStoreRecordProperty.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1c2c8d24c4ebb4ed75b16ec1571755763695c6c630ebbaabe26de3708d42649c/TimeZoneInfo.Win32.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1e9051104f7894b9ba7e669e1d0bb793b9aa7e74273a7cc1cf79a91e248ca97/Tensor.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1e98fab23de26676a61424c1c3dae32dfd9c5f3f70742cac1dc4e3ec96c2556c/ImageDecoderCore.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2565b9d99fdde488bc7801b84387b2cc864959cfb63212e1ff576fc9c6bb7e/CancellationToken.cs" root0="FORCE_HIGHLIGHTING" />
@@ -145,6 +167,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4e7bc4c9faf043209c3775b7c5ace8983766e2fbcbb81195645675088d86018/OrtAllocator.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4f5ca8a0b4696ee177cb72bbae4ff2c856ae748de567464543668dfb1fff/DistanceFunction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/552e6bce87629e4fba09e4647c288ca66bef86e470e455f343ccfb9bc41b6f/MudFormComponent.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/558c1d46e1e21d2e78ee2ab67a674f6927bf95355b2f245f35d74bb5ec0f92/CancellationTokenSource.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/55f44cf26c4f8a472241f32786a20f211d7e1ed80801eceac2a40539086141d/MemoryExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/57334938c37984ed44dcd0b3e1ff22984d161fa9fc6c7161a38d29e3e85eb6/HttpHeaderParser.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5a21f73be9e2671c3cf5a490cac2d792fa4d215ab83d8de89af7916f8d08179/ComponentBase.cs" root0="FORCE_HIGHLIGHTING" />
@@ -195,6 +218,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e78a3461bb868758dc383a38ac7d247ff1acf779756a18c8be9515c32c9/Breakpoint.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e862b2dbf388458c8b8c44c404dbc872b94e4a936e352de3d30a8f52729573c/MudSelect.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e8aee3972f4f46ef190c2b4224be16d75e671b3496b06c7b50b6cbe2418e38/EndPointHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/eabafafbeed23dab31f6a8184bdb1fe5a4c2237f39efe53885612b2ccdd3cd/MemoryCacheExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f08263c1b162536d21bcac5d3d5599c6108a7df0503ecd6facc435edad3ead4/INumber.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f6bac6c9ecc68b194f8bf9bc05091eea8de3c63a8f2efd73b05a3c783f1474/ServiceCollectionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f77be22079eb1bdddcd5dbcd5df7fecbed559688b86a491da2be84d9f269191/StringValues.cs" root0="SKIP_HIGHLIGHTING" />
@@ -228,40 +252,42 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.ResApi.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.Web: https.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.WebApp no browser.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.WebApp: IIS Express.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.WebApp: https.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Launch Settings Profile.WebApp: no-browser.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Project.ConsoleApp1.executor&quot;: &quot;Debug&quot;,
-    &quot;.NET Project.WebApp.Client.executor&quot;: &quot;Debug&quot;,
-    &quot;Docker.WebApp/Dockerfile (1).executor&quot;: &quot;Run&quot;,
-    &quot;Publish to folder.ResApi.executor&quot;: &quot;Run&quot;,
-    &quot;Publish to folder.Unnamed.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.40529165&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/thanh/Downloads&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CodeLensConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.ResApi.executor": "Debug",
+    ".NET Launch Settings Profile.Web: https.executor": "Debug",
+    ".NET Launch Settings Profile.WebApp no browser.executor": "Debug",
+    ".NET Launch Settings Profile.WebApp: IIS Express.executor": "Debug",
+    ".NET Launch Settings Profile.WebApp: https.executor": "Debug",
+    ".NET Launch Settings Profile.WebApp: no-browser.executor": "Debug",
+    ".NET Project.ConsoleApp1.executor": "Debug",
+    ".NET Project.WebApp.Client.executor": "Debug",
+    "Docker.WebApp/Dockerfile (1).executor": "Run",
+    "Publish to folder.ResApi.executor": "Run",
+    "Publish to folder.Unnamed (1).executor": "Run",
+    "Publish to folder.Unnamed.executor": "Run",
+    "Publish to folder.Worker service publish.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "XThreadsFramesViewSplitterKey": "0.40529165",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/thanh/Downloads",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "CodeLensConfigurable",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
-      &quot;Shell Script&quot;
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "Shell Script"
     ]
   }
-}</component>
+}]]></component>
   <component name="RdControllerToolWindowsLayoutState" isNewUi="true">
     <layout>
       <window_info id="Bookmarks" show_stripe_button="false" side_tool="true" />
@@ -302,7 +328,7 @@
       <window_info anchor="right" id="Maven" order="4" weight="0.25" />
     </layout>
   </component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: https">
+  <component name="RunManager" selected="Publish to folder.Worker service publish">
     <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
       <deployment type="docker-compose.yml">
         <settings />
@@ -363,6 +389,10 @@
       <riderPublish configuration="Release" platform="Any CPU" runtime="linux-x64" self_contained="true" target_folder="$PROJECT_DIR$/WebApp/WebApp/bin/Release/net9.0/linux-x64/publish" target_framework="net9.0" uuid_high="-212861499982460667" uuid_low="-5823181797240626509" />
       <method v="2" />
     </configuration>
+    <configuration name="Worker service publish" type="DotNetFolderPublish" factoryName="Publish to folder">
+      <riderPublish configuration="Release" include_all_content_for_self_extract="true" include_native_libs_for_self_extract="true" platform="Any CPU" produce_single_file="true" ready_to_run="true" runtime="win-x64" self_contained="true" target_folder="$PROJECT_DIR$/WorkerService1/bin/Release/net9.0/win-x64/publish" target_framework="net9.0" trim_unused_assemblies="true" uuid_high="5211006133636255610" uuid_low="-7562032457943844775" />
+      <method v="2" />
+    </configuration>
     <configuration name="ConsoleApp1" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="$PROJECT_DIR$/ConsoleApp1/bin/Debug/net9.0/ConsoleApp1.exe" />
       <option name="PROGRAM_PARAMETERS" value="" />
@@ -691,6 +721,21 @@
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/WebApp/WebApp.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
       <option name="LAUNCH_PROFILE_NAME" value="no-browser" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+      <option name="SEND_DEBUG_REQUEST" value="1" />
+      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
+    <configuration name="WorkerService1" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/WorkerService1/WorkerService1.csproj" />
+      <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
+      <option name="LAUNCH_PROFILE_NAME" value="WorkerService1" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <option name="USE_MONO" value="0" />
       <option name="RUNTIME_ARGUMENTS" value="" />
@@ -861,6 +906,7 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue=".NET Launch Settings Profile.WorkerService1" />
       <item itemvalue=".NET Launch Settings Profile.WebApp: http" />
       <item itemvalue=".NET Launch Settings Profile.WebApp: https" />
       <item itemvalue=".NET Launch Settings Profile.WebApp: no-browser" />
@@ -870,6 +916,7 @@
       <item itemvalue="Docker.WebApp/Dockerfile (1)" />
       <item itemvalue="Docker.WebApp/Dockerfile" />
       <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+      <item itemvalue="Publish to folder.Worker service publish" />
       <item itemvalue="Publish to folder.Unnamed" />
       <item itemvalue="Publish to folder.ResApi" />
     </list>
@@ -1226,15 +1273,9 @@
       <workItem from="1737218818630" duration="13864000" />
       <workItem from="1737284663762" duration="8653000" />
       <workItem from="1737332825660" duration="9711000" />
-      <workItem from="1737360339251" duration="883000" />
-    </task>
-    <task id="LOCAL-00661" summary="remove shit">
-      <option name="closed" value="true" />
-      <created>1736484390221</created>
-      <option name="number" value="00661" />
-      <option name="presentableId" value="LOCAL-00661" />
-      <option name="project" value="LOCAL" />
-      <updated>1736484390221</updated>
+      <workItem from="1737360339251" duration="1694000" />
+      <workItem from="1737370516733" duration="2260000" />
+      <workItem from="1737421156873" duration="5243000" />
     </task>
     <task id="LOCAL-00662" summary="out of range">
       <option name="closed" value="true" />
@@ -1620,7 +1661,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737360414507</updated>
     </task>
-    <option name="localTasksCounter" value="710" />
+    <task id="LOCAL-00710" summary="add more log">
+      <option name="closed" value="true" />
+      <created>1737366332759</created>
+      <option name="number" value="00710" />
+      <option name="presentableId" value="LOCAL-00710" />
+      <option name="project" value="LOCAL" />
+      <updated>1737366332759</updated>
+    </task>
+    <option name="localTasksCounter" value="711" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1651,7 +1700,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="remove objectId from front end" />
     <MESSAGE value="add config for mqtt" />
     <MESSAGE value="add receive" />
     <MESSAGE value="import wrong type" />
@@ -1676,7 +1724,8 @@
     <MESSAGE value="small update" />
     <MESSAGE value="allow max num" />
     <MESSAGE value="clear progress" />
-    <option name="LAST_COMMIT_MESSAGE" value="clear progress" />
+    <MESSAGE value="add more log" />
+    <option name="LAST_COMMIT_MESSAGE" value="add more log" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1715,16 +1764,29 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs</url>
-          <line>87</line>
+          <line>129</line>
           <properties documentPath="C:\Users\thanh\Git\VaultForge\WebApp\Controllers\ContentServing\FilesController.Create.cs" containingFunctionPresentation="Method 'UploadPhysical'">
             <startOffsets>
-              <option value="3260" />
+              <option value="5139" />
             </startOffsets>
             <endOffsets>
-              <option value="3297" />
+              <option value="5226" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="108" />
+          <option name="timeStamp" value="109" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs</url>
+          <line>133</line>
+          <properties documentPath="C:\Users\thanh\Git\VaultForge\WebApp\Controllers\ContentServing\FilesController.Create.cs" containingFunctionPresentation="Method 'UploadPhysical'">
+            <startOffsets>
+              <option value="5305" />
+            </startOffsets>
+            <endOffsets>
+              <option value="5327" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="110" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">

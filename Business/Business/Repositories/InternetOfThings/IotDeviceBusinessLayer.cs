@@ -6,11 +6,12 @@ using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
 using BusinessModels.System.InternetOfThings.status;
+using BusinessModels.Utils;
 using MongoDB.Driver;
 
 namespace Business.Business.Repositories.InternetOfThings;
 
-public class IotDeviceBusinessLayer(IIotDeviceDataLayer dataLayer, IIotSensorDataLayer iIotSensorDataLayer) : IIotDeviceBusinessLayer
+public class IotDeviceBusinessLayer(IIotDeviceDataLayer dataLayer, TimeProvider timeProvider, IIotSensorDataLayer iIotSensorDataLayer) : IIotDeviceBusinessLayer
 {
     public Task<long> GetDocumentSizeAsync(CancellationToken cancellationToken = default)
     {
@@ -134,7 +135,7 @@ public class IotDeviceBusinessLayer(IIotDeviceDataLayer dataLayer, IIotSensorDat
     {
         return await UpdateAsync(deviceId, new FieldUpdate<IoTDevice>()
         {
-            { x => x.LastServiceDate, DateTime.Now },
+            { x => x.LastServiceDate, timeProvider.Now() },
             { x => x.Status, status }
         });
     }

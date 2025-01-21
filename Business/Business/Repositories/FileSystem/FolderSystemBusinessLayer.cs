@@ -30,6 +30,7 @@ using MongoDB.Driver;
 using System.IO.Compression;
 using Business.Services.Interfaces;
 using BusinessModels.General.Update;
+using BusinessModels.Utils;
 
 namespace Business.Business.Repositories.FileSystem;
 
@@ -43,7 +44,7 @@ internal class FolderSystemBusinessLayer(
     IParallelBackgroundTaskQueue parallelBackgroundTaskQueue,
     ISequenceBackgroundTaskQueue sequenceBackgroundTaskQueue,
     IThumbnailService thumbnailService,
-    ApplicationConfiguration options)
+    ApplicationConfiguration options, TimeProvider timeProvider)
     : IFolderSystemBusinessLayer
 {
     private readonly CacheKeyManager _cacheKeyManager = new(memoryCache, nameof(FolderSystemBusinessLayer));
@@ -442,7 +443,7 @@ internal class FolderSystemBusinessLayer(
         request.NewFolder.RelativePath = folderRoot.RelativePath + '/' + request.NewFolder.FolderName;
         request.NewFolder.AbsolutePath = request.NewFolder.RelativePath;
         request.NewFolder.RootFolder = folderRoot.Id.ToString();
-        request.NewFolder.ModifiedTime = DateTime.Now;
+        request.NewFolder.ModifiedTime = timeProvider.Now();
         request.NewFolder.OwnerUsername = folderRoot.OwnerUsername;
 
         if (string.IsNullOrEmpty(request.NewFolder.ModifiedUserName))
@@ -652,8 +653,8 @@ internal class FolderSystemBusinessLayer(
                 FileName = path,
                 ContentType = "video/mp4",
                 RootFolder = requestNewFolder.RootId,
-                ModifiedTime = DateTime.UtcNow,
-                CreatedDate = DateOnly.FromDateTime(DateTime.UtcNow)
+                ModifiedTime = timeProvider.UtcNow(),
+                CreatedDate = DateOnly.FromDateTime(timeProvider.UtcNow())
             };
             await CreateFileAsync(storageFolder, fileInfo, cancellationToken);
             logger.LogInformation($"Add {fileInfo.Id}");

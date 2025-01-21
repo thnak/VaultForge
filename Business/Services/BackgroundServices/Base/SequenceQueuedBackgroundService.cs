@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Business.Services.BackgroundServices.Base;
 
-public sealed class SequenceQueuedBackgroundService(ISequenceBackgroundTaskQueue taskQueue, ILogger<SequenceQueuedBackgroundService> logger) : BackgroundService
+public sealed class SequenceQueuedBackgroundService(ISequenceBackgroundTaskQueue taskQueue, TimeProvider timeProvider, ILogger<SequenceQueuedBackgroundService> logger) : BackgroundService
 {
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -14,7 +14,7 @@ public sealed class SequenceQueuedBackgroundService(ISequenceBackgroundTaskQueue
 
     private async Task ProcessTaskQueueAsync(CancellationToken stoppingToken)
     {
-        using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+        using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(1), timeProvider);
         while (!stoppingToken.IsCancellationRequested && await timer.WaitForNextTickAsync(stoppingToken))
         {
             try

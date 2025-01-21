@@ -28,7 +28,6 @@ public class FaceController(IFaceEmbeddingInferenceService faceEmbeddingInferenc
             var vector = await faceEmbeddingInferenceService.AddInputAsync(image);
             await faceBusinessLayer.CreateAsync(new FaceVectorStorageModel
             {
-                CreatedAt = DateTime.Now,
                 Owner = owner
             }, vector);
         }

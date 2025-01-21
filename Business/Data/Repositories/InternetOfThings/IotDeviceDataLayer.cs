@@ -9,25 +9,18 @@ using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
 using BusinessModels.System.InternetOfThings;
+using BusinessModels.Utils;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Business.Data.Repositories.InternetOfThings;
 
-public class IotDeviceDataLayer : IIotDeviceDataLayer
+public class IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDeviceDataLayer> logger, TimeProvider timeProvider) : IIotDeviceDataLayer
 {
-    private readonly IMongoCollection<IoTDevice> _data;
-    private readonly ThreadSafeSearchEngine<IoTDevice> _threadSafeSearchEngine;
-    private readonly ILogger<IIotDeviceDataLayer> _logger;
+    private readonly IMongoCollection<IoTDevice> _data = context.MongoDatabase.GetCollection<IoTDevice>(CollectionName);
+    private readonly ThreadSafeSearchEngine<IoTDevice> _threadSafeSearchEngine = new(CollectionName, SearchEngineExtensions.IoTDeviceDocumentMapper);
     private const string CollectionName = "IoTDevice";
-
-    public IotDeviceDataLayer(IMongoDataLayerContext context, ILogger<IIotDeviceDataLayer> logger)
-    {
-        _data = context.MongoDatabase.GetCollection<IoTDevice>(CollectionName);
-        _threadSafeSearchEngine = new(CollectionName, SearchEngineExtensions.IoTDeviceDocumentMapper);
-        _logger = logger;
-    }
 
     public void Dispose()
     {
@@ -155,11 +148,11 @@ public class IotDeviceDataLayer : IIotDeviceDataLayer
             var isExist = await _data.Find(filter).AnyAsync(cancellationToken: cancellationToken);
             if (!isExist)
             {
-                model.CreateTime = DateTime.UtcNow;
-                model.ModifiedTime = DateTime.UtcNow;
+                model.CreateTime = timeProvider.UtcNow();
+                model.ModifiedTime = timeProvider.UtcNow();
                 if (string.IsNullOrEmpty(model.DeviceId))
                 {
-                    model.DeviceId = model.Id.GenerateAliasKey(DateTime.Now.Ticks.ToString());
+                    model.DeviceId = model.Id.GenerateAliasKey(timeProvider.UtcNow().Ticks.ToString());
                 }
 
                 await _data.InsertOneAsync(model, cancellationToken: cancellationToken);
@@ -171,7 +164,7 @@ public class IotDeviceDataLayer : IIotDeviceDataLayer
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            logger.LogError(e, e.Message);
             return Result<bool>.Failure(e.Message, ErrorType.Unknown);
         }
     }

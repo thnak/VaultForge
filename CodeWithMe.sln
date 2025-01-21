@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrainNet", "BrainNet\BrainN
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{B46B750E-F5D9-4788-B788-60C67E276576}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkerService1", "WorkerService1\WorkerService1.csproj", "{48513678-2DC5-4F7A-970E-438B7C487859}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +111,18 @@ Global
 		{B46B750E-F5D9-4788-B788-60C67E276576}.ReleaseX64|Any CPU.Build.0 = ReleaseX64|Any CPU
 		{B46B750E-F5D9-4788-B788-60C67E276576}.ReleaseX64|x64.ActiveCfg = ReleaseX64|x64
 		{B46B750E-F5D9-4788-B788-60C67E276576}.ReleaseX64|x64.Build.0 = ReleaseX64|x64
+		{48513678-2DC5-4F7A-970E-438B7C487859}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48513678-2DC5-4F7A-970E-438B7C487859}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48513678-2DC5-4F7A-970E-438B7C487859}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{48513678-2DC5-4F7A-970E-438B7C487859}.Debug|x64.Build.0 = Debug|Any CPU
+		{48513678-2DC5-4F7A-970E-438B7C487859}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48513678-2DC5-4F7A-970E-438B7C487859}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48513678-2DC5-4F7A-970E-438B7C487859}.Release|x64.ActiveCfg = Release|Any CPU
+		{48513678-2DC5-4F7A-970E-438B7C487859}.Release|x64.Build.0 = Release|Any CPU
+		{48513678-2DC5-4F7A-970E-438B7C487859}.ReleaseX64|Any CPU.ActiveCfg = Debug|Any CPU
+		{48513678-2DC5-4F7A-970E-438B7C487859}.ReleaseX64|Any CPU.Build.0 = Debug|Any CPU
+		{48513678-2DC5-4F7A-970E-438B7C487859}.ReleaseX64|x64.ActiveCfg = Debug|Any CPU
+		{48513678-2DC5-4F7A-970E-438B7C487859}.ReleaseX64|x64.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -15,7 +15,7 @@ public class IoTRequestQueueHostedService(
     IIotRecordBusinessLayer iotRecordBusinessLayer,
     IWaterMeterReaderQueue waterMeterReaderQueue,
     ILogger<IoTRequestQueueHostedService> logger,
-    IParallelBackgroundTaskQueue queue) : BackgroundService
+    IParallelBackgroundTaskQueue queue, TimeProvider timeProvider) : BackgroundService
 {
     private PeriodicTimer? BatchTimer { get; set; }
     private readonly int _timePeriod = options.GetIoTRequestQueueConfig.TimePeriodInSecond;
@@ -76,7 +76,7 @@ public class IoTRequestQueueHostedService(
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        BatchTimer = new PeriodicTimer(TimeSpan.FromSeconds(_timePeriod));
+        BatchTimer = new PeriodicTimer(TimeSpan.FromSeconds(_timePeriod), timeProvider);
         while (await BatchTimer.WaitForNextTickAsync(stoppingToken))
         {
             await InsertPeriodTimerCallback(stoppingToken);

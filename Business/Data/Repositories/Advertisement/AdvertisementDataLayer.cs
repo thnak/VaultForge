@@ -6,6 +6,7 @@ using Business.Utils;
 using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
+using BusinessModels.Utils;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -13,7 +14,7 @@ using ArticleModel = BusinessModels.Advertisement.ArticleModel;
 
 namespace Business.Data.Repositories.Advertisement;
 
-public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<AdvertisementDataLayer> logger) : IAdvertisementDataLayer
+public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<AdvertisementDataLayer> logger, TimeProvider timeProvider) : IAdvertisementDataLayer
 {
     private readonly IMongoCollection<ArticleModel> _dataDb = context.MongoDatabase.GetCollection<ArticleModel>("Article");
 
@@ -272,7 +273,7 @@ public class AdvertisementDataLayer(IMongoDataLayerContext context, ILogger<Adve
                         Author = "System",
                         Title = "Index",
                         Language = culture.Name,
-                        ModifiedTime = DateTime.Now,
+                        ModifiedTime = timeProvider.Now(),
                     };
                     var result = await CreateAsync(model, cancellationToken);
                     if (result.IsSuccess)

@@ -12,12 +12,13 @@ using Business.Services.Configure;
 using BusinessModels.General.Results;
 using BusinessModels.General.Update;
 using BusinessModels.Resources;
+using BusinessModels.Utils;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
 namespace Business.Business.Repositories.User;
 
-public class FaceBusinessLayer(IFaceDataLayer dataLayer, IVectorDataLayer vectorDataLayer, ILogger<FaceBusinessLayer> logger, ApplicationConfiguration applicationConfiguration) : IFaceBusinessLayer
+public class FaceBusinessLayer(IFaceDataLayer dataLayer, IVectorDataLayer vectorDataLayer, TimeProvider timeProvider, ILogger<FaceBusinessLayer> logger, ApplicationConfiguration applicationConfiguration) : IFaceBusinessLayer
 {
     private const string VectorCollectionName = "FaceVectors";
 
@@ -101,6 +102,7 @@ public class FaceBusinessLayer(IFaceDataLayer dataLayer, IVectorDataLayer vector
         {
             Key = model.Owner
         }, cancellationToken);
+        model.CreateTime = timeProvider.UtcNow();
         return await dataLayer.CreateAsync(model, cancellationToken);
     }
 
