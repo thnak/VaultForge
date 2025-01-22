@@ -158,7 +158,7 @@ public partial class IoTController
         return new FileStreamResult(ms, "application/vnd.ms-excel")
         {
             FileDownloadName = cd.FileName,
-            LastModified = DateTimeOffset.Now,
+            LastModified = timeProvider.GetUtcNow(),
             EnableRangeProcessing = true
         };
     }

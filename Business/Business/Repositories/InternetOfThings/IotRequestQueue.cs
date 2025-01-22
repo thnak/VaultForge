@@ -32,7 +32,7 @@ public class IotRequestQueue : IIotRequestQueue
         var maxQueueSize = options.GetIoTRequestQueueConfig.MaxQueueSize;
         BoundedChannelOptions boundedChannelOptions = new(maxQueueSize)
         {
-            FullMode = BoundedChannelFullMode.DropOldest,
+            FullMode = BoundedChannelFullMode.Wait,
         };
         _sensorRequestCounts = [];
         _sensorLastValues = [];

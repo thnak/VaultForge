@@ -46,18 +46,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/WorkerService1/IOTDeviceWorker.cs" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Business/Utils/BusinessExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Business/Utils/BusinessExtension.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/VectorDb/VectorDataLayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/VectorDb/VectorDataLayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/BackgroundServices/Mqtt/MqttBrokerHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/BackgroundServices/Mqtt/MqttBrokerHostedService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueHostedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/HostedServices/IoT/IoTRequestQueueBackgroundService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Business/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp1/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/packages.lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/packages.lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/packages.lock.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1268,14 +1258,7 @@
       <workItem from="1737370516733" duration="2260000" />
       <workItem from="1737421156873" duration="15322000" />
       <workItem from="1737505884113" duration="5091000" />
-    </task>
-    <task id="LOCAL-00663" summary="wrong indices">
-      <option name="closed" value="true" />
-      <created>1736487299504</created>
-      <option name="number" value="00663" />
-      <option name="presentableId" value="LOCAL-00663" />
-      <option name="project" value="LOCAL" />
-      <updated>1736487299504</updated>
+      <workItem from="1737541344542" duration="767000" />
     </task>
     <task id="LOCAL-00664" summary="clear all array when return">
       <option name="closed" value="true" />
@@ -1661,7 +1644,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737427888912</updated>
     </task>
-    <option name="localTasksCounter" value="712" />
+    <task id="LOCAL-00712" summary="small update">
+      <option name="closed" value="true" />
+      <created>1737541787326</created>
+      <option name="number" value="00712" />
+      <option name="presentableId" value="LOCAL-00712" />
+      <option name="project" value="LOCAL" />
+      <updated>1737541787326</updated>
+    </task>
+    <option name="localTasksCounter" value="713" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1712,12 +1703,12 @@
     <MESSAGE value="increase batch size" />
     <MESSAGE value="change color" />
     <MESSAGE value="move to new api" />
-    <MESSAGE value="small update" />
     <MESSAGE value="allow max num" />
     <MESSAGE value="clear progress" />
     <MESSAGE value="add more log" />
     <MESSAGE value="using time provider" />
-    <option name="LAST_COMMIT_MESSAGE" value="using time provider" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -1,6 +1,7 @@
 ﻿using BusinessModels.Resources;
 using BusinessModels.System.FileSystem;
 using BusinessModels.System.InternetOfThings;
+using BusinessModels.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers.InternetOfThings.Record;
@@ -21,7 +22,7 @@ public partial class IoTController
                     SensorData = value,
                     SignalStrength = signalStrength ?? 0,
                     BatteryLevel = battery ?? 0,
-                    RecordedAt = dateTime ?? DateTime.UtcNow
+                    RecordedAt = dateTime ?? timeProvider.UtcNow()
                 });
                 var queueResult = await requestQueueHostedService.QueueRequest(record, token);
                 if (!queueResult) logger.LogWarning($"{AppLang.Error_processing_request} {sensorId}");
@@ -69,7 +70,7 @@ public partial class IoTController
                 BatteryLevel = battery ?? 0,
                 OnChipTemperature = chipTemp ?? 0,
                 ImagePath = fileInfo.AliasCode,
-                RecordedAt = dateTime ?? DateTime.UtcNow
+                RecordedAt = dateTime ?? timeProvider.UtcNow()
             });
             var queueResult = await requestQueueHostedService.QueueRequest(record, cancelToken);
             if (!queueResult)
@@ -116,7 +117,7 @@ public partial class IoTController
                     BatteryLevel = battery ?? 0,
                     OnChipTemperature = chipTemp ?? 0,
                     ImagePath = fileInfo.AliasCode,
-                    RecordedAt = dateTime ?? DateTime.UtcNow
+                    RecordedAt = dateTime ?? timeProvider.UtcNow()
                 });
                 var queueResult = await requestQueueHostedService.QueueRequest(record, cancelToken);
                 if (!queueResult)
