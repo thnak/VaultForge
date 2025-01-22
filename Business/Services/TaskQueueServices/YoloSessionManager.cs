@@ -13,7 +13,7 @@ public interface IYoloSessionManager
     Task RunOneAsync(CancellationToken cancellationToken = default);
 }
 
-public class YoloSessionManager : IYoloSessionManager
+public class YoloSessionManager(TimeProvider timeProvider) : IYoloSessionManager
 {
     private readonly ConcurrentDictionary<Guid, IYoloInferenceSessionService?> _sessions = new();
 
@@ -26,7 +26,7 @@ public class YoloSessionManager : IYoloSessionManager
     public Guid RegisterService(Stream modelStream)
     {
         Guid userId = Guid.NewGuid();
-        var session = _sessions.GetOrAdd(userId, _ => new YoloInferenceSessionService());
+        var session = _sessions.GetOrAdd(userId, _ => new YoloInferenceSessionService(timeProvider));
         session!.Initialize(modelStream);
         return userId;
     }

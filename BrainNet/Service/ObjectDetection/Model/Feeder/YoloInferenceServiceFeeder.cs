@@ -12,6 +12,4 @@ public record YoloInferenceServiceFeeder(MemoryTensor<float> Buffer)
 
     public float PadHeight { get; set; }
     public float PadWidth { get; set; }
-
-    public MemoryTensor<float> Buffer { get; set; } = Buffer;
 }

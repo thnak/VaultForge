@@ -48,9 +48,11 @@ public class IoTRequestQueueBackgroundService(
         var result = await iotRecordBusinessLayer.CreateAsync(batch, cancellationToken);
         if (result.IsSuccess)
         {
-            var chunkedBatch = batch.Where(data => !string.IsNullOrEmpty(data.Metadata.ImagePath))
-                .Select(async data => _ioTRequestQueue.Writer.WriteAsync(await waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, cancellationToken), cancellationToken));
-            await queue.QueueBackgroundWorkItemAsync(async _ => await Task.WhenAll(chunkedBatch), cancellationToken);
+            foreach (var data in batch)
+            {
+                await queue.QueueBackgroundWorkItemAsync(async token =>
+                    await _ioTRequestQueue.Writer.WriteAsync(await waterMeterReaderQueue.GetWaterMeterReadingCountAsync(data, token), token), cancellationToken);
+            }
         }
         else
         {

@@ -6,7 +6,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace BrainNet.Service.ObjectDetection.Implements;
 
-public class YoloInferenceSessionService : IYoloInferenceSessionService
+public class YoloInferenceSessionService(TimeProvider timeProvider) : IYoloInferenceSessionService
 {
     private readonly TimeSpan _timeout = TimeSpan.FromMinutes(10); // Set inactivity timeout
     private DateTime _lastActivity = DateTime.UtcNow;
@@ -22,7 +22,7 @@ public class YoloInferenceSessionService : IYoloInferenceSessionService
 
     public bool IsExpired()
     {
-        return (DateTime.UtcNow - _lastActivity) > _timeout;
+        return timeProvider.GetUtcNow() - _lastActivity > _timeout;
     }
 
     public Task RunOneAsync(CancellationToken cancellationToken)
@@ -42,7 +42,7 @@ public class YoloInferenceSessionService : IYoloInferenceSessionService
     {
         if (_yoloInferenceService != null)
         {
-            _lastActivity = DateTime.UtcNow;
+            _lastActivity = timeProvider.GetUtcNow().DateTime;
             return _yoloInferenceService.AddInputAsync(image, cancellationToken);
         }
         return Task.FromResult(InferenceResult<List<YoloBoundingBox>>.Failure("Disposed service", InferenceErrorType.PermissionDenied));
