@@ -104,6 +104,7 @@ public partial class IoTController
                     ContentType = file.ContentType,
                     FileSize = file.Length
                 };
+                fileInfo.FileName = Guid.NewGuid() + ".jpg";
                 var createFileResult = await folderServe.CreateFileAsync(folder!, fileInfo, cancelToken);
                 if (!createFileResult.IsSuccess)
                     return BadRequest(createFileResult.Message);

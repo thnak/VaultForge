@@ -41,7 +41,7 @@ public class FileSystemDatalayer(
             [
                 Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AbsolutePath),
                 Builders<FileInfoModel>.IndexKeys.Ascending(x => x.AliasCode),
-                Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RelativePath).Ascending(x => x.RootFolder)
+                // Builders<FileInfoModel>.IndexKeys.Ascending(x => x.RelativePath).Ascending(x => x.RootFolder)
             ];
             IndexKeysDefinition<FileInfoModel>[] indexKeysDefinitions =
             [

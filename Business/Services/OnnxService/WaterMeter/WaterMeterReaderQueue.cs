@@ -35,7 +35,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
         _fileSystemBusinessLayer = fileSystemBusinessLayer;
         _iotSensorBusinessLayer = iotSensorBusinessLayer;
         _waterMeterInferenceService = waterMeterInferenceService;
-        _semaphore = new(_waterMeterInferenceService.GetBatchSize() * 4);
+        _semaphore = new(_waterMeterInferenceService.GetBatchSize() * 8);
     }
 
 
