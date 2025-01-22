@@ -20,13 +20,12 @@ public class IoTRequestQueueBackgroundService(
     private PeriodicTimer? BatchTimer { get; set; }
     private readonly int _timePeriod = options.GetIoTRequestQueueConfig.TimePeriodInSecond;
     private DateTime _currentDay = DateTime.UtcNow.Date; // Tracks the current day
-
-
-    private readonly Channel<IoTRecordUpdateModel> _ioTRequestQueue = Channel.CreateBounded<IoTRecordUpdateModel>(new BoundedChannelOptions(1024) { FullMode = BoundedChannelFullMode.Wait });
+    
+    private readonly Channel<IoTRecordUpdateModel> _ioTRequestQueue = Channel.CreateBounded<IoTRecordUpdateModel>(new BoundedChannelOptions(100_000) { FullMode = BoundedChannelFullMode.Wait });
 
     private async Task InsertPeriodTimerCallback(CancellationToken cancellationToken)
     {
-        var today = DateTime.UtcNow.Date;
+        var today = timeProvider.GetUtcNow().Date;
         // Reset the counter if the day has changed
         if (_currentDay != today)
         {
