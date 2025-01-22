@@ -149,9 +149,12 @@ public class VectorDataLayer(IMongoDataLayerContext context) : IVectorDataLayer
     public async IAsyncEnumerable<VectorRecord> GetAsyncEnumerator(string collection, string id, [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         using var cursor = await _dataDb.FindAsync(x => x.Collection == collection && x.Key == id, cancellationToken: cancellationToken);
-        foreach (VectorRecord record in cursor.ToEnumerable(cancellationToken: cancellationToken))
+        while (await cursor.MoveNextAsync(cancellationToken))
         {
-            yield return record;
+            foreach (var record in cursor.Current)
+            {
+                yield return record;
+            }
         }
     }
 }

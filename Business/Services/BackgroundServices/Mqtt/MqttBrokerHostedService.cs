@@ -89,14 +89,12 @@ public class MqttBrokerHostedService(
         await deviceBs.UpdateLastServiceTime(arg.UserName, IoTDeviceStatus.Offline);
     }
 
-    private Task MqttServerOnInterceptingPublishAsync(InterceptingPublishEventArgs args)
+    private async Task MqttServerOnInterceptingPublishAsync(InterceptingPublishEventArgs args)
     {
         string topic = args.ApplicationMessage.Topic;
         string payload = Encoding.UTF8.GetString(args.ApplicationMessage.Payload);
-
         logger.LogInformation($"Topic: {topic} Payload: {payload}");
-
-        return Task.CompletedTask;
+        await deviceBs.UpdateLastServiceTime(args.UserName, IoTDeviceStatus.Offline);
     }
 
 

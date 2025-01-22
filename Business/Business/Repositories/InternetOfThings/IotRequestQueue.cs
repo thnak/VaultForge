@@ -15,7 +15,6 @@ namespace Business.Business.Repositories.InternetOfThings;
 public class IotRequestQueue : IIotRequestQueue
 {
     private readonly Channel<IoTRecord> _channel;
-    private long _dailyRequestCount; // Total requests for the day
 
     /// <summary>
     /// Per-sensor request counts
@@ -23,7 +22,6 @@ public class IotRequestQueue : IIotRequestQueue
     private readonly ConcurrentDictionary<string, ulong> _sensorRequestCounts;
 
     private readonly ConcurrentDictionary<string, float> _sensorLastValues;
-    private readonly Lock _counterLock = new(); // Lock for resetting daily counter
     private readonly IHubContext<IoTSensorSignalHub, IIoTSensorSignal> _hub;
     private readonly IParallelBackgroundTaskQueue _backgroundTaskQueue;
     private readonly ILogger<IIotRequestQueue> _logger;
@@ -49,7 +47,6 @@ public class IotRequestQueue : IIotRequestQueue
         try
         {
             await _channel.Writer.WriteAsync(data, cancellationToken);
-            IncrementDailyRequestCount();
             await UpdateSensorLastValue(data.Metadata.SensorId, data.Metadata.SensorData, cancellationToken);
             return true;
         }
@@ -72,23 +69,12 @@ public class IotRequestQueue : IIotRequestQueue
     public void Reset()
     {
         _sensorRequestCounts.Clear();
-        lock (_counterLock)
-        {
-            _dailyRequestCount = 0;
-        }
+        _sensorLastValues.Clear();
     }
 
     public bool TryRead([MaybeNullWhen(false)] out IoTRecord item)
     {
         return _channel.Reader.TryRead(out item);
-    }
-
-    public long GetTotalRequests()
-    {
-        lock (_counterLock)
-        {
-            return _dailyRequestCount;
-        }
     }
 
     public ulong GetTotalRequests(string deviceId)
@@ -111,16 +97,6 @@ public class IotRequestQueue : IIotRequestQueue
     public void IncrementTotalRequests(string deviceId)
     {
         _sensorRequestCounts.AddOrUpdate(deviceId, 0, (_, oldValue) => oldValue + 1);
-    }
-
-
-    private void IncrementDailyRequestCount()
-    {
-        lock (_counterLock)
-        {
-            // Increment the counter
-            _dailyRequestCount++;
-        }
     }
 
     private async Task UpdateSensorLastValue(string sensorId, float value, CancellationToken cancellationToken = default)

@@ -9,12 +9,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Business.Services.HostedServices.IoT;
 
-public class IoTRequestQueueHostedService(
+public class IoTRequestQueueBackgroundService(
     ApplicationConfiguration options,
     IIotRequestQueue iotRequestQueue,
     IIotRecordBusinessLayer iotRecordBusinessLayer,
     IWaterMeterReaderQueue waterMeterReaderQueue,
-    ILogger<IoTRequestQueueHostedService> logger,
+    ILogger<IoTRequestQueueBackgroundService> logger,
     IParallelBackgroundTaskQueue queue, TimeProvider timeProvider) : BackgroundService
 {
     private PeriodicTimer? BatchTimer { get; set; }

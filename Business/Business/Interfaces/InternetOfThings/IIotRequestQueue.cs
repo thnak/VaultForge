@@ -9,7 +9,6 @@ public interface IIotRequestQueue
     ValueTask<bool> WaitToReadAsync(CancellationToken cancellationToken = default);
     void Reset();
     bool TryRead([MaybeNullWhen(false)] out IoTRecord item);
-    long GetTotalRequests();
     ulong GetTotalRequests(string deviceId);
     float GetLastRecord(string deviceId);
     void SetTotalRequests(string deviceId, ulong totalRequests);

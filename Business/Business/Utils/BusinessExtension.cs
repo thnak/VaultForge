@@ -25,7 +25,7 @@ public static class BusinessExtension
         serviceCollection.AddSingleton<IFaceEmbeddingInferenceService, FaceEmbeddingInferenceService>();
         serviceCollection.AddSingleton<IYoloSessionManager, YoloSessionManager>();
         serviceCollection.AddSingleton<IFontServiceProvider, FontServiceProvider>();
-        serviceCollection.AddHostedService<IoTRequestQueueHostedService>();
+        serviceCollection.AddHostedService<IoTRequestQueueBackgroundService>();
         serviceCollection.AddHostedService<WaterMeterInferenceHostedService>();
         serviceCollection.AddHostedService<FaceEmbeddingInferenceHostedService>();
         serviceCollection.AddHostedService<YoloSessionManagerHostedService>();
