@@ -46,8 +46,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Service/Upload/UploadSpeedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Service/Upload/UploadSpeedService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Utils/IconContentExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/IconContentExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/WebContent/MimeTypeNames.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/WebContent/MimeTypeNames.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1263,15 +1267,8 @@
       <workItem from="1737505884113" duration="5091000" />
       <workItem from="1737541344542" duration="1003000" />
       <workItem from="1737559397337" duration="5313000" />
-      <workItem from="1737618107711" duration="10261000" />
-    </task>
-    <task id="LOCAL-00669" summary="return array wrong position">
-      <option name="closed" value="true" />
-      <created>1736526279836</created>
-      <option name="number" value="00669" />
-      <option name="presentableId" value="LOCAL-00669" />
-      <option name="project" value="LOCAL" />
-      <updated>1736526279836</updated>
+      <workItem from="1737618107711" duration="10440000" />
+      <workItem from="1737639024794" duration="1380000" />
     </task>
     <task id="LOCAL-00670" summary="remove stupid things">
       <option name="closed" value="true" />
@@ -1657,7 +1654,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737628557879</updated>
     </task>
-    <option name="localTasksCounter" value="718" />
+    <task id="LOCAL-00718" summary="small update">
+      <option name="closed" value="true" />
+      <created>1737629060890</created>
+      <option name="number" value="00718" />
+      <option name="presentableId" value="LOCAL-00718" />
+      <option name="project" value="LOCAL" />
+      <updated>1737629060890</updated>
+    </task>
+    <option name="localTasksCounter" value="719" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

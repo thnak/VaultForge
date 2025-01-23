@@ -16,17 +16,25 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
     private class UploadProgress
     {
         public string FileName { get; set; } = string.Empty;
-        public string Icon => ContentType.GetIconContentType();
+        public string Icon => ContentType.GetIconContentType(FileName);
         public string ContentType { get; set; } = string.Empty;
         public string UploadMessage { get; set; } = string.Empty;
         public string UploadSpeed { get; set; } = string.Empty;
         public long FileSize { get; set; } = 0;
         public double Progress { get; set; } = 0;
-        public Color ProgressColor { get; set; } = Color.Default;
+
+        public Color ProgressColor => State switch
+        {
+            UploadState.None => Color.Default,
+            UploadState.Uploading => Color.Primary,
+            UploadState.Processing => Color.Secondary,
+            UploadState.Error => Color.Error,
+        };
 
         public readonly string Guid = System.Guid.NewGuid().ToString();
 
         public UploadState State { get; set; } = UploadState.None;
+        public bool Indeterminate => State == UploadState.Uploading;
     }
 
     private enum UploadState
@@ -44,14 +52,12 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
     private string _dragClass = DefaultDragClass;
     private readonly List<UploadProgress> _fileNames = new();
     private List<IBrowserFile> _fileUpload = [];
-    private Timer SpeedCheckTimer;
     private UploadSpeedService _speedService = new();
 
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
-            SpeedCheckTimer = new Timer(1000) { AutoReset = true };
             _speedService.Trackers += Trackers;
         }
 
@@ -64,14 +70,14 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
 
     private Task OnInputFileChanged(InputFileChangeEventArgs arg)
     {
-        var selectedFiles = arg.GetMultipleFiles();
+        var selectedFiles = arg.GetMultipleFiles(Int32.MaxValue);
         _fileUpload.AddRange(selectedFiles);
         foreach (var file in selectedFiles)
         {
             var model = new UploadProgress
             {
                 FileName = file.Name,
-                UploadMessage = file.Name,
+                UploadMessage = file.Size.ToSizeString(),
                 ContentType = file.ContentType,
                 FileSize = file.Size,
             };
@@ -115,8 +121,8 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
 
                     if (percent >= 100)
                     {
-                        _fileNames[index1].ProgressColor = Color.Secondary;
                         _fileNames[index1].State = UploadState.Processing;
+                        _speedService.CompleteItem(_fileNames[index1].FileName);
                     }
 
                     InvokeAsync(StateHasChanged);
@@ -144,7 +150,6 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
                 await Trackers();
                 foreach (var file in _fileNames)
                 {
-                    file.ProgressColor = result.IsSuccessStatusCode ? Color.Success : Color.Error;
                     file.State = result.IsSuccessStatusCode ? UploadState.Uploaded : UploadState.Error;
                 }
             }
@@ -165,7 +170,6 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
     public void Dispose()
     {
         _speedService.Trackers -= Trackers;
-        SpeedCheckTimer.Dispose();
         _speedService.Dispose();
     }
 }

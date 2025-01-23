@@ -5,9 +5,32 @@ namespace BusinessModels.Utils;
 
 public static class IconContentExtensions
 {
-    public static string GetIconContentType(this string self)
+    public static string GetIconContentType(this string contentType, string fileName = "")
     {
-        return self switch
+        if (!string.IsNullOrWhiteSpace(fileName) && contentType == "application/octet-stream")
+        {
+            string extension = Path.GetExtension(fileName).ToLowerInvariant();
+            return extension switch
+            {
+                ".jpg" or ".jpeg" => "fa-solid fa-image",
+                ".avif" => "fa-solid fa-image",
+                ".bmp" => "fa-solid fa-image",
+                ".gif" => "fa-solid fa-image",
+                ".png" => "fa-solid fa-image",
+                ".ico" => "fa-solid fa-image",
+                ".svg" => "fa-solid fa-image",
+                ".tiff" => "fa-solid fa-image",
+                ".webp" => "fa-solid fa-image",
+                ".avi" => "fa-solid fa-video",
+                ".mkv" => "fa-solid fa-video",
+                ".ts" => "fa-solid fa-video",
+                ".mp4" => "fa-solid fa-video",
+                ".mpeg" => "fa-solid fa-video",
+                ".onnx" => "fa-solid fa-hexagon-nodes",
+                _ => "fa-solid fa-file-circle-question"
+            };
+        }
+        return contentType switch
         {
             nameof(FolderContentType.Folder) => "fa-solid fa-folder",
             nameof(FolderContentType.DeletedFolder) => "fa-solid fa-folder-xmark",
@@ -26,36 +49,8 @@ public static class IconContentExtensions
             MimeTypeNames.Video.Ts => "fa-solid fa-video",
             MimeTypeNames.Video.Mp4 => "fa-solid fa-video",
             MimeTypeNames.Video.Mpeg => "fa-solid fa-video",
+            MimeTypeNames.Neuron.Onnx => "fa-solid fa-hexagon-nodes",
             _ => "fa-solid fa-file-circle-question"
-        };
-    }
-
-    /// <summary>
-    /// Gets an icon string based on the file extension.
-    /// </summary>
-    /// <param name="fileName">The file name or path.</param>
-    /// <returns>A string representing the icon (can be an HTML or Unicode character).</returns>
-    public static string GetIconFromName(this string fileName)
-    {
-        if (string.IsNullOrWhiteSpace(fileName))
-            return "insert_drive_file"; // Default generic file icon
-
-        string extension = Path.GetExtension(fileName).ToLowerInvariant();
-
-        return extension switch
-        {
-            ".png" or ".jpg" or ".jpeg" or ".gif" or ".bmp" => "image", // Image file icon
-            ".pdf" => "picture_as_pdf", // PDF file icon
-            ".doc" or ".docx" => "description", // Word document icon
-            ".xls" or ".xlsx" => "table_chart", // Excel file icon
-            ".ppt" or ".pptx" => "slideshow", // PowerPoint icon
-            ".zip" or ".rar" or ".7z" or ".tar" or ".gz" => "folder_zip", // Archive file icon
-            ".mp3" or ".wav" or ".aac" or ".flac" => "audiotrack", // Audio file icon
-            ".mp4" or ".avi" or ".mov" or ".mkv" => "movie", // Video file icon
-            ".txt" or ".log" => "text_snippet", // Text file icon
-            ".html" or ".css" or ".js" or ".json" => "code", // Code file icon
-            ".exe" => "settings", // Executable file icon
-            _ => "insert_drive_file" // Default icon for unknown extensions
         };
     }
 }

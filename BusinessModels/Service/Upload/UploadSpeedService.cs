@@ -40,6 +40,17 @@ public class UploadSpeedService : IDisposable
         tracker.UpdateUploadedBytes(uploadedBytes);
     }
 
+    public void CompleteItem(string fileId)
+    {
+        if (!_uploadTrackers.TryGetValue(fileId, out var tracker))
+        {
+            tracker = new UploadTracker();
+            _uploadTrackers[fileId] = tracker;
+        }
+
+        tracker.MarkAsComplete();
+    }
+
     /// <summary>
     /// Gets the current speed string for a file.
     /// </summary>
@@ -78,10 +89,17 @@ public class UploadSpeedService : IDisposable
         private long _lastUploadedBytes = 0;
         private long _currentUploadedBytes = 0;
         private double _currentSpeed = 0; // Speed in bytes per second
+        private double _maxSpeed = 0;
+        private bool _completed = false;
 
         public void UpdateUploadedBytes(long uploadedBytes)
         {
             _currentUploadedBytes = uploadedBytes;
+        }
+
+        public void MarkAsComplete()
+        {
+            _completed = true;
         }
 
         public void CalculateSpeed()
@@ -89,6 +107,7 @@ public class UploadSpeedService : IDisposable
             var uploadedSinceLastCheck = _currentUploadedBytes - _lastUploadedBytes;
             _currentSpeed = uploadedSinceLastCheck; // Since timer interval is 1 second
             _lastUploadedBytes = _currentUploadedBytes;
+            _maxSpeed = Math.Max(_currentSpeed, _maxSpeed);
         }
 
         public string GetSpeedString()
@@ -96,7 +115,7 @@ public class UploadSpeedService : IDisposable
             const long KB = 1024;
             const long MB = KB * 1024;
 
-            return _currentSpeed switch
+            return (_completed ? _maxSpeed : _currentSpeed) switch
             {
                 >= MB => $"{(_currentSpeed / MB):F2} MB/s",
                 >= KB => $"{(_currentSpeed / KB):F2} KB/s",
