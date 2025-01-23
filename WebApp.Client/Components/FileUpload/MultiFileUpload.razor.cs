@@ -97,7 +97,7 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
 
     private async Task Upload(IReadOnlyList<IBrowserFile> fileUploads)
     {
-        int index = _fileNames.Count - 1;
+        int index = _fileNames.Count - fileUploads.Count;
         index = Math.Max(0, index);
         using var multipartContent = new MultipartContent();
         List<Stream> streams = [];

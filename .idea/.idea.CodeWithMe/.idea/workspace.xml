@@ -46,19 +46,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/BusinessModels/Service/Upload/UploadSpeedService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/BusinessModels/Utils/FileSizeExtensions.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor.css" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SampleFileUpload/SampleFileUploadPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SampleFileUpload/SampleFileUploadPage.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SampleFileUpload/SampleFileUploadPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SampleFileUpload/SampleFileUploadPage.razor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Utils/IconContentExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/IconContentExtensions.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1274,15 +1263,7 @@
       <workItem from="1737505884113" duration="5091000" />
       <workItem from="1737541344542" duration="1003000" />
       <workItem from="1737559397337" duration="5313000" />
-      <workItem from="1737618107711" duration="9453000" />
-    </task>
-    <task id="LOCAL-00668" summary="enchant dialog style">
-      <option name="closed" value="true" />
-      <created>1736505678100</created>
-      <option name="number" value="00668" />
-      <option name="presentableId" value="LOCAL-00668" />
-      <option name="project" value="LOCAL" />
-      <updated>1736505678100</updated>
+      <workItem from="1737618107711" duration="10261000" />
     </task>
     <task id="LOCAL-00669" summary="return array wrong position">
       <option name="closed" value="true" />
@@ -1668,7 +1649,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737564609741</updated>
     </task>
-    <option name="localTasksCounter" value="717" />
+    <task id="LOCAL-00717" summary="small update">
+      <option name="closed" value="true" />
+      <created>1737628557879</created>
+      <option name="number" value="00717" />
+      <option name="presentableId" value="LOCAL-00717" />
+      <option name="project" value="LOCAL" />
+      <updated>1737628557879</updated>
+    </task>
+    <option name="localTasksCounter" value="718" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
