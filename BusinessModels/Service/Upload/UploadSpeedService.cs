@@ -16,6 +16,16 @@ public class UploadSpeedService : IDisposable
         _updateTimer.Start();
     }
 
+    public void Stop()
+    {
+        _updateTimer.Stop();
+    }
+
+    public void Start()
+    {
+        _updateTimer.Start();
+    }
+    
     private void TimerElapsed(object? sender, ElapsedEventArgs e)
     {
         UpdateAllTrackers();
@@ -70,7 +80,7 @@ public class UploadSpeedService : IDisposable
         _uploadTrackers.Remove(fileId);
     }
 
-    private void UpdateAllTrackers()
+    public void UpdateAllTrackers()
     {
         foreach (var tracker in _uploadTrackers.Values)
         {
@@ -115,11 +125,13 @@ public class UploadSpeedService : IDisposable
             const long KB = 1024;
             const long MB = KB * 1024;
 
-            return (_completed ? _maxSpeed : _currentSpeed) switch
+            var speed = _completed ? _maxSpeed : _currentSpeed;
+
+            return speed switch
             {
-                >= MB => $"{(_currentSpeed / MB):F2} MB/s",
-                >= KB => $"{(_currentSpeed / KB):F2} KB/s",
-                _ => $"{_currentSpeed:F2} Bytes/s"
+                >= MB => $"{(speed / MB):F2} MB/s",
+                >= KB => $"{(speed / KB):F2} KB/s",
+                _ => $"{speed:F2} Bytes/s"
             };
         }
     }

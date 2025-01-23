@@ -7,7 +7,7 @@ public static class IconContentExtensions
 {
     public static string GetIconContentType(this string contentType, string fileName = "")
     {
-        if (!string.IsNullOrWhiteSpace(fileName) && contentType == "application/octet-stream")
+        if (string.IsNullOrEmpty(contentType) || !string.IsNullOrEmpty(fileName) && contentType == "application/octet-stream")
         {
             string extension = Path.GetExtension(fileName).ToLowerInvariant();
             return extension switch
@@ -26,10 +26,11 @@ public static class IconContentExtensions
                 ".ts" => "fa-solid fa-video",
                 ".mp4" => "fa-solid fa-video",
                 ".mpeg" => "fa-solid fa-video",
-                ".onnx" or ".pth" or ".rknn" => "fa-solid fa-hexagon-nodes",
+                ".onnx" or ".pth" or ".rknn" => "fa-solid fa-brain",
                 _ => "fa-solid fa-file-circle-question"
             };
         }
+
         return contentType switch
         {
             nameof(FolderContentType.Folder) => "fa-solid fa-folder",
@@ -49,7 +50,6 @@ public static class IconContentExtensions
             MimeTypeNames.Video.Ts => "fa-solid fa-video",
             MimeTypeNames.Video.Mp4 => "fa-solid fa-video",
             MimeTypeNames.Video.Mpeg => "fa-solid fa-video",
-            MimeTypeNames.Neuron.Onnx => "fa-solid fa-hexagon-nodes",
             _ => "fa-solid fa-file-circle-question"
         };
     }

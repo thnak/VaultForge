@@ -124,11 +124,6 @@ public static class MimeTypeNames
         public const string Mpg = "video/mpeg";
         public const string Ts = "video/mp2t";
     }
-
-    public static class Neuron
-    {
-        public const string Onnx = "application/onnx";
-    }
     
     public static class Audio
     {

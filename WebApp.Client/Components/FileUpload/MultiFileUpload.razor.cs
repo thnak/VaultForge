@@ -35,7 +35,7 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
         public readonly string Guid = System.Guid.NewGuid().ToString();
 
         public UploadState State { get; set; } = UploadState.None;
-        public bool Indeterminate => State == UploadState.Uploading;
+        public bool Indeterminate => State == UploadState.Processing;
     }
 
     private enum UploadState
@@ -93,7 +93,10 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
     private Task Trackers()
     {
         if (_fileNames.All(x => x.State == UploadState.Uploaded))
+        {
+            _speedService.Stop();
             return Task.CompletedTask;
+        }
 
         foreach (var fileUpload in _fileNames)
         {
@@ -107,7 +110,11 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
     {
         _uploading = true;
         int index = _fileNames.Count - fileUploads.Count;
-        index = Math.Max(0, index);
+        if (fileUploads.Count > 0)
+        {
+            _speedService.Start();
+        }
+
         using var multipartContent = new MultipartContent();
         List<Stream> streams = [];
         try
@@ -116,11 +123,12 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
             {
                 var index1 = index;
                 _fileNames[index1].Progress = 0;
+                _fileNames[index1].State = UploadState.Uploading;
+
                 var progress = new Progress<double>(percent =>
                 {
                     _fileNames[index1].Progress = percent;
                     _speedService.AddOrUpdate(_fileNames[index1].Guid, (long)(_fileNames[index1].FileSize * percent / 100));
-                    _fileNames[index1].State = UploadState.Uploading;
 
                     if (percent >= 100)
                     {
@@ -137,7 +145,7 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
                 index++;
             }
 
-            var folderRequest = await ApiService.GetFolderRequestAsync(null, 0, 50, null, false, false);
+            var folderRequest = await ApiService.GetFolderRequestAsync(null, 0, 1, null, false, false);
             if (folderRequest.IsSuccessStatusCode)
             {
                 var result = await ApiService.UploadFileAsync(folderRequest.Data.Folder.AliasCode, multipartContent);
@@ -150,11 +158,11 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
                     ToastService.ShowError(result.Message, TypeClassList.ToastDefaultSetting);
                 }
 
-                await Trackers();
-                foreach (var file in _fileNames)
-                {
-                    file.State = result.IsSuccessStatusCode ? UploadState.Uploaded : UploadState.Error;
-                }
+                UpdateFileState(result.IsSuccessStatusCode ? UploadState.Uploaded : UploadState.Error);
+            }
+            else
+            {
+                UpdateFileState(UploadState.Error);
             }
         }
         catch (Exception e)
@@ -163,12 +171,22 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
         }
         finally
         {
+            await Trackers();
             foreach (var stream in streams)
             {
                 await stream.DisposeAsync();
             }
 
             _uploading = false;
+        }
+    }
+
+    private void UpdateFileState(UploadState status)
+    {
+        _speedService.UpdateAllTrackers();
+        foreach (var file in _fileNames)
+        {
+            file.State = status;
         }
     }
 

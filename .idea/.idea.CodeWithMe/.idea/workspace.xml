@@ -46,9 +46,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="upload un-limit">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/Service/Upload/UploadSpeedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Service/Upload/UploadSpeedService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BusinessModels/Utils/IconContentExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/IconContentExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BusinessModels/WebContent/MimeTypeNames.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/WebContent/MimeTypeNames.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
@@ -114,6 +117,7 @@
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Security.Cryptography/src/System/Security/Cryptography/X509Certificates/CertificatePal.Windows.Import.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/573461dc897731c11d6166574b77a8c3aabba220/src/libraries/System.Text.Json/src/System/Text/Json/Serialization/JsonConverterOfT.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/06f1cebe3a4b49688cb93231ee02bc5eb8000/67/561a064b/IndexReader.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0b6941df37cd4cd9915e4f855a73711b2df28/ac/395d253d/IBrowserFile.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0fb7a5f343ed4578a15c716986a3f17950c00/7a/d308585c/NativeDateTimeResolver.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/460eb0c121c14cee9174d62b35979cd6cd30/7f/23eb5914/LoggerInformation.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4982667bcc584b81a094468fbfdf129e38e38/1e/a0d5f7dc/IMqttNetLogger.cs" root0="FORCE_HIGHLIGHTING" />
@@ -1266,15 +1270,7 @@
       <workItem from="1737541344542" duration="1003000" />
       <workItem from="1737559397337" duration="5313000" />
       <workItem from="1737618107711" duration="10440000" />
-      <workItem from="1737639024794" duration="1997000" />
-    </task>
-    <task id="LOCAL-00671" summary="remove object ID from client">
-      <option name="closed" value="true" />
-      <created>1736662669265</created>
-      <option name="number" value="00671" />
-      <option name="presentableId" value="LOCAL-00671" />
-      <option name="project" value="LOCAL" />
-      <updated>1736662669265</updated>
+      <workItem from="1737639024794" duration="4660000" />
     </task>
     <task id="LOCAL-00672" summary="remove objectId from front end">
       <option name="closed" value="true" />
@@ -1660,7 +1656,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737640786199</updated>
     </task>
-    <option name="localTasksCounter" value="720" />
+    <task id="LOCAL-00720" summary="small update">
+      <option name="closed" value="true" />
+      <created>1737641219108</created>
+      <option name="number" value="00720" />
+      <option name="presentableId" value="LOCAL-00720" />
+      <option name="project" value="LOCAL" />
+      <updated>1737641219108</updated>
+    </task>
+    <option name="localTasksCounter" value="721" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1714,9 +1718,9 @@
     <MESSAGE value="clear progress" />
     <MESSAGE value="add more log" />
     <MESSAGE value="using time provider" />
-    <MESSAGE value="small update" />
     <MESSAGE value="upload un-limit" />
-    <option name="LAST_COMMIT_MESSAGE" value="upload un-limit" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
