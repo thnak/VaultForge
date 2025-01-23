@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using WebApp.Client.Utils;
-using Timer = System.Timers.Timer;
 
 namespace WebApp.Client.Components.FileUpload;
 
@@ -29,6 +28,8 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
             UploadState.Uploading => Color.Primary,
             UploadState.Processing => Color.Secondary,
             UploadState.Error => Color.Error,
+            UploadState.Uploaded => Color.Success,
+            _ => throw new ArgumentOutOfRangeException()
         };
 
         public readonly string Guid = System.Guid.NewGuid().ToString();
@@ -53,6 +54,7 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
     private readonly List<UploadProgress> _fileNames = new();
     private List<IBrowserFile> _fileUpload = [];
     private UploadSpeedService _speedService = new();
+    private bool _uploading = false;
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -103,6 +105,7 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
 
     private async Task Upload(IReadOnlyList<IBrowserFile> fileUploads)
     {
+        _uploading = true;
         int index = _fileNames.Count - fileUploads.Count;
         index = Math.Max(0, index);
         using var multipartContent = new MultipartContent();
@@ -164,6 +167,8 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
             {
                 await stream.DisposeAsync();
             }
+
+            _uploading = false;
         }
     }
 

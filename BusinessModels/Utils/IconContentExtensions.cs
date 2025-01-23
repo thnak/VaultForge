@@ -26,7 +26,7 @@ public static class IconContentExtensions
                 ".ts" => "fa-solid fa-video",
                 ".mp4" => "fa-solid fa-video",
                 ".mpeg" => "fa-solid fa-video",
-                ".onnx" => "fa-solid fa-hexagon-nodes",
+                ".onnx" or ".pth" or ".rknn" => "fa-solid fa-hexagon-nodes",
                 _ => "fa-solid fa-file-circle-question"
             };
         }

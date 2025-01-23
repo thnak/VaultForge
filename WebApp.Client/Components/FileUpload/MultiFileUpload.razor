@@ -2,7 +2,7 @@
     <MudFileUpload T="IReadOnlyList<IBrowserFile>"
                    OnFilesChanged="OnInputFileChanged"
                    AppendMultipleFiles MaximumFileCount="Int32.MaxValue"
-                   Hidden="@false"
+                   Hidden="@false" Disabled="_uploading"
                    InputClass="absolute mud-width-full mud-height-full overflow-hidden z-10"
                    InputStyle="opacity:0"
                    tabindex="-1"

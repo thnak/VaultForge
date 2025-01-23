@@ -46,11 +46,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Service/Upload/UploadSpeedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Service/Upload/UploadSpeedService.cs" afterDir="false" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="upload un-limit">
       <change beforePath="$PROJECT_DIR$/BusinessModels/Utils/IconContentExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/IconContentExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/WebContent/MimeTypeNames.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/WebContent/MimeTypeNames.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
@@ -1268,15 +1266,7 @@
       <workItem from="1737541344542" duration="1003000" />
       <workItem from="1737559397337" duration="5313000" />
       <workItem from="1737618107711" duration="10440000" />
-      <workItem from="1737639024794" duration="1380000" />
-    </task>
-    <task id="LOCAL-00670" summary="remove stupid things">
-      <option name="closed" value="true" />
-      <created>1736659710792</created>
-      <option name="number" value="00670" />
-      <option name="presentableId" value="LOCAL-00670" />
-      <option name="project" value="LOCAL" />
-      <updated>1736659710793</updated>
+      <workItem from="1737639024794" duration="1997000" />
     </task>
     <task id="LOCAL-00671" summary="remove object ID from client">
       <option name="closed" value="true" />
@@ -1662,7 +1652,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737629060890</updated>
     </task>
-    <option name="localTasksCounter" value="719" />
+    <task id="LOCAL-00719" summary="upload un-limit">
+      <option name="closed" value="true" />
+      <created>1737640786199</created>
+      <option name="number" value="00719" />
+      <option name="presentableId" value="LOCAL-00719" />
+      <option name="project" value="LOCAL" />
+      <updated>1737640786199</updated>
+    </task>
+    <option name="localTasksCounter" value="720" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1693,7 +1691,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="add receive" />
     <MESSAGE value="import wrong type" />
     <MESSAGE value="shit" />
     <MESSAGE value="fix wrong update fields" />
@@ -1718,7 +1715,8 @@
     <MESSAGE value="add more log" />
     <MESSAGE value="using time provider" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="upload un-limit" />
+    <option name="LAST_COMMIT_MESSAGE" value="upload un-limit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
