@@ -54,7 +54,7 @@ public partial class SampleFileUploadPage(ILogger<SampleFileUploadPage> logger) 
         using var multipartContent = new MultipartContent();
         List<Stream> streams = [];
         try
-        {
+        {   
             foreach (var file in _fileUpload)
             {
                 var index1 = index;
@@ -98,9 +98,7 @@ public partial class SampleFileUploadPage(ILogger<SampleFileUploadPage> logger) 
         }
     }
 
-    private void SetDragClass()
-        => _dragClass = $"{DefaultDragClass} mud-border-primary";
+    private void SetDragClass() => _dragClass = $"{DefaultDragClass} mud-border-primary";
 
-    private void ClearDragClass()
-        => _dragClass = DefaultDragClass;
+    private void ClearDragClass() => _dragClass = DefaultDragClass;
 }

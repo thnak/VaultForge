@@ -1,5 +1,4 @@
-﻿using BrainNet.Utils;
-using Business.Business.Interfaces.FileSystem;
+﻿using Business.Business.Interfaces.FileSystem;
 using Business.Business.Interfaces.InternetOfThings;
 using Business.Data.StorageSpace;
 using BusinessModels.System.InternetOfThings;
@@ -55,6 +54,7 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
                     ProcessStatus = ProcessStatus.Failed
                 };
             }
+
             var sensor = _iotSensorBusinessLayer.Get(record.Metadata.SensorId);
 
             var pathArray = await _redundantArrayOfIndependentDisks.GetDataBlockPaths(file.AbsolutePath, CancellationToken.None);
@@ -73,19 +73,21 @@ public class WaterMeterReaderQueue : IWaterMeterReaderQueue
             await using Raid5Stream raid5Stream = new Raid5Stream(pathArray.Files, pathArray.FileSize, pathArray.StripeSize, FileMode.Open, FileAccess.Read, FileShare.Read);
             await raid5Stream.CopyToAsync(memoryStream, (int)pathArray.FileSize, CancellationToken.None);
             memoryStream.Seek(0, SeekOrigin.Begin);
-            
+
             try
             {
                 using var image = await Image.LoadAsync<Rgb24>(memoryStream, CancellationToken.None);
-                image.AutoOrient();
-                if (sensor is { Rotate: > 0 })
-                    image.Mutate(i => i.Rotate(sensor.Rotate));
-                if (sensor is { FlipHorizontal: true })
-                    image.Mutate(i => i.Flip(FlipMode.Horizontal));
-                if (sensor is { FlipVertical: true })
-                    image.Mutate(i => i.Flip(FlipMode.Vertical));
-
-
+                image.Mutate(i =>
+                {
+                    i.AutoOrient();
+                    if (sensor is { Rotate: > 0 })
+                        i.Rotate(sensor.Rotate);
+                    if (sensor is { FlipHorizontal: true })
+                        i.Flip(FlipMode.Vertical);
+                    if (sensor is { FlipVertical: true })
+                        i.Flip(FlipMode.Horizontal);
+                });
+                
                 var predResult = await _waterMeterInferenceService.AddInputAsync(image, cancellationToken);
 
                 if (predResult.IsSuccess)

@@ -1,4 +1,5 @@
-﻿@using WebApp.Client.Components.Menus
+﻿@using BusinessModels.Utils
+@using WebApp.Client.Components.Menus
 @rendermode InteractiveWebAssembly
 @attribute [Route("/")]
 
@@ -167,7 +168,7 @@ else
             <div class="@context.ItemClassList" @key="context" @ondblclick="context.DbLickEvent.Action" >
                 <div class="icon-container-tag" >
                     <MudText Typo="Typo.h6" >
-                        <i class="@context.ContentType.GetIcon()" ></i>
+                        <i class="@IconContentExtensions.GetIconContentType(context.ContentType)" ></i>
                     </MudText>
                 </div>
                 <div class="flex-1 overflow-hidden" >
@@ -228,7 +229,7 @@ else
                 <div class="d-flex flex-row gap-2 mud-paper pa-3" @key="x.Id" >
                     <div class="align-center d-flex justify-center" >
                         <MudText>
-                            <i class="@x.ContentType.GetIcon()" ></i>
+                            <i class="@IconContentExtensions.GetIconContentType(x.ContentType)" ></i>
                         </MudText>
                     </div>
                     <div class="d-flex flex-1 flex-column gap-0 overflow-hidden" >

@@ -46,10 +46,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/BusinessModels/Service/Upload/UploadSpeedService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BusinessModels/Utils/FileSizeExtensions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Data/Repositories/FileSystem/FileSystemDatalayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Create.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Controllers/InternetOfThings/Record/IoTController.Create.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/OnnxService/WaterMeter/WaterMeterReaderQueue.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SampleFileUpload/SampleFileUploadPage.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SampleFileUpload/SampleFileUploadPage.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SampleFileUpload/SampleFileUploadPage.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SampleFileUpload/SampleFileUploadPage.razor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Pages/Drive/SharedDrive/Page.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Utils/IconContentExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/IconContentExtensions.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -162,6 +171,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/66f0292d6d8a9b716f2c022ea17708dde5be8e0a67ef1d1eadfd7bc84c2/Cell.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/69f82dfcd683547688c2c80e529252cc8ec5bd621fb654be7194a6136566c9/XSSFWorkbook.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6a44d1618475c554cdb454d3d6746789df652e379e2a5e5e67b916046b0e0d2/IndexKind.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6c68e382dd7d1513c90bf1b93d0671d5a8b9279be2ade6a37ef0bd75fa3d9c/Progress.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6d2cd2d53ab41ffc609b3587667f9d8ec76cbc74fe5f585b8d1ed813c5c4/MqttNetSourceLogger.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6f9ada867a6d42c25bec62a843ee74fde1f3e87dfd7b4d233f7dbb8726819e4/MqttConnectReasonCode.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/74e4c72cd3922ed61496931f33baf4a9b5950edddb6b78bc296241285f25c3/TaskAwaiter.cs" root0="FORCE_HIGHLIGHTING" />
@@ -1263,15 +1273,8 @@
       <workItem from="1737421156873" duration="15322000" />
       <workItem from="1737505884113" duration="5091000" />
       <workItem from="1737541344542" duration="1003000" />
-      <workItem from="1737559397337" duration="5129000" />
-    </task>
-    <task id="LOCAL-00667" summary="show error log, allow large file upload">
-      <option name="closed" value="true" />
-      <created>1736504977626</created>
-      <option name="number" value="00667" />
-      <option name="presentableId" value="LOCAL-00667" />
-      <option name="project" value="LOCAL" />
-      <updated>1736504977626</updated>
+      <workItem from="1737559397337" duration="5313000" />
+      <workItem from="1737618107711" duration="9453000" />
     </task>
     <task id="LOCAL-00668" summary="enchant dialog style">
       <option name="closed" value="true" />
@@ -1657,7 +1660,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737563242829</updated>
     </task>
-    <option name="localTasksCounter" value="716" />
+    <task id="LOCAL-00716" summary="small update">
+      <option name="closed" value="true" />
+      <created>1737564609741</created>
+      <option name="number" value="00716" />
+      <option name="presentableId" value="LOCAL-00716" />
+      <option name="project" value="LOCAL" />
+      <updated>1737564609741</updated>
+    </task>
+    <option name="localTasksCounter" value="717" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1749,19 +1760,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="93" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs</url>
-          <line>129</line>
-          <properties documentPath="C:\Users\thanh\Git\VaultForge\WebApp\Controllers\ContentServing\FilesController.Create.cs" containingFunctionPresentation="Method 'UploadPhysical'">
-            <startOffsets>
-              <option value="5139" />
-            </startOffsets>
-            <endOffsets>
-              <option value="5226" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="109" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/WebApp/Controllers/ContentServing/FilesController.Create.cs</url>

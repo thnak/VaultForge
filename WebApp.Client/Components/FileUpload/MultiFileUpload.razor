@@ -1,0 +1,58 @@
+﻿<MudStack Style="width: 100%">
+    <MudFileUpload T="IReadOnlyList<IBrowserFile>"
+                   OnFilesChanged="OnInputFileChanged"
+                   AppendMultipleFiles MaximumFileCount="Int32.MaxValue"
+                   Hidden="@false"
+                   InputClass="absolute mud-width-full mud-height-full overflow-hidden z-10"
+                   InputStyle="opacity:0"
+                   tabindex="-1"
+                   @ondrop="@ClearDragClass"
+                   @ondragenter="@SetDragClass"
+                   @ondragleave="@ClearDragClass"
+                   @ondragend="@ClearDragClass">
+        <ActivatorContent>
+            <MudPaper Height="auto"
+                      Outlined="true"
+                      Class="@_dragClass">
+                <MudText Typo="Typo.h6">
+                    Drag and drop files here or click
+                </MudText>
+            </MudPaper>
+        </ActivatorContent>
+    </MudFileUpload>
+
+    <div class="file-list-container">
+        @foreach (var fi in _fileNames)
+        {
+            <div class="d-flex flex-row mud-paper mud-elevation-1 pa-3" @key="fi.Guid" id="@fi.Guid">
+
+                <div class="icon-container">
+                    <MudIcon Icon="@fi.Icon" Color="fi.ProgressColor"></MudIcon>
+                </div>
+
+                <div class="content-container">
+
+                    <MudText Typo="Typo.h5">@fi.FileName</MudText>
+
+                    @if (fi.State == UploadState.Processing)
+                    {
+                        <MudProgressLinear Color="fi.ProgressColor" Indeterminate="true"/>
+                    }
+                    else
+                    {
+                        <MudProgressLinear Value="fi.Progress" Color="fi.ProgressColor"/>
+                    }
+
+                    <div class="d-flex flex-row justify-space-between">
+                        <MudText Typo="Typo.caption">@fi.UploadMessage</MudText>
+                        <MudText Typo="Typo.caption">@fi.UploadSpeed</MudText>
+                    </div>
+
+                </div>
+
+            </div>
+        }
+    </div>
+
+
+</MudStack>
