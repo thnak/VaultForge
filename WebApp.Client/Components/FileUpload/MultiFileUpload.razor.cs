@@ -132,7 +132,7 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
                     if (percent >= 100)
                     {
                         _fileNames[index1].State = UploadState.Processing;
-                        _speedService.CompleteItem(_fileNames[index1].FileName);
+                        _speedService.CompleteItem(_fileNames[index1].Guid);
                     }
 
                     InvokeAsync(StateHasChanged);
