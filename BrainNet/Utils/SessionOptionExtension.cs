@@ -30,7 +30,7 @@ public static class SessionOptionExtension
 
     public static string InitExecutionProviderOptions(this SessionOptions options, int deviceId)
     {
-        var providers = OrtEnv.Instance().GetAvailableProviders().Where(x => x != "TensorrtExecutionProvider");
+        var providers = OrtEnv.Instance().GetAvailableProviders();
         var availableProvider = providers.First();
         switch (availableProvider)
         {
