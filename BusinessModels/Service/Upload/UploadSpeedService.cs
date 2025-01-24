@@ -6,6 +6,7 @@ public class UploadSpeedService : IDisposable
 {
     private readonly Dictionary<string, UploadTracker> _uploadTrackers = new();
     private readonly global::System.Timers.Timer _updateTimer;
+    private bool _started;
 
     public UploadSpeedService()
     {
@@ -19,13 +20,17 @@ public class UploadSpeedService : IDisposable
     public void Stop()
     {
         _updateTimer.Stop();
+        _started = false;
     }
 
     public void Start()
     {
+        if (_started)
+            return;
         _updateTimer.Start();
+        _started = true;
     }
-    
+
     private void TimerElapsed(object? sender, ElapsedEventArgs e)
     {
         UpdateAllTrackers();

@@ -51,7 +51,6 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
     private const string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full";
     private string _dragClass = DefaultDragClass;
     private readonly List<UploadProgress> _fileNames = new();
-    private List<IBrowserFile> _fileUpload = [];
     private UploadSpeedService _speedService = new();
     private bool _uploading = false;
 
@@ -80,6 +79,7 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
 
         return InvokeAsync(StateHasChanged);
     }
+
     private void SetDragClass() => _dragClass = $"{DefaultDragClass} mud-border-primary";
 
     private void ClearDragClass() => _dragClass = DefaultDragClass;
@@ -87,20 +87,6 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
     private async Task OnInputFileChanged(InputFileChangeEventArgs arg)
     {
         var selectedFiles = arg.GetMultipleFiles(Int32.MaxValue);
-        _fileUpload.AddRange(selectedFiles);
-        foreach (var file in selectedFiles)
-        {
-            var model = new UploadProgress
-            {
-                FileName = file.Name,
-                UploadMessage = file.Size.ToSizeString(),
-                ContentType = file.ContentType,
-                FileSize = file.Size,
-            };
-            _fileNames.Add(model);
-            _speedService.AddOrUpdate(model.Guid, 0);
-        }
-
         foreach (var fileChunkList in selectedFiles.Chunk(10))
         {
             await UploadAsync(fileChunkList);
@@ -110,7 +96,6 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
     private async Task UploadAsync(IReadOnlyList<IBrowserFile> fileUploads)
     {
         _uploading = true;
-        int index = _fileNames.Count - fileUploads.Count;
         if (fileUploads.Count > 0)
         {
             _speedService.Start();
@@ -122,19 +107,25 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
         {
             foreach (var file in fileUploads)
             {
-                var index1 = index;
-                _fileNames[index1].Progress = 0;
-                _fileNames[index1].State = UploadState.Uploading;
+                var model = new UploadProgress
+                {
+                    FileName = file.Name,
+                    UploadMessage = file.Size.ToSizeString(),
+                    ContentType = file.ContentType,
+                    FileSize = file.Size,
+                    Progress = 0,
+                    State = UploadState.Uploading
+                };
 
                 var progress = new Progress<double>(percent =>
                 {
-                    _fileNames[index1].Progress = percent;
-                    _speedService.AddOrUpdate(_fileNames[index1].Guid, (long)(_fileNames[index1].FileSize * percent / 100));
+                    model.Progress = percent;
+                    _speedService.AddOrUpdate(model.Guid, (long)(model.FileSize * percent / 100));
 
                     if (percent >= 100)
                     {
-                        _fileNames[index1].State = UploadState.Processing;
-                        _speedService.CompleteItem(_fileNames[index1].Guid);
+                        model.State = UploadState.Processing;
+                        _speedService.CompleteItem(model.Guid);
                     }
 
                     InvokeAsync(StateHasChanged);
@@ -143,7 +134,8 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
                 streams.Add(progressStream);
                 var fileContent = new StreamContent(progressStream);
                 multipartContent.Add(fileContent);
-                index++;
+                _fileNames.Add(model);
+                _speedService.AddOrUpdate(model.Guid, 0);
             }
 
             var folderRequest = await ApiService.GetFolderRequestAsync(null, 0, 1, null, false, false);
