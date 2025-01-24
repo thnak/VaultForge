@@ -137,7 +137,7 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
                         _speedService.CompleteItem(_fileNames[index1].Guid);
                     }
 
-                    InvokeAsync(StateHasChanged);
+                    // InvokeAsync(StateHasChanged);
                 });
                 var progressStream = new ProgressStreamContent(file.OpenReadStream(long.MaxValue), progress);
                 streams.Add(progressStream);
