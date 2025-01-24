@@ -46,13 +46,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Service/Upload/UploadSpeedService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Service/Upload/UploadSpeedService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/Utils/IconContentExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/Utils/IconContentExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BusinessModels/WebContent/MimeTypeNames.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BusinessModels/WebContent/MimeTypeNames.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1270,15 +1265,7 @@
       <workItem from="1737541344542" duration="1003000" />
       <workItem from="1737559397337" duration="5313000" />
       <workItem from="1737618107711" duration="10440000" />
-      <workItem from="1737639024794" duration="4660000" />
-    </task>
-    <task id="LOCAL-00672" summary="remove objectId from front end">
-      <option name="closed" value="true" />
-      <created>1736678049345</created>
-      <option name="number" value="00672" />
-      <option name="presentableId" value="LOCAL-00672" />
-      <option name="project" value="LOCAL" />
-      <updated>1736678049345</updated>
+      <workItem from="1737639024794" duration="5818000" />
     </task>
     <task id="LOCAL-00673" summary="add config for mqtt">
       <option name="closed" value="true" />
@@ -1664,7 +1651,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737641219108</updated>
     </task>
-    <option name="localTasksCounter" value="721" />
+    <task id="LOCAL-00721" summary="small update">
+      <option name="closed" value="true" />
+      <created>1737647626130</created>
+      <option name="number" value="00721" />
+      <option name="presentableId" value="LOCAL-00721" />
+      <option name="project" value="LOCAL" />
+      <updated>1737647626130</updated>
+    </task>
+    <option name="localTasksCounter" value="722" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

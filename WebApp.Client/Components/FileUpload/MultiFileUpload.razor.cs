@@ -35,7 +35,6 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
         public readonly string Guid = System.Guid.NewGuid().ToString();
 
         public UploadState State { get; set; } = UploadState.None;
-        public bool Indeterminate => State == UploadState.Processing;
     }
 
     private enum UploadState

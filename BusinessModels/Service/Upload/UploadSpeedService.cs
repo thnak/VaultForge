@@ -110,6 +110,7 @@ public class UploadSpeedService : IDisposable
         public void MarkAsComplete()
         {
             _completed = true;
+            CalculateSpeed();
         }
 
         public void CalculateSpeed()
