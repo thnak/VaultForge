@@ -46,7 +46,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="test not render at all" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" afterDir="false" />
+    </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
@@ -216,6 +219,7 @@
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/Properties/launchSettings.json" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -264,7 +268,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;CodeLensConfigurable&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;Inspections-ASP.NET&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -1266,23 +1270,8 @@
       <workItem from="1737559397337" duration="5313000" />
       <workItem from="1737618107711" duration="10440000" />
       <workItem from="1737639024794" duration="5818000" />
-      <workItem from="1737679907872" duration="6338000" />
-    </task>
-    <task id="LOCAL-00680" summary="update">
-      <option name="closed" value="true" />
-      <created>1737023946886</created>
-      <option name="number" value="00680" />
-      <option name="presentableId" value="LOCAL-00680" />
-      <option name="project" value="LOCAL" />
-      <updated>1737023946886</updated>
-    </task>
-    <task id="LOCAL-00681" summary="small test">
-      <option name="closed" value="true" />
-      <created>1737076043062</created>
-      <option name="number" value="00681" />
-      <option name="presentableId" value="LOCAL-00681" />
-      <option name="project" value="LOCAL" />
-      <updated>1737076043063</updated>
+      <workItem from="1737679907872" duration="10925000" />
+      <workItem from="1737696685565" duration="1903000" />
     </task>
     <task id="LOCAL-00682" summary="small fix">
       <option name="closed" value="true" />
@@ -1660,7 +1649,23 @@
       <option name="project" value="LOCAL" />
       <updated>1737687496572</updated>
     </task>
-    <option name="localTasksCounter" value="729" />
+    <task id="LOCAL-00729" summary="restore shit">
+      <option name="closed" value="true" />
+      <created>1737690201014</created>
+      <option name="number" value="00729" />
+      <option name="presentableId" value="LOCAL-00729" />
+      <option name="project" value="LOCAL" />
+      <updated>1737690201014</updated>
+    </task>
+    <task id="LOCAL-00730" summary="small update">
+      <option name="closed" value="true" />
+      <created>1737692631699</created>
+      <option name="number" value="00730" />
+      <option name="presentableId" value="LOCAL-00730" />
+      <option name="project" value="LOCAL" />
+      <updated>1737692631699</updated>
+    </task>
+    <option name="localTasksCounter" value="731" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1691,7 +1696,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="add new service" />
     <MESSAGE value="dispose image" />
     <MESSAGE value="update logic" />
     <MESSAGE value="small update to prevent duplicate vector" />
@@ -1708,7 +1712,6 @@
     <MESSAGE value="add more log" />
     <MESSAGE value="using time provider" />
     <MESSAGE value="upload un-limit" />
-    <MESSAGE value="small update" />
     <MESSAGE value="remove shit" />
     <MESSAGE value="nver timeout" />
     <MESSAGE value="fix overflow wasm value" />
@@ -1716,7 +1719,9 @@
     <MESSAGE value="small fix" />
     <MESSAGE value="add chunk for form upload" />
     <MESSAGE value="test not render at all" />
-    <option name="LAST_COMMIT_MESSAGE" value="test not render at all" />
+    <MESSAGE value="restore shit" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1765,6 +1770,19 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="110" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/WebApp.Client/Services/Http/BaseHttpClientService.FileUpload.cs</url>
+          <line>19</line>
+          <properties documentPath="C:\Users\thanh\Git\VaultForge\WebApp.Client\Services\Http\BaseHttpClientService.FileUpload.cs" containingFunctionPresentation="Method 'UploadFileAsync'">
+            <startOffsets>
+              <option value="831" />
+            </startOffsets>
+            <endOffsets>
+              <option value="888" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="112" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.IO.IOException" isInternal="false" displayValue="IOException" namespaceName="System.IO">
