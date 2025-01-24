@@ -23,14 +23,14 @@ public static class SessionOptionExtension
         {
             case "CUDAExecutionProvider":
                 return SessionOptions.MakeSessionOptionWithCudaProvider();
-            
         }
+
         return new SessionOptions();
     }
 
     public static string InitExecutionProviderOptions(this SessionOptions options, int deviceId)
     {
-        var providers = OrtEnv.Instance().GetAvailableProviders();
+        var providers = OrtEnv.Instance().GetAvailableProviders().Where(x => x != "TensorrtExecutionProvider");
         var availableProvider = providers.First();
         switch (availableProvider)
         {
