@@ -46,7 +46,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="add chunk for form upload" />
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="test not render at all" />
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
     </list>
@@ -1266,15 +1266,7 @@
       <workItem from="1737559397337" duration="5313000" />
       <workItem from="1737618107711" duration="10440000" />
       <workItem from="1737639024794" duration="5818000" />
-      <workItem from="1737679907872" duration="5703000" />
-    </task>
-    <task id="LOCAL-00679" summary="fix small issue">
-      <option name="closed" value="true" />
-      <created>1736841497803</created>
-      <option name="number" value="00679" />
-      <option name="presentableId" value="LOCAL-00679" />
-      <option name="project" value="LOCAL" />
-      <updated>1736841497803</updated>
+      <workItem from="1737679907872" duration="6338000" />
     </task>
     <task id="LOCAL-00680" summary="update">
       <option name="closed" value="true" />
@@ -1660,7 +1652,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737687246633</updated>
     </task>
-    <option name="localTasksCounter" value="728" />
+    <task id="LOCAL-00728" summary="test not render at all">
+      <option name="closed" value="true" />
+      <created>1737687496571</created>
+      <option name="number" value="00728" />
+      <option name="presentableId" value="LOCAL-00728" />
+      <option name="project" value="LOCAL" />
+      <updated>1737687496572</updated>
+    </task>
+    <option name="localTasksCounter" value="729" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1691,7 +1691,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="small test" />
     <MESSAGE value="add new service" />
     <MESSAGE value="dispose image" />
     <MESSAGE value="update logic" />
@@ -1716,7 +1715,8 @@
     <MESSAGE value="update style" />
     <MESSAGE value="small fix" />
     <MESSAGE value="add chunk for form upload" />
-    <option name="LAST_COMMIT_MESSAGE" value="add chunk for form upload" />
+    <MESSAGE value="test not render at all" />
+    <option name="LAST_COMMIT_MESSAGE" value="test not render at all" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
