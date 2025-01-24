@@ -27,6 +27,7 @@ public partial class BaseHttpClientService
         Navigation = navigation;
         var httpClient = new HttpClient(new CookieHandler());
         httpClient.BaseAddress = new Uri(Navigation.BaseUri);
+        httpClient.Timeout = TimeSpan.MaxValue;
         HttpClient = httpClient;
         DialogService = dialogService;
         ToastService = toastService;
