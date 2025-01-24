@@ -46,8 +46,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="update style">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small fix">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp.Client/Components/FileUpload/MultiFileUpload.razor.cs" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -1268,15 +1269,7 @@
       <workItem from="1737559397337" duration="5313000" />
       <workItem from="1737618107711" duration="10440000" />
       <workItem from="1737639024794" duration="5818000" />
-      <workItem from="1737679907872" duration="3507000" />
-    </task>
-    <task id="LOCAL-00677" summary="small update">
-      <option name="closed" value="true" />
-      <created>1736705109223</created>
-      <option name="number" value="00677" />
-      <option name="presentableId" value="LOCAL-00677" />
-      <option name="project" value="LOCAL" />
-      <updated>1736705109223</updated>
+      <workItem from="1737679907872" duration="5328000" />
     </task>
     <task id="LOCAL-00678" summary="fix wrong update fields">
       <option name="closed" value="true" />
@@ -1662,7 +1655,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737682600572</updated>
     </task>
-    <option name="localTasksCounter" value="726" />
+    <task id="LOCAL-00726" summary="small fix">
+      <option name="closed" value="true" />
+      <created>1737684919424</created>
+      <option name="number" value="00726" />
+      <option name="presentableId" value="LOCAL-00726" />
+      <option name="project" value="LOCAL" />
+      <updated>1737684919424</updated>
+    </task>
+    <option name="localTasksCounter" value="727" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1695,7 +1696,6 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="update" />
     <MESSAGE value="small test" />
-    <MESSAGE value="small fix" />
     <MESSAGE value="add new service" />
     <MESSAGE value="dispose image" />
     <MESSAGE value="update logic" />
@@ -1718,7 +1718,8 @@
     <MESSAGE value="nver timeout" />
     <MESSAGE value="fix overflow wasm value" />
     <MESSAGE value="update style" />
-    <option name="LAST_COMMIT_MESSAGE" value="update style" />
+    <MESSAGE value="small fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="small fix" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

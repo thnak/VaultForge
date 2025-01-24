@@ -65,11 +65,26 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
         base.OnAfterRender(firstRender);
     }
 
+    private Task Trackers()
+    {
+        if (_fileNames.All(x => x.State == UploadState.Uploaded))
+        {
+            _speedService.Stop();
+            return Task.CompletedTask;
+        }
+
+        foreach (var fileUpload in _fileNames)
+        {
+            fileUpload.UploadSpeed = _speedService.GetSpeedString(fileUpload.Guid);
+        }
+
+        return InvokeAsync(StateHasChanged);
+    }
     private void SetDragClass() => _dragClass = $"{DefaultDragClass} mud-border-primary";
 
     private void ClearDragClass() => _dragClass = DefaultDragClass;
 
-    private Task OnInputFileChanged(InputFileChangeEventArgs arg)
+    private async Task OnInputFileChanged(InputFileChangeEventArgs arg)
     {
         var selectedFiles = arg.GetMultipleFiles(Int32.MaxValue);
         _fileUpload.AddRange(selectedFiles);
@@ -86,26 +101,13 @@ public partial class MultiFileUpload(ILogger<MultiFileUpload> logger) : Componen
             _speedService.AddOrUpdate(model.Guid, 0);
         }
 
-        return Upload(selectedFiles);
+        foreach (var fileChunkList in selectedFiles.Chunk(10))
+        {
+            await UploadAsync(fileChunkList);
+        }
     }
 
-    private Task Trackers()
-    {
-        if (_fileNames.All(x => x.State == UploadState.Uploaded))
-        {
-            _speedService.Stop();
-            return Task.CompletedTask;
-        }
-
-        foreach (var fileUpload in _fileNames)
-        {
-            fileUpload.UploadSpeed = _speedService.GetSpeedString(fileUpload.Guid);
-        }
-
-        return InvokeAsync(StateHasChanged);
-    }
-
-    private async Task Upload(IReadOnlyList<IBrowserFile> fileUploads)
+    private async Task UploadAsync(IReadOnlyList<IBrowserFile> fileUploads)
     {
         _uploading = true;
         int index = _fileNames.Count - fileUploads.Count;
