@@ -36,7 +36,7 @@ public class TerminalExtension
         {
             using var outputReader = process.StandardOutput;
             using var errorReader = process.StandardError;
-
+            
             var error = await errorReader.ReadToEndAsync(cancellationToken);
             if (!string.IsNullOrEmpty(error))
             {

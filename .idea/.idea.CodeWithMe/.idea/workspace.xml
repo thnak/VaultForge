@@ -46,8 +46,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="small update">
+    <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Services/Ffmpeg/TerminalExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Ffmpeg/TerminalExtension.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Business/Utils/DatabaseExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Utils/DatabaseExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConsoleApp1/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/.config/dotnet-tools.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Chats/ChatWithLlamaController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Test/TestController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/WeatherForecastController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Middleware/GlobalMiddleware.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/Properties/launchSettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/ResApi.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/ResApi.http" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/WeatherForecast.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/appsettings.Development.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/appsettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ResApi/packages.lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -218,8 +239,6 @@
     <setting file="file://$PROJECT_DIR$/BusinessModels/Validator/Compare/EnumerableComparer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/IoT/SensorSignal.razor.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApp.Client/Components/Photo/VirtualRowImage.razor.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/Properties/launchSettings.json" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://C:/Users/thanh/Git/VaultForge/WebApp/Properties/launchSettings.json" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -317,7 +336,7 @@
       <window_info anchor="right" id="Maven" order="4" weight="0.25" />
     </layout>
   </component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.WebApp: https">
+  <component name="RunManager" selected=".NET Project.ConsoleApp1">
     <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
       <deployment type="docker-compose.yml">
         <settings />
@@ -542,36 +561,6 @@
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/ResApi/ResApi.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
       <option name="LAUNCH_PROFILE_NAME" value="ResApi" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-    <configuration name="ResApi" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/ResApi/ResApi.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="ResApi" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-    <configuration name="WebApp: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/WebApp/WebApp/WebApp.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net9.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="http" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <option name="USE_MONO" value="0" />
       <option name="RUNTIME_ARGUMENTS" value="" />
@@ -895,11 +884,11 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue=".NET Launch Settings Profile.WorkerService1" />
+      <item itemvalue=".NET Launch Settings Profile.ResApi" />
       <item itemvalue=".NET Launch Settings Profile.WebApp: http" />
+      <item itemvalue=".NET Launch Settings Profile.WorkerService1" />
       <item itemvalue=".NET Launch Settings Profile.WebApp: https" />
       <item itemvalue=".NET Launch Settings Profile.WebApp: no-browser" />
-      <item itemvalue=".NET Launch Settings Profile.ResApi" />
       <item itemvalue=".NET Project.WebApp.Client" />
       <item itemvalue=".NET Project.ConsoleApp1" />
       <item itemvalue="Docker.WebApp/Dockerfile (1)" />
@@ -1271,23 +1260,9 @@
       <workItem from="1737618107711" duration="10440000" />
       <workItem from="1737639024794" duration="5818000" />
       <workItem from="1737679907872" duration="10925000" />
-      <workItem from="1737696685565" duration="3435000" />
-    </task>
-    <task id="LOCAL-00683" summary="small update">
-      <option name="closed" value="true" />
-      <created>1737079639311</created>
-      <option name="number" value="00683" />
-      <option name="presentableId" value="LOCAL-00683" />
-      <option name="project" value="LOCAL" />
-      <updated>1737079639311</updated>
-    </task>
-    <task id="LOCAL-00684" summary="add new service">
-      <option name="closed" value="true" />
-      <created>1737087654674</created>
-      <option name="number" value="00684" />
-      <option name="presentableId" value="LOCAL-00684" />
-      <option name="project" value="LOCAL" />
-      <updated>1737087654674</updated>
+      <workItem from="1737696685565" duration="10889000" />
+      <workItem from="1738125988902" duration="7807000" />
+      <workItem from="1738541958052" duration="14935000" />
     </task>
     <task id="LOCAL-00685" summary="small update">
       <option name="closed" value="true" />
@@ -1665,7 +1640,23 @@
       <option name="project" value="LOCAL" />
       <updated>1737700596281</updated>
     </task>
-    <option name="localTasksCounter" value="732" />
+    <task id="LOCAL-00732" summary="allow trt">
+      <option name="closed" value="true" />
+      <created>1737706665739</created>
+      <option name="number" value="00732" />
+      <option name="presentableId" value="LOCAL-00732" />
+      <option name="project" value="LOCAL" />
+      <updated>1737706665739</updated>
+    </task>
+    <task id="LOCAL-00733" summary="dont use trt">
+      <option name="closed" value="true" />
+      <created>1737709870480</created>
+      <option name="number" value="00733" />
+      <option name="presentableId" value="LOCAL-00733" />
+      <option name="project" value="LOCAL" />
+      <updated>1737709870480</updated>
+    </task>
+    <option name="localTasksCounter" value="734" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1696,8 +1687,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-    <MESSAGE value="dispose image" />
-    <MESSAGE value="update logic" />
     <MESSAGE value="small update to prevent duplicate vector" />
     <MESSAGE value="update bl" />
     <MESSAGE value="import missing" />
@@ -1721,7 +1710,9 @@
     <MESSAGE value="test not render at all" />
     <MESSAGE value="restore shit" />
     <MESSAGE value="small update" />
-    <option name="LAST_COMMIT_MESSAGE" value="small update" />
+    <MESSAGE value="allow trt" />
+    <MESSAGE value="dont use trt" />
+    <option name="LAST_COMMIT_MESSAGE" value="dont use trt" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -9,7 +9,7 @@ namespace BrainNet.Service.ObjectDetection.Implements;
 public class YoloInferenceSessionService(TimeProvider timeProvider) : IYoloInferenceSessionService
 {
     private readonly TimeSpan _timeout = TimeSpan.FromMinutes(10); // Set inactivity timeout
-    private DateTime _lastActivity = DateTime.UtcNow;
+    private DateTime _lastActivity = timeProvider.GetUtcNow().DateTime;
 
     private YoloInferenceService? _yoloInferenceService;
 

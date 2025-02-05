@@ -34,8 +34,8 @@ public class YoloInferenceService : IYoloInferenceService
     private readonly IFontServiceProvider _fontServiceProvider = new FontServiceProvider();
 
     // private IOptions<BrainNetSettingModel>? Options { get; }
-    private string[] InputNames { get; set; } = null!;
-    private string[] OutputNames { get; set; } = null!;
+    private string[] InputNames { get; set; } = [];
+    private string[] OutputNames { get; set; } = [];
     public int[] InputDimensions { get; set; } = [];
     public long[] OutputDimensions { get; set; } = [];
     private float[] InputFeedBuffer { get; set; }
@@ -328,15 +328,13 @@ public class YoloInferenceService : IYoloInferenceService
         var inputs = new Dictionary<string, OrtValue> { { InputNames.First(), ortInput } };
         using var results = _session.Run(_runOptions, inputs, OutputNames);
         var predictSpan = results[0].Value.GetTensorDataAsSpan<float>();
-        var predictArray = _singleFrameInputArrayPool.Rent(predictSpan.Length);
-        predictSpan.CopyTo(predictArray);
 
         var pads = batch.Select(x => new[] { x.Item1.PadHeight, x.Item1.PadWidth }).ToList();
         var ratios = batch.Select(x => new[] { x.Item1.HeightRatio, x.Item1.WidthRatio }).ToList();
         var originShape = batch.Select(x => new[] { x.Item1.OriginImageHeight, x.Item1.OriginImageWidth }).ToList();
 
-        YoloPrediction predictions = new YoloPrediction(predictArray, predictSpan.Length, CategoryReadOnlyCollection, pads, ratios, originShape);
-        foreach (var batchResult in predictions.GetDetect().GroupBy(x => x.BatchId))
+        YoloPredictionParser predictionsParser = new YoloPredictionParser(predictSpan, predictSpan.Length, CategoryReadOnlyCollection, pads, ratios, originShape);
+        foreach (var batchResult in predictionsParser.GetDetect().GroupBy(x => x.BatchId))
         {
             try
             {
@@ -359,7 +357,6 @@ public class YoloInferenceService : IYoloInferenceService
             }
         }
 
-        _singleFrameInputArrayPool.Return(predictArray, true);
     }
 
     public void Dispose()

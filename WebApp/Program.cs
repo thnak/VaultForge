@@ -26,8 +26,8 @@ public class Program
         builder.Services.AddSingleton(TimeProvider.System);
         // Add services to the container.
         builder.Services.AddRazorComponents(options => options.DetailedErrors = builder.Environment.IsDevelopment())
-            .AddInteractiveWebAssemblyComponents()
             .AddInteractiveServerComponents(options => { options.DetailedErrors = builder.Environment.IsDevelopment(); })
+            .AddInteractiveWebAssemblyComponents()
             .AddAuthenticationStateSerialization();
 
         builder.WebHost.ConfigureKestrel(options =>
@@ -170,11 +170,11 @@ public class Program
         app.MapControllers();
         app.UseMiddleware<Middleware>();
         app.UseExceptionHandler(_ => { });
-
         app.MapRazorComponents<App>()
-            .AddInteractiveWebAssemblyRenderMode()
             .AddInteractiveServerRenderMode()
+            .AddInteractiveWebAssemblyRenderMode()
             .AddAdditionalAssemblies(typeof(_Imports).Assembly);
+
 
         app.MapSignalRHubs();
 
