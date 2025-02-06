@@ -234,7 +234,7 @@ public class YoloInferenceService : IYoloInferenceService
     {
         while (await _inputChannel.Writer.WaitToWriteAsync(cancellationToken))
         {
-            var tcs = new TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>>();
+            var tcs = new TaskCompletionSource<InferenceResult<List<YoloBoundingBox>>>(TaskCreationOptions.RunContinuationsAsynchronously);
             using MemoryTensorOwner<float> memoryTensorOwner = _memoryAllocatorService.AllocateTensor(_inputTensorShape);
             var pads = _padAndRatiosArrayPool.Rent(2);
             var ratios = _padAndRatiosArrayPool.Rent(2);

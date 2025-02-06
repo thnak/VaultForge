@@ -1,5 +1,4 @@
-﻿
-namespace BrainNet.Service.ObjectDetection.Model.Result;
+﻿namespace BrainNet.Service.ObjectDetection.Model.Result;
 
 public class YoloBoundingBox
 {

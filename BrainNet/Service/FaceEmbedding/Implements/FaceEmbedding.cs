@@ -227,7 +227,7 @@ public class FaceEmbedding : IFaceEmbedding
     {
         while (await _inputChannel.Writer.WaitToWriteAsync(cancellationToken))
         {
-            var tcs = new TaskCompletionSource<float[]>();
+            var tcs = new TaskCompletionSource<float[]>(TaskCreationOptions.RunContinuationsAsynchronously);
             MemoryTensorOwner<float> memoryTensorOwner = _memoryAllocatorService.AllocateTensor(_inputTensorShape, true);
             var pads = _padAndRatiosArrayPool.Rent(2);
             var ratios = _padAndRatiosArrayPool.Rent(2);

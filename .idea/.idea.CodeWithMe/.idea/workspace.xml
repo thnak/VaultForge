@@ -48,27 +48,8 @@
   <component name="ChangeListManager">
     <list default="true" id="79a7685d-f71b-43fb-8362-ef0c954eb8da" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CodeWithMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Services/Ffmpeg/TerminalExtension.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Services/Ffmpeg/TerminalExtension.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Business/Utils/DatabaseExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Business/Utils/DatabaseExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConsoleApp1/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/ConsoleApp1/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/.config/dotnet-tools.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Chats/ChatWithLlamaController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Files/FilesController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/Test/TestController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Controllers/WeatherForecastController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Middleware/GlobalMiddleware.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Program.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/Properties/launchSettings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/ResApi.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/ResApi.http" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/WeatherForecast.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/appsettings.Development.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/appsettings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ResApi/packages.lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/WebApp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/WebApp.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebApp/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/appsettings.Development.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Result/YoloBoundingBox.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BrainNet/Service/ObjectDetection/Model/Result/YoloBoundingBox.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/CodeWithMe.sln.DotSettings.user" afterDir="false" />
     </list>
     <list id="f2173a79-3de8-4a27-84c9-7929eceefadd" name="lazy update" comment="">
       <change beforePath="$PROJECT_DIR$/WebApp/optimized_model.onnx" beforeDir="false" afterPath="$PROJECT_DIR$/WebApp/optimized_model.onnx" afterDir="false" />
@@ -148,7 +129,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c73b3c6c598640c592fd3c6fa226c286e90908/4e/4750adba/IMemoryOwner`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c73b3c6c598640c592fd3c6fa226c286e90908/62/1fb63ed0/IDisposable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e3157c720a4245958cf8a1b12c4b4a27e90928/17/7dde157a/ArgumentOutOfRangeException.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e3157c720a4245958cf8a1b12c4b4a27e90928/82/5879a4b9/IMemoryOwner`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e3157c720a4245958cf8a1b12c4b4a27e90928/82/5879a4b9/IMemoryOwner`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e3157c720a4245958cf8a1b12c4b4a27e90928/f1/9791d11c/StackFrameIterator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f144f137e8c44478ad03d647d3e83e8771910/68/2e705602/EncryptionAlgorithm.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1059a9b9258b3670df5a4c449544237362d49ae9599d8964fde76c16fc50b6/VectorStoreRecordProperty.cs" root0="FORCE_HIGHLIGHTING" />
@@ -158,6 +139,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1e98fab23de26676a61424c1c3dae32dfd9c5f3f70742cac1dc4e3ec96c2556c/ImageDecoderCore.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2565b9d99fdde488bc7801b84387b2cc864959cfb63212e1ff576fc9c6bb7e/CancellationToken.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2854ce6d56c18d0d837d3a3ef9c4f2c7c77691fa3528c8394986ac7ce7719/StackFrameIterator.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/29b9095b6f479d183d31fb8dd32510123adcee3a46474dbed1ac25328dbb4c/Array.CoreCLR.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2b54a8d6295726a4b8041791a5f6b2992ffd98228be84a32877624da44cf018/InferenceSession.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2eb023375b7879b26d41bf37f27d5d84cf356cf593d71659a9d432322829914c/BsonClassMap.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3156559e76fa93dbd2cb4066befe67578c77ca96444eebcc2274bdf90838d/MatOfT.cs" root0="FORCE_HIGHLIGHTING" />
@@ -202,6 +184,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/948394a61fad115d827d4d89402087c31bc6fb51eaf74a396884f5708d153f/ExclusiveConnectionPool.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9769f0874b89d9a174c39e6c977aef6d979daefa49c7f3c239ef268493ea12/SemaphoreSlim.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9d6392d7da29b5663aaca22910d8ca5b62351bd1a786350db41d3b3688d194c/Document.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9dd49ec6bcd7456b18ecca6ac7736127d2d125ca7bce9f01575cee93d8cbd49/Channel.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a387f56e0a254d6432b1c7dad82cf164131bf4cae191042f96133f70bfc2/SessionOptions.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a433d7c0d479986fdcd0239e5e30f06eea9924084f07cfd30f3478be5a4a948/ShapeUtils.shared.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ad1d58b8dd22123dfae3f2cf5d8b199992465c9c344d032f93a826d8e5539ff/RuntimeType.CoreCLR.cs" root0="FORCE_HIGHLIGHTING" />
@@ -1263,14 +1246,9 @@
       <workItem from="1737696685565" duration="10889000" />
       <workItem from="1738125988902" duration="7807000" />
       <workItem from="1738541958052" duration="14935000" />
-    </task>
-    <task id="LOCAL-00685" summary="small update">
-      <option name="closed" value="true" />
-      <created>1737090423452</created>
-      <option name="number" value="00685" />
-      <option name="presentableId" value="LOCAL-00685" />
-      <option name="project" value="LOCAL" />
-      <updated>1737090423452</updated>
+      <workItem from="1738721419297" duration="2706000" />
+      <workItem from="1738752677905" duration="4005000" />
+      <workItem from="1738771673665" duration="1815000" />
     </task>
     <task id="LOCAL-00686" summary="small update">
       <option name="closed" value="true" />
@@ -1656,7 +1634,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737709870480</updated>
     </task>
-    <option name="localTasksCounter" value="734" />
+    <task id="LOCAL-00734" summary="small update">
+      <option name="closed" value="true" />
+      <created>1738723404513</created>
+      <option name="number" value="00734" />
+      <option name="presentableId" value="LOCAL-00734" />
+      <option name="project" value="LOCAL" />
+      <updated>1738723404513</updated>
+    </task>
+    <option name="localTasksCounter" value="735" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1709,10 +1695,10 @@
     <MESSAGE value="add chunk for form upload" />
     <MESSAGE value="test not render at all" />
     <MESSAGE value="restore shit" />
-    <MESSAGE value="small update" />
     <MESSAGE value="allow trt" />
     <MESSAGE value="dont use trt" />
-    <option name="LAST_COMMIT_MESSAGE" value="dont use trt" />
+    <MESSAGE value="small update" />
+    <option name="LAST_COMMIT_MESSAGE" value="small update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
